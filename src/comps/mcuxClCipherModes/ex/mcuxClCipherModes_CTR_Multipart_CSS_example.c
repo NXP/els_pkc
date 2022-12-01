@@ -1,0 +1,208 @@
+/*--------------------------------------------------------------------------*/
+/* Copyright 2022 NXP                                                       */
+/*                                                                          */
+/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms. If you do not agree to be bound by the applicable license */
+/* terms, then you may not retain, install, activate or otherwise use the   */
+/* software.                                                                */
+/*--------------------------------------------------------------------------*/
+
+#include <mcuxClCore_Examples.h> // Defines and assertions for examples
+#include <mcuxClExample_CSS_Helper.h>
+#include <mcuxClExample_Session_Helper.h>
+#include <mcuxClExample_Key_Helper.h>
+#include <mcuxClCss.h> // Interface to the entire mcuxClCss component
+#include <mcuxClSession.h> // Interface to the entire mcuxClSession component
+#include <mcuxClKey.h> // Interface to the entire mcuxClKey component
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
+#include <toolchain.h> // memory segment definitions
+#include <stdbool.h>  // bool type for the example's return code
+#include <mcuxClAes.h> // Interface to AES-related definitions and types
+#include <mcuxClCipher.h> // Interface to the entire mcuxClCipher component
+#include <mcuxClCipherModes.h> // Interface to the entire mcuxClCipherModes component
+
+/** Key for the AES encryption. */
+static uint8_t aes128_key[MCUX_CL_AES_BLOCK_SIZE] = {
+    0x2Bu, 0x7Eu, 0x15u, 0x16u,
+    0x28u, 0xAEu, 0xD2u, 0xA6u,
+    0xABu, 0xF7u, 0x15u, 0x88u,
+    0x09u, 0xCFu, 0x4Fu, 0x3Cu
+};
+
+/** IV of the AES encryption. */
+static uint8_t aes128_iv[MCUX_CL_AES_BLOCK_SIZE] = {
+    0xF8u, 0xD2u, 0x68u, 0x76u,
+    0x81u, 0x6Fu, 0x0Fu, 0xBAu,
+    0x86u, 0x2Bu, 0xD8u, 0xA3u,
+    0x2Du, 0x04u, 0x67u, 0xC3u
+};
+
+/** Plaintext input for the AES encryption. */
+static uint8_t const msg_plain[MCUX_CL_AES_BLOCK_SIZE] = {
+    0x6Bu, 0xC1u, 0xBEu, 0xE2u,
+    0x2Eu, 0x40u, 0x9Fu, 0x96u,
+    0xE9u, 0x3Du, 0x7Eu, 0x11u,
+    0x73u, 0x93u, 0x17u, 0x2Au
+};
+
+/** Expected ciphertext output of the AES encryption. */
+static uint8_t const msg_enc_expected[MCUX_CL_AES_BLOCK_SIZE] = {
+    0x1Au, 0x75u, 0xE5u, 0xF9u,
+    0x98u, 0x9Eu, 0xC2u, 0x84u,
+    0x41u, 0x74u, 0x62u, 0xBDu,
+    0xFBu, 0x16u, 0xF9u, 0xA5u
+};
+
+bool mcuxClCipherModes_CTR_Multipart_CSS_example(void)
+{
+    /**************************************************************************/
+    /* Preparation                                                            */
+    /**************************************************************************/
+
+    /** Initialize CSS, MCUXCLCSS_RESET_DO_NOT_CANCEL **/
+    if(!mcuxClExample_Css_Init(MCUXCLCSS_RESET_DO_NOT_CANCEL))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+
+
+    /* Initialize session */
+    mcuxClSession_Descriptor_t sessionDesc;
+    mcuxClSession_Handle_t session = &sessionDesc;
+    //Allocate and initialize session
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUX_CL_CIPHER_MAX_AES_CPU_WA_BUFFER_SIZE_IN_WORDS, 0u);
+
+    /* Initialize key */
+    uint32_t keyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE_IN_WORDS];
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+
+    /* Set key properties. */
+    mcuxClCss_KeyProp_t key_properties;
+
+    key_properties.word.value = 0u;
+    key_properties.bits.ksize = MCUXCLCSS_KEYPROPERTY_KEY_SIZE_128;
+    key_properties.bits.kactv = MCUXCLCSS_KEYPROPERTY_ACTIVE_TRUE;
+
+    /* Load key. */
+    uint32_t dstData[8];
+    //Initializes a key handle, Set key properties and Load key.
+    if(!mcuxClExample_Key_Init_And_Load(session,
+                                       key,
+                                       mcuxClKey_Type_Aes128,
+                                       (mcuxCl_Buffer_t) aes128_key,
+                                       sizeof(aes128_key),
+                                       &key_properties,
+                                       dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+
+    /* Create a buffer for the context */
+    uint8_t ctxBuf[MCUX_CL_CIPHER_AES_CONTEXT_SIZE];
+    mcuxClCipher_Context_t * const ctx = (mcuxClCipher_Context_t *) ctxBuf;
+
+    /* Declare message buffer and size. */
+    uint8_t msg_enc[MCUX_CL_AES_BLOCK_SIZE];
+    uint32_t msg_enc_size = 0u;
+
+    /**************************************************************************/
+    /* Init                                                                   */
+    /**************************************************************************/
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_init, token_init, mcuxClCipher_init(
+    /* mcuxClSession_Handle_t session,          */ session,
+    /* mcuxClCipher_Context_t * const pContext, */ ctx,
+    /* mcuxClKey_Handle_t key,                  */ key,
+    /* mcuxClCipher_Mode_t mode,                */ mcuxClCipher_Mode_AES_CTR,
+    /* mcuxCl_InputBuffer_t pIv,                */ aes128_iv,
+    /* uint32_t ivLength,                      */ sizeof(aes128_iv)
+    ));
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_init) != token_init) || (MCUX_CL_CIPHER_STATUS_OK != result_init))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+
+    /**************************************************************************/
+    /* Process                                                                */
+    /**************************************************************************/
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_proc, token_proc, mcuxClCipher_process(
+    /* mcuxClSession_Handle_t session,         */ session,
+    /* mcuxClCipher_Context_t * const pContext */ ctx,
+    /* mcuxCl_InputBuffer_t pIn,               */ msg_plain,
+    /* uint32_t inLength,                     */ sizeof(msg_plain),
+    /* mcuxCl_Buffer_t pOut,                   */ msg_enc,
+    /* uint32_t * const pOutLength            */ &msg_enc_size
+    ));
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_process) != token_proc) || (MCUX_CL_CIPHER_STATUS_OK != result_proc))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+
+    /**************************************************************************/
+    /* Finish                                                                 */
+    /**************************************************************************/
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_fin, token_fin, mcuxClCipher_finish(
+    /* mcuxClSession_Handle_t session,         */ session,
+    /* mcuxClCipher_Context_t * const pContext */ ctx,
+    /* mcuxCl_Buffer_t pOut,                   */ msg_enc,
+    /* uint32_t * const pOutLength            */ &msg_enc_size
+    ));
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_finish) != token_fin) || (MCUX_CL_CIPHER_STATUS_OK != result_fin))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    if(msg_enc_size != sizeof(msg_enc_expected))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+
+    /* Check the result of the encryption, compare it against the reference */
+    if(!mcuxClCore_assertEqual(msg_enc, msg_enc_expected, msg_enc_size))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+
+
+    /**************************************************************************/
+    /* Cleanup                                                                */
+    /**************************************************************************/
+
+    /* Flush the key. */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClKey_flush(session, key));
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUX_CL_KEY_STATUS_OK != result))
+    {
+        return MCUX_CL_EXAMPLE_FAILURE;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /** Destroy Session and cleanup Session **/
+    if(!mcuxClExample_Session_Clean(session))
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+
+    /** Disable the CSSv2 **/
+    if(!mcuxClExample_Css_Disable())
+    {
+        return MCUX_CL_EXAMPLE_ERROR;
+    }
+
+    return MCUX_CL_EXAMPLE_OK;
+}

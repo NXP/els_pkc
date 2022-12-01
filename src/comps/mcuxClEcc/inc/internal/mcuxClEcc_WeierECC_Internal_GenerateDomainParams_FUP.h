@@ -1,0 +1,46 @@
+/*--------------------------------------------------------------------------*/
+/* Copyright 2022 NXP                                                       */
+/*                                                                          */
+/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms. If you do not agree to be bound by the applicable license */
+/* terms, then you may not retain, install, activate or otherwise use the   */
+/* software.                                                                */
+/*--------------------------------------------------------------------------*/
+
+/**
+ * @file  mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h
+ * @brief defines FUP programs byte arrays
+ */
+
+
+#ifndef MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP
+#define MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP
+
+
+#include <internal/mcuxClPkc_FupMacros.h>
+
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P
+ */
+#define mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P_Len   4u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P[mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P_Len];
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR
+ */
+#define mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR_Len   5u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR[mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR_Len];
+
+/**
+ * FUP program declaration mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR
+ */
+#define mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len   10u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR[mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len];
+
+
+#endif /* MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP */

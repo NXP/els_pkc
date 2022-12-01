@@ -1,0 +1,49 @@
+CLNS NirvanaSDK V1.3.0 (EAR) Release Notes
+
+- Release: NirvanaSDK_EAR
+- Version: V1.3.0
+- Date:    2022-10-27
+- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
+- Link to Bitbucket: tags/nirvanasdk_ear2_v1_3_0
+- Compiler: IAR Compiler v.8.40.1
+--- Test Target:   
+   - CoSim: CSSV2 v1.9
+      - CoSim CSS IP: 0.2.19
+--- CLNS memory consumption: delivery/nirvanaSdk_cosim_release/static_library/nirvanaSdk_cosim/libclns.a
+    TEXT  RO    RW ZI TOTAL_CONSUMPTION
+    55016 15956 0  0  70972
+
+--- New Features in version 1.3.0: 
+   - Abstraction layer for platform header files: release can be built with CRR generated header files or platform header file
+   
+--- Features:
+   - Components included: nxpClCss
+   - Components included: nxpClAead, nxpClCipher, nxpClHash, nxpClKey, nxpClMac, nxpClMemory, nxpClPadding, nxpClSession
+   - Components included: nxpClPkc, nxpClMath, nxpClEcc, nxpClRandom, nxpClRsa, nxpClTrng
+   - Components included: nxpCsslCPreProcessor, nxpCsslFlowProtection, nxpCsslMemory, nxpCsslParamIntegrity, nxpCsslSecureCounter
+   - nxpClCss supports the following functionality
+        - AES-128/192/256 encryption/decryption, modes ECB/CBC/CTR/GCM/CMAC
+        - SHA2-224/256/384/512 (including sha-direct mode)
+        - KDF: CKDF (NIST SP 800-108 / SP800-56C), HKDF (RFC5869)
+        - HMAC
+        - ECC Sign/Verify/Keygen/Keyexchange (P-256)
+        - RFC3394 key wrapping/unwrapping
+        - Key Import/Export/Utilities/Provisioning
+        - Random number Generation (DRBG/PRNG)
+        - TLS Master/Session Key generation
+        - GDET
+   - RSA key generation
+
+--- Known Issues Limitations: 
+   - Build using ARMGCC not working yet
+   - EDDSA functionality included but incomplete (under development, non-functional)
+   - occasional timeouts/iterations exceeded for RSA key generation (this is due to statistical variation)
+   - all tests that make use of interrupts could not be executed due to an issue on the test platform
+   - dma final address readback checks are disabled on this release
+   - issue observed with test of CKDF from DUK
+   - failing test on RTF feature of CSS
+   - several examples failing
+      - RSA: nxpClRsa_verify_pssverify_sha2_256_example
+      - Random: nxpClRandom_Mode_CtrDrbg_AES256_DRG3_example 
+
+   
