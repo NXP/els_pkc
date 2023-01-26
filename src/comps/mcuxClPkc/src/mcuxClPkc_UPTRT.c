@@ -21,7 +21,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClCss_Rng.h>
+#include <mcuxClEls_Rng.h>
 
 #include <mcuxClPkc_Types.h>
 #include <mcuxClPkc_Functions.h>
@@ -61,13 +61,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(uint16_
     for (uint32_t idx = noOfBuffer; idx > 1u; idx--)
     {
 		MCUX_CSSL_FP_LOOP_ITERATION(Loop,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandomWord));
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord));
         
 
         /* Generate a random number in the range [0, idx-1], where idx <= noOfBuffer <= 255. */
         uint32_t random32;
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClCss_Prng_GetRandomWord(&random32));
-        if (MCUXCLCSS_STATUS_OK != ret_PRNG_randWord)
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClEls_Prng_GetRandomWord(&random32));
+        if (MCUXCLELS_STATUS_OK != ret_PRNG_randWord)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_RandomizeUPTRT, MCUXCLPKC_STATUS_NOK);
         }
@@ -100,11 +100,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(uint1
     for (uint32_t idx = noOfBuffer; idx > 1u; idx--)
     {
         MCUX_CSSL_FP_LOOP_ITERATION(Loop,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandomWord));
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord));
 		/* Generate a random number in the range [0, idx-1], where idx <= noOfBuffer <= 255. */
         uint32_t random32;
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClCss_Prng_GetRandomWord(&random32));
-        if (MCUXCLCSS_STATUS_OK != ret_PRNG_randWord)
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClEls_Prng_GetRandomWord(&random32));
+        if (MCUXCLELS_STATUS_OK != ret_PRNG_randWord)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_ReRandomizeUPTRT, MCUXCLPKC_STATUS_NOK);
         }

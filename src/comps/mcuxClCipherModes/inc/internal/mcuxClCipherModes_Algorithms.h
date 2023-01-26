@@ -15,8 +15,8 @@
  *  @brief Supported algorithms for the mcuxClCipherModes component
  */
 
-#ifndef MCUX_CL_CIPHERMODES_ALGORITHMS_H_
-#define MCUX_CL_CIPHERMODES_ALGORITHMS_H_
+#ifndef MCUXCLCIPHERMODES_ALGORITHMS_H_
+#define MCUXCLCIPHERMODES_ALGORITHMS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -35,49 +35,49 @@ extern "C" {
  */
 
 /**
- * @brief AES ECB Encryption algorithm descriptor without padding, using CSS
+ * @brief AES ECB Encryption algorithm descriptor without padding, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_NoPadding_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_NoPadding_Els;
 
 /**
- * @brief AES ECB Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 1, using CSS
+ * @brief AES ECB Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 1, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method1_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method1_Els;
 
 /**
- * @brief AES ECB Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 2, using CSS
+ * @brief AES ECB Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 2, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method2_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method2_Els;
 
 /**
- * @brief AES ECB Decryption algorithm descriptor, using CSS
+ * @brief AES ECB Decryption algorithm descriptor, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Dec_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Dec_Els;
 
 /**
- * @brief AES CBC Encryption algorithm descriptor without padding, using CSS
+ * @brief AES CBC Encryption algorithm descriptor without padding, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_NoPadding_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_NoPadding_Els;
 
 /**
- * @brief AES CBC Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 1, using CSS
+ * @brief AES CBC Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 1, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method1_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method1_Els;
 
 /**
- * @brief AES CBC Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 2, using CSS
+ * @brief AES CBC Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 2, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method2_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method2_Els;
 
 /**
- * @brief AES CBC Decryption algorithm descriptor, using CSS
+ * @brief AES CBC Decryption algorithm descriptor, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Dec_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Dec_Els;
 
 /**
- * @brief CTR Encryption/Decryption algorithm descriptor, using CSS
+ * @brief CTR Encryption/Decryption algorithm descriptor, using ELS
  */
-extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_AlgorithmDescriptor_AES_CTR_Css;
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CTR_Els;
 
 
 
@@ -90,4 +90,4 @@ extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t mcuxClCipherModes_A
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_CIPHERMODES_ALGORITHMS_H_ */
+#endif /* MCUXCLCIPHERMODES_ALGORITHMS_H_ */

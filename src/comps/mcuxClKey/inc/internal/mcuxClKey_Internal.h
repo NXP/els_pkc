@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#ifndef MCUX_CL_KEY_INTERNAL_H_
-#define MCUX_CL_KEY_INTERNAL_H_
+#ifndef MCUXCLKEY_INTERNAL_H_
+#define MCUXCLKEY_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClKey.h>
@@ -28,4 +28,4 @@ extern "C" {
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_KEY_INTERNAL_H_ */
+#endif /* MCUXCLKEY_INTERNAL_H_ */

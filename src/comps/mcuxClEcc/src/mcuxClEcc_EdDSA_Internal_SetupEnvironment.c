@@ -27,8 +27,25 @@
 
 
 /**
- * \brief TODO
+ * This function sets up the general environment used by EdDSA functions.
+ * In particular, it sets up the utilized co-processors, prepares the PKC workarea layout,
+ * and initializes it for Montgomery arithmetic modulo p and n.
  *
+ * Input:
+ *  - pSession              Handle for the current CL session
+ *  - pCommonDomainParams   Pointer to domain parameter struct passed via API
+ *  - noOfBuffers           Number of PKC buffers to be allocated
+ *
+ * Result:
+ *  - The pointer table has been properly setup in CPU workarea and PKC buffers have been allocated
+ *  - The PKC state has been backed up in CPU workarea and the PKC has been enabled
+ *  - ps1Len = (operandSize, operandSize)
+ *  - Buffers ECC_PFULL and ECC_NFULL contain p'||p and n'||n, respectively
+ *  - Buffers ECC_PS and ECC_NS contain the p resp. n shifted to the PKC word boundary
+ *  - Buffers ECC_PQSQR and ECC_NQSQR contain the R^2 values modulo p and n, respectively
+ *  - Virtual pointers ECC_P and ECC_N point to the second PKC word of ECC_PFULL and ECC_NFULL, respectively
+ *  - Virtual pointers ECC_ZERO and ECC_ONE have been initialized with 0 and 1, respecitvely
+ *  - The domain parameters a and d are stored in buffers ECC_CP0 and ECC_CP1 in MR
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_SetupEnvironment)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment(
@@ -40,7 +57,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_SetupEnvironment(pSession, &(pDomainParams->common), noOfBuffers));
 
-    /* Import curve parameters a and d, covert them to MR modulo p, and store them in buffers ECC_CP0 and ECC_CP1. */
+    /* Import curve parameters a and d, convert them to MR modulo p, and store them in buffers ECC_CP0 and ECC_CP1. */
     uint32_t byteLenP = (uint32_t) pDomainParams->common.byteLenP;
     MCUXCLPKC_FP_IMPORTLITTLEENDIANTOPKC(ECC_T0, pDomainParams->common.pCurveParam1, byteLenP);
     MCUXCLPKC_FP_IMPORTLITTLEENDIANTOPKC(ECC_T1, pDomainParams->common.pCurveParam2, byteLenP);

@@ -31,7 +31,7 @@
 
 
 /* Example AES-128 key. */
-static uint32_t aes128_key[MCUX_CL_AES_AES128_KEY_SIZE_IN_WORDS] =
+static uint32_t aes128_key[MCUXCLAES_AES128_KEY_SIZE_IN_WORDS] =
 {
     0xb97d0b7cu, 0xd0101f81u, 0x7a6c470eu, 0xe0f6920du
 };
@@ -39,9 +39,9 @@ static uint32_t aes128_key[MCUX_CL_AES_AES128_KEY_SIZE_IN_WORDS] =
 
 
 /** Performs an example initialization and cleanup of the mcuxClKey component.
- * @retval MCUX_CL_EXAMPLE_OK    The example code completed successfully
- * @retval MCUX_CL_EXAMPLE_ERROR The example code failed */
-MCUX_CL_EXAMPLE_FUNCTION(mcuxClKey_example)
+ * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+MCUXCLEXAMPLE_FUNCTION(mcuxClKey_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -55,18 +55,18 @@ MCUX_CL_EXAMPLE_FUNCTION(mcuxClKey_example)
     /**************************************************************************/
 
     /* Create and initialize mcuxClKey_Descriptor_t structure. */
-    uint32_t keyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE_IN_WORDS];
+    uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
 
     /* Set key properties. */
-    mcuxClCss_KeyProp_t key_properties;
+    mcuxClEls_KeyProp_t key_properties;
 
     key_properties.word.value = 0u;
-    key_properties.bits.ksize = MCUXCLCSS_KEYPROPERTY_KEY_SIZE_128;
-    key_properties.bits.kactv = MCUXCLCSS_KEYPROPERTY_ACTIVE_TRUE;
+    key_properties.bits.ksize = MCUXCLELS_KEYPROPERTY_KEY_SIZE_128;
+    key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
 
     /* Key buffer for the key in memory. */
-    uint32_t key_buffer[MCUX_CL_AES_AES128_KEY_SIZE_IN_WORDS];
+    uint32_t key_buffer[MCUXCLAES_AES128_KEY_SIZE_IN_WORDS];
     //Initializes a key handle, Set key properties and Load key.
     if(!mcuxClExample_Key_Init_And_Load(&session,
                                        key,
@@ -76,7 +76,7 @@ MCUX_CL_EXAMPLE_FUNCTION(mcuxClKey_example)
                                        &key_properties,
                                        key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /**************************************************************************/
@@ -93,17 +93,17 @@ MCUX_CL_EXAMPLE_FUNCTION(mcuxClKey_example)
                                                                  &session,
                                                                  key));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != tokenFlush) || (MCUX_CL_KEY_STATUS_OK != resultFlush))
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != tokenFlush) || (MCUXCLKEY_STATUS_OK != resultFlush))
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    return MCUX_CL_EXAMPLE_OK;
+    return MCUXCLEXAMPLE_OK;
 }

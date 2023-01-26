@@ -24,17 +24,21 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClKey.h>
 #include <mcuxClPkc.h>
+#include <mcuxClMemory.h>
 #include <mcuxClEcc.h>
 
 #include <internal/mcuxClPkc_Macros.h>
 #include <internal/mcuxClPkc_Operations.h>
+#include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClKey_Types_Internal.h>
+#include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_Internal_Random.h>
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal_Hash.h>
 #include <internal/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h>
+
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateKeyPair)
@@ -52,7 +56,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateKeyPair);
 
+    /*
+     * Step 1: Set up the environment
+     */
+
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) (type->info);
 
@@ -61,59 +70,64 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
                                         pDomainParams,
                                         ECC_EDDSA_NO_OF_BUFFERS) );
 
-    /* private key length = M = 32-byte for Ed25519 (b = 256 = 32*8) */
-    /*                       or 57-byte for Ed448 (b = 456 = 57*8).  */
-    const uint32_t privKeyLength = (uint32_t) pDomainParams->b / 8u;
+    /* private and public key length = M = 32-byte for Ed25519 (b = 256 = 32*8) */
+    /*                                  or 57-byte for Ed448 (b = 456 = 57*8).  */
+    const uint32_t keyLength = (uint32_t) pDomainParams->b / 8u;
     uint8_t * pPrivKey = NULL;
 
-    /* Generate or import private key d. */
+
+    /*
+     * Step 2: Determine whether the private key is passed to the function or needs to be generated. In the latter case, generate the private key d.
+     */
     uint32_t options = mode->options;
     MCUX_CSSL_FP_BRANCH_DECL(privKeyOption);
     if (MCUXCLECC_EDDSA_PRIVKEY_GENERATE == options)
     {
         /* Reserve space on CPU workarea for the private key. */
-        const uint32_t privKeyWords = MCUXCLECC_ALIGNED_SIZE(privKeyLength) / (sizeof(uint32_t));
+        const uint32_t privKeyWords = MCUXCLECC_ALIGNED_SIZE(keyLength) / (sizeof(uint32_t));
         pPrivKey = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, privKeyWords);
         pCpuWorkarea->wordNumCpuWa += privKeyWords;
 
-        MCUX_CSSL_FP_FUNCTION_CALL(retRandom,
-            mcuxClRandom_generate(pSession, pPrivKey, privKeyLength) );
+        MCUX_CSSL_FP_FUNCTION_CALL(retRandom, mcuxClRandom_generate(pSession, pPrivKey, keyLength) );
 
         if (MCUXCLRANDOM_STATUS_OK != retRandom)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair,
-                                      MCUXCLECC_STATUS_RNG_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_RNG_ERROR);
         }
 
-        MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
+        MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
     }
     else if (MCUXCLECC_EDDSA_PRIVKEY_INPUT == options)
     {
         pPrivKey = (uint8_t *) pPrivData;
-
         MCUX_CSSL_FP_BRANCH_NEGATIVE(privKeyOption);
     }
     else
     {
         /* invalid option */
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair,
-                                  MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
-    /* The 2b-bit private key hash will be stored in PKC workarea, such that  */
-    /* the second half (bits b ~ 2b-1) is at the beginning of PKC operand S3. */
+    /*
+     * Step 3: Hash the private key using the hash function specified in the EdDSA domain parameters and store
+     *         the hash result (h_0,...,h_{2b-1}) in buffers ECC_T2 and ECC_S3 with offset such that the second half
+     *         (h_b,...,h_{2b-1}) is stored at the beginning of ECC_S3.
+     */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint8_t *pS3 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S3]);
-    uint8_t *pPrivKeyHashPkc = pS3 - privKeyLength;
+    uint8_t *pPrivKeyHashPkc = pS3 - keyLength;
 
     /* Calculate 2b-bit hash of private key. */
     MCUXCLECC_FP_EDDSA_KEYGEN_HASH_PRIVKEY(pSession,
                                           pDomainParams->algoHash,
                                           pPrivKey, pPrivKeyHashPkc,
-                                          privKeyLength);
+                                          keyLength);
 
-    /* Prepare s in PKC operand S2. */
+
+    /*
+     * Step 4: Derive the secret scalar s from the first half (h_b,..,h_{2b-1}) of the private key hash and store it in buffer ECC_S2.
+     */
+
     /* The bits 0~(b-1) of private key hash is placed before and adjacent to PKC operand S3. */
     const uint32_t b = pDomainParams->b;  /* = 256 (Ed25519); 456 (Ed448) */
     const uint32_t c = pDomainParams->c;  /* =   3 (Ed25519);   2 (Ed448) */
@@ -123,42 +137,151 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     /* V1 = V0 for Ed25519 (64/128-bit PkcWord) and Ed448 (128-bit PkcWord); */
     /*    = V0 + 64-bit for Ed448 (64-bit PkcWord).                          */
     /* ps, PKC will ignore non-aligned part of offsets.                      */
-    pOperands[TWED_V0] = (uint16_t) (offsetS3 - (b/8u));
-    pOperands[TWED_V1] = (uint16_t) (offsetS3 - (t/8u));
+    pOperands[ECC_V0] = (uint16_t) (offsetS3 - (b/8u));
+    pOperands[ECC_V1] = (uint16_t) (offsetS3 - (t/8u));
     /* V2/V3/V4 are shift/rotate amounts used in FUP program below. */
     /* V2 = 2 (Ed25519); 9 (Ed448). */
     /* V3 = -252 \equiv  4 (Ed25519);                */
     /*      -446 \equiv  2 (Ed448, 64-bit PkcWord)   */
     /*               or 66 (Ed448, 128-bit PkcWord). */
-    pOperands[TWED_V2] = (uint16_t) (b - t);
-    pOperands[TWED_V3] = (uint16_t) (c - 1u - t);
-    pOperands[TWED_V4] = (uint16_t) c;
-    uint32_t privKeyLengthPkc = MCUXCLPKC_ROUNDUP_SIZE(privKeyLength);
-    MCUXCLPKC_PS2_SETLENGTH(0u, privKeyLengthPkc);
+    pOperands[ECC_V2] = (uint16_t) (b - t);
+    pOperands[ECC_V3] = (uint16_t) (c - 1u - t);
+    pOperands[ECC_V4] = (uint16_t) c;
+    uint32_t keyLengthPkc = MCUXCLPKC_ROUNDUP_SIZE(keyLength);
+    MCUXCLPKC_PS2_SETLENGTH(0u, keyLengthPkc);
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_EdDSA_GenerateKeyPair_Prepare_S,
                         mcuxClEcc_FUP_EdDSA_GenerateKeyPair_Prepare_S_LEN);
 
 
+    /*
+     * Step 5: Perform a blinded scalar multiplication Q = s*G and store the resulting point in encoded form Q_enc in buffer ECC_COORD01.
+     */
 
-    (void)protection;
-    (void)privKey;
-    (void)pPrivData;
-    (void)pPrivDataLength;
-    (void)pubKey;
-    (void)pPubData;
-    (void)pPubDataLength;
+    /* Call the BlindedScalarMult function.
+     * If the function returns OK, ECC_COORD00 and ECC_COORD01 contain the affine x- and y-coordinates of Q.
+     * If the function returns NEUTRAL_POINT, ECC_COORD00 and ECC_COORD01 are set to the coordinates of the neutral point (0,1). */
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_BlindedScalarMult, mcuxClEcc_BlindedScalarMult(pSession, (mcuxClEcc_CommonDomainParams_t *) &pDomainParams->common) );
+    if (MCUXCLECC_STATUS_RNG_ERROR == ret_BlindedScalarMult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_RNG_ERROR);
+    }
+    else if (MCUXCLECC_STATUS_NEUTRAL_POINT == ret_BlindedScalarMult)
+    {
+        MCUXCLPKC_FP_CALC_OP1_CONST(ECC_COORD00, 0u);
+        MCUXCLPKC_FP_CALC_OP1_CONST(ECC_COORD01, 0u);
+        MCUXCLPKC_FP_CALC_OP1_ADD_CONST(ECC_COORD01, ECC_COORD01, 1u);
+    }
+    else if (MCUXCLECC_STATUS_OK != ret_BlindedScalarMult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        /* Intentionally left empty */
+    }
 
+    /* Derive the encoding Q_enc of Q and store it in buffer ECC_COORD02.
+     *
+     * NOTE: PS2 lengths are still set to (0u, keyLengthPkc) */
+    MCUXCLPKC_FP_CALC_OP2_CONST(ECC_COORD02, 0u);                    /* Clear keyLengthPkc bytes of buffer ECC_COORD02 */
+    MCUXCLPKC_FP_CALC_OP1_OR_CONST(ECC_COORD02, ECC_COORD01, 0u);    /* Copy operandSize < keyLengthPkc bytes of the y-coordinate from ECC_COORD01 to ECC_COORD02 */
+    uint8_t *pQX = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD00]);
+    uint8_t *pQEncLsbXByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD01])[keyLength - 1u];
+    MCUXCLPKC_WAITFORFINISH();
+    uint8_t lsbX = (*pQX) & 0x01u;
+    *pQEncLsbXByte |= (lsbX << 7u);
+
+
+    /*
+     * Step 6: (Securely) copy the key data to the key handles.
+     */
+    if (MCUXCLECC_EDDSA_PRIVKEY_GENERATE == options)
+    {
+        // TODO: Is this copy function secure enough?
+        // TODO: Is the second length parameter correctly set here? Or must it be *pPrivDataLength from below
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_CopyPrivKey, mcuxClMemory_copy(pPrivData, pPrivKey, keyLength, keyLength));
+        if (MCUXCLMEMORY_STATUS_OK != ret_CopyPrivKey)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        }
+    }
+
+    /* Securely export the scalar s from PKC buffer ECC_S2. */
+    uint32_t scalarSLength = (t + 7u) >> 3u;
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportScalarS, mcuxClPkc_SecureExportLittleEndianFromPkc((uint8_t *) &pPrivData[keyLength], ECC_S2, scalarSLength));
+    if (MCUXCLPKC_STATUS_OK != ret_SecExportScalarS)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
+
+    /* Securely export the private key hash (h_b,...,h_{2b-1}) from PKC buffer ECC_S3. */
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportHash, mcuxClPkc_SecureExportLittleEndianFromPkc((uint8_t *) &pPrivData[keyLength + scalarSLength], ECC_S3, keyLength));
+    if (MCUXCLPKC_STATUS_OK != ret_SecExportHash)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
+
+    /* Export the public key to the private and public key handles. */
+    // TODO: Should one use a secure version for the first export to avoid leakage for unaligned data?
+    MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC((uint8_t *) &pPrivData[2u * keyLength + scalarSLength], ECC_COORD01, keyLength);
+    MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pPubData, ECC_COORD01, keyLength);
+
+
+    /*
+     * Step 7: Initialize the key handles privKey and pubKey and set the sizes pPrivDataLength and pPubDataLength to the sizes of the content of pPrivData and pPubData.
+     */
+
+    /* Initialize private key handle */
+    mcuxClKey_TypeDescriptor_t keyType_private = { type->algoId ^ MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PRIVATE_KEY,
+                                                  type->size, type->info }; // TODO CLNS-5165: move the generation of these types into the key component
+    mcuxClKey_setTypeDescriptor(privKey, keyType_private);
+    mcuxClKey_setProtectionType(privKey, protection);
+    mcuxClKey_setKeyData(privKey, pPrivData);
+
+    /* Initialize public key handle */
+    mcuxClKey_TypeDescriptor_t keyType_public = { type->algoId ^ MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PUBLIC_KEY,
+                                                 type->size, type->info }; // TODO CLNS-5165: move the generation of these types into the key component
+    mcuxClKey_setTypeDescriptor(pubKey, keyType_public);
+    mcuxClKey_setProtectionType(pubKey, protection);
+    mcuxClKey_setKeyData(pubKey, pPubData);
+
+    /* Set private and public data lengths */
+    *(pPrivDataLength) = keyLength     + /* private key        */
+                         scalarSLength + /* scalar s           */
+                         keyLength     + /* (h_b,...,h_{2b-1}) */
+                         keyLength;      /* public key         */
+    *(pPubDataLength) = keyLength;
+
+    /* Clean up and exit */
     MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
     mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
     mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair,
-                                         MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
+        /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),
+        /* Step 2 */
         MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(privKeyOption, MCUXCLECC_EDDSA_PRIVKEY_GENERATE == options),
         MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE(privKeyOption, MCUXCLECC_EDDSA_PRIVKEY_INPUT == options),
+        /* Step 3 */
         MCUXCLECC_FP_CALLED_EDDSA_KEYGEN_HASH_PRIVKEY,
+        /* Step 4 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
-
+        /* Step 5 */
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_BlindedScalarMult),
+        MCUX_CSSL_FP_CONDITIONAL((MCUXCLECC_STATUS_NEUTRAL_POINT == ret_BlindedScalarMult),
+            MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
+            MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
+            MCUXCLPKC_FP_CALLED_CALC_OP1_ADD_CONST),
+        MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
+        MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
+        /* Step 6 */
+        MCUX_CSSL_FP_CONDITIONAL((MCUXCLECC_EDDSA_PRIVKEY_GENERATE == options),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
+        /* Step 7 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
 }

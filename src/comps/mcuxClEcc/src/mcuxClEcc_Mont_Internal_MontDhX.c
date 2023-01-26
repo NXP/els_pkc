@@ -178,7 +178,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     uint32_t leadingZeroN = MCUXCLMATH_FP_LEADINGZEROS(ECC_N);
     uint32_t bitLenN = (operandSize * 8u) - leadingZeroN;
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult0,
-        mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S1, bitLenN, MCUXCLECC_AFFINE));
+        mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S1, bitLenN, MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT));
     if (MCUXCLECC_STATUS_OK != retSecScalarMult0)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_MontDH_X, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -187,7 +187,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     /* Securely calculate, R'' = phi * R', stored result in buffers (X0, Z0). */
     /* Secure multiplication is not needed here, but we do not have non secure one */
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult1,
-        mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S0, MCUXCLECC_MONTDH_SCALAR_BLINDING_BYTELEN * 8u, MCUXCLECC_PROJECTIVE));
+        mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S0, MCUXCLECC_SCALARBLINDING_BITSIZE, MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT));
     if (MCUXCLECC_STATUS_OK != retSecScalarMult1)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_MontDH_X, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -200,7 +200,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     *(pS0) = (1u << pDomainParameters->c);
     /* Securely calculate, R = cofactor * R'', stored result in buffers (X0, Z0). */
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult2,
-        mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S0, (uint32_t)(pDomainParameters->c) + 1u, MCUXCLECC_PROJECTIVE));
+        mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S0, (uint32_t)(pDomainParameters->c) + 1u, MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT));
     if (MCUXCLECC_STATUS_OK != retSecScalarMult2)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_MontDH_X, MCUXCLECC_STATUS_FAULT_ATTACK);

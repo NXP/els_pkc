@@ -29,8 +29,8 @@
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <toolchain.h>             // Memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
- #include <mcuxClCss.h> // Interface to the entire mcuxClCss component
- #include <mcuxClExample_CSS_Helper.h>
+ #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
+ #include <mcuxClExample_ELS_Helper.h>
 
 /**********************************************************/
 /* Example test vectors                                   */
@@ -139,18 +139,18 @@ bool mcuxClRsa_sign_NoEncode_example(void)
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /* Enable Css */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCss_Enable_Async()); // Enable the CSSv2.
-    // mcuxClCss_Enable_Async is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Enable_Async) != token) || (MCUXCLCSS_STATUS_OK_WAIT != result))
+    /* Enable ELS */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
+    // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
         return false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCss_WaitForOperation(MCUXCLCSS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClCss_Enable_Async operation to complete.
-    // mcuxClCss_WaitForOperation is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_WaitForOperation) != token) || (MCUXCLCSS_STATUS_OK != result))
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
+    // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
         return false;
     }
@@ -226,8 +226,8 @@ bool mcuxClRsa_sign_NoEncode_example(void)
         return false;
     }
 
-    /** Disable the CSSv2 **/
-    if(!mcuxClExample_Css_Disable())
+    /** Disable the ELS **/
+    if(!mcuxClExample_Els_Disable())
     {
         return false;
     }

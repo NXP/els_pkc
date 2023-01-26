@@ -205,7 +205,7 @@
         MCUXCLPKC_FP_CALLED_CALC_MC1_MR+ \
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv)+ \
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)+ \
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Interleave))
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_InterleaveTwoScalars))
 
 #define MCUXCLECC_FP_VERIFY_CALC_P1 \
        (MCUX_CSSL_FP_CONDITIONAL((MCUXCLPKC_FLAG_ZERO != checkHashZero), \
@@ -261,7 +261,7 @@
         MCUXCLPKC_FP_CALLED_CALC_MC1_MR+ \
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv)+ \
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)+ \
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Interleave)+ \
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_InterleaveTwoScalars)+ \
         MCUX_CSSL_FP_CONDITIONAL((MCUXCLPKC_FLAG_NONZERO == checkHashZero), \
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy), \
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy), \

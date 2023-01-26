@@ -19,11 +19,11 @@
  * @brief   Example for the mcuxClEcc component EdDsa related functions
  */
 
-#include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClEcc.h>
 #include <mcuxClKey.h>
 #include <mcuxClPkc_Types.h>
-#include <mcuxClExample_CSS_Helper.h>
+#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 
@@ -42,8 +42,8 @@ static uint8_t const input[] =     {0x11u, 0x11u, 0x11u, 0x11u,
 
 bool mcuxClEcc_EdDSA_Ed25519_example(void)
 {
-    /** Initialize CSS, Enable the CSSv2 **/
-    if(!mcuxClExample_Css_Init(MCUXCLCSS_RESET_DO_NOT_CANCEL))
+    /** Initialize ELS, Enable the ELS **/
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return false;
     }
@@ -54,29 +54,25 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
 
     /* Initialize the RNG context and Initialize the PRNG*/
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandom_Mode_CSS_Drbg)
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg)
 
     /* Prepare buffers for generated data */
-    uint8_t privKeyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE];
+    uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privKeyDesc;
-    uint8_t pubKeyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE];
+    uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
     uint8_t privKeyBuffer[MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY]={0};
     uint8_t pubKeyBuffer[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY]={0};
     uint32_t privKeySize = 0u;
     uint32_t pubKeySize = 0u;
 
-    mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t modeGenerateKeyPair =
-    {
-        .options = MCUXCLECC_EDDSA_PRIVKEY_GENERATE
-    };
 
     /* Call Ecc_TwEd_EdDsaKeyGen */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygen_result, keygen_token, mcuxClEcc_EdDSA_GenerateKeyPair(
     /*  mcuxClSession_Handle_t pSession  */ &session,
-    /*  mcuxClKey_Type_t type            */ mcuxClKey_Type_EdDSA_Ed25519_KeyPair,
+    /*  mcuxClKey_Type_t type            */ mcuxClKey_Type_EdDSA_Ed25519_Priv,
     /*  mcuxClKey_Protection_t protection*/ mcuxClKey_Protection_None,
-    /*  const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t * */ & modeGenerateKeyPair,
+    /*  const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t * */ &mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor,
     /*  mcuxClKey_Handle_t privKey       */ privKeyHandler,
     /*  uint8_t *pPrivData              */ privKeyBuffer,
     /*  uint32_t *const pPrivDataLength */ &privKeySize,
@@ -133,8 +129,8 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
         return false;
     }
 
-    /** Disable the CSSv2 **/
-    if(!mcuxClExample_Css_Disable())
+    /** Disable the ELS **/
+    if(!mcuxClExample_Els_Disable())
     {
         return false;
     }

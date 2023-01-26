@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#ifndef MCUX_CL_AES_INTERNAL_CONSTANTS_H_
-#define MCUX_CL_AES_INTERNAL_CONSTANTS_H_
+#ifndef MCUXCLAES_INTERNAL_CONSTANTS_H_
+#define MCUXCLAES_INTERNAL_CONSTANTS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -20,12 +20,13 @@
 extern "C" {
 #endif
 
-#define MCUX_CL_AES_MASKED_KEY_SIZE               (32u)
-#define MCUX_CL_AES_MASKED_KEY_SIZE_IN_WORDS      (MCUX_CL_AES_MASKED_KEY_SIZE / sizeof(uint32_t))
+#define MCUXCLAES_MASKED_KEY_SIZE               (32u)
+#define MCUXCLAES_MASKED_KEY_SIZE_IN_WORDS      (MCUXCLAES_MASKED_KEY_SIZE / sizeof(uint32_t))
 
+#define MCUXCLAES_GCM_H_KEY_SIZE                (16u)
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_AES_INTERNAL_CONSTANTS_H_ */
+#endif /* MCUXCLAES_INTERNAL_CONSTANTS_H_ */

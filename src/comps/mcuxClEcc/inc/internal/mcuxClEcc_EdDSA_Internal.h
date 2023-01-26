@@ -33,14 +33,29 @@
 #include <mcuxClHash_Types.h>
 
 #include <internal/mcuxClEcc_Internal.h>
-#include <internal/mcuxClEcc_Internal_UPTRT_access.h>
 #include <internal/mcuxClEcc_EdDSA_Internal_PkcWaLayout.h>
 
 
 /**********************************************************/
-/* Internal return codes of mcuxClEcc_TwEd                 */
+/* Internal return codes for EdDSA functions              */
 /**********************************************************/
 // None
+
+
+/**********************************************************/
+/* Internal EdDSA defines                                 */
+/**********************************************************/
+
+/**
+ * Options for EdDSA key pair generation descriptors
+ */
+#define MCUXCLECC_EDDSA_PRIVKEY_INPUT     (0xA5A5A5A5U)  ///< the private key d is passed as input
+#define MCUXCLECC_EDDSA_PRIVKEY_GENERATE  (0X5A5A5A5AU)  ///< the private key is generated internally
+
+
+/**********************************************************/
+/* Internal EdDSA types                                   */
+/**********************************************************/
 
 /**
  * Domain parameter structure for TwEd functions.
@@ -56,14 +71,9 @@ struct mcuxClEcc_EdDSA_DomainParams
     mcuxClHash_Algo_t algoHash;             ///< Hash algorithm descriptor of the hash function H() to be used for hashing the private key, public data and plaintext messages
 };
 
-/**
- * Internal size definitions TwEd functions.
- */
-#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP            (32u)   ///< Byte length of the underlying prime p used in Ed25519.
-#define MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER    (32u)   ///< Byte length of the base point order n used in Ed25519.
-#define MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP              (56u)   ///< Byte length of the underlying prime p used in Ed448.
-#define MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER      (56u)   ///< Byte length of the base point order n used in Ed448.
-
+/**********************************************************/
+/* Declarations for internal EdDSA functions              */
+/**********************************************************/
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_SetupEnvironment)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment(

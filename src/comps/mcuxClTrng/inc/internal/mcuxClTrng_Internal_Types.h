@@ -17,8 +17,8 @@
  */
 
 
-#ifndef MCUX_CL_TRNG_INTERNAL_TYPES_H_
-#define MCUX_CL_TRNG_INTERNAL_TYPES_H_
+#ifndef MCUXCLTRNG_INTERNAL_TYPES_H_
+#define MCUXCLTRNG_INTERNAL_TYPES_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <stdint.h>
@@ -56,4 +56,4 @@ typedef uint32_t mcuxClTrng_Status_t;
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_TRNG_INTERNAL_TYPES_H_ */
+#endif /* MCUXCLTRNG_INTERNAL_TYPES_H_ */

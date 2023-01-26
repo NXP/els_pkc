@@ -19,7 +19,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClCss_Rng.h>
+#include <mcuxClEls_Rng.h>
 
 #include <mcuxClMemory.h>
 #include <mcuxClHash.h>
@@ -69,7 +69,7 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_Pss_Sha2_512 =
   .pPaddingFunction = mcuxClRsa_pssEncode
 };
 
-#if defined(MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND) || defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
+#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND) || defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
 #define mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeWa) mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa)
 #else
 #define mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeWa) mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa)
@@ -113,7 +113,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
    * M' = | M'= (padding | mHash | salt) |
    */
   const uint32_t wordSizeTempWa = MCUXCLRSA_INTERNAL_PSSENCODE_TEMPBUFFER_SIZE(hLen, sLen) / sizeof(uint32_t);
-#if defined(MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND) || defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
+#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND) || defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
   mcuxCl_Buffer_t pMprim = (mcuxCl_Buffer_t) mcuxClSession_allocateWords_cpuWa(pSession, wordSizeTempWa);
 #else
   mcuxCl_Buffer_t pMprim = (mcuxCl_Buffer_t) mcuxClSession_allocateWords_pkcWa(pSession, wordSizeTempWa);
@@ -183,9 +183,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
   /* Step 4: Generate a random octet string salt of length sLen; if sLen = 0, then salt is the empty string. */
   // TODO: question to Security Architects: PRNG okay?
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClCss_Prng_GetRandom(pSalt, sLen));
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pSalt, sLen));
 
-  if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom)
+  if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
   {
     mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_ERROR);
@@ -268,8 +268,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
 /* Use temporary defines to avoid preprocessor directives inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
-  #define TMP_FEATURE_CSS_RNG \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom), \
+  #define TMP_FEATURE_ELS_RNG \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
 
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK,
@@ -277,11 +277,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)),
     MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
-    TMP_FEATURE_CSS_RNG,
+    TMP_FEATURE_ELS_RNG,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_mgf1),
     MCUX_CSSL_FP_LOOP_ITERATIONS(loop1, sLen),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness));
 
-#undef TMP_FEATURE_CSS_RNG
+#undef TMP_FEATURE_ELS_RNG
 }

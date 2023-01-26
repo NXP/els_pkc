@@ -27,7 +27,7 @@
 /******************************************************************************/
 /* Macro to generate high-quality random number in PKC workarea.              */
 /******************************************************************************/
-#if defined(MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND)
+#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND)
 #include <internal/mcuxClSession_Internal.h>
 
 #define MCUXCLECC_FP_RANDOM_HQRNG_PKCWA(callerID, pSession, pOutPKCWA, length)                     \
@@ -70,7 +70,7 @@
     } while(false)
 
 #define MCUXCLECC_FP_CALLED_RANDOM_HQRNG_PKCWA  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate)
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
 
 #endif /* MCUXCLECC_INTERNAL_RANDOM_H_ */

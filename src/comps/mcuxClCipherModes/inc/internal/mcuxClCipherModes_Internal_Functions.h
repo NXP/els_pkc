@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 
-#ifndef MCUX_CL_CIPHERMODES_FUNCTONS_INTERNAL_H_
-#define MCUX_CL_CIPHERMODES_FUNCTONS_INTERNAL_H_
+#ifndef MCUXCLCIPHERMODES_INTERNAL_FUNCTONS_H_
+#define MCUXCLCIPHERMODES_INTERNAL_FUNCTONS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -34,14 +34,13 @@ void mcuxClCipherModes_MemCopy(uint8_t *pDst, const uint8_t *pSrc, uint32_t leng
 
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length);
 
-
 /*
  * Skeleton and Engine functions
  * */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClCipherModes_EngineCss)
-  MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_EngineCss(
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClCipherModes_EngineEls)
+  MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_EngineEls(
   mcuxClSession_Handle_t session,
-  mcuxClCipherModes_Context_Aes_Css_t * const pContext,
+  mcuxClCipherModes_Context_Aes_Els_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
   mcuxCl_Buffer_t pOut
@@ -68,4 +67,4 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_CIPHERMODES_FUNCTONS_INTERNAL_H_ */
+#endif /* MCUXCLCIPHERMODES_INTERNAL_FUNCTONS_H_ */

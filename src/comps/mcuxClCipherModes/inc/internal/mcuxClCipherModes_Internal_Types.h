@@ -15,8 +15,8 @@
  *  @brief Internal type definitions for the mcuxClCipherModes component
  */
 
-#ifndef MCUX_CL_CIPHERMODES_INTERNAL_TYPES_H_
-#define MCUX_CL_CIPHERMODES_INTERNAL_TYPES_H_
+#ifndef MCUXCLCIPHERMODES_INTERNAL_TYPES_H_
+#define MCUXCLCIPHERMODES_INTERNAL_TYPES_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -26,6 +26,7 @@
 
 #include <mcuxClAes.h>
 #include <internal/mcuxClAes_Internal_Constants.h>
+#include <internal/mcuxClAes_Ctx.h>
 #include <mcuxClCore_Platform.h>
 #include <mcuxClKey_Types.h>
 #include <mcuxClSession.h>
@@ -42,40 +43,40 @@ extern "C" {
 
 
 /**
- * @brief Cipher context structure for CSS modes
+ * @brief Cipher context structure for ELS modes
  *
  * This structure is used to store the information about the current operation
- * and the relevant internal CSS state.
+ * and the relevant internal ELS state.
  */
-typedef struct mcuxClCipherModes_Context_Aes_Css
+typedef struct mcuxClCipherModes_Context_Aes_Els
 {
   mcuxClCipher_Context_t   common;
 
   mcuxClKey_Descriptor_t * pKey;
-  uint8_t     blockBuffer[MCUX_CL_AES_BLOCK_SIZE];   /* Buffer used when not enough data for full block */
-  uint32_t    ivState[MCUX_CL_AES_BLOCK_SIZE_IN_WORDS]; /* IV and internal state */
-} mcuxClCipherModes_Context_Aes_Css_t;
+  uint8_t     blockBuffer[MCUXCLAES_BLOCK_SIZE];   /* Buffer used when not enough data for full block */
+  uint32_t    ivState[MCUXCLAES_BLOCK_SIZE_IN_WORDS]; /* IV and internal state */
+} mcuxClCipherModes_Context_Aes_Els_t;
 
 /**
- * @brief Engine function type for CSS modes
+ * @brief Engine function type for ELS modes
  */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) (*mcuxClCipherModes_EngineFunc_AesCss_t) (
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) (*mcuxClCipherModes_EngineFunc_AesEls_t) (
   mcuxClSession_Handle_t session,
-  mcuxClCipherModes_Context_Aes_Css_t * const pContext,
+  mcuxClCipherModes_Context_Aes_Els_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
   mcuxCl_Buffer_t pOut
 );
 
 /**
- * @brief Cipher mode algorithm descriptor structure for AES algorithms using CSS
+ * @brief Cipher mode algorithm descriptor structure for AES algorithms using ELS
  *
  * This structure captures all the information that the Cipher interfaces need
- * to know about a CSS AES Cipher mode algorithm.
+ * to know about an ELS AES Cipher mode algorithm.
  */
-typedef struct mcuxClCipherModes_AlgorithmDescriptor_Aes_Css
+typedef struct mcuxClCipherModes_AlgorithmDescriptor_Aes_Els
 {
-  mcuxClCipherModes_EngineFunc_AesCss_t    cryptEngine;
+  mcuxClCipherModes_EngineFunc_AesEls_t    cryptEngine;
   mcuxClPadding_addPaddingMode_t           addPadding;
   uint32_t                    protection_token_engine;
   uint32_t                    protection_token_addPadding;
@@ -84,14 +85,14 @@ typedef struct mcuxClCipherModes_AlgorithmDescriptor_Aes_Css
   uint32_t                    blockLength;
   uint32_t                    ivLength;
   uint32_t                    granularity;
-} mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t;
+} mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t;
 
 /**
- * @brief Cipher mode algorithm type for AES algorithms using CSS
+ * @brief Cipher mode algorithm type for AES algorithms using ELS
  *
- * This type is used to refer to a CSS AES Cipher mode algorithm.
+ * This type is used to refer to an ELS AES Cipher mode algorithm.
  */
-typedef const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t * const mcuxClCipherModes_Algorithm_Aes_Css_t;
+typedef const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t * const mcuxClCipherModes_Algorithm_Aes_Els_t;
 
 
 
@@ -100,4 +101,4 @@ typedef const mcuxClCipherModes_AlgorithmDescriptor_Aes_Css_t * const mcuxClCiph
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_CIPHERMODES_INTERNAL_TYPES_H_ */
+#endif /* MCUXCLCIPHERMODES_INTERNAL_TYPES_H_ */

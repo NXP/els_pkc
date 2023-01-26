@@ -13,8 +13,8 @@
 
 /**
  *
- * @file:	size.c
- * @brief:	This file contains objects which will be used to measure size of particular types.
+ * @file:   size.c
+ * @brief:  This file contains objects which will be used to measure size of particular types.
  *
  */
 #include <internal/mcuxClKey_Types_Internal.h>

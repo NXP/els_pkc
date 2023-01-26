@@ -169,7 +169,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionCalls(void)
   	MCUX_CSSL_FP_FUNCTION_CALLED(functionOnly2)
   );
 
-  /* In this function we've had various calls, i.e. call events:
+  /* In this function we have had various calls, i.e. call events:
    *  - functionOnly0 (3 times)
    *  - functionOnly1 (2 times)
    *  - functionOnly2 (2 times)

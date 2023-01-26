@@ -14,8 +14,8 @@
 /** @file  mcuxClCipher_Internal_Types.h
  *  @brief Internal type definitions for the mcuxClCipher component */
 
-#ifndef MCUX_CL_CIPHER_INTERNAL_TYPES_H_
-#define MCUX_CL_CIPHER_INTERNAL_TYPES_H_
+#ifndef MCUXCLCIPHER_INTERNAL_TYPES_H_
+#define MCUXCLCIPHER_INTERNAL_TYPES_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -48,6 +48,22 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) (*mcuxClCipher_CryptF
 );
 
 
+typedef mcuxClCipher_Status_t (*mcuxClCipher_SelfTestFunc_t) (
+  mcuxClSession_Handle_t session,
+  mcuxClCipher_Mode_t pMode
+);
+
+/**
+ * @brief Cipher selftest mode/algorithm descriptor structure
+ *
+ * This structure captures all the information that the Cipher selftest interfaces need
+ * to know about a particular Cipher selftest mode/algorithm.
+ */
+struct mcuxClCipher_TestDescriptor
+{
+  mcuxClCipher_SelfTestFunc_t    selftest;
+  uint32_t                      protection_token_selftest;
+};
 
 /**
  * @brief Cipher mode/algorithm descriptor structure
@@ -75,6 +91,7 @@ struct mcuxClCipher_Context
   const mcuxClCipher_ModeDescriptor_t * pMode;
 
   uint32_t blockBufferUsed; /* How many bytes in blockBuffer is used */
+  uint32_t totalInputLength;/* Total number of bytes that were encrypted */
 };
 
 
@@ -82,4 +99,4 @@ struct mcuxClCipher_Context
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_CIPHER_INTERNAL_TYPES_H_ */
+#endif /* MCUXCLCIPHER_INTERNAL_TYPES_H_ */

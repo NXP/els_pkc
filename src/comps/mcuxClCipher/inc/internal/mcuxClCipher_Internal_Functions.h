@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                  */
+/* Copyright 2022 NXP                                                       */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 
-#ifndef MCUX_CL_CIPHER_FUNCTONS_INTERNAL_H_
-#define MCUX_CL_CIPHER_FUNCTONS_INTERNAL_H_
+#ifndef MCUXCLCIPHER_INTERNAL_FUNCTONS_H_
+#define MCUXCLCIPHER_INTERNAL_FUNCTONS_H_
 
 
 
@@ -27,7 +27,7 @@ static inline void mcuxClCipher_computeContextCrc(mcuxClCipher_Context_t * const
 
 static inline mcuxClCipher_Status_t mcuxClCipher_verifyContextCrc(mcuxClCipher_Context_t * const pCtx, uint32_t contextSize)
 {
-    return MCUX_CL_CIPHER_STATUS_OK;
+    return MCUXCLCIPHER_STATUS_OK;
 }
 
 
@@ -35,4 +35,4 @@ static inline mcuxClCipher_Status_t mcuxClCipher_verifyContextCrc(mcuxClCipher_C
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_CIPHER_FUNCTONS_INTERNAL_H_ */
+#endif /* MCUXCLCIPHER_INTERNAL_FUNCTONS_H_ */

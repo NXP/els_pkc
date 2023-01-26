@@ -50,8 +50,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
     mcuxClKey_Descriptor_t * pKey = (mcuxClKey_Descriptor_t *)key;
     mcuxClKey_Descriptor_t * pOtherKey = (mcuxClKey_Descriptor_t *)otherKey;
 
-    if(((MCUX_CL_KEY_ALGO_ID_ECC_MONTDH | MCUX_CL_KEY_ALGO_ID_PRIVATE_KEY) != mcuxClKey_getAlgoId(pKey)) || (MCUX_CL_KEY_SIZE_NOTUSED != mcuxClKey_getSize(pKey))
-    ||((MCUX_CL_KEY_ALGO_ID_ECC_MONTDH | MCUX_CL_KEY_ALGO_ID_PUBLIC_KEY) != mcuxClKey_getAlgoId(pOtherKey)) || (MCUX_CL_KEY_SIZE_NOTUSED != mcuxClKey_getSize(pOtherKey))
+    if(((MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_PRIVATE_KEY) != mcuxClKey_getAlgoId(pKey)) || (MCUXCLKEY_SIZE_NOTUSED != mcuxClKey_getSize(pKey))
+    ||((MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_PUBLIC_KEY) != mcuxClKey_getAlgoId(pOtherKey)) || (MCUXCLKEY_SIZE_NOTUSED != mcuxClKey_getSize(pOtherKey))
     )
     {
        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyAgreement, MCUXCLECC_STATUS_FAULT_ATTACK);

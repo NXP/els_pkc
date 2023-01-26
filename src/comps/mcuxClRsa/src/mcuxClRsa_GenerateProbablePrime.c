@@ -109,7 +109,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pA0, a0, sizeof(a0), sizeof(a0)));
 
 
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
     uint8_t * pPrimeKeyDataCpu = (uint8_t*) pOperands + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_GENPRIME_UPTRT_SIZE * sizeof(uint16_t)));
 #endif
 
@@ -126,7 +126,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
         * Used functions: RNG provided through the pSession
         */
         cntRandomGen++;
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
         MCUX_CSSL_FP_FUNCTION_CALL(retRandomGen, mcuxClRandom_generate(pSession, pPrimeKeyDataCpu, pPrimeCandidate->keyEntryLength));
         if(MCUXCLRANDOM_STATUS_OK != retRandomGen)
         {
@@ -151,7 +151,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
 
         cntTestPrime++;
         MCUX_CSSL_FP_FUNCTION_CALL(retTest, mcuxClRsa_TestPrimeCandidate(pSession, pE, pPrimeCandidate, keyBitLength, iNumToCmp_iA0));
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
         if ((MCUXCLRSA_STATUS_KEYGENERATION_OK == retTest) || (MCUXCLRSA_STATUS_RNG_ERROR == retTest) || (MCUXCLRSA_STATUS_ERROR == retTest))
 #else
         if ((MCUXCLRSA_STATUS_KEYGENERATION_OK == retTest) || (MCUXCLRSA_STATUS_RNG_ERROR == retTest))
@@ -178,7 +178,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     MCUXCLPKC_SETUPTRT(bakUPTRT);
 
 /* Check define outside of macro so the MISRA rule 20.6 does not get violated */
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_GenerateProbablePrime, status,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * cntRandomGen,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * cntRandomGen,

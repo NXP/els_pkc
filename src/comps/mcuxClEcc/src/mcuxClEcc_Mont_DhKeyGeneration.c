@@ -56,8 +56,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
     mcuxClKey_Descriptor_t * pPrivKey = (mcuxClKey_Descriptor_t *)privKey;
     mcuxClKey_Descriptor_t * pPubKey = (mcuxClKey_Descriptor_t *)pubKey;
 
-    if(   ((MCUX_CL_KEY_ALGO_ID_ECC_MONTDH | MCUX_CL_KEY_ALGO_ID_KEY_PAIR) != type->algoId)
-       || (MCUX_CL_KEY_SIZE_NOTUSED != type->size) )
+    if(   ((MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_KEY_PAIR) != type->algoId)
+       || (MCUXCLKEY_SIZE_NOTUSED != type->size) )
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
@@ -121,13 +121,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
         MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pPubData, MONT_X0, keyLen);
 
         /* Fill key_handle_t structures */
-        mcuxClKey_TypeDescriptor_t keyType_private = { type->algoId ^ MCUX_CL_KEY_ALGO_ID_KEY_PAIR ^ MCUX_CL_KEY_ALGO_ID_PRIVATE_KEY,
+        mcuxClKey_TypeDescriptor_t keyType_private = { type->algoId ^ MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PRIVATE_KEY,
                                                       type->size, type->info }; // TODO CLNS-5165: move the generation of these types into the key component
         mcuxClKey_setTypeDescriptor(pPrivKey, keyType_private);
         mcuxClKey_setProtectionType(pPrivKey, protection);
         mcuxClKey_setKeyData(pPrivKey, pPrivData);
 
-        mcuxClKey_TypeDescriptor_t keyType_public = { type->algoId ^ MCUX_CL_KEY_ALGO_ID_KEY_PAIR ^ MCUX_CL_KEY_ALGO_ID_PUBLIC_KEY,
+        mcuxClKey_TypeDescriptor_t keyType_public = { type->algoId ^ MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PUBLIC_KEY,
                                                      type->size, type->info }; // TODO CLNS-5165: move the generation of these types into the key component
         mcuxClKey_setTypeDescriptor(pPubKey, keyType_public);
         mcuxClKey_setProtectionType(pPubKey, protection);

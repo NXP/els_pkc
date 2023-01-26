@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file:	size.c
- * @brief:	This file contains objects which will be used to measure size of particular types.
+ * @file:  size.c
+ * @brief: This file contains objects which will be used to measure size of particular types.
  *
  */
 
@@ -24,8 +24,7 @@
 /* *** Work area sizes *** */
 /* *********************** */
 
-volatile mcuxClCipherModes_Context_Aes_Css_t mcuxClCipherModes_WorkArea_Aes_Css_Oneshot; // CSS Oneshot Context needs to be in WA
+volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_WorkArea_Aes_Els_Oneshot; // ELS Oneshot Context needs to be in WA
 
-volatile mcuxClCipherModes_Context_Aes_Css_t mcuxClCipherModes_Context_Aes_Css;
-
+volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_Context_Aes_Els;
 

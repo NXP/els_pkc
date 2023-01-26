@@ -38,7 +38,7 @@
 #define MCUXCLECC_SECUREPOINTSELECT(ofsP0_, ofsP1_, pOps_, iBase, scalarW0_, scalarW1_, randomWord_, bitOffset_)  \
 do{                                                                                      \
   (void) randomWord_; \
-  uint32_t bit = (((uint32_t)(scalarW0_) ^ (uint32_t)(scalarW1_)) >> ((uint32_t)(bitOffset_) - 1u)) & 0x01u; \
+  uint32_t bit = (((uint32_t)(scalarW0_) ^ (uint32_t)(scalarW1_)) >> (uint32_t)(bitOffset_)) & 0x01u; \
   if(bit == 0u)\
   {\
     (ofsP0_) = (((uint32_t)(pOps_)[(iBase) + 1])<< 16) | (uint32_t)(pOps_)[(iBase)];\
@@ -50,7 +50,7 @@ do{                                                                             
     (ofsP1_) = (((uint32_t)(pOps_)[(iBase) + 1])<< 16) | (uint32_t)(pOps_)[(iBase)];\
   }\
 } while (false)
-#elif defined(__ICCARM__) || defined(__ARMCC_VERSION) || defined(__CC_ARM) || defined(__GNUC__)
+#elif defined(ICCARM_ARMCC_GNUC)
 
 #define MCUXCLECC_SECUREPOINTSELECT(ofsP0_, ofsP1_, pOps_, iBase, scalarW0_, scalarW1_, randomWord_, bitOffset_)  \
     do{  \

@@ -15,7 +15,7 @@
 #include <mcuxCsslSecureCounter.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
-#include <impl/mcuxCsslMemory_Copy_asm.h>
+#include <mcuxCsslMemory_Copy_asm.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslMemory_Copy)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Copy

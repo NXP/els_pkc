@@ -15,7 +15,7 @@
  *  @brief Implementation of the Key protection functions that are supported
  *  by component. */
 
-#include <mcuxClCss.h>
+#include <mcuxClEls.h>
 #include <mcuxClKey.h>
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
@@ -27,7 +27,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(mcuxC
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_protect_fct_none);
 
-    if(MCUX_CL_KEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(key))
+    if(MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(key))
     {
         // copy key source to destination memory buffer
         uint32_t len = mcuxClKey_getSize(key);
@@ -37,49 +37,49 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(mcuxC
                                                               len, len));
         if (0U != resultLen)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUX_CL_KEY_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUXCLKEY_STATUS_ERROR);
         }
 
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUX_CL_KEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUXCLKEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
     }
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUX_CL_KEY_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUXCLKEY_STATUS_OK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_protect_fct_ckdf)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(mcuxClKey_Handle_t key)
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_protect_fct_ckdf, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Ckdf_Sp800108_Async));
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_protect_fct_ckdf, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Ckdf_Sp800108_Async));
 
     if(NULL == key->container.parentKey)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUX_CL_KEY_STATUS_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUXCLKEY_STATUS_ERROR);
     }
 
-    mcuxClCss_KeyIndex_t key_idx_sk     = (mcuxClCss_KeyIndex_t) mcuxClKey_getLoadedKeySlot(mcuxClKey_getParentKey(key));
-    mcuxClCss_KeyIndex_t key_idx_mack   = (mcuxClCss_KeyIndex_t) mcuxClKey_getLoadedKeySlot(key);
+    mcuxClEls_KeyIndex_t key_idx_sk     = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(mcuxClKey_getParentKey(key));
+    mcuxClEls_KeyIndex_t key_idx_mack   = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(key);
     /* MISRA Ex. 9 - Needed to correctly reinterpret the auxilary data */
-    mcuxClCss_KeyProp_t  key_properties = *((mcuxClCss_KeyProp_t*) mcuxClKey_getAuxData(key));
+    mcuxClEls_KeyProp_t  key_properties = *((mcuxClEls_KeyProp_t*) mcuxClKey_getAuxData(key));
 
-    MCUX_CSSL_FP_FUNCTION_CALL(resultCkdf, mcuxClCss_Ckdf_Sp800108_Async(
+    MCUX_CSSL_FP_FUNCTION_CALL(resultCkdf, mcuxClEls_Ckdf_Sp800108_Async(
                                  key_idx_sk,
                                  key_idx_mack,
                                  key_properties,
                                  mcuxClKey_getKeyData(key)
     ));
-    // mcuxClCss_Ckdf_Async is a flow-protected function: Check the protection token and the return value
-    if (MCUXCLCSS_STATUS_OK_WAIT != resultCkdf)
+    // mcuxClEls_Ckdf_Sp800108_Async is a flow-protected function: Check the protection token and the return value
+    if (MCUXCLELS_STATUS_OK_WAIT != resultCkdf)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUX_CL_KEY_STATUS_ERROR); // Expect that no error occurred, meaning that the mcuxClCss_Ckdf_Async operation was started.
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUXCLKEY_STATUS_ERROR); // Expect that no error occurred, meaning that the mcuxClEls_Ckdf_Sp800108_Async operation was started.
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL(resultWait, mcuxClCss_WaitForOperation(MCUXCLCSS_ERROR_FLAGS_CLEAR));
+    MCUX_CSSL_FP_FUNCTION_CALL(resultWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
-    if (MCUXCLCSS_STATUS_OK != resultWait)
+    if (MCUXCLELS_STATUS_OK != resultWait)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUX_CL_KEY_STATUS_ERROR, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_WaitForOperation));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUXCLKEY_STATUS_ERROR, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUX_CL_KEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_WaitForOperation));
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_ckdf, MCUXCLKEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
 }
 
 const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_None = {&mcuxClKey_protect_fct_none,

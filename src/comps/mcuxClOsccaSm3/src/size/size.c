@@ -1,0 +1,36 @@
+/*--------------------------------------------------------------------------*/
+/* Copyright 2022 NXP                                                       */
+/*                                                                          */
+/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms. If you do not agree to be bound by the applicable license */
+/* terms, then you may not retain, install, activate or otherwise use the   */
+/* software.                                                                */
+/*--------------------------------------------------------------------------*/
+
+/**
+ *
+ * @file:   size.c
+ * @brief:  This file contains objects which will be used to measure size of particular types.
+ *
+ */
+#include <internal/mcuxClOsccaSm3_Internal.h>
+#include <internal/mcuxClHash_Internal.h>
+
+
+/* Hash Cpu Workarea size generation */
+volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuMax [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
+
+volatile uint8_t mcuxClOsccaSm3_process_WaCpuSm3 [MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_process_WaCpuMax [MCUXCLOSCCASM3_STATE_SIZE_SM3];
+
+volatile uint8_t mcuxClOsccaSm3_finish_WaCpuSm3 [MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_finish_WaCpuMax [MCUXCLOSCCASM3_STATE_SIZE_SM3];
+
+/* Hash multi-part context size generation */
+volatile uint8_t mcuxClOsccaSm3_Ctx_size[sizeof(mcuxClHash_ContextDescriptor_t)];
+

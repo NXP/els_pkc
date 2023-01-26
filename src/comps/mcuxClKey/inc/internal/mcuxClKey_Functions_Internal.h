@@ -16,8 +16,8 @@
  * @brief Internal function definitions for the mcuxClKey component
  */
 
-#ifndef MCUX_CL_KEY_FUNCTIONS_INTERNAL_H_
-#define MCUX_CL_KEY_FUNCTIONS_INTERNAL_H_
+#ifndef MCUXCLKEY_FUNCTIONS_INTERNAL_H_
+#define MCUXCLKEY_FUNCTIONS_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
@@ -138,7 +138,7 @@ static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgoId(mcuxClKey_Handle_t key
  */
 static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgorithm(mcuxClKey_Handle_t key)
 {
-  return key->type.algoId & MCUX_CL_KEY_ALGO_ID_ALGO_MASK;
+  return key->type.algoId & MCUXCLKEY_ALGO_ID_ALGO_MASK;
 }
 
 /**
@@ -148,7 +148,7 @@ static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgorithm(mcuxClKey_Handle_t 
  */
 static inline mcuxClKey_AlgorithmId_t mcuxClKey_getKeyUsage(mcuxClKey_Handle_t key)
 {
-  return key->type.algoId & MCUX_CL_KEY_ALGO_ID_USAGE_MASK;
+  return key->type.algoId & MCUXCLKEY_ALGO_ID_USAGE_MASK;
 }
 
 
@@ -289,4 +289,4 @@ static inline void mcuxClKey_setKeyContainerUsedSize(mcuxClKey_Handle_t key, uin
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_KEY_FUNCTIONS_INTERNAL_H_ */
+#endif /* MCUXCLKEY_FUNCTIONS_INTERNAL_H_ */

@@ -29,9 +29,9 @@
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <toolchain.h>             // Memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
-#include <mcuxClCss.h> // Interface to the entire mcuxClCss component
-#include <mcuxClExample_CSS_Helper.h>
-#include <mcuxClExample_CSS_Key_Helper.h>
+#include <mcuxClEls.h> // Interface to the entire mcuxClEls component
+#include <mcuxClExample_ELS_Helper.h>
+#include <mcuxClExample_ELS_Key_Helper.h>
 
 /**********************************************************/
 /* Example test vectors                                   */
@@ -125,13 +125,13 @@ bool mcuxClRsa_verify_NoVerify_example(void)
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /** Initialize CSS, Enable the CSSv2 **/
-    if(!mcuxClExample_Css_Init(MCUXCLCSS_RESET_DO_NOT_CANCEL))
+    /** Initialize ELS, Enable the ELS **/
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return false;
     }
-    /** // PRNG needs to be initialized; this can be done by calling mcuxClCss_KeyDelete_Async (delete any key slot, can be empty) **/
-    if(!mcuxClExample_CSS_KeyDelete(18))
+    /** // PRNG needs to be initialized; this can be done by calling mcuxClEls_KeyDelete_Async (delete any key slot, can be empty) **/
+    if(!mcuxClExample_Els_KeyDelete(18))
     {
         return false;
     }
@@ -209,8 +209,8 @@ bool mcuxClRsa_verify_NoVerify_example(void)
         return false;
     }
 
-    /** Disable the CSSv2 **/
-    if(!mcuxClExample_Css_Disable())
+    /** Disable the ELS **/
+    if(!mcuxClExample_Els_Disable())
     {
         return false;
     }

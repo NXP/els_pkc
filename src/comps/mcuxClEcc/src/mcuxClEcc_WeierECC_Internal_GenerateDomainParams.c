@@ -39,8 +39,8 @@
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_WeierECC_GenerateDomainParams)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomainParams(
     mcuxClSession_Handle_t pSession,
-    mcuxClEcc_Weier_ParamsOptimized_t *pEccWeierParamsOptimized,
-    mcuxClEcc_Weier_Params_t *pEccWeierParams,
+    mcuxClEcc_Weier_DomainParams_t *pEccWeierDomainParams,
+    mcuxClEcc_Weier_BasicDomainParams_t *pEccWeierBasicDomainParams,
     uint32_t options)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_WeierECC_GenerateDomainParams);
@@ -55,12 +55,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     /* Set up the environment. This includes import/calculation of the full moduli p and n incl. their nDash values
      * as well as the calculation of R2P. */
     mcuxClEcc_DomainParam_t curveParam;
-    curveParam.pA = pEccWeierParams->pA;
-    curveParam.pB = pEccWeierParams->pB;
-    curveParam.pP = pEccWeierParams->pP;
-    curveParam.pG = pEccWeierParams->pG;
-    curveParam.pN = pEccWeierParams->pN;
-    curveParam.misc = mcuxClEcc_DomainParam_misc_Pack(pEccWeierParams->nLen, pEccWeierParams->pLen);
+    curveParam.pA = pEccWeierBasicDomainParams->pA;
+    curveParam.pB = pEccWeierBasicDomainParams->pB;
+    curveParam.pP = pEccWeierBasicDomainParams->pP;
+    curveParam.pG = pEccWeierBasicDomainParams->pG;
+    curveParam.pN = pEccWeierBasicDomainParams->pN;
+    curveParam.misc = mcuxClEcc_DomainParam_misc_Pack(pEccWeierBasicDomainParams->nLen, pEccWeierBasicDomainParams->pLen);
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SetupEnvironment,
         mcuxClEcc_Weier_SetupEnvironment(pSession,
@@ -82,13 +82,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P,
                         mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P_Len);
 
-    const uint32_t byteLenP = pEccWeierParams->pLen;
-    const uint32_t byteLenN = pEccWeierParams->nLen;
+    const uint32_t byteLenP = pEccWeierBasicDomainParams->pLen;
+    const uint32_t byteLenN = pEccWeierBasicDomainParams->nLen;
 
     /* Import the base point coordinates (x,y) to buffers (ECC_S0,ECC_S1). */
 //  MCUXCLPKC_WAITFORFINISH();  <== unnecessary, because buffers ECC_S0/ECC_S1 and offsets ECC_VX0/ECC_VX1 are not used in the FUP, _Reduce_R2N_R2P.
-    MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_S0, pEccWeierParams->pG, byteLenP);
-    MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_S1, pEccWeierParams->pG + byteLenP, byteLenP);
+    MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_S0, pEccWeierBasicDomainParams->pG, byteLenP);
+    MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_S1, pEccWeierBasicDomainParams->pG + byteLenP, byteLenP);
 
     /* Verify correctness of affine coordinates of G in NR. */
     pOperands[WEIER_VX0] = pOperands[ECC_S0];
@@ -167,11 +167,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     /* start of target memory area                            */
     /**********************************************************/
 
-    /* Interpret start of memory area pEccWeierParamsOptimized as struct of type mcuxClEcc_Weier_DomainParams_t */
-    mcuxClEcc_Weier_DomainParams_t *pDomainParams = (mcuxClEcc_Weier_DomainParams_t *) pEccWeierParamsOptimized;
+    /* Interpret start of memory area pEccWeierDomainParams as struct of type mcuxClEcc_Weier_DomainParams_t */
+    mcuxClEcc_Weier_DomainParams_t *pDomainParams = (mcuxClEcc_Weier_DomainParams_t *) pEccWeierDomainParams;
 
     /* Initialize pointers to where the domain parameters shall be stored */
-    uint8_t *pDomainParamBuffers = (uint8_t *) pEccWeierParamsOptimized + sizeof(mcuxClEcc_Weier_DomainParams_t);
+    uint8_t *pDomainParamBuffers = (uint8_t *) pEccWeierDomainParams + sizeof(mcuxClEcc_Weier_DomainParams_t);
     pDomainParams->common.pFullModulusP = pDomainParamBuffers + MCUXCLECC_CUSTOMPARAMS_OFFSET_PFULL;
     pDomainParams->common.pFullModulusN = pDomainParamBuffers + MCUXCLECC_CUSTOMPARAMS_OFFSET_NFULL(byteLenP);
     pDomainParams->common.pR2P = pDomainParamBuffers + MCUXCLECC_CUSTOMPARAMS_OFFSET_R2P(byteLenP, byteLenN);
@@ -190,10 +190,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     /* Initialize lengths and function pointers in optimized domain parameter struct */
     pDomainParams->common.byteLenP = (uint16_t) byteLenP;
     pDomainParams->common.byteLenN = (uint16_t) byteLenN;
-    pDomainParams->common.pSecFixScalarMultFct = NULL;
-    pDomainParams->common.pSecVarScalarMultFct = NULL;
-    pDomainParams->common.pPlainFixScalarMultFct = NULL;
-    pDomainParams->common.pPlainVarScalarMultFct = NULL;
+    pDomainParams->common.pSecFixScalarMultFctFP = NULL;
+    pDomainParams->common.pSecVarScalarMultFctFP = NULL;
+    pDomainParams->common.pPlainFixScalarMultFctFP = NULL;
+    pDomainParams->common.pPlainVarScalarMultFctFP = NULL;
 
     /* Export full moduli for p and n to optimized domain parameter struct. */
     MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pDomainParams->common.pFullModulusP, ECC_PFULL, byteLenP + MCUXCLPKC_WORDSIZE);
@@ -207,7 +207,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
      *
      * NOTE: This is done in two steps via imports to/exports from the PKC RAM
      *       because no ordinary memory copy with endianess reversal exists. */
-    MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_T0, pEccWeierParams->pA, byteLenP);
+    MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_T0, pEccWeierBasicDomainParams->pA, byteLenP);
     MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pDomainParams->common.pCurveParam1, ECC_T0, byteLenP);
     MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pDomainParams->common.pCurveParam2, WEIER_B, byteLenP);
 

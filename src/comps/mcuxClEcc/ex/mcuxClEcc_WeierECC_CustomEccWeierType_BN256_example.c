@@ -87,8 +87,8 @@ static const uint8_t BN_P256_N[BN256_BYTE_LEN_N] =
 
 /**
  * Performs an example key derivation using the mcuxClKey component.
- * @retval MCUX_CL_EXAMPLE_OK    The example code completed successfully
- * @retval MCUX_CL_EXAMPLE_ERROR The example code failed
+ * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_ERROR The example code failed
  */
 bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
 {
@@ -108,14 +108,14 @@ bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
     /* will be converted to the optimized form accepted by mcuxClEcc APIs      */
     /**************************************************************************/
 
-    mcuxClEcc_Weier_Params_t customEccWeierParams;
-    customEccWeierParams.pP   = BN_P256_P;
-    customEccWeierParams.pLen = BN256_BYTE_LEN_P;
-    customEccWeierParams.pA   = BN_P256_A;
-    customEccWeierParams.pB   = BN_P256_B;
-    customEccWeierParams.pG   = BN_P256_G;
-    customEccWeierParams.pN   = BN_P256_N;
-    customEccWeierParams.nLen = BN256_BYTE_LEN_N;
+    mcuxClEcc_Weier_BasicDomainParams_t EccWeierBasicDomainParams;
+    EccWeierBasicDomainParams.pP   = BN_P256_P;
+    EccWeierBasicDomainParams.pLen = BN256_BYTE_LEN_P;
+    EccWeierBasicDomainParams.pA   = BN_P256_A;
+    EccWeierBasicDomainParams.pB   = BN_P256_B;
+    EccWeierBasicDomainParams.pG   = BN_P256_G;
+    EccWeierBasicDomainParams.pN   = BN_P256_N;
+    EccWeierBasicDomainParams.nLen = BN256_BYTE_LEN_N;
 
 
     /**************************************************************************/
@@ -123,16 +123,16 @@ bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
     /* the optimized form accepted by mcuxClEcc APIs                           */
     /**************************************************************************/
 
-    uint32_t eccWeierParamsOptimized[MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE(BN256_BYTE_LEN_P, BN256_BYTE_LEN_N) / (sizeof(uint32_t))];
-    mcuxClEcc_Weier_ParamsOptimized_t *pEccWeierParamsOptimized = (mcuxClEcc_Weier_ParamsOptimized_t *) eccWeierParamsOptimized;
+    uint32_t eccWeierDomainParams[MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE(BN256_BYTE_LEN_P, BN256_BYTE_LEN_N) / (sizeof(uint32_t))];
+    mcuxClEcc_Weier_DomainParams_t *pEccWeierDomainParams = (mcuxClEcc_Weier_DomainParams_t *) eccWeierDomainParams;
     const mcuxClKey_Status_t genOptEccParams_status =
         mcuxClEcc_WeierECC_GenerateDomainParams(pSession,
-                                               pEccWeierParamsOptimized,
-                                               &customEccWeierParams,
+                                               pEccWeierDomainParams,
+                                               &EccWeierBasicDomainParams,
                                                MCUXCLECC_OPTION_GENERATEPRECPOINT_YES );
     if (MCUXCLECC_STATUS_OK != genOptEccParams_status)
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
 
@@ -140,32 +140,32 @@ bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
     /* Generate custom private and public key types for BN_P256               */
     /**************************************************************************/
 
-    uint32_t customPrivKeyTypeDescriptor[MCUX_CL_KEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS] = {0};
+    uint32_t customPrivKeyTypeDescriptor[MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS] = {0};
     mcuxClKey_CustomType_t customPrivKeyType = (mcuxClKey_CustomType_t) customPrivKeyTypeDescriptor;
 
     const mcuxClKey_Status_t genPrivKeyType_status = mcuxClEcc_WeierECC_GenerateCustomKeyType(
         /* mcuxClKey_CustomType_t customType */ customPrivKeyType,
-        /* mcuxClKey_AlgorithmId_t algoId    */ MCUX_CL_KEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM | MCUX_CL_KEY_ALGO_ID_PRIVATE_KEY,
-        /* mcuxClKey_Size_t size             */ MCUX_CL_KEY_SIZE_256,
-        /* void *pCustomParams              */ (void *) pEccWeierParamsOptimized
+        /* mcuxClKey_AlgorithmId_t algoId    */ MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM | MCUXCLKEY_ALGO_ID_PRIVATE_KEY,
+        /* mcuxClKey_Size_t size             */ MCUXCLKEY_SIZE_256,
+        /* void *pCustomParams              */ (void *) pEccWeierDomainParams
     );
     if (MCUXCLECC_STATUS_OK != genPrivKeyType_status)
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    uint32_t customPubKeyTypeDescriptor[MCUX_CL_KEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS] = {0};
+    uint32_t customPubKeyTypeDescriptor[MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS] = {0};
     mcuxClKey_CustomType_t customPubKeyType = (mcuxClKey_CustomType_t) customPubKeyTypeDescriptor;
 
     const mcuxClKey_Status_t genPubKeyType_status = mcuxClEcc_WeierECC_GenerateCustomKeyType(
         /* mcuxClKey_CustomType_t customType */ customPubKeyType,
-        /* mcuxClKey_AlgorithmId_t algoId    */ MCUX_CL_KEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM | MCUX_CL_KEY_ALGO_ID_PUBLIC_KEY,
-        /* mcuxClKey_Size_t size             */ MCUX_CL_KEY_SIZE_512,
-        /* void *pCustomParams              */ (void *) pEccWeierParamsOptimized
+        /* mcuxClKey_AlgorithmId_t algoId    */ MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM | MCUXCLKEY_ALGO_ID_PUBLIC_KEY,
+        /* mcuxClKey_Size_t size             */ MCUXCLKEY_SIZE_512,
+        /* void *pCustomParams              */ (void *) pEccWeierDomainParams
     );
     if (MCUXCLECC_STATUS_OK != genPubKeyType_status)
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
 
@@ -175,5 +175,5 @@ bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
     (void) mcuxClSession_cleanup(pSession);
     (void) mcuxClSession_destroy(pSession);
 
-    return MCUX_CL_EXAMPLE_OK;
+    return MCUXCLEXAMPLE_OK;
 }

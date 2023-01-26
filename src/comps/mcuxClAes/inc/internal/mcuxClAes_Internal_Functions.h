@@ -16,13 +16,14 @@
  * @brief Internal helper function definitions for the mcuxClAes component
  */
 
-#ifndef MCUX_CL_AES_FUNCTIONS_INTERNAL_H_
-#define MCUX_CL_AES_FUNCTIONS_INTERNAL_H_
+#ifndef MCUXCLAES_INTERNAL_FUNCTIONS_H_
+#define MCUXCLAES_INTERNAL_FUNCTIONS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-
 #include <mcuxClCore_Platform.h>
 #include <mcuxClKey.h>
+#include <internal/mcuxClAes_Wa.h>
+#include <internal/mcuxClAes_Ctx.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,4 +35,4 @@ extern "C" {
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_AES_FUNCTIONS_INTERNAL_H_ */
+#endif /* MCUXCLAES_INTERNAL_FUNCTIONS_H_ */

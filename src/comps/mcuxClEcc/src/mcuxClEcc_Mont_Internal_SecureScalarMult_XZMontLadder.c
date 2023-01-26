@@ -41,8 +41,8 @@
  *
  *
  * Prerequisites:
- *   If optionAffineOrProjective is set to MCUXCLECC_AFFINE, buffer MONT_X0 contains x in MR
- *   If optionAffineOrProjective is set to MCUXCLECC_PROJECTIVE, buffers MONT_X0 and MONT_Z0 contain X and Z in MR
+ *   If optionAffineOrProjective is set to MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT, buffer MONT_X0 contains x in MR
+ *   If optionAffineOrProjective is set to MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT, buffers MONT_X0 and MONT_Z0 contain X and Z in MR
  *   buffer buf(iScalar) contains the secret scalar lambda of bit length scalarBitLength
  *   buffer ECC_CP0 contains the ladder constant A24=(A+2)/4 mod p in MR
  *   ps1Len = (operandSize, operandSize)
@@ -67,7 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
 
     /* Determine pointer table pointer */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
+    MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy - TODO CLNS-6410: check if this is necessary
     const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);  /* PKC word is CPU word aligned. */
 
     /* Initialize accumulated coordinate buffers for the ladder iteration depending on optionAffineOrProjective
@@ -77,18 +77,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
     MCUXCLPKC_FP_CALC_OP1_CONST(MONT_Z1, 0u);
 
     MCUX_CSSL_FP_SWITCH_DECL(optionAffineOrProjectiveSwitch);
-    if(MCUXCLECC_AFFINE == optionAffineOrProjective)
+    if(MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT == optionAffineOrProjective)
     {
         MCUXCLPKC_FP_CALC_OP1_OR_CONST(MONT_X2, MONT_X0, 0u);
         MCUXCLPKC_FP_CALC_OP1_NEG(MONT_Z2, ECC_P); /* 1 in MR */
-        MCUX_CSSL_FP_SWITCH_CASE(optionAffineOrProjectiveSwitch, MCUXCLECC_AFFINE, MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST, MCUXCLPKC_FP_CALLED_CALC_OP1_NEG);
+        MCUX_CSSL_FP_SWITCH_CASE(optionAffineOrProjectiveSwitch, MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT, MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST, MCUXCLPKC_FP_CALLED_CALC_OP1_NEG);
 
     }
-    else if(MCUXCLECC_PROJECTIVE == optionAffineOrProjective)
+    else if(MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT == (MCUXCLECC_SCALARMULT_OPTION_INPUT_MASK & optionAffineOrProjective))
     {
         MCUXCLPKC_FP_CALC_OP1_OR_CONST(MONT_X2, MONT_X0, 0u);
         MCUXCLPKC_FP_CALC_OP1_OR_CONST(MONT_Z2, MONT_Z0, 0u);
-        MCUX_CSSL_FP_SWITCH_CASE(optionAffineOrProjectiveSwitch, MCUXCLECC_PROJECTIVE, MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST, MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST);
+        MCUX_CSSL_FP_SWITCH_CASE(optionAffineOrProjectiveSwitch, MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT, MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST, MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST);
 
     }
     else
@@ -99,7 +99,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
 
     /* Perform ladder iteration to calculate (X_res:Z_res) */
     uint32_t i = scalarBitLength;
-    uint32_t maskedCurrentScalarWord;
+    uint32_t maskedCurrentScalarWord = 0u;
     MCUX_CSSL_FP_LOOP_DECL(whileLoop);
     MCUX_CSSL_FP_BRANCH_DECL(ifInWhile);
     while(0u < i)
@@ -110,7 +110,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
         /* Set pointers pOperands(MONT_VX1),...,pOperands(MONT_VZ2) according to the bit to be processed */
         MCUXCLPKC_WAITFORFINISH();
         uint32_t currentScalarBitInWord = i % 32u;
-        uint32_t currentScalarWordIndex = i / 32u;
         uint32_t currentScalarWordMask;
 
         if((i == (scalarBitLength - 1u)) || ((i % 32u) == 31u))
@@ -122,6 +121,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
             }
             MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
 
+            uint32_t currentScalarWordIndex = i / 32u;
             maskedCurrentScalarWord = pScalar[currentScalarWordIndex] ^ currentScalarWordMask;
             MCUX_CSSL_FP_BRANCH_POSITIVE(ifInWhile, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate));
         }
@@ -152,7 +152,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
         /* Perform the ladder step to calculate (MONT_VX1,MONT_VZ1) = 2 * (MONT_VX1,MONT_VZ1) and (MONT_VX2, MONT_VZ2) = (MONT_VX1,MONT_VZ1) + (MONT_VX2,MONT_VZ2)*/
 
         /* FP balancing at the end of loop iteration end as both cases are calling same function */
-        if(MCUXCLECC_PROJECTIVE == optionAffineOrProjective)
+        if(MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT == (MCUXCLECC_SCALARMULT_OPTION_INPUT_MASK & optionAffineOrProjective))
         {
             MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_SecureScalarMult_XZMontLadder_LadderStep,
                                 mcuxClEcc_FUP_SecureScalarMult_XZMontLadder_LadderStep_Projective_LEN);
@@ -178,8 +178,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_SecureScalarMult_
                     MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,
                     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
                     /* switch statement */
-                    MCUX_CSSL_FP_SWITCH_TAKEN(optionAffineOrProjectiveSwitch, MCUXCLECC_AFFINE, MCUXCLECC_AFFINE == optionAffineOrProjective),
-                    MCUX_CSSL_FP_SWITCH_TAKEN(optionAffineOrProjectiveSwitch, MCUXCLECC_PROJECTIVE, MCUXCLECC_PROJECTIVE == optionAffineOrProjective),
+                    MCUX_CSSL_FP_SWITCH_TAKEN(
+                            optionAffineOrProjectiveSwitch,
+                            MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT,
+                            MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT == (MCUXCLECC_SCALARMULT_OPTION_INPUT_MASK & optionAffineOrProjective)),
+                    MCUX_CSSL_FP_SWITCH_TAKEN(
+                            optionAffineOrProjectiveSwitch,
+                            MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT,
+                            MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT == (MCUXCLECC_SCALARMULT_OPTION_INPUT_MASK & optionAffineOrProjective)),
                     MCUX_CSSL_FP_LOOP_ITERATIONS(whileLoop, scalarBitLength),
                     MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
                     MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST

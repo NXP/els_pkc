@@ -20,10 +20,14 @@
 #include <internal/mcuxClEcc_Mont_Internal.h>
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
+#include <internal/mcuxClEcc_TwEd_Internal.h>
+#include <internal/mcuxClEcc_TwEd_Internal_Ed25519.h>
 #include <mcuxClHash_Algorithms.h>
 #include <mcuxClEcc_Constants.h>
+#include <mcuxClEcc_ParameterSizes.h>
 
-#include <internal/mcuxClEcc_Internal.h>
+
+
 
 /**********************************************************/
 /* MontDh domain parameters                               */
@@ -31,57 +35,57 @@
 
 /* Curve 25519 domain parameters */
 
-static const uint8_t pCurve25519_FullP[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_FullP[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
 {
   0x1bu, 0xcau, 0x6bu, 0x28u, 0xafu, 0xa1u, 0xbcu, 0x86u,
   0xedu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
   0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0x7fu
 };
 
-static const uint8_t pCurve25519_FullN[MCUXCLECC_MONTDH_CURVE25519_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_FullN[MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
 {
     0x1bu, 0x7eu, 0x54u, 0x12u, 0xa3u, 0x1du, 0xb5u, 0xd2u,
     0xedu, 0xd3u, 0xf5u, 0x5cu, 0x1au, 0x63u, 0x12u, 0x58u, 0xd6u, 0x9cu, 0xf7u, 0xa2u, 0xdeu, 0xf9u, 0xdeu, 0x14u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x10u
 };
 
-static const uint8_t pCurve25519_R2P[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_R2P[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
 {
     0xa4u, 0x05u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_R2N[MCUXCLECC_MONTDH_CURVE25519_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_R2N[MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
 {
     0x01u, 0x0fu, 0x9cu, 0x44u, 0xe3u, 0x11u, 0x06u, 0xa4u, 0x47u, 0x93u, 0x85u, 0x68u, 0xa7u, 0x1bu, 0x0eu, 0xd0u,
     0x65u, 0xbeu, 0xf5u, 0x17u, 0xd2u, 0x73u, 0xecu, 0xceu, 0x3du, 0x9au, 0x30u, 0x7cu, 0x1bu, 0x41u, 0x99u, 0x03u
 };
 
-static const uint8_t pCurve25519_PointGX[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_PointGX[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x09u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u ,0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_PointGY[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_PointGY[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0xD9u, 0xD3u, 0xCEu, 0x7Eu, 0xA2u, 0xC5u, 0xE9u, 0x29u, 0xB2u, 0x61u, 0x7Cu, 0x6Du, 0x7Eu, 0x4Du, 0x3Du, 0x92u,
     0x4Cu, 0xD1u, 0x48u, 0x77u, 0x2Cu, 0xDDu, 0x1Eu, 0xE0u, 0xB4u, 0x86u, 0xA0u, 0xB8u, 0xA1u, 0x19u, 0xAEu, 0x20u
 };
 
-static const uint8_t pCurve25519_LadderConst[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_LadderConst[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x42u, 0xDBu, 0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_A[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_A[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x06u, 0x6Du, 0x07u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_B[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_B[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
@@ -89,7 +93,7 @@ static const uint8_t pCurve25519_B[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP] __at
 
 /* Curve 448 domain parameters */
 
-static const uint8_t pCurve448_FullP[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_FullP[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
 {
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -98,7 +102,7 @@ static const uint8_t pCurve448_FullP[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP + 8u]
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t pCurve448_FullN[MCUXCLECC_MONTDH_CURVE448_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_FullN[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
 {
     0xc5u, 0x8bu, 0x91u, 0xaeu, 0x0fu, 0x44u, 0xbdu, 0x03u,
     0xF3u, 0x44u, 0x58u, 0xABu, 0x92u, 0xC2u, 0x78u, 0x23u, 0x55u, 0x8Fu, 0xC5u, 0x8Du, 0x72u, 0xC2u,
@@ -107,7 +111,7 @@ static const uint8_t pCurve448_FullN[MCUXCLECC_MONTDH_CURVE448_SIZE_BASEPOINTORD
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0x3Fu
 };
 
-static const uint8_t pCurve448_R2P[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_R2P[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
 {
     0x02u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -115,7 +119,7 @@ static const uint8_t pCurve448_R2P[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP]  __att
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_R2N[MCUXCLECC_MONTDH_CURVE448_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_R2N[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
 {
     0x60u, 0x9bu, 0x9bu, 0x04u, 0x57u, 0x92u, 0x53u, 0xe3u, 0xd9u, 0x95u, 0xb1u, 0xc1u, 0x4bu, 0x2cu,
     0xf3u, 0x7au, 0x59u, 0x18u, 0xeau, 0x88u, 0x23u, 0xdeu, 0x66u, 0x0du, 0x38u, 0xd8u, 0xe4u, 0x5eu,
@@ -123,7 +127,7 @@ static const uint8_t pCurve448_R2N[MCUXCLECC_MONTDH_CURVE448_SIZE_BASEPOINTORDER
     0xd0u, 0xe4u, 0xb7u, 0xbcu, 0x52u, 0x20u, 0x29u, 0xb7u, 0x23u, 0xf8u, 0x39u, 0xa9u, 0x02u, 0x34u
 };
 
-static const uint8_t pCurve448_LadderConst[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_LadderConst[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0xAAu, 0x98u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -131,7 +135,7 @@ static const uint8_t pCurve448_LadderConst[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_PointGX[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_PointGX[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x05u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u ,0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -139,7 +143,7 @@ static const uint8_t pCurve448_PointGX[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u ,0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_PointGY[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_PointGY[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x1au, 0x5bu, 0x7bu, 0x45u, 0x3du, 0x22u, 0xd7u, 0x6fu, 0xf7u, 0x7au, 0x67u, 0x50u, 0xb1u, 0xc4u,
     0x12u, 0x13u, 0x21u, 0x0du, 0x43u, 0x46u, 0x23u, 0x7eu, 0x02u, 0xb8u, 0xedu, 0xf6u, 0xf3u, 0x8du,
@@ -147,7 +151,7 @@ static const uint8_t pCurve448_PointGY[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __
     0x32u, 0x58u, 0x6eu, 0xabu, 0x98u, 0x6cu, 0xf6u, 0xb1u, 0xf5u, 0x95u, 0x12u, 0x5du, 0x23u, 0x7du
 };
 
-static const uint8_t pCurve448_A[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_A[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0xA6u, 0x62u, 0x02u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -155,7 +159,7 @@ static const uint8_t pCurve448_A[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attrib
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_B[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_B[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -165,46 +169,46 @@ static const uint8_t pCurve448_B[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP] __attrib
 
 const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve25519 =
 {
-    .common.byteLenP = MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIMEP,
-    .common.byteLenN = MCUXCLECC_MONTDH_CURVE25519_SIZE_BASEPOINTORDER,
-    .common.pFullModulusP = (uint8_t*)&pCurve25519_FullP,
-    .common.pFullModulusN = (uint8_t*)&pCurve25519_FullN,
-    .common.pR2P = (uint8_t*)&pCurve25519_R2P,
-    .common.pR2N = (uint8_t*)&pCurve25519_R2N,
-    .common.pCurveParam1 = (uint8_t*)&pCurve25519_A,
-    .common.pCurveParam2 = (uint8_t*)&pCurve25519_B,
-    .common.pGx = (uint8_t*)&pCurve25519_PointGX,
-    .common.pGy = (uint8_t*)&pCurve25519_PointGY,
+    .common.byteLenP = MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP,
+    .common.byteLenN = MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER,
+    .common.pFullModulusP = (uint8_t *) &pCurve25519_FullP,
+    .common.pFullModulusN = (uint8_t *) &pCurve25519_FullN,
+    .common.pR2P = (uint8_t *) &pCurve25519_R2P,
+    .common.pR2N = (uint8_t *) &pCurve25519_R2N,
+    .common.pCurveParam1 = (uint8_t *) &pCurve25519_A,
+    .common.pCurveParam2 = (uint8_t *) &pCurve25519_B,
+    .common.pGx = (uint8_t *) &pCurve25519_PointGX,
+    .common.pGy = (uint8_t *) &pCurve25519_PointGY,
     .common.pPrecPoints = NULL,
-    .common.pSecFixScalarMultFct = NULL,
-    .common.pSecVarScalarMultFct = NULL,
-    .common.pPlainFixScalarMultFct = NULL,
-    .common.pPlainVarScalarMultFct = NULL,
+    .common.pLadderConst = (uint8_t *) &pCurve25519_LadderConst,
+    .common.pSecFixScalarMultFctFP = NULL,
+    .common.pSecVarScalarMultFctFP = NULL,
+    .common.pPlainFixScalarMultFctFP = NULL,
+    .common.pPlainVarScalarMultFctFP = NULL,
     .c = 3u,
-    .t = 254u,
-    .pA24 = (uint8_t*)&pCurve25519_LadderConst
+    .t = 254u
 };
 
 const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve448 =
 {
-    .common.byteLenP = MCUXCLECC_MONTDH_CURVE448_SIZE_PRIMEP,
-    .common.byteLenN = MCUXCLECC_MONTDH_CURVE448_SIZE_BASEPOINTORDER,
-    .common.pFullModulusP = (uint8_t*)&pCurve448_FullP,
-    .common.pFullModulusN = (uint8_t*)&pCurve448_FullN,
-    .common.pR2P = (uint8_t*)&pCurve448_R2P,
-    .common.pR2N = (uint8_t*)&pCurve448_R2N,
-    .common.pCurveParam1 = (uint8_t*)&pCurve448_A,
-    .common.pCurveParam2 = (uint8_t*)&pCurve448_B,
-    .common.pGx = (uint8_t*)&pCurve448_PointGX,
-    .common.pGy = (uint8_t*)&pCurve448_PointGY,
+    .common.byteLenP = MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP,
+    .common.byteLenN = MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER,
+    .common.pFullModulusP = (uint8_t *) &pCurve448_FullP,
+    .common.pFullModulusN = (uint8_t *) &pCurve448_FullN,
+    .common.pR2P = (uint8_t *) &pCurve448_R2P,
+    .common.pR2N = (uint8_t *) &pCurve448_R2N,
+    .common.pCurveParam1 = (uint8_t *) &pCurve448_A,
+    .common.pCurveParam2 = (uint8_t *) &pCurve448_B,
+    .common.pGx = (uint8_t *) &pCurve448_PointGX,
+    .common.pGy = (uint8_t *) &pCurve448_PointGY,
     .common.pPrecPoints = NULL,
-    .common.pSecFixScalarMultFct = NULL,
-    .common.pSecVarScalarMultFct = NULL,
-    .common.pPlainFixScalarMultFct = NULL,
-    .common.pPlainVarScalarMultFct = NULL,
+    .common.pLadderConst = (uint8_t *) &pCurve448_LadderConst,
+    .common.pSecFixScalarMultFctFP = NULL,
+    .common.pSecVarScalarMultFctFP = NULL,
+    .common.pPlainFixScalarMultFctFP = NULL,
+    .common.pPlainVarScalarMultFctFP = NULL,
     .c = 2u,
-    .t = 447u,
-    .pA24 = (uint8_t*)&pCurve448_LadderConst
+    .t = 447u
 };
 
 
@@ -219,7 +223,7 @@ const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve448 =
 static const uint8_t SECP192R1_P[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
 {
     /* pDash = 0x1 [BE] */
-    0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x01u,
+    0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
 
     /* p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFF [BE] */
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -302,19 +306,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192r1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP192R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP192R1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP192R1_N,
-  .common.pR2P = (uint8_t*)&SECP192R1_R2P, 
-  .common.pR2N = (uint8_t*)&SECP192R1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&SECP192R1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP192R1_B,
-  .common.pGx = (uint8_t*)&SECP192R1_GX,
-  .common.pGy = (uint8_t*)&SECP192R1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP192R1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP192R1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP192R1_N,
+  .common.pR2P = (uint8_t *) &SECP192R1_R2P,
+  .common.pR2N = (uint8_t *) &SECP192R1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP192R1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP192R1_B,
+  .common.pGx = (uint8_t *) &SECP192R1_GX,
+  .common.pGy = (uint8_t *) &SECP192R1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP192R1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -377,14 +382,14 @@ static const uint8_t SECP160k1_GY[] =
 
 static const uint8_t SECP160k1_PRECG[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP * 2u] =
 {
-    /* 0x6393d47c72721e1175c284aedceb72cc4a88eca7 [BE] */
-    0xA7u, 0xECu, 0x88u, 0x4Au, 0xCCu, 0x72u, 0xEBu, 0xDCu, 
-    0xAEu, 0x84u, 0xC2u, 0x75u, 0x11u, 0x1Eu, 0x72u, 0x72u, 
-    0x7Cu, 0xD4u, 0x93u, 0x63u,
-    /* 0x4fb00939f52a7f95f22c6409c0a1cf66d925e396 [BE] */
-    0x96u, 0xE3u, 0x25u, 0xD9u, 0x66u, 0xCFu, 0xA1u, 0xC0u, 
-    0x09u, 0x64u, 0x2Cu, 0xF2u, 0x95u, 0x7Fu, 0x2Au, 0xF5u, 
-    0x39u, 0x09u, 0xB0u, 0x4Fu
+    /* 0xaf188ba8029e41acaf9e8000aa6337e58852a9c7 [BE] */
+    0xC7u, 0xA9u, 0x52u, 0x88u, 0xE5u, 0x37u, 0x63u, 0xAAu,
+    0x00u, 0x80u, 0x9Eu, 0xAFu, 0xACu, 0x41u, 0x9Eu, 0x02u,
+    0xA8u, 0x8Bu, 0x18u, 0xAFu,
+    /* 0x879472ab4e43293adda8793edf57b6b6961dda64 [BE] */
+    0x64u, 0xDAu, 0x1Du, 0x96u, 0xB6u, 0xB6u, 0x57u, 0xDFu,
+    0x3Eu, 0x79u, 0xA8u, 0xDDu, 0x3Au, 0x29u, 0x43u, 0x4Eu,
+    0xABu, 0x72u, 0x94u, 0x87u
 };
 
 static const uint8_t SECP160k1_R2P[] =
@@ -407,19 +412,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp160k1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP160K1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP160k1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP160k1_N,
-  .common.pR2P = (uint8_t*)&SECP160k1_R2P, 
-  .common.pR2N = (uint8_t*)&SECP160k1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&SECP160k1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP160k1_B,
-  .common.pGx = (uint8_t*)&SECP160k1_GX,
-  .common.pGy = (uint8_t*)&SECP160k1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP160k1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP160k1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP160k1_N,
+  .common.pR2P = (uint8_t *) &SECP160k1_R2P,
+  .common.pR2N = (uint8_t *) &SECP160k1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP160k1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP160k1_B,
+  .common.pGx = (uint8_t *) &SECP160k1_GX,
+  .common.pGy = (uint8_t *) &SECP160k1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP160k1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -512,19 +518,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192k1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP192K1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP192K1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP192K1_N,
-  .common.pR2P = (uint8_t*)&SECP192K1_R2P,
-  .common.pR2N = (uint8_t*)&SECP192K1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&SECP192K1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP192K1_B,
-  .common.pGx = (uint8_t*)&SECP192K1_GX,
-  .common.pGy = (uint8_t*)&SECP192K1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP192K1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP192K1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP192K1_N,
+  .common.pR2P = (uint8_t *) &SECP192K1_R2P,
+  .common.pR2N = (uint8_t *) &SECP192K1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP192K1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP192K1_B,
+  .common.pGx = (uint8_t *) &SECP192K1_GX,
+  .common.pGy = (uint8_t *) &SECP192K1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP192K1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 
@@ -562,9 +569,9 @@ static const uint8_t SECP224R1_A[] =
 {
     /* A = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFE [BE] */
     0xFEu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
-    0xFEu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
+    0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFEu, 0xFFu, 0xFFu, 0xFFu,
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
-    0x00u, 0x00u, 0x00u, 0x00u
+    0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
 static const uint8_t SECP224R1_B[] =
@@ -629,19 +636,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224r1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP224R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP224R1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP224R1_N,
-  .common.pR2P = (uint8_t*)&SECP224R1_R2P,
-  .common.pR2N = (uint8_t*)&SECP224R1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&SECP224R1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP224R1_B,
-  .common.pGx = (uint8_t*)&SECP224R1_GX,
-  .common.pGy = (uint8_t*)&SECP224R1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP224R1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP224R1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP224R1_N,
+  .common.pR2P = (uint8_t *) &SECP224R1_R2P,
+  .common.pR2N = (uint8_t *) &SECP224R1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP224R1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP224R1_B,
+  .common.pGx = (uint8_t *) &SECP224R1_GX,
+  .common.pGy = (uint8_t *) &SECP224R1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP224R1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -714,7 +722,7 @@ static const uint8_t SECP224K1_R2N[]=
     0xA0u, 0xEAu, 0x9Fu, 0xECu, 0xFBu, 0x24u, 0xCEu, 0x34u, 
     0xF5u, 0x0Au, 0xF6u, 0x16u, 0x08u, 0x32u, 0xE0u, 0x8Bu, 
     0xE4u, 0x32u, 0xFFu, 0xBBu, 0x88u, 0xBDu, 0x82u, 0xB8u, 
-    0x2Bu, 0xF7u, 0x3Fu, 0x99u
+    0x2Bu, 0xF7u, 0x3Fu, 0x99u, 0x00u
 };
 
 static const uint8_t SECP224K1_R2P[] =
@@ -722,41 +730,42 @@ static const uint8_t SECP224K1_R2P[] =
     /* R2P = 0x10000352602c230690000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
     0x69u, 0x30u, 0xC2u, 0x02u, 0x26u, 0x35u, 0x00u, 0x00u, 
-    0x01u, 0x00u, 0x00u, 0x00u, 0x93u, 0x1Au, 0x00u, 0x00u, 
+    0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u
 };
 
 static const uint8_t SECP224K1_PRECG[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP * 2u] =
 {
-    /* 0x7e7403fe9ccb8165d220751109fcd19dfec8baf1471de8759e22cf6 [BE] */
-    0xF6u, 0x2Cu, 0xE2u, 0x59u, 0x87u, 0xDEu, 0x71u, 0x14u, 
-    0xAFu, 0x8Bu, 0xECu, 0xDFu, 0x19u, 0xCDu, 0x9Fu, 0x10u, 
-    0x51u, 0x07u, 0x22u, 0x5Du, 0x16u, 0xB8u, 0xCCu, 0xE9u, 
-    0x3Fu, 0x40u, 0xE7u, 0x07u,
-    /* 0x2b04d2722d1b51816ea19134beaac7ca6c35bdeb3dda8f08262d4176 [BE] */
-    0x76u, 0x41u, 0x2Du, 0x26u, 0x08u, 0x8Fu, 0xDAu, 0x3Du, 
-    0xEBu, 0xBDu, 0x35u, 0x6Cu, 0xCAu, 0xC7u, 0xAAu, 0xBEu, 
-    0x34u, 0x91u, 0xA1u, 0x6Eu, 0x81u, 0x51u, 0x1Bu, 0x2Du, 
-    0x72u, 0xD2u, 0x04u, 0x2Bu
+    /* 0x79d91a4a04c6421d20e59c5b2f9e62d128375d5c322fe03a5646df86 [BE] */
+    0x86u, 0xDFu, 0x46u, 0x56u, 0x3Au, 0xE0u, 0x2Fu, 0x32u,
+    0x5Cu, 0x5Du, 0x37u, 0x28u, 0xD1u, 0x62u, 0x9Eu, 0x2Fu,
+    0x5Bu, 0x9Cu, 0xE5u, 0x20u, 0x1Du, 0x42u, 0xC6u, 0x04u,
+    0x4Au, 0x1Au, 0xD9u, 0x79u,
+    /* 0xfb58bafefb84206a651d0dcc71442874537dd82e9b88d5432a4ab901 [BE] */
+    0x01u, 0xB9u, 0x4Au, 0x2Au, 0x43u, 0xD5u, 0x88u, 0x9Bu,
+    0x2Eu, 0xD8u, 0x7Du, 0x53u, 0x74u, 0x28u, 0x44u, 0x71u,
+    0xCCu, 0x0Du, 0x1Du, 0x65u, 0x6Au, 0x20u, 0x84u, 0xFBu,
+    0xFEu, 0xBAu, 0x58u, 0xFBU
 };
 
 const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224k1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP224K1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP224K1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP224K1_N,
-  .common.pR2P = (uint8_t*)&SECP224K1_R2P, 
-  .common.pR2N = (uint8_t*)&SECP224K1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&SECP224K1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP224K1_B,
-  .common.pGx = (uint8_t*)&SECP224K1_GX,
-  .common.pGy = (uint8_t*)&SECP224K1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP224K1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP224K1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP224K1_N,
+  .common.pR2P = (uint8_t *) &SECP224K1_R2P,
+  .common.pR2N = (uint8_t *) &SECP224K1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP224K1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP224K1_B,
+  .common.pGx = (uint8_t *) &SECP224K1_GX,
+  .common.pGy = (uint8_t *) &SECP224K1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP224K1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -858,19 +867,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256r1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP256R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP256R1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP256R1_N,
-  .common.pR2P = (uint8_t*)&SECP256R1_R2P, 
-  .common.pR2N = (uint8_t*)&SECP256R1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&SECP256R1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP256R1_B,
-  .common.pGx = (uint8_t*)&SECP256R1_GX,
-  .common.pGy = (uint8_t*)&SECP256R1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP256R1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP256R1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP256R1_N,
+  .common.pR2P = (uint8_t *) &SECP256R1_R2P,
+  .common.pR2N = (uint8_t *) &SECP256R1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP256R1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP256R1_B,
+  .common.pGx = (uint8_t *) &SECP256R1_GX,
+  .common.pGy = (uint8_t *) &SECP256R1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP256R1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -973,19 +983,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256k1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP256K1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP256K1_N,
-  .common.pR2P = (uint8_t*)&SECP256K1_R2P, 
-  .common.pR2N = (uint8_t*)&SECP256K1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&SECP256K1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP256K1_B,
-  .common.pGx = (uint8_t*)&SECP256K1_GX,
-  .common.pGy = (uint8_t*)&SECP256K1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP256K1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP256K1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP256K1_N,
+  .common.pR2P = (uint8_t *) &SECP256K1_R2P,
+  .common.pR2N = (uint8_t *) &SECP256K1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP256K1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP256K1_B,
+  .common.pGx = (uint8_t *) &SECP256K1_GX,
+  .common.pGy = (uint8_t *) &SECP256K1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP256K1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 
@@ -1081,19 +1092,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp384r1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP384R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP384R1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP384R1_N,
-  .common.pR2P = (uint8_t*)&SECP384R1_R2P,
-  .common.pR2N = (uint8_t*)&SECP384R1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&SECP384R1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP384R1_B,
-  .common.pGx = (uint8_t*)&SECP384R1_GX,
-  .common.pGy = (uint8_t*)&SECP384R1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP384R1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP384R1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP384R1_N,
+  .common.pR2P = (uint8_t *) &SECP384R1_R2P,
+  .common.pR2N = (uint8_t *) &SECP384R1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP384R1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP384R1_B,
+  .common.pGx = (uint8_t *) &SECP384R1_GX,
+  .common.pGy = (uint8_t *) &SECP384R1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP384R1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1220,45 +1232,46 @@ static const uint8_t SECP521R1_R2N[] =
 
 static const uint8_t SECP521R1_PRECG[] =
 {
-    /* 0x6de97823f8c38d842f7aad59e87da6b820a19c319330820abb03eceb67c9c8ee6ea2500f121dbf5ab67294b1f1c30037d970840e5c142c3e23c2453d609102b570 [BE] */
-    0x70u, 0xB5u, 0x02u, 0x91u, 0x60u, 0x3Du, 0x45u, 0xC2u, 
-    0x23u, 0x3Eu, 0x2Cu, 0x14u, 0x5Cu, 0x0Eu, 0x84u, 0x70u, 
-    0xD9u, 0x37u, 0x00u, 0xC3u, 0xF1u, 0xB1u, 0x94u, 0x72u, 
-    0xB6u, 0x5Au, 0xBFu, 0x1Du, 0x12u, 0x0Fu, 0x50u, 0xA2u, 
-    0x6Eu, 0xEEu, 0xC8u, 0xC9u, 0x67u, 0xEBu, 0xECu, 0x03u, 
-    0xBBu, 0x0Au, 0x82u, 0x30u, 0x93u, 0x31u, 0x9Cu, 0xA1u, 
-    0x20u, 0xB8u, 0xA6u, 0x7Du, 0xE8u, 0x59u, 0xADu, 0x7Au, 
-    0x2Fu, 0x84u, 0x8Du, 0xC3u, 0xF8u, 0x23u, 0x78u, 0xE9u, 
-    0x6Du, 0x00u,
-    /* 0x35b23168780155070d6f2efe425ce12ff4355ed9ecdf4f9f7e8feb364c3ffceb86b2b5ac1cf81c82b8a8b5ec369cd0c0659090358d569c9eddce5bb75ea7b6bb9e [BE] */
-    0x9Eu, 0xBBu, 0xB6u, 0xA7u, 0x5Eu, 0xB7u, 0x5Bu, 0xCEu, 
-    0xDDu, 0x9Eu, 0x9Cu, 0x56u, 0x8Du, 0x35u, 0x90u, 0x90u, 
-    0x65u, 0xC0u, 0xD0u, 0x9Cu, 0x36u, 0xECu, 0xB5u, 0xA8u, 
-    0xB8u, 0x82u, 0x1Cu, 0xF8u, 0x1Cu, 0xACu, 0xB5u, 0xB2u, 
-    0x86u, 0xEBu, 0xFCu, 0x3Fu, 0x4Cu, 0x36u, 0xEBu, 0x8Fu, 
-    0x7Eu, 0x9Fu, 0x4Fu, 0xDFu, 0xECu, 0xD9u, 0x5Eu, 0x35u, 
-    0xF4u, 0x2Fu, 0xE1u, 0x5Cu, 0x42u, 0xFEu, 0x2Eu, 0x6Fu, 
-    0x0Du, 0x07u, 0x55u, 0x01u, 0x78u, 0x68u, 0x31u, 0xB2u, 
-    0x35u, 0x00u
+    /* 0x008e818d28f381d8b205edff69613b962e0c77d223ef25cc1c99d9a62e4f2572c1617ad0f5e9a86b7104e89700d4da713cb408f3de4465f86ac4ee31e71a286492ad [BE] */
+    0xADu, 0x92u, 0x64u, 0x28u, 0x1Au, 0xE7u, 0x31u, 0xEEu,
+    0xC4u, 0x6Au, 0xF8u, 0x65u, 0x44u, 0xDEu, 0xF3u, 0x08u,
+    0xB4u, 0x3Cu, 0x71u, 0xDAu, 0xD4u, 0x00u, 0x97u, 0xE8u,
+    0x04u, 0x71u, 0x6Bu, 0xA8u, 0xE9u, 0xF5u, 0xD0u, 0x7Au,
+    0x61u, 0xC1u, 0x72u, 0x25u, 0x4Fu, 0x2Eu, 0xA6u, 0xD9u,
+    0x99u, 0x1Cu, 0xCCu, 0x25u, 0xEFu, 0x23u, 0xD2u, 0x77u,
+    0x0Cu, 0x2Eu, 0x96u, 0x3Bu, 0x61u, 0x69u, 0xFFu, 0xEDu,
+    0x05u, 0xB2u, 0xD8u, 0x81u, 0xF3u, 0x28u, 0x8Du, 0x81u,
+    0x8Eu, 0x00u,
+    /* 0x013efdbc856e8f68bf44d4e19fc7c326fe48a16f7855c80866237196bf8f72ea0dcb422285dc0370689fbe726f8ce045a4038b640f2b6717760f721231cf8cdf1f60 [BE] */
+    0x60u, 0x1Fu, 0xDFu, 0x8Cu, 0xCFu, 0x31u, 0x12u, 0x72u,
+    0x0Fu, 0x76u, 0x17u, 0x67u, 0x2Bu, 0x0Fu, 0x64u, 0x8Bu,
+    0x03u, 0xA4u, 0x45u, 0xE0u, 0x8Cu, 0x6Fu, 0x72u, 0xBEu,
+    0x9Fu, 0x68u, 0x70u, 0x03u, 0xDCu, 0x85u, 0x22u, 0x42u,
+    0xCBu, 0x0Du, 0xEAu, 0x72u, 0x8Fu, 0xBFu, 0x96u, 0x71u,
+    0x23u, 0x66u, 0x08u, 0xC8u, 0x55u, 0x78u, 0x6Fu, 0xA1u,
+    0x48u, 0xFEu, 0x26u, 0xC3u, 0xC7u, 0x9Fu, 0xE1u, 0xD4u,
+    0x44u, 0xBFu, 0x68u, 0x8Fu, 0x6Eu, 0x85u, 0xBCu, 0xFDu,
+    0x3Eu, 0x01u
 };
 
 const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp521r1 =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP521R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&SECP521R1_P,
-  .common.pFullModulusN = (uint8_t*)&SECP521R1_N,
-  .common.pR2P = (uint8_t*)&SECP521R1_R2P,
-  .common.pR2N = (uint8_t*)&SECP521R1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&SECP521R1_A,
-  .common.pCurveParam2 = (uint8_t*)&SECP521R1_B,
-  .common.pGx = (uint8_t*)&SECP521R1_GX,
-  .common.pGy = (uint8_t*)&SECP521R1_GY,
-  .common.pPrecPoints = (uint8_t*)&SECP521R1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &SECP521R1_P,
+  .common.pFullModulusN = (uint8_t *) &SECP521R1_N,
+  .common.pR2P = (uint8_t *) &SECP521R1_R2P,
+  .common.pR2N = (uint8_t *) &SECP521R1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &SECP521R1_A,
+  .common.pCurveParam2 = (uint8_t *) &SECP521R1_B,
+  .common.pGx = (uint8_t *) &SECP521R1_GX,
+  .common.pGy = (uint8_t *) &SECP521R1_GY,
+  .common.pPrecPoints = (uint8_t *) &SECP521R1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1351,19 +1364,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP160r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP160r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP160r1_R2P, 
-  .common.pR2N = (uint8_t*)&brainpoolP160r1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP160r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP160r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP160r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP160r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP160r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP160r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP160r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP160r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP160r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP160r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP160r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP160r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP160r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP160r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1456,19 +1470,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP192r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP192r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP192r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP192r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP192r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP192r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP192r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP192r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP192r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP192r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP192r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP192r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP192r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP192r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP192r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP192r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP192r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP192r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1571,19 +1586,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP224r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP224r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP224r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP224r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP224r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP224r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP224r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP224r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP224r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP224r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP224r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP224r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP224r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP224r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP224r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP224r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP224r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP224r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1686,19 +1702,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP256r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP256r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP256r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP256r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP256r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP256r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP256r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP256r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP256r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP256r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP256r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP256r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP256r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP256r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP256r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP256r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP256r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP256r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1811,19 +1828,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP320r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP320r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP320r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP320r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP320r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP320r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP320r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP320r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP320r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP320r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP320r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP320r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP320r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP320r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP320r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP320r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP320r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP320r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -1946,19 +1964,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP384r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP384r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP384r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP384r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP384r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP384r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP384r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP384r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP384r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP384r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP384r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP384r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP384r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP384r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP384r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP384r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP384r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP384r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2101,19 +2120,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512r
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP512r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP512r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP512r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP512r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP512r1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP512r1_B,
-  .common.pGx = (uint8_t*)&brainpoolP512r1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP512r1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP512r1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP512r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP512r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP512r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP512r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP512r1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP512r1_B,
+  .common.pGx = (uint8_t *) &brainpoolP512r1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP512r1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP512r1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2168,19 +2188,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP160r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP160r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP160r1_R2P, 
-  .common.pR2N = (uint8_t*)&brainpoolP160r1_R2N, 
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP160t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP160t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP160t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP160t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP160t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP160r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP160r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP160r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP160r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP160t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP160t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP160t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP160t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP160t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2235,19 +2256,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP192r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP192r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP192r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP192r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP192t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP192t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP192t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP192t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP192t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP192r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP192r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP192r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP192r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP192t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP192t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP192t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP192t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP192t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2283,20 +2305,20 @@ static const uint8_t brainpoolP224t1_GX[]=
 
 static const uint8_t brainpoolP224t1_GY[] =
 {
-    /* PointGY = 0x4CDB461A5FBD6A1C0DCCC8411E4B0D7C4D3F3FD28C563E14F5E97403 [BE] */
-    0x03u, 0x74u, 0xE9u, 0xF5u, 0x14u, 0x3Eu, 0x56u, 0x8Cu, 
-    0xD2u, 0x3Fu, 0x3Fu, 0x4Du, 0x7Cu, 0x0Du, 0x4Bu, 0x1Eu, 
-    0x41u, 0xC8u, 0xCCu, 0x0Du, 0x1Cu, 0x6Au, 0xBDu, 0x5Fu, 
-    0x1Au, 0x46u, 0xDBu, 0x4Cu
+    /* PointGY = 0x0374E9F5143E568CD23F3F4D7C0D4B1E41C8CC0D1C6ABD5F1A46DB4C [BE] */
+    0x4Cu, 0xDBu, 0x46u, 0x1Au, 0x5Fu, 0xBDu, 0x6Au, 0x1Cu,
+    0x0Du, 0xCCu, 0xC8u, 0x41u, 0x1Eu, 0x4Bu, 0x0Du, 0x7Cu,
+    0x4Du, 0x3Fu, 0x3Fu, 0xD2u, 0x8Cu, 0x56u, 0x3Eu, 0x14u,
+    0xF5u, 0xE9u, 0x74u, 0x03u
 };
 
 static const uint8_t brainpoolP224t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_PRIMEP * 2u] =
 {
     /* 0x5d6a2b7060566fe4671e9055947e40131365a60a1f8682cc5be89ce2 [BE] */
-    0x5du, 0x6au, 0x2bu, 0x70u, 0x60u, 0x56u, 0x6fu, 0xe4u, 
-    0x67u, 0x1eu, 0x90u, 0x55u, 0x94u, 0x7eu, 0x40u, 0x13u, 
-    0x13u, 0x65u, 0xa6u, 0x0au, 0x1fu, 0x86u, 0x82u, 0xccu, 
-    0x5bu, 0xe8u, 0x9cu, 0xe2u,
+    0xE2u, 0x9Cu, 0xE8u, 0x5Bu, 0xCCu, 0x82u, 0x86u, 0x1Fu,
+    0x0Au, 0xA6u, 0x65u, 0x13u, 0x13u, 0x40u, 0x7Eu, 0x94u,
+    0x55u, 0x90u, 0x1Eu, 0x67u, 0xE4u, 0x6Fu, 0x56u, 0x60u,
+    0x70u, 0x2Bu, 0x6Au, 0x5Du,
     /* 0x1bee90f68bf62971f644d741bc3f1fe177a17040c9c9dd34f2cc605b [BE] */
     0x5Bu, 0x60u, 0xCCu, 0xF2u, 0x34u, 0xDDu, 0xC9u, 0xC9u, 
     0x40u, 0x70u, 0xA1u, 0x77u, 0xE1u, 0x1Fu, 0x3Fu, 0xBCu, 
@@ -2308,19 +2330,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP224r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP224r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP224r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP224r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP224t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP224t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP224t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP224t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP224t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP224r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP224r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP224r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP224r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP224t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP224t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP224t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP224t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP224t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2381,19 +2404,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP256r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP256r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP256r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP256r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP256t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP256t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP256t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP256t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP256t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP256r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP256r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP256r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP256r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP256t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP256t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP256t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP256t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP256t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2460,19 +2484,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP320r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP320r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP320r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP320r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP320t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP320t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP320t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP320t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP320t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP320r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP320r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP320r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP320r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP320t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP320t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP320t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP320t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP320t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2545,19 +2570,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP384r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP384r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP384r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP384r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP384t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP384t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP384t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP384t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP384t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP384r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP384r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP384r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP384r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP384t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP384t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP384t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP384t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP384t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 /**********************************************************/
@@ -2642,19 +2668,20 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512t
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&brainpoolP512r1_P,
-  .common.pFullModulusN = (uint8_t*)&brainpoolP512r1_N,
-  .common.pR2P = (uint8_t*)&brainpoolP512r1_R2P,
-  .common.pR2N = (uint8_t*)&brainpoolP512r1_R2N,
-  .common.pCurveParam1 = (uint8_t*)&brainpoolP512t1_A,
-  .common.pCurveParam2 = (uint8_t*)&brainpoolP512t1_B,
-  .common.pGx = (uint8_t*)&brainpoolP512t1_GX,
-  .common.pGy = (uint8_t*)&brainpoolP512t1_GY,
-  .common.pPrecPoints = (uint8_t*)&brainpoolP512t1_PRECG,
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL
+  .common.pFullModulusP = (uint8_t *) &brainpoolP512r1_P,
+  .common.pFullModulusN = (uint8_t *) &brainpoolP512r1_N,
+  .common.pR2P = (uint8_t *) &brainpoolP512r1_R2P,
+  .common.pR2N = (uint8_t *) &brainpoolP512r1_R2N,
+  .common.pCurveParam1 = (uint8_t *) &brainpoolP512t1_A,
+  .common.pCurveParam2 = (uint8_t *) &brainpoolP512t1_B,
+  .common.pGx = (uint8_t *) &brainpoolP512t1_GX,
+  .common.pGy = (uint8_t *) &brainpoolP512t1_GY,
+  .common.pPrecPoints = (uint8_t *) &brainpoolP512t1_PRECG,
+  .common.pLadderConst = NULL,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL
 };
 
 
@@ -2709,11 +2736,32 @@ static const uint8_t pEd25519_PointGY[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __att
     0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u
 };
 
+static const uint8_t pEd25519_PrecPoints[16u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+{
+    // Precomputed points are stored concatenated as P0.x||P0.y||...||P7.x||P7.y, each coordinate is given in MR in LE format
+    0x4cu, 0x1au, 0xc9u, 0x50u, 0x39u, 0x30u, 0x3eu, 0x39u, 0xdbu, 0x8bu, 0x3au, 0xc9u, 0x01u, 0x44u, 0x7fu, 0xafu, 0xd4u, 0xffu, 0xf7u, 0xf1u, 0x39u, 0x4bu, 0x5cu, 0xe0u, 0xe7u, 0xfbu, 0x0fu, 0x1cu, 0x8du, 0xbdu, 0x7du, 0x7cu,
+    0x3cu, 0x85u, 0x15u, 0x7du, 0xecu, 0x21u, 0x87u, 0x09u, 0xf2u, 0x17u, 0xdeu, 0xdau, 0xc9u, 0x01u, 0x22u, 0xb7u, 0x74u, 0xedu, 0x78u, 0x02u, 0x16u, 0x3eu, 0x5fu, 0x94u, 0xddu, 0x94u, 0x2cu, 0x3du, 0xdcu, 0x18u, 0xbeu, 0x61u,
+    0xd6u, 0x91u, 0xd3u, 0xc0u, 0x6fu, 0xa4u, 0x36u, 0x4eu, 0x58u, 0x97u, 0xcbu, 0x70u, 0x85u, 0x07u, 0x30u, 0xeau, 0xdau, 0x0bu, 0x05u, 0xb8u, 0x48u, 0xc2u, 0x4au, 0x59u, 0x74u, 0xcau, 0x7cu, 0x4fu, 0xe3u, 0x67u, 0xecu, 0x1du,
+    0x37u, 0x71u, 0x2fu, 0xedu, 0x29u, 0xabu, 0x90u, 0x0cu, 0x53u, 0x89u, 0x87u, 0x0cu, 0x3fu, 0xe6u, 0x61u, 0x88u, 0x87u, 0x9fu, 0x94u, 0x5eu, 0xd8u, 0x34u, 0xf2u, 0x8eu, 0x1du, 0x88u, 0xd0u, 0x5bu, 0x7fu, 0x7eu, 0x70u, 0x01u,
+    0x32u, 0x8fu, 0xb5u, 0xeau, 0x19u, 0x6eu, 0x4au, 0xf4u, 0x89u, 0x48u, 0x75u, 0x3au, 0xe1u, 0x40u, 0xb0u, 0x7eu, 0x2du, 0xe8u, 0xf4u, 0xb1u, 0x2eu, 0x5cu, 0x19u, 0x9au, 0x5eu, 0xeau, 0xbbu, 0x72u, 0x79u, 0xfdu, 0x45u, 0x3cu,
+    0x03u, 0x2du, 0x58u, 0x73u, 0xf1u, 0xa2u, 0x4bu, 0xadu, 0xccu, 0x38u, 0x75u, 0xafu, 0xa2u, 0xe7u, 0xd5u, 0x2fu, 0x66u, 0xefu, 0x2eu, 0x7du, 0x66u, 0x14u, 0x65u, 0xf2u, 0x51u, 0x9bu, 0x55u, 0x41u, 0xf8u, 0x29u, 0xabu, 0x21u,
+    0x17u, 0x50u, 0x9au, 0x96u, 0x9eu, 0x64u, 0xb6u, 0x4bu, 0x22u, 0x67u, 0xb5u, 0x19u, 0x6au, 0x0au, 0xd4u, 0xe5u, 0x90u, 0xe9u, 0x13u, 0xaeu, 0x0eu, 0xc7u, 0xa1u, 0x44u, 0x39u, 0x88u, 0xd0u, 0x3au, 0xc1u, 0xa0u, 0x17u, 0x20u,
+    0xedu, 0xaau, 0xb4u, 0xffu, 0x53u, 0x8eu, 0xeeu, 0x87u, 0xa5u, 0x23u, 0x9cu, 0x82u, 0xb1u, 0x44u, 0xc6u, 0x9du, 0xabu, 0x97u, 0x66u, 0xf4u, 0x7bu, 0xb6u, 0x30u, 0x30u, 0x12u, 0xfeu, 0x0fu, 0xecu, 0x2fu, 0xa3u, 0xc1u, 0x60u,
+    0xa3u, 0xdfu, 0x3au, 0x3fu, 0xedu, 0xd6u, 0x19u, 0x56u, 0x00u, 0x13u, 0x30u, 0x48u, 0xa0u, 0xd4u, 0xa4u, 0x18u, 0x05u, 0x82u, 0x7du, 0xf6u, 0x76u, 0xc2u, 0x31u, 0xbdu, 0x33u, 0xb9u, 0x15u, 0x16u, 0xbeu, 0xdcu, 0xa9u, 0x6du,
+    0x10u, 0xb4u, 0x08u, 0x9eu, 0x62u, 0x14u, 0x2du, 0x0du, 0x11u, 0x91u, 0x73u, 0xd2u, 0x7eu, 0xc8u, 0xa7u, 0x7eu, 0x69u, 0xbfu, 0x99u, 0x53u, 0x17u, 0xe4u, 0x28u, 0xcdu, 0x0bu, 0xd2u, 0x10u, 0x88u, 0x0cu, 0xd0u, 0x6bu, 0x1du,
+    0xe7u, 0xa9u, 0x77u, 0x96u, 0x7du, 0x0du, 0x81u, 0x8bu, 0xa4u, 0xd3u, 0x04u, 0xa6u, 0xa3u, 0xa9u, 0xaeu, 0x1fu, 0xeau, 0x79u, 0xe4u, 0xf9u, 0xd1u, 0x83u, 0x31u, 0xc1u, 0xccu, 0x77u, 0x5fu, 0x41u, 0xfcu, 0x9cu, 0xf1u, 0x6du,
+    0xdau, 0x37u, 0xb7u, 0xf5u, 0x43u, 0x96u, 0x57u, 0x41u, 0xc9u, 0x7fu, 0x27u, 0x3au, 0x20u, 0x0au, 0x73u, 0xa2u, 0xb8u, 0x2du, 0x41u, 0xa8u, 0xa6u, 0x93u, 0x80u, 0x9du, 0xb0u, 0x94u, 0x39u, 0x49u, 0x3bu, 0x0du, 0x8fu, 0x59u,
+    0x51u, 0xafu, 0x60u, 0x5fu, 0x31u, 0x40u, 0x37u, 0xc8u, 0x9fu, 0x48u, 0x94u, 0x3eu, 0xc4u, 0x6cu, 0x01u, 0x8fu, 0x1du, 0x71u, 0x36u, 0x38u, 0x28u, 0xeau, 0x49u, 0x45u, 0xcfu, 0xbcu, 0x2bu, 0xe6u, 0x1eu, 0xeau, 0x6au, 0x76u,
+    0x42u, 0x90u, 0x4du, 0x70u, 0x50u, 0x5du, 0x1au, 0x9fu, 0x4au, 0x35u, 0xe1u, 0xc4u, 0xf9u, 0x0cu, 0xb9u, 0xceu, 0x2du, 0x92u, 0x50u, 0xb6u, 0x93u, 0x65u, 0xf2u, 0xcbu, 0x2du, 0x0fu, 0x41u, 0xcfu, 0xd5u, 0xb8u, 0xbcu, 0x07u,
+    0xc7u, 0x3fu, 0x42u, 0xfau, 0x08u, 0x62u, 0xe4u, 0x5fu, 0x74u, 0x8fu, 0x9du, 0x11u, 0x21u, 0x18u, 0x16u, 0xdcu, 0x2cu, 0xfeu, 0xf9u, 0xfbu, 0x43u, 0xfau, 0xbau, 0xe3u, 0xdfu, 0x9au, 0x29u, 0x62u, 0x01u, 0x96u, 0x8bu, 0x6au,
+    0x2bu, 0x1au, 0x1bu, 0xb5u, 0x4bu, 0x8fu, 0xf2u, 0x84u, 0x30u, 0x61u, 0x8cu, 0x41u, 0x4bu, 0xa1u, 0x11u, 0x3bu, 0xc1u, 0xc8u, 0xf3u, 0xeeu, 0x46u, 0xe0u, 0xbfu, 0x7eu, 0xf9u, 0x5bu, 0xacu, 0x7du, 0xcbu, 0xb2u, 0x98u, 0x01u
+};
+
 static const uint8_t pEd25519_A[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
-    // A = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff [BE] 
-    0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-    0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu
+    // A = 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec [BE]
+     0xecu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+     0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0x7fu
 };
 
 static const uint8_t pEd25519_D[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
@@ -2728,6 +2776,13 @@ static const uint8_t pEd25519_SQRT_MINUS_ONE[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP
     // SQRT_MINUS_ONE = 0x2b8324804fc1df0b2b4d00993dfbd7a72f431806ad2fe478c4ee1b274a0ea0b0 [BE] 
     0xb0u, 0xa0u, 0x0eu, 0x4au, 0x27u, 0x1bu, 0xeeu, 0xc4u, 0x78u, 0xe4u, 0x2fu, 0xadu, 0x06u, 0x18u, 0x43u, 0x2fu,
     0xa7u, 0xd7u, 0xfbu, 0x3du, 0x99u, 0x00u, 0x4du, 0x2bu, 0x0bu, 0xdfu, 0xc1u, 0x4fu, 0x80u, 0x24u, 0x83u, 0x2bu
+};
+
+static const uint8_t pEd25519_LADDER_CONST[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+{
+    // LADDER_CONST = a/d mod p = 0x3f6f812deb2a31bcd4e9deeb32463099f4a22967bd86abd1da1f0d89323607aa [BE]
+    0xaau, 0x07u, 0x36u, 0x32u, 0x89u, 0x0du, 0x1fu, 0xdau, 0xd1u, 0xabu, 0x86u, 0xbdu, 0x67u, 0x29u, 0xa2u, 0xf4u,
+    0x99u, 0x30u, 0x46u, 0x32u, 0xebu, 0xdeu, 0xe9u, 0xd4u, 0xbcu, 0x31u, 0x2au, 0xebu, 0x2du, 0x81u, 0x6fu, 0x3fu
 };
 
 /* Ed448 domain parameters */
@@ -2789,6 +2844,27 @@ static const uint8_t pEd448_PointGY[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribu
     0x24u, 0xbcu, 0xb6u, 0x6eu, 0x71u, 0x46u, 0x3fu, 0x69u
 };
 
+static const uint8_t pEd448_PrecPoints[16u * MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+{
+    // Precomputed points are stored concatenated as P0.x||P0.y||...||P7.x||P7.y, each coordinate is given in MR in LE format
+    0xf1u, 0x94u, 0x29u, 0x92u, 0x55u, 0x5eu, 0x12u, 0x61u, 0xc1u, 0x10u, 0x29u, 0x05u, 0xafu, 0xa9u, 0x82u, 0x1eu, 0xdeu, 0x8au, 0xbcu, 0x12u, 0x7au, 0xa7u, 0x47u, 0x8du, 0xa8u, 0x3fu, 0x89u, 0xa3u, 0x8eu, 0x2eu, 0xbcu, 0x1du, 0x2bu, 0x6cu, 0x8fu, 0x47u, 0x8eu, 0x22u, 0xa9u, 0x72u, 0x93u, 0xabu, 0xfcu, 0xbdu, 0xa0u, 0xe4u, 0xcfu, 0x77u, 0xeeu, 0xfau, 0xdau, 0x76u, 0x02u, 0x7du, 0x6cu, 0x5au,
+    0x50u, 0xdfu, 0x37u, 0xb4u, 0x62u, 0x03u, 0xb2u, 0xd8u, 0xc1u, 0x01u, 0x00u, 0x63u, 0x06u, 0x8bu, 0x46u, 0x7du, 0x60u, 0x20u, 0x1eu, 0x63u, 0x23u, 0x29u, 0xa6u, 0x4eu, 0x9du, 0xdeu, 0xaau, 0x4eu, 0xe5u, 0xccu, 0x16u, 0x74u, 0xf2u, 0x7cu, 0x9du, 0x99u, 0xf1u, 0x3bu, 0xafu, 0x24u, 0x50u, 0x28u, 0x95u, 0x53u, 0xf6u, 0x22u, 0xd8u, 0xbdu, 0xf5u, 0x29u, 0xb2u, 0x2fu, 0x95u, 0xedu, 0x25u, 0x0au,
+    0xf0u, 0x4bu, 0xc5u, 0x09u, 0x5bu, 0x37u, 0xa5u, 0xbeu, 0xc8u, 0xc8u, 0xefu, 0xddu, 0x8bu, 0xbdu, 0xecu, 0xb3u, 0x41u, 0x43u, 0x75u, 0xe7u, 0x7eu, 0x65u, 0x4cu, 0x64u, 0xffu, 0xbdu, 0xf8u, 0x27u, 0x1fu, 0x40u, 0x7au, 0xefu, 0x92u, 0xd7u, 0x05u, 0x85u, 0xd7u, 0xd8u, 0x90u, 0xf0u, 0x59u, 0x57u, 0x5eu, 0x4fu, 0x3au, 0x9cu, 0x07u, 0xfeu, 0xc2u, 0x8cu, 0x92u, 0x0au, 0x93u, 0x8bu, 0x0du, 0x60u,
+    0x49u, 0x0cu, 0xaeu, 0xa7u, 0xa9u, 0x28u, 0xa4u, 0x01u, 0x1au, 0x16u, 0xf5u, 0x74u, 0x53u, 0x0eu, 0x71u, 0xf9u, 0x63u, 0x26u, 0x46u, 0xd4u, 0x6du, 0x39u, 0x6du, 0x31u, 0x1cu, 0x81u, 0x36u, 0xf8u, 0x60u, 0x17u, 0xa7u, 0x83u, 0xe5u, 0xb2u, 0x81u, 0xe7u, 0xccu, 0x5fu, 0x04u, 0xc5u, 0xfcu, 0xacu, 0x14u, 0x57u, 0xf5u, 0xd0u, 0x2fu, 0xc6u, 0x5au, 0x05u, 0x6fu, 0x8fu, 0x99u, 0xf2u, 0x2du, 0x06u,
+    0x6du, 0x4bu, 0x5bu, 0xffu, 0xfau, 0x2bu, 0x5eu, 0xc5u, 0x20u, 0x13u, 0x1fu, 0x99u, 0x03u, 0x45u, 0x96u, 0x32u, 0x25u, 0xa1u, 0x93u, 0xf7u, 0x66u, 0x69u, 0x79u, 0x65u, 0x84u, 0x37u, 0x90u, 0x2eu, 0xddu, 0xc6u, 0x6fu, 0xa5u, 0x87u, 0x9fu, 0xfcu, 0xfau, 0x5eu, 0x93u, 0xa0u, 0xbbu, 0x6cu, 0x65u, 0xa7u, 0x41u, 0x6fu, 0xf3u, 0x9bu, 0x09u, 0xb3u, 0x55u, 0xb6u, 0xf0u, 0xcfu, 0x3eu, 0xb4u, 0x72u,
+    0x10u, 0xe7u, 0xb4u, 0x3fu, 0x44u, 0x91u, 0xf9u, 0x45u, 0xccu, 0xc1u, 0x82u, 0xf7u, 0xdau, 0x6au, 0x1bu, 0x71u, 0xeau, 0xc8u, 0xfcu, 0x94u, 0x9cu, 0x72u, 0xabu, 0x09u, 0x07u, 0x3bu, 0x5bu, 0x21u, 0xe7u, 0xcbu, 0x5cu, 0xbau, 0x5au, 0xdcu, 0xe2u, 0x3eu, 0xefu, 0xf2u, 0x5cu, 0x54u, 0xd1u, 0xa2u, 0x2eu, 0x59u, 0x74u, 0x57u, 0x65u, 0xf4u, 0x8du, 0xb5u, 0x47u, 0x9au, 0x4du, 0xccu, 0x96u, 0xb3u,
+    0x75u, 0x29u, 0x91u, 0x6du, 0x42u, 0x3du, 0x7cu, 0x0eu, 0x6du, 0x5eu, 0x94u, 0x62u, 0xd5u, 0x05u, 0xd1u, 0x24u, 0x27u, 0x97u, 0x97u, 0xdau, 0xd8u, 0x82u, 0xbeu, 0x94u, 0xcfu, 0x96u, 0x8bu, 0x58u, 0x38u, 0x51u, 0x15u, 0x76u, 0x72u, 0xc0u, 0x67u, 0x15u, 0x47u, 0x89u, 0x63u, 0x28u, 0xecu, 0xc8u, 0xf7u, 0xe9u, 0xecu, 0xbau, 0x46u, 0x4du, 0x6bu, 0xdau, 0x90u, 0x65u, 0xc4u, 0xf2u, 0x80u, 0xafu,
+    0x7eu, 0x05u, 0x7fu, 0x70u, 0x57u, 0x51u, 0x89u, 0xb4u, 0x5fu, 0x0bu, 0xc6u, 0x3fu, 0x4du, 0x35u, 0x31u, 0x9eu, 0x03u, 0x01u, 0xa1u, 0xb1u, 0xbfu, 0x34u, 0x4au, 0x5au, 0xe6u, 0x8bu, 0x8bu, 0x8cu, 0x84u, 0xfeu, 0x12u, 0xbcu, 0x89u, 0x1au, 0x1cu, 0xd3u, 0x87u, 0x98u, 0x20u, 0x04u, 0xdfu, 0x5bu, 0x2eu, 0x02u, 0x17u, 0xc3u, 0x68u, 0x4du, 0xedu, 0x9fu, 0xe4u, 0x59u, 0x21u, 0xdfu, 0x43u, 0xbau,
+    0xadu, 0xd4u, 0x83u, 0x97u, 0xa6u, 0x2bu, 0x3du, 0x5au, 0x62u, 0xfdu, 0x43u, 0xb4u, 0x5eu, 0x87u, 0xc1u, 0xaeu, 0xd2u, 0xc1u, 0x86u, 0xd2u, 0x0au, 0xdau, 0x3fu, 0x2fu, 0x30u, 0x01u, 0xdau, 0x70u, 0xbdu, 0x7eu, 0xffu, 0xbeu, 0xb8u, 0x92u, 0x6cu, 0x96u, 0x7eu, 0x67u, 0x8fu, 0x9cu, 0xb9u, 0x74u, 0xd8u, 0x4bu, 0x06u, 0x38u, 0x69u, 0x25u, 0x4eu, 0xdeu, 0x3cu, 0xe3u, 0xf7u, 0x58u, 0xc6u, 0x81u,
+    0x6au, 0xb7u, 0xecu, 0x65u, 0x93u, 0xe6u, 0x8du, 0xa1u, 0xb0u, 0x95u, 0xbfu, 0xcfu, 0x3du, 0xceu, 0xa7u, 0x3au, 0xbau, 0x68u, 0xabu, 0x0cu, 0x44u, 0x7cu, 0xf6u, 0x25u, 0x06u, 0xeeu, 0x0du, 0x3au, 0x52u, 0x70u, 0xefu, 0x40u, 0x5au, 0xb7u, 0x4au, 0xc2u, 0xf3u, 0xdeu, 0x8eu, 0x5fu, 0x7bu, 0x07u, 0x48u, 0x4au, 0xa5u, 0x38u, 0x53u, 0x6fu, 0x64u, 0x58u, 0xb3u, 0x4au, 0x09u, 0x78u, 0xb7u, 0xfau,
+    0xf2u, 0x70u, 0x5bu, 0x94u, 0x74u, 0xe0u, 0x4du, 0x6eu, 0xebu, 0x71u, 0x9fu, 0x63u, 0xedu, 0x29u, 0xc2u, 0x1eu, 0x57u, 0x1du, 0xf7u, 0xa6u, 0xc9u, 0xbau, 0x06u, 0xb6u, 0xe7u, 0x20u, 0x86u, 0x34u, 0x49u, 0x15u, 0x36u, 0xd8u, 0x91u, 0x3bu, 0x88u, 0x57u, 0xcfu, 0x76u, 0x71u, 0x52u, 0x1du, 0x73u, 0xcbu, 0x79u, 0x12u, 0x0au, 0xbau, 0xaeu, 0x05u, 0x6du, 0xccu, 0xb5u, 0xe8u, 0xa6u, 0xbau, 0x58u,
+    0x7bu, 0xd0u, 0x8bu, 0xb3u, 0x75u, 0x67u, 0x21u, 0x22u, 0x9bu, 0x3cu, 0x51u, 0x39u, 0x2fu, 0x70u, 0xdeu, 0x50u, 0x87u, 0x1cu, 0xb4u, 0xf0u, 0x51u, 0x93u, 0x09u, 0x88u, 0x6fu, 0xbfu, 0x27u, 0xd0u, 0x47u, 0x9fu, 0x97u, 0xc1u, 0xdcu, 0x19u, 0xf6u, 0x6du, 0x6fu, 0x49u, 0xfeu, 0x19u, 0xdeu, 0xa0u, 0xb2u, 0x1eu, 0x4cu, 0x36u, 0x6bu, 0xa7u, 0x14u, 0x65u, 0x90u, 0x6cu, 0x76u, 0x2bu, 0xaeu, 0xa4u,
+    0xf4u, 0x5eu, 0x2au, 0x56u, 0x2bu, 0x7fu, 0xfdu, 0x5eu, 0x42u, 0xc1u, 0x3du, 0x8fu, 0x17u, 0x8cu, 0xbbu, 0x73u, 0xa8u, 0x6eu, 0x80u, 0x3eu, 0x1fu, 0xafu, 0xaau, 0x68u, 0x8fu, 0xdcu, 0x5au, 0x57u, 0xcdu, 0x40u, 0x73u, 0x1fu, 0x7cu, 0x57u, 0x63u, 0x85u, 0xe7u, 0xa5u, 0xe9u, 0x24u, 0x63u, 0x0au, 0x3bu, 0xd3u, 0x32u, 0xf8u, 0x4eu, 0x4du, 0x87u, 0xbcu, 0xf5u, 0x01u, 0x86u, 0xa0u, 0x05u, 0x7du,
+    0x74u, 0x68u, 0xcau, 0x2eu, 0x10u, 0xd8u, 0xc0u, 0xcbu, 0x98u, 0xa9u, 0x57u, 0x65u, 0x8cu, 0x61u, 0xd5u, 0x75u, 0x63u, 0xdcu, 0xccu, 0xfau, 0xf4u, 0xf9u, 0x95u, 0xcdu, 0x46u, 0x71u, 0xfbu, 0xd2u, 0x16u, 0xbbu, 0xf6u, 0x11u, 0xdcu, 0x29u, 0xd8u, 0xe8u, 0x93u, 0x07u, 0xeeu, 0x69u, 0xc5u, 0x8eu, 0xd4u, 0x37u, 0x36u, 0x70u, 0xc5u, 0xa7u, 0x8au, 0xdcu, 0xb9u, 0xd4u, 0x17u, 0x2bu, 0x45u, 0xa8u,
+    0xb5u, 0x05u, 0x11u, 0x4du, 0x14u, 0x48u, 0xa4u, 0xa1u, 0xaau, 0xb1u, 0x7du, 0xdau, 0xd1u, 0x66u, 0x88u, 0x6fu, 0x75u, 0x80u, 0xeau, 0x5cu, 0xddu, 0xebu, 0xdeu, 0x1cu, 0x06u, 0xaau, 0x28u, 0x05u, 0x4bu, 0xf7u, 0xcbu, 0x17u, 0x45u, 0xafu, 0x56u, 0xcfu, 0x2eu, 0xb8u, 0x8au, 0xc0u, 0xcdu, 0xddu, 0x60u, 0x3au, 0xf6u, 0x95u, 0xc3u, 0x70u, 0x03u, 0xccu, 0x69u, 0x73u, 0xe1u, 0x5bu, 0x0eu, 0xc8u,
+    0xbeu, 0x78u, 0x0fu, 0x85u, 0xdfu, 0xd4u, 0x81u, 0xc0u, 0xaeu, 0x50u, 0x63u, 0x4du, 0xd0u, 0x40u, 0x9du, 0xa6u, 0x50u, 0x53u, 0x08u, 0x62u, 0x80u, 0x4cu, 0xe8u, 0x3fu, 0x1eu, 0x72u, 0xd1u, 0xd6u, 0x62u, 0x07u, 0xf8u, 0x1bu, 0x7eu, 0xdau, 0xa4u, 0xcbu, 0x6bu, 0xe3u, 0xc2u, 0x50u, 0x78u, 0x05u, 0x40u, 0xebu, 0xacu, 0x7fu, 0xcau, 0x30u, 0x7du, 0xeeu, 0x66u, 0x35u, 0xe6u, 0x79u, 0x53u, 0x30u
+};
+
 static const uint8_t pEd448_A[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
     // A = 0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001 [BE] 
@@ -2800,69 +2876,81 @@ static const uint8_t pEd448_A[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ (
 
 static const uint8_t pEd448_D[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
 {
-    // D = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff6757 [BE] 
-    0x57u, 0x67u, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-    0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-    0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-    0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu
+    // D = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffffffffffffffffffffffffffffffffffffffffffffffff6756 [BE]
+    0x56u, 0x67u, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
+    0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFEu, 0xFFu, 0xFFu, 0xFFu,
+    0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
+    0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
+static const uint8_t pEd448_LADDER_CONST[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+{
+    // LADDER_CONST = a/d mod p = 0x2874b42380f250e60db0c73d6c8c5d3352b9ea8dbd5af0c87f64e25bbed5ed186333637ed9b301652f7f668fa7049e3bdbc33cd2455ea947 [BE]
+    0x47u, 0xa9u, 0x5eu, 0x45u, 0xd2u, 0x3cu, 0xc3u, 0xdbu, 0x3bu, 0x9eu, 0x04u, 0xa7u, 0x8fu, 0x66u, 0x7fu, 0x2fu,
+    0x65u, 0x01u, 0xb3u, 0xd9u, 0x7eu, 0x63u, 0x33u, 0x63u, 0x18u, 0xedu, 0xd5u, 0xbeu, 0x5bu, 0xe2u, 0x64u, 0x7fu,
+    0xc8u, 0xf0u, 0x5au, 0xbdu, 0x8du, 0xeau, 0xb9u, 0x52u, 0x33u, 0x5du, 0x8cu, 0x6cu, 0x3du, 0xc7u, 0xb0u, 0x0du,
+    0xe6u, 0x50u, 0xf2u, 0x80u, 0x23u, 0xb4u, 0x74u, 0x28u
+};
+
+const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainFixScalarMult25519_FP = {
+    .pScalarMultFct = mcuxClEcc_TwEd_PlainFixScalarMult25519,
+    .scalarMultFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainFixScalarMult25519),
+};
+
+const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainVarScalarMult_FP = {
+    .pScalarMultFct = mcuxClEcc_TwEd_PlainVarScalarMult,
+    .scalarMultFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainVarScalarMult),
+};
 
 const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 =
 {
   .common.byteLenP = MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&pEd25519_FullP,
-  .common.pFullModulusN = (uint8_t*)&pEd25519_FullN,
-  .common.pR2P = (uint8_t*)&pEd25519_R2P,
-  .common.pR2N = (uint8_t*)&pEd25519_R2N,
-  .common.pCurveParam1 = (uint8_t*)&pEd25519_A,  /* a */
-  .common.pCurveParam2 = (uint8_t*)&pEd25519_D,  /* d */
-  .common.pGx = (uint8_t*)&pEd25519_PointGX,
-  .common.pGy = (uint8_t*)&pEd25519_PointGY,
-  .common.pPrecPoints = NULL,  // TBD
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL,
+  .common.pFullModulusP = (uint8_t *) &pEd25519_FullP,
+  .common.pFullModulusN = (uint8_t *) &pEd25519_FullN,
+  .common.pR2P = (uint8_t *) &pEd25519_R2P,
+  .common.pR2N = (uint8_t *) &pEd25519_R2N,
+  .common.pCurveParam1 = (uint8_t *) &pEd25519_A,  /* a */
+  .common.pCurveParam2 = (uint8_t *) &pEd25519_D,  /* d */
+  .common.pGx = (uint8_t *) &pEd25519_PointGX,
+  .common.pGy = (uint8_t *) &pEd25519_PointGY,
+  .common.pPrecPoints = (uint8_t *) &pEd25519_PrecPoints,
+  .common.pLadderConst = (uint8_t *) &pEd25519_LADDER_CONST,
+  .common.pSecFixScalarMultFctFP = &mcuxClEcc_TwEd_PlainFixScalarMult25519_FP,
+  .common.pSecVarScalarMultFctFP = &mcuxClEcc_TwEd_PlainVarScalarMult_FP,
+  .common.pPlainFixScalarMultFctFP = &mcuxClEcc_TwEd_PlainFixScalarMult25519_FP,
+  .common.pPlainVarScalarMultFctFP = &mcuxClEcc_TwEd_PlainVarScalarMult_FP,
   .b = 256u,
   .c = 3u,
   .t = 254u,
-  .pSqrtMinusOne = (uint8_t*)&pEd25519_SQRT_MINUS_ONE,
-  .algoSecHash = NULL,  /* TODO: &mcuxClHash_AlgorithmDescriptor_Sha512 is unavailable on s401/s5xx */
-  .algoHash = NULL  /* TODO: &mcuxClHash_AlgorithmDescriptor_Sha512 is unavailable on s401/s5xx */
+  .pSqrtMinusOne = (uint8_t *) &pEd25519_SQRT_MINUS_ONE,
+  .algoSecHash = &mcuxClHash_AlgorithmDescriptor_Sha512,
+  .algoHash = &mcuxClHash_AlgorithmDescriptor_Sha512
 };
 
 const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 =
 {
   .common.byteLenP = MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER,
-  .common.pFullModulusP = (uint8_t*)&pEd448_FullP,
-  .common.pFullModulusN = (uint8_t*)&pEd448_FullN,
-  .common.pR2P = (uint8_t*)&pEd448_R2P,
-  .common.pR2N = (uint8_t*)&pEd448_R2N,
-  .common.pCurveParam1 = (uint8_t*)&pEd448_A,  /* a */
-  .common.pCurveParam2 = (uint8_t*)&pEd448_D,  /* d */
-  .common.pGx = (uint8_t*)&pEd448_PointGX,
-  .common.pGy = (uint8_t*)&pEd448_PointGY,
-  .common.pPrecPoints = NULL,  // TBD
-  .common.pSecFixScalarMultFct = NULL,
-  .common.pSecVarScalarMultFct = NULL,
-  .common.pPlainFixScalarMultFct = NULL,
-  .common.pPlainVarScalarMultFct = NULL,
+  .common.pFullModulusP = (uint8_t *) &pEd448_FullP,
+  .common.pFullModulusN = (uint8_t *) &pEd448_FullN,
+  .common.pR2P = (uint8_t *) &pEd448_R2P,
+  .common.pR2N = (uint8_t *) &pEd448_R2N,
+  .common.pCurveParam1 = (uint8_t *) &pEd448_A,  /* a */
+  .common.pCurveParam2 = (uint8_t *) &pEd448_D,  /* d */
+  .common.pGx = (uint8_t *) &pEd448_PointGX,
+  .common.pGy = (uint8_t *) &pEd448_PointGY,
+  .common.pPrecPoints = (uint8_t *) &pEd448_PrecPoints,
+  .common.pLadderConst = (uint8_t *) &pEd448_LADDER_CONST,
+  .common.pSecFixScalarMultFctFP = NULL,
+  .common.pSecVarScalarMultFctFP = NULL,
+  .common.pPlainFixScalarMultFctFP = NULL,
+  .common.pPlainVarScalarMultFctFP = NULL,
   .b = 456u,
   .c = 2u,
   .t = 447u,
   .pSqrtMinusOne = NULL,
   .algoSecHash =  NULL,
   .algoHash = NULL
-};
-
-const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor =
-{
-    .generateOption = 0u,    // TODO
-    .verifyOption   = 0u,
-    .pHashPrefix    = NULL,
-    .hashPrefixLen  = 0u
 };
 

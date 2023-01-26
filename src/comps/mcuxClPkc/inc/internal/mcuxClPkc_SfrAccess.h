@@ -79,7 +79,7 @@
 /** Set value of multi-bit field of PKC SFR (read-modify-write) */
 #define MCUXCLPKC_SFR_BITVALSET(sfr, bit, val)  \
     do{ uint32_t temp = PKC_SFR_BASE->PKC_SFR_NAME(sfr) & (~ (uint32_t) MCUXCLPKC_SFR_BITMSK(sfr, bit)); \
-        PKC_SFR_BASE->PKC_SFR_NAME(sfr) = ((val) << MCUXCLPKC_SFR_BITPOS(sfr, bit)) & MCUXCLPKC_SFR_BITMSK(sfr, bit); \
+        PKC_SFR_BASE->PKC_SFR_NAME(sfr) = (((val) << MCUXCLPKC_SFR_BITPOS(sfr, bit)) & MCUXCLPKC_SFR_BITMSK(sfr, bit)) | temp; \
     } while(false)
 
 

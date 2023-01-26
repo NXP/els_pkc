@@ -16,7 +16,7 @@
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <internal/mcuxCsslSecureCounter_Cfg.h>
+#include <mcuxCsslSecureCounter_Cfg.h>
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_compute)

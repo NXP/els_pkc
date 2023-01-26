@@ -1,27 +1,29 @@
-CLNS NirvanaSDK V1.3.0 (EAR) Release Notes
+CLNS SDK (1.1.0) Release Notes
 
-- Release: NirvanaSDK_EAR
-- Version: V1.3.0
-- Date:    2022-10-27
+- Release: RedfinchSDK_EAR4
+- Version: V1.4.0
+- Date:    2023-01-19
 - Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: tags/nirvanasdk_ear2_v1_3_0
-- Compiler: IAR Compiler v.8.40.1
+- Link to Bitbucket: tags/RedfinchSDK_EAR4
+- Compiler: ARMCLANG keilmdk 533
 --- Test Target:   
-   - CoSim: CSSV2 v1.9
-      - CoSim CSS IP: 0.2.19
---- CLNS memory consumption: delivery/nirvanaSdk_cosim_release/static_library/nirvanaSdk_cosim/libclns.a
-    TEXT  RO    RW ZI TOTAL_CONSUMPTION
-    55016 15956 0  0  70972
+   - RW610 A0 Sample
+--- CLNS memory consumption: static_library/redfinchSdk_sample/libclns.a
+      TEXT RO RW ZI TOTAL_CONSUMPTION
+      72584 22768 0 0 95352
 
---- New Features in version 1.3.0: 
-   - Abstraction layer for platform header files: release can be built with CRR generated header files or platform header file
+--- New Features in version 1.4.0: 
+   - Renaming of CSS component to ELS
+   - PSA driver refactoring
+   - Bugfixes
    
 --- Features:
-   - Components included: nxpClCss
-   - Components included: nxpClAead, nxpClCipher, nxpClHash, nxpClKey, nxpClMac, nxpClMemory, nxpClPadding, nxpClSession
-   - Components included: nxpClPkc, nxpClMath, nxpClEcc, nxpClRandom, nxpClRsa, nxpClTrng
-   - Components included: nxpCsslCPreProcessor, nxpCsslFlowProtection, nxpCsslMemory, nxpCsslParamIntegrity, nxpCsslSecureCounter
-   - nxpClCss supports the following functionality
+   - Components included: mcuxClEls
+   - Components included: mcuxClAead, mcuxClCipher, mcuxClHash, mcuxClKey, mcuxClMac, mcuxClMemory, mcuxClPadding, mcuxClSession
+   - Components included: mcuxClPkc, mcuxClMath, mcuxClEcc, mcuxClPrng, mcuxClRandom, mcuxClRsa, mcuxClTrng
+   - Components included: mcuxClPsaDriver
+   - Components included: mcuxCsslCPreProcessor, mcuxCsslFlowProtection, mcuxCsslMemory, mcuxCsslParamIntegrity, mcuxCsslSecureCounter
+   - mcuxClEls supports the following functionality
         - AES-128/192/256 encryption/decryption, modes ECB/CBC/CTR/GCM/CMAC
         - SHA2-224/256/384/512 (including sha-direct mode)
         - KDF: CKDF (NIST SP 800-108 / SP800-56C), HKDF (RFC5869)
@@ -31,19 +33,63 @@ CLNS NirvanaSDK V1.3.0 (EAR) Release Notes
         - Key Import/Export/Utilities/Provisioning
         - Random number Generation (DRBG/PRNG)
         - TLS Master/Session Key generation
-        - GDET
-   - RSA key generation
 
 --- Known Issues Limitations: 
-   - Build using ARMGCC not working yet
    - EDDSA functionality included but incomplete (under development, non-functional)
    - occasional timeouts/iterations exceeded for RSA key generation (this is due to statistical variation)
+   - failing test case on internal function for extracting TRNG values
+   - dma final address readback checks are disabled on this release
+   - some failures in negative test cases
+  - Failing tests in PSA:   
+      - psa_driver_hash_multipart_abort and clone
+      - truncated mac 
+   - several examples failing (incorrect)
+      - PSA cipher multipart
+      - PSA aead multipart
+
+- Release: NirvanaSDK_EAR3
+- Version: V1.4.0
+- Date:    2023-01-19
+- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
+- Link to Bitbucket: tags/nirvanasdk_ear3_v1_4_0
+- Compiler: IAR Compiler v.8.40.1
+--- Test Target:   
+   - CoSim: FPGAv2 Cosim v13
+--- CLNS memory consumption: static_library/nirvanaSdk_cosim/libclns.a
+    TEXT  RO    RW ZI TOTAL_CONSUMPTION
+   61972 19080 0 0 81052
+
+--- New Features in version 1.4.0: 
+   - Renaming of CSS component to ELS
+   - Bugfixes
+   
+--- Features:
+   - Components included: mcuxClEls
+   - Components included: mcuxClAead, mcuxClCipher, mcuxClHash, mcuxClKey, mcuxClMac, mcuxClMemory, mcuxClPadding, mcuxClSession
+   - Components included: mcuxClPkc, mcuxClMath, mcuxClEcc, mcuxClPrng, mcuxClRandom, mcuxClRsa, mcuxClTrng
+   - Components included: mcuxCsslCPreProcessor, mcuxCsslFlowProtection, mcuxCsslMemory, mcuxCsslParamIntegrity, mcuxCsslSecureCounter
+   - mcuxClEls supports the following functionality
+        - AES-128/192/256 encryption/decryption, modes ECB/CBC/CTR/GCM/CMAC
+        - SHA2-224/256/384/512 (including sha-direct mode)
+        - KDF: CKDF (NIST SP 800-108 / SP800-56C), HKDF (RFC5869)
+        - HMAC
+        - ECC Sign/Verify/Keygen/Keyexchange (P-256)
+        - RFC3394 key wrapping/unwrapping
+        - Key Import/Export/Utilities/Provisioning
+        - Random number Generation (DRBG/PRNG)
+        - TLS Master/Session Key generation
+
+--- Known Issues Limitations: 
+   - EDDSA functionality included but incomplete (under development, non-functional)
+   - occasional timeouts/iterations exceeded for RSA key generation (this is due to statistical variation)
+   - failing test case on internal function for extracting TRNG values
    - all tests that make use of interrupts could not be executed due to an issue on the test platform
    - dma final address readback checks are disabled on this release
    - issue observed with test of CKDF from DUK
-   - failing test on RTF feature of CSS
-   - several examples failing
-      - RSA: nxpClRsa_verify_pssverify_sha2_256_example
-      - Random: nxpClRandom_Mode_CtrDrbg_AES256_DRG3_example 
+   - example failing
+      - RSA: mcuxClRsa_verify_pssverify_sha2_256_example
+   - some failures in negative test cases
 
+
+   
    

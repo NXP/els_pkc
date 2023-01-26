@@ -164,7 +164,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
        */
       ++witnessLoopCounterMain;
 
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE(byteLenPrime) / sizeof(uint32_t);
       uint8_t * pWitnessCpu = (uint8_t*) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
       if (NULL == pWitnessCpu)
@@ -194,7 +194,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
       {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest, MCUXCLRSA_STATUS_RNG_ERROR);
       }
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
       /*
        * 5. If ((b <= 1) or (b >= PrimeCandidate - 1)), then go to step 4.
@@ -306,7 +306,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
 
 /* Use temporary define to avoid preprocessor directive inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   #define TMP_PKCRAM_WORKAROUND \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * witnessLoopCounterMain, \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * witnessLoopCounterMain

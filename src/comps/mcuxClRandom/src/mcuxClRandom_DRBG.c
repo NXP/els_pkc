@@ -17,15 +17,11 @@
  *  declared in mcuxClRandom.h. */
 
 
-#include <stdint.h>
-#include <stddef.h>
-
 #include <mcuxClSession.h>
 #include <mcuxClMemory.h>
 #include <mcuxClRandom.h>
 
 #include <internal/mcuxClRandom_Internal_Types.h>
-#include <internal/mcuxClRandom_Private_Types.h>
 
 /**
  * @brief This function verifies a Random mode
@@ -211,7 +207,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_checkSecurityStr
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_checkSecurityStrength);
 
-	mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
+    mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
 
     if (securityStrength > sessionMode->securityStrength)
     {

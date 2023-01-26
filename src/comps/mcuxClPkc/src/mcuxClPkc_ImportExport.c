@@ -23,7 +23,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClCss_Rng.h>
+#include <mcuxClEls_Rng.h>
 #include <mcuxCsslMemory.h>
 #include <mcuxClMemory.h>
 #include <mcuxClPkc.h>
@@ -299,8 +299,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
 
     /* Caution: the whole temp buffer needs to be initialized before PKC XOR */
     /*          if the platform requests an explicit memory initialization.  */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClCss_Prng_GetRandom(pTemp, operandSize));
-    if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pTemp, operandSize));
+    if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureImportBigEndianToPkc, MCUXCLPKC_STATUS_NOK);
     }
@@ -333,7 +333,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureImportBigEndianToPkc, MCUXCLPKC_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
@@ -412,8 +412,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
 
     /* Caution: the whole temp buffer needs to be initialized before PKC XOR */
     /*          if the platform requests an explicit memory initialization.  */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClCss_Prng_GetRandom(pTemp, operandSize));
-    if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pTemp, operandSize));
+    if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
     {
        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureExportBigEndianFromPkc, MCUXCLPKC_STATUS_NOK);
     }
@@ -455,7 +455,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureExportBigEndianFromPkc, MCUXCLPKC_STATUS_OK,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),

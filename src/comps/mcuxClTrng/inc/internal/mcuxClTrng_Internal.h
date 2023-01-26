@@ -19,12 +19,12 @@
  * @brief component of trng generation
  */
 
-#ifndef MCUX_CL_TRNG_INTERNAL_H_
-#define MCUX_CL_TRNG_INTERNAL_H_
+#ifndef MCUXCLTRNG_INTERNAL_H_
+#define MCUXCLTRNG_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClTrng_Internal_Types.h>
 #include <internal/mcuxClTrng_Internal_Functions.h>
 #include <internal/mcuxClTrng_Internal_Constants.h>
 
-#endif /* MCUX_CL_TRNG_INTERNAL_H_ */
+#endif /* MCUXCLTRNG_INTERNAL_H_ */

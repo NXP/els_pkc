@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <mcuxClCss.h>               // Interface to the entire mcuxClCss component
-#include <mcuxClExample_CSS_Helper.h>
+#include <mcuxClEls.h>               // Interface to the entire mcuxClEls component
+#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClSession.h>           // Interface to the entire mcuxClSession component
 #include <mcuxClHash.h>              // Interface to the entire mcuxClHash component
 #include <mcuxCsslFlowProtection.h>
@@ -47,10 +47,10 @@ bool mcuxClHash_sha256_streaming_example(void)
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /** Initialize CSS, MCUXCLCSS_RESET_DO_NOT_CANCEL **/
-    if(!mcuxClExample_Css_Init(MCUXCLCSS_RESET_DO_NOT_CANCEL))
+    /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Initialize session */
@@ -77,7 +77,7 @@ bool mcuxClHash_sha256_streaming_example(void)
 	// mcuxClHash_init is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != token2) || (MCUXCLHASH_STATUS_OK != result2))
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -90,7 +90,7 @@ bool mcuxClHash_sha256_streaming_example(void)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token3) || (MCUXCLHASH_STATUS_OK != result3))
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -103,7 +103,7 @@ bool mcuxClHash_sha256_streaming_example(void)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token4) || (MCUXCLHASH_STATUS_OK != result4))
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -116,7 +116,7 @@ bool mcuxClHash_sha256_streaming_example(void)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token5) || (MCUXCLHASH_STATUS_OK != result5))
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -132,7 +132,7 @@ bool mcuxClHash_sha256_streaming_example(void)
 	// mcuxClHash_finish is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish) != token6) || (MCUXCLHASH_STATUS_OK != result6))
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -150,18 +150,18 @@ bool mcuxClHash_sha256_streaming_example(void)
 	}
 	if(hashDifferent)
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
     if(hashOutputSize != sizeof(hash))
 	{
-		return MCUX_CL_EXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_ERROR;
 	}
 
-    /** Disable the CSSv2 **/
-    if(!mcuxClExample_Css_Disable())
+    /** Disable the ELS **/
+    if(!mcuxClExample_Els_Disable())
     {
-        return MCUX_CL_EXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-	return MCUX_CL_EXAMPLE_OK;
+	return MCUXCLEXAMPLE_OK;
 }

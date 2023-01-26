@@ -23,7 +23,6 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClEcc_Internal.h>
 
-
 /**********************************************************/
 /** PKC workarea memory layout used for TwEd functions.   */
 /**********************************************************/

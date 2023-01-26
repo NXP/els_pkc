@@ -17,30 +17,25 @@
  * @brief:	This file contains objects which will be used to measure size of particular types.
  *
  */
-#include <mcuxClCore_Platform.h>
-#include <mcuxClKey_Constants.h>
-#include <mcuxClAes.h>
+#include <internal/mcuxClRandomModes_Internal_SizeDefinitions.h>
 
-#ifdef MCUXCL_FEATURE_RANDOM_CTRDRBG
-#include <internal/mcuxClRandom_Private_CtrDrbg.h>
-#endif /* MCUXCL_FEATURE_RANDOM_CTRDRBG */
+#ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
+#include <internal/mcuxClRandomModes_Private_CtrDrbg.h>
+#endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
 /* *********************** */
 /* *** Work area sizes *** */
 /* *********************** */
 
-#ifdef MCUXCL_FEATURE_RANDOM_CTRDRBG
-extern volatile mcuxClRandom_Context_CtrDrbg_Aes128_t mcuxClRandom_Context_Aes128;
-volatile mcuxClRandom_Context_CtrDrbg_Aes128_t mcuxClRandom_Context_Aes128;
+#ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
+extern volatile mcuxClRandomModes_Context_CtrDrbg_Aes128_t mcuxClRandomModes_Context_Aes128;
+volatile mcuxClRandomModes_Context_CtrDrbg_Aes128_t mcuxClRandomModes_Context_Aes128;
 
-extern volatile mcuxClRandom_Context_CtrDrbg_Aes192_t mcuxClRandom_Context_Aes192;
-volatile mcuxClRandom_Context_CtrDrbg_Aes192_t mcuxClRandom_Context_Aes192;
+extern volatile mcuxClRandomModes_Context_CtrDrbg_Aes192_t mcuxClRandomModes_Context_Aes192;
+volatile mcuxClRandomModes_Context_CtrDrbg_Aes192_t mcuxClRandomModes_Context_Aes192;
 
-extern volatile mcuxClRandom_Context_CtrDrbg_Aes256_t mcuxClRandom_Context_Aes256;
-volatile mcuxClRandom_Context_CtrDrbg_Aes256_t mcuxClRandom_Context_Aes256;
-#endif /* MCUXCL_FEATURE_RANDOM_CTRDRBG */
+extern volatile mcuxClRandomModes_Context_CtrDrbg_Aes256_t mcuxClRandomModes_Context_Aes256;
+volatile mcuxClRandomModes_Context_CtrDrbg_Aes256_t mcuxClRandomModes_Context_Aes256;
+#endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
-#if defined(MCUXCL_FEATURE_RANDOM_DERIVATION_FUNCTION)
-// (initSeedSize for instantiate) + (blockLen+(4+4+initSeedSize(64 for 256bit)+1+7(padding))+keyLen+2*blockLen for df function) + (initSeedSize) of 256bit security strength
-uint8_t mcuxClRandom_CpuWA_MaxSize[(MCUXCLRANDOM_MODE_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 + (4u + 4u + MCUXCLRANDOM_MODE_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 + 1u + 7u) + MCUX_CL_KEY_SIZE_256 + 3u * MCUX_CL_AES_BLOCK_SIZE + MCUXCLRANDOM_MODE_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 + sizeof(uint32_t) - 1u)/sizeof(uint32_t)];
-#endif
+uint8_t mcuxClRandomModes_CpuWA_MaxSize[MCUXCLRANDOMMODES_CPUWA_MAXSIZE];

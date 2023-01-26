@@ -58,7 +58,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   uint8_t * pHashOutput = pPkcWorkarea;
 
   /* Set up hash input */
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   /* TODO CLNS-6084: hash input should directly be located either in CPU or PKC WA, depending on the feature flags
    * When the workround is enabled, this would:
    * - save memory
@@ -89,7 +89,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
     /* Compute Hash */
     uint32_t hashOutputSize = 0u;
 
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
     /* Update CPU workarea */
     const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MGF1_WACPU_SIZE_WO_HASH(inputLength) / (sizeof(uint32_t));
     uint8_t * pHashInputCpu = (uint8_t*) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
@@ -132,7 +132,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
       mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_STATUS_ERROR);
     }
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
     /* Concatenate the hash of the seed pInput and C to the T */
     uint32_t concatenateLen = (tLen + hLen > outputLength) ? (outputLength - tLen) : hLen;
@@ -144,7 +144,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
 /* Check define outside of macro so the MISRA rule 20.6 does not get violated */
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_INTERNAL_STATUS_MGF_OK,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) * mxCounter,

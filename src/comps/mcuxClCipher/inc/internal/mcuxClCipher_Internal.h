@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#ifndef MCUX_CL_CIPHER_INTERNAL_H_
-#define MCUX_CL_CIPHER_INTERNAL_H_
+#ifndef MCUXCLCIPHER_INTERNAL_H_
+#define MCUXCLCIPHER_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -22,4 +22,4 @@
 #include <internal/mcuxClCipher_Internal_Functions.h>
 
 
-#endif /* MCUX_CL_CIPHER_INTERNAL_H_ */
+#endif /* MCUXCLCIPHER_INTERNAL_H_ */

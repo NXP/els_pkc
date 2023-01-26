@@ -33,7 +33,7 @@
 /* byte length of private key hash (= 2b/8) can be derived from               */
 /* byte length of private key (= b/8).                                        */
 /******************************************************************************/
-#if defined(MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND)
+#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND)
 #include <mcuxClMemory_Copy.h>
 #define MCUXCLECC_FP_EDDSA_KEYGEN_HASH_PRIVKEY(pSession, hashAlg, pPrivKey, pPrivKeyHash, privKeyLen)  \
     do{                                                                \
@@ -74,7 +74,7 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
 
 #define MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(hashOutputLength)    MCUXCLECC_ALIGNED_SIZE(hashOutputLength)
-#else  /* !MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#else  /* !MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #define MCUXCLECC_FP_EDDSA_KEYGEN_HASH_PRIVKEY(pSession, hashAlg, pPrivKey, pPrivKeyHash, privKeyLen)  \
     do{                                                                \
         uint32_t outLength = 0u;                                       \
@@ -97,7 +97,7 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
 
 #define MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(hashOutputLength)    0u
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
 
 #endif /* MCUXCLECC_EDDSA_INTERNAL_HASH_H_ */

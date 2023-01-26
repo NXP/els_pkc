@@ -11,13 +11,13 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#ifndef MCUX_CL_CIPHER_INTERNAL_CONSTANTS_H_
-#define MCUX_CL_CIPHER_INTERNAL_CONSTANTS_H_
+#ifndef MCUXCLCIPHER_INTERNAL_CONSTANTS_H_
+#define MCUXCLCIPHER_INTERNAL_CONSTANTS_H_
 
 /* Options for the crypt mode function */
-#define MCUX_CL_CIPHER_OPTION_ONESHOT 0x00000007u
-#define MCUX_CL_CIPHER_OPTION_INIT    0x00000001u
-#define MCUX_CL_CIPHER_OPTION_PROCESS 0x00000002u
-#define MCUX_CL_CIPHER_OPTION_FINISH  0x00000004u
+#define MCUXCLCIPHER_OPTION_ONESHOT 0x00000007u
+#define MCUXCLCIPHER_OPTION_INIT    0x00000001u
+#define MCUXCLCIPHER_OPTION_PROCESS 0x00000002u
+#define MCUXCLCIPHER_OPTION_FINISH  0x00000004u
 
-#endif /* MCUX_CL_CIPHER_INTERNAL_CONSTANTS_H_ */
+#endif /* MCUXCLCIPHER_INTERNAL_CONSTANTS_H_ */

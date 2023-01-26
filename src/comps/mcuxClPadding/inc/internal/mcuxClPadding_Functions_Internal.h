@@ -182,37 +182,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC
   uint32_t * const pOutLength
 );
 /**
- * @brief PKCS7 padding function.
- * @api
- *
- * This function adds PKCS7 padding according to rfc2315, it adds the remaning
- * bytes in the block with the value equal to the total number of added bytes.
- *
- * @param[in]  blockLength      The block length of the used block cipher.
- *
- * @param[in]  pIn              Pointer to the input buffer of the block that will
- *                              be padded.
- * @param[in]  lastBlockLength  Number of bytes in the last block, i.e. the number of bytes
- *                              in @p pIn. Must be smaller than @p blockLength.
- * @param[in]  totalInputLength Total number of plaintext/ciphertext bytes.
- *
- * @param[out] pOut             Pointer to the output buffer where the padded data
- *                              needs to be written.
- * @param[out] pOutLength       Length of the data written to @p pOut, including the padding.
- *
- * @return status
- */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_PKCS7)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_PKCS7(
-  uint32_t blockLength,
-  const uint8_t * const pIn,
-  uint32_t lastBlockLength,
-  uint32_t totalInputLength,
-  uint8_t * const pOut,
-  uint32_t * const pOutLength
-);
-
-/**
  * @brief Random-padding function, which pads a block with random bytes in the end.
  * @api
  *

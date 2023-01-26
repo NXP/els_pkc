@@ -109,13 +109,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
   uint8_t *pWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordSizeWa);
 
-  #ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+  #ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   const uint16_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_PSSVERIFY_WACPU_SIZE_WO_MGF1(hLen, sLen) / sizeof(uint32_t);
   /* Pointer to the cpu buffer for the M' = | padding_1 | mHash | salt | */
   uint8_t * pMprimCpu = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
   /* Update CPU workarea */
 
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
   /* TODO CLNS-6084: instead of moving the unaligned accesses to CPU RAM, which requires a huge ammount of CPU RAM and unnecessary operations such as memcopy,
    * it should be analyzed, whether it is possible to just target the places where unaligned accessed in PKC RAM occur, and ensure that those particular memory
@@ -126,7 +126,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
    * - pH: second input to the cssl comparison.
    *   Should be copied somewhere else (CPU RAM or PKC RAM): requires one extra copy, on length hLen (which is still better than copying keyByteLen to the CPU RAM)
    *
-   * Also, an analysis of the dependency between both workarounds CSS_ACCESS_PKCRAM_WORKAROUND and PKC_PKCRAM_NO_UNALIGNED_ACCESS should be done, and
+   * Also, an analysis of the dependency between both workarounds ELS_ACCESS_PKCRAM_WORKAROUND and PKC_PKCRAM_NO_UNALIGNED_ACCESS should be done, and
    * workarounds should be either completely independent of each other, or merged more explicitly into a single workaround.
    */
   uint8_t *pWorkarea = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, wordSizeWa);
@@ -170,9 +170,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
     {
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -188,9 +188,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   {
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -207,9 +207,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   {
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -234,9 +234,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   {
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -257,9 +257,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   {
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -299,9 +299,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   {
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -327,7 +327,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /* Step 13: HPrime = Hash(mPrime) */
   uint32_t hashOutputSize = 0u;
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result1, mcuxClMemory_copy(pMprimCpu, pMprim, mprimLen, mprimLen));
   if(0u != memcopy_result1)
   {
@@ -363,7 +363,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
     mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
   }
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
   MCUX_CSSL_FP_FUNCTION_CALL(hash_result_2, mcuxClHash_compute(pSession,
                                                              pHashAlgo,
@@ -397,9 +397,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /************************************************************************************************/
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
       mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
       mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
 #endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
@@ -408,14 +408,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 /* Use temporary defines to avoid preprocessor directives inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
 #ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-#ifdef MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   #define TMP_PKCRAM_WORKAROUND \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
 #else
   #define TMP_PKCRAM_WORKAROUND \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
-#endif /* MCUXCL_FEATURE_CSS_ACCESS_PKCRAM_WORKAROUND */
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #else
 #define TMP_PKCRAM_WORKAROUND \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)

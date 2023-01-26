@@ -23,7 +23,7 @@
 #include <mcuxClMemory.h>
 #include <mcuxClPkc.h>
 #include <mcuxClMath.h>
-#include <mcuxClCss_Rng.h>
+#include <mcuxClEls_Rng.h>
 
 #include <internal/mcuxClKey_Internal.h>
 
@@ -229,8 +229,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
 
 
   /* Generate random number blind32 and set LSB to 1, to ensure it is odd and non-null */
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom1, mcuxClCss_Prng_GetRandom(pBlind32, blindLen));
-  if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom1)
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom1, mcuxClEls_Prng_GetRandom(pBlind32, blindLen));
+  if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom1)
   {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
   }
@@ -314,8 +314,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   }
 
   /* Generate random number blind32 and set LSB to 1, to ensure it is odd and non-null */
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom2, mcuxClCss_Prng_GetRandom(pBlind32, blindLen));
-  if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom2)
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom2, mcuxClEls_Prng_GetRandom(pBlind32, blindLen));
+  if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom2)
   {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
   }
@@ -411,8 +411,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   }
 
   /* Generate random number R_qInv */
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom3, mcuxClCss_Prng_GetRandom(pPrimeT1, qInvAlignLen));
-  if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom3)
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom3, mcuxClEls_Prng_GetRandom(pPrimeT1, qInvAlignLen));
+  if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom3)
   {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
   }
@@ -498,7 +498,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT,
           4u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
           4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
-          3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom),
+          3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
           4u * MCUXCLPKC_FP_CALLED_CALC_OP1_MUL,
           2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_NDash),
           3u * MCUXCLPKC_FP_CALLED_CALC_MC1_MR,
@@ -528,7 +528,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT,
         4u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
         4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
-        3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom),
+        3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
         4u * MCUXCLPKC_FP_CALLED_CALC_OP1_MUL,
         2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_NDash),
         3u * MCUXCLPKC_FP_CALLED_CALC_MC1_MR,
@@ -625,7 +625,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK,
           4u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
           4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
-          3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom),
+          3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
           4u * MCUXCLPKC_FP_CALLED_CALC_OP1_MUL,
           3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_NDash),
           3u * MCUXCLPKC_FP_CALLED_CALC_MC1_MR,

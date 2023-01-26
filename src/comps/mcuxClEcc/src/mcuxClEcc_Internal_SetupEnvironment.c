@@ -33,27 +33,24 @@
 
 
 /**
- * \brief This function setups environment of ECC APIs.
+ * This function sets up the general environment used by ECC functions.
+ * In particular, it sets up the utilized co-processors, prepares the PKC workarea layout,
+ * and initializes it for Montgomery arithmetic modulo p and n.
  *
- * This function setups CPU and PKC workarea for ECC APIs. CPU workarea of ECC APIs
- * will be placed in the beginning of free CPU memory according to the session descriptor.
- * ECC API needs to store the address of beginning of free CPU memory before
- * calling this setup environment function.
+ * Input:
+ *  - pSession              Handle for the current CL session
+ *  - pCommonDomainParams   Pointer to domain parameter struct passed via API
+ *  - noOfBuffers           Number of PKC buffers to be allocated
  *
- * Inputs:
- *  - pSession: pointer to session descriptor;
- *  - pCommonDomainParams: pointer to ECC common domain parameter structure;
- *  - noOfBuffers: number of buffers in PKC workarea used by calling API.
- *
- * Results:
- *  - ECC CPU workarea is placed in the beginning of free CPU memory;
- *  - PKC is initialized, and the original PKC status is stored in CPU workarea;
- *  - pOperands[] (UPTR table) is created in CPU workarea and initialized;
- *  - PKC PS1 LEN and MCLEN are initialized;
- *  - prime p and curve order n, and the Montgomery parameter of them are
- *    imported to corresponding buffers in PKC workarea;
- *  - R^2 of p and n are imported to corresponding buffers;
- *  - shifted modulus of p and n are calculated and stored in corresponding buffers.
+ * Result:
+ *  - The pointer table has been properly setup in CPU workarea and PKC buffers have been allocated
+ *  - The PKC state has been backed up in CPU workarea and the PKC has been enabled
+ *  - ps1Len = (operandSize, operandSize)
+ *  - Buffers ECC_PFULL and ECC_NFULL contain p'||p and n'||n, respectively
+ *  - Buffers ECC_PS and ECC_NS contain the p resp. n shifted to the PKC word boundary
+ *  - Buffers ECC_PQSQR and ECC_NQSQR contain the R^2 values modulo p and n, respectively
+ *  - Virtual pointers ECC_P and ECC_N point to the second PKC word of ECC_PFULL and ECC_NFULL, respectively
+ *  - Virtual pointers ECC_ZERO and ECC_ONE have been initialized with 0 and 1, respecitvely
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_SetupEnvironment)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SetupEnvironment(mcuxClSession_Handle_t pSession,
@@ -72,6 +69,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SetupEnvironment(mcuxC
     const uint32_t byteLenOperandsTable = (sizeof(uint16_t)) * (ECC_NO_OF_VIRTUALS + (uint32_t) noOfBuffers);
     const uint32_t alignedByteLenCpuWa = (sizeof(mcuxClEcc_CpuWa_t)) + MCUXCLECC_ALIGNED_SIZE(byteLenOperandsTable);
     const uint32_t wordNumCpuWa = alignedByteLenCpuWa / (sizeof(uint32_t));
+    /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, wordNumCpuWa);
     const uint32_t wordNumPkcWa = (bufferSize * (uint32_t) noOfBuffers) / (sizeof(uint32_t));  /* PKC bufferSize is a multiple of CPU word size. */
     const uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordNumPkcWa);

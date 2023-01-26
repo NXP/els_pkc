@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 
-#ifndef MCUX_CL_CIPHERMODES_WA_H_
-#define MCUX_CL_CIPHERMODES_WA_H_
+#ifndef MCUXCLCIPHERMODES_WA_H_
+#define MCUXCLCIPHERMODES_WA_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -23,15 +23,15 @@
 #include <mcuxClAes.h>
 #include <mcuxClCore_Platform.h>
 #include <internal/mcuxClCipher_Internal_Constants.h>
+#include <internal/mcuxClAes_Wa.h>
 
 /* TODO CLNS-5399: this is AES SGI specific, rework WA */
 typedef struct mcuxClCipherModes_WorkArea
 {
-  uint32_t sgiCtrl;
-  uint8_t paddingBuff[MCUX_CL_AES_BLOCK_SIZE];
-  uint32_t tempBuff[MCUX_CL_AES_BLOCK_SIZE_IN_WORDS];
+  uint8_t paddingBuff[MCUXCLAES_BLOCK_SIZE];
+  uint32_t tempBuff[MCUXCLAES_BLOCK_SIZE_IN_WORDS];
   uint32_t *pIV;
 } mcuxClCipherModes_WorkArea_t;
 
 
-#endif /* MCUX_CL_CIPHERMODES_WA_H_ */
+#endif /* MCUXCLCIPHERMODES_WA_H_ */

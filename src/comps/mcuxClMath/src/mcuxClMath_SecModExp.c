@@ -21,7 +21,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClCss_Rng.h>
+#include <mcuxClEls_Rng.h>
 #include <mcuxClPkc.h>
 #include <mcuxClMath_Functions.h>
 #include <mcuxClMath_Types.h>
@@ -98,18 +98,18 @@ mcuxClMath_SecModExp_SqrMultAws(const uint32_t *pExp, uint32_t expByteLength, ui
     do
     {
         MCUX_CSSL_FP_LOOP_ITERATION(SquMulLoop,
-                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandomWord));
+                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord));
 
         /* Load next CPU word of exponent. */
         if (0x1Eu == ((uint32_t) bitIndex & 0x1Fu))
         {
             MCUX_CSSL_FP_LOOP_ITERATION(SquMulLoop_LoadExpWord,
-                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandomWord));
+                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord));
 
             /* Read one CPU word of exponent and mask it. */
             uint32_t randomWordStack;
-            MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClCss_Prng_GetRandomWord(&randomWordStack));
-            if (MCUXCLCSS_STATUS_OK != ret_PRNG_randWord)
+            MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClEls_Prng_GetRandomWord(&randomWordStack));
+            if (MCUXCLELS_STATUS_OK != ret_PRNG_randWord)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_ERRORCODE_ERROR);
             }
@@ -139,8 +139,8 @@ mcuxClMath_SecModExp_SqrMultAws(const uint32_t *pExp, uint32_t expByteLength, ui
 
         /* Generate a fresh random word for secure offset selection.*/
         uint32_t rndWordStack;
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord2, mcuxClCss_Prng_GetRandomWord(&rndWordStack));
-        if (MCUXCLCSS_STATUS_OK != ret_PRNG_randWord2)
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord2, mcuxClEls_Prng_GetRandomWord(&rndWordStack));
+        if (MCUXCLELS_STATUS_OK != ret_PRNG_randWord2)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_ERRORCODE_ERROR);
         }
@@ -199,8 +199,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(const uint
     /* Generate random expB and blind exponent, expA = exp + expB. */
     uint8_t *pA1 = MCUXCLPKC_OFFSET2PTR(pOperands[SECMODEXP_A1]);
     /* A1 = expB < (256^pkcLenExpPlus)/2. */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClCss_Prng_GetRandom(pA1, pkcLenExpPlus));
-    if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandom)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pA1, pkcLenExpPlus));
+    if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
     }
@@ -220,8 +220,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(const uint
     uint8_t *pR0 = MCUXCLPKC_OFFSET2PTR(offsetR0);
     uint32_t *p32R0 = (uint32_t *) pR0;  /* PKC buffer is CPU-word aligned. */
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandomWord, mcuxClCss_Prng_GetRandomWord(&p32R0[0]));
-    if (MCUXCLCSS_STATUS_OK != ret_PRNG_GetRandomWord)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandomWord, mcuxClEls_Prng_GetRandomWord(&p32R0[0]));
+    if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandomWord)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
     }
@@ -331,9 +331,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(const uint
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
         /* Euclidean exponent splitting */
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandom),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
         MCUXCLPKC_FP_CALLED_CALC_OP1_ADD,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_GetRandomWord),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord),
         MCUXCLPKC_FP_CALLED_CALC_OP1_SHL,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_NDash),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_QDash),

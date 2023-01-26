@@ -16,8 +16,8 @@
  * @brief Top level APIs of mcuxClTrng component
  */
 
-#ifndef MCUX_CL_TRNG_INTERNAL_FUNCTIONS_H_
-#define MCUX_CL_TRNG_INTERNAL_FUNCTIONS_H_
+#ifndef MCUXCLTRNG_INTERNAL_FUNCTIONS_H_
+#define MCUXCLTRNG_INTERNAL_FUNCTIONS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <stdint.h>
@@ -78,4 +78,4 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void);
  * @}
  */ /* mcuxClTrng_Internal_Functions */
 
-#endif /* MCUX_CL_TRNG_INTERNAL_FUNCTIONS_H_ */
+#endif /* MCUXCLTRNG_INTERNAL_FUNCTIONS_H_ */

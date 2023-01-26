@@ -51,6 +51,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Initialization                                         */
     /**********************************************************/
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
+    /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SetupEnvironment,
         mcuxClEcc_Weier_SetupEnvironment(pSession,
@@ -203,7 +204,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /**********************************************************/
 
     /* Interleave u1 in S0 and u2 in S1. */
-    MCUXCLECC_FP_INTERLEAVE(MCUXCLPKC_PACKARGS2(ECC_S0, ECC_S1), byteLenN * 8u);
+    MCUXCLECC_FP_INTERLEAVETWOSCALARS(MCUXCLPKC_PACKARGS2(ECC_S0, ECC_S1), byteLenN * 8u);
 
     /* Calculate P1 = u1 * G, if u1 != 0 */
     if (MCUXCLPKC_FLAG_ZERO != checkHashZero)

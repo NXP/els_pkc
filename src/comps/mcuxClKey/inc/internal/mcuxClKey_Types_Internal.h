@@ -16,8 +16,8 @@
  * @brief Type definitions for the mcuxClKey component
  */
 
-#ifndef MCUX_CL_KEY_TYPES_INTERNAL_H_
-#define MCUX_CL_KEY_TYPES_INTERNAL_H_
+#ifndef MCUXCLKEY_TYPES_INTERNAL_H_
+#define MCUXCLKEY_TYPES_INTERNAL_H_
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -40,7 +40,7 @@
  *
  * @param[in]  key  Key handle that provides information to load the key
  *
- * @return An error code that can be any error code in @ref MCUX_CL_KEY_STATUS_, see individual documentation for more information
+ * @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
  */
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_LoadFuncPtr_t)(mcuxClKey_Handle_t key);
 
@@ -49,7 +49,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_LoadFuncPtr_
  *
  * @param[in]  key  Key handle that provides information to store the key
  *
- * @return An error code that can be any error code in @ref MCUX_CL_KEY_STATUS_, see individual documentation for more information
+ * @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
  */
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_StoreFuncPtr_t)(mcuxClKey_Handle_t key);
 
@@ -58,7 +58,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_StoreFuncPtr
  *
  * @param[in]  key  Key handle that provides information to flush the key
  *
- * @return An error code that can be any error code in @ref MCUX_CL_KEY_STATUS_, see individual documentation for more information
+ * @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
  */
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_FlushFuncPtr_t)(mcuxClKey_Handle_t key);
 
@@ -91,7 +91,7 @@ struct mcuxClKey_TypeDescriptor {
 /**
  * @brief Struct for key internal storage information (destination key)
  * Key data can be provided in @param pData or loaded to a @param slot
- * @param status is one of MCUX_CL_KEY_LOADSTATUS_
+ * @param status is one of MCUXCLKEY_LOADSTATUS_
  */
 typedef struct mcuxClKey_Location {
   uint8_t *             pData;    ///< Pointer to the data buffer
@@ -132,5 +132,25 @@ struct mcuxClKey_Descriptor {
   const mcuxClKey_ProtectionDescriptor_t * protection;  ///< Protection mechanism applied to the key stored in the container
 };
 
+/**
+ * @brief Function prototype for protocol specific key generation function pointer.
+ */
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (* mcuxClKey_KeyGenFct_t)(
+        mcuxClSession_Handle_t pSession,
+        mcuxClKey_Generation_t generation,
+        mcuxClKey_Handle_t privKey,
+        mcuxClKey_Handle_t pubKey
+);
 
-#endif /* MCUX_CL_KEY_TYPES_INTERNAL_H_ */
+/**
+ * @brief Struct of generation descriptor
+ */
+struct mcuxClKey_GenerationDescriptor
+{
+  mcuxClKey_KeyGenFct_t pKeyGenFct;    ///< Pointer to the protocol specific key pair generation function
+  uint32_t protectionTokenKeyGenFct;  ///< Protection token of the protocol specific key generation function
+  const void *pProtocolDescriptor;    ///< Pointer to additional parameters for the protocol specific key generation function
+};
+
+
+#endif /* MCUXCLKEY_TYPES_INTERNAL_H_ */

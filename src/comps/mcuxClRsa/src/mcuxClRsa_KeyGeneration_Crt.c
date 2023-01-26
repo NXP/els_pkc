@@ -67,10 +67,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *
    */
   const uint32_t bitLenKey = type->size;
-  if(((MCUX_CL_KEY_ALGO_ID_RSA | MCUX_CL_KEY_ALGO_ID_KEY_PAIR) != type->algoId)
-       || ((MCUX_CL_KEY_SIZE_2048 != bitLenKey) &&
-           (MCUX_CL_KEY_SIZE_3072 != bitLenKey) &&
-           (MCUX_CL_KEY_SIZE_4096 != bitLenKey)))
+  if(((MCUXCLKEY_ALGO_ID_RSA | MCUXCLKEY_ALGO_ID_KEY_PAIR) != type->algoId)
+       || ((MCUXCLKEY_SIZE_2048 != bitLenKey) &&
+           (MCUXCLKEY_SIZE_3072 != bitLenKey) &&
+           (MCUXCLKEY_SIZE_4096 != bitLenKey)))
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
@@ -533,26 +533,26 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *     -set length of the key in type->size
    *     -set type->info to NULL
    *     c. set pSrcKeyData to point to the start of the provided buffer
-   *     d. set dstKey.loadLocation to MCUX_CL_KEY_LOADSTATUS_NOTLOADED
+   *     d. set dstKey.loadLocation to MCUXCLKEY_LOADSTATUS_NOTLOADED
    *     e. set other fields of dstKey to zero
    */
   mcuxClKey_Descriptor_t * pPubKey = (mcuxClKey_Descriptor_t *) pubKey;
   mcuxClKey_setProtectionType(pPubKey, protection);
   // TODO CLNS-5165: move the generation of these types into the key component - TBD with architects, is this still what we want to do?
-  mcuxClKey_TypeDescriptor_t keyType_public = { MCUX_CL_KEY_ALGO_ID_RSA ^ MCUX_CL_KEY_ALGO_ID_PUBLIC_KEY, type->size, NULL };
+  mcuxClKey_TypeDescriptor_t keyType_public = { MCUXCLKEY_ALGO_ID_RSA ^ MCUXCLKEY_ALGO_ID_PUBLIC_KEY, type->size, NULL };
   mcuxClKey_setTypeDescriptor(pPubKey, keyType_public);
   mcuxClKey_setKeyData(pPubKey, pPubData);
-  mcuxClKey_setLoadStatus(pPubKey, MCUX_CL_KEY_LOADSTATUS_NOTLOADED);
+  mcuxClKey_setLoadStatus(pPubKey, MCUXCLKEY_LOADSTATUS_NOTLOADED);
   mcuxClKey_setLoadedKeyData(pPubKey, NULL);
   mcuxClKey_setLoadedKeySlot(pPubKey, 0u);
 
   mcuxClKey_Descriptor_t * pPrivKey = (mcuxClKey_Descriptor_t *) privKey;
   mcuxClKey_setProtectionType(pPrivKey, protection);
   // TODO CLNS-5165: move the generation of these types into the key component
-  mcuxClKey_TypeDescriptor_t keyType_private = { MCUX_CL_KEY_ALGO_ID_RSA ^ MCUX_CL_KEY_ALGO_ID_PRIVATE_KEY, type->size, NULL };
+  mcuxClKey_TypeDescriptor_t keyType_private = { MCUXCLKEY_ALGO_ID_RSA ^ MCUXCLKEY_ALGO_ID_PRIVATE_KEY, type->size, NULL };
   mcuxClKey_setTypeDescriptor(pPrivKey, keyType_private);
   mcuxClKey_setKeyData(pPrivKey, pPrivData);
-  mcuxClKey_setLoadStatus(pPrivKey, MCUX_CL_KEY_LOADSTATUS_NOTLOADED);
+  mcuxClKey_setLoadStatus(pPrivKey, MCUXCLKEY_LOADSTATUS_NOTLOADED);
   mcuxClKey_setLoadedKeyData(pPrivKey, NULL);
   mcuxClKey_setLoadedKeySlot(pPrivKey, 0u);
 

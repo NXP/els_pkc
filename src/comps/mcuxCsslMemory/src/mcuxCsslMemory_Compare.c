@@ -14,7 +14,7 @@
 #include <mcuxCsslMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
-#include <impl/mcuxCsslMemory_Compare_asm.h>
+#include <mcuxCsslMemory_Compare_asm.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslMemory_Compare)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Compare
@@ -50,9 +50,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Compare
     uint8_t const * end_lhs = &cur_lhs[length];
     uint8_t const * end_rhs = &cur_rhs[length];
 
+#ifdef __COVERITY__
 #pragma coverity compliance block deviate MISRA_C_2012_Rule_11_3 "Exception 9: re-interpreting the memory for word access"
+#endif
     MCUXCSSLMEMORY_COMPARE_ASM_COMPARISON(retval, cur_lhs, cur_rhs, nwords, length, notValid, result);
+#ifdef __COVERITY__
 #pragma coverity compliance end_block MISRA_C_2012_Rule_11_3
+#endif
 
     MCUXCSSLMEMORY_COMPARE_ASM_CALC_RETVAL(retval, errCode);
 

@@ -17,8 +17,8 @@
  */
 
 
-#ifndef MCUX_CL_TRNG_INTERNAL_CONSTANTS_H_
-#define MCUX_CL_TRNG_INTERNAL_CONSTANTS_H_
+#ifndef MCUXCLTRNG_INTERNAL_CONSTANTS_H_
+#define MCUXCLTRNG_INTERNAL_CONSTANTS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <stdint.h>
@@ -46,13 +46,13 @@ extern "C" {
 #define MCUXCLTRNG_STATUS_FAULT_ATTACK           ((mcuxClTrng_Status_t) 0xAAA5F0F0u)  ///< A fault attack is detected
 /** @} */
 
-#ifdef MCUXCL_FEATURE_TRNG_CSS
+#ifdef MCUXCL_FEATURE_TRNG_ELS
 /**
- * @brief Defines all macros of @ref mcuxClTrng_CSS
- * @ingroup mcuxClTrng_CSS
+ * @brief Defines all macros of @ref mcuxClTrng_ELS
+ * @ingroup mcuxClTrng_ELS
  * @{
  */
-#define MCUXCLTRNG_CSS_TRNG_OUTPUT_SIZE  (32u / sizeof(uint32_t))                    ///< output word size of #mcuxClCss_Rng_DrbgRequestRaw_Async
+#define MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE  (32u / sizeof(uint32_t))                    ///< output word size of #mcuxClEls_Rng_DrbgRequestRaw_Async
 #endif
 
 /**
@@ -63,4 +63,4 @@ extern "C" {
 } /* extern "C" */
 #endif
 
-#endif /* MCUX_CL_TRNG_INTERNAL_CONSTANTS_H_ */
+#endif /* MCUXCLTRNG_INTERNAL_CONSTANTS_H_ */

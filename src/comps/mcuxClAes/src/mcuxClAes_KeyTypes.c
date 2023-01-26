@@ -20,8 +20,8 @@
 #include <mcuxClAes.h>
 
 // fully supported AES key types
-const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Aes128 = {MCUX_CL_KEY_ALGO_ID_AES + MCUX_CL_KEY_ALGO_ID_SYMMETRIC_KEY, MCUX_CL_AES_AES128_KEY_SIZE, NULL};
-const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Aes256 = {MCUX_CL_KEY_ALGO_ID_AES + MCUX_CL_KEY_ALGO_ID_SYMMETRIC_KEY, MCUX_CL_AES_AES256_KEY_SIZE, NULL};
+const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Aes128 = {MCUXCLKEY_ALGO_ID_AES + MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY, MCUXCLAES_AES128_KEY_SIZE, NULL};
+const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Aes256 = {MCUXCLKEY_ALGO_ID_AES + MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY, MCUXCLAES_AES256_KEY_SIZE, NULL};
 
 // AES key types supported by key from memory only
-const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Aes192 = {MCUX_CL_KEY_ALGO_ID_AES + MCUX_CL_KEY_ALGO_ID_SYMMETRIC_KEY, MCUX_CL_AES_AES192_KEY_SIZE, NULL};
+const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Aes192 = {MCUXCLKEY_ALGO_ID_AES + MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY, MCUXCLAES_AES192_KEY_SIZE, NULL};

@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 
-#ifndef MCUX_CL_CIPHERMODES_INTERNAL_H_
-#define MCUX_CL_CIPHERMODES_INTERNAL_H_
+#ifndef MCUXCLCIPHERMODES_INTERNAL_H_
+#define MCUXCLCIPHERMODES_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -24,4 +24,4 @@
 #include <internal/mcuxClCipherModes_Internal_Types.h>
 #include <internal/mcuxClCipherModes_Internal_Constants.h>
 
-#endif /* MCUX_CL_CIPHERMODES_INTERNAL_H_ */
+#endif /* MCUXCLCIPHERMODES_INTERNAL_H_ */

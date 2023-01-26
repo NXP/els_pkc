@@ -29,9 +29,9 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClCss_Hash.h>
-#include <internal/mcuxClHash_Internal_css_sha2.h>
-#include <internal/mcuxClHash_Core_css_sha2.h>
+#include <mcuxClEls_Hash.h>
+#include <internal/mcuxClHash_Internal_els_sha2.h>
+#include <internal/mcuxClHash_Core_els_sha2.h>
 
 
 /**********************************************
@@ -186,24 +186,24 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoSkelet
  */
 struct mcuxClHash_AlgorithmDescriptor
 {
-  mcuxClHash_css_AlgoCore_t css_core;                       ///< CSS hash core function (acess to CSS coprocessor)
-  uint32_t protection_token_css_core;                      ///< Protection token value for the used core
+  mcuxClHash_els_AlgoCore_t els_core;                       ///< ELS hash core function (access to ELS coprocessor)
+  uint32_t protection_token_els_core;                      ///< Protection token value for the used core
   mcuxClHash_AlgoSkeleton_OneShot_t oneShotSkeleton;        ///< One-shot hash skeleton function
   uint32_t protection_token_oneShotSkeleton;               ///< Protection token value for the used one-shot skeleton
   mcuxClHash_AlgoSkeleton_Process_t processSkeleton;        ///< Process hash skeleton function
   uint32_t protection_token_processSkeleton;               ///< Protection token value for the used process skeleton
   mcuxClHash_AlgoSkeleton_Finish_t finishSkeleton;          ///< Multi-part hash skeleton function
   uint32_t protection_token_finishSkeleton;                ///< Protection token value for the used multi-part skeleton
-#ifdef MCUXCL_FEATURE_CSS_DMA_FINAL_ADDRESS_READBACK
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
   mcuxClHash_AlgoDmaProtection_t dmaProtection;             ///< DMA protection function
   uint32_t protection_token_dma_protection;                ///< Protection token value for the used DMA protection function
-#endif /* MCUXCL_FEATURE_CSS_DMA_FINAL_ADDRESS_READBACK */
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
   size_t blockSize;                                        ///< Size of the block used by the hash algorithm
   size_t hashSize;                                         ///< Size of the output of the hash algorithm
   size_t stateSize;                                        ///< Size of the state used by the hash algorithm
   uint32_t counterSize;                                    ///< Size of the counter used by the hash algorithm
   uint32_t rtfSize;                                        ///< Size of the Runtime Fingerprint used by the hash function; has to be set to zero when not supported
-  mcuxClCss_HashOption_t hashOptions;
+  mcuxClEls_HashOption_t hashOptions;
 };
 
 /**@}*/

@@ -24,6 +24,7 @@
 #include <stdbool.h>
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClMemory.h>
+#include <mcuxClKey_Types.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClSession.h>
@@ -31,7 +32,6 @@
 #include <mcuxClEcc_Types.h>
 
 #include <internal/mcuxClEcc_Internal.h>
-#include <internal/mcuxClEcc_Internal_UPTRT_access.h>
 
 /**
  * Domain parameter structure for ECC functions based on Weierstrass functions.
@@ -40,6 +40,8 @@ struct mcuxClEcc_Weier_DomainParams
 {
     mcuxClEcc_CommonDomainParams_t common;  ///< structure containing pointers and lengths for common ECC parameters (see Common ECC Domain parameters)
 };
+
+
 
 /**********************************************************/
 /* Internal return codes of mcuxClEcc                      */
@@ -109,6 +111,7 @@ struct mcuxClEcc_Weier_DomainParams
 #define ECC_GENERATEDOMAINPARAMS_NO_OF_BUFFERS   (WEIER_Y0 + 1u - ECC_GENERATEDOMAINPARAMS_NO_OF_VIRTUALS)
 
 
+
 /**********************************************************/
 /* Helper macros of import/export with flow protection    */
 /**********************************************************/
@@ -139,16 +142,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Weier_SetupEnvironment
         uint8_t noOfBuffers
         );
 
-
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_Interleave)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Interleave(uint16_t iScalar0_iScalar1, uint32_t scalarBitLength);
-
-/** Helper macro to call #mcuxClEcc_Interleave with flow protection. */
-#define MCUXCLECC_FP_INTERLEAVE(iS0_iS1, bitLenScalar)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_Interleave(iS0_iS1, bitLenScalar));  \
-        (void) retValTemp;  /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_SetupEnvironment)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_SetupEnvironment(
+        mcuxClSession_Handle_t pSession,
+        mcuxClEcc_Weier_DomainParams_t *pWeierDomainParams,
+        uint8_t noOfBuffers
+        );
 
 
 /**********************************************************/
@@ -221,5 +220,33 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_Int_CoreKeyGen)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClSession_Handle_t pSession,
                                                                       uint32_t nByteLength);
+
+/**
+ * @brief WeierECC key pair generation.
+ * @api
+ *
+ * This function generates an ECC key pair for usage within WeierECC protocols such as ECDSA and ECDH.
+ *
+ * @param      pSession             Handle for the current CL session.
+ * @param[in]  generation           Key generation algorithm specifier.
+ * @param[out] privKey              Key handle for the generated private key.
+ * @param[out] pubKey               Key handle for the generated public key.
+ *
+ * @return status
+ * @retval #MCUXCLECC_STATUS_OK              if private key and public key are generated successfully;
+ * @retval #MCUXCLECC_STATUS_INVALID_PARAMS  if parameters are invalid;
+ * @retval #MCUXCLECC_STATUS_RNG_ERROR       if random number (DRBG / PRNG) error (unexpected behavior);
+ * @retval #MCUXCLECC_STATUS_FAULT_ATTACK    if fault attack (unexpected behavior) is detected.
+ *
+ * @attention This function uses DRBG and PRNG. Caller needs to check if DRBG and PRNG are ready.
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_GenerateKeyPair)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateKeyPair(
+    mcuxClSession_Handle_t pSession,
+    mcuxClKey_Generation_t generation,
+    mcuxClKey_Handle_t privKey,
+    mcuxClKey_Handle_t pubKey
+    );
+
 
 #endif /* MCUXCLECC_WEIER_INTERNAL_H_ */

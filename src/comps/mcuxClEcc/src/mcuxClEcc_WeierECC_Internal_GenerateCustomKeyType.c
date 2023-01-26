@@ -32,27 +32,27 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateCusto
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_WeierECC_GenerateCustomKeyType);
 
     /* Extract algo and usage specifiers from the algoId */
-    const uint32_t algoSpecifier  = (uint32_t) algoId & MCUX_CL_KEY_ALGO_ID_ALGO_MASK;
-    const uint32_t usageSpecifier = (uint32_t) algoId & MCUX_CL_KEY_ALGO_ID_USAGE_MASK;
+    const uint32_t algoSpecifier  = (uint32_t) algoId & MCUXCLKEY_ALGO_ID_ALGO_MASK;
+    const uint32_t usageSpecifier = (uint32_t) algoId & MCUXCLKEY_ALGO_ID_USAGE_MASK;
 
     /* Verify that the algoId is supported. If not, return FAULT_ATTACK */
-    if (   (MCUX_CL_KEY_ALGO_ID_ECC_SHWS_GFP_EPHEMERAL_CUSTOM != algoSpecifier)
-        && (MCUX_CL_KEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM    != algoSpecifier) )
+    if (   (MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_EPHEMERAL_CUSTOM != algoSpecifier)
+        && (MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM    != algoSpecifier) )
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_WeierECC_GenerateCustomKeyType, MCUXCLECC_STATUS_INVALID_PARAMS);
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_WeierECC_GenerateCustomKeyType, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
-    if (   (MCUX_CL_KEY_ALGO_ID_PUBLIC_KEY  != usageSpecifier)
-        && (MCUX_CL_KEY_ALGO_ID_PRIVATE_KEY != usageSpecifier)
-        && (MCUX_CL_KEY_ALGO_ID_KEY_PAIR    != usageSpecifier) )
+    if (   (MCUXCLKEY_ALGO_ID_PUBLIC_KEY  != usageSpecifier)
+        && (MCUXCLKEY_ALGO_ID_PRIVATE_KEY != usageSpecifier)
+        && (MCUXCLKEY_ALGO_ID_KEY_PAIR    != usageSpecifier) )
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_WeierECC_GenerateCustomKeyType, MCUXCLECC_STATUS_INVALID_PARAMS);
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_WeierECC_GenerateCustomKeyType, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
-    
+
     /* Fill custom key type descriptor */
     customType->algoId = algoId;
     customType->size   = size;
     customType->info   = pCustomParams;
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_WeierECC_GenerateCustomKeyType, MCUXCLECC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_WeierECC_GenerateCustomKeyType, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK);
 }

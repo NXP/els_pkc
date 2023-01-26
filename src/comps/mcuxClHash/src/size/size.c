@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,13 +16,13 @@
 #include <internal/mcuxClHash_Internal.h>
 
 /* Hash Cpu Workarea size generation */
-volatile uint8_t mcuxClHash_process_WaCpuMd5 [MCUXCLHASH_INTERNAL_WACPU_SIZE_MD5];
-volatile uint8_t mcuxClHash_process_WaCpuSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA1];
-volatile uint8_t mcuxClHash_process_WaCpuSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_224];
-volatile uint8_t mcuxClHash_process_WaCpuSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_256];
-volatile uint8_t mcuxClHash_process_WaCpuSha2_384 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_384];
-volatile uint8_t mcuxClHash_process_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
-volatile uint8_t mcuxClHash_process_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
+volatile uint8_t mcuxClHash_compute_WaCpuMd5 [MCUXCLHASH_INTERNAL_WACPU_SIZE_MD5];
+volatile uint8_t mcuxClHash_compute_WaCpuSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA1];
+volatile uint8_t mcuxClHash_compute_WaCpuSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_224];
+volatile uint8_t mcuxClHash_compute_WaCpuSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_256];
+volatile uint8_t mcuxClHash_compute_WaCpuSha2_384 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_384];
+volatile uint8_t mcuxClHash_compute_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
+volatile uint8_t mcuxClHash_compute_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
 
 volatile uint8_t mcuxClHash_finish_WaCpuMd5 [MCUXCLHASH_INTERNAL_WACPU_SIZE_MD5];
 volatile uint8_t mcuxClHash_finish_WaCpuSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA1];

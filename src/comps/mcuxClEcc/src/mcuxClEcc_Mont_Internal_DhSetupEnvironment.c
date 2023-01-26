@@ -62,7 +62,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_SetupEnvironmen
 
     /* Import ladder constant (A+2)/4 mod p. */
     MCUXCLPKC_FP_IMPORTLITTLEENDIANTOPKC(ECC_T0,
-                                        pDomainParams->pA24,
+                                        pDomainParams->common.pLadderConst,
                                         (uint32_t) pDomainParams->common.byteLenP);
 
     /* Convert ladder constant to Montgomery representation. */

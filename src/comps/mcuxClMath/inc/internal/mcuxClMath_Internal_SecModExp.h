@@ -86,7 +86,7 @@ do{                                                                             
         (ofsA) = MCUXCLMATH_ROR((ofsA), 16u);                                              \
 } while (false)
 
-#elif defined(__ICCARM__) || defined(__ARMCC_VERSION) || defined(__GNUC__)
+#elif defined(ICCARM_ARMCLANG_GNUC)
 
 #define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0_, expW1_, ofsAs_, ofsYX_, rndW_, bIdx_, oMsH8_, oMsL8_)  \
 do{  \

@@ -57,9 +57,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Set
 
     volatile uint8_t *p8Dst = (volatile uint8_t *) pDst; // needs to be aligned
 
+#ifdef __COVERITY__
 #pragma coverity compliance block deviate MISRA_C_2012_Rule_11_6 "Exception 6: casting void pointer to security counter type"
+#endif
     MCUX_CSSL_SC_ADD((uint32_t) pDst + copyLen);
+#ifdef __COVERITY__
 #pragma coverity compliance end_block MISRA_C_2012_Rule_11_6
+#endif
 
     MCUX_CSSL_FP_LOOP_DECL(FirstByteLoop);
     MCUX_CSSL_FP_LOOP_DECL(SecondByteLoop);
@@ -73,9 +77,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Set
         remainLength--;
     }
 
+#ifdef __COVERITY__
 #pragma coverity compliance block deviate MISRA_C_2012_Rule_11_3 "Exception 9: re-interpreting the memory"
+#endif
     volatile uint32_t *p32Dst = (volatile uint32_t *) p8Dst;  /* p8Dst is CPU word-aligned after the previous loop. */
+#ifdef __COVERITY__
 #pragma coverity compliance end_block MISRA_C_2012_Rule_11_3
+#endif
     while (cpuWordSize <= remainLength)
     {
         MCUX_CSSL_FP_LOOP_ITERATION(WordLoop);
@@ -95,9 +103,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Set
 
     MCUX_CSSL_SC_SUB((uint32_t) p8Dst);
 
+#ifdef __COVERITY__
 #pragma coverity compliance block deviate MISRA_C_2012_Rule_11_6 "Exception 6: casting void pointer to security counter type"
+#endif
     MCUX_CSSL_FP_COUNTER_STMT(uint32_t noOfBytesToAlignment = ((0u - ((uint32_t) pDst)) & (cpuWordSize - 1u)));
+#ifdef __COVERITY__
 #pragma coverity compliance end_block MISRA_C_2012_Rule_11_6
+#endif
     MCUX_CSSL_FP_COUNTER_STMT(uint32_t firstByteIteration = (copyLen > noOfBytesToAlignment)
                              ? noOfBytesToAlignment
                              : copyLen);

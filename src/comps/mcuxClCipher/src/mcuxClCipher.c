@@ -26,7 +26,7 @@
 
 
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
-  mcuxClSession_Handle_t pSession,
+  mcuxClSession_Handle_t session,
   mcuxClKey_Handle_t key,
   mcuxClCipher_Mode_t mode,
   mcuxCl_InputBuffer_t pIv,
@@ -39,7 +39,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_crypt);
 
-  MCUX_CSSL_FP_FUNCTION_CALL(status, mode->crypt(pSession,
+  MCUX_CSSL_FP_FUNCTION_CALL(status, mode->crypt(session,
                                                 NULL, /* pContext */
                                                 key,
                                                 mode,
@@ -49,13 +49,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
                                                 inLength,
                                                 pOut,
                                                 pOutLength,
-                                                MCUX_CL_CIPHER_OPTION_ONESHOT));
+                                                MCUXCLCIPHER_OPTION_ONESHOT));
 
-  if(MCUX_CL_CIPHER_STATUS_OK != status)
+  if(MCUXCLCIPHER_STATUS_OK != status)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_crypt, status, mode->protection_token_crypt);
   }
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_crypt, MCUX_CL_CIPHER_STATUS_OK, MCUX_CL_CIPHER_STATUS_FAULT_ATTACK,
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_crypt, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
                                        mode->protection_token_crypt);
 
 }
@@ -63,7 +63,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
 
 
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
-  mcuxClSession_Handle_t pSession,
+  mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,
   mcuxClKey_Handle_t key,
   mcuxClCipher_Mode_t mode,
@@ -73,7 +73,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_init);
 
-  MCUX_CSSL_FP_FUNCTION_CALL(status, mode->crypt(pSession,
+  MCUX_CSSL_FP_FUNCTION_CALL(status, mode->crypt(session,
                                                 pContext,
                                                 key,
                                                 mode,
@@ -83,18 +83,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
                                                 0u,   /* inLength */
                                                 NULL, /* pOut */
                                                 0u,   /* pOutLength */
-                                                MCUX_CL_CIPHER_OPTION_INIT));
+                                                MCUXCLCIPHER_OPTION_INIT));
 
-  if(MCUX_CL_CIPHER_STATUS_OK != status)
+  if(MCUXCLCIPHER_STATUS_OK != status)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_init, status, mode->protection_token_crypt);
   }
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_init, MCUX_CL_CIPHER_STATUS_OK, MCUX_CL_CIPHER_STATUS_FAULT_ATTACK,
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_init, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
                                        mode->protection_token_crypt);
 }
 
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
-  mcuxClSession_Handle_t pSession,
+  mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
@@ -104,7 +104,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_process);
 
-  MCUX_CSSL_FP_FUNCTION_CALL(status, pContext->pMode->crypt(pSession,
+  MCUX_CSSL_FP_FUNCTION_CALL(status, pContext->pMode->crypt(session,
                                                            pContext,
                                                            NULL, /* pKey, is already stored in context */
                                                            NULL, /* pMode, is already stored in context */
@@ -114,18 +114,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
                                                            inLength,
                                                            pOut,
                                                            pOutLength,
-                                                           MCUX_CL_CIPHER_OPTION_PROCESS));
+                                                           MCUXCLCIPHER_OPTION_PROCESS));
 
-  if(MCUX_CL_CIPHER_STATUS_OK != status)
+  if(MCUXCLCIPHER_STATUS_OK != status)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_process, status, pContext->pMode->protection_token_crypt);
   }
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_process, MCUX_CL_CIPHER_STATUS_OK, MCUX_CL_CIPHER_STATUS_FAULT_ATTACK,
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_process, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
                                        pContext->pMode->protection_token_crypt);
 }
 
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
-  mcuxClSession_Handle_t pSession,
+  mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,
   mcuxCl_Buffer_t pOut,
   uint32_t * const pOutLength
@@ -133,7 +133,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_finish);
 
-    MCUX_CSSL_FP_FUNCTION_CALL(status, pContext->pMode->crypt(pSession,
+    MCUX_CSSL_FP_FUNCTION_CALL(status, pContext->pMode->crypt(session,
                                                              pContext,
                                                              NULL, /* pKey, is already stored in context */
                                                              NULL, /* pMode, is already stored in context */
@@ -143,13 +143,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
                                                              0u,   /* inLength */
                                                              pOut,
                                                              pOutLength,
-                                                             MCUX_CL_CIPHER_OPTION_FINISH));
+                                                             MCUXCLCIPHER_OPTION_FINISH));
 
-  if(MCUX_CL_CIPHER_STATUS_OK != status)
+  if(MCUXCLCIPHER_STATUS_OK != status)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_finish, status, pContext->pMode->protection_token_crypt);
   }
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_finish, MCUX_CL_CIPHER_STATUS_OK, MCUX_CL_CIPHER_STATUS_FAULT_ATTACK,
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_finish, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
                                        pContext->pMode->protection_token_crypt);
 }
 

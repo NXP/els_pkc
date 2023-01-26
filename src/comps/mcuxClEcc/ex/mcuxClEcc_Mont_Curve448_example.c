@@ -19,11 +19,11 @@
  * @brief   Example for the mcuxClEcc component curve448 related functions
  */
 
-#include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClEcc.h>
 #include <mcuxClKey.h>
 #include <mcuxClPkc_Types.h>
-#include <mcuxClExample_CSS_Helper.h>
+#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 
@@ -33,8 +33,8 @@
 
 bool mcuxClEcc_Mont_Curve448_example(void)
 {
-    /** Initialize CSS, Enable the CSSv2 **/
-    if(!mcuxClExample_Css_Init(MCUXCLCSS_RESET_DO_NOT_CANCEL))
+    /** Initialize ELS, Enable the ELS **/
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return false;
     }
@@ -45,12 +45,12 @@ bool mcuxClEcc_Mont_Curve448_example(void)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
 
     /* Initialize the RNG and Initialize the PRNG */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandom_Mode_CSS_Drbg)
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg)
 
     /* Prepare input for Alice key generation */
-    uint8_t alicePrivKeyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE];
+    uint8_t alicePrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t alicePrivKeyHandler = (mcuxClKey_Handle_t) &alicePrivKeyDesc;
-    uint8_t alicePubKeyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE];
+    uint8_t alicePubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t alicePubKeyHandler = (mcuxClKey_Handle_t) &alicePubKeyDesc;
     uint8_t alicePrivKeyBuffer[MCUXCLECC_MONT_CURVE448_SIZE_PRIVATEKEY]={0};
     uint8_t alicePubKeyBuffer[MCUXCLECC_MONT_CURVE448_SIZE_PUBLICKEY]={0};
@@ -76,9 +76,9 @@ bool mcuxClEcc_Mont_Curve448_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Prepare input for Bob key generation */
-    uint8_t bobPrivKeyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE];
+    uint8_t bobPrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t bobPrivKeyHandler = (mcuxClKey_Handle_t) &bobPrivKeyDesc;
-    uint8_t bobPubKeyDesc[MCUX_CL_KEY_DESCRIPTOR_SIZE];
+    uint8_t bobPubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t bobPubKeyHandler = (mcuxClKey_Handle_t) &bobPubKeyDesc;
     uint8_t bobPrivKeyBuffer[MCUXCLECC_MONT_CURVE448_SIZE_PRIVATEKEY]={0};
     uint8_t bobPubKeyBuffer[MCUXCLECC_MONT_CURVE448_SIZE_PUBLICKEY]={0};
@@ -151,8 +151,8 @@ bool mcuxClEcc_Mont_Curve448_example(void)
         return false;
     }
 
-    /** Disable the CSSv2 **/
-    if(!mcuxClExample_Css_Disable())
+    /** Disable the ELS **/
+    if(!mcuxClExample_Els_Disable())
     {
         return false;
     }
