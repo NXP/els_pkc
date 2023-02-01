@@ -12,13 +12,13 @@
 #include <stddef.h>
 
 #include "fsl_common.h"
-#include <mcuxClCss.h>              // Interface to the entire nxpClCss component
+#include <mcuxClEls.h>              // Interface to the entire nxpClEls component
 #include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <mcuxClRandom.h>
 #include <ip_platform.h>
 
 /*!
- * @addtogroup css_pkc
+ * @addtogroup els_pkc
  * @{
  */
 
@@ -48,7 +48,7 @@ extern "C" {
  *
  * @return kStatus_Success upon success, kStatus_Fail otherwise
  */
-status_t ELS_PowerDownWakeupInit(CSS_Type *base);
+status_t ELS_PowerDownWakeupInit(S50_Type *base);
 
 #if defined(__cplusplus)
 }

@@ -20,6 +20,9 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
+
+#include <mcuxClMemory.h>
+
 /**
  * Function that performs RFC3394 key wrapping.
  * @retval true  Wrapping successful.

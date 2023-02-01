@@ -29,7 +29,7 @@ static status_t ELS_check_key(uint8_t keyIdx, mcuxClCss_KeyProp_t *pKeyProp);
  *
  * return kStatus_Success upon success, kStatus_Fail otherwise
  */
-status_t ELS_PowerDownWakeupInit(CSS_Type *base)
+status_t ELS_PowerDownWakeupInit(S50_Type *base)
 {
     status_t status = kStatus_Fail;
 

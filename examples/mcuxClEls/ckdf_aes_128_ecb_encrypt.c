@@ -30,6 +30,8 @@
 #include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_ELS_Key_Helper.h>
 
+#include <mcuxClEls_KeyManagement.h>
+
 /** Plaintext input for the AES encryption. */
 static const uint8_t aes128_input[MCUXCLELS_CIPHER_BLOCK_SIZE_AES]  = {
     0x6bu, 0xc1u, 0xbeu, 0xe2u, 0x2eu, 0x40u, 0x9fu, 0x96u, 
@@ -40,7 +42,7 @@ static uint8_t ckdf_derivation_data[MCUXCLELS_CKDF_DERIVATIONDATA_SIZE] = {
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 /** Key provisioning input part 1 */
-static const uint8_t keyprov_external_part1[MCUXCLELS_KEYPROV_KEY_PART_1_SIZE]  = {
+static const uint8_t keyprov_external_part1[32]  = {
     0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 
     0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u,
     0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u, 0x11u,
@@ -63,6 +65,8 @@ static uint8_t aes128_output[MCUXCLELS_CIPHER_BLOCK_SIZE_AES];
  * @retval false The example code failed */
 bool ckdf_aes_128_ecb_encrypt(void)
 {
+#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
+  
     mcuxClEls_KeyIndex_t             key_idx_ckdf = 0u;
     mcuxClEls_KeyIndex_t             key_idx_aes  = 10u;
 
@@ -195,6 +199,8 @@ bool ckdf_aes_128_ecb_encrypt(void)
     {
         return false;
     }
+ 
+#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */    
     
     return true;
 }
