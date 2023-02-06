@@ -5,7 +5,7 @@
  *     SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "fsl_pkc.h"
+#include "mcux_pkc.h"
 
 #include <mcuxClPkc_Macros.h> //
 

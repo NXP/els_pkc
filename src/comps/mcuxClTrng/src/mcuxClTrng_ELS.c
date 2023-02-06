@@ -20,7 +20,7 @@
 #include <mcuxClSession.h>
 #include <mcuxClEls.h>
 #include <mcuxCsslMemory.h>
-#include <internal/mcuxClTrng_internal.h>
+#include <internal/mcuxClTrng_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClTrng_Init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void)

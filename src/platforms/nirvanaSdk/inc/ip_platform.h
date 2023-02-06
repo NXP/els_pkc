@@ -19,7 +19,7 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include <MCXN947_cm33_core0.h>
+#include "fsl_device_registers.h"
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
