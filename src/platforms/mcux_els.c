@@ -86,7 +86,6 @@ static status_t ELS_check_key(uint8_t keyIdx, mcuxClCss_KeyProp_t *pKeyProp)
 
 static status_t ELS_PRNG_KickOff(void)
 {
-    status_t status = kStatus_Fail;
 
     /* Check if PRNG already ready */
     if ((ELS->ELS_STATUS & S50_ELS_STATUS_PRNG_RDY_MASK) == 0u)
