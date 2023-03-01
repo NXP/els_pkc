@@ -17,7 +17,7 @@
 #include <mcuxClHash.h>              // Interface to the entire mcuxClHash component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>  // Code flow protection
-#include <toolchain.h>              // memory segment definitions
+#include <nxpClToolchain.h>              // memory segment definitions
 #include <stdbool.h>                // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>

@@ -14,7 +14,7 @@
 /** @file  mcuxClPadding.c
  *  @brief implementation of padding functions for different components */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <internal/mcuxClPadding_Internal.h>
 #include <mcuxClMemory.h>
 #include <mcuxClSession.h>

@@ -25,7 +25,7 @@
 #include <stdbool.h>
 #include <mcuxClConfig.h> // Exported features flags header
 #include <platform_specific_headers.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <mcuxClOsccaPkc_Types.h>
 #include <internal/mcuxClOsccaPkc_SfrAccess.h>

@@ -20,7 +20,7 @@
 #include <mcuxClMacModes.h> // Interface to the entire mcuxClMacModes component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>

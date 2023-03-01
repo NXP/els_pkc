@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>

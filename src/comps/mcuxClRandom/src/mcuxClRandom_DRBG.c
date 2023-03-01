@@ -16,7 +16,7 @@
  *  handling of DRBG random number generators. This file implements the functions
  *  declared in mcuxClRandom.h. */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxClMemory.h>
 #include <mcuxClRandom.h>

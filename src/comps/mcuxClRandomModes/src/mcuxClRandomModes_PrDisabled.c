@@ -13,7 +13,7 @@
 /* Security Classification:  Company Confidential                           */
 /*--------------------------------------------------------------------------*/
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>

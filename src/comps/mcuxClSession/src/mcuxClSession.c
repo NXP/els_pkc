@@ -19,7 +19,7 @@
 #include <mcuxClSession.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <mcuxClMemory.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_init(

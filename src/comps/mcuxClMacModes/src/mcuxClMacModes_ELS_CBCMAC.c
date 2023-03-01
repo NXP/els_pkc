@@ -27,7 +27,7 @@
 
 #include <internal/mcuxClKey_Internal.h>
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>

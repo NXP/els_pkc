@@ -22,7 +22,7 @@
 #include <mcuxClKey.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <internal/mcuxClKey_Internal.h>
 #include <mcuxClAes.h>
 

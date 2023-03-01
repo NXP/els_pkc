@@ -16,7 +16,7 @@
  * @brief mcuxClEcc: implementation of mcuxClEcc_RecodeAndReorderScalar
  */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>

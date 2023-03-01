@@ -14,7 +14,7 @@
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_copy)

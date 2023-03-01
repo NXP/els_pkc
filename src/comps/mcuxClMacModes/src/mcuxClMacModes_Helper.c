@@ -14,7 +14,7 @@
 /** @file  mcuxClMacModes_Helper.c
  *  @brief implementation of helper functions of mcuxClMacModes component */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClMac.h>
 
 #include <mcuxClMemory.h>

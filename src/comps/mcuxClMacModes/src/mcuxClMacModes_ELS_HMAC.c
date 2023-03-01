@@ -14,7 +14,7 @@
 /** @file  mcuxClMacModes_ELS_HMAC.c
  *  @brief implementation of the HMAC part of mcuxClMac component using ELS */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClMac.h>
 
 #include <mcuxClEls.h>

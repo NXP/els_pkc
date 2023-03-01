@@ -16,7 +16,7 @@
  * @brief Function to import, convert and validate the coordinates of a pre-computed point
  */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>

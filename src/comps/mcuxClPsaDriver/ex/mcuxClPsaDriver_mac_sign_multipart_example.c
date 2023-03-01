@@ -22,7 +22,7 @@
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClCore_Examples.h>
 #include <mcuxClExample_ELS_Helper.h>
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClAes.h> // Interface to AES-related definitions and types

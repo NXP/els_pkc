@@ -16,7 +16,7 @@
  */
 
 #include <stdint.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -28,7 +28,7 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>

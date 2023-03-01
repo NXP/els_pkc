@@ -23,7 +23,7 @@
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
