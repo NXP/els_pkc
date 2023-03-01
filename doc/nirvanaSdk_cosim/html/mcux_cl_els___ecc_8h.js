@@ -38,7 +38,7 @@ var mcux_cl_els___ecc_8h =
     [ "privateKeyIdx", "group__mcux_cl_els___ecc___functions.html#gaea95e5e5fa22a012ebd485482a58591e", null ],
     [ "generatedKeyProperties", "group__mcux_cl_els___ecc___functions.html#ga6c28db4477ee3bfe9c71412bdd0645f9", null ],
     [ "pRandomData", "group__mcux_cl_els___ecc___functions.html#ga047d25d348348a7cfdde337f011f2f9a", null ],
-    [ "pPublicKey", "group__mcux_cl_els___ecc___functions.html#ga3d977d4579e65f36d2f81022d52059f6", null ],
+    [ "pPublicKey", "group__mcux_cl_els___ecc___functions.html#ga65f97dafb1d6bad75debe741f6a6eb3f", null ],
     [ "sharedSecretIdx", "group__mcux_cl_els___ecc___functions.html#ga38ec5ef6f6757759e45a622ab6a2698e", null ],
     [ "sharedSecretProperties", "group__mcux_cl_els___ecc___functions.html#gaa9b8cf4db187b976c9c188191b5b077a", null ],
     [ "keyIdx", "group__mcux_cl_els___ecc___functions.html#ga9f32c92d7c6ae7c1d5173ad55fb68baa", null ],

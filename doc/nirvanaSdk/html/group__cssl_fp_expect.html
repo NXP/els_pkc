@@ -120,6 +120,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga24a55fecde25d3aa0a227814345b9714"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__cssl_fp_expect.html#ga24a55fecde25d3aa0a227814345b9714">MCUX_CSSL_FP_CONDITIONAL</a>(condition, ...)</td></tr>
 <tr class="memdesc:ga24a55fecde25d3aa0a227814345b9714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handling of conditionally expected code flow behavior.  <a href="#ga24a55fecde25d3aa0a227814345b9714">More...</a><br /></td></tr>
 <tr class="separator:ga24a55fecde25d3aa0a227814345b9714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga301b8f23ac6981e62649c8f571a6c6eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__cssl_fp_expect.html#ga301b8f23ac6981e62649c8f571a6c6eb">MCUX_CSSL_FP_ASSERT</a>(...)</td></tr>
+<tr class="memdesc:ga301b8f23ac6981e62649c8f571a6c6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assert an expected state of the code flow.  <a href="#ga301b8f23ac6981e62649c8f571a6c6eb">More...</a><br /></td></tr>
+<tr class="separator:ga301b8f23ac6981e62649c8f571a6c6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Expectation handling support functionality. </p>
@@ -211,6 +214,39 @@ Macros</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">condition</td><td>Condition under which the given expectations apply. </td></tr>
     <tr><td class="paramname">...</td><td>One or more (comma separated) declarations of expected code flow behavior. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga301b8f23ac6981e62649c8f571a6c6eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga301b8f23ac6981e62649c8f571a6c6eb">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_ASSERT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_FP_ASSERT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Assert an expected state of the code flow. </p>
+<p>This macro can be used to check whether the code flow up to this point matches the expected state. Unlike the <a class="el" href="group__cssl_fp_expect.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a> macro, it will not update the expectations, but merely perform a check on the recorded events against the already recorded expectations plus the ones provided as parameters.</p>
+<p>If the check fails, the code defined in <a class="el" href="group__cssl_fp_cnt_expect.html#ga0c29c395a9104c6d918091b12f63ca74" title="Fallback assert callback implementation.">MCUX_CSSL_FP_ASSERT_CALLBACK()</a> will be executed.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="group__cssl_fp_cnt_expect.html#ga0c29c395a9104c6d918091b12f63ca74" title="Fallback assert callback implementation.">MCUX_CSSL_FP_ASSERT_CALLBACK()</a> must be defined before including the CSSL flow protection headers, otherwise a default implementation could be used.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__cssl_fp_expect.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
+<li>expect: One or more (comma separated) declarations of expected code flow behavior. </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>

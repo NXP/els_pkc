@@ -6,6 +6,7 @@ var mcux_cssl_flow_protection___secure_counter___common_8h =
     [ "MCUX_CSSL_FP_EXPECTATIONS", "group__cssl_fp_cnt_expect.html#ga173c3887e1d02b5cace9e622d0a3225b", null ],
     [ "MCUX_CSSL_FP_COUNTER_STMT_IMPL", "mcux_cssl_flow_protection___secure_counter___common_8h.html#a206162408638fe12dc1d021fa3cb8ad5", null ],
     [ "MCUX_CSSL_FP_CONDITIONAL_IMPL", "group__cssl_fp_cnt_core.html#ga643cc00e2fecb3e73de572797618ad35", null ],
+    [ "MCUX_CSSL_FP_VOID_EXPECTATION_IMPL", "group__cssl_fp_cnt_expect.html#ga4ea20ab3d4d080887fdfc12f6c7f6bab", null ],
     [ "MCUX_CSSL_FP_EXPECT_IMPL", "group__cssl_fp_cnt_expect.html#ga7be0ed334bcf634f81d5d4b93a4c1657", null ],
     [ "MCUX_CSSL_FP_FUNCTION_ID", "group__cssl_fp_cnt_function.html#ga479eda7e7852481c11efbc1959aee5ab", null ],
     [ "MCUX_CSSL_FP_FUNCTION_ID_ENTRY_MASK", "group__cssl_fp_cnt_function.html#gaaee8a28145962c5b60693126fb43f577", null ],
@@ -24,6 +25,7 @@ var mcux_cssl_flow_protection___secure_counter___common_8h =
     [ "MCUX_CSSL_FP_PROTECTION_TOKEN_IMPL", "group__cssl_fp_cnt_function.html#ga5da930d2d73279d4361af98b96771185", null ],
     [ "MCUX_CSSL_FP_COUNTER_COMPRESSED", "group__cssl_fp_cnt_function.html#ga2aa4e71591c9e48638a5733885a77972", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALLED_IMPL", "group__cssl_fp_cnt_function.html#ga387940e23bd51390165c5cdffe5b2e6e", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_ENTERED_IMPL", "group__cssl_fp_cnt_function.html#gaaf3937045ab2420f95b209d63d380b0e", null ],
     [ "MCUX_CSSL_FP_LOOP_ID", "group__cssl_fp_cnt_loop.html#ga995fa3b11e4cc00e87135ada7aef8d5e", null ],
     [ "MCUX_CSSL_FP_LOOP_DECL_IMPL", "group__cssl_fp_cnt_loop.html#gaf96c3a513125fcf430cbf3b5fe595e4f", null ],
     [ "MCUX_CSSL_FP_LOOP_VALUE", "group__cssl_fp_cnt_loop.html#ga7eef9d81d7343fd127b4b05c14944d1c", null ],
@@ -65,5 +67,6 @@ var mcux_cssl_flow_protection___secure_counter___common_8h =
     [ "MCUX_CSSL_FP_SWITCH_TAKEN_IMPL", "group__cssl_fp_cnt_switch.html#ga2cea4b8acd163c7b4877267c4221a9d4", null ],
     [ "MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT_IMPL2", "group__cssl_fp_cnt_switch.html#gaf4a47979ed6e58b347658038ed393210", null ],
     [ "MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT_IMPL1", "group__cssl_fp_cnt_switch.html#gaef7299bb6aa7dc7a367edae023cc2a41", null ],
-    [ "MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT_IMPL", "group__cssl_fp_cnt_switch.html#gadd39e2b4cb02e9c849a289302465a8ff", null ]
+    [ "MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT_IMPL", "group__cssl_fp_cnt_switch.html#gadd39e2b4cb02e9c849a289302465a8ff", null ],
+    [ "MCUX_CSSL_FP_ASSERT_CALLBACK", "group__cssl_fp_cnt_expect.html#ga0c29c395a9104c6d918091b12f63ca74", null ]
 ];

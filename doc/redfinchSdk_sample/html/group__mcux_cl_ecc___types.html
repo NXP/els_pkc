@@ -117,12 +117,6 @@ $(document).ready(function(){initNavTree('group__mcux_cl_ecc___types.html','');}
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptor specifying the EdDSA GenerateKeyPair variant.  <a href="structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptor specifying the EdDSA variant.  <a href="structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmcux_cl_ecc___domain_param__t.html">mcuxClEcc_DomainParam_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameter structure of elliptic curve of the form, y^2 = x^3 + a*x + b modulo prime p.  <a href="structmcux_cl_ecc___domain_param__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,6 +177,12 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga365359e63f156889e46845381455b321"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClEcc_EdDSA_DomainParams&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321">mcuxClEcc_EdDSA_DomainParams_t</a></td></tr>
 <tr class="memdesc:ga365359e63f156889e46845381455b321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for EdDSA domain parameters.  <a href="#ga365359e63f156889e46845381455b321">More...</a><br /></td></tr>
 <tr class="separator:ga365359e63f156889e46845381455b321"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadee46209e43c63814a86e882b3927b27"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClEcc_EdDSA_GenerateKeyPairDescriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_ecc___types.html#gadee46209e43c63814a86e882b3927b27">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a></td></tr>
+<tr class="memdesc:gadee46209e43c63814a86e882b3927b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">EdDSA GenerateKeyPair variant descriptor type.  <a href="#gadee46209e43c63814a86e882b3927b27">More...</a><br /></td></tr>
+<tr class="separator:gadee46209e43c63814a86e882b3927b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaec003d78ecf36673f595fcc87f11b82c"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a></td></tr>
+<tr class="memdesc:gaec003d78ecf36673f595fcc87f11b82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">EdDSA SignatureProtocol variant descriptor type.  <a href="#gaec003d78ecf36673f595fcc87f11b82c">More...</a><br /></td></tr>
+<tr class="separator:gaec003d78ecf36673f595fcc87f11b82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe84edad82c8934ef1634e9f29effa55"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClEcc_Weier_DomainParams&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_ecc___types.html#gafe84edad82c8934ef1634e9f29effa55">mcuxClEcc_Weier_DomainParams_t</a></td></tr>
 <tr class="memdesc:gafe84edad82c8934ef1634e9f29effa55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for Weierstrass ECC domain parameters.  <a href="#gafe84edad82c8934ef1634e9f29effa55">More...</a><br /></td></tr>
 <tr class="separator:gafe84edad82c8934ef1634e9f29effa55"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,13 +190,10 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ga86ce358d9af15d943c4a254ac4156363"><td class="memItemLeft" align="right" valign="top"><a id="ga86ce358d9af15d943c4a254ac4156363"></a>
-const <a class="el" href="structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor</b></td></tr>
+const <a class="el" href="group__mcux_cl_ecc___types.html#gadee46209e43c63814a86e882b3927b27">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor</b></td></tr>
 <tr class="separator:ga86ce358d9af15d943c4a254ac4156363"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacb00ef663d82e0042572fe5fdc6bcfdf"><td class="memItemLeft" align="right" valign="top"><a id="gacb00ef663d82e0042572fe5fdc6bcfdf"></a>
-const <a class="el" href="structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClEcc_EdDsa_InputPrivKeyDescriptor</b></td></tr>
-<tr class="separator:gacb00ef663d82e0042572fe5fdc6bcfdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadd43ca6894d3cf30d6bd5693c44fa8d4"><td class="memItemLeft" align="right" valign="top"><a id="gadd43ca6894d3cf30d6bd5693c44fa8d4"></a>
-const <a class="el" href="structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor</b></td></tr>
+const <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor</b></td></tr>
 <tr class="separator:gadd43ca6894d3cf30d6bd5693c44fa8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -433,6 +430,38 @@ const <a class="el" href="structmcux_cl_ecc___ed_d_s_a___signature_protocol_desc
 </div><div class="memdoc">
 
 <p>Type for EdDSA domain parameters. </p>
+
+</div>
+</div>
+<a id="gadee46209e43c63814a86e882b3927b27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadee46209e43c63814a86e882b3927b27">&#9670;&nbsp;</a></span>mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct mcuxClEcc_EdDSA_GenerateKeyPairDescriptor <a class="el" href="group__mcux_cl_ecc___types.html#gadee46209e43c63814a86e882b3927b27">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>EdDSA GenerateKeyPair variant descriptor type. </p>
+
+</div>
+</div>
+<a id="gaec003d78ecf36673f595fcc87f11b82c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaec003d78ecf36673f595fcc87f11b82c">&#9670;&nbsp;</a></span>mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>EdDSA SignatureProtocol variant descriptor type. </p>
 
 </div>
 </div>

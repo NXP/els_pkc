@@ -17,6 +17,7 @@ var mcux_cssl_flow_protection_8h =
     [ "MCUX_CSSL_FP_FUNCTION_CALL_BEGIN", "group__cssl_fp_function.html#ga8a9b1ebbc02c8195618a339aa8e0003d", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALL_END", "group__cssl_fp_function.html#gac4362de43d0e67ba6fac0057eb38008d", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALLED", "group__cssl_fp_function.html#gac16ad6597579a02a30ada37f86f216d5", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_ENTERED", "group__cssl_fp_function.html#ga9f7aa860f353079a6da5188bd18b977c", null ],
     [ "MCUX_CSSL_FP_LOOP_DECL", "group__cssl_fp_loop.html#ga96df84766aff763718a84dd44246af38", null ],
     [ "MCUX_CSSL_FP_LOOP_ITERATION", "group__cssl_fp_loop.html#gae7942657c4fac73115908f05c382cc86", null ],
     [ "MCUX_CSSL_FP_LOOP_ITERATIONS", "group__cssl_fp_loop.html#gae5aabc3339a46a799d1fefd1095a4898", null ],
@@ -31,5 +32,6 @@ var mcux_cssl_flow_protection_8h =
     [ "MCUX_CSSL_FP_SWITCH_TAKEN", "group__cssl_fp_switch.html#gaa620180722a4eaa8e7370a92d2bd18d9", null ],
     [ "MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT", "group__cssl_fp_switch.html#gac011e972fff0f38d704edfeadce256cd", null ],
     [ "MCUX_CSSL_FP_EXPECT", "group__cssl_fp_expect.html#ga83db474d65df2b52abea45293f9684d0", null ],
-    [ "MCUX_CSSL_FP_CONDITIONAL", "group__cssl_fp_expect.html#ga24a55fecde25d3aa0a227814345b9714", null ]
+    [ "MCUX_CSSL_FP_CONDITIONAL", "group__cssl_fp_expect.html#ga24a55fecde25d3aa0a227814345b9714", null ],
+    [ "MCUX_CSSL_FP_ASSERT", "group__cssl_fp_expect.html#ga301b8f23ac6981e62649c8f571a6c6eb", null ]
 ];

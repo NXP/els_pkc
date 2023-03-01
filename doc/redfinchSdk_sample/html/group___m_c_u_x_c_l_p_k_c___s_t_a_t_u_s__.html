@@ -211,6 +211,7 @@ Functions</h2></td></tr>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>Securely clear <code>length</code> bytes of data at <code>pDst</code>.</p>
 <p>Destroy a Crypto Library session.</p>
 <p>Clean up a Crypto Library session.</p>
 <p>Set the RTF option in a Crypto Library session.</p>
@@ -297,6 +298,7 @@ Functions</h2></td></tr>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
+<p>This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.</p>
 <p>implements ECC key agreement according to rfc7748.</p>
 <p>implements ECC key pair generation step for a MontDh key agreement according to rfc7748.</p>
 <p>implements ECC point multiplication.</p>
@@ -318,7 +320,7 @@ Functions</h2></td></tr>
 <li>Plain input data</li>
 <li>Associated data</li>
 <li>Output data buffer</li>
-<li>Output size buffer, to store the amount of written bytes</li>
+<li>Output length buffer, to store the amount of written bytes</li>
 <li>Tag buffer, to store the authentication tag</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -381,7 +383,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>This function performs the finalization of an authenticated encryption or decryption operation and produces the authentication tag. The algorithm and key to be used will be determined based on the context that is provided.</p>
-<p>Note: the tagSize is already specified when the INIT function is called.</p>
+<p>Note: the taglength is already specified when the INIT function is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
@@ -395,7 +397,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>This function performs the finalization of an authenticated decryption operation and verifies the authentication tag. The algorithm and key to be used will be determined based on the context that is provided.</p>
 <p>This function can be used as an alternative for <code>mcuxClAead_finish</code> when one also wants to perform the tag verification step.</p>
-<p>Note: the tagSize is already specified when the INIT function is called.</p>
+<p>Note: the taglength is already specified when the INIT function is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
@@ -537,6 +539,22 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>mode Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPrivKey</td><td>Pointer to private key input</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>EdDSA mode descriptor has been initialized successfully </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>For an M byte private key d, which is either generated internally at random or passed as input, this function calculates the private key hash H(d)=(h0,...,h{2b-1}) and deduces and returns</p><ul>
 <li>the secret integer s</li>
 <li>the second half (hb,...,h{2b-1}) of the private key hash</li>
@@ -546,19 +564,13 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Type of the key </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">protection</td><td>Protection mechanism that must be applied to the generated keys </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Mode descriptor specifying the EdDSA GenerateKeyPair variant </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">privKey</td><td>Key handle to be initialized for the private key </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pPrivData</td><td>Pointer to the buffer storing private key related data. If option MCUXCLECC_EDDSA_PRIVKEY_INPUT is set, then the private key d is passed at the start of this buffer. If option MCUXCLECC_EDDSA_PRIVKEY_GENERATE is set, then d is generated internally at random. After the function call, the buffer contains the private key d followed by the integer s, the string (hb,...,h{2b-1}) as well as the public key Qenc. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPrivData buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pubKey</td><td>Key handle to be initialized for the generated public key </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubData</td><td>Pointer to the buffer where the generated public key data needs to be written </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPubData buffer</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>privKey Key handle for the private key. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>pubKey Key handle for the public key.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a> and <a class="el" href="group___m_c_u_x_c_l_e_c_c___m_o_n_t_d_h___s_t_a_t_u_s__.html">MCUXCLECC_MONTDH_STATUS_</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>private key data and public key have been generated successfully </td></tr>
@@ -1994,6 +2006,7 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <p>This function calculates modular exponentiation in a secure manner. It randomizes the computation by Euclidean splitting: exponent = b * q + r, where b is a 32-bit odd random number (with both MSbit and LSbit set), and r = exponent % b. The exponentiation is calculated by two steps: (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExp</td><td>pointer to exponent </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExpTemp</td><td>pointer to temporary buffer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">expByteLength</td><td>byte length of exponent </td></tr>
@@ -2005,6 +2018,8 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt><code>session:</code>  </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pExp</code>  </dt>
 <dd>the exponent is a big-endian octet string and shall be non-zero. </dd>
 <dt><code>pExpTemp</code>  </dt>
@@ -2051,6 +2066,7 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function calculates exact division R = X/Y, where divisor Y is odd and dividend X shall be exactly a multiple of Y. If X is not a multiple of Y, result will be incorrect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2195,6 +2211,7 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
   </table>
@@ -2203,6 +2220,8 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 </dl>
@@ -2219,9 +2238,11 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
@@ -2231,6 +2252,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 <dt><code>bufferLength</code>  </dt>
@@ -2247,6 +2270,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2442,6 +2466,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates an RSA private key in CRT representation (p, q, dp, dq, qInv) and computes the modulus n.</p>
 <p>Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2496,6 +2521,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates RSA private key in in plain from (d, n).</p>
 <p>Private exponent d is computed with the requirements specified in the FIPS 186-4, Appendix B.3.1. Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2550,6 +2576,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pSession</td><td>Session to be initialized. </td></tr>
@@ -2575,6 +2602,26 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
+<p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<p>TODO CLNS-7208: Update description to reflect the change from set to secure set</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="group__mcux_cssl_param_integrity___functions.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDst</td><td>The destination pointer to buffer to be cleared. Must not be NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dstLength</td><td>The size of the destination data buffer in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The number of bytes to clear. Must be different from zero.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A status code encapsulated in a flow-protection type. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gab2993c75e7ef98fed36f03946630e41c" title="The operation was successful.">MCUXCSSLMEMORY_STATUS_OK</a></td><td>If the contents in buffer at <code>pDst</code> is cleared. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#ga0e60adf6203cb3acb2bdb3ddec166766" title="A parameter was invalid.">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td><td>If one of the parameters is invalid. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gaf0923b98a5db9fd23732989986d72f4d" title="A fault occurred in the execution.">MCUXCSSLMEMORY_STATUS_FAULT</a></td><td>If a fault was detected, included invalid checksum <code>chk</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Deprecated type for error codes used by code-flow protected PKC component functions.</p>
 <p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
 <p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
@@ -2654,6 +2701,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
+<p>This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.</p>
 <p>implements ECC key agreement according to rfc7748.</p>
 <p>implements ECC key pair generation step for a MontDh key agreement according to rfc7748.</p>
 <p>implements ECC point multiplication.</p>
@@ -2762,6 +2810,22 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>mode Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPrivKey</td><td>Pointer to private key input</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>EdDSA mode descriptor has been initialized successfully </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>For an M byte private key d, which is either generated internally at random or passed as input, this function calculates the private key hash H(d)=(h0,...,h{2b-1}) and deduces and returns</p><ul>
 <li>the secret integer s</li>
 <li>the second half (hb,...,h{2b-1}) of the private key hash</li>
@@ -2771,19 +2835,13 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Type of the key </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">protection</td><td>Protection mechanism that must be applied to the generated keys </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Mode descriptor specifying the EdDSA GenerateKeyPair variant </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">privKey</td><td>Key handle to be initialized for the private key </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pPrivData</td><td>Pointer to the buffer storing private key related data. If option MCUXCLECC_EDDSA_PRIVKEY_INPUT is set, then the private key d is passed at the start of this buffer. If option MCUXCLECC_EDDSA_PRIVKEY_GENERATE is set, then d is generated internally at random. After the function call, the buffer contains the private key d followed by the integer s, the string (hb,...,h{2b-1}) as well as the public key Qenc. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPrivData buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pubKey</td><td>Key handle to be initialized for the generated public key </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubData</td><td>Pointer to the buffer where the generated public key data needs to be written </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPubData buffer</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>privKey Key handle for the private key. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>pubKey Key handle for the public key.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a> and <a class="el" href="group___m_c_u_x_c_l_e_c_c___m_o_n_t_d_h___s_t_a_t_u_s__.html">MCUXCLECC_MONTDH_STATUS_</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>private key data and public key have been generated successfully </td></tr>
@@ -4858,6 +4916,7 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <p>This function calculates modular exponentiation in a secure manner. It randomizes the computation by Euclidean splitting: exponent = b * q + r, where b is a 32-bit odd random number (with both MSbit and LSbit set), and r = exponent % b. The exponentiation is calculated by two steps: (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExp</td><td>pointer to exponent </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExpTemp</td><td>pointer to temporary buffer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">expByteLength</td><td>byte length of exponent </td></tr>
@@ -4869,6 +4928,8 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt><code>session:</code>  </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pExp</code>  </dt>
 <dd>the exponent is a big-endian octet string and shall be non-zero. </dd>
 <dt><code>pExpTemp</code>  </dt>
@@ -4915,6 +4976,7 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function calculates exact division R = X/Y, where divisor Y is odd and dividend X shall be exactly a multiple of Y. If X is not a multiple of Y, result will be incorrect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5136,6 +5198,7 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
   </table>
@@ -5144,6 +5207,8 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 </dl>
@@ -5160,9 +5225,11 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
@@ -5172,6 +5239,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 <dt><code>bufferLength</code>  </dt>
@@ -5188,6 +5257,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5344,6 +5414,23 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>The function expects as input a custom function to be used inside the CL functions for random number generation as well as a pointer to a context buffer which can be used by the custom generate function. The custom generate function may also use all CPU workarea allocated for the mcuxClRandom_generate function. The function shall be called prior to an mcuxClRandom_init call.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">patchMode[out]</td><td>Pointer to PATCH_MODE descriptor to be initialized </td></tr>
+    <tr><td class="paramname">customGenerateAlgorithm[in]</td><td>Pointer to the custom generate function </td></tr>
+    <tr><td class="paramname">pEntropyInput[in]</td><td>Pointer to a custom context which shall be used by the passed custom generate function </td></tr>
+    <tr><td class="paramname">securityStrength[in]</td><td>Security level for which the patch DRBG shall be used</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
+<p>Deprecated type for error codes used by code-flow protected PKC component functions.</p>
+<p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
+<p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
+<p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
+<p>Deprecated type for ELS driver protected status codes.</p>
+<p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>RSA key generation of private plain key operation.</p>
 <p>Generates an RSA key in CRT format.</p>
 <p>RSA verify operation.</p>
@@ -5410,6 +5497,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs an RSA signature verification according to RSAVP1, RSASSA-PSS-VERIFY or RSASSA-PKCS1-v1_5-VERIFY of PKCS #1 v2.2. Based on the selection of the padding mode, it is determined, whether to perform no padding verification, or whether to perform one of the supported padding verifications based on one of the supported hash functions. The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8. The public exponent is limited to 2 &lt;= e &lt; N.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5478,6 +5566,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates an RSA private key in CRT representation (p, q, dp, dq, qInv) and computes the modulus n.</p>
 <p>Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -5532,6 +5621,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates RSA private key in in plain from (d, n).</p>
 <p>Private exponent d is computed with the requirements specified in the FIPS 186-4, Appendix B.3.1. Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -5586,6 +5676,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <p>Deprecated type for error codes used by code-flow protected PKC component functions.</p>
 <p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
 <p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
@@ -5601,8 +5692,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
     <tr><td class="paramname">pCpuWaBuffer</td><td>Pointer to buffer to be used as workarea for CPU operations. This pointer shall be CPU-word aligned. </td></tr>
     <tr><td class="paramname">cpuWaLength</td><td>Size (in bytes) of the workarea for CPU operations. The size shall be a multiple of CPU wordsize. </td></tr>
     <tr><td class="paramname">pPkcWaBuffer</td><td>Pointer to buffer to be used as workarea for PKC operations. This pointer shall be PKC-word aligned. </td></tr>
-    <tr><td class="paramname">pkcWaLength</td><td>Size (in bytes) of the workarea for PKC operations. The size shall be a multiple of <b>CPU</b> wordsize. </td></tr>
-    <tr><td class="paramname">rngCtx</td><td>Context to be used for RNG operations.</td></tr>
+    <tr><td class="paramname">pkcWaLength</td><td>Size (in bytes) of the workarea for PKC operations. The size shall be a multiple of <b>CPU</b> wordsize.</td></tr>
   </table>
   </dd>
 </dl>
@@ -5610,7 +5700,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname"><a class="el" href="group__mcux_cl_session_status_values.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6" title="Session operation successful.">MCUXCLSESSION_STATUS_OK</a></td><td>Session has been initialized successfully </td></tr>
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_session_status_values.html#ga547425b7379de3ee1fb96c79140fd68e" title="Error occured during Session operation.">MCUXCLSESSION_STATUS_ERROR</a></td><td>Error occurred during session initializing.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cl_session_status_values.html#ga547425b7379de3ee1fb96c79140fd68e" title="Error occurred during Session operation.">MCUXCLSESSION_STATUS_ERROR</a></td><td>Error occurred during session initializing.</td></tr>
   </table>
   </dd>
 </dl>
@@ -5645,7 +5735,28 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>Securely clear <code>length</code> bytes of data at <code>pDst</code>.</p>
 <p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="group__mcux_cssl_param_integrity___functions.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDst</td><td>The destination pointer to buffer to be cleared. Must not be NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dstLength</td><td>The size of the destination data buffer in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The number of bytes to clear. Must be different from zero.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A status code encapsulated in a flow-protection type. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gab2993c75e7ef98fed36f03946630e41c" title="The operation was successful.">MCUXCSSLMEMORY_STATUS_OK</a></td><td>If the contents in buffer at <code>pDst</code> is cleared. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#ga0e60adf6203cb3acb2bdb3ddec166766" title="A parameter was invalid.">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td><td>If one of the parameters is invalid. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gaf0923b98a5db9fd23732989986d72f4d" title="A fault occurred in the execution.">MCUXCSSLMEMORY_STATUS_FAULT</a></td><td>If a fault was detected, included invalid checksum <code>chk</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<p>TODO CLNS-7208: Update description to reflect the change from set to secure set</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="group__mcux_cssl_param_integrity___functions.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
@@ -5781,6 +5892,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>Securely clear <code>length</code> bytes of data at <code>pDst</code>.</p>
 <p>Destroy a Crypto Library session.</p>
 <p>Clean up a Crypto Library session.</p>
 <p>Set the RTF option in a Crypto Library session.</p>
@@ -5867,6 +5979,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
+<p>This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.</p>
 <p>implements ECC key agreement according to rfc7748.</p>
 <p>implements ECC key pair generation step for a MontDh key agreement according to rfc7748.</p>
 <p>implements ECC point multiplication.</p>
@@ -5888,7 +6001,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <li>Plain input data</li>
 <li>Associated data</li>
 <li>Output data buffer</li>
-<li>Output size buffer, to store the amount of written bytes</li>
+<li>Output length buffer, to store the amount of written bytes</li>
 <li>Tag buffer, to store the authentication tag</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -5951,7 +6064,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>This function performs the finalization of an authenticated encryption or decryption operation and produces the authentication tag. The algorithm and key to be used will be determined based on the context that is provided.</p>
-<p>Note: the tagSize is already specified when the INIT function is called.</p>
+<p>Note: the taglength is already specified when the INIT function is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
@@ -5965,7 +6078,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>This function performs the finalization of an authenticated decryption operation and verifies the authentication tag. The algorithm and key to be used will be determined based on the context that is provided.</p>
 <p>This function can be used as an alternative for <code>mcuxClAead_finish</code> when one also wants to perform the tag verification step.</p>
-<p>Note: the tagSize is already specified when the INIT function is called.</p>
+<p>Note: the taglength is already specified when the INIT function is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
@@ -6107,6 +6220,22 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>mode Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPrivKey</td><td>Pointer to private key input</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>EdDSA mode descriptor has been initialized successfully </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>For an M byte private key d, which is either generated internally at random or passed as input, this function calculates the private key hash H(d)=(h0,...,h{2b-1}) and deduces and returns</p><ul>
 <li>the secret integer s</li>
 <li>the second half (hb,...,h{2b-1}) of the private key hash</li>
@@ -6116,19 +6245,13 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Type of the key </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">protection</td><td>Protection mechanism that must be applied to the generated keys </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Mode descriptor specifying the EdDSA GenerateKeyPair variant </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">privKey</td><td>Key handle to be initialized for the private key </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pPrivData</td><td>Pointer to the buffer storing private key related data. If option MCUXCLECC_EDDSA_PRIVKEY_INPUT is set, then the private key d is passed at the start of this buffer. If option MCUXCLECC_EDDSA_PRIVKEY_GENERATE is set, then d is generated internally at random. After the function call, the buffer contains the private key d followed by the integer s, the string (hb,...,h{2b-1}) as well as the public key Qenc. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPrivData buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pubKey</td><td>Key handle to be initialized for the generated public key </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubData</td><td>Pointer to the buffer where the generated public key data needs to be written </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPubData buffer</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>privKey Key handle for the private key. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>pubKey Key handle for the public key.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a> and <a class="el" href="group___m_c_u_x_c_l_e_c_c___m_o_n_t_d_h___s_t_a_t_u_s__.html">MCUXCLECC_MONTDH_STATUS_</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>private key data and public key have been generated successfully </td></tr>
@@ -7564,6 +7687,7 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <p>This function calculates modular exponentiation in a secure manner. It randomizes the computation by Euclidean splitting: exponent = b * q + r, where b is a 32-bit odd random number (with both MSbit and LSbit set), and r = exponent % b. The exponentiation is calculated by two steps: (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExp</td><td>pointer to exponent </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExpTemp</td><td>pointer to temporary buffer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">expByteLength</td><td>byte length of exponent </td></tr>
@@ -7575,6 +7699,8 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt><code>session:</code>  </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pExp</code>  </dt>
 <dd>the exponent is a big-endian octet string and shall be non-zero. </dd>
 <dt><code>pExpTemp</code>  </dt>
@@ -7621,6 +7747,7 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function calculates exact division R = X/Y, where divisor Y is odd and dividend X shall be exactly a multiple of Y. If X is not a multiple of Y, result will be incorrect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -7765,6 +7892,7 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
   </table>
@@ -7773,6 +7901,8 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 </dl>
@@ -7789,9 +7919,11 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
@@ -7801,6 +7933,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 <dt><code>bufferLength</code>  </dt>
@@ -7817,6 +7951,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -8012,6 +8147,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates an RSA private key in CRT representation (p, q, dp, dq, qInv) and computes the modulus n.</p>
 <p>Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -8066,6 +8202,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates RSA private key in in plain from (d, n).</p>
 <p>Private exponent d is computed with the requirements specified in the FIPS 186-4, Appendix B.3.1. Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -8120,6 +8257,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pSession</td><td>Session to be initialized. </td></tr>
@@ -8145,6 +8283,26 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
+<p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<p>TODO CLNS-7208: Update description to reflect the change from set to secure set</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="group__mcux_cssl_param_integrity___functions.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDst</td><td>The destination pointer to buffer to be cleared. Must not be NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dstLength</td><td>The size of the destination data buffer in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The number of bytes to clear. Must be different from zero.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A status code encapsulated in a flow-protection type. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gab2993c75e7ef98fed36f03946630e41c" title="The operation was successful.">MCUXCSSLMEMORY_STATUS_OK</a></td><td>If the contents in buffer at <code>pDst</code> is cleared. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#ga0e60adf6203cb3acb2bdb3ddec166766" title="A parameter was invalid.">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td><td>If one of the parameters is invalid. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gaf0923b98a5db9fd23732989986d72f4d" title="A fault occurred in the execution.">MCUXCSSLMEMORY_STATUS_FAULT</a></td><td>If a fault was detected, included invalid checksum <code>chk</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>Multi-part encryption/decryption finalization function.</p>
 <p>Multi-part encryption/decryption processing function.</p>
@@ -8214,6 +8372,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
+<p>This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.</p>
 <p>implements ECC key agreement according to rfc7748.</p>
 <p>implements ECC key pair generation step for a MontDh key agreement according to rfc7748.</p>
 <p>implements ECC point multiplication.</p>
@@ -8322,6 +8481,22 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>mode Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPrivKey</td><td>Pointer to private key input</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>EdDSA mode descriptor has been initialized successfully </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>For an M byte private key d, which is either generated internally at random or passed as input, this function calculates the private key hash H(d)=(h0,...,h{2b-1}) and deduces and returns</p><ul>
 <li>the secret integer s</li>
 <li>the second half (hb,...,h{2b-1}) of the private key hash</li>
@@ -8331,19 +8506,13 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Type of the key </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">protection</td><td>Protection mechanism that must be applied to the generated keys </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Mode descriptor specifying the EdDSA GenerateKeyPair variant </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">privKey</td><td>Key handle to be initialized for the private key </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pPrivData</td><td>Pointer to the buffer storing private key related data. If option MCUXCLECC_EDDSA_PRIVKEY_INPUT is set, then the private key d is passed at the start of this buffer. If option MCUXCLECC_EDDSA_PRIVKEY_GENERATE is set, then d is generated internally at random. After the function call, the buffer contains the private key d followed by the integer s, the string (hb,...,h{2b-1}) as well as the public key Qenc. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPrivData buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pubKey</td><td>Key handle to be initialized for the generated public key </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubData</td><td>Pointer to the buffer where the generated public key data needs to be written </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pPubDataLength</td><td>Will be set to the number of bytes of data that have been written to the pPubData buffer</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>privKey Key handle for the private key. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in/out]</td><td>pubKey Key handle for the public key.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a> and <a class="el" href="group___m_c_u_x_c_l_e_c_c___m_o_n_t_d_h___s_t_a_t_u_s__.html">MCUXCLECC_MONTDH_STATUS_</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>private key data and public key have been generated successfully </td></tr>
@@ -10343,6 +10512,7 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <p>This function calculates modular exponentiation in a secure manner. It randomizes the computation by Euclidean splitting: exponent = b * q + r, where b is a 32-bit odd random number (with both MSbit and LSbit set), and r = exponent % b. The exponentiation is calculated by two steps: (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExp</td><td>pointer to exponent </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pExpTemp</td><td>pointer to temporary buffer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">expByteLength</td><td>byte length of exponent </td></tr>
@@ -10354,6 +10524,8 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt><code>session:</code>  </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pExp</code>  </dt>
 <dd>the exponent is a big-endian octet string and shall be non-zero. </dd>
 <dt><code>pExpTemp</code>  </dt>
@@ -10400,6 +10572,7 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function calculates exact division R = X/Y, where divisor Y is odd and dividend X shall be exactly a multiple of Y. If X is not a multiple of Y, result will be incorrect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -10601,6 +10774,7 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
   </table>
@@ -10609,6 +10783,8 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 </dl>
@@ -10625,9 +10801,11 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
@@ -10637,6 +10815,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 <dt><code>bufferLength</code>  </dt>
@@ -10653,6 +10833,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -10799,6 +10980,18 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>The function expects as input a custom function to be used inside the CL functions for random number generation as well as a pointer to a context buffer which can be used by the custom generate function. The custom generate function may also use all CPU workarea allocated for the mcuxClRandom_generate function. The function shall be called prior to an mcuxClRandom_init call.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">patchMode[out]</td><td>Pointer to PATCH_MODE descriptor to be initialized </td></tr>
+    <tr><td class="paramname">customGenerateAlgorithm[in]</td><td>Pointer to the custom generate function </td></tr>
+    <tr><td class="paramname">pEntropyInput[in]</td><td>Pointer to a custom context which shall be used by the passed custom generate function </td></tr>
+    <tr><td class="paramname">securityStrength[in]</td><td>Security level for which the patch DRBG shall be used</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
+<p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>RSA key generation of private plain key operation.</p>
 <p>Generates an RSA key in CRT format.</p>
 <p>RSA verify operation.</p>
@@ -10865,6 +11058,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs an RSA signature verification according to RSAVP1, RSASSA-PSS-VERIFY or RSASSA-PKCS1-v1_5-VERIFY of PKCS #1 v2.2. Based on the selection of the padding mode, it is determined, whether to perform no padding verification, or whether to perform one of the supported padding verifications based on one of the supported hash functions. The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8. The public exponent is limited to 2 &lt;= e &lt; N.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -10933,6 +11127,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates an RSA private key in CRT representation (p, q, dp, dq, qInv) and computes the modulus n.</p>
 <p>Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -10987,6 +11182,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <p>This function for given public exponent and key size generates RSA private key in in plain from (d, n).</p>
 <p>Private exponent d is computed with the requirements specified in the FIPS 186-4, Appendix B.3.1. Primes p and q are generated based on the method specified in the FIPS 186-4, Appendix B.3.3 using probabilistic primality test with the probability of not being prime less than 2^(-125). The public exponent is restricted to (FIPS compliant) odd values in the range 2^16 &lt; e &lt; 2^256 (i.e. including 0x10001). The bit-length of the key size is limited to 2048, 3072 and 4096. The keys generated by this function are FIPS 186-4 compliant provided their length is either 2048 or 3072 bits and the exponent value is an odd integer between 2^16 and 2^256.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -11041,6 +11237,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function.</dd></dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>Destroy a Crypto Library session.</p>
 <p>Clean up a Crypto Library session.</p>
@@ -11051,8 +11248,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
     <tr><td class="paramname">pCpuWaBuffer</td><td>Pointer to buffer to be used as workarea for CPU operations. This pointer shall be CPU-word aligned. </td></tr>
     <tr><td class="paramname">cpuWaLength</td><td>Size (in bytes) of the workarea for CPU operations. The size shall be a multiple of CPU wordsize. </td></tr>
     <tr><td class="paramname">pPkcWaBuffer</td><td>Pointer to buffer to be used as workarea for PKC operations. This pointer shall be PKC-word aligned. </td></tr>
-    <tr><td class="paramname">pkcWaLength</td><td>Size (in bytes) of the workarea for PKC operations. The size shall be a multiple of <b>CPU</b> wordsize. </td></tr>
-    <tr><td class="paramname">rngCtx</td><td>Context to be used for RNG operations.</td></tr>
+    <tr><td class="paramname">pkcWaLength</td><td>Size (in bytes) of the workarea for PKC operations. The size shall be a multiple of <b>CPU</b> wordsize.</td></tr>
   </table>
   </dd>
 </dl>
@@ -11060,7 +11256,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname"><a class="el" href="group__mcux_cl_session_status_values.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6" title="Session operation successful.">MCUXCLSESSION_STATUS_OK</a></td><td>Session has been initialized successfully </td></tr>
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_session_status_values.html#ga547425b7379de3ee1fb96c79140fd68e" title="Error occured during Session operation.">MCUXCLSESSION_STATUS_ERROR</a></td><td>Error occurred during session initializing.</td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cl_session_status_values.html#ga547425b7379de3ee1fb96c79140fd68e" title="Error occurred during Session operation.">MCUXCLSESSION_STATUS_ERROR</a></td><td>Error occurred during session initializing.</td></tr>
   </table>
   </dd>
 </dl>
@@ -11090,7 +11286,28 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>Securely clear <code>length</code> bytes of data at <code>pDst</code>.</p>
 <p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="group__mcux_cssl_param_integrity___functions.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDst</td><td>The destination pointer to buffer to be cleared. Must not be NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dstLength</td><td>The size of the destination data buffer in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The number of bytes to clear. Must be different from zero.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A status code encapsulated in a flow-protection type. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gab2993c75e7ef98fed36f03946630e41c" title="The operation was successful.">MCUXCSSLMEMORY_STATUS_OK</a></td><td>If the contents in buffer at <code>pDst</code> is cleared. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#ga0e60adf6203cb3acb2bdb3ddec166766" title="A parameter was invalid.">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td><td>If one of the parameters is invalid. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group__mcux_cssl_memory___types___macros.html#gaf0923b98a5db9fd23732989986d72f4d" title="A fault occurred in the execution.">MCUXCSSLMEMORY_STATUS_FAULT</a></td><td>If a fault was detected, included invalid checksum <code>chk</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<p>TODO CLNS-7208: Update description to reflect the change from set to secure set</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="group__mcux_cssl_param_integrity___functions.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>

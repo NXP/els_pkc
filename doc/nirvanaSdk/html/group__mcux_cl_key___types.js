@@ -10,8 +10,6 @@ var group__mcux_cl_key___types =
     [ "mcuxClKey_CustomType_t", "group__mcux_cl_key___types.html#ga4249d6ccc1dab6d15b46270da3c3d6d4", null ],
     [ "mcuxClKey_ProtectionDescriptor_t", "group__mcux_cl_key___types.html#ga1c51acf51723d52dbcdc1a0f80f98572", null ],
     [ "mcuxClKey_Protection_t", "group__mcux_cl_key___types.html#gab16fa58359f9994921f5d4a58c597c66", null ],
-    [ "mcuxClKey_AgreementDescriptor_t", "group__mcux_cl_key___types.html#ga01e80989ed177ee950b67567a22d2c1e", null ],
-    [ "mcuxClKey_Agreement_t", "group__mcux_cl_key___types.html#gac992bd0bbe2ffcbf8c16a96141cb80ea", null ],
     [ "mcuxClKey_GenerationDescriptor_t", "group__mcux_cl_key___types.html#gaad2bc2272e961dd28dba4697d9287a14", null ],
     [ "mcuxClKey_Generation_t", "group__mcux_cl_key___types.html#gabb1e565ab474265cf8b53be6d9a1f758", null ],
     [ "MCUX_CSSL_FP_PROTECTED_TYPE", "group__mcux_cl_key___types.html#gaae9387591dfa17577ca9a4016c877b71", null ]

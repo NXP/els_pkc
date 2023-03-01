@@ -3,7 +3,6 @@ var searchData=
   ['cfg',['cfg',['../structmcux_cl_pkc___state__t.html#a5d5778eef90af40b0ba73b22fdeedb57',1,'mcuxClPkc_State_t']]],
   ['ciphersup',['ciphersup',['../unionmcux_cl_els___hw_config__t.html#ac0db95aaf62ac50581111452e89de3ba',1,'mcuxClEls_HwConfig_t']]],
   ['ckdf_5falgo',['ckdf_algo',['../unionmcux_cl_els___ckdf_option__t.html#afc52662f6e41b83e0c731d77c616506c',1,'mcuxClEls_CkdfOption_t']]],
-  ['ckdf_5fderivation_5fdata',['ckdf_derivation_data',['../ckdf__aes__128__ecb__encrypt_8c.html#a800b7470078f0d521e4c5ec941384e3c',1,'ckdf_aes_128_ecb_encrypt.c']]],
   ['ckdfsup',['ckdfsup',['../unionmcux_cl_els___hw_config__t.html#a05b73ed0395351b9504c35f54ac50495',1,'mcuxClEls_HwConfig_t']]],
   ['cmacsup',['cmacsup',['../unionmcux_cl_els___hw_config__t.html#ad30966f27a451f027aed32c036289515',1,'mcuxClEls_HwConfig_t']]],
   ['cphmde',['cphmde',['../unionmcux_cl_els___cipher_option__t.html#a2e1e4a5d815c2559f0ef02e4fd0e5523',1,'mcuxClEls_CipherOption_t']]],

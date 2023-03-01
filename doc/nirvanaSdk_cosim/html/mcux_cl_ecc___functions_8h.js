@@ -15,9 +15,10 @@ var mcux_cl_ecc___functions_8h =
     [ "pOut", "group__mcux_cl_ecc___functions.html#ga66a2c3c79fd22f52f4758b2624473548", null ],
     [ "pOutLength", "group__mcux_cl_ecc___functions.html#ga1a605220f104142b692f4bbc198e4f98", null ],
     [ "mode", "group__mcux_cl_ecc___functions.html#ga876dc9fe8b12e47a43a3ffd96de206c6", null ],
+    [ "pPrivKey", "group__mcux_cl_ecc___functions.html#ga49fc82391222c244208f098e915974c9", null ],
     [ "pIn", "group__mcux_cl_ecc___functions.html#ga3bcc0006a1be68ed8312674730135b1c", null ],
     [ "inSize", "group__mcux_cl_ecc___functions.html#gaf3e40d58bbcee527b32a82db1c49c1b3", null ],
-    [ "pSignature", "group__mcux_cl_ecc___functions.html#gafb3402e626c7ea106176d0bda4566963", null ],
+    [ "pSignature", "group__mcux_cl_ecc___functions.html#gac62070e4338bc94077962af94fe1bb64", null ],
     [ "pSignatureSize", "group__mcux_cl_ecc___functions.html#gae8416e51b02ecd25f30b1717e35c11c9", null ],
     [ "signatureSize", "group__mcux_cl_ecc___functions.html#gad5ae1f8a4aa62308f0186f774d44e3b6", null ]
 ];

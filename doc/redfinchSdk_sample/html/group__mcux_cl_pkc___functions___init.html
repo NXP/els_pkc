@@ -273,6 +273,7 @@ Functions</h2></td></tr>
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
   </table>
@@ -281,6 +282,8 @@ Functions</h2></td></tr>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 </dl>
@@ -297,9 +300,11 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
@@ -309,6 +314,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dl>
 <dt>Parameter properties </dt>
 <dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
 <dd>this pointer shall be 2-byte aligned. </dd>
 <dt><code>bufferLength</code>  </dt>
@@ -325,6 +332,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </table>
   </dd>
 </dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

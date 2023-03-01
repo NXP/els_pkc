@@ -7,7 +7,6 @@ var searchData=
   ['pexp3',['pExp3',['../structmcux_cl_rsa___key.html#a0846b30142dc6cb42d05b5c30afd71cc',1,'mcuxClRsa_Key']]],
   ['pg',['pG',['../structmcux_cl_ecc___domain_param__t.html#a63d99844f35b075f23980f9c405d034b',1,'mcuxClEcc_DomainParam_t']]],
   ['phash',['pHash',['../structmcux_cl_ecc___sign___param__t.html#aeccbb72505744e1f627b67b1f51508ef',1,'mcuxClEcc_Sign_Param_t::pHash()'],['../structmcux_cl_ecc___verify___param__t.html#adb5823e73ed5542ddd0b4a7103e62f1f',1,'mcuxClEcc_Verify_Param_t::pHash()']]],
-  ['phashprefix',['pHashPrefix',['../structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html#a04692e74f0fcc44aa43c18f30709ca91',1,'mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t']]],
   ['pkcwa',['pkcWa',['../structmcux_cl_session___descriptor.html#a394996570a6810808bd59d2f9672c76a',1,'mcuxClSession_Descriptor']]],
   ['pkeyentrydata',['pKeyEntryData',['../structmcux_cl_rsa___key_entry__t.html#a1f5a90f95105b9abaf31a7997a2fb24e',1,'mcuxClRsa_KeyEntry_t']]],
   ['pmod1',['pMod1',['../structmcux_cl_rsa___key.html#ab53f60022abcb2c60300022907c460ce',1,'mcuxClRsa_Key']]],

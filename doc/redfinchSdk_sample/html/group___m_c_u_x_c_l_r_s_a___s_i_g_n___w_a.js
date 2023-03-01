@@ -19,7 +19,6 @@ var group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a =
     [ "MCUXCLRSA_SIGN_PLAIN_2048_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga5b2d3626004c26e5935658c75faed0fe", null ],
     [ "MCUXCLRSA_SIGN_PLAIN_3072_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga87f2af5e231ca701d6c241260f6632c8", null ],
     [ "MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gac51d995815daa1270660faa6c941556b", null ],
-    [ "MCUXCLRSA_SIGN_PLAIN_8192_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga6b503e621adc1cdb724c7a4052ff5b83", null ],
     [ "MCUXCLRSA_SIGN_PLAIN_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gab592bb2afe239d110b69019bbcfbf39a", null ],
     [ "MCUXCLRSA_SIGN_CRT_NOENCODE_1024_WACPU_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga08af4d804d4c5dd22c246fe4ee55afd1", null ],
     [ "MCUXCLRSA_SIGN_CRT_NOENCODE_2048_WACPU_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gada60205f871f7cbdff86547038599ec8", null ],
@@ -40,6 +39,5 @@ var group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a =
     [ "MCUXCLRSA_SIGN_CRT_2048_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gaab6efa4449159180daf2c0ad4452283c", null ],
     [ "MCUXCLRSA_SIGN_CRT_3072_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga7844b694581a8cb752edd86444a10812", null ],
     [ "MCUXCLRSA_SIGN_CRT_4096_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga56f2ed2760ce4db4e8246d96f768e23e", null ],
-    [ "MCUXCLRSA_SIGN_CRT_8192_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gae3069a3437f12c9697da1ffb0669b88b", null ],
     [ "MCUXCLRSA_SIGN_CRT_WAPKC_SIZE", "group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gae92072e416a0f52664b7720d33b1fd91", null ]
 ];

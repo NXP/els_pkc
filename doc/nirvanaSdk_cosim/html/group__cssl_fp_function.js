@@ -16,5 +16,6 @@ var group__cssl_fp_function =
     [ "MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED", "group__cssl_fp_function.html#ga5544a5ce0e2478832eb1eacf339b4475", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALL_BEGIN", "group__cssl_fp_function.html#ga8a9b1ebbc02c8195618a339aa8e0003d", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALL_END", "group__cssl_fp_function.html#gac4362de43d0e67ba6fac0057eb38008d", null ],
-    [ "MCUX_CSSL_FP_FUNCTION_CALLED", "group__cssl_fp_function.html#gac16ad6597579a02a30ada37f86f216d5", null ]
+    [ "MCUX_CSSL_FP_FUNCTION_CALLED", "group__cssl_fp_function.html#gac16ad6597579a02a30ada37f86f216d5", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_ENTERED", "group__cssl_fp_function.html#ga9f7aa860f353079a6da5188bd18b977c", null ]
 ];

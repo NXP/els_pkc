@@ -1,14 +1,5 @@
 var group__mcux_cl_ecc___types =
 [
-    [ "mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t", "structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html", [
-      [ "options", "structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html#ac6b59aa73f4d82e7f21c0ba2f23f79e9", null ]
-    ] ],
-    [ "mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html", [
-      [ "generateOption", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html#af4c55bbeac7d492ebe69b685ccb3b4a0", null ],
-      [ "verifyOption", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html#a49751cd6cef94a0b705ba8b130ede5fe", null ],
-      [ "pHashPrefix", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html#a04692e74f0fcc44aa43c18f30709ca91", null ],
-      [ "hashPrefixLen", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html#a5445cf291f66dfd32118116ae473d1d2", null ]
-    ] ],
     [ "mcuxClEcc_DomainParam_t", "structmcux_cl_ecc___domain_param__t.html", [
       [ "pA", "structmcux_cl_ecc___domain_param__t.html#a5916c96212c7f76a61ddc0c8aa957ef5", null ],
       [ "pB", "structmcux_cl_ecc___domain_param__t.html#abcaf03eba7dd8f697e3e582de2aa1eef", null ],
@@ -59,5 +50,7 @@ var group__mcux_cl_ecc___types =
     [ "mcuxClEcc_Verify_Param_optLen_byteLenHash_mask", "group__mcux_cl_ecc___types.html#gafeb4e3230717ac80d469d421918a8607", null ],
     [ "mcuxClEcc_MontDH_DomainParams_t", "group__mcux_cl_ecc___types.html#ga52205a42d2027ba1c3ec49589f9f0b8c", null ],
     [ "mcuxClEcc_EdDSA_DomainParams_t", "group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321", null ],
+    [ "mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t", "group__mcux_cl_ecc___types.html#gadee46209e43c63814a86e882b3927b27", null ],
+    [ "mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t", "group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c", null ],
     [ "mcuxClEcc_Weier_DomainParams_t", "group__mcux_cl_ecc___types.html#gafe84edad82c8934ef1634e9f29effa55", null ]
 ];

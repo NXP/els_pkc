@@ -10,7 +10,7 @@ var modules =
     [ "mcuxClMemory", "group__mcux_cl_memory.html", "group__mcux_cl_memory" ],
     [ "mcuxClOsccaPkc", "group__mcux_cl_oscca_pkc.html", "group__mcux_cl_oscca_pkc" ],
     [ "mcuxClOsccaSm3", "group__mcux_cl_oscca_sm3.html", null ],
-    [ "mcuxClOsccaSm3_Modes", "group__mcux_cl_oscca_sm3___modes.html", "group__mcux_cl_oscca_sm3___modes" ],
+    [ "mcuxClOsccaSm3_Modes", "group__mcux_cl_oscca_sm3___modes.html", null ],
     [ "MCUXCLOSCCASM3_OUTPUT_SIZE_", "group___m_c_u_x_c_l_o_s_c_c_a_s_m3___o_u_t_p_u_t___s_i_z_e__.html", "group___m_c_u_x_c_l_o_s_c_c_a_s_m3___o_u_t_p_u_t___s_i_z_e__" ],
     [ "MCUXCLOSCCASM3_WA", "group___m_c_u_x_c_l_o_s_c_c_a_s_m3___w_a.html", "group___m_c_u_x_c_l_o_s_c_c_a_s_m3___w_a" ],
     [ "MCUXCLOSCCASM3_CONTEXT", "group___m_c_u_x_c_l_o_s_c_c_a_s_m3___c_o_n_t_e_x_t.html", "group___m_c_u_x_c_l_o_s_c_c_a_s_m3___c_o_n_t_e_x_t" ],
