@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,8 +16,8 @@
  * \brief Implementation that disables the CSSL secure counter mechanism.
  */
 
-#ifndef MCUX_CSSL_SECURE_COUNTER_NONE_H_
-#define MCUX_CSSL_SECURE_COUNTER_NONE_H_
+#ifndef MCUXCSSLSECURECOUNTER_NONE_H_
+#define MCUXCSSLSECURECOUNTER_NONE_H_
 
 /**
  * \addtogroup mcuxCsslIMPL MCUX CSSL -- Implementations
@@ -105,7 +105,7 @@
  * \return          Always #MCUX_CSSL_SC_CHECK_PASSED.
  */
 #define MCUX_CSSL_SC_CHECK_IMPL(value) \
-  (MCUXCLCOUNTER_CHECK_PASSED)
+  (MCUX_CSSL_SC_CHECK_PASSED_IMPL)
 
 /****************************************************************************/
 /* Counter increment                                                        */
@@ -263,4 +263,4 @@
   /* intentionally empty */
 
 
-#endif /* MCUX_CSSL_SECURE_COUNTER_NONE_H_ */
+#endif /* MCUXCSSLSECURECOUNTER_NONE_H_ */

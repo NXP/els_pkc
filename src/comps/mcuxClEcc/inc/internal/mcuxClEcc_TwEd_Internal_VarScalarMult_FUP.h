@@ -23,6 +23,9 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * FUP program declaration mcuxClEcc_FUP_VarScalarMult_YZMontLadder_LadderStep
@@ -35,5 +38,9 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_VarScalarMult_YZMontLadder_Ladde
  */
 #define mcuxClEcc_FUP_VarScalarMult_Recover_X_Coordinate_LEN  15u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_VarScalarMult_Recover_X_Coordinate[mcuxClEcc_FUP_VarScalarMult_Recover_X_Coordinate_LEN];
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_TWED_INTERNAL_VARSCALARMULT_FUP_H_ */

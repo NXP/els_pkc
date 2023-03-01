@@ -28,6 +28,10 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**********************************************
  * FUNCTIONS
  **********************************************/
@@ -43,6 +47,10 @@
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMemory_set)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_set (uint8_t *pDst, uint8_t val, size_t length, size_t bufLength);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMEMORY_SET_H_ */
 

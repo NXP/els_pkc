@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,8 +32,6 @@
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClKey_Internal.h>
 
-#define mcuxClRsa_verify mcuxClRsa_verify
-
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_verify)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
   mcuxClSession_Handle_t           pSession,
@@ -53,10 +51,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
   /* Initialization                                    */
   /*****************************************************/
 
-
   /* Locate paddedMessage buffer at beginning of PKC WA and update session info */
-  const uint32_t modulusByteLength = pKey->pMod1->keyEntryLength;  // TODO TBD during security review: check consistency of input params? pMod1->keyEntryLength vs mcuxClKey_getSize(key)
+  const uint32_t modulusByteLength = pKey->pMod1->keyEntryLength;
   const uint32_t pkcWaSizeWord = MCUXCLPKC_ROUNDUP_SIZE(modulusByteLength) / (sizeof(uint32_t));
+
   uint8_t * pPaddedMessage = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
   if (NULL == pPaddedMessage)
   {
@@ -110,22 +108,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
     /*****************************************************/
 
     const uint32_t keyBitLength = 8u * modulusByteLength;
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-    /* TODO CLNS-6084: Remove this copy to CPU RAM.
-     * If this is not possible, then move the following to pssVerify internal function, and revert all changes in RSA Verify that are related to PKC_PKCRAM_NO_UNALIGNED_ACCESS
-     */
-    uint32_t fpBalance = 0u;
-    const uint32_t cpuWaSizeWorkaround = (MCUXCLPKC_ROUNDUP_SIZE(modulusByteLength) / (sizeof(uint32_t)));
-    if(pVerifyMode->EncodeVerify_FunId == MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pssVerify))
-    {
-      /* wokraround, pPaddedMessage moved to cpuram, aligned address*/
-      uint8_t * pPaddedMessageCpu = (uint8_t *)mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWorkaround);
 
-      MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pPaddedMessageCpu, pPaddedMessage, MCUXCLPKC_ROUNDUP_SIZE(modulusByteLength), MCUXCLPKC_ROUNDUP_SIZE(modulusByteLength)));
-      pPaddedMessage = pPaddedMessageCpu;
-      fpBalance = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy);
-    }
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
 
     MCUX_CSSL_FP_FUNCTION_CALL(retVal_PaddingOperation, pVerifyMode->pPaddingFunction(pSession,
                                                                                      pMessageOrDigest,
@@ -148,18 +131,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
 
     /* Recover session info */
     mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-    mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWorkaround);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_verify, retVal_PaddingOperation,
                     MCUXCLRSA_STATUS_FAULT_ATTACK,
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_public),
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-                    fpBalance,
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
                     pVerifyMode->EncodeVerify_FunId,
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
   }

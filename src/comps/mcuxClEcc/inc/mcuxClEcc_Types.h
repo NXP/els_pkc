@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,6 +26,9 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClEcc_ParameterSizes.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************************/
 /* Return codes of mcuxClEcc                               */
@@ -58,6 +61,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Status_Protect
 #define MCUXCLECC_STATUS_INVALID_SIGNATURE         ((mcuxClEcc_Status_t) 0x555517E8u)  ///< ECDSA Signature is invalid.
 #define MCUXCLECC_STATUS_NEUTRAL_POINT             ((mcuxClEcc_Status_t) 0x55558778u)  ///< The result of the point operation is the neutral point.
 #define MCUXCLECC_STATUS_FAULT_ATTACK              ((mcuxClEcc_Status_t) 0x5555F00Fu)  ///< Fault attack (unexpected behavior) is detected.
+#define MCUXCLECC_STATUS_NOT_SUPPORTED             ((mcuxClEcc_Status_t) 0x55550000u)  ///< Functionality is not supported.
 /** @} */
 
 /**
@@ -66,22 +70,6 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Status_Protect
  * @{ */
 #define MCUXCLECC_STATUS_ERROR_SMALL_SUBGROUP      ((mcuxClEcc_Status_t) 0x55554DB2u)  ///< MONTDH public key lies in small subgroup.
 /** @} */  /* MCUXCLECC_MONTDH_STATUS_ */
-
-/** @addtogroup MCUXCLECC_EDDSA_ED25519_SIZE_
- * mcuxClEcc_Mont_size definitions for Ed25519 input buffers
- * @{ */
-#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY        (32u)   ///< Byte length of a Ed25519 private key.
-#define MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY         (32u)   ///< Byte length of a Ed25519 public key.
-#define MCUXCLECC_EDDSA_ED25519_SIGNATURE_SIZE         (64u)   ///< Byte length of a Ed25519 signature.
-/** @} */  /* MCUXCLECC_EDDSA_ED25519_SIZE_ */
-
-/** @addtogroup MCUXCLECC_EDDSA_ED448_SIZE_
- * mcuxClEcc_Mont_size definitions for Ed448 input buffers
- * @{ */
-#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY        (57u)   ///< Byte length of a Ed448 private key.
-#define MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY         (57u)   ///< Byte length of a Ed448 public key.
-#define MCUXCLECC_EDDSA_ED448_SIGNATURE_SIZE         (114u)  ///< Byte length of a Ed448 signature.
-/** @} */  /* MCUXCLECC_EDDSA_ED448_SIZE_ */
 /**
  * @}
  */ /* mcuxClEcc_Macros */
@@ -105,20 +93,26 @@ typedef struct mcuxClEcc_MontDH_DomainParams mcuxClEcc_MontDH_DomainParams_t;
 /** Type for EdDSA domain parameters */
 typedef struct mcuxClEcc_EdDSA_DomainParams mcuxClEcc_EdDSA_DomainParams_t;
 
-/** Descriptor specifying the EdDSA GenerateKeyPair variant */
-typedef struct
-{
-    uint32_t options;  ///< option of GenerateKeyPair, see @ref MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_
-} mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t;
+/**
+ * @brief Forward declaration for EdDSA GenerateKeyPair variant structure
+ */
+struct mcuxClEcc_EdDSA_GenerateKeyPairDescriptor;
 
-/** Descriptor specifying the EdDSA variant */
-typedef struct
-{
-    uint32_t generateOption;      ///< option of signature generation
-    uint32_t verifyOption;        ///< option of signature verification
-    const uint32_t *pHashPrefix;  ///< pointer to hash prefix
-    uint32_t hashPrefixLen;       ///< size of hash prefix
-} mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t;
+/**
+ * @brief EdDSA GenerateKeyPair variant descriptor type
+ */
+typedef struct mcuxClEcc_EdDSA_GenerateKeyPairDescriptor mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t;
+
+/**
+ * @brief Forward declaration for EdDSA SignatureProtocol variant structure
+ */
+struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor;
+
+/**
+ * @brief EdDSA SignatureProtocol variant descriptor type
+ */
+typedef struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t;
+
 
 
 /** Type for Weierstrass ECC domain parameters */
@@ -226,10 +220,6 @@ typedef struct
  * EdDSA key pair generation function */
 extern const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor;
 
-/* EdDSA key pair generation descriptor to be used when the private is an input to the
- * EdDSA key pair generation function */
-extern const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_InputPrivKeyDescriptor;
-
 
 /**********************************************************/
 /* Signature protocol descriptors                         */
@@ -242,5 +232,8 @@ extern const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_PureE
  * @}
  */ /* mcuxClEcc_Types */
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_TYPES_H_ */

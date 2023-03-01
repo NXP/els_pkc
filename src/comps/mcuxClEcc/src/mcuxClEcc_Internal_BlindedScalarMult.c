@@ -102,7 +102,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_BlindedScalarMult(mcux
      */
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
-    uint32_t leadingZeroN = MCUXCLMATH_FP_LEADINGZEROS(ECC_N);
+    uint32_t leadingZeroN;
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(ECC_N, &leadingZeroN));
     uint32_t bitLenN = (operandSize * 8u) - leadingZeroN;
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_secFixScalarMult,

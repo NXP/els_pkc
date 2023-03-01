@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -60,6 +60,7 @@
  *   pOperands[X0/Y0/X1/Y1] and location of corresponding buffers are randomized.
  *
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_SecurePointMult)
@@ -77,7 +78,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint32_t *pOperands32 = (uint32_t *) pOperands;  /* UPTR table is 32-bit aligned in ECC component. */
-    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);  /* PKC word is CPU word aligned. */
+    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
 
     /* Randomize P: (X0,Y0, Z) -> (X0,Y0, new Z) Jacobian. */
     uint8_t *pZA = MCUXCLPKC_OFFSET2PTR(pOperands[WEIER_ZA]);
@@ -161,7 +162,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
             /* Randomize buffers X0/Y0/X1/Y1. */
             MCUXCLPKC_WAITFORFINISH();
             MCUX_CSSL_FP_FUNCTION_CALL(retReRandomUptrt,  // TODO CLNS-3449, check if removing it
-                                      mcuxClPkc_ReRandomizeUPTRT(&pOperands[WEIER_X0],
+                                      mcuxClPkc_ReRandomizeUPTRT(pSession,
+                                                                &pOperands[WEIER_X0],
                                                                 (uint16_t) operandSize,
                                                                 (WEIER_Y1 - WEIER_X0 + 1u)) );
             if (MCUXCLPKC_STATUS_OK != retReRandomUptrt)

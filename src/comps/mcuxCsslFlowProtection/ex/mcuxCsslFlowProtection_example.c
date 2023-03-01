@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,16 +11,25 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+
+#define MCUX_CSSL_FP_ASSERT_CALLBACK() assertCallback()
+
+
 #include <mcuxCsslExamples.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
 
+
+/*Example global SC*/
+static volatile uint32_t testVariable = 0u; 
+
+
 /****************************************************************************/
-/* Unprotected function declaration                                         */
+/* Function declaration                                                     */
 /****************************************************************************/
 
 uint32_t functionOnly(void);
-
+void assertCallback(void);
 
 
 /****************************************************************************/
@@ -51,15 +60,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionBranch(uint32_t arg);
 MCUX_CSSL_FP_FUNCTION_DECL(functionSwitch) /* Important: no semicolon here! */
 MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionSwitch(uint32_t arg);
 
+MCUX_CSSL_FP_FUNCTION_DECL(functionAssert) /* Important: no semicolon here! */
+MCUX_CSSL_FP_PROTECTED_TYPE(void) functionAssert(void);
+
 
 
 /****************************************************************************/
-/* Unprotected function definitions                                         */
+/* Function definitions                                                     */
 /****************************************************************************/
 
 uint32_t functionOnly(void)
 {
   return 0xC0DEu;
+}
+
+void assertCallback(void)
+{
+  testVariable += 1UL;
 }
 
 /****************************************************************************/
@@ -306,7 +323,56 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionSwitch(uint32_t arg)
   );
 }
 
-bool mcuxCsslFlowProtection_example(void)
+/*
+ * Example of a function that performs an assertion.
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(functionAssert) /* Important: no semicolon here! */
+MCUX_CSSL_FP_PROTECTED_TYPE(void) functionAssert()
+{
+  /* The protected function that will be called must be declared as expected,
+   * either in the FUNCTION_ENTRY, FUNCTION_EXIT, EXPECT, or an event that
+   * accepts expectation declarations.
+   * FUNCTION_ENTRY can be used with and without providing expectations. */
+  MCUX_CSSL_FP_FUNCTION_ENTRY(functionAssert,
+    MCUX_CSSL_FP_FUNCTION_CALLED(functionOnly0)
+  );
+ 
+  functionOnly0();
+
+  /* The ASSERT macro allows the currently recorded code flow to be checked.
+   * The call to functionOnly has already been recorded as expected at the
+   * function entry, so at this point the only remaining expectation is that
+   * the function has been entered. */
+  MCUX_CSSL_FP_ASSERT(
+    MCUX_CSSL_FP_FUNCTION_ENTERED(functionAssert)
+  );
+
+  (void) functionOnly1();
+
+  /* At this point the functionOnly1 call event should have happened, but not
+   * yet recorded as an expectation. Therefore it should be specified as an
+   * expected event for the assertion to pass. */
+  MCUX_CSSL_FP_ASSERT(
+    MCUX_CSSL_FP_FUNCTION_ENTERED(functionAssert),
+    MCUX_CSSL_FP_FUNCTION_CALLED(functionOnly1)
+  );
+
+  /* This assertion will fail since it misses the expectation for the
+   * functionOnly1 call event. */
+  MCUX_CSSL_FP_ASSERT(
+    MCUX_CSSL_FP_FUNCTION_ENTERED(functionAssert)
+  );
+
+  /* At this point MCUX_CSSL_FP_ASSERT_CALLBACK should be already executed 
+  testVariable should be set to 0xFF*/
+
+  /* FUNCTION_EXIT can be used with and without providing expectations. */
+  MCUX_CSSL_FP_FUNCTION_EXIT_VOID(functionAssert,
+    MCUX_CSSL_FP_FUNCTION_CALLED(functionOnly1)
+  );
+}
+
+MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 {
   const uint32_t rOnly = functionOnly();
   (void) rOnly;
@@ -339,6 +405,8 @@ bool mcuxCsslFlowProtection_example(void)
   {
     return MCUX_CSSL_EX_ERROR;
   }
+
+  functionAssert();
 
   return MCUX_CSSL_EX_OK;
 }

@@ -31,6 +31,13 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(
     const uint8_t *input,
     size_t input_length )
 {
+    mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation->ctx.clns_data;
+    /* No support for multipart Hmac in CL */
+    if(PSA_ALG_IS_HMAC(pClnsMacData->alg) == 1u)
+    {
+        return PSA_ERROR_NOT_SUPPORTED;
+    }
+
     uint32_t cpuWorkarea[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
     /* Create session */
     mcuxClSession_Descriptor_t session;
@@ -48,7 +55,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Call the mcuxClMac_process */
-    mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation->ctx.clns_data;
     mcuxClKey_Descriptor_t * keyDesc = &pClnsMacData->keydesc;
 
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(keyDesc))
@@ -94,7 +100,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer_internal
 {
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
     const mcuxClMac_ModeDescriptor_t * mode;
-    mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes);
+    mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
     if (mode == NULL)
     {
         return PSA_ERROR_NOT_SUPPORTED;
@@ -203,7 +209,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
     size_t *mac_length)
 {
     const mcuxClMac_ModeDescriptor_t * mode;
-    mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes);
+    mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
+    if (mode == NULL)
+    {
+        return PSA_ERROR_NOT_SUPPORTED;
+    }
 
     if ( mac_size == 0u ||  mac_size > mode->common.macByteSize)
     {
@@ -243,6 +253,13 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
     size_t mac_size,
     size_t *mac_length)
 {
+    mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation->ctx.clns_data;
+    /* No support for multipart Hmac in CL */
+    if(PSA_ALG_IS_HMAC(pClnsMacData->alg) == 1u)
+    {
+        return PSA_ERROR_NOT_SUPPORTED;
+    }
+
     /* Key buffer for the CPU workarea in memory. */
     uint32_t cpuWorkarea[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
 
@@ -261,7 +278,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     /* Call the mcuxClMac_finish */
-    mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation->ctx.clns_data;
     mcuxClKey_Descriptor_t * keyDesc = &pClnsMacData->keydesc;
 
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(keyDesc))
@@ -299,11 +315,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
 }
 
 
-const mcuxClMac_ModeDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(const psa_key_attributes_t *attributes)
+const mcuxClMac_ModeDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(const psa_key_attributes_t *attributes, psa_algorithm_t alg)
 {
     if(attributes->core.type == PSA_KEY_TYPE_AES)
     {
-        switch(PSA_ALG_FULL_LENGTH_MAC(attributes->core.policy.alg))
+        switch(PSA_ALG_FULL_LENGTH_MAC(alg))
         {
             //AES based algorithms and paddings
             case PSA_ALG_CMAC:
@@ -317,9 +333,9 @@ const mcuxClMac_ModeDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_mac_getMod
                 return NULL;
         }
     }
-    else if(PSA_ALG_IS_HMAC(attributes->core.policy.alg) == 1u)
+    else if(PSA_ALG_IS_HMAC(alg) == 1u)
     {
-        switch(PSA_ALG_HMAC_GET_HASH(attributes->core.policy.alg))
+        switch(PSA_ALG_HMAC_GET_HASH(alg))
         {
             case PSA_ALG_SHA_256:
                 return mcuxClMac_Mode_HMAC_SHA2_256_ELS;
@@ -341,7 +357,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(
         psa_algorithm_t alg)
 {
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
-    const mcuxClMac_ModeDescriptor_t * mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes);
+    const mcuxClMac_ModeDescriptor_t * mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
     if (mode == NULL)
     {
         return PSA_ERROR_NOT_SUPPORTED;
@@ -402,9 +418,18 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer(
     psa_algorithm_t alg )
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    // The driver handles multiple storage locations, call it first then default to builtin driver
-    /* Create the key */
     mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation->ctx.clns_data;
+    
+    /* Set alg in clns_data for update and finalize */
+    pClnsMacData->alg = alg;
+
+    /* No support for multipart Hmac */
+    if(PSA_ALG_IS_HMAC(alg) == 1u)
+    {
+        return PSA_ERROR_NOT_SUPPORTED;
+    }
+
+    
     mcuxClKey_Descriptor_t * keyDesc = &pClnsMacData->keydesc;
     psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, keyDesc);
     if(PSA_SUCCESS != keyStatus)

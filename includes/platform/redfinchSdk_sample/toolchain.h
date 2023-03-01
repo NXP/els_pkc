@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -43,7 +43,7 @@
     #define CSS_IDATA_SEGMENT
     #define CSS_CONST_SEGMENT
     #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4)))
-    #define UNUSED_PARAM
+    #define UNUSED_PARAM __attribute__((unused))
     #define UNALIGNED
     #define MCUX_CSSL_UNUSED(p) ((void) (p))
 
@@ -79,7 +79,7 @@
     #define CSS_IDATA_SEGMENT
     #define CSS_CONST_SEGMENT
     #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4)))
-    #define UNUSED_PARAM
+    #define UNUSED_PARAM __attribute__((unused))
     #define UNALIGNED
     #define MCUX_CSSL_UNUSED(p) ((void) (p))
 
@@ -107,7 +107,7 @@
 #endif
 
 #if defined (__ARMCC_VERSION) && (__ARMCC_VERSION < 6010050)
-    #define ARMCC_LT_10_5
+    #define ARMCC_LT_10_5 //6.01 build 0050
 #endif
 
 #if ( defined(__ARMCC_VERSION) || defined(_MSC_VER) ) && !defined(inline) && !defined(__cplusplus)

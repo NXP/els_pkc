@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -22,11 +22,21 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClSession.h>
+#include <mcuxClCore_Buffer.h>
 #include <mcuxClPkc_Functions.h>
 #include <mcuxClEcc_Types.h>
 
 #include <internal/mcuxClEcc_Internal_UPTRT_access.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**********************************************************/
+/*                                                        */
+/* Definition of generic CPU and PKC workarea layout      */
+/*                                                        */
+/**********************************************************/
 
 /**
  * Generic ECC PKC workarea memory layout.
@@ -110,6 +120,14 @@ typedef struct
     uint32_t pOperands32[];
 } mcuxClEcc_CpuWa_t;
 
+
+
+/**********************************************************/
+/*                                                        */
+/* Definition of generic ECC domain parameters            */
+/*                                                        */
+/**********************************************************/
+
 typedef struct mcuxClEcc_CommonDomainParams mcuxClEcc_CommonDomainParams_t;
 
 
@@ -129,7 +147,6 @@ typedef struct
     mcuxClEcc_ScalarMultFunction_t pScalarMultFct;   ///< scalar multiplication function pointer
     uint32_t scalarMultFct_FP_FuncId;               ///< FP ID of the function
 } mcuxClEcc_ScalarMultFunction_FP_t;
-
 
 /**
  * Common part of domain parameter structure, shared by all ECC functions.
@@ -154,7 +171,18 @@ struct mcuxClEcc_CommonDomainParams
     const mcuxClEcc_ScalarMultFunction_FP_t *pPlainVarScalarMultFctFP;  ///< Pointer to plain scalar multiplication function and FP ID that shall be used to perform a scalar multiplication lambda*G for non-secret scalar lambda in {1,...,n-1} and arbitrary point P on the curve
 };
 
-/* Options to determine whether scalar multiplication input/output are in affine or projective format. */
+
+
+
+/**********************************************************/
+/*                                                        */
+/* Miscellanious definitions                              */
+/*                                                        */
+/**********************************************************/
+
+/**
+ * Options to determine whether scalar multiplication input/output are in affine or projective format.
+ */
 #define MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT    (0x000000A5u)
 #define MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT        (0x0000005Au)
 #define MCUXCLECC_SCALARMULT_OPTION_INPUT_MASK          (0x000000FFu)
@@ -162,7 +190,9 @@ struct mcuxClEcc_CommonDomainParams
 #define MCUXCLECC_SCALARMULT_OPTION_AFFINE_OUTPUT       (0x00003C00u)
 #define MCUXCLECC_SCALARMULT_OPTION_OUTPUT_MASK         (0x0000FF00u)
 
-/** Define specifying the size of the multiplicative scalar blinding bit size */
+/**
+ * Define specifying the size of the multiplicative scalar blinding bit size
+ */
 #define MCUXCLECC_SCALARBLINDING_BITSIZE (32u)
 #define MCUXCLECC_SCALARBLINDING_BYTELEN (MCUXCLECC_SCALARBLINDING_BITSIZE / 8u)
 
@@ -170,6 +200,13 @@ struct mcuxClEcc_CommonDomainParams
 #define MCUXCLECC_ALIGNED_SIZE(byteLength)  \
     ((((byteLength) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t))) * (sizeof(uint32_t)))
 
+
+
+/**********************************************************/
+/*                                                        */
+/* Internal function declarations                         */
+/*                                                        */
+/**********************************************************/
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_InterleaveTwoScalars)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_InterleaveTwoScalars(uint16_t iScalar0_iScalar1, uint32_t scalarBitLength);
@@ -214,5 +251,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RecodeAndReorderScalar
         MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_RecodeAndReorderScalar(pSession, scalarIndex, f, scalarBitLength));  \
         (void) retValTemp;  /* Checking is unnecessary, because it always returns OK. */  \
     } while (false)
+
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_INTERNAL_H_ */

@@ -290,38 +290,7 @@ mcuxCsslMemory_Copy_fault:  \
     (void)success;  \
 }while(false)
 #else
-#ifdef MCUXCL_FEATURE_CSSL_MEMORY_C_FALLBACK
-#warning Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax. \
-         Using (unsecure) C fallback implementation for now.
-
-#define MCUXCSSLMEMORY_COPY_ASM(word, byte, cha, chb, xorword, retval, datareg, src, dst, nwords, cnt, success)  \
-do{  \
-    (word) = 0u; \
-    (xorword) = 0u; \
-    while ((word) < (nwords)) \
-    { \
-      (datareg) = ((const uint32_t *) (src))[word]; \
-      (cha) ^= (datareg); \
-      ((uint32_t *) (dst))[word] = (datareg); \
-      (chb) ^= (datareg); \
-      ++(word); \
-      (xorword) ^= (word);  \
-    } \
-    (byte) = (word) << 2;  \
-    while ((byte) < (cnt)) \
-    { \
-      (datareg) = (uint32_t)(((const uint8_t *) (src))[byte]); \
-      (cha) ^= (datareg); \
-      ((uint8_t *) (dst))[byte] = (uint8_t)(datareg); \
-      (chb) ^= (datareg); \
-      ++(byte); \
-    } \
-    (datareg) = 0u; \
-    (retval) ^= (success);  \
-}while(false)
-#else
     #error Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax.
-#endif /* MCUXCL_FEATURE_CSSL_MEMORY_C_FALLBACK */
 #endif /* Compiler selection */
 
 

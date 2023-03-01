@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,6 +26,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClPkc.h>              // Interface to the entire mcuxClPkc component
+#include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <toolchain.h>             // Memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
@@ -139,30 +140,27 @@ bool mcuxClRsa_sign_NoEncode_example(void)
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /* Enable ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
-    // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    /** Initialize ELS, Enable the ELS **/
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return false;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
-    // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
-    {
-        return false;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create session handle to be used by mcuxClRsa_sign */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-    //Allocate and initialize session
+
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session,
                                                  MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE,
                                                  MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE);
+
+    /* Initialize the PRNG */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
+    {
+        return false;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PRIVATEPLAIN */
     const mcuxClRsa_KeyEntry_t Mod1 = {

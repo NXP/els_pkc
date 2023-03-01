@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,6 +25,9 @@
 
 #include <internal/mcuxClEls_Internal_mapping.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /****                                ****/
 /**** ELS Hardware Abstraction Layer ****/
@@ -75,7 +78,8 @@
 
 /**** ------------------------------ ****/
 
-
-
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLELS_SFRACCESS_H_ */

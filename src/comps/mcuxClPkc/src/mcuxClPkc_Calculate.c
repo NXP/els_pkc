@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -54,7 +54,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Calc(uint16_t param_mo
      | (MCUXCLPKC_SFR_BITPOS(CTRL, GOM1) != 4) | (MCUXCLPKC_SFR_BITPOS(CTRL, GOM2) != 5) )
 #error update implementation according to the PKC spec
 #endif
-    uint32_t pkc_ctrl = MCUXCLPKC_SFR_READ(CTRL) | (MCUXCLPKC_SFR_BITMSK(CTRL, GOD1) << ((param_mode >> 14) & 0x3u));
+    uint32_t pkc_ctrl = MCUXCLPKC_SFR_READ(CTRL) | ((uint32_t) MCUXCLPKC_SFR_BITMSK(CTRL, GOD1) << (((uint32_t) param_mode >> 14u) & 0x3u));
 
     MCUXCLPKC_WAITFORREADY();
 

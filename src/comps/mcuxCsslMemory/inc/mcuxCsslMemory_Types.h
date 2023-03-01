@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,7 +20,6 @@
 #define MCUXCSSLMEMORY_TYPES_H
 
 #include <stdint.h>
-#include <stdlib.h>
 
 /**
  * @defgroup mcuxCsslMemory_Types mcuxCsslMemory_Types
@@ -43,9 +42,13 @@
 #define MCUXCSSLMEMORY_STATUS_NOT_EQUAL          ((mcuxCsslMemory_Status_t) 0x1E1E1E1Eu) ///< The two contents of the Memory Compare are not equal
 #define MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER  ((mcuxCsslMemory_Status_t) 0x69696969u) ///< A parameter was invalid
 #define MCUXCSSLMEMORY_STATUS_FAULT              ((mcuxCsslMemory_Status_t) 0x96969696u) ///< A fault occurred in the execution
+
+#define MCUXCSSLMEMORY_KEEP_ORDER     ((uint32_t) 0xE1E139A5u)  ///< Data storing in destination buffer in original order.
+#define MCUXCSSLMEMORY_REVERSE_ORDER  ((uint32_t) 0xE1E1395Au)  ///< Data storing in destination buffer with reversed order.
 /**
  * @}
  */
+
 
 /**********************************************
  * TYPEDEFS

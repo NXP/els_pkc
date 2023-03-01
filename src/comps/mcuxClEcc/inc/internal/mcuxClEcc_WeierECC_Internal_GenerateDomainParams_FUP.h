@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,9 +20,11 @@
 #ifndef MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP
 #define MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP
 
-
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * FUP program declaration mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P
@@ -42,5 +44,8 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Convert_G_t
 #define mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len   10u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR[mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len];
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP */

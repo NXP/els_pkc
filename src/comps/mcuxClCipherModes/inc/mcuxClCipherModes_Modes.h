@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -66,6 +66,7 @@ extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_E
 static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_ECB_Enc_PaddingISO9797_1_Method2 =
   &mcuxClCipher_ModeDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method2;
 
+
 /**
  * @brief AES ECB Decryption mode descriptor
  */
@@ -76,6 +77,8 @@ extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_D
  */
 static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_ECB_Dec_NoPadding =
   &mcuxClCipher_ModeDescriptor_AES_ECB_Dec;
+
+
 
 /**
  * @brief AES CBC Encryption mode descriptor without padding
@@ -131,8 +134,6 @@ extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CTR;
  */
 static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_CTR =
   &mcuxClCipher_ModeDescriptor_AES_CTR;
-
-
 
 
 /** @} */

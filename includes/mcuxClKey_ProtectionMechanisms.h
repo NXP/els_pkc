@@ -77,8 +77,9 @@ static const mcuxClKey_Protection_t mcuxClKey_Protection_XorMasked =
 
 /** @} */
 
-#endif /* MCUXCLKEY_PROTECTIONMECHANISMS_H_ */
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif /* MCUXCLKEY_PROTECTIONMECHANISMS_H_ */
+

@@ -28,7 +28,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetHwVer
     mcuxClEls_HwVersion_t * result)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetHwVersion);
-    result->word.value = MCUXCLELS_SFR_READ(VERSION);
+    result->word.value = MCUXCLELS_SFR_READ(ELS_VERSION);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetHwVersion, MCUXCLELS_STATUS_OK);
 }
 
@@ -48,7 +48,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetHwSta
     mcuxClEls_HwState_t * result)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetHwState);
-    result->word.value = MCUXCLELS_SFR_READ(STATUS);
+    result->word.value = MCUXCLELS_SFR_READ(ELS_STATUS);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetHwState, MCUXCLELS_STATUS_OK);
 }
 
@@ -57,7 +57,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Enable_A
     void)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Enable_Async);
-    MCUXCLELS_SFR_WRITE(CTRL, MCUXCLELS_SFR_FIELD_FORMAT(CTRL, ELS_EN, 1u));
+    MCUXCLELS_SFR_WRITE(ELS_CTRL, MCUXCLELS_SFR_FIELD_FORMAT(ELS_CTRL, ELS_EN, 1u));
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Enable_Async, MCUXCLELS_STATUS_OK_WAIT);
 }
 
@@ -197,7 +197,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_ResetErr
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_ResetErrorFlags);
 
-    MCUXCLELS_SFR_WRITE(ERR_STATUS_CLR, MCUXCLELS_SFR_FIELD_FORMAT(ERR_STATUS, CLR_ERR_CLR, MCUXCLELS_ERROR_FLAGS_CLEAR));
+    MCUXCLELS_SFR_WRITE(ELS_ERR_STATUS_CLR, MCUXCLELS_SFR_FIELD_FORMAT(ELS_ERR_STATUS, CLR_ERR_CLR, MCUXCLELS_ERROR_FLAGS_CLEAR));
     // Poll error bit to be sure that error bits has been cleared. Required by HW spec.
     while(0u != MCUXCLELS_GET_STATUS_FIELD(MCUXCLELS_SFR_STATUS_ELS_ERR))
     {
@@ -226,7 +226,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_SetIntEn
     mcuxClEls_InterruptOptionEn_t options)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_SetIntEnableFlags);
-    MCUXCLELS_SFR_WRITE(INT_ENABLE, options.word.value);
+    MCUXCLELS_SFR_WRITE(ELS_INT_ENABLE, options.word.value);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_SetIntEnableFlags, MCUXCLELS_STATUS_OK);
 }
 
@@ -235,7 +235,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetIntEn
     mcuxClEls_InterruptOptionEn_t * result)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetIntEnableFlags);
-    result->word.value = MCUXCLELS_SFR_READ(INT_ENABLE);
+    result->word.value = MCUXCLELS_SFR_READ(ELS_INT_ENABLE);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetIntEnableFlags, MCUXCLELS_STATUS_OK);
 }
 
@@ -244,7 +244,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_ResetInt
     mcuxClEls_InterruptOptionRst_t options)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_ResetIntFlags);
-    MCUXCLELS_SFR_WRITE(INT_STATUS_CLR, options.word.value);
+    MCUXCLELS_SFR_WRITE(ELS_INT_STATUS_CLR, options.word.value);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_ResetIntFlags, MCUXCLELS_STATUS_OK);
 }
 
@@ -253,7 +253,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_SetIntFl
     mcuxClEls_InterruptOptionSet_t options)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_SetIntFlags);
-    MCUXCLELS_SFR_WRITE(INT_STATUS_SET, options.word.value);
+    MCUXCLELS_SFR_WRITE(ELS_INT_STATUS_SET, options.word.value);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_SetIntFlags, MCUXCLELS_STATUS_OK);
 }
 
@@ -292,7 +292,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetLock(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetLock);
 
-    *pSessionId = MCUXCLELS_SFR_READ(SESSION_ID);
+    *pSessionId = MCUXCLELS_SFR_READ(ELS_SESSION_ID);
     if(0u == *pSessionId)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetLock, MCUXCLELS_STATUS_SW_LOCKING_FAILED);
@@ -306,7 +306,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_ReleaseL
     uint32_t sessionId)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_ReleaseLock);
-    MCUXCLELS_SFR_WRITE(SESSION_ID, sessionId);
+    MCUXCLELS_SFR_WRITE(ELS_SESSION_ID, sessionId);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_ReleaseLock, MCUXCLELS_STATUS_OK);
 }
 
@@ -329,48 +329,10 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_SetMaste
     uint32_t masterId)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_SetMasterUnlock);
-    MCUXCLELS_SFR_WRITE(MASTER_ID, masterId);
+    MCUXCLELS_SFR_WRITE(ELS_MASTER_ID, masterId);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_SetMasterUnlock, MCUXCLELS_STATUS_OK);
 }
 #endif /* MCUXCL_FEATURE_ELS_LOCKING */
 
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_ADDRESS_READBACK
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_GetLastDmaAddress)
-MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetLastDmaAddress(uint32_t* pLastAddress)
-{
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetLastDmaAddress);
 
-    *pLastAddress = MCUXCLELS_SFR_READ(ELS_DMA_FIN_ADDR);
-
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetLastDmaAddress, MCUXCLELS_STATUS_OK);
-
-}
-#endif /* MCUXCL_FEATURE_ELS_DMA_ADDRESS_READBACK */
-
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_CompareDmaFinalOutputAddress)
-MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_CompareDmaFinalOutputAddress(
-        uint8_t *outputStartAddress,
-        size_t expectedLength)
-{
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_CompareDmaFinalOutputAddress,
-                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetLastDmaAddress));
-
-    /* Calculate the expected final address from the input */
-    uint32_t expectedFinalAddress = (uint32_t)outputStartAddress + expectedLength;
-
-    /* Get the actual final address from ELS - no result check as function always returns OK */
-    uint32_t finalAddress;
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEls_GetLastDmaAddress(&finalAddress));
-
-    /* Compare the expected address to the actual one */
-    if(finalAddress != expectedFinalAddress)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_CompareDmaFinalOutputAddress, MCUXCLELS_STATUS_SW_COMPARISON_FAILED);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_CompareDmaFinalOutputAddress, MCUXCLELS_STATUS_OK);
-
-}
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */

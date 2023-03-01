@@ -50,7 +50,8 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     if((PSA_KEY_TYPE_IS_KEY_PAIR(attributes->core.type) != 1u)
         && (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != 1u))
     {
-      return PSA_ERROR_INVALID_ARGUMENT;
+        /* Invalid key type detected, The response shall be  PSA_ERROR_NOT_SUPPORTED */
+        return PSA_ERROR_NOT_SUPPORTED;
     }
 
     if(true == isHash)
@@ -91,6 +92,15 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != tokenSessionInit) || (MCUXCLSESSION_STATUS_OK != resultSessionInit))
     {
       return PSA_ERROR_GENERIC_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /* Initialize the PRNG */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != prngInit_result))
+    {
+        return PSA_ERROR_GENERIC_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -351,15 +361,6 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-        /* Initialize the PRNG */
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));
-        if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
-          (MCUXCLRANDOM_STATUS_OK != prngInit_result))
-        {
-          return PSA_ERROR_GENERIC_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-
         /* Call PointMult for public keys calculation and check FP and return code */
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pointMult_result, pointMult_token, mcuxClEcc_PointMult(&session, &params));
         if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != pointMult_token) ||
@@ -436,20 +437,14 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify(const psa_key_attributes_
                                                                     isHash);
 
         keyStatus = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+
         if(PSA_SUCCESS !=  keyStatus)
         {
             return keyStatus;
         }
 
-        if (PSA_ERROR_NOT_SUPPORTED != status)
-        {
-            return status;
-        }
-        else
-        {
-            // reset to default
-            status = PSA_ERROR_CORRUPTION_DETECTED;
-        }
+        /* Retrun psa status as it is from here*/
+        return status;
     }
     else if(keyStatus != PSA_ERROR_NOT_SUPPORTED)
     {

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,25 +25,20 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**********************************************************
  * Type declarations
  **********************************************************/
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-/**
- * @brief DMA protection function type
- *
- * This function will verify if the DMA transfer of the last hardware accelerator operation finished on the expected address
- *
- */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoDmaProtection_t)(uint8_t *startAddress,
-                                                        size_t expectedLength);
-
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 /**********************************************************
  * Function declarations
  **********************************************************/
-
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLHASH_INTERNAL_ELS_SHA2_H_ */

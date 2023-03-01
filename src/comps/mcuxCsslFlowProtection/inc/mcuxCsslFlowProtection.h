@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -202,7 +202,7 @@
  *               flow behavior.
  */
 #define MCUX_CSSL_FP_FUNCTION_ENTRY(...) \
-  MCUX_CSSL_FP_FUNCTION_ENTRY_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_FUNCTION_ENTRY_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_FUNCTION_EXIT
@@ -244,7 +244,7 @@
  *               are encoded.
  */
 #define MCUX_CSSL_FP_FUNCTION_EXIT(...) \
-  MCUX_CSSL_FP_FUNCTION_EXIT_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_FUNCTION_EXIT_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK
@@ -283,7 +283,7 @@
  *               and a flow protection token are encoded.
  */
 #define MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(...) \
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_FUNCTION_EXIT_VOID
@@ -323,7 +323,7 @@
  * @return       A protected return value of type void.
  */
 #define MCUX_CSSL_FP_FUNCTION_EXIT_VOID(...) \
-  MCUX_CSSL_FP_FUNCTION_EXIT_VOID_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_FUNCTION_EXIT_VOID_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_RESULT
@@ -624,6 +624,40 @@
   MCUX_CSSL_FP_FUNCTION_CALLED_IMPL(__VA_ARGS__)
 
 
+/**
+ * @def MCUX_CSSL_FP_FUNCTION_ENTERED
+ * @brief Expectation implementation of an entered (but not exited) function.
+ * @ingroup csslFpFunction
+ *
+ * This expectation macro indicates to the flow protection mechanism that a
+ * function entry has happened, for example:
+ * @code
+ * MCUX_CSSL_FP_FUNCTION_DEF(someFunction) // Note: no semicolon here
+ * uint32_t someFunction(void)
+ * {
+ *   MCUX_CSSL_FP_FUNCTION_ENTRY(someFunction);
+ *   // ...
+ *   MCUX_CSSL_FP_ASSERT(MCUX_CSSL_FP_FUNCTION_ENTERED(someFunction);
+ *   // ...
+ * }
+ * @endcode
+ *
+ * @declaration{MCUX_CSSL_FP_FUNCTION_DECL}
+ * @event{MCUX_CSSL_FP_FUNCTION_CALL}
+ *
+ * @see MCUX_CSSL_FP_FUNCTION_ENTRY
+ * @see MCUX_CSSL_FP_FUNCTION_EXIT
+ * @see MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK
+ * @see MCUX_CSSL_FP_EXPECT
+ * @see MCUX_CSSL_FP_FUNCTION_CALLED
+ * @see MCUX_CSSL_FP_ASSERT
+ *
+ * @param id Identifier of the function that is expected to be entered.
+ * @return   Counter value for the given function.
+ */
+#define MCUX_CSSL_FP_FUNCTION_ENTERED(id) \
+  MCUX_CSSL_FP_FUNCTION_ENTERED_IMPL(id)
+
 
 /**
  * @defgroup csslFpLoop Looping flow protection
@@ -690,7 +724,7 @@
  *                   flow behavior related to this event.
  */
 #define MCUX_CSSL_FP_LOOP_ITERATION(...) \
-  MCUX_CSSL_FP_LOOP_ITERATION_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_LOOP_ITERATION_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_LOOP_ITERATIONS
@@ -810,7 +844,7 @@
  *                  flow behavior related to this event.
  */
 #define MCUX_CSSL_FP_BRANCH_POSITIVE(...) \
-  MCUX_CSSL_FP_BRANCH_POSITIVE_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_BRANCH_POSITIVE_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_BRANCH_NEGATIVE
@@ -849,7 +883,7 @@
  *                  flow behavior related to this event.
  */
 #define MCUX_CSSL_FP_BRANCH_NEGATIVE(...) \
-  MCUX_CSSL_FP_BRANCH_NEGATIVE_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_BRANCH_NEGATIVE_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE
@@ -1043,7 +1077,7 @@
  *                  flow behavior related to this event.
  */
 #define MCUX_CSSL_FP_SWITCH_CASE(...) \
-  MCUX_CSSL_FP_SWITCH_CASE_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_SWITCH_CASE_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_SWITCH_DEFAULT
@@ -1091,7 +1125,7 @@
  *                  flow behavior related to this event.
  */
 #define MCUX_CSSL_FP_SWITCH_DEFAULT(...) \
-  MCUX_CSSL_FP_SWITCH_DEFAULT_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_SWITCH_DEFAULT_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_SWITCH_TAKEN
@@ -1234,7 +1268,7 @@
  *                  flow behavior.
  */
 #define MCUX_CSSL_FP_EXPECT(...) \
-  MCUX_CSSL_FP_EXPECT_IMPL(__VA_ARGS__)
+  MCUX_CSSL_FP_EXPECT_IMPL(__VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 /**
  * @def MCUX_CSSL_FP_CONDITIONAL
@@ -1257,11 +1291,39 @@
  *               flow behavior.
  */
 #define MCUX_CSSL_FP_CONDITIONAL(condition, ...) \
-  MCUX_CSSL_FP_CONDITIONAL_IMPL((condition), __VA_ARGS__)
+  MCUX_CSSL_FP_CONDITIONAL_IMPL((condition), __VA_ARGS__, MCUX_CSSL_FP_VOID_EXPECTATION_IMPL())
 
 #ifdef __COVERITY__
 #pragma coverity compliance end_block MISRA_C_2012_Rule_3_1
 #endif
+
+/**
+ * @def MCUX_CSSL_FP_ASSERT
+ * @brief Assert an expected state of the code flow.
+ * @api
+ * @ingroup csslFpExpect
+ *
+ * This macro can be used to check whether the code flow up to this point
+ * matches the expected state. Unlike the #MCUX_CSSL_FP_EXPECT macro, it will
+ * not update the expectations, but merely perform a check on the recorded
+ * events against the already recorded expectations plus the ones provided as
+ * parameters.
+ *
+ * If the check fails, the code defined in #MCUX_CSSL_FP_ASSERT_CALLBACK() will
+ * be executed.
+ *
+ * @note #MCUX_CSSL_FP_ASSERT_CALLBACK() must be defined before including the
+ * CSSL flow protection headers, otherwise a default implementation could be
+ * used.
+ *
+ * @see MCUX_CSSL_FP_EXPECT
+ *
+ * @param ...    The following parameters need to be passed (comma separated):
+ *        - expect: One or more (comma separated) declarations of expected code
+ *                  flow behavior.
+ */
+#define MCUX_CSSL_FP_ASSERT(...) \
+  MCUX_CSSL_FP_ASSERT_IMPL(__VA_ARGS__)
 
 #endif /* MCUX_CSSL_FLOW_PROTECTION_H_ */
 

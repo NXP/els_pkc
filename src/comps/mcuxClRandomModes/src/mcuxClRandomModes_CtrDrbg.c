@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -36,7 +36,21 @@ const mcuxClRandomModes_DrbgAlgorithmsDescriptor_t mcuxClRandomModes_DrbgAlgorit
     .protectionTokenGenerateAlgorithm = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_CtrDrbg_generateAlgorithm,
 };
 
-#if defined(MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_incV)
+static MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClRandomModes_CtrDrbg_incV(uint8_t *pV)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_incV);
+    uint32_t beforeIncrement = *(uint32_t *)pV;
+    /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
+    *(uint64_t *)pV += 1u;
+
+    if(0u == *(uint64_t *)pV)
+    {
+        *(uint64_t *)&pV[8] += 1u;
+    }
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_incV, beforeIncrement);
+}
+
 
 #define MCUXCLRANDOM_MAX_DF_BITS        512u
 
@@ -49,7 +63,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_bcc
     uint32_t *pInputBlock = pData;
 
     /* clear the out buffer for the first xor with input */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pOut, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pOut, 0u,
                 MCUXCLAES_BLOCK_SIZE,
                 MCUXCLAES_BLOCK_SIZE));
     (void)result_memset;
@@ -110,14 +124,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     uint32_t *pIV = (uint32_t *)&pSession->cpuWa.buffer[pSession->cpuWa.used];
 
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLAES_BLOCK_SIZE));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_df, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
     allocateSuccess = NULL;
 
     /* clear the IV to padding 0 at the end */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t*)pIV, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t*)pIV, 0u,
                  MCUXCLAES_BLOCK_SIZE,
                  MCUXCLAES_BLOCK_SIZE));
     (void)result_memset;
@@ -138,14 +152,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     }
 
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(lenOfS));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_df, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
     allocateSuccess = NULL;
 
     /* clear the S in case need padding 0 at the end */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset2, mcuxClMemory_set(pSByte, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset2, mcuxClMemory_set(pSByte, 0u,
                 lenOfS, lenOfS));
     (void)result_memset2;
 
@@ -162,10 +176,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
      *  keylen     16         16
      * allocate an addition block in case (keylen + 16) mod 16 != 0
      */
-    uint32_t outKeyLen = pMode->securityStrength/8u + 2u * MCUXCLAES_BLOCK_SIZE;
+    uint32_t outKeyLen = (uint32_t)(pMode->securityStrength) / 8u + 2u * MCUXCLAES_BLOCK_SIZE;
 
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(outKeyLen));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_df, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
@@ -177,7 +191,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     {
         pIV[0] = i;
         MCUX_CSSL_FP_FUNCTION_CALL(result_bcc,
-            mcuxClRandomModes_CtrDrbg_bcc((uint8_t const *)mcuxClRandomModes_CtrDrbg_df_key, pMode->securityStrength/8u,
+            mcuxClRandomModes_CtrDrbg_bcc((uint8_t const *)mcuxClRandomModes_CtrDrbg_df_key, (uint32_t)(pMode->securityStrength/8u),
                     pIV, MCUXCLAES_BLOCK_SIZE + lenOfS,
                     &pOutKey[i*MCUXCLAES_BLOCK_SIZE/sizeof(uint32_t)]));
         if (MCUXCLRANDOM_STATUS_OK != result_bcc)
@@ -191,13 +205,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     }
 
     uint32_t j;
-    outBlocks = (outputLen + MCUXCLAES_BLOCK_SIZE - 1)/MCUXCLAES_BLOCK_SIZE;
+    outBlocks = (uint32_t)((outputLen + MCUXCLAES_BLOCK_SIZE - 1) / MCUXCLAES_BLOCK_SIZE);
     /* use pIV as output X */
     /* generate the first X */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_blockcipher,
-        mcuxClRandomModes_DRBG_AES_Internal_blockcipher((uint8_t *)&pOutKey[pMode->securityStrength/8u/sizeof(uint32_t)],
-                (uint8_t *)pOutKey, (uint8_t *)&pIV[0], pMode->securityStrength/8u));
-    if (MCUXCLRANDOM_STATUS_OK != ret_blockcipher)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_blockcipher1,
+        mcuxClRandomModes_DRBG_AES_Internal_blockcipher((uint8_t *)&pOutKey[(uint32_t)(pMode->securityStrength/8u)/sizeof(uint32_t)],
+                (uint8_t *)pOutKey, (uint8_t *)&pIV[0], (uint32_t)(pMode->securityStrength/8u)));
+    if (MCUXCLRANDOM_STATUS_OK != ret_blockcipher1)
     {
         mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(outKeyLen + lenOfS + MCUXCLAES_BLOCK_SIZE));
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_df, MCUXCLRANDOM_STATUS_ERROR,
@@ -209,10 +223,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     /* generate the remained X */
     for (j = 1u; j < outBlocks; j++)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_blockcipher,
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_blockcipher2,
                                   mcuxClRandomModes_DRBG_AES_Internal_blockcipher((uint8_t *)&pIV[(j-1u)*MCUXCLAES_BLOCK_SIZE/sizeof(uint32_t)],
-                    (uint8_t *)pOutKey, (uint8_t *)&pIV[j*MCUXCLAES_BLOCK_SIZE/sizeof(uint32_t)], pMode->securityStrength/8u));
-        if (MCUXCLRANDOM_STATUS_OK != ret_blockcipher)
+                    (uint8_t *)pOutKey, (uint8_t *)&pIV[j*MCUXCLAES_BLOCK_SIZE/sizeof(uint32_t)], (uint32_t)(pMode->securityStrength/8u)));
+        if (MCUXCLRANDOM_STATUS_OK != ret_blockcipher2)
         {
             mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(outKeyLen + lenOfS + MCUXCLAES_BLOCK_SIZE));
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_df, MCUXCLRANDOM_STATUS_ERROR,
@@ -234,8 +248,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
             j  * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher));
 }
 
-#endif
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRandomModes_DrbgVariantDescriptor_t mcuxClRandomModes_DrbgVariantDescriptor_CtrDrbg_AES128 =
 {
     .reseedInterval = MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES128,
@@ -244,6 +258,7 @@ const mcuxClRandomModes_DrbgVariantDescriptor_t mcuxClRandomModes_DrbgVariantDes
     .reseedSeedSize = MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES128
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRandomModes_DrbgVariantDescriptor_t mcuxClRandomModes_DrbgVariantDescriptor_CtrDrbg_AES192 =
 {
     .reseedInterval = MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES192,
@@ -252,6 +267,7 @@ const mcuxClRandomModes_DrbgVariantDescriptor_t mcuxClRandomModes_DrbgVariantDes
     .reseedSeedSize = MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES192
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRandomModes_DrbgVariantDescriptor_t mcuxClRandomModes_DrbgVariantDescriptor_CtrDrbg_AES256 =
 {
     .reseedInterval = MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES256,
@@ -288,20 +304,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_ins
     /* Pad entropyInput with zeros to obtain proper seedMaterial for the UpdateState function */
     uint32_t *pSeedMaterial = (uint32_t *)&pSession->cpuWa.buffer[pSession->cpuWa.used];
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(initSeedSize));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_instantiateAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
     allocateSuccess = NULL;
 
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pSeedMaterial, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pSeedMaterial, 0u,
                 initSeedSize,
                 initSeedSize));
     (void)result_memset;
     MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t *)pSeedMaterial, (uint8_t const *)pEntropyInput,
                          initSeedSize);
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION
     /* pSeedMaterial use as both input and output */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_df, mcuxClRandomModes_CtrDrbg_df(pSession, (uint8_t *)pSeedMaterial,
                 initSeedSize, seedLen));
@@ -309,14 +324,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_ins
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_instantiateAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
-#endif
 
     /* Clear counter V and key K in context
      *
      * NOTE: V and K lie next to each other in the context */
     /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
     uint32_t *pState = ((mcuxClRandomModes_Context_CtrDrbg_Aes128_t *) pRngCtx)->key;
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset2, mcuxClMemory_set((uint8_t *)pState, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset2, mcuxClMemory_set((uint8_t *)pState, 0u,
                 seedLen,
                 seedLen));
     (void)result_memset2;
@@ -336,9 +350,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_ins
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_instantiateAlgorithm, MCUXCLRANDOM_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
         2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-#ifdef MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_df),
-#endif
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_UpdateState));
 }
 
@@ -362,29 +374,26 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_res
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_reseedAlgorithm);
 
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-#ifdef MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION
     uint32_t seedLen = ((mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
-#endif
     uint32_t reseedSeedSize = ((mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->reseedSeedSize;
     uint32_t * allocateSuccess = NULL;
 
     /* Pad entropyInput with zeros to obtain proper seedMaterial for the UpdateState function */
     uint32_t *pSeedMaterial = (uint32_t *)&pSession->cpuWa.buffer[pSession->cpuWa.used];
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(reseedSeedSize));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_reseedAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
     allocateSuccess = NULL;
 
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pSeedMaterial, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pSeedMaterial, 0u,
                 reseedSeedSize,
                 reseedSeedSize));
     (void)result_memset;
     MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t *)pSeedMaterial, (uint8_t const *)pEntropyInput,
                          reseedSeedSize);
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION
     /* pSeedMaterial use as both input and output */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_df, mcuxClRandomModes_CtrDrbg_df(pSession, (uint8_t *)pSeedMaterial,
                 reseedSeedSize, seedLen));
@@ -392,7 +401,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_res
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_reseedAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
-#endif
 
     /* Update the CTR_DRBG state */
     MCUX_CSSL_FP_FUNCTION_CALL(result_updatestate, mcuxClRandomModes_CtrDrbg_UpdateState(pSession, (uint8_t *)pSeedMaterial));
@@ -406,9 +414,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_res
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_reseedAlgorithm, MCUXCLRANDOM_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-#ifdef MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_df),
-#endif
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_UpdateState));
 }
 
@@ -443,13 +449,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
     /* Init additionalInput for state update in CPU workarea to all zeros and update the CTR_DRBG state */
     uint32_t *pAdditionalInput = (uint32_t *)&pSession->cpuWa.buffer[pSession->cpuWa.used];
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(seedLen));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_generateAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
     allocateSuccess = NULL;
 
-    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pAdditionalInput, 0,
+    MCUX_CSSL_FP_FUNCTION_CALL(result_memset, mcuxClMemory_set((uint8_t *)pAdditionalInput, 0u,
                 seedLen,
                 seedLen));
     (void)result_memset;
@@ -479,7 +485,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_Upd
     mcuxClRandomModes_Context_Generic_t *pCtx = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
     uint32_t seedLen = ((mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
-    uint32_t securityStrength = pMode->securityStrength;
+    uint32_t securityStrength = (uint32_t)(pMode->securityStrength);
     uint32_t * allocateSuccess = NULL;
 
     /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
@@ -490,7 +496,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_Upd
     /* produce the new Key and V */
     uint32_t *pNewKV = (uint32_t *)&pSession->cpuWa.buffer[pSession->cpuWa.used];
     allocateSuccess = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(seedLen));
-    if(!allocateSuccess)
+    if(NULL == allocateSuccess)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_UpdateState, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
@@ -499,17 +505,22 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_Upd
     uint32_t keyLenInBlkSize = securityStrength/8u/MCUXCLAES_BLOCK_SIZE;
     uint32_t i, j;
 
-    for (i = 0; i < keyLenInBlkSize + 1; i++)
+    for (i = 0u; i < keyLenInBlkSize + 1u; i++)
     {
         /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
-        *(uint64_t *)pV += 1;
+        MCUX_CSSL_FP_FUNCTION_CALL(checkIncrement, mcuxClRandomModes_CtrDrbg_incV(pV));
+        if(checkIncrement == *(uint32_t *)pV)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_UpdateState, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
         MCUX_CSSL_FP_FUNCTION_CALL(ret_blockcipher, mcuxClRandomModes_DRBG_AES_Internal_blockcipher(pV, pKey,
                 (uint8_t *)&pNewKV[(i * MCUXCLAES_BLOCK_SIZE_IN_WORDS)],
                 securityStrength/8u));
         if (MCUXCLRANDOM_STATUS_OK != ret_blockcipher)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_UpdateState, MCUXCLRANDOM_STATUS_ERROR,
-                (i + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher));
+                (i + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher),
+                (i + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_incV));
         }
     }
 
@@ -530,10 +541,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_Upd
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_UpdateState, MCUXCLRANDOM_STATUS_OK,
                 i * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher),
+                i * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_incV),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_CtrDrbg_generateOutput)
+/* MISRA Ex. 20 - Rule 5.1 */
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_generateOutput(
         mcuxClSession_Handle_t pSession,
         uint8_t *pOut, uint32_t outLength)
@@ -542,7 +555,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
 
     mcuxClRandomModes_Context_Generic_t *pCtx = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-    uint32_t securityStrength = pMode->securityStrength;
+    uint32_t securityStrength = (uint32_t)(pMode->securityStrength);
 
     /**
      * We first request as much as possible directly, and then use a small buffer
@@ -563,19 +576,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
     uint8_t *pV = &pState[securityStrength/8u];
     uint32_t requestSizeRemainingBytes = outLength % MCUXCLAES_BLOCK_SIZE;
     uint32_t requestSizeFullWordsBytes = outLength - requestSizeRemainingBytes;
-    uint32_t outIndex = 0;
+    uint32_t outIndex = 0u;
 
     /* Request as many random bytes as possible with full word size. */
     while (requestSizeFullWordsBytes > 0u)
     {
-        /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
-        *(uint64_t *)pV += 1;
+        MCUX_CSSL_FP_FUNCTION_CALL(checkIncrement, mcuxClRandomModes_CtrDrbg_incV(pV));
+        if(checkIncrement == *(uint32_t *)pV)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_generateOutput, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+
         MCUX_CSSL_FP_FUNCTION_CALL(ret_Internal_blockcipher,
             mcuxClRandomModes_DRBG_AES_Internal_blockcipher(pV, pKey, &pOut[outIndex], securityStrength/8u));
         if (MCUXCLRANDOM_STATUS_OK != ret_Internal_blockcipher)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_generateOutput, MCUXCLRANDOM_STATUS_ERROR,
-                (outIndex/MCUXCLAES_BLOCK_SIZE + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher));
+                (outIndex/MCUXCLAES_BLOCK_SIZE + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher),
+                (outIndex/MCUXCLAES_BLOCK_SIZE + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_incV));
         }
         outIndex += MCUXCLAES_BLOCK_SIZE;
         requestSizeFullWordsBytes -= MCUXCLAES_BLOCK_SIZE;
@@ -586,13 +604,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
     {
         uint8_t requestRemainingBuffer[MCUXCLAES_BLOCK_SIZE] = {0u};
 
-        *(uint64_t *)pV += 1;
+        MCUX_CSSL_FP_FUNCTION_CALL(checkIncrement, mcuxClRandomModes_CtrDrbg_incV(pV));
+        if(checkIncrement == *(uint32_t *)pV)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_generateOutput, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+
         MCUX_CSSL_FP_FUNCTION_CALL(ret_Internal_blockcipher,
             mcuxClRandomModes_DRBG_AES_Internal_blockcipher(pV, pKey, requestRemainingBuffer, securityStrength/8u));
         if (MCUXCLRANDOM_STATUS_OK != ret_Internal_blockcipher)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_generateOutput, MCUXCLRANDOM_STATUS_ERROR,
-                (outIndex/MCUXCLAES_BLOCK_SIZE + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher));
+                (outIndex/MCUXCLAES_BLOCK_SIZE + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher),
+                (outIndex/MCUXCLAES_BLOCK_SIZE + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_incV));
         }
 
         /* Copy the remaining bytes from the buffer to output. */
@@ -602,8 +626,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_CtrDrbg_generateOutput, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
             (outIndex/MCUXCLAES_BLOCK_SIZE) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher),
+            (outIndex/MCUXCLAES_BLOCK_SIZE) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_incV),
             MCUX_CSSL_FP_CONDITIONAL((requestSizeRemainingBytes > 0u),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher))
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_DRBG_AES_Internal_blockcipher),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_incV))
             );
 }

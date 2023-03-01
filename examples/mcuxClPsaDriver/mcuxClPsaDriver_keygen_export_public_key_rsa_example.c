@@ -19,6 +19,8 @@
  * @brief Example for generating and exporting rsa key
  */
 
+#include "common.h"
+
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
@@ -63,18 +65,18 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
 
     /* Set up PSA key attributes. */
     psa_key_attributes_t attributes = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_RSA_KEY_PAIR,                                    // Keypair family with curve montgomery
-        .private_bits = MCUXCLKEY_SIZE_2048,                                         // Key bits for RSA 2048
-        .private_lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 0U,                                                             // ID zero
-        .private_policy = {
-          .private_usage = PSA_ALG_NONE,
-          .private_alg = PSA_ALG_NONE,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = (uint8_t*)PublicExp,
-      .private_domain_parameters_size = sizeof(PublicExp)};
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_RSA_KEY_PAIR,                                    // Keypair family with curve montgomery
+        .bits = MCUXCLKEY_SIZE_2048,                                         // Key bits for RSA 2048
+        .lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 0U,                                                             // ID zero
+        .policy = {
+          .usage = PSA_ALG_NONE,
+          .alg = PSA_ALG_NONE,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = (uint8_t*)PublicExp,
+      .domain_parameters_size = sizeof(PublicExp)};
 
     /* Call generate_key operation */
     uint8_t key_buffer[PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE(2048u)] = {0U};
@@ -104,7 +106,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
     size_t data_size = PSA_EXPORT_KEY_OUTPUT_SIZE(PSA_KEY_TYPE_RSA_PUBLIC_KEY,MCUXCLKEY_SIZE_2048);
     size_t data_length = 0U;
 
-    attributes.private_core.private_policy.private_usage = PSA_KEY_USAGE_EXPORT;
+    attributes.core.policy.usage = PSA_KEY_USAGE_EXPORT;
     status = psa_driver_wrapper_export_public_key(
                 &attributes,
                 key_buffer, key_buffer_size,

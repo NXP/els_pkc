@@ -599,8 +599,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_update(
     size_t output_size,
     size_t *output_length )
 {
-    /* calculate expected output size: update does not add padding so expected to be same length as input */
-    size_t expected_output_size = input_length;
+    size_t expected_output_size;
+
+    expected_output_size = output_size == 0 ? output_size : input_length;
 
     /* Check if IV is required and set*/
     if ((1u == operation->iv_required) && (0u == operation->iv_set))

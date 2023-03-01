@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -70,7 +70,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_LeadingZeros(uint8_t
 
     const uint16_t *pUptrt = MCUXCLPKC_GETUPTRT();
     uint32_t offsetX = (uint32_t) pUptrt[iX];  /* Assume offsetX is exactly a multiple of MCUXCLPKC_WORDSIZE. */
-    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);  /* PKC word is CPU word aligned. */
+    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
 
     uint32_t len = (uint32_t) MCUXCLPKC_PS1_GETOPLEN() / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t numLeadingZeros = 0u;
@@ -100,7 +100,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_TrailingZeros(uint8_
 
     const uint16_t *pUptrt = MCUXCLPKC_GETUPTRT();
     uint32_t offsetX = (uint32_t) pUptrt[iX];  /* Assume offsetX is exactly a multiple of MCUXCLPKC_WORDSIZE. */
-    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);  /* PKC word is CPU word aligned. */
+    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
 
     uint32_t opWords = (uint32_t) MCUXCLPKC_PS1_GETOPLEN() / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t index = 0u;
@@ -144,7 +144,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ShiftModulus(uint16_
 
     /* Count the number of leading zeros of modulus n. */
     MCUXCLPKC_WAITFORFINISH();
-    uint32_t leadingZeroBits = MCUXCLMATH_FP_LEADINGZEROS(iN);
+    uint32_t leadingZeroBits;
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(iN, &leadingZeroBits));
     uint32_t leadingZeroPkcWords_InBytes = leadingZeroBits / (MCUXCLPKC_WORDSIZE * 8u) * MCUXCLPKC_WORDSIZE;
 
     /* Set PS2 LEN, to exclude leading zero PKC word(s). */

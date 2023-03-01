@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -55,20 +55,20 @@
 
 /** Read from SAFO SM3 SFR bit field */
 #define MCUXCLOSCCASM3_SAFO_SGI_SFR_BITREAD(sfr, bit)  \
-    ((SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) & MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SAFO_SFR_NAME(sfr), bit)) >> MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(SAFO_SFR_NAME(sfr), bit))
+    ((SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) & MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(sfr, bit)) >> MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(sfr, bit))
 
 /** Set bit field of SAFO SM3 SFR (read-modify-write) */
 #define MCUXCLOSCCASM3_SAFO_SGI_SFR_BITSET(sfr, bit)  \
-    do{ SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) |= MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SAFO_SFR_NAME(sfr), bit); } while(false)
+    do{ SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) |= MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(sfr, bit); } while(false)
 
 /** Clear bit field of SAFO SM3 SFR (read-modify-write) */
 #define MCUXCLOSCCASM3_SAFO_SGI_SFR_BITCLEAR(sfr, bit)  \
-    do{ SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) &= (~ (uint32_t) MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SAFO_SFR_NAME(sfr), bit)); } while(false)
+    do{ SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) &= (~ (uint32_t) MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(sfr, bit)); } while(false)
 
 /** Set value of multi-bit field of SAFO SM3 SFR (read-modify-write) */
 #define MCUXCLOSCCASM3_SAFO_SGI_SFR_BITVALSET(sfr, bit, val)  \
-    do{ uint32_t temp = SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) & (~ (uint32_t) MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SAFO_SFR_NAME(sfr), bit)); \
-        SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) = ((val) << MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(SAFO_SFR_NAME(sfr), bit)) & MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SAFO_SFR_NAME(sfr), bit); \
+    do{ uint32_t temp = SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) & (~ (uint32_t) MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(sfr, bit)); \
+        SAFO_SFR_BASE->SAFO_SFR_NAME(sfr) = ((val) << MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(sfr, bit)) & MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(sfr, bit); \
     } while(false)
 
 /**** ------------------------------ ****/
@@ -87,6 +87,6 @@ static inline void mcuxClOsccaSm3_setSfrField(volatile uint32_t *pSfr, uint32_t 
 
 /** Sets SAFO_SGI_SM3_FIFO input buffer from the input value*/
 #define MCUXCLOSCCASM3_SET_FIFO_FIELD(value)\
-    mcuxClOsccaSm3_setSfrField((uint32_t *)&MCUXCLOSCCASM3_SAFO_SGI_SFR_READ(SM3_FIFO), (value), MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SAFO_SGI_SM3_FIFO, FIFO), MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(SAFO_SGI_SM3_FIFO, FIFO))
+    mcuxClOsccaSm3_setSfrField((uint32_t *)&MCUXCLOSCCASM3_SAFO_SGI_SFR_READ(SM3_FIFO), (value), MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SM3_FIFO, FIFO), MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(SM3_FIFO, FIFO))
 
 #endif /* MCUXCLOSCCASM3_SFRACCESS_H_ */

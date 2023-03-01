@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,13 +20,12 @@
 
 #define MCUXCLRANDOMMODES_MAX( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
 
+#include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClAes.h>
-
-#ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
+#include <stdint.h>
+#include <stdbool.h>
 #include <internal/mcuxClRandomModes_Private_CtrDrbg.h>
-#endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
-#if defined(MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION)
 /*
  * Description of how much cpu wa mcuxClRandomModes_CtrDrbg_df uses at most, i.e. for the AES-256 CTR_DRBG case
  *
@@ -44,18 +43,17 @@
 #define MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_X                 MCUXCLAES_BLOCK_SIZE
 #define MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_ADDITIONBLOCK     MCUXCLAES_BLOCK_SIZE
 
-#define MCUXCLRANDOMMODES_CTRDRBG_DERIVATIONFUNCTION_CPUWA_MAXSIZE     (   \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_IV + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_L + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_N + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_SEED + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_0X80 + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_MAXPADDING + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_K + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_X + \
-                                                                            MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_ADDITIONBLOCK \
-		                                                                )
-#endif
+#define MCUXCLRANDOMMODES_CTRDRBG_DERIVATIONFUNCTION_CPUWA_MAXSIZE     (\
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_IV + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_L + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_N + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_SEED + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_0X80 + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_MAXPADDING + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_K + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_X + \
+                                                                        MCUXCLRANDOMMODES_CTRDRBG_AES256_DF_ADDITIONBLOCK \
+                                                                      )
 
 /*
  * Description of how much cpu wa mcuxClRandomModes_CtrDrbg_UpdateState uses at most, i.e. for the AES-256 CTR_DRBG case
@@ -66,7 +64,6 @@
  */
 #define MCUXCLRANDOMMODES_CTRDRBG_UPDATESTATE_CPUWA_MAXSIZE     MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256
 
-#if defined(MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION)
 /*
  * Description of how much cpu wa mcuxClRandomModes_CtrDrbg_instantiateAlgorithm uses at most
  *
@@ -81,7 +78,6 @@
             MCUXCLRANDOMMODES_CTRDRBG_UPDATESTATE_CPUWA_MAXSIZE         \
         ) \
     )
-#endif
 
 
 /*
@@ -91,14 +87,10 @@
  * size in byte   | entropy_input size for the init case   |  cpuWaInstantiateAlgo   |
  *
  */
-#if defined(MCUXCL_FEATURE_RANDOMMODES_CTRDRBG)
 #define MCUXCLRANDOMMODES_NORMALMODE_INIT_CPUWA_MAXSIZE ( \
             MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 +\
 			MCUXCLRANDOMMODES_CTRDRBG_INSTANTIATEALGO_CPUWA_MAXSIZE \
         )
-#else
-#define MCUXCLRANDOMMODES_NORMALMODE_INIT_CPUWA_MAXSIZE 1
-#endif
 
 /*
  * Maximum cpuWa size for API functions

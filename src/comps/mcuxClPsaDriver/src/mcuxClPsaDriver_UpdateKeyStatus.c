@@ -30,7 +30,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusSuspend(
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
-        return mcuxClPsaDriver_Oracle_suspendKey(key_descriptor);
+        return mcuxClPsaDriver_Oracle_SuspendKey(key_descriptor);
     }
     else
     {
@@ -49,7 +49,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
-        return mcuxClPsaDriver_Oracle_resumeKey(key_descriptor);
+        return mcuxClPsaDriver_Oracle_ResumeKey(key_descriptor);
     }
     else
     {
@@ -68,7 +68,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
-        return mcuxClPsaDriver_Oracle_unloadKey(key_descriptor);
+        return mcuxClPsaDriver_Oracle_UnloadKey(key_descriptor);
     }
     else
     {

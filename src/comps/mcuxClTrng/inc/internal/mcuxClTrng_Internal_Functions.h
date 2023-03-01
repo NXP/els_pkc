@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -69,6 +69,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClTrng_Init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void);
+
+/**
+ * @brief Function to check that TRNG is properly configured
+ *
+ * @return Status of the operation:
+ * @retval #MCUXCLTRNG_STATUS_OK             The check operation was successful
+ * @retval #MCUXCLTRNG_STATUS_ERROR          TRNG is not properly configured
+ * @retval #MCUXCLTRNG_STATUS_FAULT_ATTACK   A fault attack is detected
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClTrng_checkConfig)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_checkConfig(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

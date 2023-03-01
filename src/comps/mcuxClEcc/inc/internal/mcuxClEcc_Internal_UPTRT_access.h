@@ -21,6 +21,7 @@
 #define MCUXCLECC_INTERNAL_UPTRT_ACCESS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+
 /**********************************************************/
 /* Helper macros for accessing UPTRT table                */
 /**********************************************************/
@@ -31,18 +32,11 @@
  * @attention if the two offsets are not in the same CPU word, this macro might cause extra code size.
  */
 #define MCUXCLECC_LOAD_2OFFSETS(pOps, idx0, idx1)  \
-    ({  \
-        uint32_t offset1_offset0;  \
-        if ( (0u == ((idx0) & (0x01u))) && ((idx1) == ((idx0) + (0x01u))) )  \
-        { /* MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in ECC component */ \
-          offset1_offset0 = ((uint32_t *) (pOps))[(idx0) / 2u]; \
-        }  \
-        else  \
-        { /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */ \
-          offset1_offset0 = (uint32_t) ((uint16_t *) (pOps))[idx0] | ((uint32_t) ((uint16_t *) (pOps))[idx1] << 16); \
-        }  \
-        (offset1_offset0);  \
-    })
+    ( \
+        ((0u == ((idx0) & (0x01u))) && ((idx1) == ((idx0) + (0x01u)))) ? \
+            (((uint32_t *) (pOps))[(idx0) / 2u]) : \
+            ((uint32_t) ((uint16_t *) (pOps))[idx0] | ((uint32_t) ((uint16_t *) (pOps))[idx1] << 16)) \
+    )
 
 /** Macro for writing 2 offsets to UPTRT table.
  * [in] pOps: pointer to 16-bit offset table. This pointer must be 32-bit aligned;

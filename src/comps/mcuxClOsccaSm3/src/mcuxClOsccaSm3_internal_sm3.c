@@ -446,6 +446,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
  * Algorithm descriptor implementations
  **********************************************************/
 
+#ifdef MCUXCL_FEATURE_HASH_HW_SM3
 const mcuxClHash_AlgorithmDescriptor_t mcuxClOsccaSm3_AlgorithmDescriptor_Sm3 = {
     .oneShotSkeleton                  = (mcuxClHash_AlgoSkeleton_OneShot_t)mcuxClOsccaSm3_sm3_oneShotSkeleton,
     .protection_token_oneShotSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_sm3_oneShotSkeleton),
@@ -458,3 +459,4 @@ const mcuxClHash_AlgorithmDescriptor_t mcuxClOsccaSm3_AlgorithmDescriptor_Sm3 = 
     .stateSize                        = MCUXCLOSCCASM3_STATE_SIZE_SM3,
     .counterSize                      = MCUXCLOSCCASM3_COUNTER_SIZE_SM3,
 };
+#endif /* MCUXCL_FEATURE_HASH_HW_SM3 */

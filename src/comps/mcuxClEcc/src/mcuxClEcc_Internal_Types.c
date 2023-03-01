@@ -28,12 +28,8 @@
 
 const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor =
 {
-    .options = MCUXCLECC_EDDSA_PRIVKEY_GENERATE
-};
-
-const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_InputPrivKeyDescriptor =
-{
-    .options = MCUXCLECC_EDDSA_PRIVKEY_INPUT
+    .options       = MCUXCLECC_EDDSA_PRIVKEY_GENERATE,
+    .pPrivKeyInput = NULL
 };
 
 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -35,6 +35,10 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClEls_Common.h> // Common functionality
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * CONSTANTS
@@ -224,6 +228,11 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Cipher_A
 /**
  * @}
  */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
 #endif /* MCUXCLELS_CIPHER_H_ */
 
 /**

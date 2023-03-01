@@ -39,15 +39,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClTrng_Init);
 
-#ifdef MCUXCL_FEATURE_TRNG_RNG4_DUAL_OSCILLATOR_MODE
-    /* Verify that the TRNG is configured in dual oscillator mode. */
-    if(MCUXCLTRNG_SFR_BITREAD(OSC2_CTL, TRNG_ENT_CTL) != MCUXCLTRNG_RNG4_HW_DUAL_OSCILLATOR_MODE)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_Init, MCUXCLTRNG_STATUS_ERROR);
-    }
-#endif
+    MCUX_CSSL_FP_FUNCTION_CALL(retVal_checkConfig, mcuxClTrng_checkConfig());
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_Init, MCUXCLTRNG_STATUS_OK, MCUXCLTRNG_STATUS_FAULT_ATTACK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_Init, retVal_checkConfig, MCUXCLTRNG_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
+}
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClTrng_checkConfig)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_checkConfig(void)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClTrng_checkConfig);
+
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_checkConfig, MCUXCLTRNG_STATUS_OK, MCUXCLTRNG_STATUS_FAULT_ATTACK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClTrng_getEntropyInput)
@@ -60,6 +64,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClTrng_getEntropyInput);
 
     (void) pSession; // Parameter not needed in this mode.
+
+    /* Call check configuration function to ensure the TRNG is properly configured for upcoming TRNG accesses */
+    MCUX_CSSL_FP_FUNCTION_CALL(result_trngCheckConfig, mcuxClTrng_checkConfig());
+    if(MCUXCLTRNG_STATUS_OK != result_trngCheckConfig)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_getEntropyInput, result_trngCheckConfig, MCUXCLTRNG_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
+    }
 
     if ((NULL == pEntropyInput) || ((entropyInputLength % sizeof(uint32_t)) != 0u))
     {
@@ -111,6 +123,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
         ++pDest;
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_OK, MCUXCLTRNG_STATUS_FAULT_ATTACK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_OK, MCUXCLTRNG_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
 }
 

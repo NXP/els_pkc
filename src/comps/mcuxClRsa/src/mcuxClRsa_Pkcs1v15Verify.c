@@ -16,6 +16,7 @@
  */
 
 #include <stdint.h>
+#include <toolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxCsslMemory.h>
@@ -75,8 +76,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
   const uint32_t              saltlabelLength,
   const uint32_t              keyBitLength,
   const uint32_t              options,
-  mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength)
+  mcuxCl_Buffer_t              pOutput UNUSED_PARAM,
+  uint32_t * const            pOutLength UNUSED_PARAM)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_pkcs1v15Verify);
   /*****************************************************/

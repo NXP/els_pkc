@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,11 +17,12 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
+#include <mcuxClCipher_Constants.h>
 #include <mcuxClCore_Platform.h>
 #include <mcuxClCore_Buffer.h>
-
 #include <mcuxClKey_Types.h>
 #include <internal/mcuxClCipherModes_Internal_Types.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,7 @@ extern "C" {
 void mcuxClCipherModes_MemCopy(uint8_t *pDst, const uint8_t *pSrc, uint32_t length);
 
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length);
+
 
 /*
  * Skeleton and Engine functions

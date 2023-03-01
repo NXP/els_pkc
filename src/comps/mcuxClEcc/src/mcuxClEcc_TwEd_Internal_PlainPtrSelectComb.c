@@ -16,7 +16,7 @@
  * @brief Function to import, convert and validate the coordinates of a pre-computed point
  */
 
-
+#include <toolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -50,7 +50,7 @@
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainPtrSelectComb)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectComb(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint32_t scalarWord,
     uint8_t scalarDigitOffset
 )
@@ -68,8 +68,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectCom
     /* Step 3: Set virtual pointers TWED_PP_VX0, TWED_PP_VY0 and TWED_PP_VT0 to the pointer table entries with indices tiX, tiX+1 and tiX+2. */
     MCUXCLPKC_WAITFORREADY();
     pOperands[TWED_PP_VX0] = (uint16_t) pOperands[tiX];
-    pOperands[TWED_PP_VY0] = (uint16_t) pOperands[tiX+1];
-    pOperands[TWED_PP_VT0] = (uint16_t) pOperands[tiX+2];
+    pOperands[TWED_PP_VY0] = (uint16_t) pOperands[tiX + 1u];
+    pOperands[TWED_PP_VT0] = (uint16_t) pOperands[tiX + 2u];
 
     if(0u == (nibble & 0x1u))
     {

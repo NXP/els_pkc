@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -40,7 +40,7 @@ extern "C" {
  */
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ComputeFunc_t)(
   mcuxClSession_Handle_t session,
-  const mcuxClKey_Handle_t key,
+  mcuxClKey_Handle_t key,
   mcuxClMac_Mode_t mode,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
@@ -57,7 +57,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ComputeFunc_
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_InitFunc_t)(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
-  const mcuxClKey_Handle_t key
+  mcuxClKey_Handle_t key
 );
 
 /**

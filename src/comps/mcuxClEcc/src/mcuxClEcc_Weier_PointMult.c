@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -91,7 +91,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
     /* Check P in (X1,Y1) affine NR. */
 //  MCUXCLPKC_WAITFORREADY();  <== there is WaitForFinish in import function.
     MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_X1, WEIER_Y1);
-    mcuxClEcc_Status_t pointCheckStatus = MCUXCLECC_FP_POINTCHECKAFFINENR();
+    MCUX_CSSL_FP_FUNCTION_CALL(pointCheckStatus, mcuxClEcc_PointCheckAffineNR());
     if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckStatus)
     {
         MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
@@ -140,7 +140,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
     /* Securely import scalar d to buffer S1 of size = bufferSize, with temp T1. */
     MCUXCLPKC_PS1_SETLENGTH(0u, bufferSize);
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SecImport,
-        mcuxClPkc_SecureImportBigEndianToPkc(MCUXCLPKC_PACKARGS2(ECC_S1, ECC_T1),
+        mcuxClPkc_SecureImportBigEndianToPkc(pSession, MCUXCLPKC_PACKARGS2(ECC_S1, ECC_T1),
                                             pParam->pScalar, byteLenN) );
     if (MCUXCLPKC_STATUS_OK != ret_SecImport)
     {
@@ -195,7 +195,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
     /* P will be randomized (projective coordinate randomization) in SecurePointMult. */
 
     /* Calculate Q0 = d0 * P. */
-    mcuxClEcc_Status_t securePointMultStatusFirst = MCUXCLECC_FP_SECUREPOINTMULT(ECC_S0, 64u);
+    MCUX_CSSL_FP_FUNCTION_CALL(securePointMultStatusFirst, mcuxClEcc_SecurePointMult(pSession, ECC_S0, 64u));
     if(MCUXCLECC_STATUS_RNG_ERROR == securePointMultStatusFirst)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_RNG_ERROR);
@@ -225,7 +225,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
     }
 
     /* Calculate Q = d1 * Q0. */
-    mcuxClEcc_Status_t securePointMultStatusSecond = MCUXCLECC_FP_SECUREPOINTMULT(ECC_S1, byteLenN * 8u);
+    MCUX_CSSL_FP_FUNCTION_CALL(securePointMultStatusSecond, mcuxClEcc_SecurePointMult(pSession, ECC_S1, byteLenN * 8u));
     if(MCUXCLECC_STATUS_RNG_ERROR == securePointMultStatusSecond)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_RNG_ERROR);
@@ -255,7 +255,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
     /* Check Q in (XA,YA) affine NR. */
     MCUXCLPKC_WAITFORREADY();
     MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_XA, WEIER_YA);
-    if (MCUXCLECC_STATUS_OK != MCUXCLECC_FP_POINTCHECKAFFINENR())
+    MCUX_CSSL_FP_FUNCTION_CALL(pointCheckQStatus, mcuxClEcc_PointCheckAffineNR());
+    if (MCUXCLECC_STATUS_OK != pointCheckQStatus)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
@@ -279,7 +280,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
         && (zeroFlag_checkN == MCUXCLPKC_FLAG_ZERO) )
     {
         MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportXa,
-            mcuxClPkc_SecureExportBigEndianFromPkc(pParam->pResult,
+            mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                                  pParam->pResult,
                                                   MCUXCLPKC_PACKARGS2(WEIER_XA, ECC_T0),
                                                   byteLenP) );
         if (MCUXCLPKC_STATUS_OK != ret_SecExportXa)
@@ -287,7 +289,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
         MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportYa,
-            mcuxClPkc_SecureExportBigEndianFromPkc(pParam->pResult + byteLenP,
+            mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                                  pParam->pResult + byteLenP,
                                                   MCUXCLPKC_PACKARGS2(WEIER_YA, ECC_T1),
                                                   byteLenP) );
         if (MCUXCLPKC_STATUS_OK != ret_SecExportYa)

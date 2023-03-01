@@ -64,7 +64,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_GenerateMultiplicative
 
     uint8_t *pS0 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S0]);
 
-    /* Generate S0 = phi = a 32-bit non-zero random d0, with PRNG. */
+    /* Generate S0 = phi = a 32-bit non-zero random, with PRNG. */
     MCUXCLPKC_WAITFORFINISH();
     volatile uint32_t *p32S0 = (volatile uint32_t *) pS0;  /* PKC buffer is CPU word aligned. */
 

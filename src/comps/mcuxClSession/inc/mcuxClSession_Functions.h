@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,10 +19,10 @@
 #ifndef MCUXCLSESSION_FUNCTIONS_H_
 #define MCUXCLSESSION_FUNCTIONS_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClSession_Types.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClSession_Types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,7 +50,6 @@ extern "C" {
  *                      This pointer shall be PKC-word aligned.
  * @param  pkcWaLength  Size (in bytes) of the workarea for PKC operations.
  *                      The size shall be a multiple of **CPU** wordsize.
- * @param  rngCtx       Context to be used for RNG operations.
  *
  * @return status
  * @retval #MCUXCLSESSION_STATUS_OK     Session has been initialized successfully
@@ -81,6 +80,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_setRtf(
   uint8_t * const pRtf,
   mcuxClSession_Rtf_t RtfOptions
 );
+
 
 /**
  * \brief Clean up a Crypto Library session.

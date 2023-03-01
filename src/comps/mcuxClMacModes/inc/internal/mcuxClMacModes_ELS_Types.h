@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -72,7 +72,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_InitEngine_t
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_UpdateEngine_t)(
   mcuxClSession_Handle_t session,
   mcuxClMacModes_Context_t * const pContext,
-  const uint8_t *const pIn,
+  mcuxCl_InputBuffer_t pIn,
   uint32_t inLength
 );
 
@@ -85,8 +85,8 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_UpdateEngine
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_FinishEngine_t)(
   mcuxClSession_Handle_t session,
   mcuxClMacModes_Context_t * const pContext,
-  uint8_t *const pOut,
-  uint32_t *const outLength
+  mcuxCl_Buffer_t pOut,
+  uint32_t * const outLength
 );
 
 

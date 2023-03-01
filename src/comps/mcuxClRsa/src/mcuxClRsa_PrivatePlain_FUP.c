@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_PrivatePlain_FUP.h>
 
-const mcuxClPkc_FUPEntry_t mcuxClRsa_PrivatePlain_ReductionME[3] = {{0x10u,0x00u,0x54u,0xb5u,0xe5u,0x39u},{0x80u,0x33u,0x01u,0x00u,0x02u,0x03u},{0x80u,0x2au,0x02u,0x03u,0x02u,0x00u}};
+const mcuxClPkc_FUPEntry_t mcuxClRsa_PrivatePlain_ReductionME_FUP[3] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0x54u,0xb5u,0xe5u,0x39u},{0x80u,0x33u,0x01u,0x00u,0x02u,0x03u},{0x80u,0x2au,0x02u,0x03u,0x02u,0x00u}};
 
 
 /*

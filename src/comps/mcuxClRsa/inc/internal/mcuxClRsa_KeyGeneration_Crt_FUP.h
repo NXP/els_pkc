@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,12 +19,12 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
-#define mcuxClRsa_KeyGeneration_Crt_Steps10_LEN  3u
-#define mcuxClRsa_KeyGeneration_Crt_Steps11_LEN  3u
-#define mcuxClRsa_KeyGeneration_Crt_Steps12_LEN  3u
+#define mcuxClRsa_KeyGeneration_Crt_Steps10_FUP_LEN  3u
+#define mcuxClRsa_KeyGeneration_Crt_Steps11_FUP_LEN  3u
+#define mcuxClRsa_KeyGeneration_Crt_Steps12_FUP_LEN  3u
 
-extern const mcuxClPkc_FUPEntry_t mcuxClRsa_KeyGeneration_Crt_Steps10[mcuxClRsa_KeyGeneration_Crt_Steps10_LEN];
-extern const mcuxClPkc_FUPEntry_t mcuxClRsa_KeyGeneration_Crt_Steps11[mcuxClRsa_KeyGeneration_Crt_Steps11_LEN];
-extern const mcuxClPkc_FUPEntry_t mcuxClRsa_KeyGeneration_Crt_Steps12[mcuxClRsa_KeyGeneration_Crt_Steps12_LEN];
+extern const mcuxClPkc_FUPEntry_t mcuxClRsa_KeyGeneration_Crt_Steps10_FUP[mcuxClRsa_KeyGeneration_Crt_Steps10_FUP_LEN];
+extern const mcuxClPkc_FUPEntry_t mcuxClRsa_KeyGeneration_Crt_Steps11_FUP[mcuxClRsa_KeyGeneration_Crt_Steps11_FUP_LEN];
+extern const mcuxClPkc_FUPEntry_t mcuxClRsa_KeyGeneration_Crt_Steps12_FUP[mcuxClRsa_KeyGeneration_Crt_Steps12_FUP_LEN];
 
 #endif /* MCUXCLRSA_KEYGENERATION_CRT_FUP_H_ */ 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,11 +23,18 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * FUP program declaration mcuxClEcc_FUP_TwEd_PointValidation
  */
 #define mcuxClEcc_FUP_TwEd_PointValidation_Len  14u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation[mcuxClEcc_FUP_TwEd_PointValidation_Len];
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_TWED_INTERNAL_POINTVALIDATION_FUP_H_ */

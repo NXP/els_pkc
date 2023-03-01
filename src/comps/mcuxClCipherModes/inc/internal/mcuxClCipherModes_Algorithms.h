@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -54,6 +54,7 @@ extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_A
  */
 extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Dec_Els;
 
+
 /**
  * @brief AES CBC Encryption algorithm descriptor without padding, using ELS
  */
@@ -74,13 +75,11 @@ extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_A
  */
 extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Dec_Els;
 
+
 /**
  * @brief CTR Encryption/Decryption algorithm descriptor, using ELS
  */
 extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CTR_Els;
-
-
-
 
 
 

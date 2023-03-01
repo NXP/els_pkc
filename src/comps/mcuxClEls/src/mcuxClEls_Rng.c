@@ -43,7 +43,7 @@
 static inline uint32_t els_getPRNGWord(
     void)
 {
-    return MCUXCLELS_SFR_READ(PRNG_DATOUT);
+    return MCUXCLELS_SFR_READ(ELS_PRNG_DATOUT);
 }
 
 // Implementation of mcuxClEls interface "Rng"

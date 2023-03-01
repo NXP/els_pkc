@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,6 +26,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClPkc.h>              // Interface to the entire mcuxClPkc component
+#include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <toolchain.h>             // Memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
@@ -117,13 +118,22 @@ bool mcuxClRsa_verify_pssverify_sha2_256_example(void)
     {
         return false;
     }
+
     /* Create session handle to be used by verify function */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, 
-                                                 MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE(RSA_KEY_BIT_LENGTH),
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session,
+                                                 MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE,
                                                  MCUXCLRSA_VERIFY_2048_WAPKC_SIZE);
+
+    /* Initialize the PRNG */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
+    {
+        return false;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PUBLIC */
     const mcuxClRsa_KeyEntry_t Mod1 = {

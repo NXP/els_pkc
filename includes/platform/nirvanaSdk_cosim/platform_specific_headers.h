@@ -16,17 +16,18 @@
  #pragma once
  
  #include "mcuxClConfig.h"
+ #include "mcuxClCore_Analysis.h"
+ 
+ MCUXCLCORE_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
  #include "ip_platform.h" 
  #include "sfr_peripherals.h" 
  #include "binarydef.h" 
  #include "ip_css.h" 
  #include "ip_css_constants.h" 
  #include "ip_css_design_configuration.h" 
- #include "ip_gdet.h" 
  #include "sa_trng_256.h" 
  #include "ip_pkc.h" 
  #include "id_safo_sgi.h" 
- #include "ip_puf.h" 
- #include "ip_glikey.h" 
+ MCUXCLCORE_ANALYSIS_STOP_PATTERN_EXTERNAL_HEADER()
  
  #endif /*PLATFORM_SPECIFIC_HEADERS_H_*/ 

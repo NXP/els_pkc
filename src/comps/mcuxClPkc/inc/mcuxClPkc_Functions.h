@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,9 +26,13 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClSession.h>
 
 #include <mcuxClPkc_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @defgroup mcuxClPkc_Functions mcuxClPkc_Functions
@@ -161,12 +165,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_GenerateUPTRT(
  * It randomizes the buffer allocation (physical address in PKC workarea).
  * When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.
  *
+ * @param[in] pSession    handle for the current CL session.
  * @param[in,out] pUPTRT  pointer to the first element to be randomized in UPTR table.
  * @param[in] noOfBuffer  number of elements to be randomized.
  *
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>pSession:</dt>
+ *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.
  *     <dt>@p pUPTRT</dt>
  *       <dd>this pointer shall be 2-byte aligned.
  *   </dl></dd>
@@ -178,9 +185,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_GenerateUPTRT(
  * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
  * @retval #MCUXCLPKC_STATUS_OK   if UPTR table is randomized successfully.
  * @retval #MCUXCLPKC_STATUS_NOK  if the operation failed.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_RandomizeUPTRT)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(
+    mcuxClSession_Handle_t pSession,
     uint16_t *pUPTRT,
     uint8_t noOfBuffer
     );
@@ -192,6 +202,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(
  * It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly.
  * When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.
  *
+ * @param[in] pSession      handle for the current CL session.
  * @param[in,out] pUPTRT    pointer to the first element to be randomized in UPTR table.
  * @param[in] bufferLength  byte length of each buffer in PKC workarea.
  * @param[in] noOfBuffer    number of elements to be randomized.
@@ -199,6 +210,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>pSession:</dt>
+ *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.
  *     <dt>@p pUPTRT</dt>
  *       <dd>this pointer shall be 2-byte aligned.
  *     <dt>@p bufferLength</dt>
@@ -211,9 +224,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(
  * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
  * @retval #MCUXCLPKC_STATUS_OK   if UPTR table is randomized successfully.
  * @retval #MCUXCLPKC_STATUS_NOK  if the operation failed.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_ReRandomizeUPTRT)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(
+    mcuxClSession_Handle_t pSession,
     uint16_t *pUPTRT,
     uint16_t bufferLength,
     uint8_t noOfBuffer
@@ -366,5 +382,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_WaitForReady(void);
  * @}
  */ /* mcuxClPkc_Functions */
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLPKC_FUNCTIONS_H_ */

@@ -13,6 +13,7 @@
 /* Security Classification:  Company Confidential                           */
 /*--------------------------------------------------------------------------*/
 
+#include <toolchain.h>
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
@@ -52,7 +53,7 @@
  *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK    if the selftest failed
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_PrDisabled_selftestPrHandler)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_selftestPrHandler(mcuxClSession_Handle_t pSession, mcuxClRandom_Context_t testCtx, mcuxClRandom_Mode_t testMode)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_selftestPrHandler(mcuxClSession_Handle_t pSession UNUSED_PARAM, mcuxClRandom_Context_t testCtx UNUSED_PARAM, mcuxClRandom_Mode_t testMode UNUSED_PARAM)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_PrDisabled_selftestPrHandler);
 #if 0

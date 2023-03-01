@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -29,7 +29,7 @@
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_compute)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(
 mcuxClSession_Handle_t session,
-const mcuxClKey_Handle_t key,
+mcuxClKey_Handle_t key,
 mcuxClMac_Mode_t mode,
 mcuxCl_InputBuffer_t pIn,
 uint32_t inLength,
@@ -49,7 +49,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_init(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
-  const mcuxClKey_Handle_t key)
+  mcuxClKey_Handle_t key)
 {
   /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
   mcuxClMacModes_Context_t * const pCtx = (mcuxClMacModes_Context_t *) pContext;
@@ -63,8 +63,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_init(
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_process)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_process(
   mcuxClSession_Handle_t session,
-  mcuxClMac_Context_t *const pContext,
-  const uint8_t *const pIn,
+  mcuxClMac_Context_t * const pContext,
+  mcuxCl_InputBuffer_t pIn,
   uint32_t inLength)
 {
   /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
@@ -78,9 +78,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_process(
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_finish)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_finish(
   mcuxClSession_Handle_t session,
-  mcuxClMac_Context_t *const pContext,
-  uint8_t *const pMac,
-  uint32_t * pMacLength)
+  mcuxClMac_Context_t * const pContext,
+  mcuxCl_Buffer_t pMac,
+  uint32_t * const pMacLength)
 {
   /* MISRA Ex. 9 to Rule 11.3 */
   mcuxClMacModes_Context_t * const pCtx = (mcuxClMacModes_Context_t *) pContext;

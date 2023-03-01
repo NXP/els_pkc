@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -31,6 +31,10 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClEls_Common.h> // Common functionality
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * MACROS
@@ -173,6 +177,10 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Cmac_Asy
     size_t inputLength, 
     uint8_t * pMac
     );
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLELS_CMAC_H_ */
 

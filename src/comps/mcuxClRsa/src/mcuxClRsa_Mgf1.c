@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -47,7 +47,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   const uint32_t hLen = pHashAlgo->hashSize;
 
   /* Update PKC workarea */
-  const uint32_t wordSizePkcWa = (MCUXCLRSA_INTERNAL_MGF1_WAPKC_SIZE(hLen, hLen) / (sizeof(uint32_t)));
+  const uint32_t wordSizePkcWa = (MCUXCLRSA_INTERNAL_MGF1_WAPKC_SIZE(inputLength, hLen) / (sizeof(uint32_t)));
   uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordSizePkcWa);
   if (NULL == pPkcWorkarea)
   {
@@ -58,14 +58,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   uint8_t * pHashOutput = pPkcWorkarea;
 
   /* Set up hash input */
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-  /* TODO CLNS-6084: hash input should directly be located either in CPU or PKC WA, depending on the feature flags
-   * When the workround is enabled, this would:
-   * - save memory
-   * - save calls to memcopy, mcuxClSession_allocateWords_cpuWa and mcuxClSession_freeWords_cpuWa in each iteration (improve performance)
-   * - remove the big block of code with the workaround below (improve maintainability)
-   */
-#endif
   uint8_t * pHashInput = pHashOutput + hLen;
 
   MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pHashInput, pInput, inputLength, inputLength));
@@ -89,38 +81,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
     /* Compute Hash */
     uint32_t hashOutputSize = 0u;
 
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-    /* Update CPU workarea */
-    const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MGF1_WACPU_SIZE_WO_HASH(inputLength) / (sizeof(uint32_t));
-    uint8_t * pHashInputCpu = (uint8_t*) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-    if (NULL == pHashInputCpu)
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_STATUS_FAULT_ATTACK);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result1, mcuxClMemory_copy(pHashInputCpu, pHashInput, inputLength + 4U, inputLength + 4U));
-    if(0u != memcopy_result1)
-    {
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_STATUS_ERROR);
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL(hash_result, mcuxClHash_compute(pSession,
-                                                             pHashAlgo,
-                                                             pHashInputCpu,
-                                                             inputLength + 4U,
-                                                             pHashOutput,
-                                                             &hashOutputSize) );
-    if(MCUXCLHASH_STATUS_OK != hash_result)
-    {
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_STATUS_ERROR);
-    }
-
-    mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-
-#else
     MCUX_CSSL_FP_FUNCTION_CALL(hash_result, mcuxClHash_compute(pSession,
                                                              pHashAlgo,
                                                              pHashInput,
@@ -132,7 +92,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
       mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_STATUS_ERROR);
     }
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
     /* Concatenate the hash of the seed pInput and C to the T */
     uint32_t concatenateLen = (tLen + hLen > outputLength) ? (outputLength - tLen) : hLen;
@@ -144,16 +103,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
 /* Check define outside of macro so the MISRA rule 20.6 does not get violated */
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_INTERNAL_STATUS_MGF_OK,
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) * mxCounter,
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * mxCounter,
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * mxCounter);
-#else
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_INTERNAL_STATUS_MGF_OK,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) * mxCounter,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * mxCounter);
-#endif
 }

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,6 +17,7 @@
 
 
 #include <stdint.h>
+#include <toolchain.h>
 
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -46,16 +47,16 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_NoVerify =
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_noVerify)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
   mcuxClSession_Handle_t       pSession,
-  mcuxCl_InputBuffer_t         pInput,
-  const uint32_t              inputLength,
+  mcuxCl_InputBuffer_t         pInput UNUSED_PARAM,
+  const uint32_t              inputLength UNUSED_PARAM,
   mcuxCl_Buffer_t              pVerificationInput,
-  mcuxClHash_Algo_t            pHashAlgo,
-  const uint8_t *             pLabel,
-  const uint32_t              saltlabelLength,
+  mcuxClHash_Algo_t            pHashAlgo UNUSED_PARAM,
+  const uint8_t *             pLabel UNUSED_PARAM,
+  const uint32_t              saltlabelLength UNUSED_PARAM,
   const uint32_t              keyBitLength,
-  const uint32_t              options,
+  const uint32_t              options UNUSED_PARAM,
   mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength)
+  uint32_t * const            pOutLength UNUSED_PARAM)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_noVerify);
 
@@ -80,7 +81,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
 
   /* Export result of size BYTE_LENGTH(keyBitLength) from pInput to pOutput in reverse order. */
   MCUXCLPKC_PS1_SETLENGTH(0u, MCUXCLPKC_ROUNDUP_SIZE(keyByteLength)); /* PS1 length = key byte length rounded up to PKC word size */
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExport, mcuxClPkc_SecureExportBigEndianFromPkc((uint8_t * )pOutput,
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExport, mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                                                                 (uint8_t * )pOutput,
                                                                                  MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_NOVERIFY_IN,
                                                                                                     MCUXCLRSA_INTERNAL_UPTRTINDEX_NOVERIFY_TMP),
                                                                                  keyByteLength));

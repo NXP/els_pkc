@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,10 +19,14 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeSkeletonAesCcm)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
     mcuxClSession_Handle_t session,
-    mcuxClAeadModes_Context_t * const pCtx,
+    mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pNonce,
     uint32_t nonceLength,
     mcuxCl_InputBuffer_t pIn,
@@ -39,7 +43,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeEngineAesCcmEls)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls (
     mcuxClSession_Handle_t session,
-    mcuxClAeadModes_Context_t * const pCtx,
+    mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pIn,
     uint32_t inLength,
     mcuxCl_Buffer_t pOut,
@@ -50,7 +54,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeSkeletonAesGcm)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
     mcuxClSession_Handle_t session,
-    mcuxClAeadModes_Context_t * const pCtx,
+    mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pNonce,
     uint32_t nonceLength,
     mcuxCl_InputBuffer_t pIn,
@@ -67,7 +71,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeEngineAesGcmEls)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesGcmEls (
     mcuxClSession_Handle_t session,
-    mcuxClAeadModes_Context_t * const pCtx,
+    mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pIn,
     uint32_t inLength,
     mcuxCl_Buffer_t pOut,
@@ -75,5 +79,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesGcmEls 
     uint32_t options  //!< options is a bitmask with one bit reserved for each of the operations
     );
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLAEADMODES_ELS_FUNCTIONS_H_ */

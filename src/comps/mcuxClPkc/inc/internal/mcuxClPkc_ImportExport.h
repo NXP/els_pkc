@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,9 +25,13 @@
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClSession.h>
 
 #include <mcuxClPkc_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************************/
 /* Import/export function declaration                     */
@@ -203,6 +207,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportLittleEndianFrom
  * This function imports an integer stored as a big-endian octet string with specified length
  * and stores it as an integer in PKC workarea according PKC specification, in a secure manner.
  *
+ * \param[in]   pSession       handle for the current CL session.
  * \param[out]  iTarget_iTemp  indices of PKC operands (Target and Temp)
  * \param[in]   pSource        address of the octet string to be imported
  * \param[in]   length         length of the octet string to be imported
@@ -210,6 +215,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportLittleEndianFrom
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *      <dt>pSession:</dt>
+ *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.</dd>
  *     <dt>@p iTarget_iTemp</dt>
  *       <dd><code>iTemp</code> (bits 0~7): index of temporary buffer (PKC operand).
  *       <br><code>iTarget</code> (bits 8~15): index of Target (PKC operand),
@@ -222,9 +229,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportLittleEndianFrom
  * @return Status of the mcuxClPkc_SecureImportBigEndianToPkc operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
  * @retval #MCUXCLPKC_STATUS_OK     The function executed successfully
  * @retval #MCUXCLPKC_STATUS_NOK    The function execution failed
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_SecureImportBigEndianToPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianToPkc(uint16_t iTarget_iTemp, const uint8_t * pSource, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianToPkc(mcuxClSession_Handle_t pSession, uint16_t iTarget_iTemp, const uint8_t * pSource, uint32_t length);
 
 
 /**
@@ -259,6 +268,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportLittleEndi
  * This function exports a PKC integer in PKC workarea and stores it as a big-endian octet string
  * in a buffer specified by the given address and length, in a secure manner.
  *
+ * \param[in]   pSession       handle for the current CL session.
  * \param[out]  pTarget        address of operand, where the exported integer will be stored
  * \param[in]   iSource_iTemp  indices of PKC operands (Source and Temp)
  * \param[in]   length         length of the octet string to be exported
@@ -266,6 +276,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportLittleEndi
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>pSession:</dt>
+ *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.</dd>
  *     <dt>@p iSource_iTemp</dt>
  *       <dd><code>iTemp</code> (bits 0~7): index of temporary buffer (PKC operand).
  *       <br><code>iSource</code> (bits 8~15): index of Source (PKC operand) to be exported.
@@ -279,9 +291,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportLittleEndi
  * @return Status of the mcuxClPkc_SecureExportBigEndianFromPkc operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
  * @retval #MCUXCLPKC_STATUS_OK     The function executed successfully
  * @retval #MCUXCLPKC_STATUS_NOK    The function execution failed
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_SecureExportBigEndianFromPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianFromPkc(uint8_t * pTarget, uint16_t iSource_iTemp, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianFromPkc(mcuxClSession_Handle_t pSession, uint8_t * pTarget, uint16_t iSource_iTemp, uint32_t length);
 
 
 /**
@@ -309,5 +323,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_SecureExportLittleEndianFromPkc)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportLittleEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLPKC_IMPORTEXPORT_H_ */

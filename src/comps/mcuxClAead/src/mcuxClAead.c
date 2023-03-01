@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -216,7 +216,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_verify(
     MCUX_CSSL_FP_FUNCTION_CALL(status, pContext->mode->verify(
       /* mcuxClSession_Handle_t session,        */ session,
       /* mcuxClAead_Context_t * const pContext, */ pContext,
-      /* mcuxCl_Buffer_t pTag,                  */ (mcuxCl_Buffer_t) pTag,
+      /* mcuxCl_InputBuffer_t pTag,             */ pTag,
       /* mcuxCl_Buffer_t pOut,                  */ pOut,
       /* uint32_t * const pOutLength,          */ pOutLength
     ));

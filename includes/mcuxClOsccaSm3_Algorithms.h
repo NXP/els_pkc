@@ -25,6 +25,7 @@
 * @ingroup mcuxClOsccaSm3_Constants
 * @{
 */
+#if defined(MCUXCL_FEATURE_HASH_HW_SM3)
 /**
  * @brief SM3 algorithm descriptor
  *        SM3 hash calculation using the Hash functionality OSCCA SM3.
@@ -36,6 +37,7 @@ extern const mcuxClHash_AlgorithmDescriptor_t mcuxClOsccaSm3_AlgorithmDescriptor
  *        SM3 hash calculation using the Hash functionality OSCCA SM3.
  */
 static mcuxClHash_Algo_t mcuxClOsccaSm3_Algorithm_Sm3 = &mcuxClOsccaSm3_AlgorithmDescriptor_Sm3;
+#endif /* MCUXCL_FEATURE_HASH_HW_SM3 */
 
 /**@}*/
 

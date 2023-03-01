@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,14 +17,18 @@
 
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Analysis.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
 #include <mcuxClMacModes_Constants.h>
+#include <mcuxClMacModes_Modes.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 #include <internal/mcuxClMacModes_Internal_Functions.h>
 
 /**
  *  Constant top-level mode descriptors and common mode descriptors for custom modes
  */
+
+/* MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER() */
 
 /**
  *  Top-level mode structure for CMAC
@@ -44,6 +48,7 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CMAC = {
   },
   .pCustom = NULL
 };
+
 
 
 /**
@@ -68,6 +73,7 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_NoPadding = {
 /**
  *  Top-level mode structure for CBCMAC using ISO9797-1 Method 1 Padding
  */
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1 = {
   .common = {
     .compute = mcuxClMacModes_compute,
@@ -87,6 +93,7 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_
 /**
  *  Top-level mode structure forCBCMAC using ISO9797-1 Method 2 Padding
  */
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2 = {
   .common = {
     .compute = mcuxClMacModes_compute,
@@ -123,3 +130,4 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_HMAC_SHA2_256_ELS = {
   .pCustom = NULL
 };
 
+/* MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER() */

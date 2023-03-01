@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,6 +18,8 @@
  * @example mcuxClPsaDriver_keygen_export_public_key_mont_curve25519_example.c
  * @brief Example for montgomery curves 384bits key pairs generating and public exporting
  */
+
+#include "common.h"
 
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
@@ -59,18 +61,18 @@ bool mcuxClPsaDriver_keygen_export_public_key_mont_curve25519_example(void)
 
     /* Set up PSA key attributes. */
     psa_key_attributes_t keygenAttr = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY),         // Keypair family with curve montgomery
-        .private_bits = 256U,                                                         // Key bits of a Curve25519
-        .private_lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 0U,                                                             // ID zero
-        .private_policy = {
-          .private_usage = PSA_ALG_NONE,                                              // Key may be used for sign message or hash
-          .private_alg = PSA_ALG_ECDSA_ANY,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = NULL,
-      .private_domain_parameters_size = 0U};
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY),         // Keypair family with curve montgomery
+        .bits = 256U,                                                         // Key bits of a Curve25519
+        .lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 0U,                                                             // ID zero
+        .policy = {
+          .usage = PSA_ALG_NONE,                                              // Key may be used for sign message or hash
+          .alg = PSA_ALG_ECDSA_ANY,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = NULL,
+      .domain_parameters_size = 0U};
 
     /* Call generate_key operation */
     uint8_t key_buffer[MCUXCLECC_MONT_CURVE25519_SIZE_PRIVATEKEY] = {0U};
@@ -99,18 +101,18 @@ bool mcuxClPsaDriver_keygen_export_public_key_mont_curve25519_example(void)
     /**********************************************************************************************/
     /* Set up PSA key attributes. */
     psa_key_attributes_t exportAttr = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY),         // Keypair family with curve montgomery
-        .private_bits = 256U,                                                         // Key bits of a Curve25519
-        .private_lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 0U,                                                             // ID zero
-        .private_policy = {
-          .private_usage = PSA_KEY_USAGE_EXPORT,                                      // Key may be used for sign message or hash
-          .private_alg = PSA_ALG_ECDSA_ANY,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = NULL,
-      .private_domain_parameters_size = 0U};
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY),         // Keypair family with curve montgomery
+        .bits = 256U,                                                         // Key bits of a Curve25519
+        .lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 0U,                                                             // ID zero
+        .policy = {
+          .usage = PSA_KEY_USAGE_EXPORT,                                      // Key may be used for sign message or hash
+          .alg = PSA_ALG_ECDSA_ANY,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = NULL,
+      .domain_parameters_size = 0U};
 
     /* Call export_public_key operation */
     uint8_t data[PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_MONTGOMERY), 256u)] = {0U};

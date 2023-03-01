@@ -35,7 +35,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_reseedFunction)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_reseedFunction(mcuxClSession_Handle_t pSession);
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_generateFunction_PrDisabled)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_generateFunction_PrDisabled(mcuxClSession_Handle_t pSession, uint8_t *pOut, uint32_t outLength);
 
@@ -43,7 +42,6 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_selftestFunction_PrDisab
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled(mcuxClSession_Handle_t pSession, mcuxClRandom_Mode_t mode);
 
 extern const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_NormalMode_PrDisabled;
-#endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
 

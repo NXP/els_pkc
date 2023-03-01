@@ -52,7 +52,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_QDash(uint32_t iQDas
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_QDash);
 
     uint16_t pOperands[QDASH_UPTRT_SIZE];
-    const uint16_t *backupPtrUptrt = MCUXCLMATH_FP_INITLOCALUPTRT(iQDash_iNShifted_iN_iT, 0, pOperands, 4u);
+    const uint16_t *backupPtrUptrt;
+    /* mcuxClMath_InitLocalUptrt always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(iQDash_iNShifted_iN_iT, 0, pOperands, 4u, &backupPtrUptrt));
     pOperands[QDASH_CONST0] = 0u;
 
     /* Prepare 2Q mod n, which is the Montgomery representation of 2. */

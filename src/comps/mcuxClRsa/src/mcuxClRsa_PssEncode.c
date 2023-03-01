@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,15 +16,15 @@
  */
 
 #include <stdint.h>
+#include <toolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClEls_Rng.h>
-
 #include <mcuxClMemory.h>
 #include <mcuxClHash.h>
-#include <internal/mcuxClHash_Internal.h>
+#include <mcuxClRandom.h>
 
+#include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
@@ -69,25 +69,19 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_Pss_Sha2_512 =
   .pPaddingFunction = mcuxClRsa_pssEncode
 };
 
-#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND) || defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
-#define mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeWa) mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa)
-#else
-#define mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeWa) mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa)
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
-
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pssEncode)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
   const uint32_t              inputLength,
-  mcuxCl_Buffer_t              pVerificationInput,
+  mcuxCl_Buffer_t              pVerificationInput UNUSED_PARAM,
   mcuxClHash_Algo_t            pHashAlgo,
-  const uint8_t *             pLabel,
+  const uint8_t *             pLabel UNUSED_PARAM,
   const uint32_t              saltlabelLength,
   const uint32_t              keyBitLength,
   const uint32_t              options,
   mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength)
+  uint32_t * const            pOutLength UNUSED_PARAM)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_pssEncode);
 
@@ -109,15 +103,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   const uint32_t padding3Length = padding2Length + 1u;
 
   /*
-   * Set buffers in temporary workarea
+   * Set buffers in the PKC workarea
    * M' = | M'= (padding | mHash | salt) |
    */
-  const uint32_t wordSizeTempWa = MCUXCLRSA_INTERNAL_PSSENCODE_TEMPBUFFER_SIZE(hLen, sLen) / sizeof(uint32_t);
-#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND) || defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
-  mcuxCl_Buffer_t pMprim = (mcuxCl_Buffer_t) mcuxClSession_allocateWords_cpuWa(pSession, wordSizeTempWa);
-#else
-  mcuxCl_Buffer_t pMprim = (mcuxCl_Buffer_t) mcuxClSession_allocateWords_pkcWa(pSession, wordSizeTempWa);
-#endif
+  const uint32_t wordSizePkcWa = MCUXCLRSA_INTERNAL_PSSENCODE_MAX_WAPKC_SIZE_WO_MGF1(emLen) / sizeof(uint32_t);
+  mcuxCl_Buffer_t pMprim = (mcuxCl_Buffer_t) mcuxClSession_allocateWords_pkcWa(pSession, wordSizePkcWa);
   /* Pointer to the buffer for the mHash in the M'*/
   mcuxCl_Buffer_t pMHash = pMprim + padding1Length;
   /* Pointer to the buffer for the salt in the M'*/
@@ -145,7 +135,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
   if((emLen < (hLen + sLen + 2u)) || (hLen < sLen) || ((1024u == keyBitLength) && (512u == (8u * hLen)) && ((hLen - 2u) < sLen)))
   {
-    mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
 
@@ -166,7 +156,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
     if(MCUXCLHASH_STATUS_OK != hash_result1)
     {
-      mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+      mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_ERROR);
     }
   }
@@ -177,17 +167,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   }
   else
   {
-    mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_ERROR);
   }
 
   /* Step 4: Generate a random octet string salt of length sLen; if sLen = 0, then salt is the empty string. */
   // TODO: question to Security Architects: PRNG okay?
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pSalt, sLen));
-
-  if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate, mcuxClRandom_ncGenerate(pSession, pSalt, sLen));
+  if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate)
   {
-    mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_ERROR);
   }
 
@@ -210,7 +199,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
   if(MCUXCLHASH_STATUS_OK != hash_result_2)
   {
-    mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_ERROR);
   }
 
@@ -222,7 +211,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
   if(MCUXCLRSA_INTERNAL_STATUS_MGF_OK != retVal_mcuxClRsa_mgf1)
   {
-    mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_ERROR);
   }
 
@@ -264,12 +253,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   /************************************************************************************************/
   /* Function exit                                                                                */
   /************************************************************************************************/
-  mcuxClRsa_PssEncode_SessionFreeWords_tempWa(pSession, wordSizeTempWa);
+  mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
 /* Use temporary defines to avoid preprocessor directives inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
   #define TMP_FEATURE_ELS_RNG \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom), \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
 
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK,

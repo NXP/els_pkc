@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -54,7 +54,9 @@ typedef struct mcuxClPkc_FUPEntry
  * MCUXCLPKC_FUP_EXT_ROM(FupProgram1, FUP_OP1_MUL(0,1,1), FUP_OP1_MUL(1,0,0));
  */
 #define MCUXCLPKC_FUP_EXT_ROM(name, ...)  \
-    const mcuxClPkc_FUPEntry_t name[] __attribute__((aligned(4),section("PH_CL_FUP_PROGRAMS_MAGIC_AREA"))) = { __VA_ARGS__ }
+    MCUXCLCORE_ANALYSIS_START_PATTERN_FUP() \
+    const mcuxClPkc_FUPEntry_t name[] __attribute__((aligned(4),section("PH_CL_FUP_PROGRAMS_MAGIC_AREA"))) = { __VA_ARGS__ } \
+    MCUXCLCORE_ANALYSIS_STOP_PATTERN_FUP()
 
 #define MCUXCLPKC_FUP_LEN(pFupProgram)  ((uint8_t) ((sizeof(pFupProgram)) / 6u))
 

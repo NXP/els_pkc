@@ -21,7 +21,8 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
-#include <mcuxClKey.h>
+#include <mcuxClKey_Types.h>
+#include <mcuxClKey_Constants.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 
 #ifdef __cplusplus

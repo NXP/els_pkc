@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,6 +26,9 @@
 #include <mcuxClKey.h>
 #include <mcuxClEcc_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief Structure to define basic custom domain parameters for (short) Weierstrass curves with cofactor 1.
@@ -114,5 +117,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateCusto
 
 
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_WEIERECC_H_ */

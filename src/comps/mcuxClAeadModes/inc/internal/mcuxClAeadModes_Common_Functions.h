@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,6 +19,9 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_process_adata)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
@@ -26,19 +29,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
   mcuxClAead_Context_t * const pContext,
   mcuxCl_InputBuffer_t pAdata,
   uint32_t adataLength
-);
-
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_init)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init(
-  mcuxClSession_Handle_t session,
-  mcuxClAead_Context_t * const pContext,
-  mcuxClKey_Handle_t key,
-  mcuxClAead_Mode_t mode,
-  mcuxCl_InputBuffer_t pNonce,
-  uint32_t nonceLength,
-  uint32_t inLength,
-  uint32_t adataLength,
-  uint32_t tagLength
 );
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_process)
@@ -69,6 +59,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_verify(
   uint32_t * const pOutLength
 );
 
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_init)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init(
+  mcuxClSession_Handle_t session,
+  mcuxClAead_Context_t * const pContext,
+  mcuxClKey_Handle_t key,
+  mcuxClAead_Mode_t mode,
+  mcuxCl_InputBuffer_t pNonce,
+  uint32_t nonceLength,
+  uint32_t inLength,
+  uint32_t adataLength,
+  uint32_t tagLength
+);
+
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_crypt)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_crypt(
   mcuxClSession_Handle_t session,
@@ -87,69 +90,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_crypt(
 );
 
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_encrypt)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_encrypt(
-  mcuxClSession_Handle_t session,
-  mcuxClKey_Handle_t key,
-  mcuxClAead_Mode_t mode,
-  mcuxCl_InputBuffer_t pNonce,
-  uint32_t nonceLength,
-  mcuxCl_InputBuffer_t pIn,
-  uint32_t inLength,
-  mcuxCl_InputBuffer_t pAdata,
-  uint32_t adataLength,
-  mcuxCl_Buffer_t pOut,
-  uint32_t * const pOutLength,
-  mcuxCl_Buffer_t pTag,
-  uint32_t tagLength
-);
-
-
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_decrypt)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_decrypt(
-  mcuxClSession_Handle_t session,
-  mcuxClKey_Handle_t key,
-  mcuxClAead_Mode_t mode,
-  mcuxCl_InputBuffer_t pNonce,
-  uint32_t nonceLength,
-  mcuxCl_InputBuffer_t pIn,
-  uint32_t inLength,
-  mcuxCl_InputBuffer_t pAdata,
-  uint32_t adataLength,
-  mcuxCl_InputBuffer_t pTag,
-  uint32_t tagLength,
-  mcuxCl_Buffer_t pOut,
-  uint32_t * const pOutLength
-);
-
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_init_encrypt)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init_encrypt(
-  mcuxClSession_Handle_t session,
-  mcuxClAead_Context_t * const pContext,
-  mcuxClKey_Handle_t key,
-  mcuxClAead_Mode_t mode,
-  mcuxCl_InputBuffer_t pNonce,
-  uint32_t nonceLength,
-  uint32_t inLength,
-  uint32_t adataLength,
-  uint32_t tagLength
-);
-
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_init_decrypt)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init_decrypt(
-  mcuxClSession_Handle_t session,
-  mcuxClAead_Context_t * const pContext,
-  mcuxClKey_Handle_t key,
-  mcuxClAead_Mode_t mode,
-  mcuxCl_InputBuffer_t pNonce,
-  uint32_t nonceLength,
-  uint32_t inLength,
-  uint32_t adataLength,
-  uint32_t tagLength
-);
-
-
-
-
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /*MCUXCLAEADMODES_COMMON_FUNCTIONS_H_*/

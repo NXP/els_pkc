@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -134,6 +134,19 @@
  */
 #define MCUX_CSSL_FP_CONDITIONAL_IMPL(condition, ...) \
   (MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__) & ((condition) ? ((uint32_t) UINT32_MAX) : ((uint32_t) 0)))
+
+/**
+ * @def MCUX_CSSL_FP_VOID_EXPECTATION_IMPL
+ * @brief Implementation of expectation of nothing
+ * @api
+ * @ingroup csslFpCntExpect
+ *
+ * This expectation macro indicates to the flow protection mechanism that nothing
+ * is expected to happen. This is mainly intended for internal use (to ensure at 
+ * least one expectation is passed).
+ */
+#define MCUX_CSSL_FP_VOID_EXPECTATION_IMPL() \
+  (0u)
 
 /**
  * \def MCUX_CSSL_FP_EXPECT_IMPL
@@ -343,6 +356,22 @@
 #define MCUX_CSSL_FP_FUNCTION_CALLED_IMPL(id) \
   MCUX_CSSL_FP_FUNCTION_VALUE(id)
 
+
+/**
+ * \def MCUX_CSSL_FP_FUNCTION_ENTERED_IMPL
+ * \brief Expectation implementation of an entered (but not exited) function.
+ * \ingroup csslFpCntFunction
+ *
+ * \declaration{MCUX_CSSL_FP_FUNCTION_DECL_IMPL}
+ * \event{MCUX_CSSL_FP_FUNCTION_CALL_IMPL}
+ *
+ * \see MCUX_CSSL_FP_FUNCTION_VALUE
+ *
+ * \param id Identifier of the function that is expected to be entered.
+ * \return   Counter value for the given function.
+ */
+#define MCUX_CSSL_FP_FUNCTION_ENTERED_IMPL(id) \
+  MCUX_CSSL_FP_FUNCTION_ID_ENTRY_PART(id)
 
 
 /**
@@ -972,6 +1001,26 @@
 #define MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT_IMPL(...) \
   MCUX_CSSL_CPP_OVERLOADED2(MCUX_CSSL_FP_SWITCH_TAKEN_DEFAULT_IMPL, __VA_ARGS__)
 
-
+/**
+ * @def MCUX_CSSL_FP_ASSERT_CALLBACK
+ * @brief Fallback assert callback implementation.
+ * @api
+ * @ingroup csslFpCntExpect
+ *
+ * This macro will be executed if an #MCUX_CSSL_FP_ASSERT fails. In general this
+ * behavior should be defined by the user. This implementation is only in place
+ * to ensure that an implementation is always available.
+ *
+ * This is implemented a division by 0, which should trigger a compiler warning
+ * when used, to inform the user that the default implementation is used.
+ * Additionally, when still used at run-time it should trigger some system
+ * exception.
+ *
+ * \see MCUX_CSSL_FP_ASSERT
+ */
+#ifndef MCUX_CSSL_FP_ASSERT_CALLBACK
+  #define MCUX_CSSL_FP_ASSERT_CALLBACK() \
+    return 1/0 /* Fallback ASSERT callback is used, please provide your own. */
+#endif
 
 #endif /* MCUX_CSSL_FLOW_PROTECTION_SECURE_COUNTER_COMMON_H_ */

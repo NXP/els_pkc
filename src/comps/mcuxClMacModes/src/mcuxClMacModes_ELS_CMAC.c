@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,6 +32,7 @@
 #include <internal/mcuxClMacModes_Wa.h>
 #include <internal/mcuxClMacModes_ELS_Types.h>
 #include <internal/mcuxClMacModes_ELS_CMAC.h>
+#include <internal/mcuxClMacModes_Algorithms.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CMAC_Oneshot)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Oneshot(
@@ -113,17 +114,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
       }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-      if(NULL != pOut)
-      {
-          MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult1, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
-
-          if (MCUXCLELS_STATUS_OK != addressComparisonResult1)
-          {
-              MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAULT_ATTACK);
-          }
-      }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
       pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
 
@@ -214,17 +204,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
       }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-      if(NULL != pOut)
-      {
-          MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult2, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
-
-          if (MCUXCLELS_STATUS_OK != addressComparisonResult2)
-          {
-              MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAULT_ATTACK);
-          }
-      }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     }
 
     *pOutLength = MCUXCLELS_CMAC_OUT_SIZE;
@@ -347,14 +326,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) );
     }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult1, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-    if (MCUXCLELS_STATUS_OK != addressComparisonResult1)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_FAULT_ATTACK);
-    }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     //update options for the next operations
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
@@ -407,14 +378,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) );
     }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult2, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-    if (MCUXCLELS_STATUS_OK != addressComparisonResult2)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_FAULT_ATTACK);
-    }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
 
@@ -494,14 +457,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) );
   }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-  MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult1, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-  if (MCUXCLELS_STATUS_OK != addressComparisonResult1)
-  {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_FAULT_ATTACK);
-  }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
   //copy result to output buffer
   MCUX_CSSL_FP_FUNCTION_CALL(resultCopy, mcuxClMemory_copy(pOut,
@@ -540,6 +495,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
         MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
 }
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CMAC = {
   .engineInit = mcuxClMacModes_Engine_CMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_Init),

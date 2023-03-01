@@ -44,7 +44,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
 
     if(signature_size < MCUXCLELS_ECC_SIGNATURE_SIZE)
     {
-        return PSA_ERROR_INSUFFICIENT_MEMORY;
+        return PSA_ERROR_BUFFER_TOO_SMALL;
     }
 
     uint32_t digest[MCUXCLHASH_OUTPUT_SIZE_SHA_256 / sizeof(uint32_t)];
@@ -304,9 +304,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
 {
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
 
+    /* WCBRD-1105: Also fallback to sw for determinisitc ecdsa case*/
     if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) != 1u
         && PSA_ALG_IS_RSA_PSS(alg) != 1u
-        && PSA_ALG_IS_ECDSA(alg)  != 1u)
+        && (PSA_ALG_IS_ECDSA(alg) != 1u || PSA_ALG_IS_DETERMINISTIC_ECDSA(alg) == 1u))
     {
       return PSA_ERROR_NOT_SUPPORTED;
     }
@@ -547,7 +548,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
 
       if(signature_size < mcuxClKey_getSize(pKey))
       {
-          return PSA_ERROR_INSUFFICIENT_MEMORY;
+          return PSA_ERROR_BUFFER_TOO_SMALL;
       }
 
       MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClRsa_sign(
@@ -640,7 +641,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
 
       if(signature_size < 2u * nLen)
       {
-          return PSA_ERROR_INSUFFICIENT_MEMORY;
+          return PSA_ERROR_BUFFER_TOO_SMALL;
       }
 
       MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(&session, &paramSign));

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,6 +23,9 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * FUP program declaration mcuxClEcc_FUP_TwEd_PointDoubleEd25519
@@ -36,5 +39,8 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointDoubleEd25519[mcuxClEc
 #define mcuxClEcc_FUP_TwEd_MixedPointAddEd25519_Len  19u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_MixedPointAddEd25519[mcuxClEcc_FUP_TwEd_MixedPointAddEd25519_Len];
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_TWED_INTERNAL_ED25519_FUP_H_ */

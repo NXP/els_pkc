@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -30,6 +30,10 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClCore_Buffer.h>
 #include <mcuxClEls.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * FUNCTIONS
@@ -205,5 +209,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_setKeyproperties(
 /**
  * @}
  */ /* mcuxClKey_Functions */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLKEY_FUNCTIONS_H_ */

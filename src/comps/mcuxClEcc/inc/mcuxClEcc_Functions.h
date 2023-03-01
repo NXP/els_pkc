@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -31,6 +31,10 @@
 
 #include <mcuxClKey.h>
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************************/
 /* Public APIs of mcuxClEcc                                */
@@ -191,6 +195,25 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
 
 
 /**
+ * @brief This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.
+ *
+ * @param[in]     pSession              Handle for the current CL session
+ * @param[in/out] mode                  Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input
+ * @param[in]     pPrivKey              Pointer to private key input
+ *
+ * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
+ * @retval #MCUXCLECC_STATUS_OK           EdDSA mode descriptor has been initialized successfully
+ * @retval #MCUXCLECC_STATUS_FAULT_ATTACK fault attack (unexpected behavior) is detected
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_InitPrivKeyInputMode)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInputMode(
+    mcuxClSession_Handle_t pSession,
+    mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
+    const uint8_t *pPrivKey
+    );
+
+
+/**
  * @brief This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032
  *  (see Sections 5.1.5 and 5.2.5 of https://datatracker.ietf.org/doc/html/rfc8032).
  *  For an M byte private key d, which is either generated internally at random or passed as input,
@@ -204,24 +227,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
  * Unexpected behavior will return MCUXCLECC_STATUS_FAULT_ATTACK.
  *
  *
- * @param[in]     pSession        Handle for the current CL session
- * @param[in]     type            Type of the key
- * @param[in]     protection      Protection mechanism that must be applied to the generated keys
- * @param[in]     mode            Mode descriptor specifying the EdDSA GenerateKeyPair variant
- * @param[out]    privKey         Key handle to be initialized for the private key
- * @param[in,out] pPrivData       Pointer to the buffer storing private key related data.
- *                                  If option MCUXCLECC_EDDSA_PRIVKEY_INPUT is set,
- *                                  then the private key d is passed at the start of this buffer.
- *                                  If option MCUXCLECC_EDDSA_PRIVKEY_GENERATE is set,
- *                                  then d is generated internally at random.
- *                                  After the function call, the buffer contains the private key d followed by the integer s,
- *                                  the string (hb,...,h{2b-1}) as well as the public key Qenc.
- * @param[out]    pPrivDataLength Will be set to the number of bytes of data that have been written to the pPrivData buffer
- * @param[out]    pubKey          Key handle to be initialized for the generated public key
- * @param[out]    pPubData        Pointer to the buffer where the generated public key data needs to be written
- * @param[out]    pPubDataLength  Will be set to the number of bytes of data that have been written to the pPubData buffer
+ * @param[in]     pSession              Handle for the current CL session
+ * @param[in]     mode                  Mode descriptor specifying the EdDSA GenerateKeyPair variant
+ * @param[in/out] privKey               Key handle for the private key.
+ * @param[in/out] pubKey                Key handle for the public key.
  *
- * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_ and @ref MCUXCLECC_MONTDH_STATUS_)
+ * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
  * @retval #MCUXCLECC_STATUS_OK           private key data and public key have been generated successfully
  * @retval #MCUXCLECC_STATUS_RNG_ERROR    random number generation (DRBG / PRNG) error (unexpected behavior)
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK fault attack (unexpected behavior) is detected
@@ -229,15 +240,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateKeyPair)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     mcuxClSession_Handle_t pSession,
-    mcuxClKey_Type_t type,
-    mcuxClKey_Protection_t protection,
     const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
     mcuxClKey_Handle_t privKey,
-    uint8_t *pPrivData,
-    uint32_t *const pPrivDataLength,
-    mcuxClKey_Handle_t pubKey,
-    uint8_t *pPubData,
-    uint32_t *const pPubDataLength
+    mcuxClKey_Handle_t pubKey
     );
 
 /**
@@ -321,9 +326,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     uint32_t signatureSize
     );
 
+
+
+
 /**
  * @}
  */ /* mcuxClEcc_Functions */
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_FUNCTIONS_H_ */

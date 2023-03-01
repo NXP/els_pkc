@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,6 +32,10 @@
 #include <mcuxClEcc_Types.h>
 
 #include <internal/mcuxClEcc_Internal.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * Domain parameter structure for ECC functions based on Weierstrass functions.
@@ -157,13 +161,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_SetupEnvironm
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_PointCheckAffineNR)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointCheckAffineNR(void);
 
-/** Helper macro to call #mcuxClEcc_PointCheckAffineNR with flow protection. */
-#define MCUXCLECC_FP_POINTCHECKAFFINENR()  \
-    ({ \
-        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_PointCheckAffineNR());  \
-        (retValTemp);  \
-    })
-
 
 /**********************************************************/
 /* Internal function declaration - point arithmetic       */
@@ -171,22 +168,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointCheckAffineNR(voi
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_RepeatPointDouble)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RepeatPointDouble(uint32_t iteration);
 
-/** Helper macro to call #mcuxClEcc_RepeatPointDouble with flow protection. */
-#define MCUXCLECC_FP_REPEATPOINTDOUBLE(iteration)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_RepeatPointDouble(iteration));  \
-        (void) retValTemp;  /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
-
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_PointFullAdd)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void);
-
-/** Helper macro to call #mcuxClEcc_PointFullAdd with flow protection. */
-#define MCUXCLECC_FP_POINTFULLADD()  \
-    ({ \
-        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_PointFullAdd());  \
-        (retValTemp);  \
-    })
 
 
 /**********************************************************/
@@ -195,23 +178,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void);
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_Int_PointMult)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_PointMult(uint8_t iScalar, uint32_t scalarBitLength);
 
-/** Helper macro to call #mcuxClEcc_Int_PointMult with flow protection. */
-#define MCUXCLECC_FP_INT_POINTMULT(iScalar, scalarBitLen)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_Int_PointMult(iScalar, scalarBitLen));  \
-        (void) retValTemp;  /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
-
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_SecurePointMult)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxClSession_Handle_t pSession,
                                                                        uint8_t iScalar,
                                                                        uint32_t scalarBitLength);
-/** Helper macro to call #mcuxClEcc_SecurePointMult with flow protection. */
-#define MCUXCLECC_FP_SECUREPOINTMULT(iScalar, scalarBitLen)  \
-    ({ \
-        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_SecurePointMult(pSession, iScalar, scalarBitLen));  \
-        (retValTemp);  \
-    })
 
 
 /**********************************************************/
@@ -248,5 +218,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateKeyPa
     mcuxClKey_Handle_t pubKey
     );
 
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_WEIER_INTERNAL_H_ */

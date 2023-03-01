@@ -49,13 +49,10 @@ static const mcuxClRandom_Mode_t mcuxClRandomModes_Mode_ELS_Drbg =
     &mcuxClRandomModes_mdELS_Drbg;
 
 
-#if defined(MCUXCL_FEATURE_RANDOMMODES_NORMALMODE) && defined(MCUXCL_FEATURE_RANDOMMODES_CTRDRBG)
-
-#ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
 
 
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256
+
 
 /**
  * @brief Mode for a NIST SP800-90A CTR_DRBG based on AES-256 configured to not provide prediction resistance and realize a DRG.3 at 256 bit security level.
@@ -91,15 +88,12 @@ static const mcuxClRandom_Mode_t mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3 =
  */
 #define mcuxClRandomModes_Mode_CtrDrbg_AES256 mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3
 
-#endif /* MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256 */
 
-#endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
 
 /*TODO These are currently not used by any mode */
 
-#endif /* defined(MCUXCL_FEATURE_RANDOMMODES_NORMALMODE) && defined(MCUXCL_FEATURE_RANDOMMODES_CTRDRBG) */
 
 /**
  * @}

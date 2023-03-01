@@ -25,7 +25,9 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
+#ifdef MCUXCL_FEATURE_HASH_HW_SM3
 #include <internal/mcuxClOsccaSm3_Internal_sm3.h>
+#endif /* MCUXCL_FEATURE_HASH_HW_SM3 */
 
 /**********************************************
  * CONSTANTS

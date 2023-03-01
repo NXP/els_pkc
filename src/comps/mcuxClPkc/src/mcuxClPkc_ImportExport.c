@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,9 +23,11 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClEls_Rng.h>
+#include <mcuxClRandom.h>
 #include <mcuxCsslMemory.h>
 #include <mcuxClMemory.h>
+#include <mcuxClSession.h>
+
 #include <mcuxClPkc.h>
 
 #include <internal/mcuxClPkc_Operations.h>
@@ -57,7 +59,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_SwitchEndianness);
 
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     if (0u != (length % (sizeof(uint32_t))))
     {
         uint8_t *ptrL = (uint8_t *) ptr;
@@ -84,10 +85,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
 
     /* length is a multiple of CPU word size (4). */
     uint32_t *ptrH32 = (uint32_t *) ((uint8_t *) ptr + length - 4u);
-#else
-    /* MISRA Ex. 9 - Rule 11.3 - Use of UNALIGNED keyword. */
-    uint32_t UNALIGNED *ptrH32 = (uint32_t UNALIGNED *) ((uint8_t *) ptr + length - 4u);
-#endif
     uint32_t *ptrL32 = ptr;
 
     /* While there are >= 4 bytes to switch the endianness. */
@@ -105,24 +102,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
         ptrL32++;
     }
 
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     /* Now, ptrH32 = phtL32 - 4 or ptrL32 - 8, nothing more to do. */
-#else
-    /* If ptrH <= ptrL - 4, nothing more to do. */
-    /* If ptrH == ptrL - 3, swap ptrL[0] with ptrH[3] = ptrL[0], i.e., nothing to do. */
-    /* If ptrH == ptrL - 2, swap ptrL[0] with ptrH[3] = ptrL[1]. */
-    /* If ptrH == ptrL - 1, swap ptrL[0] with ptrH[3] = ptrL[2], and leave ptrL[1] unchanged. */
-    uint8_t *ptrL8 = (uint8_t *) ptrL32;
-    uint8_t *ptrH8 = (uint8_t *) ptrH32 + 3u;
-    if (ptrH8 > ptrL8)
-    {
-        uint8_t byteL = *ptrL8;
-        uint8_t byteH = *ptrH8;
-
-        *ptrH8 = byteL;
-        *ptrL8 = byteH;
-    }
-#endif
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SwitchEndianness, MCUXCLPKC_STATUS_OK);
 }
@@ -275,7 +255,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportLittleEndianFrom
  * (6) unmask (XOR) the target PKC operand.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_SecureImportBigEndianToPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianToPkc(uint16_t iTarget_iTemp, const uint8_t * pSource, uint32_t length)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianToPkc(mcuxClSession_Handle_t pSession, uint16_t iTarget_iTemp, const uint8_t * pSource, uint32_t length)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_SecureImportBigEndianToPkc);
 
@@ -299,16 +279,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
 
     /* Caution: the whole temp buffer needs to be initialized before PKC XOR */
     /*          if the platform requests an explicit memory initialization.  */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pTemp, operandSize));
-    if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate, mcuxClRandom_ncGenerate(pSession, pTemp, operandSize));
+    if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureImportBigEndianToPkc, MCUXCLPKC_STATUS_NOK);
     }
 
-
     MCUXCLPKC_FP_CALC_OP1_XOR(iTarget, iTarget, iTemp);
 
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     uint32_t alignedLength = (length + (sizeof(uint32_t)) - 1u) & (~ ((sizeof(uint32_t)) - 1u));
 
     MCUXCLPKC_WAITFORFINISH();
@@ -322,25 +300,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
 
     /* Clear the extra byte(s) by right-shifting. */
     MCUXCLPKC_FP_CALC_OP1_SHR(iTarget, iTarget, (alignedLength - length) * 8u);
-#else
-    MCUXCLPKC_WAITFORFINISH();
-    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTemp,   length);  /* PKC buffer is CPU word aligned. */
-    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTarget, length);  /* PKC buffer is CPU word aligned. */
-
-    MCUXCLPKC_FP_CALC_OP1_XOR(iTarget, iTarget, iTemp);
-#endif
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureImportBigEndianToPkc, MCUXCLPKC_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
         , MCUXCLPKC_FP_CALLED_CALC_OP1_SHR
-#endif
         );
 }
 
@@ -396,7 +365,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportLittleEndi
  *     to the target buffer.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_SecureExportBigEndianFromPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianFromPkc(uint8_t * pTarget, uint16_t iSource_iTemp, uint32_t length)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianFromPkc(mcuxClSession_Handle_t pSession, uint8_t * pTarget, uint16_t iSource_iTemp, uint32_t length)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_SecureExportBigEndianFromPkc);
 
@@ -412,16 +381,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
 
     /* Caution: the whole temp buffer needs to be initialized before PKC XOR */
     /*          if the platform requests an explicit memory initialization.  */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom, mcuxClEls_Prng_GetRandom(pTemp, operandSize));
-    if (MCUXCLELS_STATUS_OK != ret_PRNG_GetRandom)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate, mcuxClRandom_ncGenerate(pSession, pTemp, operandSize));
+    if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate)
     {
        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureExportBigEndianFromPkc, MCUXCLPKC_STATUS_NOK);
     }
 
-
     MCUXCLPKC_FP_CALC_OP1_XOR(iSource, iSource, iTemp);
 
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     uint32_t alignedLength = (length + (sizeof(uint32_t)) - 1u) & (~ ((sizeof(uint32_t)) - 1u));
 
     MCUXCLPKC_WAITFORFINISH();
@@ -435,14 +402,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
 
     /* Clear the extra byte(s) by right-shifting. */
     MCUXCLPKC_FP_CALC_OP1_SHR(iSource, iSource, (alignedLength - length) * 8u);
-#else
-
-    MCUXCLPKC_WAITFORFINISH();
-    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTemp,   length);  /* PKC buffer is CPU word aligned. */
-    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pSource, length);  /* PKC buffer is CPU word aligned. */
-
-    MCUXCLPKC_FP_CALC_OP1_XOR(iSource, iSource, iTemp);
-#endif
 
     MCUXCLPKC_WAITFORFINISH();
 
@@ -455,14 +414,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureExportBigEndianFromPkc, MCUXCLPKC_STATUS_OK,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR,
-#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
         MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-#endif
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy)
         );
 }

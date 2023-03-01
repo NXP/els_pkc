@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,12 +20,13 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClPkc.h>
+
 /**
- * Init Session via mcuxClSession_init via mcuxClSession_init.
+ * Initialize Session via mcuxClSession_init.
  * [in]  pSession     : Pointer to the session handle.
  * [in]  cpuWaLength  : Size of the workarea for CPU operations.
  * [in]  pkcWaLength  : Size of the workarea for PKC operations.
-*/
+ */
 #define MCUXCLEXAMPLE_ALLOCATE_CPUWA(cpuWaLength) (cpuWaLength?cpuWaLength:1u)  // always allocate a minimum size buffer to avoid issues
 #define MCUXCLEXAMPLE_ALLOCATE_PKCWA(pkcWaLength) (pkcWaLength?pkcWaLength:1u)  // always allocate a minimum size buffer to avoid issues
 

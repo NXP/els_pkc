@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_ComputeD_FUP.h>
 
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_ComputeD_Steps123,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_ComputeD_Steps123_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     /* Compute p' = p-1 */
     FUP_OP1_SUB_CONST(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_PSUB1, MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_P,

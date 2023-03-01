@@ -16,7 +16,7 @@
  *  handling of DRBG random number generators. This file implements the functions
  *  declared in mcuxClRandom.h. */
 
-
+#include <toolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxClMemory.h>
 #include <mcuxClRandom.h>
@@ -57,7 +57,7 @@ static inline mcuxClRandom_Status_t mcuxClRandom_verifyMode(mcuxClRandom_Mode_t 
  *
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_verifyContext)
-static inline mcuxClRandom_Status_t mcuxClRandom_verifyContext(mcuxClRandom_Context_t pRngCtx)
+static inline mcuxClRandom_Status_t mcuxClRandom_verifyContext(mcuxClRandom_Context_t pRngCtx UNUSED_PARAM)
 {
     // TODO: To be implemented
     return MCUXCLRANDOM_STATUS_OK;

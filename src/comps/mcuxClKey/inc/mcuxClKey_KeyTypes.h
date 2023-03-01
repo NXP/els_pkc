@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,6 +25,10 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClKey_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @defgroup mcuxClKey_KeyTypes mcuxClKey_KeyTypes
  * @brief Defines of supported key types of @ref mcuxClKey
@@ -41,6 +45,7 @@
  * \brief Key type structure for HMAC-SHA256 based keys with variable length.
  *
  */
+/* MISRA Ex. 20 - Rule 5.1 */
 extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256_variableLength;
 
 /**
@@ -59,6 +64,9 @@ extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256;
  */
 static const mcuxClKey_Type_t mcuxClKey_Type_HmacSha256 = &mcuxClKey_TypeDescriptor_HmacSha256;
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 /**
  * @}

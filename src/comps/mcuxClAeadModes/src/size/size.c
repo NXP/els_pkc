@@ -19,7 +19,9 @@
  * @brief:	This file contains objects which will be used to measure size of particular types.
  *
  */
+
 #include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Analysis.h>
 
 /* ******************************* */
 /* *** Work area and ctx sizes *** */
@@ -30,11 +32,12 @@
 
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile uint8_t mcuxClAead_WorkArea[1];
 volatile uint8_t mcuxClAead_OneShot[sizeof(mcuxClAeadModes_Context_t)];
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 
 
-
+MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile struct mcuxClAeadModes_Context mcuxClAeadModes_Context;
-
-
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

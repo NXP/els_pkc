@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -51,7 +51,7 @@ extern "C" {
  *  - Plain input data
  *  - Associated data
  *  - Output data buffer
- *  - Output size buffer, to store the amount of written bytes
+ *  - Output length buffer, to store the amount of written bytes
  *  - Tag buffer, to store the authentication tag
  *
  * @param      session     Handle for the current CL session.
@@ -210,7 +210,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_process_adata(
  * decryption operation and produces the authentication tag. The algorithm and
  * key to be used will be determined based on the context that is provided.
  *
- * Note: the tagSize is already specified when the INIT function is called.
+ * Note: the taglength is already specified when the INIT function is called.
  *
  * @param      session     Handle for the current CL session.
  * @param      pContext    AEAD context which is used to maintain the state and
@@ -244,7 +244,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_finish(
  * This function can be used as an alternative for @p mcuxClAead_finish when one
  * also wants to perform the tag verification step.
  *
- * Note: the tagSize is already specified when the INIT function is called.
+ * Note: the taglength is already specified when the INIT function is called.
  *
  * @param      session    Handle for the current CL session.
  * @param      pContext   AEAD context which is used to maintain the state and

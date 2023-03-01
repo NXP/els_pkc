@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -34,6 +34,10 @@
 #include <internal/mcuxClHash_Core_els_sha2.h>
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**********************************************
  * CONSTANTS
  **********************************************/
@@ -57,6 +61,8 @@
 #define MCUXCLHASH_STATE_SIZE_SHA_512       (64U) ///< SHA-224 state size: 623 bit (64 bytes)
 #define MCUXCLHASH_STATE_SIZE_MD5           (16U) ///< MD5 state size: 64 bit (8 bytes)
 
+#define MCUXCLHASH_STATE_SIZE_SHA3         (200U) ///< SHA3 all variants state size: (200 bytes of the ctx S3HA)
+
 #define MCUXCLHASH_COUNTER_SIZE_SHA_1        (8U) ///< Counter size for SHA-1 padding
 #define MCUXCLHASH_COUNTER_SIZE_SHA_224      (8U) ///< Counter size for SHA-224 padding
 #define MCUXCLHASH_COUNTER_SIZE_SHA_256      (8U) ///< Counter size for SHA-256 padding
@@ -66,6 +72,7 @@
 
 #define MCUXCLHASH_NO_OF_ROUNDS_SHA_1       (80U) ///< Number of rounds for SHA-1 algorithm
 #define MCUXCLHASH_NO_OF_ROUNDS_MD5         (64u) ///< Number of rounds for MD5 algorithm
+
 
 /**@}*/
 
@@ -93,7 +100,7 @@ typedef struct mcuxClHash_ContextBuffer
 {
   uint8_t unprocessed[MCUXCLHASH_BLOCK_SIZE_SHA_512];
   uint8_t state[MCUXCLHASH_STATE_SIZE_SHA_512];
-}mcuxClHash_ContextBuffer_t;
+} mcuxClHash_ContextBuffer_t;
 
 /**
  * @brief support bigger input length up to 2^128 bits
@@ -112,7 +119,7 @@ static inline void mcuxClHash_processedLength_add(uint64_t *pLen128, uint32_t ad
  */
 static inline int mcuxClHash_processedLength_cmp(uint64_t *pLen128, uint64_t cmpLenHigh64, uint64_t cmpLenLow64)
 {
-	return ((int64_t)(pLen128[1] - cmpLenHigh64) > 0 ? 1 : ((int64_t)(cmpLenHigh64 - pLen128[1]) > 0 ? -1 : ((int64_t)(pLen128[0] - cmpLenLow64) > 0 ? 1 : (pLen128[0] == cmpLenLow64 ? 0 : -1))));
+  return pLen128[1] > cmpLenHigh64 ? 1 : (cmpLenHigh64 > pLen128[1] ? -1 : ((pLen128[0] > cmpLenLow64 ? 1 : (pLen128[0] == cmpLenLow64 ? 0 : -1))));
 }
 
 /**
@@ -124,8 +131,9 @@ static inline int mcuxClHash_processedLength_cmp(uint64_t *pLen128, uint64_t cmp
  */
 typedef struct mcuxClHash_ContextData {
   uint32_t unprocessedLength;
+  uint32_t PADDING_FOR_64BIT_ALIGNMENT;
   uint64_t processedLength[2];
-}mcuxClHash_ContextData_t;
+} mcuxClHash_ContextData_t;
 
 /**
  * @brief Hash Context structure
@@ -139,6 +147,7 @@ struct mcuxClHash_ContextDescriptor
   mcuxClHash_ContextBuffer_t buffer;
   mcuxClHash_ContextData_t data;
   const mcuxClHash_AlgorithmDescriptor_t * algo;
+  uint32_t PADDING_FOR_64BIT_ALIGNMENT;
   /* if needed: mcuxCl_InputBuffer_t iv, */
 };
 
@@ -194,14 +203,12 @@ struct mcuxClHash_AlgorithmDescriptor
   uint32_t protection_token_processSkeleton;               ///< Protection token value for the used process skeleton
   mcuxClHash_AlgoSkeleton_Finish_t finishSkeleton;          ///< Multi-part hash skeleton function
   uint32_t protection_token_finishSkeleton;                ///< Protection token value for the used multi-part skeleton
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-  mcuxClHash_AlgoDmaProtection_t dmaProtection;             ///< DMA protection function
-  uint32_t protection_token_dma_protection;                ///< Protection token value for the used DMA protection function
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
   size_t blockSize;                                        ///< Size of the block used by the hash algorithm
   size_t hashSize;                                         ///< Size of the output of the hash algorithm
   size_t stateSize;                                        ///< Size of the state used by the hash algorithm
   uint32_t counterSize;                                    ///< Size of the counter used by the hash algorithm
+
+
   uint32_t rtfSize;                                        ///< Size of the Runtime Fingerprint used by the hash function; has to be set to zero when not supported
   mcuxClEls_HashOption_t hashOptions;
 };
@@ -212,5 +219,8 @@ struct mcuxClHash_AlgorithmDescriptor
  * Function declarations
  **********************************************/
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLHASH_INTERNAL_H_ */

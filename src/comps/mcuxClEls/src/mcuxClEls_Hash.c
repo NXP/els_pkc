@@ -50,7 +50,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Asy
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Hash_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
-    
+
     mcuxClEls_setInput0(pInput, inputLength);
     mcuxClEls_setInput1_fixedSize(pDigest);
     mcuxClEls_setOutput_fixedSize(pDigest);
@@ -58,5 +58,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Asy
 
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Hash_Async, MCUXCLELS_STATUS_OK_WAIT);
+
 }
 

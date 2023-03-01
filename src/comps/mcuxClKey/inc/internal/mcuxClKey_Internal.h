@@ -15,7 +15,6 @@
 #define MCUXCLKEY_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClKey.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClKey_Protection_Internal.h>

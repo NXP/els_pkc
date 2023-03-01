@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -22,6 +22,10 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClEcc_Types.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @defgroup mcuxClEcc_KeyTypeDescriptors mcuxClEcc_KeyTypeDescriptors
@@ -299,7 +303,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_secp521r1_Priv = &mcuxClKe
  * @brief Key type structure for public ECC keys for Weierstrass curve NIST P-192.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P192_Pub mcuxClKey_TypeDescriptor_WeierECC_secp192r1_Pub;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P192_Pub mcuxClKey_TypeDescriptor_WeierECC_secp192r1_Pub
 
 /**
  * @brief Key type pointer for public ECC Weierstrass keys for Weierstrass curve NIST P-192.
@@ -311,7 +315,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P192_Pub = &mcuxClKey
  * @brief Key type structure for private ECC keys for Weierstrass curve NIST P-192.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P192_Priv mcuxClKey_TypeDescriptor_WeierECC_secp192r1_Priv;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P192_Priv mcuxClKey_TypeDescriptor_WeierECC_secp192r1_Priv
 
 /**
  * @brief Key type pointer for private ECC keys for Weierstrass curve NIST P-256.
@@ -328,7 +332,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P192_Priv = &mcuxClKe
  * @brief Key type structure for public ECC keys for Weierstrass curve NIST P-224.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P224_Pub mcuxClKey_TypeDescriptor_WeierECC_secp224r1_Pub;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P224_Pub mcuxClKey_TypeDescriptor_WeierECC_secp224r1_Pub
 
 /**
  * @brief Key type pointer for public ECC Weierstrass keys for Weierstrass curve NIST P-224.
@@ -340,7 +344,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P224_Pub = &mcuxClKey
  * @brief Key type structure for private ECC keys for Weierstrass curve NIST P-224.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P224_Priv mcuxClKey_TypeDescriptor_WeierECC_secp224r1_Priv;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P224_Priv mcuxClKey_TypeDescriptor_WeierECC_secp224r1_Priv
 
 /**
  * @brief Key type pointer for private ECC keys for Weierstrass curve NIST P-224.
@@ -357,7 +361,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P224_Priv = &mcuxClKe
  * @brief Key type structure for public ECC keys for Weierstrass curve NIST P-256.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P256_Pub mcuxClKey_TypeDescriptor_WeierECC_secp256r1_Pub;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P256_Pub mcuxClKey_TypeDescriptor_WeierECC_secp256r1_Pub
 
 /**
  * @brief Key type pointer for public ECC Weierstrass keys for Weierstrass curve NIST P-256.
@@ -369,7 +373,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P256_Pub = &mcuxClKey
  * @brief Key type structure for private ECC keys for Weierstrass curve NIST P-256.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P256_Priv mcuxClKey_TypeDescriptor_WeierECC_secp256r1_Priv;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P256_Priv mcuxClKey_TypeDescriptor_WeierECC_secp256r1_Priv
 
 /**
  * @brief Key type pointer for private ECC keys for Weierstrass curve NIST P-256.
@@ -386,7 +390,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P256_Priv = &mcuxClKe
  * @brief Key type structure for public ECC keys for Weierstrass curve NIST P-384.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P384_Pub mcuxClKey_TypeDescriptor_WeierECC_secp384r1_Pub;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P384_Pub mcuxClKey_TypeDescriptor_WeierECC_secp384r1_Pub
 
 /**
  * @brief Key type pointer for public ECC Weierstrass keys for Weierstrass curve NIST P-384.
@@ -398,7 +402,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P384_Pub = &mcuxClKey
  * @brief Key type structure for private ECC keys for Weierstrass curve NIST P-384.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P384_Priv mcuxClKey_TypeDescriptor_WeierECC_secp384r1_Priv;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P384_Priv mcuxClKey_TypeDescriptor_WeierECC_secp384r1_Priv
 
 /**
  * @brief Key type pointer for private ECC keys for Weierstrass curve NIST P-384.
@@ -415,7 +419,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P384_Priv = &mcuxClKe
  * @brief Key type structure for public ECC keys for Weierstrass curve NIST P-521.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P521_Pub mcuxClKey_TypeDescriptor_WeierECC_secp521r1_Pub;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P521_Pub mcuxClKey_TypeDescriptor_WeierECC_secp521r1_Pub
 
 /**
  * @brief Key type pointer for public ECC Weierstrass keys for Weierstrass curve NIST P-521.
@@ -427,7 +431,7 @@ static const mcuxClKey_Type_t mcuxClKey_Type_WeierECC_NIST_P521_Pub = &mcuxClKey
  * @brief Key type structure for private ECC keys for Weierstrass curve NIST P-521.
  *
  */
-#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P521_Priv mcuxClKey_TypeDescriptor_WeierECC_secp521r1_Priv;
+#define mcuxClKey_TypeDescriptor_WeierECC_NIST_P521_Priv mcuxClKey_TypeDescriptor_WeierECC_secp521r1_Priv
 
 /**
  * @brief Key type pointer for private ECC keys for Weierstrass curve NIST P-521.
@@ -941,26 +945,9 @@ static const mcuxClKey_Type_t mcuxClKey_Type_Ecc_MontDH_Curve448_KeyPair = &mcux
 
 
 
-/**
- * @defgroup mcuxClEcc_KeyAgreementDescriptors mcuxClEcc_KeyAgreementDescriptors
- * @brief Definitions of ECC related key agreement algorithm descriptors
- * @ingroup mcuxClEcc
- * @{
- */
 
-/**
- * @brief ECDH Key agreement algorithm descriptor
- */
-extern const mcuxClKey_AgreementDescriptor_t mcuxClKey_AgreementDescriptor_ECDH;
-
-/**
- * @brief ECDH Key agreement algorithm
- */
-static mcuxClKey_Agreement_t mcuxClKey_Agreement_ECDH =
-  &mcuxClKey_AgreementDescriptor_ECDH;
-
-/**
- * @}
- */ /* mcuxClEcc_KeyAgreementDescriptors */
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_KEYMECHANISMS_H_ */

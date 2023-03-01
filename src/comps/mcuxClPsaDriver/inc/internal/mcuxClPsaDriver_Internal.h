@@ -18,6 +18,8 @@
 #ifndef MCUXCLPSADRIVER_INTERNAL_H_
 #define MCUXCLPSADRIVER_INTERNAL_H_
 
+#include <crypto_types.h>
+
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClCipherModes_Internal_Types.h>
 #include <internal/mcuxClAeadModes_ELS_Types.h>
@@ -52,17 +54,19 @@
             MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_PLAIN_WACPU_SIZE_MAX, \
                                MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_CRT_WACPU_SIZE_MAX)
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_WACPU_SIZE_MAX \
-            MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_WACPU_SIZE_MAX, \
-                               MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLPSADRIVER_ECC_N_SIZE_MAX)), \
-                               MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX)
+            MCUXCLPSADRIVER_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE, \
+                               MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_WACPU_SIZE_MAX, \
+                                                  MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLPSADRIVER_ECC_N_SIZE_MAX)), \
+                                                  MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX))
 
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_Verify function */
 #define MCUXCLPSADRIVER_VERIFY_BY_CLNS_RSA_WACPU_SIZE_MAX  \
-            MCUXCLPSADRIVER_MAX(MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
+            MCUXCLPSADRIVER_MAX(MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE, \
                                MCUXCLRSA_VERIFY_PKCS1V15VERIFY_WACPU_SIZE)
 #define MCUXCLPSADRIVER_VERIFY_BY_CLNS_WACPU_SIZE_MAX  \
-            MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_VERIFY_BY_CLNS_RSA_WACPU_SIZE_MAX, MCUXCLECC_VERIFY_WACPU_SIZE), \
-                               MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX)
+            MCUXCLPSADRIVER_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE, \
+                               MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_VERIFY_BY_CLNS_RSA_WACPU_SIZE_MAX, MCUXCLECC_VERIFY_WACPU_SIZE), \
+                                                  MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX))
 
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_Sign function */
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_WAPKC_SIZE_MAX  \
@@ -75,8 +79,9 @@
 
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_generate_rsa_key function */
 #define MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WACPU_SIZE_MAX  \
-            MCUXCLPSADRIVER_MAX(MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
-                               MCUXCLRSA_KEYGENERATION_PLAIN_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX))
+            MCUXCLPSADRIVER_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE, \
+                               MCUXCLPSADRIVER_MAX(MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
+                                                  MCUXCLRSA_KEYGENERATION_PLAIN_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX)))
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_generate_rsa_key function */
 #define MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WAPKC_SIZE_MAX  \
             MCUXCLPSADRIVER_MAX(MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
@@ -102,6 +107,7 @@ typedef struct
 {
     mcuxClMacModes_Context_t ctx;
     mcuxClKey_Descriptor_t keydesc;
+    psa_algorithm_t alg;
 } mcuxClPsaDriver_ClnsData_Mac_t;
 
 typedef struct

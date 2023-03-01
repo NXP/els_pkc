@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,14 +14,35 @@
 /** @file  mcuxClPsaDriver_Oracle.h
  *  @brief API definition of the PSA driver Oracle */
 
+#ifndef MCUXCLPSADRIVERORACLE_H_
+#define MCUXCLPSADRIVERORACLE_H_
 
 #include <crypto.h>
 #include <mcuxClKey.h>
 #include <mcuxClConfig.h> // Exported features flags header
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // GENERAL NOTE
 // do not use mcuxClKey_setKeyproperties on any of these keys as it will overwrite pAuxData
 
+/**
+ * @brief Oracle function for exporting of the public key created in ELS during KEY_GEN command
+ *
+ * @param[in] pKey is the reference to the key descriptor of the ELS
+ * @param[out] data is the buffer including the exported public key
+ * @param[in] data_size is the size of the allocated memory for the data buffer
+ * @param[out] data_length is the lenght of the exported key
+ *
+ * @retval PSA_SUCCESS                 The operation was succesful
+ * @retval PSA_ERROR_DOES_NOT_EXIST    No key with the associated key_id found in ELS
+ */
+psa_status_t mcuxClPsaDriver_Oracle_ExportPublicKey(mcuxClKey_Descriptor_t *pKey,
+                                                   uint8_t *data,
+                                                   size_t data_size,
+                                                   size_t *data_length);
 
 /**
     @brief Oracle function for loading a key
@@ -73,7 +94,7 @@ psa_status_t mcuxClPsaDriver_Oracle_LoadKey( mcuxClKey_Descriptor_t   *pKey );
     @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
 
 */
-psa_status_t mcuxClPsaDriver_Oracle_suspendKey( mcuxClKey_Descriptor_t   *pKey );
+psa_status_t mcuxClPsaDriver_Oracle_SuspendKey( mcuxClKey_Descriptor_t   *pKey );
 
 /**
     @brief Oracle function for 'resuming' a previously 'suspended' key
@@ -87,7 +108,7 @@ psa_status_t mcuxClPsaDriver_Oracle_suspendKey( mcuxClKey_Descriptor_t   *pKey )
     @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
 
 */
-psa_status_t mcuxClPsaDriver_Oracle_resumeKey( mcuxClKey_Descriptor_t   *pKey );
+psa_status_t mcuxClPsaDriver_Oracle_ResumeKey( mcuxClKey_Descriptor_t   *pKey );
 
 /**
     @brief Oracle function for 'unloading' a previously loaded key
@@ -100,7 +121,7 @@ psa_status_t mcuxClPsaDriver_Oracle_resumeKey( mcuxClKey_Descriptor_t   *pKey );
     @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
 
 */
-psa_status_t mcuxClPsaDriver_Oracle_unloadKey( mcuxClKey_Descriptor_t   *pKey );
+psa_status_t mcuxClPsaDriver_Oracle_UnloadKey( mcuxClKey_Descriptor_t   *pKey );
 
 /**
     @brief Oracle function for allocating storage for a key that will be created by the psa driver
@@ -113,7 +134,7 @@ psa_status_t mcuxClPsaDriver_Oracle_unloadKey( mcuxClKey_Descriptor_t   *pKey );
     @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
 
 */
-psa_status_t mcuxClPsaDriver_Oracle_reserveKey( mcuxClKey_Descriptor_t   *pKey );
+psa_status_t mcuxClPsaDriver_Oracle_ReserveKey( mcuxClKey_Descriptor_t   *pKey );
 /**
     @brief Oracle function for saving a key
 
@@ -124,7 +145,7 @@ psa_status_t mcuxClPsaDriver_Oracle_reserveKey( mcuxClKey_Descriptor_t   *pKey )
     @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
 
 */
-psa_status_t mcuxClPsaDriver_Oracle_storeKey( mcuxClKey_Descriptor_t   *pKey );
+psa_status_t mcuxClPsaDriver_Oracle_StoreKey( mcuxClKey_Descriptor_t   *pKey );
 
 
 
@@ -138,6 +159,11 @@ psa_status_t mcuxClPsaDriver_Oracle_storeKey( mcuxClKey_Descriptor_t   *pKey );
     @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
 
 */
-psa_status_t mcuxClPsaDriver_Oracle_importKey (  mcuxClKey_Descriptor_t *pKey,
+psa_status_t mcuxClPsaDriver_Oracle_ImportKey (  mcuxClKey_Descriptor_t *pKey,
                                                 size_t                *bits);
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* MCUXCLPSADRIVERORACLE_H_ */

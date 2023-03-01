@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,8 +17,8 @@
  *        variable).
  */
 
-#ifndef MCUX_CSSL_SECURE_COUNTER_SW_LOCAL_H_
-#define MCUX_CSSL_SECURE_COUNTER_SW_LOCAL_H_
+#ifndef MCUXCSSLSECURECOUNTER_SW_LOCAL_H_
+#define MCUXCSSLSECURECOUNTER_SW_LOCAL_H_
 
 /**
  * \addtogroup mcuxCsslIMPL MCUX CSSL -- Implementations
@@ -273,4 +273,4 @@
   MCUX_CSSL_SC_COUNTER_NAME = (value)
 
 
-#endif /* MCUX_CSSL_SECURE_COUNTER_SW_LOCAL_H_ */
+#endif /* MCUXCSSLSECURECOUNTER_SW_LOCAL_H_ */

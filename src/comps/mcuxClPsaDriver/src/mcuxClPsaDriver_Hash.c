@@ -84,7 +84,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_setup(
     size_t input_length )
 {
     /* Allocate workarea space */
-    uint32_t cpuWorkarea[MCUXCLCIPHER_MAX_AES_CPU_WA_BUFFER_SIZE_IN_WORDS];
+    uint32_t cpuWorkarea[MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX / sizeof(uint32_t)];
 
     mcuxClPsaDriver_ClnsData_Hash_t * pClnsHashData = (mcuxClPsaDriver_ClnsData_Hash_t *) operation->ctx.clns_data;
     if(pClnsHashData->ctx.algo == NULL)

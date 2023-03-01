@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,12 +16,12 @@
  */
 
 
+#include <internal/mcuxClAeadModes_ELS_Algorithms.h>
 #include <internal/mcuxClAead_Internal_Descriptor.h>
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 #include <internal/mcuxClAeadModes_Common_Functions.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_GCM_ENC;
+#include <mcuxClAeadModes_Modes.h>
 
 const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_GCM_ENC = {
   .crypt = mcuxClAeadModes_crypt,
@@ -40,8 +40,6 @@ const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_GCM_ENC = {
   .algorithm = &mcuxClAead_algorithm_AES_GCM_ENC
 };
 
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_GCM_DEC;
-
 const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_GCM_DEC = {
   .crypt = mcuxClAeadModes_crypt,
   .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAeadModes_crypt),
@@ -59,8 +57,6 @@ const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_GCM_DEC = {
   .algorithm = &mcuxClAead_algorithm_AES_GCM_DEC
 };
 
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_CCM_ENC;
-
 const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_CCM_ENC = {
   .crypt = mcuxClAeadModes_crypt,
   .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAeadModes_crypt),
@@ -77,8 +73,6 @@ const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_CCM_ENC = {
   .protection_token_verify = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAeadModes_verify),
   .algorithm = &mcuxClAead_algorithm_AES_CCM_ENC
 };
-
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_CCM_DEC;
 
 const mcuxClAead_ModeDescriptor_t mcuxClAead_ModeDescriptor_AES_CCM_DEC = {
   .crypt = mcuxClAeadModes_crypt,

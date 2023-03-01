@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,6 +20,10 @@
 #ifndef MCUXCLECC_MONT_INTERNAL_MONTDHX_FUP_H_
 #define MCUXCLECC_MONT_INTERNAL_MONTDHX_FUP_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
@@ -35,5 +39,8 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_MontDhDecodeScalar[mcuxClEcc_FUP
 #define mcuxClEcc_FUP_MontDhX_CalcAffineX_LEN  5u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_MontDhX_CalcAffineX[mcuxClEcc_FUP_MontDhX_CalcAffineX_LEN];
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_MONT_INTERNAL_MONTDHX_FUP_H_ */

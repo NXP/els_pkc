@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -35,14 +35,12 @@ extern "C" {
 #define MCUXCLRANDOMMODES_SEEDLEN_CTR_DRBG_AES192 (40u)
 #define MCUXCLRANDOMMODES_SEEDLEN_CTR_DRBG_AES256 (48u)
 
-#if defined(MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES128 (39u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES192 (55u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 (64u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES128  (23u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES192  (39u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES256  (55u)
-#endif
 
 #define MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES128 (0x0001000000000000u)
 #define MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES192 (0x0001000000000000u)
@@ -98,7 +96,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_bcc
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_UpdateState)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_UpdateState(
     mcuxClSession_Handle_t pSession,
-    uint8_t *pProvideData
+    uint8_t *pProvidedData
 );
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_CtrDrbg_generateOutput)

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -28,8 +28,13 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 
 #include <mcuxClPkc.h>
+#include <mcuxClSession.h>
+
 #include <mcuxClMath_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @defgroup mcuxClMath_Functions mcuxClMath_Functions
@@ -97,14 +102,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_InitLocalUptrt(
     uint8_t noOfIndices,
     const uint16_t **oldPtrUptrt
     );
-/** Helper macro to call #mcuxClMath_InitLocalUptrt with flow protection. */
-#define MCUXCLMATH_FP_INITLOCALUPTRT(i3_i2_i1_i0, i7_i6_i5_i4, localPtrUptrt, noOfIndices)  \
-    ({ \
-        const uint16_t *oldPtrUptrt_;  \
-        /* mcuxClMath_InitLocalUptrt always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(i3_i2_i1_i0, i7_i6_i5_i4, localPtrUptrt, noOfIndices, &oldPtrUptrt_));  \
-        (oldPtrUptrt_);  \
-    })
 
 
 /**
@@ -145,14 +142,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_LeadingZeros(
     uint8_t iX,
     uint32_t *pNumLeadingZeros
     );
-/** Helper macro to call #mcuxClMath_LeadingZeros with flow protection. */
-#define MCUXCLMATH_FP_LEADINGZEROS(iX)  \
-    ({ \
-        uint32_t numLeadingZeros_;  \
-        /* mcuxClMath_LeadingZeros always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(iX, &numLeadingZeros_));  \
-        (numLeadingZeros_);  \
-    })
 
 
 /**
@@ -193,14 +182,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_TrailingZeros(
     uint8_t iX,
     uint32_t *pNumTrailingZeros
     );
-/** Helper macro to call #mcuxClMath_TrailingZeros with flow protection. */
-#define MCUXCLMATH_FP_TRAILINGZEROS(iX)  \
-    ({ \
-        uint32_t numTrailingZeros_;  \
-        /* mcuxClMath_TrailingZeros always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_TrailingZeros(iX, &numTrailingZeros_));  \
-        (numTrailingZeros_);  \
-    })
 
 
 /**
@@ -614,6 +595,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModExp_SqrMultL2R(
  * r = exponent % b. The exponentiation is calculated by two steps:
  * (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n.
  *
+ * @param[in] pSession        handle for the current CL session.
  * @param[in] pExp            pointer to exponent
  * @param[in] pExpTemp        pointer to temporary buffer
  * @param[in] expByteLength   byte length of exponent
@@ -623,6 +605,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModExp_SqrMultL2R(
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>@p session:</dt>
+ *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.</dd>
  *     <dt>@p pExp</dt>
  *       <dd>the exponent is a big-endian octet string and shall be non-zero.</dd>
  *     <dt>@p pExpTemp </dt>
@@ -666,9 +650,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModExp_SqrMultL2R(
  * @return A code-flow protected error code (see @ref mcuxCsslFlowProtection)
  * @retval #MCUXCLMATH_ERRORCODE_OK     function executed successfully
  * @retval #MCUXCLMATH_ERRORCODE_ERROR  error occurred during operation
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_SecModExp)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
+    mcuxClSession_Handle_t session,
     const uint8_t *pExp,
     uint32_t *pExpTemp,
     uint32_t expByteLength,
@@ -676,8 +663,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
     uint32_t iN_iTE_iT0_iR
     );
 /** Helper macro for #mcuxClMath_SecModExp. */
-#define MCUXCLMATH_SECMODEXP(pExp, pExpTemp, byteLenExp, iR, iX, iN, iTE, iT0, iT1, iT2, iT3)  \
-    mcuxClMath_SecModExp(pExp, pExpTemp, byteLenExp, MCUXCLPKC_PACKARGS4(iT3, iX, iT2, iT1), MCUXCLPKC_PACKARGS4(iN, iTE, iT0, iR))
+#define MCUXCLMATH_SECMODEXP(session, pExp, pExpTemp, byteLenExp, iR, iX, iN, iTE, iT0, iT1, iT2, iT3)  \
+    mcuxClMath_SecModExp(session, pExp, pExpTemp, byteLenExp, MCUXCLPKC_PACKARGS4(iT3, iX, iT2, iT1), MCUXCLPKC_PACKARGS4(iN, iTE, iT0, iR))
 
 
 /**
@@ -824,5 +811,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t
  * @}
  */ /* mcuxClMath_Functions */
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMATH_FUNCTIONS_H_ */

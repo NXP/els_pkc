@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,6 +11,9 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+#include "common.h"
+
+#include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <mcuxClPsaDriver.h>
@@ -93,20 +96,20 @@ bool mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example(void)
 
   /* Set up PSA key attributes. */
   const psa_key_attributes_t sign_attributes = {
-    .private_core = {                                                                                                                // Core attributes
-      .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_K1),                                                             // SECPK1 curves family
-      .private_bits = BITLEN_P,                                                                                                      // ... of bitlength 224bits
-      .private_lifetime = PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION(PSA_KEY_LIFETIME_VOLATILE, PSA_KEY_LOCATION_LOCAL_STORAGE), // Volatile (RAM), Local Storage for private key
-      .private_id = 0U,                                                                                                              // ID zero
-      .private_policy = {
-        .private_usage = PSA_KEY_USAGE_SIGN_HASH,                                                                                    // Key may be used for signing a hash
-        .private_alg = PSA_ALG_ECDSA_ANY,                                                                                            // ECDSA signature scheme without specifying a hash algorithm
-        .private_alg2 = PSA_ALG_NONE
+    .core = {                                                                                                                // Core attributes
+      .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_K1),                                                             // SECPK1 curves family
+      .bits = BITLEN_P,                                                                                                      // ... of bitlength 224bits
+      .lifetime = PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION(PSA_KEY_LIFETIME_VOLATILE, PSA_KEY_LOCATION_LOCAL_STORAGE), // Volatile (RAM), Local Storage for private key
+      .id = 0U,                                                                                                              // ID zero
+      .policy = {
+        .usage = PSA_KEY_USAGE_SIGN_HASH,                                                                                    // Key may be used for signing a hash
+        .alg = PSA_ALG_ECDSA_ANY,                                                                                            // ECDSA signature scheme without specifying a hash algorithm
+        .alg2 = PSA_ALG_NONE
         },
-      .private_flags = 0U
+      .flags = 0U
       },                                                                                                                             // No flags
-    .private_domain_parameters = NULL,
-    .private_domain_parameters_size = 0U};
+    .domain_parameters = NULL,
+    .domain_parameters_size = 0U};
 
   size_t signature_length;
 
@@ -140,20 +143,20 @@ bool mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example(void)
 
   /* Set up PSA key attributes. */
   const psa_key_attributes_t verify_attributes = {
-    .private_core = {                                                                                                                // Core attributes
-      .private_type = PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_K1),                                                           // SECPK1 curves family
-      .private_bits = BITLEN_P,                                                                                                      // ... of bitlength 224bits
-      .private_lifetime = PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION(PSA_KEY_LIFETIME_VOLATILE, PSA_KEY_LOCATION_LOCAL_STORAGE), // Volatile (RAM), Local Storage for public key
-      .private_id = 0U,                                                                                                              // ID zero
-      .private_policy = {
-        .private_usage = PSA_KEY_USAGE_VERIFY_HASH,                                                                                  // Key may be used for verify a hash
-        .private_alg = PSA_ALG_ECDSA_ANY,                                                                                            // ECDSA signature scheme without specifying a hash algorithm
-        .private_alg2 = PSA_ALG_NONE
+    .core = {                                                                                                                // Core attributes
+      .type = PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_K1),                                                           // SECPK1 curves family
+      .bits = BITLEN_P,                                                                                                      // ... of bitlength 224bits
+      .lifetime = PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION(PSA_KEY_LIFETIME_VOLATILE, PSA_KEY_LOCATION_LOCAL_STORAGE), // Volatile (RAM), Local Storage for public key
+      .id = 0U,                                                                                                              // ID zero
+      .policy = {
+        .usage = PSA_KEY_USAGE_VERIFY_HASH,                                                                                  // Key may be used for verify a hash
+        .alg = PSA_ALG_ECDSA_ANY,                                                                                            // ECDSA signature scheme without specifying a hash algorithm
+        .alg2 = PSA_ALG_NONE
         },
-      .private_flags = 0U
+      .flags = 0U
       },                                                                                                                             // No flags
-    .private_domain_parameters = NULL,
-    .private_domain_parameters_size = 0U};
+    .domain_parameters = NULL,
+    .domain_parameters_size = 0U};
 
   psa_status_t verify_status = psa_driver_wrapper_verify_hash(
     &verify_attributes,         //const psa_key_attributes_t *attributes,

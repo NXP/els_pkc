@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,28 +14,25 @@
 /** @file  mcuxClPadding.c
  *  @brief implementation of padding functions for different components */
 
+#include <toolchain.h>
 #include <internal/mcuxClPadding_Internal.h>
 #include <mcuxClMemory.h>
 #include <mcuxClSession.h>
+#include <mcuxClCore_Analysis.h>
 
 #define MCUXCLPADDING_ISO_PADDING_BYTE (0x80u)
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_None)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_None(
-  uint32_t blockLength,
-  const uint8_t * const pIn,
+  uint32_t blockLength UNUSED_PARAM,
+  const uint8_t * const pIn UNUSED_PARAM,
   uint32_t lastBlockLength,
-  uint32_t totalInputLength,
-  uint8_t * const pOut,
+  uint32_t totalInputLength UNUSED_PARAM,
+  uint8_t * const pOut UNUSED_PARAM,
   uint32_t * const pOutLength)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPadding_addPadding_None);
-
-  (void) blockLength;
-  (void) pIn;
-  (void) pOut;
-  (void) totalInputLength;
 
   if(0u != lastBlockLength)
   {
@@ -47,8 +44,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Non
 }
 
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method1)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method1(
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   uint32_t blockLength,
   const uint8_t * const pIn,
   uint32_t lastBlockLength,
@@ -93,18 +92,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO
 }
 
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method2)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method2 (
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   uint32_t blockLength,
   const uint8_t * const pIn,
   uint32_t lastBlockLength,
-  uint32_t totalInputLength,
+  uint32_t totalInputLength UNUSED_PARAM,
   uint8_t * const pOut,
   uint32_t * const pOutLength)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPadding_addPadding_ISO9797_1_Method2);
-
-  (void) totalInputLength;
 
   uint8_t *pOutPtr = (uint8_t *) pOut;
 
@@ -215,5 +214,4 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Ran
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
 }
-
 

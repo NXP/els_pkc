@@ -219,7 +219,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         /* Check G in (X1,Y1) affine NR. */
 //      MCUXCLPKC_WAITFORREADY();  <== there is WaitForFinish in import function.
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_X1, WEIER_Y1);
-        mcuxClEcc_Status_t pointCheckBasePointStatus = MCUXCLECC_FP_POINTCHECKAFFINENR();
+        MCUX_CSSL_FP_FUNCTION_CALL(pointCheckBasePointStatus, mcuxClEcc_PointCheckAffineNR());
         if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckBasePointStatus)
         {
             MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
@@ -248,7 +248,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         /* Check PrecG in (X2,Y2) affine NR. */
 //      MCUXCLPKC_WAITFORREADY();  <== there is WaitForFinish in _PointCheckAffineNR.
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_X2, WEIER_Y2);
-        mcuxClEcc_Status_t pointCheckPrecPointStatus = MCUXCLECC_FP_POINTCHECKAFFINENR();
+        MCUX_CSSL_FP_FUNCTION_CALL(pointCheckPrecPointStatus, mcuxClEcc_PointCheckAffineNR());
         if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckPrecPointStatus)
         {
             MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
@@ -307,7 +307,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         /* Output: P1 in (XA,YA, ZA) relative-z, w.r.t. Z. */
 //      MCUXCLPKC_WAITFORREADY();  <==unnecessary, because VT is not used in the FUP program before.
         pOperands[WEIER_VT] = pOperands[ECC_S2];  /* Use S2 as 5th temp. */
-        MCUXCLECC_FP_INT_POINTMULT(ECC_S0, byteLenN * 8u);
+        /* mcuxClEcc_Int_PointMult always returns _OK. */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_Int_PointMult(ECC_S0, byteLenN * 8u));
 
         /* Update z = z * z', so P1: (XA,YA, ZA) relative-z -> (XA,YA, Z) Jacobian. */
         MCUXCLPKC_FP_CALC_MC1_MM(ECC_T0, WEIER_Z, WEIER_ZA, ECC_P);
@@ -329,7 +330,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Check Q in (X1,Y1) affine NR. */
 //  MCUXCLPKC_WAITFORREADY();  <== there is WaitForFinish in import function.
     MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_X1, WEIER_Y1);
-    mcuxClEcc_Status_t pointCheckPubKeyStatus = MCUXCLECC_FP_POINTCHECKAFFINENR();
+    MCUX_CSSL_FP_FUNCTION_CALL(pointCheckPubKeyStatus, mcuxClEcc_PointCheckAffineNR());
     if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckPubKeyStatus)
     {
         MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
@@ -365,7 +366,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_X0, WEIER_Y0);  /* input: Q */
     pOperands[WEIER_VZ2] = pOperands[WEIER_ZA];
     pOperands[WEIER_VT] = pOperands[ECC_S2];  /* Use S2 as 5th temp. */
-    MCUXCLECC_FP_REPEATPOINTDOUBLE((byteLenN * 8u) / 2u);
+    /* mcuxClEcc_RepeatPointDouble always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_RepeatPointDouble((byteLenN * 8u) / 2u));
 
     /* Prepare 3 pre-computed points for Q, with the same z coordinate. */
     /* Input: Q     in (X0, Y0, Z) Jacobian;                       */
@@ -390,7 +392,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Input: 3 Prec_i, in (Xi,Yi, Z) Jacobian.        */
     /* Output: P2 in (XA,YA, ZA) relative-z, w.r.t. Z. */
 //  pOperands[WEIER_VT] = pOperands[ECC_S2];  <== the 5th temp WEIER_VT has been set before calling _RepeatPointDouble.
-    MCUXCLECC_FP_INT_POINTMULT(ECC_S1, byteLenN * 8u);
+    /* mcuxClEcc_RepeatPointDouble always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_Int_PointMult(ECC_S1, byteLenN * 8u));
 
     /**********************************************************/
     /* Calculate (x1, y1) = P1 + P2, and check the result     */
@@ -406,7 +409,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_XA, WEIER_YA);  /* input: P2; output P1 + P2 */
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VZ0, WEIER_VZ, WEIER_ZA, WEIER_Z);    /* input: z' and z; output z' */
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX1, WEIER_VY1, WEIER_X0, WEIER_Y0);  /* input: P1 */
-        if (MCUXCLECC_STATUS_NEUTRAL_POINT == MCUXCLECC_FP_POINTFULLADD())
+        MCUX_CSSL_FP_FUNCTION_CALL(statusPointFullAdd, mcuxClEcc_PointFullAdd());
+        if (MCUXCLECC_STATUS_NEUTRAL_POINT == statusPointFullAdd)
         {
             MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
             mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
@@ -433,7 +437,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Check if P1 + P2 is valid. */
 //  MCUXCLPKC_WAITFORREADY();  <== unnecessary, because VX0/VY0 are not used in the FUP program before.
     MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_X0, WEIER_Y0);
-    if (MCUXCLECC_STATUS_OK != MCUXCLECC_FP_POINTCHECKAFFINENR())
+    MCUX_CSSL_FP_FUNCTION_CALL(pointCheckStatus, mcuxClEcc_PointCheckAffineNR());
+    if (MCUXCLECC_STATUS_OK != pointCheckStatus)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
     }

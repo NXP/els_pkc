@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,6 +18,10 @@
 #define MCUXCLMATH_INTERNAL_UTILS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Count leading zeros of non-zero value.
@@ -52,5 +56,9 @@ static inline uint32_t mcuxClMath_CountTrailingZeroesWord(uint32_t value)
   return zeroes;
 #endif
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /*MCUXCLMATH_INTERNAL_UTILS_H_ */

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -208,7 +208,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   /************************************************************************************************/
 
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecModExp,
-      MCUXCLMATH_SECMODEXP(pExp,
+      MCUXCLMATH_SECMODEXP(pSession,
+                          pExp,
                           pExpTemp,
                           byteLenD,
                           MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R,  /* Result */
@@ -228,8 +229,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   /* Convert result back to normal representation and store result in pOutput.                    */
   /************************************************************************************************/
 
-  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_PrivatePlain_ReductionME,
-          mcuxClRsa_PrivatePlain_ReductionME_LEN);
+  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_PrivatePlain_ReductionME_FUP,
+          mcuxClRsa_PrivatePlain_ReductionME_FUP_LEN);
   MCUXCLPKC_WAITFORFINISH();
 
   /* Copy result to the output buffer */

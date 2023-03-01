@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -13,7 +13,7 @@
 
 /** 
  * @file  mcuxClRsa_Functions.h
- * @brief Top-level API of the mcuxClRsa component 
+ * @brief Top-level API of the mcuxClRsa component
  */
 
 #ifndef MCUXCLRSA_FUNCTIONS_H_
@@ -112,6 +112,8 @@ extern "C" {
  * @retval #MCUXCLRSA_STATUS_SIGN_OK               Sign operation executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT         The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                 An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_sign)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
@@ -193,6 +195,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT         The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_VERIFY_FAILED         The signature verification failed.
  * @retval #MCUXCLRSA_STATUS_ERROR                 An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_verify)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
@@ -271,6 +275,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED    RSA key generation exceeds the limit of iterations to generate a prime.
  * @retval #MCUXCLRSA_STATUS_ERROR                               An error occurred during the execution. In that case, expectations for
  *                                                              the flow protection are not balanced.
+ *
+ * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    mcuxClSession_Handle_t pSession,
@@ -347,6 +353,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED    RSA key generation exceeds the limit of iterations to generate a prime.
  * @retval #MCUXCLRSA_STATUS_ERROR                               An error occurred during the execution. In that case, expectations for
  *                                                              the flow protection are not balanced.
+ *
+ * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    mcuxClSession_Handle_t pSession,

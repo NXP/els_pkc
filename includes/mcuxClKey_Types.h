@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -24,6 +24,11 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Buffer.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * TYPEDEFS
@@ -134,28 +139,6 @@ typedef struct mcuxClKey_ProtectionDescriptor mcuxClKey_ProtectionDescriptor_t;
  */
 typedef const mcuxClKey_ProtectionDescriptor_t * mcuxClKey_Protection_t;
 
-/**
- * @brief Key agreement descriptor structure
- *
- * This structure captures all the information that the Key interfaces need to
- * know about a particular Key agreement algorithm.
- */
-struct mcuxClKey_AgreementDescriptor;
-
-/**
- * @brief Key agreement descriptor type
- *
- * This type captures all the information that the Key interfaces need to know
- * about a particular Key agreement algorithm.
- */
-typedef struct mcuxClKey_AgreementDescriptor mcuxClKey_AgreementDescriptor_t;
-
-/**
- * @brief Key agreement type
- *
- * This type is used to refer to a Key agreement algorithm.
- */
-typedef const mcuxClKey_AgreementDescriptor_t * const mcuxClKey_Agreement_t;
 
 /**
  * @brief Key generation descriptor structure
@@ -185,5 +168,9 @@ typedef const mcuxClKey_GenerationDescriptor_t * const mcuxClKey_Generation_t;
 /**
  * @}
  */ /* mcuxClKey_Types */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLKEY_TYPES_H_ */
