@@ -23,7 +23,17 @@
 #include <psa_crypto_driver_wrappers.h>
 #include <mcuxClConfig.h> // Exported features flags header
 
+/* Include TF-M builtin key driver added from TFM v1.7 updates */
+#if defined(PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER)
+#include "tfm_crypto_defs.h"
+#endif /* PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER */
+
+/* if TF-M builtin key driver is enabled (only aplicable for tfm examples) */
+#if defined(PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER)
+#define MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location) ((location) == PSA_KEY_LOCATION_LOCAL_STORAGE || (location) == TFM_BUILTIN_KEY_LOADER_KEY_LOCATION)
+#else
 #define MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location) ((location) == PSA_KEY_LOCATION_LOCAL_STORAGE)
+#endif
 
 #define PSA_KEY_LOCATION_EXTERNAL_STORAGE ((psa_key_location_t)(PSA_KEY_LOCATION_VENDOR_FLAG | 0x00U))
 
