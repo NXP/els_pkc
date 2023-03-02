@@ -262,7 +262,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
                                                                                             (mcuxClKey_Handle_t) &privKeyData,
                                                                                             (mcuxClKey_Handle_t) &pubKeyData,
                                                                                             (uint8_t *)(data+1u),
-                                                                                            data_length));
+                                                                                            (uint32_t *)data_length));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != keyagreement_token) || (MCUXCLECC_STATUS_OK != keyagreement_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
@@ -345,7 +345,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
                                                                                             (mcuxClKey_Handle_t) &privKeyData,
                                                                                             (mcuxClKey_Handle_t) &pubKeyData,
                                                                                             (uint8_t *)(data+1u),
-                                                                                            data_length));
+                                                                                            (uint32_t *)data_length));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != keyagreement_token) || (MCUXCLECC_STATUS_OK != keyagreement_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
