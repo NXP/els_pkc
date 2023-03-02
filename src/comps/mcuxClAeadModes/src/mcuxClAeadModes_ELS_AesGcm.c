@@ -547,7 +547,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
         /* Call the finalize function. */
         MCUX_CSSL_FP_FUNCTION_CALL(retFinal, pAlgo->pEngine(session, pContext,
                                                                    NULL,
-                                                                   NULL,
+                                                                   (uint32_t)NULL,
                                                                    pContext->partialData,
                                                                    NULL,
                                                                    MCUXCLAEAD_ENGINE_OPTION_FINISH));
