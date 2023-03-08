@@ -1615,9 +1615,11 @@ component.els_pkc.platform.mcxn:
       version: "${els_pkc_version}"
       component_bundle: bundle.drivers
       type: software_component
-      full_name: Component els_pkc_mcx
-      description: Component els_pkc_mcx
-      manifest_name: els_pkc_mcx
+      full_name: Component els_pkc_mcxn
+      description: Component els_pkc_mcxn
+      manifest_name: els_pkc_mcxn
+    cmsis_pack:
+      sub: "els_pkc_platform_mcxn"
 
 component.els_pkc.platform.rw61x.devices:
   section-type: component_support
