@@ -39,6 +39,7 @@
 
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x400B3000u)
+#define PKC_RAM_SIZE  ((uint32_t)0x1000u)
 #define PKC_WORD_SIZE  8u
 
 // Define base address of TRNG

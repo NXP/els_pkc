@@ -12,8 +12,6 @@
 #include <stddef.h>
 
 #include "fsl_common.h"
-#include <mcuxClEls.h>              // Interface to the entire nxpClEls component
-#include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <ip_platform.h>
 
 /*!

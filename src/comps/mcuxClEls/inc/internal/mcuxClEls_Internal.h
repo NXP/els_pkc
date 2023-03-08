@@ -34,6 +34,63 @@ extern "C" {
 /**** ELS Hardware Abstraction Layer ****/
 /****                                ****/
 
+/* Platform compatibility defines */
+#ifndef ELS_DMA_SRC0
+#define ELS_DMA_SRC0 DMA_SRC0
+#endif
+
+#ifndef ELS_DMA_SRC0_LEN
+#define ELS_DMA_SRC0_LEN DMA_SRC0_LEN
+#endif
+
+#ifndef ELS_DMA_SRC1
+#define ELS_DMA_SRC1 DMA_SRC1
+#endif
+
+#ifndef ELS_DMA_SRC2
+#define ELS_DMA_SRC2 DMA_SRC2
+#endif
+
+#ifndef ELS_DMA_SRC2_LEN
+#define ELS_DMA_SRC2_LEN DMA_SRC2_LEN
+#endif
+
+#ifndef ELS_DMA_RES0
+#define ELS_DMA_RES0 DMA_RES0
+#endif
+
+#ifndef ELS_DMA_RES0_LEN
+#define ELS_DMA_RES0_LEN DMA_RES0_LEN
+#endif
+
+#ifndef ELS_KIDX0
+#define ELS_KIDX0 KIDX0
+#endif
+
+#ifndef ELS_KIDX1
+#define ELS_KIDX1 KIDX1
+#endif
+
+#ifndef ELS_KIDX2
+#define ELS_KIDX2 KIDX2
+#endif
+
+#ifndef ELS_KPROPIN
+#define ELS_KPROPIN KPROPIN
+#endif
+
+#ifndef ELS_CTRL
+#define ELS_CTRL CTRL
+#endif
+
+#ifndef ELS_CMDCFG0
+#define ELS_CMDCFG0 CMDCFG0
+#endif
+
+#ifndef ELS_STATUS
+#define ELS_STATUS STATUS
+#endif
+/* END of Platform compatibility defines */
 
 /** Asserts the correctness of the supplied parameters*/
 #define MCUXCLELS_INPUT_PARAM_CHECK(x) if((x)) { return MCUXCLELS_STATUS_SW_INVALID_PARAM; }
