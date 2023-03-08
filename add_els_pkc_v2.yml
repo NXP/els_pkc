@@ -1740,6 +1740,11 @@ component.els_pkc.examples:
     - source: examples/mcuxCsslMemory/data_invariant_memory_compare.c
     - source: examples/mcuxCsslMemory/data_invariant_memory_copy.c
 
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_ELS_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_ELS_Key_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_Key_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_RFC3394_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_RNG_Helper.h
     - source: src/comps/mcuxClExample/inc/mcuxClExample_Session_Helper.h
   component_info:
     common:
