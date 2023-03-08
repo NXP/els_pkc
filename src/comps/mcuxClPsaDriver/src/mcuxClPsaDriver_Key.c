@@ -306,7 +306,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
     mcuxClKey_setTypeDescriptor(out_key_descriptor, keyTypeDesc);
 
     return PSA_SUCCESS;
-}      
+}
 
 static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     const psa_key_attributes_t *attributes,
@@ -385,7 +385,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     *key_buffer_length = (keyProp.bits.ksize == MCUXCLELS_KEYPROPERTY_KEY_SIZE_256) ? 32U : 16U;
     return PSA_SUCCESS;
-}        
+}
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
     const psa_key_attributes_t *attributes,
@@ -410,7 +410,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
     key.container.pData     = key_buffer;
     key.container.length    = key_buffer_size;
     key.container.used      = key_buffer_size;
-    status = mcuxClPsaDriver_Oracle_reserveKey(&key);
+    status = mcuxClPsaDriver_Oracle_ReserveKey(&key);
     if(PSA_SUCCESS != status)
     {
         return status;
@@ -479,7 +479,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
         Store generated private key:
         TODO:if S50, public key should also store
     */
-    status = mcuxClPsaDriver_Oracle_storeKey(&key);
+    status = mcuxClPsaDriver_Oracle_StoreKey(&key);
     if(PSA_SUCCESS != status)
     {
         return status;
@@ -553,23 +553,37 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(const psa_key_attribut
                                                          size_t data_size,
                                                          size_t *data_length)
 {
-    psa_status_t psa_status    = PSA_ERROR_NOT_SUPPORTED;
+    psa_status_t psa_status = PSA_ERROR_NOT_SUPPORTED;
     mcuxClKey_Descriptor_t key = {0};
 
+    /* check for buffer too small */
+    if( key_buffer_size > data_size )
+        return( PSA_ERROR_BUFFER_TOO_SMALL );
+
     psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, tokenNxpClMemory_copy, mcuxClMemory_copy(
-                                                                                data,
-                                                                                key.container.pData,
-                                                                                *data_length,
-                                                                                *data_length));
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy) || (0u != result))
+    if(PSA_SUCCESS == psa_status)
     {
-        return PSA_ERROR_GENERIC_ERROR;
+         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, tokenNxpClMemory_copy, mcuxClMemory_copy(
+                                                                                        data,
+                                                                                        key.container.pData,
+                                                                                        key_buffer_size,
+                                                                                        data_size));
+        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy) || (0u != result))
+        {
+            return PSA_ERROR_GENERIC_ERROR;
+        }
+        MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+        *data_length = key.location.length;
+
+        /* unload key */
+        psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+
+        /* Overwrite status only when status has no error code */
+        if(PSA_SUCCESS == psa_status)
+        {
+            psa_status = keyStatus;
+        }
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    *data_length = key.location.length;
-
     return psa_status;
 }

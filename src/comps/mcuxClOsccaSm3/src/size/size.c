@@ -20,6 +20,7 @@
 #include <internal/mcuxClOsccaSm3_Internal.h>
 #include <internal/mcuxClHash_Internal.h>
 
+#if defined(MCUXCL_FEATURE_HASH_HW_SM3)
 
 /* Hash Cpu Workarea size generation */
 volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
@@ -34,3 +35,4 @@ volatile uint8_t mcuxClOsccaSm3_finish_WaCpuMax [MCUXCLOSCCASM3_STATE_SIZE_SM3];
 /* Hash multi-part context size generation */
 volatile uint8_t mcuxClOsccaSm3_Ctx_size[sizeof(mcuxClHash_ContextDescriptor_t)];
 
+#endif /* MCUXCL_FEATURE_HASH_SW_SM3 || MCUXCL_FEATURE_HASH_HW_SM3 */

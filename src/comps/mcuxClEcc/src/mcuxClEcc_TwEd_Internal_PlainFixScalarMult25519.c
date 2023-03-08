@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -29,17 +29,20 @@
 #include <internal/mcuxClEcc_TwEd_Internal.h>
 #include <internal/mcuxClEcc_TwEd_Internal_Ed25519.h>
 
-const mcuxClEcc_TwEd_PointDoubleFunction_FP_t mcuxClEcc_TwEd_PointDoubleEd25519_FP = {
+/* MISRA Ex. 20 - Rule 5.1 */
+static const mcuxClEcc_TwEd_PointDoubleFunction_FP_t mcuxClEcc_TwEd_PointDoubleEd25519_FP = {
     .pPointDoubleFct = mcuxClEcc_TwEd_PointDoubleEd25519,
     .pointDoubleFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PointDoubleEd25519),
 };
 
-const mcuxClEcc_TwEd_MixedPointAddFunction_FP_t mcuxClEcc_TwEd_MixedPointAddEd25519_FP = {
+/* MISRA Ex. 20 - Rule 5.1 */
+static const mcuxClEcc_TwEd_MixedPointAddFunction_FP_t mcuxClEcc_TwEd_MixedPointAddEd25519_FP = {
     .pMixedPointAddFct = mcuxClEcc_TwEd_MixedPointAddEd25519,
     .mixedPointAddFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_MixedPointAddEd25519),
 };
 
-const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelectComb_FP = {
+/* MISRA Ex. 20 - Rule 5.1 */
+static const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelectComb_FP = {
     .pPtrSelectFct = mcuxClEcc_TwEd_PlainPtrSelectComb,
     .ptrSelectFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainPtrSelectComb),
 };

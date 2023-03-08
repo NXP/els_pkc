@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -35,6 +35,9 @@
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal_PkcWaLayout.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************************/
 /* Internal return codes for EdDSA functions              */
@@ -54,24 +57,6 @@
 
 
 /**********************************************************/
-/* Internal EdDSA types                                   */
-/**********************************************************/
-
-/**
- * Domain parameter structure for TwEd functions.
- */
-struct mcuxClEcc_EdDSA_DomainParams
-{
-    mcuxClEcc_CommonDomainParams_t common;  ///< structure containing pointers and lengths for common ECC parameters (see Common ECC Domain parameters)
-    uint16_t b;                            ///< Integer satisfying 2^(b-1) > p. EdDSA public keys have exactly b bits, and EdDSA signatures have exactly 2*b bits.
-    uint16_t c;                            ///< cofactor exponent
-    uint16_t t;                            ///< bit position of MSBit of decoded scalar
-    uint8_t *pSqrtMinusOne;                ///< Pointer to a square root of -1 modulo p which is needed for point decoding in case p = 5 mod 8 (i.e. only needed for Ed25519, not for Ed448)
-    mcuxClHash_Algo_t algoSecHash;          ///< Hash algorithm descriptor of the hash function H() to be used for hashing the private key hash (see Public and private keys)
-    mcuxClHash_Algo_t algoHash;             ///< Hash algorithm descriptor of the hash function H() to be used for hashing the private key, public data and plaintext messages
-};
-
-/**********************************************************/
 /* Declarations for internal EdDSA functions              */
 /**********************************************************/
 
@@ -82,5 +67,68 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment
     uint8_t noOfBuffers
     );
 
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_CalcHashModN)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_CalcHashModN(
+    mcuxClSession_Handle_t pSession,
+    mcuxClHash_Context_t pCtx,
+    mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+    const uint32_t *pHashPrefix,
+    uint32_t hashPrefixLen,
+    const uint8_t *pSignatureR,
+    const uint8_t *pPubKey,
+    const uint8_t *pIn,
+    uint32_t inSize
+    );
+
+
+/**********************************************************/
+/* Internal EdDSA types                                   */
+/**********************************************************/
+
+/**
+ * Decode function pointer structure for EdDsa point decoding.
+ */
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_EdDSA_DecodePointFunction_t)(mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+                                                                                              const uint8_t *pEncPoint);
+
+/**
+ * Domain parameter structure for EdDSA functions.
+ */
+struct mcuxClEcc_EdDSA_DomainParams
+{
+    mcuxClEcc_CommonDomainParams_t common;  ///< structure containing pointers and lengths for common ECC parameters (see Common ECC Domain parameters)
+    uint16_t b;                            ///< Integer satisfying 2^(b-1) > p. EdDSA public keys have exactly b bits, and EdDSA signatures have exactly 2*b bits.
+    uint16_t c;                            ///< cofactor exponent
+    uint16_t t;                            ///< bit position of MSBit of decoded scalar
+    uint8_t *pSqrtMinusOne;                ///< Pointer to a square root of -1 modulo p which is needed for point decoding in case p = 5 mod 8 (i.e. only needed for Ed25519, not for Ed448)
+    mcuxClHash_Algo_t algoSecHash;          ///< Hash algorithm descriptor of the hash function H() to be used for hashing the private key hash (see Public and private keys)
+    mcuxClHash_Algo_t algoHash;             ///< Hash algorithm descriptor of the hash function H() to be used for hashing the private key, public data and plaintext messages
+    mcuxClEcc_EdDSA_DecodePointFunction_t pDecodePointFct; ///< Function to be used to decode a point
+    uint32_t pDecodePoint_FP_FuncId;                      ///< ID of function to be used to decode a point
+};
+
+/**
+ * EdDSA GenerateKeyPair variant structure.
+ */
+struct mcuxClEcc_EdDSA_GenerateKeyPairDescriptor
+{
+    uint32_t options;       ///< option of GenerateKeyPair, see @ref MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_
+    uint8_t *pPrivKeyInput; ///< Pointer to private key input; set to NULL, if MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_GENERATE is chosen
+};
+
+/**
+ * EdDSA SignatureProtocol variant structure.
+ */
+struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor
+{
+    uint32_t generateOption;      ///< option of signature generation
+    uint32_t verifyOption;        ///< option of signature verification
+    const uint32_t *pHashPrefix;  ///< pointer to hash prefix
+    uint32_t hashPrefixLen;       ///< size of hash prefix
+};
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_EDDSA_INTERNAL_H_ */

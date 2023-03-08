@@ -16,7 +16,7 @@
  * @brief Function to import, convert and validate the coordinates of a pre-computed point
  */
 
-
+#include <nxpClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -54,7 +54,7 @@
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PrecPointImportAndValidate)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PrecPointImportAndValidate(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint8_t iDst,
     uint8_t *pSrc,
     uint16_t byteLenP

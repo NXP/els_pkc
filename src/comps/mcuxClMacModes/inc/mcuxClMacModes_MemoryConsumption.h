@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,8 +14,8 @@
 /** @file  mcuxClMacModes_MemoryConsumption.h
  *  @brief Defines the memory consumption for the mcuxClMacModes component */
 
-#ifndef MCUXCLMACMODES_MEMORYCONSUMPTIONS_H_
-#define MCUXCLMACMODES_MEMORYCONSUMPTIONS_H_
+#ifndef MCUXCLMACMODES_MEMORYCONSUMPTION_H_
+#define MCUXCLMACMODES_MEMORYCONSUMPTION_H_
 
 /**
  * @defgroup mcuxClMacModes_MemoryConsumption mcuxClMacModes_MemoryConsumption
@@ -39,7 +39,7 @@
 
 /* Context sizes */
 #define MCUXCLMAC_CONTEXT_SIZE                         (112u)
-#define MCUXCLMAC_CONTEXT_SIZE_IN_WORDS                (MCUXCLMAC_CMAC_CONTEXT_SIZE / sizeof(uint32_t))
+#define MCUXCLMAC_CONTEXT_SIZE_IN_WORDS                (MCUXCLMAC_CONTEXT_SIZE / sizeof(uint32_t))
 
 /* Mode descriptor sizes */
 
@@ -47,4 +47,4 @@
  * @}
  */ /* mcuxClMac_MemoryConsumption */
 
-#endif /* MCUXCLMACMODES_MEMORYCONSUMPTIONS_H_ */
+#endif /* MCUXCLMACMODES_MEMORYCONSUMPTION_H_ */

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,8 +19,16 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define mcuxClRsa_TestPQDistance_FUP_LEN  4u
 
 extern const mcuxClPkc_FUPEntry_t mcuxClRsa_TestPQDistance_FUP[mcuxClRsa_TestPQDistance_FUP_LEN];
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLRSA_TESTPQDISTANCE_FUP_H_ */ 

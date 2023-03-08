@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -21,8 +21,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClEls_Rng.h>
-
+#include <mcuxClRandom.h>
 #include <mcuxClPkc_Types.h>
 #include <mcuxClPkc_Functions.h>
 #include <internal/mcuxClPkc_Macros.h>
@@ -49,7 +48,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_GenerateUPTRT(uint16_t
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_RandomizeUPTRT)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(uint16_t *pUPTRT,
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(mcuxClSession_Handle_t pSession,
+                                                    uint16_t *pUPTRT,
                                                     uint8_t noOfBuffer)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_RandomizeUPTRT);
@@ -60,14 +60,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(uint16_
     /* Randomize entries in UPTRT by Knuth shuffle. */
     for (uint32_t idx = noOfBuffer; idx > 1u; idx--)
     {
-		MCUX_CSSL_FP_LOOP_ITERATION(Loop,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord));
+        MCUX_CSSL_FP_LOOP_ITERATION(Loop,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate));
         
 
         /* Generate a random number in the range [0, idx-1], where idx <= noOfBuffer <= 255. */
         uint32_t random32;
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClEls_Prng_GetRandomWord(&random32));
-        if (MCUXCLELS_STATUS_OK != ret_PRNG_randWord)
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate, mcuxClRandom_ncGenerate(pSession, (uint8_t *) &random32, sizeof(uint32_t)));
+        if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_RandomizeUPTRT, MCUXCLPKC_STATUS_NOK);
         }
@@ -87,7 +87,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(uint16_
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_ReRandomizeUPTRT)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(uint16_t *pUPTRT,
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(mcuxClSession_Handle_t pSession,
+                                                      uint16_t *pUPTRT,
                                                       uint16_t bufferLength,
                                                       uint8_t noOfBuffer)
 {
@@ -100,15 +101,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(uint1
     for (uint32_t idx = noOfBuffer; idx > 1u; idx--)
     {
         MCUX_CSSL_FP_LOOP_ITERATION(Loop,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord));
-		/* Generate a random number in the range [0, idx-1], where idx <= noOfBuffer <= 255. */
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate));
+        /* Generate a random number in the range [0, idx-1], where idx <= noOfBuffer <= 255. */
         uint32_t random32;
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_randWord, mcuxClEls_Prng_GetRandomWord(&random32));
-        if (MCUXCLELS_STATUS_OK != ret_PRNG_randWord)
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate, mcuxClRandom_ncGenerate(pSession, (uint8_t *) &random32, sizeof(uint32_t)));
+        if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_ReRandomizeUPTRT, MCUXCLPKC_STATUS_NOK);
         }
-        
         uint32_t random8 = random32 >> 8;
         random8 *= idx;
         random8 >>= 24;
@@ -119,7 +119,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(uint1
         pUPTRT[random8] = offset0;
         pUPTRT[idx - 1u] = offset1;
 
-        /* PKC buffer is CPU word aligned. */
+        /* MISRA Ex. 9 to Rule 11.3 - PKC buffer is CPU word aligned. */
         uint32_t *ptr0 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(offset0);
         uint32_t *ptr1 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(offset1);
 

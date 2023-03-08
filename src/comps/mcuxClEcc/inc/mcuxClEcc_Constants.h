@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,7 +16,7 @@
  * @brief Constants definition for domain parameters of supported curves
  */
 
-/* TODO: domain parameters are not verified, and will be verified in CLNS-5898 and CLNS-5817 */
+/* TODO: domain parameters are not verified, and will be verified in CLNS-5817 */
 
 #ifndef MCUXCLECC_CONSTANTS_H_
 #define MCUXCLECC_CONSTANTS_H_
@@ -24,14 +24,16 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClEcc_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @defgroup mcuxClEcc_Constants mcuxClEcc_Constants
  * @brief Defines constants of @ref mcuxClEcc
  * @ingroup mcuxClEcc
  * @{
  */
-
-/* TODO: domain parameters are not verified, and will be verified in CLNS-5898 and CLNS-5817 */
 
 
 /* Curve25519 domain parameters */
@@ -134,5 +136,9 @@ extern const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448;
 /**
  * @}
  */ /* mcuxClEcc_Constants */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_CONSTANTS_H_ */

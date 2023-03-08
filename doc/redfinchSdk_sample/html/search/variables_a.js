@@ -7,8 +7,6 @@ var searchData=
   ['keygensup',['keygensup',['../unionmcux_cl_els___hw_config__t.html#add6853a64d3322d8400c601277d42afb',1,'mcuxClEls_HwConfig_t']]],
   ['keyinsup',['keyinsup',['../unionmcux_cl_els___hw_config__t.html#a10e2de8c251bc00183a2d578fb778661',1,'mcuxClEls_HwConfig_t']]],
   ['keyoutsup',['keyoutsup',['../unionmcux_cl_els___hw_config__t.html#a6bbf59e55899238b17d7a1266d6a063a',1,'mcuxClEls_HwConfig_t']]],
-  ['keyprov_5fexternal_5fpart1',['keyprov_external_part1',['../ckdf__aes__128__ecb__encrypt_8c.html#a83ca2adb65e24feb96ceeb887a97e47d',1,'ckdf_aes_128_ecb_encrypt.c']]],
-  ['keyprov_5fexternal_5fpart2',['keyprov_external_part2',['../ckdf__aes__128__ecb__encrypt_8c.html#a59b342597e24c530030134a8f6c2110e',1,'ckdf_aes_128_ecb_encrypt.c']]],
   ['keyprovsup',['keyprovsup',['../unionmcux_cl_els___hw_config__t.html#a55ac97e5d1105cd9f5ac217d05a8e0c2',1,'mcuxClEls_HwConfig_t']]],
   ['keytype',['keytype',['../structmcux_cl_rsa___key.html#a8d0791ef8960a4316931f55f5848c3fa',1,'mcuxClRsa_Key']]],
   ['kfmt',['kfmt',['../unionmcux_cl_els___key_import_option__t.html#ae3892b035704c00a855dd43d96a21b2c',1,'mcuxClEls_KeyImportOption_t']]],

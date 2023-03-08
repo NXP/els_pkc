@@ -93,7 +93,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     /* Verify correctness of affine coordinates of G in NR. */
     pOperands[WEIER_VX0] = pOperands[ECC_S0];
     pOperands[WEIER_VY0] = pOperands[ECC_S1];
-    mcuxClEcc_Status_t pointCheckBasePointStatus = MCUXCLECC_FP_POINTCHECKAFFINENR();
+    MCUX_CSSL_FP_FUNCTION_CALL(pointCheckBasePointStatus, mcuxClEcc_PointCheckAffineNR());
     if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckBasePointStatus)
     {
         MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
@@ -144,7 +144,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_X0, WEIER_Y0);
         pOperands[WEIER_VZ2] = pOperands[WEIER_ZA];
         pOperands[WEIER_VT] = pOperands[ECC_S2];
-        MCUXCLECC_FP_REPEATPOINTDOUBLE((byteLenN * 8u) / 2u);
+        /* mcuxClEcc_RepeatPointDouble always returns _OK. */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_RepeatPointDouble((byteLenN * 8u) / 2u));
 
         /* Convert precG to affine coordinates in NR and store them in (WEIER_X0,WEIER_Y0). */
         MCUXCLMATH_FP_MODINV(ECC_T0, WEIER_ZA, ECC_P, ECC_T1);

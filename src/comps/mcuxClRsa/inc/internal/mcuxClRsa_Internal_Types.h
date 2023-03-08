@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -21,9 +21,15 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClRsa_Types.h>
+#include <mcuxClPkc_Types.h>
+#include <mcuxClPkc_Functions.h>
 #include <mcuxClHash_Types.h>
 #include <mcuxClCore_Buffer.h>
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
  /**
  * @defgroup mcuxClRsa_Internal_Macros mcuxClRsa_Internal_Macros
@@ -100,5 +106,9 @@ struct mcuxClRsa_SignVerifyMode_t
 };
 
 
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLRSA_INTERNAL_TYPES_H_ */

@@ -32,6 +32,10 @@
 
 #include <mcuxClMemory_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**********************************************
  * FUNCTIONS
  **********************************************/
@@ -52,6 +56,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_clear (uint8_t *
 /**
  * @}
  */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMEMORY_CLEAR_H_ */
 

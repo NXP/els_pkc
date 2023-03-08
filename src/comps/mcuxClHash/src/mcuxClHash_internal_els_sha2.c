@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,6 +19,9 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClEls.h>
+#include <mcuxClPkc_Types.h>
+#include <internal/mcuxClPkc_Macros.h>
+#include <internal/mcuxClSession_Internal.h>
 
 /**********************************************************
  * Helper functions
@@ -44,24 +47,6 @@ static inline mcuxClHash_Status_t mcuxClHash_els_selectRtfFlags(mcuxClSession_Rt
     return MCUXCLHASH_STATUS_OK;
 }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_els_dmaProtectionAddressReadback)
-static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_dmaProtectionAddressReadback(uint8_t * startAddress,
-                                                                                             size_t expectedLength)
-{
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_els_dmaProtectionAddressReadback,
-                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_CompareDmaFinalOutputAddress));
-
-    MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_CompareDmaFinalOutputAddress(startAddress, expectedLength));
-
-    if (MCUXCLELS_STATUS_OK != result)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_dmaProtectionAddressReadback, MCUXCLHASH_STATUS_FAULT_ATTACK);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_dmaProtectionAddressReadback, MCUXCLHASH_STATUS_OK);
-}
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 
 /**********************************************************
@@ -78,6 +63,10 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_oneShotSk
                                     uint32_t *const pOutSize)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_els_oneShotSkeleton_sha2);
+
+    const size_t isInputInPKC =
+         (((uint32_t) pIn + inSize)> (uint32_t) MCUXCLPKC_RAM_START_ADDRESS)
+         && ((uint32_t) pIn < ((uint32_t) MCUXCLPKC_RAM_START_ADDRESS + MCUXCLPKC_RAM_SIZE));
 
     /**************************************************************************************
      * Step 1: Set ELS options for initialization, continuation from external state, or from
@@ -102,19 +91,51 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_oneShotSk
 
     /* All blocks can be processed in bulk directly from in */
     size_t const sizeOfFullBlocks = (inSize / algorithm->blockSize) * algorithm->blockSize;
+
     if (0u < sizeOfFullBlocks)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(result, algorithm->els_core(hash_options.word.value,
-                                                       pIn,
-                                                       sizeOfFullBlocks,
-                                                       NULL));
-
-        if (MCUXCLHASH_STATUS_OK != result)
+        /* Check if pIn is in PKC workarea. */
+        if (0u != isInputInPKC)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, result);
-        }
+            /* Allocate buffer in CPU WA to copy the input block of data from PKC WA */
+            uint8_t * pInCpu = (uint8_t *) mcuxClSession_allocateWords_cpuWa(session, algorithm->blockSize / sizeof(uint32_t));
+            size_t processedIn = 0u;
+            while(processedIn < sizeOfFullBlocks)
+            {
+                MCUX_CSSL_FP_FUNCTION_CALL(retVal_Memcopy, mcuxClMemory_copy(pInCpu, &pIn[processedIn], algorithm->blockSize, algorithm->blockSize));
+                if(0u != retVal_Memcopy)
+                {
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, MCUXCLHASH_FAILURE);
+                }
+                MCUX_CSSL_FP_FUNCTION_CALL(result, algorithm->els_core(hash_options.word.value,
+                                                               pInCpu,
+                                                               algorithm->blockSize,
+                                                               NULL));
+                hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
 
-        hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
+                if (MCUXCLHASH_STATUS_OK != result)
+                {
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, result);
+                }
+                processedIn += algorithm->blockSize;
+            }
+            mcuxClSession_freeWords_cpuWa(session, algorithm->blockSize / sizeof(uint32_t));
+
+        }
+        else
+        {
+            MCUX_CSSL_FP_FUNCTION_CALL(result, algorithm->els_core(hash_options.word.value,
+                                                           pIn,
+                                                           sizeOfFullBlocks,
+                                                           NULL));
+
+            if (MCUXCLHASH_STATUS_OK != result)
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, result);
+            }
+
+            hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
+        }
     }
 
     /**************************************************************************************
@@ -202,20 +223,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_oneShotSk
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, result);
     }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    uint32_t rtfSize = 0;
-    rtfSize = (MCUXCLSESSION_RTF_UPDATE_TRUE == session->rtf) ? algorithm->rtfSize : 0u;
-    if(NULL != algorithm->dmaProtection)
-    {
-        MCUX_CSSL_FP_FUNCTION_CALL(resultDma, algorithm->dmaProtection(shablock,
-                                                                      algorithm->stateSize + rtfSize));
-
-        if (MCUXCLHASH_STATUS_OK != resultDma)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, resultDma);
-        }
-    }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     /**************************************************************************************
      * Step 4: Copy result to output buffers
@@ -242,14 +249,16 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_oneShotSk
 
     /* Set expectations and exit */
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, MCUXCLHASH_STATUS_OK,
-                            MCUX_CSSL_FP_CONDITIONAL((0u != sizeOfFullBlocks), algorithm->protection_token_els_core),
+                            MCUX_CSSL_FP_CONDITIONAL((0u != sizeOfFullBlocks),
+                              MCUX_CSSL_FP_CONDITIONAL(0u != isInputInPKC,
+                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy), algorithm->protection_token_els_core) *
+                                 (sizeOfFullBlocks / algorithm->blockSize),
+                            MCUX_CSSL_FP_CONDITIONAL(0u == isInputInPKC,
+                                 algorithm->protection_token_els_core)),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                             MCUX_CSSL_FP_CONDITIONAL((buflen == algorithm->blockSize), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set), algorithm->protection_token_els_core),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                             (algorithm->protection_token_els_core),
-                            #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-                            (algorithm->protection_token_dma_protection),
-                            #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
                             MCUX_CSSL_FP_CONDITIONAL((MCUXCLSESSION_RTF_UPDATE_TRUE == session->rtf),  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 }
@@ -281,6 +290,10 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_process_s
     /* Need to store the initial values of these variables for correct calculation of flow protection values at the end of the function */
     MCUX_CSSL_FP_COUNTER_STMT(const size_t initialUnprocessedCompleteBlockLength = unprocessedCompleteBlockLength);
     MCUX_CSSL_FP_COUNTER_STMT(const size_t initialUnprocessedContextLength = context->data.unprocessedLength);
+
+    const size_t isInputInPKC =
+        (((uint32_t) pIn + inSize) > (uint32_t) MCUXCLPKC_RAM_START_ADDRESS)
+        && ((uint32_t) pIn < ((uint32_t) MCUXCLPKC_RAM_START_ADDRESS + MCUXCLPKC_RAM_SIZE));
 
     /* Pointer to the buffer where the state is stored. Either it ends up in the work area, or in the state buffer of the context */
     uint8_t *partialdigest = context->buffer.state;
@@ -341,17 +354,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_process_s
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, result);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        if(NULL != pAlgoDesc->dmaProtection)
-        {
-            MCUX_CSSL_FP_FUNCTION_CALL(resultDma, pAlgoDesc->dmaProtection(partialdigest, pAlgoDesc->stateSize));
-
-            if (MCUXCLHASH_STATUS_OK != resultDma)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, resultDma);
-            }
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
         hash_options.bits.hashld = MCUXCLELS_HASH_LOAD_DISABLE;
@@ -368,27 +370,50 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_process_s
     /* At this point, there is no more data in the context buffer, so remaining blocks can be processed in bulk directly from pIn */
     if (0u != unprocessedCompleteBlockLength)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgoDesc->els_core(hash_options.word.value,
-                                                          pInput,
-                                                          unprocessedCompleteBlockLength,
-                                                          partialdigest));
-
-        if (MCUXCLHASH_STATUS_OK != result)
+        /* Check pInput is in PKC workarea. */
+        if (0u != isInputInPKC)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, result);
-        }
-
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        if(NULL != pAlgoDesc->dmaProtection)
-        {
-            MCUX_CSSL_FP_FUNCTION_CALL(resultDma, pAlgoDesc->dmaProtection(partialdigest, pAlgoDesc->stateSize));
-
-            if (MCUXCLHASH_STATUS_OK != resultDma)
+            size_t processedIn = 0u;
+            while(processedIn < unprocessedCompleteBlockLength)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, resultDma);
+                /* Copy block of the input data in the context buffer. */
+                MCUX_CSSL_FP_FUNCTION_CALL(memcopy_resultIn, mcuxClMemory_copy(context->buffer.unprocessed,
+                                                                            &pInput[processedIn],
+                                                                            algoBlockSize,
+                                                                            sizeof(context->buffer.unprocessed)));
+                if(0u != memcopy_resultIn)
+                {
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, MCUXCLHASH_FAILURE);
+                }
+
+                MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgoDesc->els_core(hash_options.word.value,
+                                                               context->buffer.unprocessed,
+                                                               algoBlockSize,
+                                                               partialdigest));
+                if (MCUXCLHASH_STATUS_OK != result)
+                {
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_oneShotSkeleton_sha2, result);
+                }
+                processedIn += algoBlockSize;
+                
+                hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
+                hash_options.bits.hashld = MCUXCLELS_HASH_LOAD_DISABLE;
             }
         }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+        else
+        {
+            MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgoDesc->els_core(hash_options.word.value,
+                                                              pInput,
+                                                              unprocessedCompleteBlockLength,
+                                                              partialdigest));
+
+            if (MCUXCLHASH_STATUS_OK != result)
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, result);
+            }
+
+        }
+
 
         hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
         hash_options.bits.hashld = MCUXCLELS_HASH_LOAD_DISABLE;
@@ -428,15 +453,14 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_process_s
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_process_sha2, MCUXCLHASH_STATUS_OK,
                            MCUX_CSSL_FP_CONDITIONAL((0u != initialUnprocessedCompleteBlockLength) && (0u != initialUnprocessedContextLength),
                                                    pAlgoDesc->protection_token_els_core,
-                                                   #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-                                                   pAlgoDesc->protection_token_dma_protection,
-                                                   #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
                                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
                            MCUX_CSSL_FP_CONDITIONAL((((0u != initialUnprocessedCompleteBlockLength) && (0u == initialUnprocessedContextLength)) || ((algoBlockSize < initialUnprocessedCompleteBlockLength) && (0u != initialUnprocessedContextLength))),
-                                                   #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-                                                   pAlgoDesc->protection_token_dma_protection,
-                                                   #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
-                                                   pAlgoDesc->protection_token_els_core),
+                                                   MCUX_CSSL_FP_CONDITIONAL(0u != isInputInPKC,
+                                                                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                                           pAlgoDesc->protection_token_els_core)
+                                                                           * initialUnprocessedCompleteBlockLength / algoBlockSize,
+                                                   MCUX_CSSL_FP_CONDITIONAL(0u == isInputInPKC,
+                                                                           pAlgoDesc->protection_token_els_core)),
                            MCUX_CSSL_FP_CONDITIONAL((0u < unprocessedTotalLength),
                                                    (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))));
 }
@@ -536,17 +560,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_finish_sh
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_finish_sha2, result);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        if(NULL != pAlgoDesc->dmaProtection)
-        {
-            MCUX_CSSL_FP_FUNCTION_CALL(resultDma, pAlgoDesc->dmaProtection(partialdigest, pAlgoDesc->stateSize));
-
-            if (MCUXCLHASH_STATUS_OK != resultDma)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_finish_sha2, resultDma);
-            }
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         hash_options.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
         hash_options.bits.hashld = MCUXCLELS_HASH_LOAD_ENABLE;
@@ -599,20 +612,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_finish_sh
                                                       pAlgoDesc->blockSize,
                                                       pOutput));
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    uint32_t rtfSize = 0;
-    rtfSize = (MCUXCLSESSION_RTF_UPDATE_TRUE == session->rtf) ? pAlgoDesc->rtfSize : 0u;
-    if(NULL != pAlgoDesc->dmaProtection)
-    {
-        MCUX_CSSL_FP_FUNCTION_CALL(resultDma, pAlgoDesc->dmaProtection(pOutput,
-                                                                      pAlgoDesc->stateSize + rtfSize));
-
-        if (MCUXCLHASH_STATUS_OK != resultDma)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_finish_sha2, resultDma);
-        }
-    }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     if (MCUXCLHASH_STATUS_OK != result)
     {
@@ -669,17 +668,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_finish_sh
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_finish_sha2, MCUXCLHASH_STATUS_OK,
                               MCUX_CSSL_FP_CONDITIONAL(pAlgoDesc->blockSize - pAlgoDesc->counterSize - 1u < unprocessedLength,
-                                                      #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-                                                      pAlgoDesc->protection_token_dma_protection,
-                                                      #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
                                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                                                       pAlgoDesc->protection_token_els_core),
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                               pAlgoDesc->protection_token_els_core,
-                              #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-                              pAlgoDesc->protection_token_dma_protection,
-                              #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
                               MCUX_CSSL_FP_CONDITIONAL((MCUXCLSESSION_RTF_UPDATE_TRUE == session->rtf),
                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
@@ -704,10 +697,6 @@ const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_Sha224 = {
     .protection_token_processSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_process_sha2),
     .finishSkeleton                   = mcuxClHash_els_finish_sha2,
     .protection_token_finishSkeleton  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_finish_sha2),
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    .dmaProtection                    = mcuxClHash_els_dmaProtectionAddressReadback,
-    .protection_token_dma_protection  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_dmaProtectionAddressReadback),
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     .blockSize                        = MCUXCLHASH_BLOCK_SIZE_SHA_224,
     .hashSize                         = MCUXCLHASH_OUTPUT_SIZE_SHA_224,
     .stateSize                        = MCUXCLHASH_STATE_SIZE_SHA_224,
@@ -728,10 +717,6 @@ const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_Sha256 = {
     .protection_token_processSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_process_sha2),
     .finishSkeleton                   = mcuxClHash_els_finish_sha2,
     .protection_token_finishSkeleton  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_finish_sha2),
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    .dmaProtection                    = mcuxClHash_els_dmaProtectionAddressReadback,
-    .protection_token_dma_protection  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_dmaProtectionAddressReadback),
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     .blockSize                        = MCUXCLHASH_BLOCK_SIZE_SHA_256,
     .hashSize                         = MCUXCLHASH_OUTPUT_SIZE_SHA_256,
     .stateSize                        = MCUXCLHASH_STATE_SIZE_SHA_256,
@@ -752,10 +737,6 @@ const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_Sha384 = {
     .protection_token_processSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_process_sha2),
     .finishSkeleton                   = mcuxClHash_els_finish_sha2,
     .protection_token_finishSkeleton  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_finish_sha2),
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    .dmaProtection                    = mcuxClHash_els_dmaProtectionAddressReadback,
-    .protection_token_dma_protection  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_dmaProtectionAddressReadback),
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     .blockSize                        = MCUXCLHASH_BLOCK_SIZE_SHA_384,
     .hashSize                         = MCUXCLHASH_OUTPUT_SIZE_SHA_384,
     .stateSize                        = MCUXCLHASH_STATE_SIZE_SHA_384,
@@ -776,10 +757,6 @@ const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_Sha512 = {
     .protection_token_processSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_process_sha2),
     .finishSkeleton                   = mcuxClHash_els_finish_sha2,
     .protection_token_finishSkeleton  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_finish_sha2),
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    .dmaProtection                    = mcuxClHash_els_dmaProtectionAddressReadback,
-    .protection_token_dma_protection  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_els_dmaProtectionAddressReadback),
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     .blockSize                        = MCUXCLHASH_BLOCK_SIZE_SHA_512,
     .hashSize                         = MCUXCLHASH_OUTPUT_SIZE_SHA_512,
     .stateSize                        = MCUXCLHASH_STATE_SIZE_SHA_512,

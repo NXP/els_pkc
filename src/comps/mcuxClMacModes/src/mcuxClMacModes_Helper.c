@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,7 +14,7 @@
 /** @file  mcuxClMacModes_Helper.c
  *  @brief implementation of helper functions of mcuxClMacModes component */
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClMac.h>
 
 #include <mcuxClMemory.h>
@@ -25,6 +25,7 @@
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClMacModes_Internal_Constants.h>
+#include <internal/mcuxClMacModes_Internal_Functions.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_prepareHMACKey)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_prepareHMACKey(

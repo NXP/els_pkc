@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -27,7 +27,7 @@
 
 #include <internal/mcuxClKey_Internal.h>
 
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
@@ -35,6 +35,7 @@
 #include <internal/mcuxClMacModes_Wa.h>
 #include <internal/mcuxClMacModes_ELS_Types.h>
 #include <internal/mcuxClMacModes_ELS_CBCMAC.h>
+#include <internal/mcuxClMacModes_Algorithms.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CBCMAC_Oneshot)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Oneshot(
@@ -82,7 +83,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_One
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
     }
 
-    if(0 != noOfFullBlocks)
+    if(0u != noOfFullBlocks)
     {
         // Call ELS cmac on all full blocks
         MCUX_CSSL_FP_FUNCTION_CALL(cmacResult1, mcuxClEls_Cmac_Async(
@@ -102,14 +103,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_One
 
         MCUX_CSSL_FP_FUNCTION_CALL(waitResult1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         if (MCUXCLELS_STATUS_OK != waitResult1)
         {
@@ -161,15 +154,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_One
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     }
 
     if((0u != inLength) || (paddingOutLength != 0u))
@@ -244,8 +228,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
     // Check if there are remaining bytes in the context from previous calls to this function
     // pContext->blockBufferUsed can be at most MCUXCLAES_BLOCK_SIZE - 1
     // The case where inLength + pContext->blockBufferUsed is less than a block size is handeled later
-    uint32_t blockBufferBytesToBlocksize = ((0u < pContext->blockBufferUsed) && (MCUXCLAES_BLOCK_SIZE <= (inLength + pContext->blockBufferUsed)));
-    if ( blockBufferBytesToBlocksize != 0u )
+    const bool hasBlockSizedBytesInBuffer = ((0u < pContext->blockBufferUsed) && (MCUXCLAES_BLOCK_SIZE <= (inLength + pContext->blockBufferUsed)));
+    if (hasBlockSizedBytesInBuffer)
     {
         MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 
@@ -282,15 +266,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         pInNrProcessedBytes = MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed;
 
@@ -299,8 +274,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
     }
 
     // Check if there are full blocks to process
-    uint32_t temp_FullBlocks = (MCUXCLAES_BLOCK_SIZE <= (inLength - pInNrProcessedBytes));
-    if(temp_FullBlocks !=0 )
+    const bool hasFullBlocks = (MCUXCLAES_BLOCK_SIZE <= (inLength - pInNrProcessedBytes));
+    if(hasFullBlocks)
     {
         size_t noOfFullBlocks = (inLength - pInNrProcessedBytes) / MCUXCLAES_BLOCK_SIZE;
 
@@ -326,14 +301,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLAES_BLOCK_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         pInNrProcessedBytes += (noOfFullBlocks * MCUXCLAES_BLOCK_SIZE);
     }
@@ -356,10 +323,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_OK,
-                        MCUX_CSSL_FP_CONDITIONAL(blockBufferBytesToBlocksize,
+                        MCUX_CSSL_FP_CONDITIONAL(hasBlockSizedBytesInBuffer,
                             MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN,
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async)),
-                        MCUX_CSSL_FP_CONDITIONAL(temp_FullBlocks,
+                        MCUX_CSSL_FP_CONDITIONAL(hasFullBlocks,
                             MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN,
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async)));
 
@@ -421,15 +388,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Finalize, MCUXCLMAC_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     }
 
@@ -451,9 +409,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async)));
 }
 
-//#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "MISRA Ex. 20 - Rule 5.1 - Names with similar 31-character prefix are allowed"
+MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_NoPadding = {
-//#pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
   .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,
@@ -466,9 +424,9 @@ const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CB
   .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_None),
 };
 
-//#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "MISRA Ex. 20 - Rule 5.1 - Names with similar 31-character prefix are allowed"
+MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_PaddingISO9797_1_Method1 = {
-//#pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
   .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,
@@ -481,9 +439,9 @@ const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CB
   .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_ISO9797_1_Method1),
 };
 
-//#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.1" "MISRA Ex. 20 - Rule 5.1 - Names with similar 31-character prefix are allowed"
+MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_PaddingISO9797_1_Method2 = {
-//#pragma coverity compliance end_block "MISRA C-2012 Rule 5.1"
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
   .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,

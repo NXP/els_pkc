@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,12 +19,14 @@
  * @brief Example for ECC signing using an internal ELS key
  */
 
+#include "common.h"
+
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>
@@ -59,18 +61,18 @@ bool mcuxClPsaDriver_els_eccp256_ecdsa_example(void)
 
   /* Generate signing key */
 psa_key_attributes_t attributes = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve SECP_R1
-        .private_bits = MCUXCLKEY_SIZE_256 * 8u,                                     // Key bits of SECP_R1_P256
-        .private_lifetime = LIFETIME_INTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 0U,                                                             // ID zero
-        .private_policy = {
-          .private_usage =  PSA_KEY_USAGE_SIGN_HASH,      // Key may be used for sign message or hash
-          .private_alg = PSA_ALG_ECDSA_ANY,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = NULL,
-      .private_domain_parameters_size = 0U};
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve SECP_R1
+        .bits = MCUXCLKEY_SIZE_256 * 8u,                                     // Key bits of SECP_R1_P256
+        .lifetime = LIFETIME_INTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 0U,                                                             // ID zero
+        .policy = {
+          .usage =  PSA_KEY_USAGE_SIGN_HASH,      // Key may be used for sign message or hash
+          .alg = PSA_ALG_ECDSA_ANY,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = NULL,
+      .domain_parameters_size = 0U};
 
     /* Call generate_key operation */
     uint8_t key_buffer[MCUXCLKEY_SIZE_256] = {0U};
@@ -95,12 +97,12 @@ psa_key_attributes_t attributes = {
   size_t signature_length = 0U;
   psa_status_t statusSignHash = psa_driver_wrapper_sign_hash(
               &attributes,                   // const psa_key_attributes_t *attributes,
-              keyBuffer,                     // const uint8_t *key_buffer,
+              (uint8_t *)keyBuffer,          // const uint8_t *key_buffer,
               sizeof(keyBuffer),             // size_t key_buffer_size,
               PSA_ALG_ECDSA_ANY,             // psa_algorithm_t alg,
               (const uint8_t *)ecc_digest,   // const uint8_t *hash,
               sizeof(ecc_digest),            // size_t hash_length,
-              &ecc_signature,                // uint8_t *signature,
+              (uint8_t *)&ecc_signature,     // uint8_t *signature,
               MCUXCLELS_ECC_SIGNATURE_SIZE,   // size_t signature_size,
               &signature_length              // size_t *signature_length
               );

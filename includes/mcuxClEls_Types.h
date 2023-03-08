@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,6 +32,10 @@
 #include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClEls_mapping.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * MACROS
@@ -287,6 +291,10 @@ typedef mcuxClEls_Status_t (*mcuxClEls_TransferToRegisterFunction_t)(
     uint8_t const * pSource,
     size_t sourceLength,
     void * pCallerData);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLELS_TYPES_H_ */
 

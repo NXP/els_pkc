@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -35,13 +35,8 @@
  */
 #define MCUXCLECC_ALIGN_SIZE_CPU(byteLen)  ((((byteLen) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t))) * (sizeof(uint32_t)))
 
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
 #define MCUXCLECC_KEYGEN_WACPU_SIZE(byteLenN)  (380u + MCUXCLECC_ALIGN_SIZE_CPU(byteLenN + 8u))  ///< CPU workarea size (in bytes) for #mcuxClEcc_KeyGen.
 #define MCUXCLECC_SIGN_WACPU_SIZE(byteLenN)    (380u + MCUXCLECC_ALIGN_SIZE_CPU(byteLenN + 8u))  ///< CPU workarea size (in bytes) for #mcuxClEcc_Sign.
-#else /* ! MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#define MCUXCLECC_KEYGEN_WACPU_SIZE(byteLenN)        380u  ///< CPU workarea size (in bytes) for #mcuxClEcc_KeyGen. Parameter byteLenN is just to keep the API consistent.
-#define MCUXCLECC_SIGN_WACPU_SIZE(byteLenN)          380u  ///< CPU workarea size (in bytes) for #mcuxClEcc_Sign. Parameter byteLenN is just to keep the API consistent.
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
 #define MCUXCLECC_VERIFY_WACPU_SIZE     388u  ///< CPU workarea size (in bytes) for #mcuxClEcc_Verify.
 #define MCUXCLECC_POINTMULT_WACPU_SIZE  380u  ///< CPU workarea size (in bytes) for #mcuxClEcc_PointMult.
@@ -70,14 +65,15 @@
  * @brief Define the CPU workarea size required by mcuxClEcc EdDSA APIs.
  * @{
  */
-#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE    356u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPaireration.
-#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WACPU_SIZE      308u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPaireration.
+#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE    580u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed25519.
+#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WACPU_SIZE      480u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed448.
 
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE  4u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature.
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE    4u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE  484u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE    356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
 
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    4u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature.
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      4u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature.
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    484u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
+
 /**
  * @}
  */  /* MCUXCLECC_EDDSA_WACPU_ */
@@ -153,6 +149,7 @@
 #define MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WAPKC_SIZE_640 (1936u )
 
 
+
 /**
  * @}
  */  /* MCUXCLECC_WAPKC_ */
@@ -192,20 +189,28 @@
  * @brief Define the PKC workarea size required by mcuxClEcc EdDSA APIs.
  * @{
  */
-#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE    1760u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed25519.
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE  8u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE    8u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
 
+/**
+ * PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair.
+ */
+#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE    1760u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed25519.
 #define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WAPKC_SIZE    2816u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed448.
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WAPKC_SIZE  8u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WAPKC_SIZE    8u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
+
+/**
+ * PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature.
+ */
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE  1760u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WAPKC_SIZE  2816u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
+
+/**
+ * PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature.
+ */
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE    1760u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WAPKC_SIZE    2816u  ///< PKC workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
+
 /**
  * @}
  */  /* MCUXCLECC_EDDSA_WAPKC_ */
-
-/**
- * @}
- */  /* mcuxClEcc_MemoryConsumption */
 
 /**
  * @brief Define for the buffer size (in bytes) for optimized custom ECC Weierstrass domain parameters
@@ -215,5 +220,18 @@
                             + 8u * (byteLenP)  \
                             + 2u * (byteLenN) )
 
+/**
+ * @addtogroup MCUXCLECC_EDDSA_GENKEYPAIR_DESC_SIZE_
+ * @brief Define for the EdDSA key pair generation descriptor size.
+ * @{
+ */
+#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE    8u  ///< EdDSA key pair generation descriptor size.
+/**
+ * @}
+ */  /* MCUXCLECC_EDDSA_GENKEYPAIR_DESC_SIZE_ */
+
+/**
+ * @}
+ */  /* mcuxClEcc_MemoryConsumption */
 
 #endif /* MCUXCLECC_MEMORYCONSUMPTION_H_ */

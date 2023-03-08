@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -133,7 +133,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
     for(uint32_t i = 0u; i < MCUXCLECC_TWED_FIXSCALARMULT_NOOFPRECPOINTS; i++)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(importPointStatus,
-            mcuxClEcc_TwEd_PrecPointImportAndValidate(pSession, TWED_PP_X0 + (TWED_PP_X1 - TWED_PP_X0) * i, pDomainParams->pPrecPoints + (2u * i * byteLenP), byteLenP));
+            mcuxClEcc_TwEd_PrecPointImportAndValidate(pSession, (uint8_t)(TWED_PP_X0 + (TWED_PP_X1 - TWED_PP_X0) * i), pDomainParams->pPrecPoints + (2u * i * byteLenP), (uint16_t)byteLenP));
         if(MCUXCLECC_STATUS_OK != importPointStatus)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_TwEd_FixScalarMult, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -149,7 +149,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
      *             - if i0 = 0, set TWED_PP_VY0 and TWED_PP_VT0 to buffers ECC_T2 and ECC_T3 and store the negative Y- and T-coordinates of PP in buffers ECC_T2 and ECC_T3.
      *          - Call mixed point addition routine defined by pMixedPointAddFct to compute P = P + PP.
      */
-    int32_t currentDigitBitIndex = scalarBitLength;
+    uint32_t currentDigitBitIndex = scalarBitLength; /* scalarBitLength is multiple of MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE, so index can be unsigned. */
     uint32_t currentScalarWord = 0u;
     MCUX_CSSL_FP_LOOP_DECL(whileLoop);
     MCUX_CSSL_FP_BRANCH_DECL(ifInWhile);
@@ -160,7 +160,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
 
         /* Read next scalar word if needed. */
         uint32_t currentDigitInWordIndex  = currentDigitBitIndex % 32u;
-        if((currentDigitBitIndex == (scalarBitLength - 4u)) || (currentDigitInWordIndex  == (32u - MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE)))
+        if(((uint32_t)currentDigitBitIndex == (scalarBitLength - 4u)) || (currentDigitInWordIndex  == (32u - MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE)))
         {
             MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
             uint32_t currentScalarWordIndex = currentDigitBitIndex / 32u;

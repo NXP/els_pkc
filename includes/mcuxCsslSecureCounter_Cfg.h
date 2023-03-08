@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,8 +16,8 @@
  * \brief Configuration of the implementation for the secure counter mechanism.
  */
 
-#ifndef MCUX_CSSL_SECURE_COUNTER_CFG_H_
-#define MCUX_CSSL_SECURE_COUNTER_CFG_H_
+#ifndef MCUXCSSLSECURECOUNTER_CFG_H_
+#define MCUXCSSLSECURECOUNTER_CFG_H_
 
 /**
  * \addtogroup mcuxCsslCFG MCUX CSSL -- Configurations
@@ -100,4 +100,4 @@
 
 /* Basic configuration sanity check */
 
-#endif /* MCUX_CSSL_SECURE_COUNTER_CFG_H_ */
+#endif /* MCUXCSSLSECURECOUNTER_CFG_H_ */

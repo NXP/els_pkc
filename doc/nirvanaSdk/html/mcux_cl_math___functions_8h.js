@@ -1,8 +1,5 @@
 var mcux_cl_math___functions_8h =
 [
-    [ "MCUXCLMATH_FP_INITLOCALUPTRT", "group__mcux_cl_math___functions.html#ga4c4f5d39d9afbaa83550c0e4dcd190db", null ],
-    [ "MCUXCLMATH_FP_LEADINGZEROS", "group__mcux_cl_math___functions.html#ga5e286eeaee0c98c3a1eb1a325632787f", null ],
-    [ "MCUXCLMATH_FP_TRAILINGZEROS", "group__mcux_cl_math___functions.html#gaf8e95ef7352377d28593d19cfa19e8f7", null ],
     [ "MCUXCLMATH_SHIFTMODULUS", "group__mcux_cl_math___functions.html#gaadd4485b0f1db32b6da6e6b7a2e6cc11", null ],
     [ "MCUXCLMATH_FP_SHIFTMODULUS", "group__mcux_cl_math___functions.html#ga35df7cdad4c81c5e276f373c70c571d0", null ],
     [ "MCUXCLMATH_NDASH", "group__mcux_cl_math___functions.html#gab588855e23f750a4c9f7533b54a11325", null ],
@@ -17,7 +14,7 @@ var mcux_cl_math___functions_8h =
     [ "MCUXCLMATH_FP_REDUCEMODEVEN", "group__mcux_cl_math___functions.html#gaed2b24ff10b916eb07a842a2a05ad341", null ],
     [ "MCUXCLMATH_MODEXP_SQRMULTL2R", "group__mcux_cl_math___functions.html#ga82842f4b45c0d86e4c2d6d29e23c259b", null ],
     [ "MCUXCLMATH_FP_MODEXP_SQRMULTL2R", "group__mcux_cl_math___functions.html#ga9f0c8d67f0c192341fbf9ac436f02173", null ],
-    [ "MCUXCLMATH_SECMODEXP", "group__mcux_cl_math___functions.html#ga7f34036f34027bdbd97cda0e285fdcd2", null ],
+    [ "MCUXCLMATH_SECMODEXP", "group__mcux_cl_math___functions.html#ga3e0168ff93f7bffd7d56ce509ba29c59", null ],
     [ "MCUXCLMATH_EXACTDIVIDEODD", "group__mcux_cl_math___functions.html#gae807c4ed789f67aa150addbae31de180", null ],
     [ "MCUXCLMATH_FP_EXACTDIVIDEODD", "group__mcux_cl_math___functions.html#gaf1d62616daa224745d2ed40fdfa4d724", null ],
     [ "MCUXCLMATH_EXACTDIVIDE", "group__mcux_cl_math___functions.html#gae99e5e55dda4387e4384e974a112a760", null ],
@@ -29,13 +26,14 @@ var mcux_cl_math___functions_8h =
     [ "oldPtrUptrt", "group__mcux_cl_math___functions.html#gab3a0ca4c2a03da5451ce6bcfcedfcd10", null ],
     [ "pNumLeadingZeros", "group__mcux_cl_math___functions.html#gaf181ae59c982598bf57427a15a8be411", null ],
     [ "pNumTrailingZeros", "group__mcux_cl_math___functions.html#ga20556fae861cd90038a5baceae1faf8a", null ],
-    [ "length", "group__mcux_cl_math___functions.html#ga1892eba2086d12ac2b09005aeb09ea3b", null ],
+    [ "length", "group__mcux_cl_math___functions.html#ga30461418a695751302d8e0067b232204", null ],
     [ "iT1_iT2_iT3", "group__mcux_cl_math___functions.html#ga19c0795bafea7dc12049ca68553d1502", null ],
-    [ "expByteLength", "group__mcux_cl_math___functions.html#ga6d00303a91d73b8ea2cb3cc867220bc0", null ],
+    [ "expByteLength", "group__mcux_cl_math___functions.html#ga1b4ea15275874f910cb99e2430ca5e54", null ],
     [ "iR_iX_iN_iT", "group__mcux_cl_math___functions.html#ga6b46696154c14a1c2e8a20272a6e2f35", null ],
-    [ "pExpTemp", "group__mcux_cl_math___functions.html#ga2e64c4526559ba76300d7591c8c429c2", null ],
-    [ "iT3_iX_iT2_iT1", "group__mcux_cl_math___functions.html#ga06f22ae1493caccea8cd74e2e8a43503", null ],
-    [ "iN_iTE_iT0_iR", "group__mcux_cl_math___functions.html#ga9790dddc6642f5079c3abcc424d4fd0b", null ],
+    [ "pExp", "group__mcux_cl_math___functions.html#ga4e9dde1324099335da288945a22be675", null ],
+    [ "pExpTemp", "group__mcux_cl_math___functions.html#ga0e15edbb95af11c4f4094b4bedc67fbb", null ],
+    [ "iT3_iX_iT2_iT1", "group__mcux_cl_math___functions.html#ga0bc1e7401d14e5e7cec2a163842e3f00", null ],
+    [ "iN_iTE_iT0_iR", "group__mcux_cl_math___functions.html#ga7f82dd238ffc2bcc89aba9218e1b5499", null ],
     [ "xPkcByteLength", "group__mcux_cl_math___functions.html#gae6e7ed3fb4da819a702256aae0c27cd7", null ],
     [ "yPkcByteLength", "group__mcux_cl_math___functions.html#gafd774555389055fde6e9e58ef95273c4", null ]
 ];

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,6 +19,10 @@
 #define MCUXCLHASH_ALGORITHMS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
 * @defgroup mcuxClHash_Modes mcuxClHash_Modes
@@ -95,6 +99,18 @@ static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha512 = &mcuxClHash_AlgorithmDesc
 
 
 
+
+
+
+
+
+
+
+
 /**@}*/
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLHASH_ALGORITHMS_H_ */

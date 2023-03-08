@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* All rights are reserved. Reproduction in whole or in part is prohibited  */
 /* without the prior written consent of the copy-right owner.               */
@@ -39,6 +39,7 @@
 
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x400B3000u)
+#define PKC_RAM_SIZE  ((uint32_t)0x1000u)
 #define PKC_WORD_SIZE  8u
 
 // Define base address of TRNG
@@ -52,39 +53,6 @@
 #define SAFO_SFR_BASE           SM3_0       ///< base of SAFO SFRs
 #define SAFO_SFR_NAME(sfr)      sfr         ///< full name of SFR
 #define SAFO_SFR_PREFIX         SM3_        ///< sfr field name prefix
-
-// Workaround for the use of prefixed constants in the SM3 implementation (e.g. SAFO_SGI_SM3_CTRL --> CTRL)
-#define SAFO_SGI_DATIN0A DATIN0A
-#define SAFO_SGI_DATIN0B DATIN0B
-#define SAFO_SGI_DATIN0C DATIN0C
-#define SAFO_SGI_DATIN0D DATIN0D
-#define SAFO_SGI_DATIN1A DATIN1A
-#define SAFO_SGI_DATIN1B DATIN1B
-#define SAFO_SGI_DATIN1C DATIN1C
-#define SAFO_SGI_DATIN1D DATIN1D
-#define SAFO_SGI_KEY0A KEY0A
-#define SAFO_SGI_KEY0B KEY0B
-#define SAFO_SGI_KEY0C KEY0C
-#define SAFO_SGI_KEY0D KEY0D
-#define SAFO_SGI_KEY1A KEY1A
-#define SAFO_SGI_KEY1B KEY1B
-#define SAFO_SGI_KEY1C KEY1C
-#define SAFO_SGI_KEY1D KEY1D
-#define SAFO_SGI_DATOUTA DATOUTA
-#define SAFO_SGI_DATOUTB DATOUTB
-#define SAFO_SGI_DATOUTC DATOUTC
-#define SAFO_SGI_DATOUTD DATOUTD
-#define SAFO_SGI_STATUS STATUS
-#define SAFO_SGI_COUNT COUNT
-#define SAFO_SGI_CTRL CTRL
-#define SAFO_SGI_CTRL2 CTRL2
-#define SAFO_SGI_SM3_CTRL SM3_CTRL
-#define SAFO_SGI_SM3_FIFO SM3_FIFO
-#define SAFO_SGI_CONFIG CONFIG
-#define SAFO_SGI_INT_ENABLE INT_ENABLE
-#define SAFO_SGI_INT_STATUS_CLR INT_STATUS_CLR
-#define SAFO_SGI_INT_STATUS_SET INT_STATUS_SET
-
 
 // CSS interrupt definitions
 #define CSS_INTERRUPT_ERR_NUMBER   CSS_IRQn

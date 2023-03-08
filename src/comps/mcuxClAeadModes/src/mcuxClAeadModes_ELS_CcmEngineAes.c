@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,8 +15,7 @@
  *  @brief implementation of the AES CCM Engine functions of the mcuxClAead component */
 
 #include <mcuxClAead.h>
-#include <internal/mcuxClAeadModes_ELS_Types.h>
-#include <internal/mcuxClAeadModes_ELS_Functions.h>
+#include <internal/mcuxClAeadModes_Internal.h>
 #include <mcuxClMemory.h>
 #include <mcuxClSession.h>
 #include <mcuxClKey.h>
@@ -135,15 +134,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 
     }
@@ -187,14 +177,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 
     }
@@ -223,14 +205,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     }
 

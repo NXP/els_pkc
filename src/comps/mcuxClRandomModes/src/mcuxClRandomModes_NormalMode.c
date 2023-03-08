@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -13,6 +13,7 @@
 /* Security Classification:  Company Confidential                           */
 /*--------------------------------------------------------------------------*/
 
+#include <nxpClToolchain.h>
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
@@ -26,7 +27,7 @@
 #include <internal/mcuxClRandomModes_Private_NormalMode.h>
 #include <internal/mcuxClTrng_Internal.h>
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_NormalMode_PrDisabled = {
     .initFunction                    = mcuxClRandomModes_NormalMode_initFunction,
     .reseedFunction                  = mcuxClRandomModes_NormalMode_reseedFunction,
@@ -38,7 +39,6 @@ const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDesc
     .protectionTokenSelftestFunction = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled,
     .operationMode                   = MCUXCLRANDOMMODES_NORMALMODE,
 };
-#endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
 
@@ -67,6 +67,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
     uint32_t *pEntropyInput = (uint32_t *)&pSession->cpuWa.buffer[pSession->cpuWa.used];
     pSession->cpuWa.used += MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(pDrbgMode->pDrbgVariant->initSeedSize);
 
+    /* Call TRNG initialization function to ensure it's properly configured for upcoming TRNG accesses */
+    MCUX_CSSL_FP_FUNCTION_CALL(result_trngInit, mcuxClTrng_Init());
+    if (MCUXCLTRNG_STATUS_OK != result_trngInit)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_NormalMode_initFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    }
+
     /* Generate entropy input using the TRNG */
     MCUX_CSSL_FP_FUNCTION_CALL(result_trng,
       mcuxClTrng_getEntropyInput(pSession, pEntropyInput, MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(pDrbgMode->pDrbgVariant->initSeedSize)*sizeof(uint32_t))
@@ -90,6 +97,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
     pSession->cpuWa.used -= MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(pDrbgMode->pDrbgVariant->initSeedSize);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_NormalMode_initFunction, MCUXCLRANDOM_STATUS_OK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_Init),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_getEntropyInput),
         pDrbgMode->pDrbgAlgorithms->protectionTokenInstantiateAlgorithm);
 }
@@ -148,7 +156,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
 }
 
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
 /**
  * \brief This function generates random numbers from a DRBG in NORMAL_MODE following the lines of the function Generate_function specified in NIST SP800-90A
  * and reseeds according to the DRG.3 security level.
@@ -203,11 +210,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_NormalMode_generateFunction_PrDisabled, MCUXCLRANDOM_STATUS_OK,
         pDrbgMode->pDrbgAlgorithms->protectionTokenGenerateAlgorithm);
 }
-#endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
 /**
  * \brief This function performs a selftest of a DRBG in NORMAL_MODE with DRG.3 security level
  *
@@ -225,7 +230,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
  *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK    if the selftest failed
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled(mcuxClSession_Handle_t pSession, mcuxClRandom_Mode_t mode)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled(mcuxClSession_Handle_t pSession UNUSED_PARAM, mcuxClRandom_Mode_t mode UNUSED_PARAM)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled);
     //TODO: This is outdated
@@ -264,7 +269,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
 #endif
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled, MCUXCLRANDOM_STATUS_OK);
 }
-#endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
 
@@ -287,7 +291,7 @@ mcuxClRandom_Status_t mcuxClRandomModes_selftest_VerifyArrays(uint32_t length, u
 /**
  * \brief TODO
  */
-mcuxClRandom_Status_t mcuxClRandomModes_selftest_CheckContext(mcuxClRandomModes_Context_Generic_t *pCtx, uint32_t *pExpectedKey, uint32_t *pExpectedCounterV)
+mcuxClRandom_Status_t mcuxClRandomModes_selftest_CheckContext(mcuxClRandomModes_Context_Generic_t *pCtx UNUSED_PARAM, uint32_t *pExpectedKey UNUSED_PARAM, uint32_t *pExpectedCounterV UNUSED_PARAM)
 {
     // TODO
     return MCUXCLRANDOM_STATUS_OK;

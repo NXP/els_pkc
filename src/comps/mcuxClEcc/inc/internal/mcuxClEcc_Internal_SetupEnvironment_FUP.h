@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,6 +23,9 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * FUP program declaration mcuxClEcc_FUP_SetupEnvironment_ClearBuffers
@@ -30,5 +33,8 @@
 #define mcuxClEcc_FUP_SetupEnvironment_ClearBuffers_LEN  5u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_SetupEnvironment_ClearBuffers[mcuxClEcc_FUP_SetupEnvironment_ClearBuffers_LEN];
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_INTERNAL_SETUPENVIRONMENT_FUP_H_ */ 

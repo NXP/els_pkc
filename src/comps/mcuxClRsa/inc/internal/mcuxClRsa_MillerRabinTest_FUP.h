@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,8 +19,16 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
-#define mcuxClRsa_MillerRabinTest_ReducAndCheck_LEN  4u
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-extern const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck[mcuxClRsa_MillerRabinTest_ReducAndCheck_LEN];
+#define mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP_LEN  4u
+
+extern const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP[mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP_LEN];
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLRSA_MILLERRABINTEST_FUP_H_ */ 

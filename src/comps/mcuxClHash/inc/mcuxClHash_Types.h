@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,6 +25,10 @@
 #include <mcuxClSession_Types.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @defgroup mcuxClHash_Types mcuxClHash_Types
@@ -77,5 +81,9 @@ typedef mcuxClHash_ContextDescriptor_t * const mcuxClHash_Context_t;
 typedef uint32_t mcuxClHash_Status_t;
 
 /**@}*/
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLHASH_TYPES_H_ */

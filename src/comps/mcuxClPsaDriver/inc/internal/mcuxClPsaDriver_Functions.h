@@ -24,7 +24,9 @@ extern "C" {
 
 #include <crypto_types.h>
 
-#include <mcuxClAeadModes_Modes.h>
+#include <mcuxClAeadModes.h>
+#include <mcuxClCipherModes.h>
+#include <mcuxClMacModes.h>
 #include <mcuxClPsaDriver.h>
 #include <mcuxClRsa_Types.h>
 
@@ -213,6 +215,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
    size_t tag_size,
    size_t *tag_length);
 
+psa_status_t mcuxClPsaDriver_psa_driver_get_tag_len(
+    psa_aead_operation_t *operation,
+    uint8_t *tag_len);
+
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_lengths(
    psa_aead_operation_t *operation,
    size_t ad_length,
@@ -397,7 +403,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
     size_t *mac_length);
 
 const mcuxClMac_ModeDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(
-    const psa_key_attributes_t *attributes);
+    const psa_key_attributes_t *attributes,
+    psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
     psa_mac_operation_t *operation,
@@ -472,6 +479,14 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify(
     bool isHash);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(
+    const psa_key_attributes_t *attributes,
+    const uint8_t *key_buffer,
+    size_t key_buffer_size,
+    uint8_t *data,
+    size_t data_size,
+    size_t *data_length);
+
+psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportPublicKey(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
     size_t key_buffer_size,

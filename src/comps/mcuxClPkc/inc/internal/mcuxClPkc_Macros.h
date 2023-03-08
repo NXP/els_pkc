@@ -25,7 +25,7 @@
 #include <stdbool.h>
 #include <mcuxClConfig.h> // Exported features flags header
 #include <platform_specific_headers.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <mcuxClPkc_Types.h>
 #include <internal/mcuxClPkc_SfrAccess.h>
@@ -144,15 +144,20 @@
 #define MCUXCLPKC_WAITFORREADY()  \
     do{} while(0u != MCUXCLPKC_SFR_BITREAD(STATUS, GOANY))
 
+static inline uint32_t mcuxClPkc_waitForFinishGetStatus(void)
+{
+    uint32_t pkc_status_;
+ 
+    do {
+        pkc_status_ = MCUXCLPKC_SFR_READ(STATUS);
+    } while (0u != (pkc_status_ & MCUXCLPKC_SFR_BITMSK(STATUS, ACTIV)));
+ 
+    return pkc_status_;
+}
+
 /** Macro to wait PKC calculation and then get PKC status. */
 #define MCUXCLPKC_WAITFORFINISH_GETSTATUS()  \
-    ({  \
-        uint32_t pkc_status_;  \
-        do{  \
-            pkc_status_ = MCUXCLPKC_SFR_READ(STATUS);  \
-        } while (0u != (pkc_status_ & MCUXCLPKC_SFR_BITMSK(STATUS, ACTIV)));  \
-        (pkc_status_);  \
-    })
+    mcuxClPkc_waitForFinishGetStatus()
 
 /* Macros to enable and disable GF2 calculation mode. */
 #define MCUXCLPKC_ENABLEGF2()   MCUXCLPKC_SFR_BITSET(CTRL, GF2CONV)    ///< Enable GF2 calculation mode.
@@ -181,13 +186,8 @@
 /** PW_READY check is not required. */
 #define MCUXCLPKC_PKC_WAIT_PW_READY()  do{} while(false)
 
-#ifdef MCUXCL_FEATURE_PKC_CPUPKC_ARBITRATION_WORKAROUND
-/** Workaround for cosim platforms: avoid CPU and PKC concurrently accessing to PKC workarea. */
-#define MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND()  MCUXCLPKC_WAITFORFINISH()
-#else
 /** Workaround disabled. */
 #define MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND()  do{} while(false)
-#endif /* MCUXCL_FEATURE_PKC_CPUPKC_ARBITRATION_WORKAROUND */
 
 /** Workaround disabled. */
 #define MCUXCLPKC_PKC_BLOCK_CPU_WORKAROUND()  do{} while(false)

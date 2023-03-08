@@ -63,5 +63,4 @@
 #include <mcuxClRsa_MemoryConsumption.h>
 #include <mcuxClRsa_Constants.h>
 #include <mcuxClRsa_Types.h>
-
 #endif /* MCUXCLRSA_H_ */

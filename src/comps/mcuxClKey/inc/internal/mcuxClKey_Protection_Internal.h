@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -21,8 +21,11 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <mcuxClKey.h>
+#include <mcuxClKey_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * INTERNAL FUNCTIONS
@@ -60,5 +63,9 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_protect_fct_ckdf)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(
   mcuxClKey_Handle_t key
   );
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLKEY_PROTECTION_INTERNAL_H_ */

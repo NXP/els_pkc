@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -61,7 +61,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
     }
 
     /* If the security strength is already sufficient, finish here. */
-    if(MCUXCLELS_STATUS_DRBGENTLVL_NONE != hwState.bits.drbgentlvl)
+    if((uint8_t)MCUXCLELS_STATUS_DRBGENTLVL_NONE != hwState.bits.drbgentlvl)
     {
        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK, MCUXCLPRNG_STATUS_FAULT_ATTACK,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState));
@@ -86,7 +86,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
                                         (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties));
         }
 
-        if (MCUXCLELS_KEYPROPERTY_ACTIVE_FALSE == keyProp.bits.kactv)
+        if ((uint8_t)MCUXCLELS_KEYPROPERTY_ACTIVE_FALSE == keyProp.bits.kactv)
         {
             MCUX_CSSL_FP_FUNCTION_CALL(ret_KeyDelete_Async, mcuxClEls_KeyDelete_Async(keyIdx));
 
@@ -94,7 +94,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState),
-                                            (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
+                                            (uint16_t)(keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async));
             }
 

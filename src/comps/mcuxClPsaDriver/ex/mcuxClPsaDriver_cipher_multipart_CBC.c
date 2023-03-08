@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,12 +11,14 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+#include "common.h"
+
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>
@@ -62,18 +64,18 @@ bool mcuxClPsaDriver_cipher_multipart_CBC(void)
 
     /* Set up PSA key attributes. */
     psa_key_attributes_t attributes = {
-        .private_core = {                               // Core attributes
-            .private_type = PSA_KEY_TYPE_AES,           // Key is for AES operations
-            .private_bits = 0U,                         // No key bits
-            .private_lifetime = LIFETIME_EXTERNAL,      // Volatile (RAM), Local Storage (plain) key
-            .private_id = 0U,                           // ID zero
-            .private_policy = {
-                .private_usage = PSA_KEY_USAGE_ENCRYPT | PSA_KEY_USAGE_DECRYPT, // Key may be used for encryption and decryption
-                .private_alg = PSA_ALG_CBC_NO_PADDING,  // Key may be used for CBC mode without padding only
-                .private_alg2 = PSA_ALG_NONE},
-            .private_flags = 0u},                       // No flags
-        .private_domain_parameters = NULL,              // No domain parameters
-        .private_domain_parameters_size = 0u};
+        .core = {                               // Core attributes
+            .type = PSA_KEY_TYPE_AES,           // Key is for AES operations
+            .bits = 0U,                         // No key bits
+            .lifetime = LIFETIME_EXTERNAL,      // Volatile (RAM), Local Storage (plain) key
+            .id = 0U,                           // ID zero
+            .policy = {
+                .usage = PSA_KEY_USAGE_ENCRYPT | PSA_KEY_USAGE_DECRYPT, // Key may be used for encryption and decryption
+                .alg = PSA_ALG_CBC_NO_PADDING,  // Key may be used for CBC mode without padding only
+                .alg2 = PSA_ALG_NONE},
+            .flags = 0u},                       // No flags
+        .domain_parameters = NULL,              // No domain parameters
+        .domain_parameters_size = 0u};
 
     /* Variable for the output length of the encryption operation */
     size_t output_length = 0u;
@@ -118,6 +120,11 @@ bool mcuxClPsaDriver_cipher_multipart_CBC(void)
         return MCUXCLEXAMPLE_ERROR;
     }
 
+    /* Check the output length */
+    if(output_length != sizeof(aes128_output)) {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
     result = psa_driver_wrapper_cipher_finish(
         &operation,                         // psa_cipher_operation_t *operation,
         aes128_output,                      // uint8_t *output,
@@ -125,13 +132,14 @@ bool mcuxClPsaDriver_cipher_multipart_CBC(void)
         &output_length                      // size_t *output_length
         );
 
-    /* Check the return value */
-    if(result != PSA_SUCCESS) {
+    /* Check the output length - no output was return */
+    if(0u != output_length)
+    {
         return MCUXCLEXAMPLE_ERROR;
     }
 
-    /* Check the output length */
-    if(output_length != sizeof(aes128_output)) {
+    /* Check the return value */
+    if(result != PSA_SUCCESS) {
         return MCUXCLEXAMPLE_ERROR;
     }
 
@@ -185,6 +193,11 @@ bool mcuxClPsaDriver_cipher_multipart_CBC(void)
         return MCUXCLEXAMPLE_ERROR;
     }
 
+    /* Check the output length */
+    if(output_length != sizeof(aes128_output)) {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
     result = psa_driver_wrapper_cipher_finish(
         &operation,                         // psa_cipher_operation_t *operation,
         aes128_output,                      // uint8_t *output,
@@ -192,14 +205,14 @@ bool mcuxClPsaDriver_cipher_multipart_CBC(void)
         &output_length                      // size_t *output_length
         );
 
-    /* Check the return value */
-    if(result != PSA_SUCCESS) {
+    /* Check the output length - no output was return */
+    if(0u != output_length)
+    {
         return MCUXCLEXAMPLE_ERROR;
     }
 
-
-    /* Check the output length */
-    if(output_length != sizeof(aes128_output)) {
+    /* Check the return value */
+    if(result != PSA_SUCCESS) {
         return MCUXCLEXAMPLE_ERROR;
     }
 

@@ -22,6 +22,7 @@
 #include <mcuxClEls.h>
 #include <internal/mcuxClRandom_Internal_Types.h>
 #include <internal/mcuxClRandomModes_Private_CtrDrbg.h>
+#include <internal/mcuxClRandomModes_Private_CtrDrbg_BlockCipher.h>
 #include <internal/mcuxClRandomModes_Private_NormalMode.h>
 #include <internal/mcuxClTrng_Internal.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>

@@ -59,7 +59,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t
 
     uint32_t uptrtIndexY = (iR_iX_iY_iT >> 8) & 0xFFu;
 
-    uint32_t noOfTrailingZeroBits = MCUXCLMATH_FP_TRAILINGZEROS(uptrtIndexY);
+    uint32_t noOfTrailingZeroBits;
+    /* mcuxClMath_TrailingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_TrailingZeros(uptrtIndexY, &noOfTrailingZeroBits));
     uint32_t noOfTrailingZeroPkcWords = noOfTrailingZeroBits / (8u * MCUXCLPKC_WORDSIZE);
 
     /* If number of trailing zero bits exceeds a PKC word, shift pointer in UPTR table. */
@@ -81,7 +83,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t
 
     /* If number of leading zero bits after shift exceeds a PKC word, reduce length of Y. */
     MCUXCLPKC_WAITFORFINISH();
-    uint32_t leadingZeroBits = MCUXCLMATH_FP_LEADINGZEROS(uptrtIndexY);
+    uint32_t leadingZeroBits;
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(uptrtIndexY, &leadingZeroBits));
 
     if((8u * MCUXCLPKC_WORDSIZE) <= leadingZeroBits)
     {

@@ -6,6 +6,5 @@ var searchData=
   ['mcuxcl_5fversion_5fmax_5fsize',['MCUXCL_VERSION_MAX_SIZE',['../mcux_cl__clns_8h.html#aac49d4488517875c56358012b911da08',1,'mcuxCl_clns.h']]],
   ['mcuxclcss_5faead_5ffinalize_5fasync',['mcuxClCss_Aead_Finalize_Async',['../mcux_cl_els__mapping_8h.html#acd4f33dfe8b92796f5d88070e2cb45ec',1,'mcuxClEls_mapping.h']]],
   ['mcuxclcss_5faeadoption_5ft',['mcuxClCss_AeadOption_t',['../mcux_cl_els__mapping_8h.html#adbc7825ddeb3a5325134b21ba92d895c',1,'mcuxClEls_mapping.h']]],
-  ['mcuxclcss_5fapi',['MCUXCLCSS_API',['../mcux_cl_els__mapping_8h.html#a943265c1ad7bb3d4163f108994aa7958',1,'mcuxClEls_mapping.h']]],
-  ['mcuxclecc_5fcustomweiereccdomainparams_5fsize',['MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE',['../mcux_cl_ecc___memory_consumption_8h.html#ac8895d8165cf3c84b10ac986a30c37e4',1,'mcuxClEcc_MemoryConsumption.h']]]
+  ['mcuxclcss_5fapi',['MCUXCLCSS_API',['../mcux_cl_els__mapping_8h.html#a943265c1ad7bb3d4163f108994aa7958',1,'mcuxClEls_mapping.h']]]
 ];

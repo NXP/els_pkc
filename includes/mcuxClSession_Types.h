@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,12 +19,11 @@
 #ifndef MCUXCLSESSION_TYPES_H_
 #define MCUXCLSESSION_TYPES_H_
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClRandom_Types.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
+
+#include <mcuxClRandom_Types.h>
 
 /**********************************************
  * CONSTANTS
@@ -41,7 +40,7 @@
  * @{
  */
 #define MCUXCLSESSION_STATUS_OK          ((mcuxClSession_Status_t) 0xE8E8E8E8u )  ///< Session operation successful
-#define MCUXCLSESSION_STATUS_ERROR       ((mcuxClSession_Status_t) 0xE8E88E8Eu )  ///< Error occured during Session operation
+#define MCUXCLSESSION_STATUS_ERROR       ((mcuxClSession_Status_t) 0xE8E88E8Eu )  ///< Error occurred during Session operation
 /**@}*/
 
 /**
@@ -52,6 +51,7 @@
 #define MCUXCLSESSION_RTF_UPDATE_FALSE   ((mcuxClSession_Rtf_t) 0x0F0F0F0Fu )     ///< RTF will not be updated
 /**@}*/
 
+
 /**
  * @}
  */ /* mcuxClSession_Constants */
@@ -61,11 +61,11 @@
  * TYPEDEFS
  **********************************************/
 /**
-* @defgroup mcuxClSession_Types mcuxClSession_Types
+ * @defgroup mcuxClSession_Types mcuxClSession_Types
  * @brief Defines all types of @ref mcuxClSession
  * @ingroup mcuxClSession
-* @{
-*/
+ * @{
+ */
 
 /**
  * @brief Type for mcuxClSession status codes
@@ -101,6 +101,7 @@ typedef struct mcuxClSession_SecurityContext
   uint32_t securityCounter;     ///< Security counter
 } mcuxClSession_SecurityContext_t;
 
+
 /**
  * @brief Type for mcuxClSession Descriptor
  */
@@ -111,12 +112,13 @@ typedef struct mcuxClSession_Descriptor
   mcuxClRandom_Config_t randomCfg;   ///< Configuration of the Rng (contexts and mode)
   mcuxClSession_Rtf_t rtf;           ///< Configuration of the RTF
   uint8_t *pRtf;
-  /* TBD: DMA handling */
 } mcuxClSession_Descriptor_t;
+
 /**
  * @brief Type for mcuxClSession Handle
  */
 typedef mcuxClSession_Descriptor_t * const mcuxClSession_Handle_t;
+
 
 /**
  * @}

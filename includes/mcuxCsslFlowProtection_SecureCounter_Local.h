@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -410,5 +410,37 @@ do                                                                  \
 #define MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL() \
 } while (0)
 
+/**
+ * @def MCUX_CSSL_FP_ASSERT_IMPL
+ * @brief Assert an expected state of the code flow.
+ * @api
+ * @ingroup csslFpCntExpect
+ *
+ * This macro can be used to check whether the code flow up to this point
+ * matches the expected state. Unlike the #MCUX_CSSL_FP_EXPECT macro, it will
+ * not update the expectations, but merely perform a check on the recorded
+ * events against the already recorded expectations plus the ones provided as
+ * parameters.
+ *
+ * If the check fails, the code defined in MCUX_CSSL_FP_ASSERT_CALLBACK will be
+ * executed.
+ *
+ * \see MCUX_CSSL_FP_EXPECTATIONS
+ *
+ * \param expect One or more (comma separated) declarations of expected code
+ *               flow behavior.
+ */
+#define MCUX_CSSL_FP_ASSERT_IMPL(...) \
+  if (MCUX_CSSL_SC_CHECK_PASSED != \
+        MCUX_CSSL_SC_CHECK(MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__))) \
+  { \
+    MCUX_CSSL_FP_ASSERT_CALLBACK(); \
+  } \
+  else if (MCUX_CSSL_SC_CHECK_PASSED != \
+        MCUX_CSSL_SC_CHECK(MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__))) \
+  { \
+    MCUX_CSSL_FP_ASSERT_CALLBACK(); \
+  } \
+  else {/*empty*/}
 
 #endif /* MCUX_CSSL_FLOW_PROTECTION_SECURE_COUNTER_LOCAL_H_ */

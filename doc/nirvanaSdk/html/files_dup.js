@@ -92,7 +92,7 @@ var files_dup =
     [ "mcuxClOsccaPkc_Functions.h", "mcux_cl_oscca_pkc___functions_8h.html", "mcux_cl_oscca_pkc___functions_8h" ],
     [ "mcuxClOsccaPkc_Types.h", "mcux_cl_oscca_pkc___types_8h.html", "mcux_cl_oscca_pkc___types_8h" ],
     [ "mcuxClOsccaSm3.h", "mcux_cl_oscca_sm3_8h.html", null ],
-    [ "mcuxClOsccaSm3_Algorithms.h", "mcux_cl_oscca_sm3___algorithms_8h.html", "mcux_cl_oscca_sm3___algorithms_8h" ],
+    [ "mcuxClOsccaSm3_Algorithms.h", "mcux_cl_oscca_sm3___algorithms_8h.html", null ],
     [ "mcuxClOsccaSm3_Constants.h", "mcux_cl_oscca_sm3___constants_8h.html", "mcux_cl_oscca_sm3___constants_8h" ],
     [ "mcuxClOsccaSm3_MemoryConsumption.h", "mcux_cl_oscca_sm3___memory_consumption_8h.html", "mcux_cl_oscca_sm3___memory_consumption_8h" ],
     [ "mcuxClPadding.h", "mcux_cl_padding_8h.html", null ],

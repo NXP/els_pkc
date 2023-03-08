@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,6 +16,7 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
+#include <mcuxClMac_Types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,7 +47,7 @@ extern const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CMAC;
  * @brief CMAC mode
  * @ingroup mcuxClMacModes_Modes
  */
-static const mcuxClMac_Mode_t mcuxClMac_Mode_CMAC =
+static mcuxClMac_Mode_t mcuxClMac_Mode_CMAC =
   &mcuxClMac_ModeDescriptor_CMAC;
 
 
@@ -61,7 +62,7 @@ extern const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_NoPaddin
  * @brief CBC-MAC mode without padding
  * @ingroup mcuxClMacModes_Modes
  */
-static const mcuxClMac_Mode_t mcuxClMac_Mode_CBCMAC_NoPadding =
+static mcuxClMac_Mode_t mcuxClMac_Mode_CBCMAC_NoPadding =
   &mcuxClMac_ModeDescriptor_CBCMAC_NoPadding;
 
 /**
@@ -74,7 +75,7 @@ extern const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingI
  * @brief CBC-MAC mode with ISO/IEC 9797-1 padding method 1
  * @ingroup mcuxClMacModes_Modes
  */
-static const mcuxClMac_Mode_t mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method1 =
+static mcuxClMac_Mode_t mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method1 =
   &mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1;
 
 /**
@@ -87,7 +88,7 @@ extern const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingI
  * @brief CBC-MAC mode with ISO/IEC 9797-1 padding method 2
  * @ingroup mcuxClMacModes_Modes
  */
-static const mcuxClMac_Mode_t mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2 =
+static mcuxClMac_Mode_t mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2 =
   &mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2;
 
 
@@ -108,7 +109,7 @@ extern const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_HMAC_SHA2_256_E
  * into coprocessor (see @ref mcuxClKey for details).
  *
  */
-static const mcuxClMac_Mode_t mcuxClMac_Mode_HMAC_SHA2_256_ELS =
+static mcuxClMac_Mode_t mcuxClMac_Mode_HMAC_SHA2_256_ELS =
   &mcuxClMac_ModeDescriptor_HMAC_SHA2_256_ELS;
 
 

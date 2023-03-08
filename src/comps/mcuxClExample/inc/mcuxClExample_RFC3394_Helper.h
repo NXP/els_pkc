@@ -19,9 +19,7 @@
 #include <mcuxClEls.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-
-
-#include <mcuxClMemory.h>
+#include <mcuxClMemory_Copy.h>
 
 /**
  * Function that performs RFC3394 key wrapping.

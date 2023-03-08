@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -38,6 +38,7 @@
 #define MCUXCLKEY_STATUS_OK               ((mcuxClKey_Status_t) 0xE2E2E2E2u )  ///< Key operation successful
 #define MCUXCLKEY_STATUS_ERROR            ((mcuxClKey_Status_t) 0xE2E22E2Eu )  ///< Error occured during Key operation
 #define MCUXCLKEY_STATUS_FAILURE          ((mcuxClKey_Status_t) 0xE2E2E22Eu )  ///< Failure during execution
+#define MCUXCLKEY_STATUS_INVALID_INPUT    ((mcuxClKey_Status_t) 0xE2E22EE2u )  ///< Invalid input
 #define MCUXCLKEY_STATUS_FAULT_ATTACK     ((mcuxClKey_Status_t) 0xE2E2F0F0u )  ///< Fault attack detected
 #define MCUXCLKEY_STATUS_CRC_NOT_OK       ((mcuxClKey_Status_t) 0x003E0002u)   ///< CRC verification failed
 #define MCUXCLKEY_STATUS_NOT_SUPPORTED    ((mcuxClKey_Status_t) 0xE2E20000u)   ///< Functionality not supported

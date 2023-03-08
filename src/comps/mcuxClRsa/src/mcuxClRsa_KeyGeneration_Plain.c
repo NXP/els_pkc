@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -24,7 +24,7 @@
 #include <mcuxClKey.h>
 #include <internal/mcuxClKey_Internal.h>
 #include <mcuxClMath.h>
-#include <mcuxClMemory_Copy.h>
+#include <mcuxClMemory.h>
 #include <mcuxClPkc.h>
 #include <mcuxClRandom.h>
 
@@ -64,6 +64,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    * If did not pass verification, function returns MCUXCLRSA_STATUS_INVALID_INPUT error.
    *
    */
+  // TODO CLNS-5567: support more key sizes for S5xy
   const uint32_t bitLenKey = type->size;
   if(((MCUXCLKEY_ALGO_ID_RSA | MCUXCLKEY_ALGO_ID_KEY_PAIR) != type->algoId)
        || ((MCUXCLKEY_SIZE_2048 != bitLenKey) &&
@@ -78,6 +79,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    *    If the RNG does not provide an appropriate level of entropy (security strength)
    *    for the given key size, this function returns MCUXCLRSA_STATUS_RNG_ERROR error.
    */
+  // TODO CLNS-6350 - this check is disabled by default for S5xy for now. Align with SA whether this would be needed.
 
   /*
    * 3. Check if E is FIPS compliant, i.e., is odd values in the range 2^16 < e < 2^256,
@@ -404,7 +406,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   pRsaPrivatePlainKey->pExp1->keyEntryLength = d.keyEntryLength;
   MCUXCLPKC_PS1_SETLENGTH(0u, pkcByteLenKey); /* set operand len for mcuxClPkc_SecureExportBigEndianFromPkc */
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportD,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pRsaPrivatePlainKey->pExp1->pKeyEntryData,
+      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                            pRsaPrivatePlainKey->pExp1->pKeyEntryData,
                                             MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_D,
                                                                MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_N /* used as a temp */),
                                             pRsaPrivatePlainKey->pExp1->keyEntryLength));

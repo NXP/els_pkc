@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,6 +20,7 @@
 #include <internal/mcuxClEcc_Mont_Internal.h>
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
+#include <internal/mcuxClEcc_EdDSA_Internal_Ed25519.h>
 #include <internal/mcuxClEcc_TwEd_Internal.h>
 #include <internal/mcuxClEcc_TwEd_Internal_Ed25519.h>
 #include <mcuxClHash_Algorithms.h>
@@ -35,57 +36,57 @@
 
 /* Curve 25519 domain parameters */
 
-static const uint8_t pCurve25519_FullP[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_FullP[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
   0x1bu, 0xcau, 0x6bu, 0x28u, 0xafu, 0xa1u, 0xbcu, 0x86u,
   0xedu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
   0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0x7fu
 };
 
-static const uint8_t pCurve25519_FullN[MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_FullN[MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0x1bu, 0x7eu, 0x54u, 0x12u, 0xa3u, 0x1du, 0xb5u, 0xd2u,
     0xedu, 0xd3u, 0xf5u, 0x5cu, 0x1au, 0x63u, 0x12u, 0x58u, 0xd6u, 0x9cu, 0xf7u, 0xa2u, 0xdeu, 0xf9u, 0xdeu, 0x14u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x10u
 };
 
-static const uint8_t pCurve25519_R2P[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_R2P[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0xa4u, 0x05u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_R2N[MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_R2N[MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0x01u, 0x0fu, 0x9cu, 0x44u, 0xe3u, 0x11u, 0x06u, 0xa4u, 0x47u, 0x93u, 0x85u, 0x68u, 0xa7u, 0x1bu, 0x0eu, 0xd0u,
     0x65u, 0xbeu, 0xf5u, 0x17u, 0xd2u, 0x73u, 0xecu, 0xceu, 0x3du, 0x9au, 0x30u, 0x7cu, 0x1bu, 0x41u, 0x99u, 0x03u
 };
 
-static const uint8_t pCurve25519_PointGX[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_PointGX[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0x09u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u ,0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_PointGY[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_PointGY[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0xD9u, 0xD3u, 0xCEu, 0x7Eu, 0xA2u, 0xC5u, 0xE9u, 0x29u, 0xB2u, 0x61u, 0x7Cu, 0x6Du, 0x7Eu, 0x4Du, 0x3Du, 0x92u,
     0x4Cu, 0xD1u, 0x48u, 0x77u, 0x2Cu, 0xDDu, 0x1Eu, 0xE0u, 0xB4u, 0x86u, 0xA0u, 0xB8u, 0xA1u, 0x19u, 0xAEu, 0x20u
 };
 
-static const uint8_t pCurve25519_LadderConst[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_LadderConst[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0x42u, 0xDBu, 0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_A[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_A[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0x06u, 0x6Du, 0x07u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve25519_B[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve25519_B[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
@@ -93,7 +94,7 @@ static const uint8_t pCurve25519_B[MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP] __attr
 
 /* Curve 448 domain parameters */
 
-static const uint8_t pCurve448_FullP[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_FullP[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -102,7 +103,7 @@ static const uint8_t pCurve448_FullP[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP + 8u] _
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t pCurve448_FullN[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_FullN[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0xc5u, 0x8bu, 0x91u, 0xaeu, 0x0fu, 0x44u, 0xbdu, 0x03u,
     0xF3u, 0x44u, 0x58u, 0xABu, 0x92u, 0xC2u, 0x78u, 0x23u, 0x55u, 0x8Fu, 0xC5u, 0x8Du, 0x72u, 0xC2u,
@@ -111,7 +112,7 @@ static const uint8_t pCurve448_FullN[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0x3Fu
 };
 
-static const uint8_t pCurve448_R2P[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_R2P[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0x02u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -119,7 +120,7 @@ static const uint8_t pCurve448_R2P[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP]  __attri
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_R2N[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_R2N[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0x60u, 0x9bu, 0x9bu, 0x04u, 0x57u, 0x92u, 0x53u, 0xe3u, 0xd9u, 0x95u, 0xb1u, 0xc1u, 0x4bu, 0x2cu,
     0xf3u, 0x7au, 0x59u, 0x18u, 0xeau, 0x88u, 0x23u, 0xdeu, 0x66u, 0x0du, 0x38u, 0xd8u, 0xe4u, 0x5eu,
@@ -127,7 +128,7 @@ static const uint8_t pCurve448_R2N[MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER] 
     0xd0u, 0xe4u, 0xb7u, 0xbcu, 0x52u, 0x20u, 0x29u, 0xb7u, 0x23u, 0xf8u, 0x39u, 0xa9u, 0x02u, 0x34u
 };
 
-static const uint8_t pCurve448_LadderConst[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_LadderConst[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0xAAu, 0x98u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -135,7 +136,7 @@ static const uint8_t pCurve448_LadderConst[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] 
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_PointGX[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_PointGX[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0x05u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u ,0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -143,7 +144,7 @@ static const uint8_t pCurve448_PointGX[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __at
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u ,0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_PointGY[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_PointGY[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0x1au, 0x5bu, 0x7bu, 0x45u, 0x3du, 0x22u, 0xd7u, 0x6fu, 0xf7u, 0x7au, 0x67u, 0x50u, 0xb1u, 0xc4u,
     0x12u, 0x13u, 0x21u, 0x0du, 0x43u, 0x46u, 0x23u, 0x7eu, 0x02u, 0xb8u, 0xedu, 0xf6u, 0xf3u, 0x8du,
@@ -151,7 +152,7 @@ static const uint8_t pCurve448_PointGY[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __at
     0x32u, 0x58u, 0x6eu, 0xabu, 0x98u, 0x6cu, 0xf6u, 0xb1u, 0xf5u, 0x95u, 0x12u, 0x5du, 0x23u, 0x7du
 };
 
-static const uint8_t pCurve448_A[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_A[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0xA6u, 0x62u, 0x02u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -159,7 +160,7 @@ static const uint8_t pCurve448_A[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribut
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pCurve448_B[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pCurve448_B[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -167,7 +168,7 @@ static const uint8_t pCurve448_B[MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP] __attribut
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve25519 =
+const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve25519 __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve25519"))) =
 {
     .common.byteLenP = MCUXCLECC_MONT_CURVE25519_SIZE_PRIMEP,
     .common.byteLenN = MCUXCLECC_MONT_CURVE25519_SIZE_BASEPOINTORDER,
@@ -189,7 +190,7 @@ const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve25519 =
     .t = 254u
 };
 
-const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve448 =
+const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve448 __attribute__((section(".rodata.curve.mcuxClEcc_MontDH_Curve_448"))) =
 {
     .common.byteLenP = MCUXCLECC_MONT_CURVE448_SIZE_PRIMEP,
     .common.byteLenN = MCUXCLECC_MONT_CURVE448_SIZE_BASEPOINTORDER,
@@ -220,7 +221,7 @@ const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve448 =
 /* secp192r1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP192R1_P[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP192R1_P[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* pDash = 0x1 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -231,7 +232,7 @@ static const uint8_t SECP192R1_P[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP192R1_N[MCUXCLECC_WEIERECC_SECP192R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP192R1_N[MCUXCLECC_WEIERECC_SECP192R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* nDash = 0x882672070ddbcf2f [BE] */
     0x2Fu, 0xCFu, 0xDBu, 0x0Du, 0x07u, 0x72u, 0x26u, 0x88u,
@@ -242,7 +243,7 @@ static const uint8_t SECP192R1_N[MCUXCLECC_WEIERECC_SECP192R1_SIZE_BASEPOINTORDE
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP192R1_A[] =
+static const uint8_t SECP192R1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* A = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFC [BE] */
     0xFCu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -250,7 +251,7 @@ static const uint8_t SECP192R1_A[] =
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP192R1_B[] =
+static const uint8_t SECP192R1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* B = 0x64210519E59C80E70FA7E9AB72243049FEB8DEECC146B9B1 [BE] */
     0xB1u, 0xB9u, 0x46u, 0xC1u, 0xECu, 0xDEu, 0xB8u, 0xFEu,
@@ -258,7 +259,7 @@ static const uint8_t SECP192R1_B[] =
     0xE7u, 0x80u, 0x9Cu, 0xE5u, 0x19u, 0x05u, 0x21u, 0x64u
 };
 
-static const uint8_t SECP192R1_GX[]=
+static const uint8_t SECP192R1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* PointGX = 0x188DA80EB03090F67CBF20EB43A18800F4FF0AFD82FF1012 [BE] */
     0x12u, 0x10u, 0xFFu, 0x82u, 0xFDu, 0x0Au, 0xFFu, 0xF4u,
@@ -266,7 +267,7 @@ static const uint8_t SECP192R1_GX[]=
     0xF6u, 0x90u, 0x30u, 0xB0u, 0x0Eu, 0xA8u, 0x8Du, 0x18u
 };
 
-static const uint8_t SECP192R1_GY[] =
+static const uint8_t SECP192R1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* PointGY = 0x07192B95FFC8DA78631011ED6B24CDD573F977A11E794811 [BE] */
     0x11u, 0x48u, 0x79u, 0x1Eu, 0xA1u, 0x77u, 0xF9u, 0x73u,
@@ -274,7 +275,7 @@ static const uint8_t SECP192R1_GY[] =
     0x78u, 0xDAu, 0xC8u, 0xFFu, 0x95u, 0x2Bu, 0x19u, 0x07u
 };
 
-static const uint8_t SECP192R1_PRECG[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP192R1_PRECG[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* 0x51A581D9184AC7374730D4F480D1090BB19963D8C0A1E340 [BE] */
     0x40u, 0xE3u, 0xA1u, 0xC0u, 0xD8u, 0x63u, 0x99u, 0xB1u,
@@ -286,7 +287,7 @@ static const uint8_t SECP192R1_PRECG[MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP * 
     0x6Eu, 0x9Fu, 0xBBu, 0xE0u, 0xE2u, 0x1Eu, 0xD8u, 0x5Bu
 };
 
-static const uint8_t SECP192R1_R2P[] =
+static const uint8_t SECP192R1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* R2P = 0x100000000000000020000000000000001 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -294,7 +295,7 @@ static const uint8_t SECP192R1_R2P[] =
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP192R1_R2N[]=
+static const uint8_t SECP192R1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
     /* R2N = 0x28be5677ea0581a24696ea5bbb3a6beece66baccdeb35961 [BE] */
     0x61u, 0x59u, 0xB3u, 0xDEu, 0xCCu, 0xBAu, 0x66u, 0xCEu, 
@@ -302,7 +303,7 @@ static const uint8_t SECP192R1_R2N[]=
     0xA2u, 0x81u, 0x05u, 0xEAu, 0x77u, 0x56u, 0xBEu, 0x28u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP192R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP192R1_SIZE_BASEPOINTORDER,
@@ -326,7 +327,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192r1 =
 /* secp160k1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP160k1_P[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP160k1_P[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* pDash = 0x63c361d4b4ab2745 [BE] */
     0x45u, 0x27u, 0xABu, 0xB4u, 0xD4u, 0x61u, 0xC3u, 0x63u,
@@ -337,7 +338,7 @@ static const uint8_t SECP160k1_P[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP160k1_N[MCUXCLECC_WEIERECC_SECP160K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP160k1_N[MCUXCLECC_WEIERECC_SECP160K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* nDash = 0xd10d67b535931785 [BE] */
     0x85u, 0x17u, 0x93u, 0x35u, 0xB5u, 0x67u, 0x0Du, 0xD1u,
@@ -348,7 +349,7 @@ static const uint8_t SECP160k1_N[MCUXCLECC_WEIERECC_SECP160K1_SIZE_BASEPOINTORDE
     0x00u, 0x00u, 0x00u, 0x00u, 0x01u
 };
 
-static const uint8_t SECP160k1_A[] =
+static const uint8_t SECP160k1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* A = 0x0000000000000000000000000000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -356,7 +357,7 @@ static const uint8_t SECP160k1_A[] =
     0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP160k1_B[] =
+static const uint8_t SECP160k1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* B = 0x0000000000000000000000000000000000000007 [BE] */
     0x07u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -364,7 +365,7 @@ static const uint8_t SECP160k1_B[] =
     0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP160k1_GX[]=
+static const uint8_t SECP160k1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* PointGX = 0x3b4c382ce37aa192a4019e763036f4f5dd4d7ebb [BE] */
     0xBBu, 0x7Eu, 0x4Du, 0xDDu, 0xF5u, 0xF4u, 0x36u, 0x30u, 
@@ -372,7 +373,7 @@ static const uint8_t SECP160k1_GX[]=
     0x2Cu, 0x38u, 0x4Cu, 0x3Bu
 };
 
-static const uint8_t SECP160k1_GY[] =
+static const uint8_t SECP160k1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* PointGY = 0x938cf935318fdced6bc28286531733c3f03c4fee [BE] */
     0xEEu, 0x4Fu, 0x3Cu, 0xF0u, 0xC3u, 0x33u, 0x17u, 0x53u, 
@@ -380,7 +381,7 @@ static const uint8_t SECP160k1_GY[] =
     0x35u, 0xF9u, 0x8Cu, 0x93u
 };
 
-static const uint8_t SECP160k1_PRECG[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP160k1_PRECG[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* 0xaf188ba8029e41acaf9e8000aa6337e58852a9c7 [BE] */
     0xC7u, 0xA9u, 0x52u, 0x88u, 0xE5u, 0x37u, 0x63u, 0xAAu,
@@ -392,7 +393,7 @@ static const uint8_t SECP160k1_PRECG[MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP * 
     0xABu, 0x72u, 0x94u, 0x87u
 };
 
-static const uint8_t SECP160k1_R2P[] =
+static const uint8_t SECP160k1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* R2P = 0x10000a71a1b44bba90000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -400,7 +401,7 @@ static const uint8_t SECP160k1_R2P[] =
     0x01u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP160k1_R2N[]=
+static const uint8_t SECP160k1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
     /* R2N = 0xcdcf2babdfe35d2f4d8a8aad0f8494330e687aaf [BE] */
     0xAFu, 0x7Au, 0x68u, 0x0Eu, 0x33u, 0x94u, 0x84u, 0x0Fu, 
@@ -408,7 +409,7 @@ static const uint8_t SECP160k1_R2N[]=
     0xABu, 0x2Bu, 0xCFu, 0xCDu, 0x00u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp160k1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp160k1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp160k1")))  =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP160K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP160K1_SIZE_BASEPOINTORDER,
@@ -432,7 +433,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp160k1 =
 /* secp192k1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP192K1_P[MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP192K1_P[MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* pDash  0xf27ae55b7446d879 [BE] */
     0x79u, 0xD8u, 0x46u, 0x74u, 0x5Bu, 0xE5u, 0x7A, 0xF2u,
@@ -443,7 +444,7 @@ static const uint8_t SECP192K1_P[MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP192K1_N[MCUXCLECC_WEIERECC_SECP192K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP192K1_N[MCUXCLECC_WEIERECC_SECP192K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* nDash 0x8203e3a8560472bb [BE] */
     0xBBu, 0x72u, 0x04u, 0x56u, 0xA8u, 0xE3u, 0x03u, 0x82u,
@@ -454,7 +455,7 @@ static const uint8_t SECP192K1_N[MCUXCLECC_WEIERECC_SECP192K1_SIZE_BASEPOINTORDE
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP192K1_A[] =
+static const uint8_t SECP192K1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /*  A = 0x000000000000000000000000000000000000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -462,7 +463,7 @@ static const uint8_t SECP192K1_A[] =
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP192K1_B[] =
+static const uint8_t SECP192K1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* B = 0x000000000000000000000000000000000000000000000003 [BE] */
     0x03u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -470,7 +471,7 @@ static const uint8_t SECP192K1_B[] =
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP192K1_GX[]=
+static const uint8_t SECP192K1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* PointGX = 0xDB4FF10EC057E9AE26B07D0280B7F4341DA5D1B1EAE06C7D [BE] */
     0x7Du, 0x6Cu, 0xE0u, 0xEAu, 0xB1u, 0xD1u, 0xA5u, 0x1Du,
@@ -478,7 +479,7 @@ static const uint8_t SECP192K1_GX[]=
     0xAEu, 0xE9u, 0x57u, 0xC0u, 0x0Eu, 0xF1u, 0x4Fu, 0xDBu
 };
 
-static const uint8_t SECP192K1_GY[] =
+static const uint8_t SECP192K1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* PointGY = 0x9B2F2F6D9C5628A7844163D015BE86344082AA88D95E2F9D [BE] */
     0x9Du, 0x2Fu, 0x5Eu, 0xD9u, 0x88u, 0xAAu, 0x82u, 0x40u,
@@ -486,7 +487,7 @@ static const uint8_t SECP192K1_GY[] =
     0xA7u, 0x28u, 0x56u, 0x9Cu, 0x6Du, 0x2Fu, 0x2Fu, 0x9Bu
 };
 
-static const uint8_t SECP192K1_PRECG[MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP192K1_PRECG[MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* 0x79C8D6B2F3B65531119C7C2BA6FD6C4A4A0A43C83C3803C1 [BE] */
     0xC1u, 0x03u, 0x38u, 0x3Cu, 0xC8u, 0x43u, 0x0Au, 0x4Au,
@@ -498,7 +499,7 @@ static const uint8_t SECP192K1_PRECG[MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP * 
     0x6Eu, 0x30u, 0xA1u, 0xE3u, 0x5Bu, 0x37u, 0x64u, 0xEBu
 };
 
-static const uint8_t SECP192K1_R2P[]=
+static const uint8_t SECP192K1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* R2P = 0x100002392013c4fd1 [BE] */
     0xD1u, 0x4Fu, 0x3Cu, 0x01u, 0x92u, 0x23u, 0x00u, 0x00u,
@@ -506,7 +507,7 @@ static const uint8_t SECP192K1_R2P[]=
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP192K1_R2N[] =
+static const uint8_t SECP192K1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
     /* R2N = 0x6a21191c2ec4b2b1f0f4f172195e97e2461c1989250f0702 [BE] */
     0x02u, 0x07u, 0x0Fu, 0x25u, 0x89u, 0x19u, 0x1Cu, 0x46u,
@@ -514,7 +515,7 @@ static const uint8_t SECP192K1_R2N[] =
     0xB1u, 0xB2u, 0xC4u, 0x2Eu, 0x1Cu, 0x19u, 0x21u, 0x6Au
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192k1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192k1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192k1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP192K1_SIZE_BASEPOINTORDER,
@@ -541,7 +542,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192k1 =
 /* secp224r1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP224R1_P[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP224R1_P[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* pDash 0xffffffffffffffff [BE] */
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -553,7 +554,7 @@ static const uint8_t SECP224R1_P[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP224R1_N[MCUXCLECC_WEIERECC_SECP224R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP224R1_N[MCUXCLECC_WEIERECC_SECP224R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* nDash 0xd6e242706a1fc2eb [BE] */
     0xEBu, 0xC2u, 0x1Fu, 0x6Au, 0x70u, 0x42u, 0xE2u, 0xD6,
@@ -565,7 +566,7 @@ static const uint8_t SECP224R1_N[MCUXCLECC_WEIERECC_SECP224R1_SIZE_BASEPOINTORDE
     0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP224R1_A[] =
+static const uint8_t SECP224R1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* A = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFE [BE] */
     0xFEu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -574,7 +575,7 @@ static const uint8_t SECP224R1_A[] =
     0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP224R1_B[] =
+static const uint8_t SECP224R1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* B = 0xB4050A850C04B3ABF54132565044B0B7D7BFD8BA270B39432355FFB4 [BE] */
     0xB4u, 0xFFu, 0x55u, 0x23u, 0x43u, 0x39u, 0x0Bu, 0x27u,
@@ -583,7 +584,7 @@ static const uint8_t SECP224R1_B[] =
     0x85u, 0x0Au, 0x05u, 0xB4u
 };
 
-static const uint8_t SECP224R1_GX[]=
+static const uint8_t SECP224R1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* PointGX = 0xB70E0CBD6BB4BF7F321390B94A03C1D356C21122343280D6115C1D21 [BE] */
     0x21u, 0x1Du, 0x5Cu, 0x11u, 0xD6u, 0x80u, 0x32u, 0x34u,
@@ -592,7 +593,7 @@ static const uint8_t SECP224R1_GX[]=
     0xBDu, 0x0Cu, 0x0Eu, 0xB7u
 };
 
-static const uint8_t SECP224R1_GY[] =
+static const uint8_t SECP224R1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* PointGY = 0xBD376388B5F723FB4C22DFE6CD4375A05A07476444D5819985007E34 [BE] */
     0x34u, 0x7Eu, 0x00u, 0x85u, 0x99u, 0x81u, 0xD5u, 0x44u,
@@ -601,7 +602,7 @@ static const uint8_t SECP224R1_GY[] =
     0x88u, 0x63u, 0x37u, 0xBDu
 };
 
-static const uint8_t SECP224R1_R2P[] =
+static const uint8_t SECP224R1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* R2P = 0xfffffffffffffffe00000000ffffffff00000000ffffffff00000001 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 
@@ -610,7 +611,7 @@ static const uint8_t SECP224R1_R2P[] =
     0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP224R1_R2N[]=
+static const uint8_t SECP224R1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* R2N = 0xb1e979616ad15f7cd9714856abc8ff5931d63f4b29947a695f517d15 [BE] */
     0x15u, 0x7Du, 0x51u, 0x5Fu, 0x69u, 0x7Au, 0x94u, 0x29u, 
@@ -619,7 +620,7 @@ static const uint8_t SECP224R1_R2N[]=
     0x61u, 0x79u, 0xE9u, 0xB1u
 };
 
-static const uint8_t SECP224R1_PRECG[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP224R1_PRECG[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
     /* 0x0499AA8A5F8EBEEFEC27A4E13A0B91FB2991FAB0A00641966CAB26E3 [BE] */
     0xE3u, 0x26u, 0xABu, 0x6Cu, 0x96u, 0x41u, 0x06u, 0xA0u,
@@ -632,7 +633,7 @@ static const uint8_t SECP224R1_PRECG[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP * 
     0x82u, 0xAEu, 0x7Au, 0xD7u, 0x81u, 0x5Bu, 0x8Cu, 0x33u,
     0xD4u, 0xF6u, 0x16u, 0x69u
 };
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP224R1_SIZE_BASEPOINTORDER,
@@ -656,7 +657,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224r1 =
 /* secp224k1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP224K1_P[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP224K1_P[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* pDash 0x5a92a00a198d139b [BE] */
     0x9Bu, 0x13u, 0x8Du, 0x19u, 0x0Au, 0xA0u, 0x92u, 0x5Au,
@@ -668,7 +669,7 @@ static const uint8_t SECP224K1_P[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP224K1_N[MCUXCLECC_WEIERECC_SECP224K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP224K1_N[MCUXCLECC_WEIERECC_SECP224K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* nDash 0x43fa520244c1a039 [BE] */
     0x39u, 0xA0u, 0xC1u, 0x44u, 0x02u, 0x52u, 0xFAu, 0x43u,
@@ -680,7 +681,7 @@ static const uint8_t SECP224K1_N[MCUXCLECC_WEIERECC_SECP224K1_SIZE_BASEPOINTORDE
     0x00u, 0x00u, 0x00u, 0x00u, 0x01u
 };
 
-static const uint8_t SECP224K1_A[] =
+static const uint8_t SECP224K1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* A = 0x00000000000000000000000000000000000000000000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -689,7 +690,7 @@ static const uint8_t SECP224K1_A[] =
     0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP224K1_B[] =
+static const uint8_t SECP224K1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* B = 0x00000000000000000000000000000000000000000000000000000005 [BE] */
     0x05u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -698,7 +699,7 @@ static const uint8_t SECP224K1_B[] =
     0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP224K1_GX[]=
+static const uint8_t SECP224K1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* PointGX = 0xA1455B334DF099DF30FC28A169A467E9E47075A90F7E650EB6B7A45C [BE] */
     0x5Cu, 0xA4u, 0xB7u, 0xB6u, 0x0Eu, 0x65u, 0x7Eu, 0x0Fu,
@@ -707,7 +708,7 @@ static const uint8_t SECP224K1_GX[]=
     0x33u, 0x5Bu, 0x45u, 0xA1u
 };
 
-static const uint8_t SECP224K1_GY[] =
+static const uint8_t SECP224K1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* PointGY = 0x7E089FED7FBA344282CAFBD6F7E319F7C0B0BD59E2CA4BDB556D61A5 [BE] */
     0xA5u, 0x61u, 0x6Du, 0x55u, 0xDBu, 0x4Bu, 0xCAu, 0xE2u,
@@ -716,7 +717,7 @@ static const uint8_t SECP224K1_GY[] =
     0xEDu, 0x9Fu, 0x08u, 0x7Eu
 };
 
-static const uint8_t SECP224K1_R2N[]=
+static const uint8_t SECP224K1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* R2N = 0x993ff72bb882bd88bbff32e48be0320816f60af534ce24fbec9feaa0 [BE] */
     0xA0u, 0xEAu, 0x9Fu, 0xECu, 0xFBu, 0x24u, 0xCEu, 0x34u, 
@@ -725,7 +726,7 @@ static const uint8_t SECP224K1_R2N[]=
     0x2Bu, 0xF7u, 0x3Fu, 0x99u, 0x00u
 };
 
-static const uint8_t SECP224K1_R2P[] =
+static const uint8_t SECP224K1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* R2P = 0x10000352602c230690000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -734,7 +735,7 @@ static const uint8_t SECP224K1_R2P[] =
     0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP224K1_PRECG[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP224K1_PRECG[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
     /* 0x79d91a4a04c6421d20e59c5b2f9e62d128375d5c322fe03a5646df86 [BE] */
     0x86u, 0xDFu, 0x46u, 0x56u, 0x3Au, 0xE0u, 0x2Fu, 0x32u,
@@ -748,7 +749,7 @@ static const uint8_t SECP224K1_PRECG[MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP * 
     0xFEu, 0xBAu, 0x58u, 0xFBU
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224k1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224k1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224k1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP224K1_SIZE_BASEPOINTORDER,
@@ -772,7 +773,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224k1 =
 /* secp256r1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP256R1_P[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP256R1_P[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* pDash  0x1 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -784,7 +785,7 @@ static const uint8_t SECP256R1_P[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP + MCUX
     0x01u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP256R1_N[MCUXCLECC_WEIERECC_SECP256R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP256R1_N[MCUXCLECC_WEIERECC_SECP256R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* nDash 0xccd1c8aaee00bc4f [BE] */
     0x4Fu, 0xBCu, 0x00u, 0xEEu, 0xAAu, 0xC8u, 0xD1u, 0xCCu,
@@ -796,7 +797,7 @@ static const uint8_t SECP256R1_N[MCUXCLECC_WEIERECC_SECP256R1_SIZE_BASEPOINTORDE
     0x00u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP256R1_A[] =
+static const uint8_t SECP256R1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* A = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC [BE] */
     0xFCu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -805,7 +806,7 @@ static const uint8_t SECP256R1_A[] =
     0x01u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP256R1_B[] =
+static const uint8_t SECP256R1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* B = 0x5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B [BE] */
     0x4Bu, 0x60u, 0xD2u, 0x27u, 0x3Eu, 0x3Cu, 0xCEu, 0x3Bu,
@@ -814,7 +815,7 @@ static const uint8_t SECP256R1_B[] =
     0xE7u, 0x93u, 0x3Au, 0xAAu, 0xD8u, 0x35u, 0xC6u, 0x5Au
 };
 
-static const uint8_t SECP256R1_GX[]=
+static const uint8_t SECP256R1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* PointGX = 0x6B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296 [BE] */
     0x96u, 0xC2u, 0x98u, 0xD8u, 0x45u, 0x39u, 0xA1u, 0xF4u,
@@ -823,7 +824,7 @@ static const uint8_t SECP256R1_GX[]=
     0x47u, 0x42u, 0x2Cu, 0xE1u, 0xF2u, 0xD1u, 0x17u, 0x6Bu
 };
 
-static const uint8_t SECP256R1_GY[] =
+static const uint8_t SECP256R1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* PointGY = 0x4FE342E2FE1A7F9B8EE7EB4A7C0F9E162BCE33576B315ECECBB6406837BF51F5 [BE] */
     0xF5u, 0x51u, 0xBFu, 0x37u, 0x68u, 0x40u, 0xB6u, 0xCBu,
@@ -832,7 +833,7 @@ static const uint8_t SECP256R1_GY[] =
     0x9Bu, 0x7Fu, 0x1Au, 0xFEu, 0xE2u, 0x42u, 0xE3u, 0x4Fu
 };
 
-static const uint8_t SECP256R1_R2P[]=
+static const uint8_t SECP256R1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* R2P = 0x4fffffffdfffffffffffffffefffffffbffffffff0000000000000003 [BE] */
     0x03u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -841,7 +842,7 @@ static const uint8_t SECP256R1_R2P[]=
     0xFDu, 0xFFu, 0xFFu, 0xFFu, 0x04u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP256R1_R2N[] =
+static const uint8_t SECP256R1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* R2N = 0x66e12d94f3d956202845b2392b6bec594699799c49bd6fa683244c95be79eea2 [BE] */
     0xA2u, 0xEEu, 0x79u, 0xBEu, 0x95u, 0x4Cu, 0x24u, 0x83u, 
@@ -850,7 +851,7 @@ static const uint8_t SECP256R1_R2N[] =
     0x20u, 0x56u, 0xD9u, 0xF3u, 0x94u, 0x2Du, 0xE1u, 0x66u
 };
 
-static const uint8_t SECP256R1_PRECG[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP256R1_PRECG[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
     /* 0x447D739BEEDB5E67FB982FD588C6766EFC35FF7DC297EAC357C84FC9D789BD85 [BE] */
     0x85u, 0xBDu, 0x89u, 0xD7u, 0xC9u, 0x4Fu, 0xC8u, 0x57u,
@@ -863,7 +864,7 @@ static const uint8_t SECP256R1_PRECG[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP * 
     0xF7u, 0xAFu, 0x4Au, 0x3Au, 0x95u, 0x9Du, 0x2Eu, 0xE1u,
     0xEEu, 0x31u, 0x41u, 0x83u, 0xABu, 0x25u, 0x48u, 0x2Du
 };
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP256R1_SIZE_BASEPOINTORDER,
@@ -887,7 +888,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256r1 =
 /* secp256k1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP256K1_P[MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP256K1_P[MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* pDash 0xd838091dd2253531 [BE] */
     0x31u, 0x35u, 0x25u, 0xD2u, 0x1Du, 0x09u, 0x38u, 0xD8u,
@@ -899,7 +900,7 @@ static const uint8_t SECP256K1_P[MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP256K1_N[MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP256K1_N[MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* nDash 0x4b0dff665588b13f [BE] */
     0x3Fu, 0xB1u, 0x88u, 0x55u, 0x66u, 0xFFu, 0x0Du, 0x4Bu,
@@ -911,7 +912,7 @@ static const uint8_t SECP256K1_N[MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDE
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP256K1_A[] =
+static const uint8_t SECP256K1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* A = 0x0000000000000000000000000000000000000000000000000000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -920,7 +921,7 @@ static const uint8_t SECP256K1_A[] =
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP256K1_B[] =
+static const uint8_t SECP256K1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* B = 0x0000000000000000000000000000000000000000000000000000000000000007 [BE] */
     0x07u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -929,7 +930,7 @@ static const uint8_t SECP256K1_B[] =
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP256K1_GX[]=
+static const uint8_t SECP256K1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* PointGX = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798 [BE] */
     0x98u, 0x17u, 0xF8u, 0x16u, 0x5Bu, 0x81u, 0xF2u, 0x59u,
@@ -938,7 +939,7 @@ static const uint8_t SECP256K1_GX[]=
     0xACu, 0xBBu, 0xDCu, 0xF9u, 0x7Eu, 0x66u, 0xBEu, 0x79u
 };
 
-static const uint8_t SECP256K1_GY[] =
+static const uint8_t SECP256K1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* PointGY = 0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8 [BE] */
     0xB8u, 0xD4u, 0x10u, 0xFBu, 0x8Fu, 0xD0u, 0x47u, 0x9Cu,
@@ -947,7 +948,7 @@ static const uint8_t SECP256K1_GY[] =
     0x65u, 0xC4u, 0xA3u, 0x26u, 0x77u, 0xDAu, 0x3Au, 0x48u
 };
 
-static const uint8_t SECP256K1_R2P[] =
+static const uint8_t SECP256K1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* R2P = 0x1000007a2000e90a1 [BE] */
     0xA1u, 0x90u, 0x0Eu, 0x00u, 0xA2u, 0x07u, 0x00u, 0x00u, 
@@ -956,7 +957,7 @@ static const uint8_t SECP256K1_R2P[] =
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP256K1_R2N[] =
+static const uint8_t SECP256K1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* R2N = 0x9d671cd581c69bc5e697f5e45bcd07c6741496c20e7cf878896cf21467d7d140 [BE] */
     0x40u, 0xD1u, 0xD7u, 0x67u, 0x14u, 0xF2u, 0x6Cu, 0x89u, 
@@ -965,7 +966,7 @@ static const uint8_t SECP256K1_R2N[] =
     0xC5u, 0x9Bu, 0xC6u, 0x81u, 0xD5u, 0x1Cu, 0x67u, 0x9Du
 };
 
-static const uint8_t SECP256K1_PRECG[MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP256K1_PRECG[MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
     /* 0x8F68B9D2F63B5F339239C1AD981F162EE88C5678723EA3351B7B444C9EC4C0DA [BE] */
     0xDAu, 0xC0u, 0xC4u, 0x9Eu, 0x4Cu, 0x44u, 0x7Bu, 0x1Bu,
@@ -979,7 +980,7 @@ static const uint8_t SECP256K1_PRECG[MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP * 
     0x86u, 0x39u, 0x06u, 0xBAu, 0x2Du, 0x9Fu, 0x2Au, 0x66u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256k1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256k1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256k1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER,
@@ -1004,7 +1005,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256k1 =
 /* secp384r1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP384R1_P[MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP384R1_P[MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* pDash 0x100000001 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0x01u, 0x00u, 0x00u, 0x00u,
@@ -1015,7 +1016,7 @@ static const uint8_t SECP384R1_P[MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP + MCUX
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP384R1_N[MCUXCLECC_WEIERECC_SECP384R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP384R1_N[MCUXCLECC_WEIERECC_SECP384R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* nDash 0x6ed46089e88fdc45 [BE] */
     0x45u, 0xDCu, 0x8Fu, 0xE8u, 0x89u, 0x60u, 0xD4u, 0x6Eu,
@@ -1026,7 +1027,7 @@ static const uint8_t SECP384R1_N[MCUXCLECC_WEIERECC_SECP384R1_SIZE_BASEPOINTORDE
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP384R1_A[] =
+static const uint8_t SECP384R1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* A = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFF0000000000000000FFFFFFFC [BE] */
     0xFCu, 0xFFu, 0xFFu, 0xFFu, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -1034,7 +1035,7 @@ static const uint8_t SECP384R1_A[] =
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t SECP384R1_B[] =
+static const uint8_t SECP384R1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* B = 0xB3312FA7E23EE7E4988E056BE3F82D19181D9C6EFE8141120314088F5013875AC656398D8A2ED19D2A85C8EDD3EC2AEF [BE] */
     0xEFu, 0x2Au, 0xECu, 0xD3u, 0xEDu, 0xC8u, 0x85u, 0x2Au, 0x9Du, 0xD1u, 0x2Eu, 0x8Au, 0x8Du, 0x39u, 0x56u, 0xC6u,
@@ -1042,7 +1043,7 @@ static const uint8_t SECP384R1_B[] =
     0x19u, 0x2Du, 0xF8u, 0xE3u, 0x6Bu, 0x05u, 0x8Eu, 0x98u, 0xE4u, 0xE7u, 0x3Eu, 0xE2u, 0xA7u, 0x2Fu, 0x31u, 0xB3u
 };
 
-static const uint8_t SECP384R1_GX[]=
+static const uint8_t SECP384R1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* PointGX = 0xAA87CA22BE8B05378EB1C71EF320AD746E1D3B628BA79B9859F741E082542A385502F25DBF55296C3A545E3872760AB7 [BE] */
     0xB7u, 0x0Au, 0x76u, 0x72u, 0x38u, 0x5Eu, 0x54u, 0x3Au, 0x6Cu, 0x29u, 0x55u, 0xBFu, 0x5Du, 0xF2u, 0x02u, 0x55u,
@@ -1050,7 +1051,7 @@ static const uint8_t SECP384R1_GX[]=
     0x74u, 0xADu, 0x20u, 0xF3u, 0x1Eu, 0xC7u, 0xB1u, 0x8Eu, 0x37u, 0x05u, 0x8Bu, 0xBEu, 0x22u, 0xCAu, 0x87u, 0xAAu
 };
 
-static const uint8_t SECP384R1_GY[] =
+static const uint8_t SECP384R1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* PointGY = 0x3617DE4A96262C6F5D9E98BF9292DC29F8F41DBD289A147CE9DA3113B5F0B8C00A60B1CE1D7E819D7A431D7C90EA0E5F [BE] */
     0x5Fu, 0x0Eu, 0xEAu, 0x90u, 0x7Cu, 0x1Du, 0x43u, 0x7Au, 0x9Du, 0x81u, 0x7Eu, 0x1Du, 0xCEu, 0xB1u, 0x60u, 0x0Au,
@@ -1058,7 +1059,7 @@ static const uint8_t SECP384R1_GY[] =
     0x29u, 0xDCu, 0x92u, 0x92u, 0xBFu, 0x98u, 0x9Eu, 0x5Du, 0x6Fu, 0x2Cu, 0x26u, 0x96u, 0x4Au, 0xDEu, 0x17u, 0x36u
 };
 
-static const uint8_t SECP384R1_R2P[] =
+static const uint8_t SECP384R1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* R2P = 0x10000000200000000fffffffe000000000000000200000000fffffffe00000001 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0xFEu, 0xFFu, 0xFFu, 0xFFu, 0x00u, 0x00u, 0x00u, 0x00u, 0x02u, 0x00u, 0x00u, 0x00u, 
@@ -1066,7 +1067,7 @@ static const uint8_t SECP384R1_R2P[] =
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t SECP384R1_R2N[] =
+static const uint8_t SECP384R1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* R2N = 0xc84ee012b39bf213fb05b7a28266895d40d49174aab1cc5bc3e483afcb82947ff3d81e5df1aa4192d319b2419b409a9 [BE] */
     0xA9u, 0x09u, 0xB4u, 0x19u, 0x24u, 0x9Bu, 0x31u, 0x2Du, 0x19u, 0xA4u, 0x1Au, 0xDFu, 0xE5u, 0x81u, 0x3Du, 0xFFu, 
@@ -1074,7 +1075,7 @@ static const uint8_t SECP384R1_R2N[] =
     0x95u, 0x68u, 0x26u, 0x28u, 0x7Au, 0x5Bu, 0xB0u, 0x3Fu, 0x21u, 0xBFu, 0x39u, 0x2Bu, 0x01u, 0xEEu, 0x84u, 0x0C
 };
 
-static const uint8_t SECP384R1_PRECG[MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP * 2u] =
+static const uint8_t SECP384R1_PRECG[MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
     /* 0xC19E0B4C800119C440F7F9E706421279B42A31AF8A3E297DDB2987894D10DDEABA065458A4F52D78A628B09AAA03BD53 [BE] */
     0x53u, 0xBDu, 0x03u, 0xAAu, 0x9Au, 0xB0u, 0x28u, 0xA6u, 0x78u, 0x2Du, 0xF5u, 0xA4u, 0x58u, 0x54u, 0x06u, 0xBAu,
@@ -1088,7 +1089,7 @@ static const uint8_t SECP384R1_PRECG[MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP * 
 
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp384r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp384r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp384r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP384R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP384R1_SIZE_BASEPOINTORDER,
@@ -1112,7 +1113,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp384r1 =
 /* secp521r1 Curve parameters (LE)                        */
 /**********************************************************/
 
-static const uint8_t SECP521R1_P[MCUXCLECC_WEIERECC_SECP521R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP521R1_P[MCUXCLECC_WEIERECC_SECP521R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* pDash 0x1 [BE] */
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -1129,7 +1130,7 @@ static const uint8_t SECP521R1_P[MCUXCLECC_WEIERECC_SECP521R1_SIZE_PRIMEP + MCUX
     0xFFu, 0x01u
 };
 
-static const uint8_t SECP521R1_N[MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t SECP521R1_N[MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* nDash 0x1d2f5ccd79a995c7 [BE] */
     0xC7u, 0x95u, 0xA9u, 0x79u, 0xCDu, 0x5Cu, 0x2Fu, 0x1Du,
@@ -1146,7 +1147,7 @@ static const uint8_t SECP521R1_N[MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDE
     0xFFu, 0x01u
 };
 
-static const uint8_t SECP521R1_A[] =
+static const uint8_t SECP521R1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* A = 0x01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC [BE] */
     0xFCu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -1160,7 +1161,7 @@ static const uint8_t SECP521R1_A[] =
     0xFFu, 0x01u
 };
 
-static const uint8_t SECP521R1_B[] =
+static const uint8_t SECP521R1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* B = 0x0051953EB9618E1C9A1F929A21A0B68540EEA2DA725B99B315F3B8B489918EF109E156193951EC7E937B1652C0BD3BB1BF073573DF883D2C34F1EF451FD46B503F00 [BE] */
     0x00u, 0x3Fu, 0x50u, 0x6Bu, 0xD4u, 0x1Fu, 0x45u, 0xEFu,
@@ -1174,7 +1175,7 @@ static const uint8_t SECP521R1_B[] =
     0x51u, 0x00u
 };
 
-static const uint8_t SECP521R1_GX[]=
+static const uint8_t SECP521R1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* PointGX = 0x00C6858E06B70404E9CD9E3ECB662395B4429C648139053FB521F828AF606B4D3DBAA14B5E77EFE75928FE1DC127A2FFA8DE3348B3C1856A429BF97E7E31C2E5BD66 [BE] */
     0x66u, 0xBDu, 0xE5u, 0xC2u, 0x31u, 0x7Eu, 0x7Eu, 0xF9u,
@@ -1188,7 +1189,7 @@ static const uint8_t SECP521R1_GX[]=
     0xC6u, 0x00u
 };
 
-static const uint8_t SECP521R1_GY[] =
+static const uint8_t SECP521R1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* PointGY = 0x011839296A789A3BC0045C8A5FB42C7D1BD998F54449579B446817AFBD17273E662C97EE72995EF42640C550B9013FAD0761353C7086A272C24088BE94769FD16650 [BE] */
     0x50u, 0x66u, 0xD1u, 0x9Fu, 0x76u, 0x94u, 0xBEu, 0x88u,
@@ -1202,7 +1203,7 @@ static const uint8_t SECP521R1_GY[] =
     0x18u, 0x01u
 };
 
-static const uint8_t SECP521R1_R2P[] =
+static const uint8_t SECP521R1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* R2P = 0x4000000000000000000000000000 [BE] */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
@@ -1216,7 +1217,7 @@ static const uint8_t SECP521R1_R2P[] =
     0x00u, 0x00u
 };
 
-static const uint8_t SECP521R1_R2N[] =
+static const uint8_t SECP521R1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* R2N = 0x3d2d8e03d1492d0d455bcc6d61a8e567bccff3d142b7756e3edd6e23d82e49c7dbd3721ef557f75e0612a78d38794573fff707badce5547ea3137cd04dcf15dd04 [BE] */
     0x04u, 0xDDu, 0x15u, 0xCFu, 0x4Du, 0xD0u, 0x7Cu, 0x13u, 
@@ -1230,7 +1231,7 @@ static const uint8_t SECP521R1_R2N[] =
     0x3Du, 0x00u
 };
 
-static const uint8_t SECP521R1_PRECG[] =
+static const uint8_t SECP521R1_PRECG[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
     /* 0x008e818d28f381d8b205edff69613b962e0c77d223ef25cc1c99d9a62e4f2572c1617ad0f5e9a86b7104e89700d4da713cb408f3de4465f86ac4ee31e71a286492ad [BE] */
     0xADu, 0x92u, 0x64u, 0x28u, 0x1Au, 0xE7u, 0x31u, 0xEEu,
@@ -1254,7 +1255,7 @@ static const uint8_t SECP521R1_PRECG[] =
     0x3Eu, 0x01u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp521r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp521r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp521r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP521R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDER,
@@ -1278,7 +1279,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp521r1 =
 /* brainpoolP160r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP160r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP160r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* pDash 0x4522ab3adbcb311 [BE] */
     0x11u, 0xB3u, 0xBCu, 0xADu, 0xB3u, 0x2Au, 0x52u, 0x04u,
@@ -1289,7 +1290,7 @@ static const uint8_t brainpoolP160r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_P
     0x5Fu, 0x4Au, 0x5Eu, 0xE9u
 };
 
-static const uint8_t brainpoolP160r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP160r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* nDash 0xe3d0b7e25c7aadc7 [BE] */
     0xC7u, 0xADu, 0x7Au, 0x5Cu, 0xE2u, 0xB7u, 0xD0u, 0xE3,
@@ -1300,7 +1301,7 @@ static const uint8_t brainpoolP160r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_B
     0x5Fu, 0x4Au, 0x5Eu, 0xE9u
 };
 
-static const uint8_t brainpoolP160r1_A[] =
+static const uint8_t brainpoolP160r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* A = 0x340E7BE2A280EB74E2BE61BADA745D97E8F7C300 [BE] */
     0x00u, 0xC3u, 0xF7u, 0xE8u, 0x97u, 0x5Du, 0x74u, 0xDAu,
@@ -1308,7 +1309,7 @@ static const uint8_t brainpoolP160r1_A[] =
     0xE2u, 0x7Bu, 0x0Eu, 0x34u
 };
 
-static const uint8_t brainpoolP160r1_B[] =
+static const uint8_t brainpoolP160r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* B = 0x1E589A8595423412134FAA2DBDEC95C8D8675E58 [BE] */
     0x58u, 0x5Eu, 0x67u, 0xD8u, 0xC8u, 0x95u, 0xECu, 0xBDu,
@@ -1316,7 +1317,7 @@ static const uint8_t brainpoolP160r1_B[] =
     0x85u, 0x9Au, 0x58u, 0x1Eu
 };
 
-static const uint8_t brainpoolP160r1_GX[]=
+static const uint8_t brainpoolP160r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* PointGX = 0xBED5AF16EA3F6A4F62938C4631EB5AF7BDBCDBC3 [BE] */
     0xC3u, 0xDBu, 0xBCu, 0xBDu, 0xF7u, 0x5Au, 0xEBu, 0x31u,
@@ -1324,7 +1325,7 @@ static const uint8_t brainpoolP160r1_GX[]=
     0x16u, 0xAFu, 0xD5u, 0xBEu
 };
 
-static const uint8_t brainpoolP160r1_GY[] =
+static const uint8_t brainpoolP160r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* PointGY = 0x1667CB477A1A8EC338F94741669C976316DA6321 [BE] */
     0x21u, 0x63u, 0xDAu, 0x16u, 0x63, 0x97u, 0x9Cu, 0x66u,
@@ -1332,7 +1333,7 @@ static const uint8_t brainpoolP160r1_GY[] =
     0x47u, 0xCBu, 0x67u, 0x16u
 };
 
-static const uint8_t brainpoolP160r1_R2N[] =
+static const uint8_t brainpoolP160r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* R2N = 0xcad5a1d8d38e031bf9502858780d638a45a3fdc4 [BE] */
     0xC4u, 0xFDu, 0xA3u, 0x45u, 0x8Au, 0x63u, 0x0Du, 0x78u, 
@@ -1340,7 +1341,7 @@ static const uint8_t brainpoolP160r1_R2N[] =
     0xD8u, 0xA1u, 0xD5u, 0xCAu
 };
 
-static const uint8_t brainpoolP160r1_R2P[] =
+static const uint8_t brainpoolP160r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* R2P = 0xde9b6b4c5e48b7a01518fd109a27f58da5aeb5a3 [BE] */
     0xA3u, 0xB5u, 0xAEu, 0xA5u, 0x8Du, 0xF5u, 0x27u, 0x9Au, 
@@ -1348,7 +1349,7 @@ static const uint8_t brainpoolP160r1_R2P[] =
     0x4Cu, 0x6Bu, 0x9Bu, 0xDEu
 };
 
-static const uint8_t brainpoolP160r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP160r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
     /* 0x8E63BD3939FC8E94BB518725D3B8210CB19BD5A1 [BE] */
     0xA1u, 0xD5u, 0x9Bu, 0xB1u, 0x0Cu, 0x21u, 0xB8u, 0xD3u,
@@ -1360,7 +1361,7 @@ static const uint8_t brainpoolP160r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SI
     0x7Bu, 0x97u, 0x1Eu, 0x4Du
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP160R1_SIZE_BASEPOINTORDER,
@@ -1384,7 +1385,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160r
 /* brainpoolP192r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP192r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP192r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* pDash 0xe08496db56a2c2d9 [BE] */
     0xD9u, 0xC2u, 0xA2u, 0x56u, 0xDBu, 0x96u, 0x84u, 0xE0u,
@@ -1395,7 +1396,7 @@ static const uint8_t brainpoolP192r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_P
     0xCDu, 0x36u, 0x2Au, 0x93u, 0x1Du, 0xF4u, 0x02u, 0xC3u
 };
 
-static const uint8_t brainpoolP192r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP192r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* nDash 0x6f3cf15f75de1cbf [BE] */
     0xBFu, 0x1Cu, 0xDEu, 0x75u, 0x5Fu, 0xF1u, 0x3Cu, 0x6Fu,
@@ -1406,7 +1407,7 @@ static const uint8_t brainpoolP192r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_B
     0xCDu, 0x36u, 0x2Au, 0x93u, 0x1Du, 0xF4u, 0x02u, 0xC3u
 };
 
-static const uint8_t brainpoolP192r1_A[] =
+static const uint8_t brainpoolP192r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* A = 0x6A91174076B1E0E19C39C031FE8685C1CAE040E5C69A28EF [BE] */
     0xEFu, 0x28u, 0x9Au, 0xC6u, 0xE5u, 0x40u, 0xE0u, 0xCAu,
@@ -1414,7 +1415,7 @@ static const uint8_t brainpoolP192r1_A[] =
     0xE1u, 0xE0u, 0xB1u, 0x76u, 0x40u, 0x17u, 0x91u, 0x6Au
 };
 
-static const uint8_t brainpoolP192r1_B[] =
+static const uint8_t brainpoolP192r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* B = 0x469A28EF7C28CCA3DC721D044F4496BCCA7EF4146FBF25C9 [BE] */
     0xC9u, 0x25u, 0xBFu, 0x6Fu, 0x14u, 0xF4u, 0x7Eu, 0xCAu,
@@ -1422,7 +1423,7 @@ static const uint8_t brainpoolP192r1_B[] =
     0xA3u, 0xCCu, 0x28u, 0x7Cu, 0xEFu, 0x28u, 0x9Au, 0x46u
 };
 
-static const uint8_t brainpoolP192r1_GX[]=
+static const uint8_t brainpoolP192r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* PointGX = 0xC0A0647EAAB6A48753B033C56CB0F0900A2F5C4853375FD6 [BE] */
     0xD6u, 0x5Fu, 0x37u, 0x53u, 0x48u, 0x5Cu, 0x2Fu, 0x0Au,
@@ -1430,7 +1431,7 @@ static const uint8_t brainpoolP192r1_GX[]=
     0x87u, 0xA4u, 0xB6u, 0xAAu, 0x7Eu, 0x64u, 0xA0u, 0xC0u
 };
 
-static const uint8_t brainpoolP192r1_GY[] =
+static const uint8_t brainpoolP192r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* PointGY = 0x14B690866ABD5BB88B5F4828C1490002E6773FA2FA299B8F [BE] */
     0x8Fu, 0x9Bu, 0x29u, 0xFAu, 0xA2u, 0x3Fu, 0x77u, 0xE6u,
@@ -1438,7 +1439,7 @@ static const uint8_t brainpoolP192r1_GY[] =
     0xB8u, 0x5Bu, 0xBDu, 0x6Au, 0x86u, 0x90u, 0xB6u, 0x14u
 };
 
-static const uint8_t brainpoolP192r1_R2P[] =
+static const uint8_t brainpoolP192r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* R2P = 0xb6225126eed34f1033bf484602c3fe69e2474c6972c7b21a [BE] */
     0x1Au, 0xB2u, 0xC7u, 0x72u, 0x69u, 0x4Cu, 0x47u, 0xE2u, 
@@ -1446,7 +1447,7 @@ static const uint8_t brainpoolP192r1_R2P[] =
     0x10u, 0x4Fu, 0xD3u, 0xEEu, 0x26u, 0x51u, 0x22u, 0xB6u
 };
 
-static const uint8_t brainpoolP192r1_R2N[] =
+static const uint8_t brainpoolP192r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* R2N = 0x98769b9ce772102bbf4afd5dbf53aff0b4727c80e407e8f8 [BE] */
     0xF8u, 0xE8u, 0x07u, 0xE4u, 0x80u, 0x7Cu, 0x72u, 0xB4u, 
@@ -1454,7 +1455,7 @@ static const uint8_t brainpoolP192r1_R2N[] =
     0x2Bu, 0x10u, 0x72u, 0xE7u, 0x9Cu, 0x9Bu, 0x76u, 0x98u
 };
 
-static const uint8_t brainpoolP192r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP192r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
     /* 0x773D02971E972E92086B6F1DB5B55527B4006CD56E55384C [BE] */
     0x4Cu, 0x38u, 0x55u, 0x6Eu, 0xD5u, 0x6Cu, 0x00u, 0xB4u,
@@ -1466,7 +1467,7 @@ static const uint8_t brainpoolP192r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SI
     0x88u, 0x04u, 0xCEu, 0x01u, 0x5Cu, 0x61u, 0x7Fu, 0x80u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP192R1_SIZE_BASEPOINTORDER,
@@ -1490,7 +1491,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192r
 /* brainpoolP224r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP224r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP224r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* pDash 0xe24d216ae149c101 [BE] */
     0x01u, 0xC1u, 0x49u, 0xE1u, 0x6Au, 0x21u, 0x4Du, 0xE2u,
@@ -1502,7 +1503,7 @@ static const uint8_t brainpoolP224r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_P
     0xAAu, 0x34u, 0xC1u, 0xD7u
 };
 
-static const uint8_t brainpoolP224r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP224r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* nDash 0x5fc488776cfb37a1 [BE] */
     0xA1u, 0x37u, 0xFBu, 0x6Cu, 0x77u, 0x88u, 0xC4u, 0x5Fu,
@@ -1514,7 +1515,7 @@ static const uint8_t brainpoolP224r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_B
     0xAAu, 0x34u, 0xC1u, 0xD7u
 };
 
-static const uint8_t brainpoolP224r1_A[] =
+static const uint8_t brainpoolP224r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* A = 0x68A5E62CA9CE6C1C299803A6C1530B514E182AD8B0042A59CAD29F43 [BE] */
     0x43u, 0x9Fu, 0xD2u, 0xCAu, 0x59u, 0x2Au, 0x04u, 0xB0u, 
@@ -1523,7 +1524,7 @@ static const uint8_t brainpoolP224r1_A[] =
     0x2Cu, 0xE6u, 0xA5u, 0x68u
 };
 
-static const uint8_t brainpoolP224r1_B[] =
+static const uint8_t brainpoolP224r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* B = 0x2580F63CCFE44138870713B1A92369E33E2135D266DBB372386C400B [BE] */
     0x0Bu, 0x40u, 0x6Cu, 0x38u, 0x72u, 0xB3u, 0xDBu, 0x66u,
@@ -1532,7 +1533,7 @@ static const uint8_t brainpoolP224r1_B[] =
     0x3Cu, 0xF6u, 0x80u, 0x25u
 };
 
-static const uint8_t brainpoolP224r1_GX[]=
+static const uint8_t brainpoolP224r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* PointGX = 0x0D9029AD2C7E5CF4340823B2A87DC68C9E4CE3174C1E6EFDEE12C07D [BE] */
     0x7Du, 0xC0u, 0x12u, 0xEEu, 0xFDu, 0x6Eu, 0x1Eu, 0x4Cu,
@@ -1541,7 +1542,7 @@ static const uint8_t brainpoolP224r1_GX[]=
     0xADu, 0x29u, 0x90u, 0x0Du
 };
 
-static const uint8_t brainpoolP224r1_GY[] =
+static const uint8_t brainpoolP224r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* PointGY = 0x58AA56F772C0726F24C6B89E4ECDAC24354B9E99CAA3F6D3761402CD [BE] */
     0xCDu, 0x02u, 0x14u, 0x76u, 0xD3u, 0xF6u, 0xA3u, 0xCAu, 
@@ -1550,7 +1551,7 @@ static const uint8_t brainpoolP224r1_GY[] =
     0xF7u, 0x56u, 0xAAu, 0x58u
 };
 
-static const uint8_t brainpoolP224r1_R2P[] =
+static const uint8_t brainpoolP224r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* R2P = 0x2b3d40dd7ea5577c77e3d7e476f9ee46f691d1053bfbc9bf6b3d58ff [BE] */
     0xFFu, 0x58u, 0x3Du, 0x6Bu, 0xBFu, 0xC9u, 0xFBu, 0x3Bu, 
@@ -1559,7 +1560,7 @@ static const uint8_t brainpoolP224r1_R2P[] =
     0xDDu, 0x40u, 0x3Du, 0x2Bu
 };
 
-static const uint8_t brainpoolP224r1_R2N[] =
+static const uint8_t brainpoolP224r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* R2N = 0x5234fe17b4581327a35371e1f0f40a07bab96b21f3d67605e0d86b49 [BE] */
     0x49u, 0x6Bu, 0xD8u, 0xE0u, 0x05u, 0x76u, 0xD6u, 0xF3u, 
@@ -1568,7 +1569,7 @@ static const uint8_t brainpoolP224r1_R2N[] =
     0x17u, 0xFEu, 0x34u, 0x52u
 };
 
-static const uint8_t brainpoolP224r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP224r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
     /* 0xB3CDA5BC0699B4A5D7C84B0EEE591079619F1D35794ADD4818671CAC [BE] */
     0xACu, 0x1Cu, 0x67u, 0x18u, 0x48u, 0xDDu, 0x4Au, 0x79u,
@@ -1582,7 +1583,7 @@ static const uint8_t brainpoolP224r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SI
     0x34u, 0xC0u, 0x2Du, 0xBCu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP224R1_SIZE_BASEPOINTORDER,
@@ -1606,7 +1607,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224r
 /* brainpoolP256r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP256r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP256r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* pDash 0xc6a75590cefd89b9 [BE] */
     0xB9u, 0x89u, 0xFDu, 0xCEu, 0x90u, 0x55u, 0xA7u, 0xC6u,
@@ -1618,7 +1619,7 @@ static const uint8_t brainpoolP256r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_P
     0xBCu, 0xA9u, 0xEEu, 0xA1u, 0xDBu, 0x57u, 0xFBu, 0xA9u
 };
 
-static const uint8_t brainpoolP256r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP256r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* nDash 0xfbffbebdcbb40ee9 [BE] */
     0xE9u, 0x0Eu, 0xB4u, 0xCBu, 0xBDu, 0xBEu, 0xFFu, 0xFBu,
@@ -1630,7 +1631,7 @@ static const uint8_t brainpoolP256r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_B
     0xBCu, 0xA9u, 0xEEu, 0xA1u, 0xDBu, 0x57u, 0xFBu, 0xA9u
 };
 
-static const uint8_t brainpoolP256r1_A[] =
+static const uint8_t brainpoolP256r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* A = 0x7D5A0975FC2C3057EEF67530417AFFE7FB8055C126DC5C6CE94A4B44F330B5D9 [BE] */
     0xD9u, 0xB5u, 0x30u, 0xF3u, 0x44u, 0x4Bu, 0x4Au, 0xE9u,
@@ -1639,7 +1640,7 @@ static const uint8_t brainpoolP256r1_A[] =
     0x57u, 0x30u, 0x2Cu, 0xFCu, 0x75u, 0x09u, 0x5Au, 0x7Du
 };
 
-static const uint8_t brainpoolP256r1_B[] =
+static const uint8_t brainpoolP256r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* B = 0x26DC5C6CE94A4B44F330B5D9BBD77CBF958416295CF7E1CE6BCCDC18FF8C07B6 [BE] */
     0xB6u, 0x07u, 0x8Cu, 0xFFu, 0x18u, 0xDCu, 0xCCu, 0x6Bu,
@@ -1648,7 +1649,7 @@ static const uint8_t brainpoolP256r1_B[] =
     0x44u, 0x4Bu, 0x4Au, 0xE9u, 0x6Cu, 0x5Cu, 0xDCu, 0x26u
 };
 
-static const uint8_t brainpoolP256r1_GX[]=
+static const uint8_t brainpoolP256r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* PointGX = 0x8BD2AEB9CB7E57CB2C4B482FFC81B7AFB9DE27E1E3BD23C23A4453BD9ACE3262 [BE] */
     0x62u, 0x32u, 0xCEu, 0x9Au, 0xBDu, 0x53u, 0x44u, 0x3Au,
@@ -1657,7 +1658,7 @@ static const uint8_t brainpoolP256r1_GX[]=
     0xCBu, 0x57u, 0x7Eu, 0xCBu, 0xB9u, 0xAEu, 0xD2u, 0x8Bu
 };
 
-static const uint8_t brainpoolP256r1_GY[] =
+static const uint8_t brainpoolP256r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* PointGY = 0x547EF835C3DAC4FD97F8461A14611DC9C27745132DED8E545C1D54C72F046997 [BE] */
     0x97u, 0x69u, 0x04u, 0x2Fu, 0xC7u, 0x54u, 0x1Du, 0x5Cu,
@@ -1666,7 +1667,7 @@ static const uint8_t brainpoolP256r1_GY[] =
     0xFDu, 0xC4u, 0xDAu, 0xC3u, 0x35u, 0xF8u, 0x7Eu, 0x54u
 };
 
-static const uint8_t brainpoolP256r1_R2P[] =
+static const uint8_t brainpoolP256r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* R2P = 0x4717aa21e5957fa8a1ecdacd6b1ac8075cce4c26614d4f4d8cfedf7ba6465b6c [BE] */
     0x6Cu, 0x5Bu, 0x46u, 0xA6u, 0x7Bu, 0xDFu, 0xFEu, 0x8Cu, 
@@ -1675,7 +1676,7 @@ static const uint8_t brainpoolP256r1_R2P[] =
     0xA8u, 0x7Fu, 0x95u, 0xE5u, 0x21u, 0xAAu, 0x17u, 0x47u
 };
 
-static const uint8_t brainpoolP256r1_R2N[] =
+static const uint8_t brainpoolP256r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* R2N = 0xb25f1b9c32367629b7f25e76c815cb0f35d176a1134e4a0e1d8d8de3312fca6 [BE] */
     0xA6u, 0xFCu, 0x12u, 0x33u, 0xDEu, 0xD8u, 0xD8u, 0xE1u, 
@@ -1684,7 +1685,7 @@ static const uint8_t brainpoolP256r1_R2N[] =
     0x62u, 0x67u, 0x23u, 0xC3u, 0xB9u, 0xF1u, 0x25u, 0x0Bu
 };
 
-static const uint8_t brainpoolP256r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP256r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
     /* 0x4A14C0303B856C94B44385117F87ED9D1200CA9B11006590EB6B651CF58472C9 [BE] */
     0xC9u, 0x72u, 0x84u, 0xF5u, 0x1Cu, 0x65u, 0x6Bu, 0xEBu,
@@ -1698,7 +1699,7 @@ static const uint8_t brainpoolP256r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SI
     0xEFu, 0xD5u, 0xE2u, 0xDAu, 0x70u, 0xE4u, 0x81u, 0x7Bu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_BASEPOINTORDER,
@@ -1722,7 +1723,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256r
 /* brainpoolP320r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP320r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP320r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* pDash 0x3d1e9ba22a8a9e69 [BE] */
     0x69u, 0x9Eu, 0x8Au, 0x2Au, 0xA2u, 0x9Bu, 0x1Eu, 0x3D,
@@ -1735,7 +1736,7 @@ static const uint8_t brainpoolP320r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_P
     0xB7u, 0x4Fu, 0xBCu, 0x36u, 0x20u, 0x47u, 0x5Eu, 0xD3u
 };
 
-static const uint8_t brainpoolP320r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP320r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* nDash 0x6d42e535fc62420f [BE] */
     0x0Fu, 0x42u, 0x62u, 0xFCu, 0x35u, 0xE5u, 0x42u, 0x6D,
@@ -1748,7 +1749,7 @@ static const uint8_t brainpoolP320r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_B
     0xB7u, 0x4Fu, 0xBCu, 0x36u, 0x20u, 0x47u, 0x5Eu, 0xD3u
 };
 
-static const uint8_t brainpoolP320r1_A[] =
+static const uint8_t brainpoolP320r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* A = 0x3EE30B568FBAB0F883CCEBD46D3F3BB8A2A73513F5EB79DA66190EB085FFA9F492F375A97D860EB4 [BE] */
     0xB4u, 0x0Eu, 0x86u, 0x7Du, 0xA9u, 0x75u, 0xF3u, 0x92u,
@@ -1758,7 +1759,7 @@ static const uint8_t brainpoolP320r1_A[] =
     0xF8u, 0xB0u, 0xBAu, 0x8Fu, 0x56u, 0x0Bu, 0xE3u, 0x3Eu
 };
 
-static const uint8_t brainpoolP320r1_B[] =
+static const uint8_t brainpoolP320r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* B = 0x520883949DFDBC42D3AD198640688A6FE13F41349554B49ACC31DCCD884539816F5EB4AC8FB1F1A6 [BE] */
     0xA6u, 0xF1u, 0xB1u, 0x8Fu, 0xACu, 0xB4u, 0x5Eu, 0x6Fu,
@@ -1768,7 +1769,7 @@ static const uint8_t brainpoolP320r1_B[] =
     0x42u, 0xBCu, 0xFDu, 0x9Du, 0x94u, 0x83u, 0x08u, 0x52u
 };
 
-static const uint8_t brainpoolP320r1_GX[]=
+static const uint8_t brainpoolP320r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* PointGX = 0x43BD7E9AFB53D8B85289BCC48EE5BFE6F20137D10A087EB6E7871E2A10A599C710AF8D0D39E20611 [BE] */
     0x11u, 0x06u, 0xE2u, 0x39u, 0x0Du, 0x8Du, 0xAFu, 0x10u,
@@ -1778,7 +1779,7 @@ static const uint8_t brainpoolP320r1_GX[]=
     0xB8u, 0xD8u, 0x53u, 0xFBu, 0x9Au, 0x7Eu, 0xBDu, 0x43u
 };
 
-static const uint8_t brainpoolP320r1_GY[] =
+static const uint8_t brainpoolP320r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* PointGY = 0x14FDD05545EC1CC8AB4093247F77275E0743FFED117182EAA9C77877AAAC6AC7D35245D1692E8EE1 [BE] */
     0xE1u, 0x8Eu, 0x2Eu, 0x69u, 0xD1u, 0x45u, 0x52u, 0xD3u,
@@ -1788,7 +1789,7 @@ static const uint8_t brainpoolP320r1_GY[] =
     0xC8u, 0x1Cu, 0xECu, 0x45u, 0x55u, 0xD0u, 0xFDu, 0x14u
 };
 
-static const uint8_t brainpoolP320r1_R2P[] =
+static const uint8_t brainpoolP320r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* R2P = 0xa259ba4a6c2d92525455a964e614d6d21f4c881f30c5b676c2478a8d906978ef994ee88a743b52f9 [BE] */
     0xF9u, 0x52u, 0x3Bu, 0x74u, 0x8Au, 0xE8u, 0x4Eu, 0x99u, 
@@ -1798,7 +1799,7 @@ static const uint8_t brainpoolP320r1_R2P[] =
     0x52u, 0x92u, 0x2Du, 0x6Cu, 0x4Au, 0xBAu, 0x59u, 0xA2u
 };
 
-static const uint8_t brainpoolP320r1_R2N[] =
+static const uint8_t brainpoolP320r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* R2N = 0x31ec87c73200b14fe30d35244e6390fe86b330bcaf86c40991c3001be0e16805679d29df2513e4cd [BE] */
     0xCDu, 0xE4u, 0x13u, 0x25u, 0xDFu, 0x29u, 0x9Du, 0x67u, 
@@ -1808,7 +1809,7 @@ static const uint8_t brainpoolP320r1_R2N[] =
     0x4Fu, 0xB1u, 0x00u, 0x32u, 0xC7u, 0x87u, 0xECu, 0x31u
 };
 
-static const uint8_t brainpoolP320r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP320r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
     /* 0x3BC19CAE675062D337C47C97D324B0FF41C14B62B7ED9FD820619B2A13C4A1FA7723D2D17C841CBC [BE] */
     0xBCu, 0x1Cu, 0x84u, 0x7Cu, 0xD1u, 0xD2u, 0x23u, 0x77u,
@@ -1824,7 +1825,7 @@ static const uint8_t brainpoolP320r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SI
     0x94u, 0xDCu, 0xB2u, 0xE7u, 0xE0u, 0xE9u, 0x1Du, 0x8Cu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP320R1_SIZE_BASEPOINTORDER,
@@ -1848,7 +1849,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320r
 /* brainpoolP384r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP384r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP384r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* pDash 0x9a6ea96cea9ec825 [BE] */
     0x25u, 0xC8u, 0x9Eu, 0xEAu, 0x6Cu, 0xA9u, 0x6Eu, 0x9Au,
@@ -1862,7 +1863,7 @@ static const uint8_t brainpoolP384r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_P
     0x28u, 0x6Du, 0x38u, 0xA3u, 0x82u, 0x1Eu, 0xB9u, 0x8Cu
 };
 
-static const uint8_t brainpoolP384r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP384r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* nDash 0x5cfedd2a5cb5bb93 [BE] */
     0x93u, 0xBBu, 0xB5u, 0x5Cu, 0x2Au, 0xDDu, 0xFEu, 0x5Cu,
@@ -1876,7 +1877,7 @@ static const uint8_t brainpoolP384r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_B
     0x28u, 0x6Du, 0x38u, 0xA3u, 0x82u, 0x1Eu, 0xB9u, 0x8Cu
 };
 
-static const uint8_t brainpoolP384r1_A[] =
+static const uint8_t brainpoolP384r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* A = 0x7BC382C63D8C150C3C72080ACE05AFA0C2BEA28E4FB22787139165EFBA91F90F8AA5814A503AD4EB04A8C7DD22CE2826 [BE] */
     0x26u, 0x28u, 0xCEu, 0x22u, 0xDDu, 0xC7u, 0xA8u, 0x04u,
@@ -1887,7 +1888,7 @@ static const uint8_t brainpoolP384r1_A[] =
     0x0Cu, 0x15u, 0x8Cu, 0x3Du, 0xC6u, 0x82u, 0xC3u, 0x7Bu
 };
 
-static const uint8_t brainpoolP384r1_B[] =
+static const uint8_t brainpoolP384r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* B = 0x04A8C7DD22CE28268B39B55416F0447C2FB77DE107DCD2A62E880EA53EEB62D57CB4390295DBC9943AB78696FA504C11 [BE] */
     0x11u, 0x4Cu, 0x50u, 0xFAu, 0x96u, 0x86u, 0xB7u, 0x3Au,
@@ -1898,7 +1899,7 @@ static const uint8_t brainpoolP384r1_B[] =
     0x26u, 0x28u, 0xCEu, 0x22u, 0xDDu, 0xC7u, 0xA8u, 0x04u
 };
 
-static const uint8_t brainpoolP384r1_GX[]=
+static const uint8_t brainpoolP384r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* PointGX = 0x1D1C64F068CF45FFA2A63A81B7C13F6B8847A3E77EF14FE3DB7FCAFE0CBD10E8E826E03436D646AAEF87B2E247D4AF1E [BE] */
     0x1Eu, 0xAFu, 0xD4u, 0x47u, 0xE2u, 0xB2u, 0x87u, 0xEFu,
@@ -1909,7 +1910,7 @@ static const uint8_t brainpoolP384r1_GX[]=
     0xFFu, 0x45u, 0xCFu, 0x68u, 0xF0u, 0x64u, 0x1Cu, 0x1Du
 };
 
-static const uint8_t brainpoolP384r1_GY[] =
+static const uint8_t brainpoolP384r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* PointGY = 0x8ABE1D7520F9C2A45CB1EB8E95CFD55262B70B29FEEC5864E19C054FF99129280E4646217791811142820341263C5315 [BE] */
     0x15u, 0x53u, 0x3Cu, 0x26u, 0x41u, 0x03u, 0x82u, 0x42u,
@@ -1920,7 +1921,7 @@ static const uint8_t brainpoolP384r1_GY[] =
     0xA4u, 0xC2u, 0xF9u, 0x20u, 0x75u, 0x1Du, 0xBEu, 0x8Au
 };
 
-static const uint8_t brainpoolP384r1_R2P[] =
+static const uint8_t brainpoolP384r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* R2P = 0x36bf6883178df842d5c6ef3ba57e052c621401919918d5af8e28f99cc9940899535283343d7fd965087cefff40b64bde [BE] */
     0xDEu, 0x4Bu, 0xB6u, 0x40u, 0xFFu, 0xEFu, 0x7Cu, 0x08u, 
@@ -1931,7 +1932,7 @@ static const uint8_t brainpoolP384r1_R2P[] =
     0x42u, 0xF8u, 0x8Du, 0x17u, 0x83u, 0x68u, 0xBFu, 0x36u
 };
 
-static const uint8_t brainpoolP384r1_R2N[] =
+static const uint8_t brainpoolP384r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* R2N = 0xce8941a614e97c28f886dc965165fdb574a74cb52d748ff2a927e3b9802688a37264e202f2b6b6eac4ed3a2de771c8e [BE] */
     0x8Eu, 0x1Cu, 0x77u, 0xDEu, 0xA2u, 0xD3u, 0x4Eu, 0xACu, 
@@ -1942,7 +1943,7 @@ static const uint8_t brainpoolP384r1_R2N[] =
     0xC2u, 0x97u, 0x4Eu, 0x61u, 0x1Au, 0x94u, 0xE8u, 0x0Cu
 };
 
-static const uint8_t brainpoolP384r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP384r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
     /* 0x2369DBB6397C99F18974B5688E81AF98DF4DDACCBB1FDC04E18A5D2D02C7F72702A353BC5345A9466BF550B04D994B04 [BE] */
     0x04u, 0x4Bu, 0x99u, 0x4Du, 0xB0u, 0x50u, 0xF5u, 0x6Bu,
@@ -1960,7 +1961,7 @@ static const uint8_t brainpoolP384r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SI
     0x4Fu, 0x12u, 0x3Bu, 0xAAu, 0x1Du, 0xB1u, 0x47u, 0x6Fu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP384R1_SIZE_BASEPOINTORDER,
@@ -1984,7 +1985,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384r
 /* brainpoolP512r1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP512r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP512r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_PRIMEP + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* pDash 0x839b32207d89efc5 [BE] */
     0xC5u, 0xEFu, 0x89u, 0x7Du, 0x20u, 0x32u, 0x9Bu, 0x83u,
@@ -2000,7 +2001,7 @@ static const uint8_t brainpoolP512r1_P[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_P
     0x8Bu, 0xC4u, 0xE9u, 0xDBu, 0xB8u, 0x9Du, 0xDDu, 0xAAu
 };
 
-static const uint8_t brainpoolP512r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] =
+static const uint8_t brainpoolP512r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_BASEPOINTORDER + MCUXCLPKC_WORDSIZE] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* nDash 0xad49541f0f1b7027 [BE] */
     0x27u, 0x70u, 0x1Bu, 0x0Fu, 0x1Fu, 0x54u, 0x49u, 0xADu,
@@ -2016,7 +2017,7 @@ static const uint8_t brainpoolP512r1_N[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_B
     0x8Bu, 0xC4u, 0xE9u, 0xDBu, 0xB8u, 0x9Du, 0xDDu, 0xAAu
 };
 
-static const uint8_t brainpoolP512r1_A[] =
+static const uint8_t brainpoolP512r1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* A = 0x7830A3318B603B89E2327145AC234CC594CBDD8D3DF91610A83441CAEA9863BC2DED5D5AA8253AA10A2EF1C98B9AC8B57F1117A72BF2C7B9E7C1AC4D77FC94CA [BE] */
     0xCAu, 0x94u, 0xFCu, 0x77u, 0x4Du, 0xACu, 0xC1u, 0xE7u,
@@ -2029,7 +2030,7 @@ static const uint8_t brainpoolP512r1_A[] =
     0x89u, 0x3Bu, 0x60u, 0x8Bu, 0x31u, 0xA3u, 0x30u, 0x78u
 };
 
-static const uint8_t brainpoolP512r1_B[] =
+static const uint8_t brainpoolP512r1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* B = 0x3DF91610A83441CAEA9863BC2DED5D5AA8253AA10A2EF1C98B9AC8B57F1117A72BF2C7B9E7C1AC4D77FC94CADC083E67984050B75EBAE5DD2809BD638016F723 [BE] */
     0x23u, 0xF7u, 0x16u, 0x80u, 0x63u, 0xBDu, 0x09u, 0x28u,
@@ -2042,7 +2043,7 @@ static const uint8_t brainpoolP512r1_B[] =
     0xCAu, 0x41u, 0x34u, 0xA8u, 0x10u, 0x16u, 0xF9u, 0x3Du
 };
 
-static const uint8_t brainpoolP512r1_GX[]=
+static const uint8_t brainpoolP512r1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* PointGX = 0x81AEE4BDD82ED9645A21322E9C4C6A9385ED9F70B5D916C1B43B62EEF4D0098EFF3B1F78E2D0D48D50D1687B93B97D5F7C6D5047406A5E688B352209BCB9F822 [BE] */
     0x22u, 0xF8u, 0xB9u, 0xBCu, 0x09u, 0x22u, 0x35u, 0x8Bu,
@@ -2055,7 +2056,7 @@ static const uint8_t brainpoolP512r1_GX[]=
     0x64u, 0xD9u, 0x2Eu, 0xD8u, 0xBDu, 0xE4u, 0xAEu, 0x81u
 };
 
-static const uint8_t brainpoolP512r1_GY[] =
+static const uint8_t brainpoolP512r1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* PointGY = 0x7DDE385D566332ECC0EABFA9CF7822FDF209F70024A57B1AA000C55B881F8111B2DCDE494A5F485E5BCA4BD88A2763AED1CA2B2FA8F0540678CD1E0F3AD80892 [BE] */
     0x92u, 0x08u, 0xD8u, 0x3Au, 0x0Fu, 0x1Eu, 0xCDu, 0x78u,
@@ -2068,7 +2069,7 @@ static const uint8_t brainpoolP512r1_GY[] =
     0xECu, 0x32u, 0x63u, 0x56u, 0x5Du, 0x38u, 0xDEu, 0x7Du
 };
 
-static const uint8_t brainpoolP512r1_R2P[] =
+static const uint8_t brainpoolP512r1_R2P[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* R2P = 0x3c4c9d05a9ff6450202e19402056eecca16daa5fd42bff8319486fd8d5898057e0c19a7783514a2553b7f9bc905affd3793fb1302715790549ad144a6158f205 [BE] */
     0x05u, 0xF2u, 0x58u, 0x61u, 0x4Au, 0x14u, 0xADu, 0x49u, 
@@ -2081,7 +2082,7 @@ static const uint8_t brainpoolP512r1_R2P[] =
     0x50u, 0x64u, 0xFFu, 0xA9u, 0x05u, 0x9Du, 0x4Cu, 0x3Cu
 };
 
-static const uint8_t brainpoolP512r1_R2N[] =
+static const uint8_t brainpoolP512r1_R2N[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* R2N = 0xa794586a718407b095df1b4c194b2e56723c37a22f16bbdfd7f9cc263b790de3a6f230c72f0207e83ec64bd033b7627f0886b75895283dddd2a3681ecda81671 [BE] */
     0x71u, 0x16u, 0xA8u, 0xCDu, 0x1Eu, 0x68u, 0xA3u, 0xD2u, 
@@ -2094,7 +2095,7 @@ static const uint8_t brainpoolP512r1_R2N[] =
     0xB0u, 0x07u, 0x84u, 0x71u, 0x6Au, 0x58u, 0x94u, 0xA7u
 };
 
-static const uint8_t brainpoolP512r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP512r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
     /* 0x7B5913F766C4ED95D5262CE1B8F1B2AFC056FD658F28487079A83D9B945E84601BAE0F47ACA3B94E97502F33730A37219D189C5408AC7DA5CA448127EF66EFB5 [BE] */
     0xB5u, 0xEFu, 0x66u, 0xEFu, 0x27u, 0x81u, 0x44u, 0xCAu,
@@ -2116,7 +2117,7 @@ static const uint8_t brainpoolP512r1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SI
     0x3Au, 0x59u, 0xFCu, 0x4Fu, 0x45u, 0x8Eu, 0x4Du, 0x3Bu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512r1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP512R1_SIZE_BASEPOINTORDER,
@@ -2140,7 +2141,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512r
 /* brainpoolP160t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP160t1_A[] =
+static const uint8_t brainpoolP160t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160t1"))) =
 {
     /* A = 0xE95E4A5F737059DC60DFC7AD95B3D8139515620C [BE] */
     0x0Cu, 0x62u, 0x15u, 0x95u, 0x13u, 0xD8u, 0xB3u, 0x95u, 
@@ -2148,7 +2149,7 @@ static const uint8_t brainpoolP160t1_A[] =
     0x5Fu, 0x4Au, 0x5Eu, 0xE9u
 };
 
-static const uint8_t brainpoolP160t1_B[] =
+static const uint8_t brainpoolP160t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160t1"))) =
 {
     /* B = 0x7A556B6DAE535B7B51ED2C4D7DAA7A0B5C55F380 [BE] */
     0x80u, 0xF3u, 0x55u, 0x5Cu, 0x0Bu, 0x7Au, 0xAAu, 0x7Du, 
@@ -2156,7 +2157,7 @@ static const uint8_t brainpoolP160t1_B[] =
     0x6Du, 0x6Bu, 0x55u, 0x7Au
 };
 
-static const uint8_t brainpoolP160t1_GX[]=
+static const uint8_t brainpoolP160t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160t1"))) =
 {
     /* PointGX = 0xB199B13B9B34EFC1397E64BAEB05ACC265FF2378 [BE] */
     0x78u, 0x23u, 0xFFu, 0x65u, 0xC2u, 0xACu, 0x05u, 0xEBu, 
@@ -2164,7 +2165,7 @@ static const uint8_t brainpoolP160t1_GX[]=
     0x3Bu, 0xB1u, 0x99u, 0xB1u
 };
 
-static const uint8_t brainpoolP160t1_GY[] =
+static const uint8_t brainpoolP160t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160t1"))) =
 {
     /* PointGY = 0xADD6718B7C7C1961F0991B842443772152C9E0AD [BE] */
     0xADu, 0xE0u, 0xC9u, 0x52u, 0x21u, 0x77u, 0x43u, 0x24u, 
@@ -2172,7 +2173,7 @@ static const uint8_t brainpoolP160t1_GY[] =
     0x8Bu, 0x71u, 0xD6u, 0xADu
 };
 
-static const uint8_t brainpoolP160t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP160t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160t1"))) =
 {
     /* Gy = 0x5bc89492ef997c10ab58a622e09c1acb87ab38d8 [BE] */
     0xD8u, 0x38u, 0xABu, 0x87u, 0xCBu, 0x1Au, 0x9Cu, 0xE0u, 
@@ -2184,7 +2185,7 @@ static const uint8_t brainpoolP160t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SI
     0x6Fu, 0x45u, 0xF1u, 0x96u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP160t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_BASEPOINTORDER,
@@ -2208,7 +2209,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160t
 /* brainpoolP192t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP192t1_A[] =
+static const uint8_t brainpoolP192t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192t1"))) =
 {
     /* A = 0xC302F41D932A36CDA7A3463093D18DB78FCE476DE1A86294 [BE] */
     0x94u, 0x62u, 0xA8u, 0xE1u, 0x6Du, 0x47u, 0xCEu, 0x8Fu, 
@@ -2216,7 +2217,7 @@ static const uint8_t brainpoolP192t1_A[] =
     0xCDu, 0x36u, 0x2Au, 0x93u, 0x1Du, 0xF4u, 0x02u, 0xC3u
 };
 
-static const uint8_t brainpoolP192t1_B[] =
+static const uint8_t brainpoolP192t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192t1"))) =
 {
     /* B = 0x13D56FFAEC78681E68F9DEB43B35BEC2FB68542E27897B79 [BE] */
     0x79u, 0x7Bu, 0x89u, 0x27u, 0x2Eu, 0x54u, 0x68u, 0xFBu, 
@@ -2224,7 +2225,7 @@ static const uint8_t brainpoolP192t1_B[] =
     0x1Eu, 0x68u, 0x78u, 0xECu, 0xFAu, 0x6Fu, 0xD5u, 0x13u
 };
 
-static const uint8_t brainpoolP192t1_GX[]=
+static const uint8_t brainpoolP192t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192t1"))) =
 {
     /* PointGX = 0x3AE9E58C82F63C30282E1FE7BBF43FA72C446AF6F4618129 [BE] */
     0x29u, 0x81u, 0x61u, 0xF4u, 0xF6u, 0x6Au, 0x44u, 0x2Cu, 
@@ -2232,7 +2233,7 @@ static const uint8_t brainpoolP192t1_GX[]=
     0x30u, 0x3Cu, 0xF6u, 0x82u, 0x8Cu, 0xE5u, 0xE9u, 0x3Au
 };
 
-static const uint8_t brainpoolP192t1_GY[] =
+static const uint8_t brainpoolP192t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192t1"))) =
 {
     /* PointGY = 0x097E2C5667C2223A902AB5CA449D0084B7E5B3DE7CCC01C9 [BE] */
     0xC9u, 0x01u, 0xCCu, 0x7Cu, 0xDEu, 0xB3u, 0xE5u, 0xB7u, 
@@ -2240,7 +2241,7 @@ static const uint8_t brainpoolP192t1_GY[] =
     0x3Au, 0x22u, 0xC2u, 0x67u, 0x56u, 0x2Cu, 0x7Eu, 0x09u
 };
 
-static const uint8_t brainpoolP192t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP192t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192t1"))) =
 {
     /* PPx = 0xafa01a77799b50cff28985e9dcd327f63b32bf88de39650b [BE] */
     0x0Bu, 0x65u, 0x39u, 0xDEu, 0x88u, 0xBFu, 0x32u, 0x3Bu, 
@@ -2252,7 +2253,7 @@ static const uint8_t brainpoolP192t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SI
     0x84u, 0xD5u, 0x4Eu, 0x67u, 0xB8u, 0x08u, 0x4Du, 0x47u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP192t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP192T1_SIZE_BASEPOINTORDER,
@@ -2276,7 +2277,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192t
 /* brainpoolP224t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP224t1_A[] =
+static const uint8_t brainpoolP224t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224t1"))) =
 {
     /* A = 0xD7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FC [BE] */
     0xFCu, 0xC0u, 0xC8u, 0x7Eu, 0xF5u, 0x89u, 0xDAu, 0x97u, 
@@ -2285,7 +2286,7 @@ static const uint8_t brainpoolP224t1_A[] =
     0xAAu, 0x34u, 0xC1u, 0xD7u
 };
 
-static const uint8_t brainpoolP224t1_B[] =
+static const uint8_t brainpoolP224t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224t1"))) =
 {
     /* B = 0x4B337D934104CD7BEF271BF60CED1ED20DA14C08B3BB64F18A60888D [BE] */
     0x8Du, 0x88u, 0x60u, 0x8Au, 0xF1u, 0x64u, 0xBBu, 0xB3u, 
@@ -2294,7 +2295,7 @@ static const uint8_t brainpoolP224t1_B[] =
     0x93u, 0x7Du, 0x33u, 0x4Bu
 };
 
-static const uint8_t brainpoolP224t1_GX[]=
+static const uint8_t brainpoolP224t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224t1"))) =
 {
     /* PointGX = 0x6AB1E344CE25FF3896424E7FFE14762ECB49F8928AC0C76029B4D580 [BE] */
     0x80u, 0xD5u, 0xB4u, 0x29u, 0x60u, 0xC7u, 0xC0u, 0x8Au, 
@@ -2303,7 +2304,7 @@ static const uint8_t brainpoolP224t1_GX[]=
     0x44u, 0xE3u, 0xB1u, 0x6Au
 };
 
-static const uint8_t brainpoolP224t1_GY[] =
+static const uint8_t brainpoolP224t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224t1"))) =
 {
     /* PointGY = 0x0374E9F5143E568CD23F3F4D7C0D4B1E41C8CC0D1C6ABD5F1A46DB4C [BE] */
     0x4Cu, 0xDBu, 0x46u, 0x1Au, 0x5Fu, 0xBDu, 0x6Au, 0x1Cu,
@@ -2312,7 +2313,7 @@ static const uint8_t brainpoolP224t1_GY[] =
     0xF5u, 0xE9u, 0x74u, 0x03u
 };
 
-static const uint8_t brainpoolP224t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP224t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224t1"))) =
 {
     /* 0x5d6a2b7060566fe4671e9055947e40131365a60a1f8682cc5be89ce2 [BE] */
     0xE2u, 0x9Cu, 0xE8u, 0x5Bu, 0xCCu, 0x82u, 0x86u, 0x1Fu,
@@ -2326,7 +2327,7 @@ static const uint8_t brainpoolP224t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SI
     0xF6u, 0x90u, 0xEEu, 0x1Bu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP224t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP224T1_SIZE_BASEPOINTORDER,
@@ -2350,7 +2351,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224t
 /* brainpoolP256t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP256t1_A[] =
+static const uint8_t brainpoolP256t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256t1"))) =
 {
     /* A = 0xA9FB57DBA1EEA9BC3E660A909D838D726E3BF623D52620282013481D1F6E5374 [BE] */
     0x74u, 0x53u, 0x6Eu, 0x1Fu, 0x1Du, 0x48u, 0x13u, 0x20u, 
@@ -2359,7 +2360,7 @@ static const uint8_t brainpoolP256t1_A[] =
     0xBCu, 0xA9u, 0xEEu, 0xA1u, 0xDBu, 0x57u, 0xFBu, 0xA9u
 };
 
-static const uint8_t brainpoolP256t1_B[] =
+static const uint8_t brainpoolP256t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256t1"))) =
 {
     /* B = 0x662C61C430D84EA4FE66A7733D0B76B7BF93EBC4AF2F49256AE58101FEE92B04 [BE] */
     0x04u, 0x2Bu, 0xE9u, 0xFEu, 0x01u, 0x81u, 0xE5u, 0x6Au, 
@@ -2368,7 +2369,7 @@ static const uint8_t brainpoolP256t1_B[] =
     0xA4u, 0x4Eu, 0xD8u, 0x30u, 0xC4u, 0x61u, 0x2Cu, 0x66u
 };
 
-static const uint8_t brainpoolP256t1_GX[]=
+static const uint8_t brainpoolP256t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256t1"))) =
 {
     /* PointGX = 0xA3E8EB3CC1CFE7B7732213B23A656149AFA142C47AAFBC2B79A191562E1305F4 [BE] */
     0xF4u, 0x05u, 0x13u, 0x2Eu, 0x56u, 0x91u, 0xA1u, 0x79u, 
@@ -2377,7 +2378,7 @@ static const uint8_t brainpoolP256t1_GX[]=
     0xB7u, 0xE7u, 0xCFu, 0xC1u, 0x3Cu, 0xEBu, 0xE8u, 0xA3u
 };
 
-static const uint8_t brainpoolP256t1_GY[] =
+static const uint8_t brainpoolP256t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256t1"))) =
 {
     /* PointGY = 0x2D996C823439C56D7F7B22E14644417E69BCB6DE39D027001DABE8F35B25C9BE [BE] */
     0xBEu, 0xC9u, 0x25u, 0x5Bu, 0xF3u, 0xE8u, 0xABu, 0x1Du, 
@@ -2386,7 +2387,7 @@ static const uint8_t brainpoolP256t1_GY[] =
     0x6Du, 0xC5u, 0x39u, 0x34u, 0x82u, 0x6Cu, 0x99u, 0x2Du
 };
 
-static const uint8_t brainpoolP256t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP256t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256t1"))) =
 {
     /* 0x8d3285eee42ebe8808c6c385438dedd62c5095657970dfff2f8196ed9b01699d [BE] */
     0x9Du, 0x69u, 0x01u, 0x9Bu, 0xEDu, 0x96u, 0x81u, 0x2Fu, 
@@ -2400,7 +2401,7 @@ static const uint8_t brainpoolP256t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SI
     0xD5u, 0x1Bu, 0x86u, 0xE7u, 0x1Du, 0x49u, 0x2Eu, 0x24u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP256t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP256T1_SIZE_BASEPOINTORDER,
@@ -2424,7 +2425,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256t
 /* brainpoolP320t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP320t1_A[] =
+static const uint8_t brainpoolP320t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320t1"))) =
 {
     /* A = 0xD35E472036BC4FB7E13C785ED201E065F98FCFA6F6F40DEF4F92B9EC7893EC28FCD412B1F1B32E24 [BE] */
     0x24u, 0x2Eu, 0xB3u, 0xF1u, 0xB1u, 0x12u, 0xD4u, 0xFCu, 
@@ -2434,7 +2435,7 @@ static const uint8_t brainpoolP320t1_A[] =
     0xB7u, 0x4Fu, 0xBCu, 0x36u, 0x20u, 0x47u, 0x5Eu, 0xD3u
 };
 
-static const uint8_t brainpoolP320t1_B[] =
+static const uint8_t brainpoolP320t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320t1"))) =
 {
     /* B = 0xA7F561E038EB1ED560B3D147DB782013064C19F27ED27C6780AAF77FB8A547CEB5B4FEF422340353 [BE] */
     0x53u, 0x03u, 0x34u, 0x22u, 0xF4u, 0xFEu, 0xB4u, 0xB5u, 
@@ -2444,7 +2445,7 @@ static const uint8_t brainpoolP320t1_B[] =
     0xD5u, 0x1Eu, 0xEBu, 0x38u, 0xE0u, 0x61u, 0xF5u, 0xA7u
 };
 
-static const uint8_t brainpoolP320t1_GX[]=
+static const uint8_t brainpoolP320t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320t1"))) =
 {
     /* PointGX = 0x925BE9FB01AFC6FB4D3E7D4990010F813408AB106C4F09CB7EE07868CC136FFF3357F624A21BED52 [BE] */
     0x52u, 0xEDu, 0x1Bu, 0xA2u, 0x24u, 0xF6u, 0x57u, 0x33u, 
@@ -2454,7 +2455,7 @@ static const uint8_t brainpoolP320t1_GX[]=
     0xFBu, 0xC6u, 0xAFu, 0x01u, 0xFBu, 0xE9u, 0x5Bu, 0x92u
 };
 
-static const uint8_t brainpoolP320t1_GY[] =
+static const uint8_t brainpoolP320t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320t1"))) =
 {
     /* PointGY = 0x63BA3A7A27483EBF6671DBEF7ABB30EBEE084E58A0B077AD42A5A0989D1EE71B1B9BC0455FB0D2C3 [BE] */
     0xC3u, 0xD2u, 0xB0u, 0x5Fu, 0x45u, 0xC0u, 0x9Bu, 0x1Bu, 
@@ -2464,7 +2465,7 @@ static const uint8_t brainpoolP320t1_GY[] =
     0xBFu, 0x3Eu, 0x48u, 0x27u, 0x7Au, 0x3Au, 0xBAu, 0x63u
 };
 
-static const uint8_t brainpoolP320t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP320t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320t1"))) =
 {
     /* 0x85b929aa2600c461b96b2fcc20698e46840d860868b3b37ca7bb4ecd668739ae61fcff4aa2ff7ed1 [BE] */
     0xD1u, 0x7Eu, 0xFFu, 0xA2u, 0x4Au, 0xFFu, 0xFCu, 0x61u, 
@@ -2480,7 +2481,7 @@ static const uint8_t brainpoolP320t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SI
     0xFFu, 0x07u, 0x2Du, 0x32u, 0x91u, 0xE9u, 0xF0u, 0x4Fu
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP320t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP320T1_SIZE_BASEPOINTORDER,
@@ -2504,7 +2505,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320t
 /* brainpoolP384t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP384t1_A[] =
+static const uint8_t brainpoolP384t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384t1"))) =
 {
     /* A = 0x8CB91E82A3386D280F5D6F7E50E641DF152F7109ED5456B412B1DA197FB71123ACD3A729901D1A71874700133107EC50 [BE] */
     0x50u, 0xECu, 0x07u, 0x31u, 0x13u, 0x00u, 0x47u, 0x87u, 
@@ -2515,7 +2516,7 @@ static const uint8_t brainpoolP384t1_A[] =
     0x28u, 0x6Du, 0x38u, 0xA3u, 0x82u, 0x1Eu, 0xB9u, 0x8Cu
 };
 
-static const uint8_t brainpoolP384t1_B[] =
+static const uint8_t brainpoolP384t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384t1"))) =
 {
     /* B = 0x7F519EADA7BDA81BD826DBA647910F8C4B9346ED8CCDC64E4B1ABD11756DCE1D2074AA263B88805CED70355A33B471EE [BE] */
     0xEEu, 0x71u, 0xB4u, 0x33u, 0x5Au, 0x35u, 0x70u, 0xEDu, 
@@ -2526,7 +2527,7 @@ static const uint8_t brainpoolP384t1_B[] =
     0x1Bu, 0xA8u, 0xBDu, 0xA7u, 0xADu, 0x9Eu, 0x51u, 0x7Fu
 };
 
-static const uint8_t brainpoolP384t1_GX[]=
+static const uint8_t brainpoolP384t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384t1"))) =
 {
     /* PointGX = 0x18DE98B02DB9A306F2AFCD7235F72A819B80AB12EBD653172476FECD462AABFFC4FF191B946A5F54D8D0AA2F418808CC [BE] */
     0xCCu, 0x08u, 0x88u, 0x41u, 0x2Fu, 0xAAu, 0xD0u, 0xD8u, 
@@ -2537,7 +2538,7 @@ static const uint8_t brainpoolP384t1_GX[]=
     0x06u, 0xA3u, 0xB9u, 0x2Du, 0xB0u, 0x98u, 0xDEu, 0x18u
 };
 
-static const uint8_t brainpoolP384t1_GY[] =
+static const uint8_t brainpoolP384t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384t1"))) =
 {
     /* PointGY = 0x25AB056962D30651A114AFD2755AD336747F93475B7A1FCA3B88F2B6A208CCFE469408584DC2B2912675BF5B9E582928 [BE] */
     0x28u, 0x29u, 0x58u, 0x9Eu, 0x5Bu, 0xBFu, 0x75u, 0x26u, 
@@ -2548,7 +2549,7 @@ static const uint8_t brainpoolP384t1_GY[] =
     0x51u, 0x06u, 0xD3u, 0x62u, 0x69u, 0x05u, 0xABu, 0x25u
 };
 
-static const uint8_t brainpoolP384t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP384t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384t1"))) =
 {
     /* 0x29a4dda85b9410db63d95d3cd39f37dad9036fd6f8474f68422425e5d858d5311c8cd512d7dafaed011c514c55c37501 [BE] */
     0x01u, 0x75u, 0xC3u, 0x55u, 0x4Cu, 0x51u, 0x1Cu, 0x01u, 
@@ -2566,7 +2567,7 @@ static const uint8_t brainpoolP384t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SI
     0x3Du, 0x44u, 0xE1u, 0x47u, 0x75u, 0xBBu, 0x0Bu, 0x62u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP384t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP384T1_SIZE_BASEPOINTORDER,
@@ -2590,7 +2591,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384t
 /* brainpoolP512t1 Curve parameters (LE)                  */
 /**********************************************************/
 
-static const uint8_t brainpoolP512t1_A[] =
+static const uint8_t brainpoolP512t1_A[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512t1"))) =
 {
     /* A = 0xAADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA703308717D4D9B009BC66842AECDA12AE6A380E62881FF2F2D82C68528AA6056583A48F0 [BE] */
     0xF0u, 0x48u, 0x3Au, 0x58u, 0x56u, 0x60u, 0xAAu, 0x28u, 
@@ -2603,7 +2604,7 @@ static const uint8_t brainpoolP512t1_A[] =
     0x8Bu, 0xC4u, 0xE9u, 0xDBu, 0xB8u, 0x9Du, 0xDDu, 0xAAu
 };
 
-static const uint8_t brainpoolP512t1_B[] =
+static const uint8_t brainpoolP512t1_B[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512t1"))) =
 {
     /* B = 0x7CBBBCF9441CFAB76E1890E46884EAE321F70C0BCB4981527897504BEC3E36A62BCDFA2304976540F6450085F2DAE145C22553B465763689180EA2571867423E [BE] */
     0x3Eu, 0x42u, 0x67u, 0x18u, 0x57u, 0xA2u, 0x0Eu, 0x18u, 
@@ -2616,7 +2617,7 @@ static const uint8_t brainpoolP512t1_B[] =
     0xB7u, 0xFAu, 0x1Cu, 0x44u, 0xF9u, 0xBCu, 0xBBu, 0x7Cu
 };
 
-static const uint8_t brainpoolP512t1_GX[]=
+static const uint8_t brainpoolP512t1_GX[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512t1"))) =
 {
     /* PointGX = 0x640ECE5C12788717B9C1BA06CBC2A6FEBA85842458C56DDE9DB1758D39C0313D82BA51735CDB3EA499AA77A7D6943A64F7A3F25FE26F06B51BAA2696FA9035DA [BE] */
     0xDAu, 0x35u, 0x90u, 0xFAu, 0x96u, 0x26u, 0xAAu, 0x1Bu, 
@@ -2629,7 +2630,7 @@ static const uint8_t brainpoolP512t1_GX[]=
     0x17u, 0x87u, 0x78u, 0x12u, 0x5Cu, 0xCEu, 0x0Eu, 0x64u
 };
 
-static const uint8_t brainpoolP512t1_GY[] =
+static const uint8_t brainpoolP512t1_GY[] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512t1"))) =
 {
     /* PointGY = 0x5B534BD595F5AF0FA2C892376C84ACE1BB4E3019B71634C01131159CAE03CEE9D9932184BEEF216BD71DF2DADF86A627306ECFF96DBB8BACE198B61E00F8B332 [BE] */
     0x32u, 0xB3u, 0xF8u, 0x00u, 0x1Eu, 0xB6u, 0x98u, 0xE1u, 
@@ -2642,7 +2643,7 @@ static const uint8_t brainpoolP512t1_GY[] =
     0x0Fu, 0xAFu, 0xF5u, 0x95u, 0xD5u, 0x4Bu, 0x53u, 0x5Bu
 };
 
-static const uint8_t brainpoolP512t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_PRIMEP * 2u] =
+static const uint8_t brainpoolP512t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_PRIMEP * 2u] __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512t1"))) =
 {
     /* 0xc26d7c5f9a7e9cfc3092bb291ec5b5c79a6581ef89311fb3842fc4b52cef4b3d2a9253c0a8789ef5c82f91e0a53ef5e03b91a8a1457108be53595c10c79bab1 [BE] */
     0xB1u, 0xBAu, 0x79u, 0x0Cu, 0xC1u, 0x95u, 0x35u, 0xE5u, 
@@ -2664,7 +2665,7 @@ static const uint8_t brainpoolP512t1_PRECG[MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SI
     0xFAu, 0x17u, 0xF4u, 0x20u, 0x24u, 0x32u, 0x11u, 0x60u
 };
 
-const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512t1 =
+const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512t1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_brainpoolP512t1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_BASEPOINTORDER,
@@ -2690,7 +2691,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512t
 /**********************************************************/
 
 /* Ed25519 domain parameters */
-static const uint8_t pEd25519_FullP[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_FullP[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // p = 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed [BE] 
     // pDash = 0x86bca1af286bca1b [BE] 
@@ -2699,7 +2700,7 @@ static const uint8_t pEd25519_FullP[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP + 8u] __
     0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0x7fu
 };
 
-static const uint8_t pEd25519_FullN[MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_FullN[MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // n = 0x1000000000000000000000000000000014def9dea2f79cd65812631a5cf5d3ed [BE] 
     // nDash = 0xd2b51da312547e1b [BE] 
@@ -2708,35 +2709,35 @@ static const uint8_t pEd25519_FullN[MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER 
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x10u
 };
 
-static const uint8_t pEd25519_R2P[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_R2P[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // R2P = 0x00000000000000000000000000000000000000000000000000000000000005a4 [BE] 
     0xa4u, 0x05u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pEd25519_R2N[MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_R2N[MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // R2N = 0x0399411b7c309a3dceec73d217f5be65d00e1ba768859347a40611e3449c0f01 [BE] 
     0x01u, 0x0fu, 0x9cu, 0x44u, 0xe3u, 0x11u, 0x06u, 0xa4u, 0x47u, 0x93u, 0x85u, 0x68u, 0xa7u, 0x1bu, 0x0eu, 0xd0u,
     0x65u, 0xbeu, 0xf5u, 0x17u, 0xd2u, 0x73u, 0xecu, 0xceu, 0x3du, 0x9au, 0x30u, 0x7cu, 0x1bu, 0x41u, 0x99u, 0x03u
 };
 
-static const uint8_t pEd25519_PointGX[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_PointGX[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // PointGX = 0x216936d3cd6e53fec0a4e231fdd6dc5c692cc7609525a7b2c9562d608f25d51a [BE] 
     0x1au, 0xd5u, 0x25u, 0x8fu, 0x60u, 0x2du, 0x56u, 0xc9u, 0xb2u, 0xa7u, 0x25u, 0x95u, 0x60u, 0xc7u, 0x2cu, 0x69u,
     0x5cu, 0xdcu, 0xd6u, 0xfdu, 0x31u, 0xe2u, 0xa4u, 0xc0u, 0xfeu, 0x53u, 0x6eu, 0xcdu, 0xd3u, 0x36u, 0x69u, 0x21u
 };
 
-static const uint8_t pEd25519_PointGY[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_PointGY[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // PointGY = 0x6666666666666666666666666666666666666666666666666666666666666658 [BE] 
     0x58u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u,
     0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u, 0x66u
 };
 
-static const uint8_t pEd25519_PrecPoints[16u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_PrecPoints[16u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // Precomputed points are stored concatenated as P0.x||P0.y||...||P7.x||P7.y, each coordinate is given in MR in LE format
     0x4cu, 0x1au, 0xc9u, 0x50u, 0x39u, 0x30u, 0x3eu, 0x39u, 0xdbu, 0x8bu, 0x3au, 0xc9u, 0x01u, 0x44u, 0x7fu, 0xafu, 0xd4u, 0xffu, 0xf7u, 0xf1u, 0x39u, 0x4bu, 0x5cu, 0xe0u, 0xe7u, 0xfbu, 0x0fu, 0x1cu, 0x8du, 0xbdu, 0x7du, 0x7cu,
@@ -2757,28 +2758,28 @@ static const uint8_t pEd25519_PrecPoints[16u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIM
     0x2bu, 0x1au, 0x1bu, 0xb5u, 0x4bu, 0x8fu, 0xf2u, 0x84u, 0x30u, 0x61u, 0x8cu, 0x41u, 0x4bu, 0xa1u, 0x11u, 0x3bu, 0xc1u, 0xc8u, 0xf3u, 0xeeu, 0x46u, 0xe0u, 0xbfu, 0x7eu, 0xf9u, 0x5bu, 0xacu, 0x7du, 0xcbu, 0xb2u, 0x98u, 0x01u
 };
 
-static const uint8_t pEd25519_A[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_A[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // A = 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec [BE]
      0xecu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
      0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0x7fu
 };
 
-static const uint8_t pEd25519_D[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_D[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // D = 0x52036cee2b6ffe738cc740797779e89800700a4d4141d8ab75eb4dca135978a3 [BE] 
     0xa3u, 0x78u, 0x59u, 0x13u, 0xcau, 0x4du, 0xebu, 0x75u, 0xabu, 0xd8u, 0x41u, 0x41u, 0x4du, 0x0au, 0x70u, 0x00u,
     0x98u, 0xe8u, 0x79u, 0x77u, 0x79u, 0x40u, 0xc7u, 0x8cu, 0x73u, 0xfeu, 0x6fu, 0x2bu, 0xeeu, 0x6cu, 0x03u, 0x52u
 };
 
-static const uint8_t pEd25519_SQRT_MINUS_ONE[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_SQRT_MINUS_ONE[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // SQRT_MINUS_ONE = 0x2b8324804fc1df0b2b4d00993dfbd7a72f431806ad2fe478c4ee1b274a0ea0b0 [BE] 
     0xb0u, 0xa0u, 0x0eu, 0x4au, 0x27u, 0x1bu, 0xeeu, 0xc4u, 0x78u, 0xe4u, 0x2fu, 0xadu, 0x06u, 0x18u, 0x43u, 0x2fu,
     0xa7u, 0xd7u, 0xfbu, 0x3du, 0x99u, 0x00u, 0x4du, 0x2bu, 0x0bu, 0xdfu, 0xc1u, 0x4fu, 0x80u, 0x24u, 0x83u, 0x2bu
 };
 
-static const uint8_t pEd25519_LADDER_CONST[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd25519_LADDER_CONST[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
     // LADDER_CONST = a/d mod p = 0x3f6f812deb2a31bcd4e9deeb32463099f4a22967bd86abd1da1f0d89323607aa [BE]
     0xaau, 0x07u, 0x36u, 0x32u, 0x89u, 0x0du, 0x1fu, 0xdau, 0xd1u, 0xabu, 0x86u, 0xbdu, 0x67u, 0x29u, 0xa2u, 0xf4u,
@@ -2786,7 +2787,7 @@ static const uint8_t pEd25519_LADDER_CONST[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] 
 };
 
 /* Ed448 domain parameters */
-static const uint8_t pEd448_FullP[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_FullP[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF [BE] 
     // pDash = 0x0000000000000001 [BE] 
@@ -2797,7 +2798,7 @@ static const uint8_t pEd448_FullP[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP + 8u] __attr
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t pEd448_FullN[MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_FullN[MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // n = 0x3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7CCA23E9C44EDB49AED63690216CC2728DC58F552378C292AB5844F3 [BE] 
     // nDash = 03bd440fae918bc5 [BE] 
@@ -2808,7 +2809,7 @@ static const uint8_t pEd448_FullN[MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER + 8u
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0x3Fu
 };
 
-static const uint8_t pEd448_R2P[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP]  __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_R2P[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // R2P = 0x0000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000002 [BE] 
     0x02u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -2817,7 +2818,7 @@ static const uint8_t pEd448_R2P[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP]  __attribute_
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pEd448_R2N[MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_R2N[MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER]  __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // R2N = 0x3402a939f823b7292052bcb7e4d070af1a9cc14ba3c47c44ae17cf725ee4d8380d66de2388ea18597af32c4bc1b195d9e3539257049b9b60 [BE] 
     0x60u, 0x9bu, 0x9bu, 0x04u, 0x57u, 0x92u, 0x53u, 0xe3u, 0xd9u, 0x95u, 0xb1u, 0xc1u, 0x4bu, 0x2cu,
@@ -2826,7 +2827,7 @@ static const uint8_t pEd448_R2N[MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER]  __at
     0xd0u, 0xe4u, 0xb7u, 0xbcu, 0x52u, 0x20u, 0x29u, 0xb7u, 0x23u, 0xf8u, 0x39u, 0xa9u, 0x02u, 0x34u
 };
 
-static const uint8_t pEd448_PointGX[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_PointGX[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // PointGX = 0x4f1970c66bed0ded221d15a622bf36da9e146570470f1767ea6de324a3d3a46412ae1af72ab66511433b80e18b00938e2626a82bc70cc05e [BE] 
     0x5eu, 0xc0u, 0x0cu, 0xc7u, 0x2bu, 0xa8u, 0x26u, 0x26u, 0x8eu, 0x93u, 0x00u, 0x8bu, 0xe1u, 0x80u, 0x3bu, 0x43u,
@@ -2835,7 +2836,7 @@ static const uint8_t pEd448_PointGX[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribu
     0xedu, 0x0du, 0xedu, 0x6bu, 0xc6u, 0x70u, 0x19u, 0x4fu
 };
 
-static const uint8_t pEd448_PointGY[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_PointGY[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // PointGY = 0x693f46716eb6bc248876203756c9c7624bea73736ca3984087789c1e05a0c2d73ad3ff1ce67c39c4fdbd132c4ed7c8ad9808795bf230fa14 [BE] 
     0x14u, 0xfau, 0x30u, 0xf2u, 0x5bu, 0x79u, 0x08u, 0x98u, 0xadu, 0xc8u, 0xd7u, 0x4eu, 0x2cu, 0x13u, 0xbdu, 0xfdu,
@@ -2844,7 +2845,7 @@ static const uint8_t pEd448_PointGY[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribu
     0x24u, 0xbcu, 0xb6u, 0x6eu, 0x71u, 0x46u, 0x3fu, 0x69u
 };
 
-static const uint8_t pEd448_PrecPoints[16u * MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_PrecPoints[16u * MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // Precomputed points are stored concatenated as P0.x||P0.y||...||P7.x||P7.y, each coordinate is given in MR in LE format
     0xf1u, 0x94u, 0x29u, 0x92u, 0x55u, 0x5eu, 0x12u, 0x61u, 0xc1u, 0x10u, 0x29u, 0x05u, 0xafu, 0xa9u, 0x82u, 0x1eu, 0xdeu, 0x8au, 0xbcu, 0x12u, 0x7au, 0xa7u, 0x47u, 0x8du, 0xa8u, 0x3fu, 0x89u, 0xa3u, 0x8eu, 0x2eu, 0xbcu, 0x1du, 0x2bu, 0x6cu, 0x8fu, 0x47u, 0x8eu, 0x22u, 0xa9u, 0x72u, 0x93u, 0xabu, 0xfcu, 0xbdu, 0xa0u, 0xe4u, 0xcfu, 0x77u, 0xeeu, 0xfau, 0xdau, 0x76u, 0x02u, 0x7du, 0x6cu, 0x5au,
@@ -2865,7 +2866,7 @@ static const uint8_t pEd448_PrecPoints[16u * MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] 
     0xbeu, 0x78u, 0x0fu, 0x85u, 0xdfu, 0xd4u, 0x81u, 0xc0u, 0xaeu, 0x50u, 0x63u, 0x4du, 0xd0u, 0x40u, 0x9du, 0xa6u, 0x50u, 0x53u, 0x08u, 0x62u, 0x80u, 0x4cu, 0xe8u, 0x3fu, 0x1eu, 0x72u, 0xd1u, 0xd6u, 0x62u, 0x07u, 0xf8u, 0x1bu, 0x7eu, 0xdau, 0xa4u, 0xcbu, 0x6bu, 0xe3u, 0xc2u, 0x50u, 0x78u, 0x05u, 0x40u, 0xebu, 0xacu, 0x7fu, 0xcau, 0x30u, 0x7du, 0xeeu, 0x66u, 0x35u, 0xe6u, 0x79u, 0x53u, 0x30u
 };
 
-static const uint8_t pEd448_A[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_A[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // A = 0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001 [BE] 
     0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -2874,7 +2875,7 @@ static const uint8_t pEd448_A[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ (
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 };
 
-static const uint8_t pEd448_D[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_D[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // D = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffffffffffffffffffffffffffffffffffffffffffffffff6756 [BE]
     0x56u, 0x67u, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu,
@@ -2883,7 +2884,7 @@ static const uint8_t pEd448_D[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ (
     0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFFu
 };
 
-static const uint8_t pEd448_LADDER_CONST[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) =
+static const uint8_t pEd448_LADDER_CONST[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
     // LADDER_CONST = a/d mod p = 0x2874b42380f250e60db0c73d6c8c5d3352b9ea8dbd5af0c87f64e25bbed5ed186333637ed9b301652f7f668fa7049e3bdbc33cd2455ea947 [BE]
     0x47u, 0xa9u, 0x5eu, 0x45u, 0xd2u, 0x3cu, 0xc3u, 0xdbu, 0x3bu, 0x9eu, 0x04u, 0xa7u, 0x8fu, 0x66u, 0x7fu, 0x2fu,
@@ -2892,17 +2893,19 @@ static const uint8_t pEd448_LADDER_CONST[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __at
     0xe6u, 0x50u, 0xf2u, 0x80u, 0x23u, 0xb4u, 0x74u, 0x28u
 };
 
-const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainFixScalarMult25519_FP = {
+/* MISRA Ex. 20 - Rule 5.1 */
+static const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainFixScalarMult25519_FP = {
     .pScalarMultFct = mcuxClEcc_TwEd_PlainFixScalarMult25519,
     .scalarMultFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainFixScalarMult25519),
 };
 
-const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainVarScalarMult_FP = {
+/* MISRA Ex. 20 - Rule 5.1 */
+static const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainVarScalarMult_FP = {
     .pScalarMultFct = mcuxClEcc_TwEd_PlainVarScalarMult,
     .scalarMultFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainVarScalarMult),
 };
 
-const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 =
+const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
 {
   .common.byteLenP = MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER,
@@ -2925,10 +2928,12 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 =
   .t = 254u,
   .pSqrtMinusOne = (uint8_t *) &pEd25519_SQRT_MINUS_ONE,
   .algoSecHash = &mcuxClHash_AlgorithmDescriptor_Sha512,
-  .algoHash = &mcuxClHash_AlgorithmDescriptor_Sha512
+  .algoHash = &mcuxClHash_AlgorithmDescriptor_Sha512,
+  .pDecodePointFct = mcuxClEcc_EdDSA_DecodePoint_Ed25519,
+  .pDecodePoint_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_DecodePoint_Ed25519)
 };
 
-const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 =
+const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
   .common.byteLenP = MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP,
   .common.byteLenN = MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER,
@@ -2951,6 +2956,8 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 =
   .t = 447u,
   .pSqrtMinusOne = NULL,
   .algoSecHash =  NULL,
-  .algoHash = NULL
+  .algoHash = NULL,
+  .pDecodePointFct = NULL,
+  .pDecodePoint_FP_FuncId = 0u
 };
 

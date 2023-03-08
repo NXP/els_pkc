@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                       */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -164,8 +164,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
        */
       ++witnessLoopCounterMain;
 
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE(byteLenPrime) / sizeof(uint32_t);
+      const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE_WO_RNG(byteLenPrime) / sizeof(uint32_t);
       uint8_t * pWitnessCpu = (uint8_t*) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
       if (NULL == pWitnessCpu)
       {
@@ -186,15 +185,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
       }
 
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#else
-      MCUX_CSSL_FP_FUNCTION_CALL(randomGenerateResult, mcuxClRandom_generate(pSession,
-                                                               pWitness,
-                                                               byteLenPrime));
-      if(MCUXCLRANDOM_STATUS_OK != randomGenerateResult)
-      {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest, MCUXCLRSA_STATUS_RNG_ERROR);
-      }
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
       /*
        * 5. If ((b <= 1) or (b >= PrimeCandidate - 1)), then go to step 4.
@@ -229,7 +219,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
      * LEN and MCLEN was already initialized OPLEN = MCLEN = pkcPrimeByteLength,
      */
     MCUX_CSSL_FP_FUNCTION_CALL(secModExpResult,
-        MCUXCLMATH_SECMODEXP(pExp,
+        MCUXCLMATH_SECMODEXP(pSession,
+                            pExp,
                             pExpTemp,
                             byteLenPrime,
                             MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_RESULT,  /* Result */
@@ -251,8 +242,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
      * Normalize the result (case if R > N)
      * 7. If ((z = 1), test passed, then go to step 9
      */
-    MCUXCLPKC_FP_CALCFUP(mcuxClRsa_MillerRabinTest_ReducAndCheck,
-        mcuxClRsa_MillerRabinTest_ReducAndCheck_LEN);
+    MCUXCLPKC_FP_CALCFUP(mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP,
+        mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP_LEN);
 
     MCUX_CSSL_FP_LOOP_ITERATION(mainLoopFp, MCUXCLPKC_FP_CALLED_CALC_MC1_MM,
                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_SecModExp),
@@ -306,14 +297,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
 
 /* Use temporary define to avoid preprocessor directive inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   #define TMP_PKCRAM_WORKAROUND \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * witnessLoopCounterMain, \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * witnessLoopCounterMain
-#else
-  #define TMP_PKCRAM_WORKAROUND \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * witnessLoopCounterMain
-#endif
 
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest,
                             status,

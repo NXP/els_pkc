@@ -93,7 +93,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygeneration_result, keygeneration_token, mcuxClEcc_Mont_DhKeyGeneration(&session,
                                                                  mcuxClKey_Type_Ecc_MontDH_Curve448_KeyPair,
                                                                  mcuxClKey_Protection_None,
-                                                                 privKeyHandler, key_buffer, key_buffer_length,
+                                                                 privKeyHandler, key_buffer, (uint32_t *)key_buffer_length,
                                                                  pubKeyHandler, pubKeyBuffer, &pubKeySize));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != keygeneration_token) || (MCUXCLECC_STATUS_OK != keygeneration_result))
             {
@@ -165,7 +165,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygeneration_result, keygeneration_token, mcuxClEcc_Mont_DhKeyGeneration(&session,
                                                                   mcuxClKey_Type_Ecc_MontDH_Curve25519_KeyPair,
                                                                   mcuxClKey_Protection_None,
-                                                                  privKeyHandler, key_buffer, key_buffer_length,
+                                                                  privKeyHandler, key_buffer, (uint32_t *)key_buffer_length,
                                                                   pubKeyHandler, pubKeyBuffer, &pubKeySize));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != keygeneration_token) || (MCUXCLECC_STATUS_OK != keygeneration_result))
             {

@@ -17,6 +17,7 @@
 #include <mcuxClEcc.h>
 #include <mcuxClMemory_Copy.h>
 #include <mcuxClPsaDriver.h>
+#include <mcuxClPsaDriver_Oracle.h>
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
@@ -31,7 +32,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_s50_public(
 {
     size_t bitLength = psa_get_key_bits(attributes);
     size_t bytes = PSA_BITS_TO_BYTES(bitLength);
-    psa_algorithm_t alg = psa_get_key_algorithm(attributes);
     if(bytes != MCUXCLKEY_SIZE_256)
     {
         return PSA_ERROR_NOT_SUPPORTED;
@@ -39,11 +39,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_s50_public(
     if(data_size < MCUXCLELS_ECC_PUBLICKEY_SIZE)
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
-    }
-
-    if(PSA_ALG_IS_ECDSA(alg) != 1u) //check if really ECDSA is requested, in any form
-    {
-        return PSA_ERROR_NOT_SUPPORTED;
     }
 
     mcuxClEls_KeyIndex_t keyIdxExp = (mcuxClEls_KeyIndex_t)*key_buffer;
@@ -146,22 +141,40 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
     /* Check and skip the version tag */
     mcuxClRsa_KeyEntry_t rsaPrivateN = {0};
     mcuxClRsa_KeyEntry_t rsaPrivateE = {0};
+            
+    /* check and skip the sequence tag */
+    if (PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x10 | 0x20))
+    {
+        return PSA_ERROR_GENERIC_ERROR;
+    }
+
+    /* check and skip the version tag */
     if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x02))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
     uint8_t *originKey = (uint8_t *)key_buffer;
-
+    
+    /* Modulus*/
     if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer((uint8_t **)&key_buffer, &rsaPrivateN))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
+    /* Public Exponent*/
     if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer((uint8_t **)&key_buffer, &rsaPrivateE))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
+    
     size_t pubKeyLen = (size_t)(key_buffer - originKey);
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret, token, mcuxClMemory_copy(data,
+    /* Start the public key with sequence, tag and length of public key*/
+    size_t seqAndTagLen= 0x04u;
+    data[0] = 0x30;
+    data[1] = 0x82;        
+    data[2] = MBEDTLS_BYTE_1( pubKeyLen );
+    data[3] = MBEDTLS_BYTE_0( pubKeyLen );    
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret, token, mcuxClMemory_copy(data + seqAndTagLen,
                                                                  originKey,
                                                                  pubKeyLen,
                                                                  pubKeyLen));
@@ -170,7 +183,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
         return PSA_ERROR_GENERIC_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    *data_length = pubKeyLen;
+    *data_length = pubKeyLen + seqAndTagLen;
 
     return PSA_SUCCESS;
 }
@@ -182,11 +195,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
 {
     psa_ecc_family_t curve = PSA_KEY_TYPE_ECC_GET_FAMILY(psa_get_key_type(attributes));
     size_t bytes = PSA_BITS_TO_BYTES(psa_get_key_bits(attributes));
-    psa_algorithm_t alg = psa_get_key_algorithm(attributes);
-    if(PSA_ALG_IS_ECDSA(alg) != 1u) //check if really ECDSA is requested, in any form
-    {
-        return PSA_ERROR_NOT_SUPPORTED;
-    }
 
     //For Montgomery curves
     if(curve == PSA_ECC_FAMILY_MONTGOMERY)
@@ -254,7 +262,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
                                                                                             (mcuxClKey_Handle_t) &privKeyData,
                                                                                             (mcuxClKey_Handle_t) &pubKeyData,
                                                                                             (uint8_t *)(data+1u),
-                                                                                            data_length));
+                                                                                            (uint32_t *)data_length));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != keyagreement_token) || (MCUXCLECC_STATUS_OK != keyagreement_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
@@ -337,7 +345,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
                                                                                             (mcuxClKey_Handle_t) &privKeyData,
                                                                                             (mcuxClKey_Handle_t) &pubKeyData,
                                                                                             (uint8_t *)(data+1u),
-                                                                                            data_length));
+                                                                                            (uint32_t *)data_length));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != keyagreement_token) || (MCUXCLECC_STATUS_OK != keyagreement_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
@@ -508,9 +516,15 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
     }
-    if((psa_get_key_usage_flags(attributes) & PSA_KEY_USAGE_EXPORT) != PSA_KEY_USAGE_EXPORT)
+
+    psa_status_t psa_status = PSA_ERROR_NOT_SUPPORTED;
+    mcuxClKey_Descriptor_t key = {0};
+
+    psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
+
+    if (PSA_ERROR_NOT_SUPPORTED != psa_status)
     {
-        return PSA_ERROR_INVALID_ARGUMENT;
+        psa_status = mcuxClPsaDriver_Oracle_ExportPublicKey (&key, data, data_size, data_length);
     }
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
@@ -536,27 +550,30 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
                             key_buffer, key_buffer_size,
                             data, data_size, data_length);
             }
-
-            /* Need to export the public part of a private key,
-             * so conversion is needed. Try the accelerators first. */
-            if( !PSA_KEY_TYPE_IS_KEY_PAIR(type) )
-            {
-                return PSA_ERROR_INVALID_ARGUMENT;
-            }
-
-            //PSA_KEY_TYPE_RSA_KEY_PAIR
-            if( PSA_KEY_TYPE_IS_RSA(type) )
-            {
-                status = mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_key(attributes,
-                                                      key_buffer, key_buffer_size,
-                                                      data, data_size, data_length);
-            }
-            //PSA_KEY_TYPE_ECC_KEY_PAIR_BASE
+            /* If its not a public key, only then go and check for RSA or ECC key pairs*/
             else
             {
-                status = mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_key(attributes,
-                                                      key_buffer, key_buffer_size,
-                                                      data, data_size, data_length);
+                /* Need to export the public part of a private key,
+                 * so conversion is needed. Try the accelerators first. */
+                if( !PSA_KEY_TYPE_IS_KEY_PAIR(type) )
+                {
+                    return PSA_ERROR_INVALID_ARGUMENT;
+                }
+
+                //PSA_KEY_TYPE_RSA_KEY_PAIR
+                if( PSA_KEY_TYPE_IS_RSA(type) )
+                {
+                    status = mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_key(attributes,
+                                                          key_buffer, key_buffer_size,
+                                                          data, data_size, data_length);
+                }
+                //PSA_KEY_TYPE_ECC_KEY_PAIR_BASE
+                else
+                {
+                    status = mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_key(attributes,
+                                                          key_buffer, key_buffer_size,
+                                                          data, data_size, data_length);
+                }
             }
         }
         else
@@ -564,5 +581,39 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
             return PSA_ERROR_NOT_SUPPORTED;
         }
     }
+    /* unload key */
+    psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+
+    /* Overwrite status only when status has no error code */
+    if(PSA_SUCCESS == status)
+    {
+        status = keyStatus;
+    }
     return status;
+}
+
+psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportPublicKey(
+    const psa_key_attributes_t *attributes,
+    const uint8_t *key_buffer,
+    size_t key_buffer_size,
+    uint8_t *data,
+    size_t data_size,
+    size_t *data_length)
+{
+    psa_status_t psa_status    = PSA_ERROR_NOT_SUPPORTED;
+    mcuxClKey_Descriptor_t key = {0};
+
+    psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
+
+    if (PSA_ERROR_NOT_SUPPORTED != psa_status)
+    {
+        psa_status = mcuxClPsaDriver_Oracle_ExportPublicKey(&key, data, data_size, data_length);
+
+        if (PSA_ERROR_NOT_SUPPORTED != psa_status)
+        {
+            return mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+        }
+    }
+
+    return psa_status;
 }

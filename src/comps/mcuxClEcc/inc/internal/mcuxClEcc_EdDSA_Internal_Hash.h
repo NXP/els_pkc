@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -24,6 +24,7 @@
 #include <mcuxClHash_Types.h>
 #include <mcuxClHash_Functions.h>
 #include <mcuxClHash_Constants.h>
+
 #include <internal/mcuxClSession_Internal.h>
 
 
@@ -33,48 +34,6 @@
 /* byte length of private key hash (= 2b/8) can be derived from               */
 /* byte length of private key (= b/8).                                        */
 /******************************************************************************/
-#if defined(MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND)
-#include <mcuxClMemory_Copy.h>
-#define MCUXCLECC_FP_EDDSA_KEYGEN_HASH_PRIVKEY(pSession, hashAlg, pPrivKey, pPrivKeyHash, privKeyLen)  \
-    do{                                                                \
-        const uint32_t privKeyHashLength = 2u * (privKeyLen);          \
-        const uint32_t privKeyHashWord = MCUXCLECC_ALIGNED_SIZE(privKeyHashLength) / (sizeof(uint32_t));  \
-        uint8_t *pTemp = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, privKeyHashWord);        \
-        if (NULL == pTemp)                                             \
-        {                                                              \
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair,  \
-                                      MCUXCLECC_STATUS_FAULT_ATTACK);   \
-        }                                                              \
-        uint32_t outLength = 0u;                                       \
-        MCUX_CSSL_FP_FUNCTION_CALL(retHash,                             \
-            mcuxClHash_compute(pSession,                                \
-                              hashAlg,                                 \
-                              (mcuxCl_InputBuffer_t) (pPrivKey),        \
-                              privKeyLen,                              \
-                              (mcuxCl_Buffer_t) pTemp,                  \
-                              &outLength) );                           \
-        if (MCUXCLHASH_STATUS_OK != retHash)                            \
-        {                                                              \
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair,  \
-                                      MCUXCLECC_STATUS_FAULT_ATTACK);   \
-        }                                                              \
-        MCUXCLPKC_WAITFORFINISH();                                      \
-        MCUX_CSSL_FP_FUNCTION_CALL(retMemCpy,                                                \
-            mcuxClMemory_copy(pPrivKeyHash, pTemp, privKeyHashLength, privKeyHashLength) );  \
-        if (0u != retMemCpy)                                           \
-        {                                                              \
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair,  \
-                                      MCUXCLECC_STATUS_FAULT_ATTACK);   \
-        }                                                              \
-        mcuxClSession_freeWords_cpuWa(pSession, privKeyHashWord);       \
-    } while(false)
-
-#define MCUXCLECC_FP_CALLED_EDDSA_KEYGEN_HASH_PRIVKEY  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute),   \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
-
-#define MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(hashOutputLength)    MCUXCLECC_ALIGNED_SIZE(hashOutputLength)
-#else  /* !MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 #define MCUXCLECC_FP_EDDSA_KEYGEN_HASH_PRIVKEY(pSession, hashAlg, pPrivKey, pPrivKeyHash, privKeyLen)  \
     do{                                                                \
         uint32_t outLength = 0u;                                       \
@@ -97,7 +56,185 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
 
 #define MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(hashOutputLength)    0u
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
+
+/******************************************************************************/
+/* Macros to compute the hash H(prefix || (h_b,...,h_{2b-1}) || m') using     */
+/*   - the hash function algoSecHash to hash the blocks containing the secret */
+/*     (h_b,\dots,h_{2b-1}), and                                              */
+/*   - the hash function algoHash to hash the remaining part of the input     */
+/* Since the parameter b of both Ed25519 and Ed448 is a multiple of 8,        */
+/* byte length of hash (= 2b/8) can be derived from                           */
+/* byte length of (h_b,...,h_{2b-1}) (= b/8).                                 */
+/******************************************************************************/
+#define MCUXCLECC_FP_EDDSA_SIGN_CALC_SCALAR(pSession, pCtx, algoHash, algoSecHash, pHashPrefix, hashPrefixLen, pPrivKeyHalfHash, privKeyHalfHashLength, pIn, inSize, pOutput) \
+    do{                                                                     \
+        uint32_t outLength = 0u;                                            \
+                                                                            \
+        (void) (algoHash); /* TODO: Use algoHash for blocks with not sensitive data (CLNS-7002) */ \
+                                                                            \
+        /* Initialize the hash context */                                   \
+        MCUX_CSSL_FP_FUNCTION_CALL(retInitHash,                              \
+            mcuxClHash_init(pSession,                                        \
+                           pCtx,                                            \
+                           algoSecHash) );                                  \
+        if (MCUXCLHASH_STATUS_OK != retInitHash)                             \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature,     \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with prefix */                               \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess1Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                              pCtx,                                         \
+                              (mcuxCl_InputBuffer_t) (pHashPrefix),          \
+                              hashPrefixLen) );                             \
+        if (MCUXCLHASH_STATUS_OK != retProcess1Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature,     \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with (h_b,...,h_{2b-1}) */                   \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess2Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                              pCtx,                                         \
+                              (mcuxCl_InputBuffer_t) (pPrivKeyHalfHash),     \
+                              privKeyHalfHashLength) );                     \
+        if (MCUXCLHASH_STATUS_OK != retProcess2Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature,     \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with m' */                                   \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess3Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                              pCtx,                                         \
+                              (mcuxCl_InputBuffer_t) (pIn),                  \
+                              inSize) );                                    \
+        if (MCUXCLHASH_STATUS_OK != retProcess3Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature,     \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Finalize hash computation */                                     \
+        MCUXCLPKC_WAITFORFINISH();                                           \
+        MCUX_CSSL_FP_FUNCTION_CALL(retFinishHash,                            \
+            mcuxClHash_finish(pSession,                                      \
+                              pCtx,                                         \
+                              pOutput,                                      \
+                              &outLength) );                                \
+        if (MCUXCLHASH_STATUS_OK != retFinishHash)                           \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature,     \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+    } while(false)
+
+#define MCUXCLECC_FP_CALLED_EDDSA_SIGN_CALC_SCALAR   \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init),    \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process), \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process), \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process), \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish)
+
+#define MCUXCLECC_EDDSA_SIGN_CALC_SCALAR_HASHOUTPUT_CPUWA(hashOutputLength)    0u
+
+
+/******************************************************************************/
+/* Macro to compute input hash and store it in PKC workarea.                  */
+/* Since the parameter b of both Ed25519 and Ed448 is a multiple of 8,        */
+/* byte length of hash (= 2b/8) can be derived from                           */
+/* byte length of encoded public key (= b/8).                                 */
+/******************************************************************************/
+#define MCUXCLECC_FP_EDDSA_SIGN_VERIFY_CALC_HASH(pSession, pCtx, hashAlg, pHashPrefix,hashPrefixLen, pSignatureR, signatureRLen, pPubKey, pubKeyLen, pIn, inSize, pOutput) \
+    do{                                                                     \
+        uint32_t outLength = 0u;                                            \
+                                                                            \
+        /* Initialize the hash context */                                   \
+        MCUX_CSSL_FP_FUNCTION_CALL(retInitHash,                              \
+            mcuxClHash_init(pSession,                                        \
+                            pCtx,                                           \
+                            hashAlg) );                                     \
+        if (MCUXCLHASH_STATUS_OK != retInitHash)                             \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN,          \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with prefix */                               \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess1Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                            pCtx,                                           \
+                            (mcuxCl_InputBuffer_t) (pHashPrefix),            \
+                            hashPrefixLen) );                               \
+        if (MCUXCLHASH_STATUS_OK != retProcess1Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN,          \
+                                    MCUXCLECC_STATUS_FAULT_ATTACK);          \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with Renc */                                 \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess2Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                              pCtx,                                         \
+                              (mcuxCl_InputBuffer_t) (pSignatureR),          \
+                              signatureRLen) );                             \
+        if (MCUXCLHASH_STATUS_OK != retProcess2Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN,          \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with Qenc */                                 \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess3Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                              pCtx,                                         \
+                              (mcuxCl_InputBuffer_t) (pPubKey),              \
+                              pubKeyLen) );                                 \
+        if (MCUXCLHASH_STATUS_OK != retProcess3Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN,          \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        /* Update hash context with m' */                                   \
+        MCUX_CSSL_FP_FUNCTION_CALL(retProcess4Hash,                          \
+            mcuxClHash_process(pSession,                                     \
+                              pCtx,                                         \
+                              (mcuxCl_InputBuffer_t) (pIn),                  \
+                              inSize) );                                    \
+        if (MCUXCLHASH_STATUS_OK != retProcess4Hash)                         \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN,          \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+                                                                            \
+        MCUXCLPKC_WAITFORFINISH();                                           \
+        /* Finalize hash computation */                                     \
+        MCUX_CSSL_FP_FUNCTION_CALL(retFinishHash,                            \
+            mcuxClHash_finish(pSession,                                      \
+                              pCtx,                                         \
+                              (mcuxCl_Buffer_t) pOutput,                     \
+                              &outLength) );                                \
+        if (MCUXCLHASH_STATUS_OK != retFinishHash)                           \
+        {                                                                   \
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN,          \
+                                      MCUXCLECC_STATUS_FAULT_ATTACK);        \
+        }                                                                   \
+    } while(false)
+
+#define MCUXCLECC_FP_CALLED_EDDSA_SIGN_VERIFY_CALC_HASH                  \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init),                        \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),                     \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),                     \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),                     \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),                     \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish)
+
+#define MCUXCLECC_EDDSA_SIGN_VERIFY_CALC_HASH_HASHOUTPUT_CPUWA(hashOutputLength)    0u
 
 #endif /* MCUXCLECC_EDDSA_INTERNAL_HASH_H_ */

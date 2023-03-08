@@ -22,7 +22,7 @@
 #include <mcuxClAeadModes.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 
 /* NIST Special Publication 800-38C example 2 test vectors */

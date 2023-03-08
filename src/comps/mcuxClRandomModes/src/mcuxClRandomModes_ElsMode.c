@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -169,7 +169,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 }
 
 
-const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_ELS_Drbg = {
+static const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_ELS_Drbg = {
     .initFunction                    = mcuxClRandomModes_ElsMode_init,
     .reseedFunction                  = mcuxClRandomModes_ElsMode_reseed,
     .generateFunction                = mcuxClRandomModes_ElsMode_generate,

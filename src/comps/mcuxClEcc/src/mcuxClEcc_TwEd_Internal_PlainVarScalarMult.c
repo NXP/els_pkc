@@ -24,7 +24,7 @@
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_TwEd_Internal.h>
 
-const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelectML_FP = {
+static const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelectML_FP = {
     .pPtrSelectFct = mcuxClEcc_TwEd_PlainPtrSelectML,
     .ptrSelectFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainPtrSelectML),
 };

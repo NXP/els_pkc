@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,6 +18,6 @@
 #define MCUXCLRSA_MILLERRABINTEST_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
-extern const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck[4];
+extern const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP[4];
 
 #endif /* MCUXCLRSA_MILLERRABINTEST_FUP*/ 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,25 +17,23 @@
  * @brief:	This file contains objects which will be used to measure size of particular types.
  *
  */
+
+#include <mcuxClCore_Analysis.h>
+
 #include <internal/mcuxClRandomModes_Internal_SizeDefinitions.h>
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
 #include <internal/mcuxClRandomModes_Private_CtrDrbg.h>
-#endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
 /* *********************** */
 /* *** Work area sizes *** */
 /* *********************** */
+MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
-extern volatile mcuxClRandomModes_Context_CtrDrbg_Aes128_t mcuxClRandomModes_Context_Aes128;
 volatile mcuxClRandomModes_Context_CtrDrbg_Aes128_t mcuxClRandomModes_Context_Aes128;
 
-extern volatile mcuxClRandomModes_Context_CtrDrbg_Aes192_t mcuxClRandomModes_Context_Aes192;
 volatile mcuxClRandomModes_Context_CtrDrbg_Aes192_t mcuxClRandomModes_Context_Aes192;
 
-extern volatile mcuxClRandomModes_Context_CtrDrbg_Aes256_t mcuxClRandomModes_Context_Aes256;
 volatile mcuxClRandomModes_Context_CtrDrbg_Aes256_t mcuxClRandomModes_Context_Aes256;
-#endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
 uint8_t mcuxClRandomModes_CpuWA_MaxSize[MCUXCLRANDOMMODES_CPUWA_MAXSIZE];
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

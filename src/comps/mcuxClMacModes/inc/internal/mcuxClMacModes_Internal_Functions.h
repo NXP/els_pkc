@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -24,6 +24,10 @@
 #include <mcuxClKey_Types.h>
 #include <mcuxClSession_Types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Skeleton functions for the MAC modes
  */
@@ -37,7 +41,7 @@
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_compute)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(
   mcuxClSession_Handle_t session,
-  const mcuxClKey_Handle_t key,
+  mcuxClKey_Handle_t key,
   mcuxClMac_Mode_t mode,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
@@ -55,7 +59,7 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_init(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
-  const mcuxClKey_Handle_t key
+  mcuxClKey_Handle_t key
 );
 
 /**
@@ -103,5 +107,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_prepareHMACKey(
   uint32_t * preparedHmacKey
 );
 
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMACMODES_INTERNAL_FUNCTIONS_H_ */

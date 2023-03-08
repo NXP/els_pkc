@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,6 +16,7 @@
  */
 
 #include <stdint.h>
+#include <nxpClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -29,7 +30,7 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
@@ -82,12 +83,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   const uint32_t              inputLength,
   mcuxCl_Buffer_t              pVerificationInput,
   mcuxClHash_Algo_t            pHashAlgo,
-  const uint8_t *             pLabel,
+  const uint8_t *             pLabel UNUSED_PARAM,
   const uint32_t              saltlabelLength,
   const uint32_t              keyBitLength,
   const uint32_t              options,
-  mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength)
+  mcuxCl_Buffer_t              pOutput UNUSED_PARAM,
+  uint32_t * const            pOutLength UNUSED_PARAM)
 {
 
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_pssVerify);
@@ -105,32 +106,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /* Length of DB (and maskedDB). */
   const uint32_t dbLen = emLen - hLen - 1U;
 
-  const uint16_t wordSizeWa = MCUXCLRSA_INTERNAL_PSSVERIFY_WAPKC_SIZE_WO_MGF1(emLen, hLen, sLen) / sizeof(uint32_t);
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-  uint8_t *pWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordSizeWa);
-
-  #ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-  const uint16_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_PSSVERIFY_WACPU_SIZE_WO_MGF1(hLen, sLen) / sizeof(uint32_t);
-  /* Pointer to the cpu buffer for the M' = | padding_1 | mHash | salt | */
-  uint8_t * pMprimCpu = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-  /* Update CPU workarea */
-
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-  /* TODO CLNS-6084: instead of moving the unaligned accesses to CPU RAM, which requires a huge ammount of CPU RAM and unnecessary operations such as memcopy,
-   * it should be analyzed, whether it is possible to just target the places where unaligned accessed in PKC RAM occur, and ensure that those particular memory
-   * accesses are aligned, or moved to the CPU RAM.
-   * Based on a first analysis, here are the only two pointers that may be unaligned in PKC RAM and cause issues due to word-aligned accesses:
-   * - pHprim: output of hash (unlikely to cause issues there), input to cssl comparison (where data is accessed in a loop on words).
-   *   Can be easily moved to be always aligned, which would require at most 3 bytes of PKC RAM and no extra operation.
-   * - pH: second input to the cssl comparison.
-   *   Should be copied somewhere else (CPU RAM or PKC RAM): requires one extra copy, on length hLen (which is still better than copying keyByteLen to the CPU RAM)
-   *
-   * Also, an analysis of the dependency between both workarounds ELS_ACCESS_PKCRAM_WORKAROUND and PKC_PKCRAM_NO_UNALIGNED_ACCESS should be done, and
-   * workarounds should be either completely independent of each other, or merged more explicitly into a single workaround.
-   */
-  uint8_t *pWorkarea = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
+  const uint16_t wordSizePkcWa = (uint16_t)(MCUXCLRSA_INTERNAL_PSSVERIFY_MAX_WAPKC_SIZE_WO_MGF1(emLen) / sizeof(uint32_t));
+  uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordSizePkcWa);
 
   /*
    * Set buffers in PKC workarea
@@ -139,14 +116,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /* Pointer to the encoded message */
   mcuxCl_Buffer_t pEm = pVerificationInput;
   /* Pointer to the buffer for the M' = | padding_1 | mHash | salt | */
-  mcuxCl_Buffer_t pMprim = pWorkarea;
+  mcuxCl_Buffer_t pMprim = pPkcWorkarea;
   /* Pointer to the buffer for the mHash in the M'*/
   mcuxCl_Buffer_t pMHash = pMprim + padding1Length;
   /* Pointer to the buffer for the salt in the M'*/
   mcuxCl_Buffer_t pSalt = pMHash + hLen;
 
   /* Pointer to the buffer for the dbMask'*/
-  mcuxCl_Buffer_t pDbMask = pSalt + sLen;
+  mcuxCl_Buffer_t pDbMask = pSalt + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sLen);
   /* Pointer to the buffer for the H' */
   mcuxCl_Buffer_t pHprim = pDbMask + dbLen;
 
@@ -168,14 +145,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 
     if(MCUXCLHASH_STATUS_OK != hash_result1)
     {
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
+      mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
     }
   }
@@ -186,15 +156,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   }
   else
   {
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
-
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
   }
 
@@ -205,14 +167,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   if((((1024U == keyBitLength) && (512U == (8U * hLen)) && ((hLen - 2U) < sLen)) || (hLen < sLen))
           || (emLen < (hLen + sLen + 2U)) || (0xbcU != *pEm))
   {
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_VERIFY_FAILED,
       MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_PLAIN == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
@@ -232,14 +187,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /* Step 6: Check if 8*emLen-emBits leftmost bits equal to zero. Note that, as keyBitLength is a multiple of 8, 8 * emLen - emBits = 1 bit.*/
   if(0U != ((*maskedDB) & 0x80u))
   {
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_VERIFY_FAILED,
       MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_PLAIN == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
@@ -255,14 +203,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 
   if(MCUXCLRSA_INTERNAL_STATUS_MGF_OK != retVal_mcuxClRsa_mgf1)
   {
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
   }
@@ -297,14 +238,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   }
   if((counterZeros != padding2Length) || (0x01u != pDB[padding2Length]))
   {
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_VERIFY_FAILED,
       MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_PLAIN == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
@@ -326,30 +260,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 
   /* Step 13: HPrime = Hash(mPrime) */
   uint32_t hashOutputSize = 0u;
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-  MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result1, mcuxClMemory_copy(pMprimCpu, pMprim, mprimLen, mprimLen));
-  if(0u != memcopy_result1)
-  {
-    mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-    mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
-  }
-  MCUX_CSSL_FP_FUNCTION_CALL(hash_result_2, mcuxClHash_compute(pSession,
-                                                             pHashAlgo,
-                                                             pMprimCpu,
-                                                             mprimLen,
-                                                             pHprim,
-                                                             &hashOutputSize
-    ));
-
-  if(MCUXCLHASH_STATUS_OK != hash_result_2)
-  {
-    mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-    mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
-  }
-#else
   MCUX_CSSL_FP_FUNCTION_CALL(hash_result_2, mcuxClHash_compute(pSession,
                                                              pHashAlgo,
                                                              pMprim,
@@ -360,34 +270,41 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 
   if(MCUXCLHASH_STATUS_OK != hash_result_2)
   {
-    mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
+    mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
   }
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-  MCUX_CSSL_FP_FUNCTION_CALL(hash_result_2, mcuxClHash_compute(pSession,
-                                                             pHashAlgo,
-                                                             pMprim,
-                                                             mprimLen,
-                                                             pHprim,
-                                                             &hashOutputSize
-    ));
-
-  if(MCUXCLHASH_STATUS_OK != hash_result_2)
-  {
-    mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_ERROR);
-  }
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
 
   /* Step 14 verify5 = (HPrime == H) ? true : false. */
-  MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pH, pHprim, hLen),
+  /* Becasue pH and pHprim are unaligned and taking into account the properties:
+   * - dbLen = emLen - hLen - 1U
+   * - emLen % CpuWord = 0
+   * - hLen % CpuWord = 0
+   * - pEm % CpuWord = 0
+   * - pDbMask % CpuWord = 0
+   * - pH % CpuWord = CpuWord-unalignedBytes
+   * - pHprim  % CpuWord = CpuWord-unalignedBytes
+   * - unalignedBytes = (CpuWord - dbLen) & (CpuWord - 1) <- it is unaligned part of pH and pHprim
+   * , the first unalignedBytes bytes will be compared separately (byte-wise) then the rest will be compared with aligned address.
+   */
+  uint32_t unalignedBytes = ((sizeof(uint32_t)) - dbLen) & ((sizeof(uint32_t)) - 1u);
+  MCUX_CSSL_FP_FUNCTION_CALL(compare_result1, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pH, pHprim, unalignedBytes),
                                                                   pH,
                                                                   pHprim,
-                                                                  hLen));
+                                                                  unalignedBytes));
 
   mcuxClRsa_Status_t pssVerifyStatus = MCUXCLRSA_STATUS_VERIFY_FAILED;
-  if(compare_result == MCUXCSSLMEMORY_STATUS_EQUAL)
+  if(compare_result1 == MCUXCSSLMEMORY_STATUS_EQUAL)
+  {
+    pssVerifyStatus = MCUXCLRSA_STATUS_VERIFY_OK;
+  }
+
+  MCUX_CSSL_FP_FUNCTION_CALL(compare_result2, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pH + unalignedBytes,
+                                                                  pHprim + unalignedBytes, hLen - unalignedBytes),
+                                                                  pH + unalignedBytes,
+                                                                  pHprim + unalignedBytes,
+                                                                  hLen - unalignedBytes));
+
+  if(compare_result2 == MCUXCSSLMEMORY_STATUS_EQUAL)
   {
     pssVerifyStatus = MCUXCLRSA_STATUS_VERIFY_OK;
   }
@@ -395,33 +312,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /************************************************************************************************/
   /* Function exit                                                                                */
   /************************************************************************************************/
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-      mcuxClSession_freeWords_pkcWa(pSession, wordSizeWa);
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-      mcuxClSession_freeWords_cpuWa(pSession, wordSizeWa);
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
-
+  mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
 /* Use temporary defines to avoid preprocessor directives inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
-#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-  #define TMP_PKCRAM_WORKAROUND \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy), \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
-#else
-  #define TMP_PKCRAM_WORKAROUND \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
-#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
-#else
-#define TMP_PKCRAM_WORKAROUND \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
-#endif /* MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS */
-
-  #define TMP_ENABLE_COMPARE \
+  #define FP_RSA_PSSVERIFY_COMPARISON \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
 
@@ -435,11 +331,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
     MCUX_CSSL_FP_LOOP_ITERATIONS(loop1, dbLen),
     MCUX_CSSL_FP_LOOP_ITERATIONS(loop2, padding2Length),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-    TMP_PKCRAM_WORKAROUND,
-    TMP_ENABLE_COMPARE
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute),
+    FP_RSA_PSSVERIFY_COMPARISON
   );
 
-#undef TMP_PKCRAM_WORKAROUND
-#undef TMP_ENABLE_COMPARE
+#undef FP_RSA_PSSVERIFY_COMPARISON
 
 }

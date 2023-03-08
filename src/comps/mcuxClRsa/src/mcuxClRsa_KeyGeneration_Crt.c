@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -293,8 +293,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
 
-  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_KeyGeneration_Crt_Steps10,
-          mcuxClRsa_KeyGeneration_Crt_Steps10_LEN);
+  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_KeyGeneration_Crt_Steps10_FUP,
+          mcuxClRsa_KeyGeneration_Crt_Steps10_FUP_LEN);
   MCUXCLPKC_WAITFORREADY();
   MCUX_CSSL_FP_FUNCTION_CALL_VOID(
     mcuxClRsa_ModInv(
@@ -309,8 +309,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *
    * Used functions: mcuxClRsa_ModInv
    */
-  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_KeyGeneration_Crt_Steps11,
-          mcuxClRsa_KeyGeneration_Crt_Steps11_LEN);
+  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_KeyGeneration_Crt_Steps11_FUP,
+          mcuxClRsa_KeyGeneration_Crt_Steps11_FUP_LEN);
   MCUXCLPKC_WAITFORREADY();
   MCUX_CSSL_FP_FUNCTION_CALL_VOID(
     mcuxClRsa_ModInv(
@@ -325,8 +325,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *
    * Used functions: mcuxClMath_ModInv
    */
-  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_KeyGeneration_Crt_Steps12,
-          mcuxClRsa_KeyGeneration_Crt_Steps12_LEN);
+  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_KeyGeneration_Crt_Steps12_FUP,
+          mcuxClRsa_KeyGeneration_Crt_Steps12_FUP_LEN);
   MCUXCLPKC_WAITFORREADY();
   /* Calculate NDash of p */
   MCUXCLMATH_FP_NDASH(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T3, MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1);
@@ -433,7 +433,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   pRsaPrivCrtKey->pMod1->pKeyEntryData = pPrivData + *pPrivDataLength;
   pRsaPrivCrtKey->pMod1->keyEntryLength = byteLenPrime;
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportP,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pRsaPrivCrtKey->pMod1->pKeyEntryData,
+      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                            pRsaPrivCrtKey->pMod1->pKeyEntryData,
                                             MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_P,
                                                                MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1),
                                             pRsaPrivCrtKey->pMod1->keyEntryLength));
@@ -452,7 +453,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   pRsaPrivCrtKey->pMod2->pKeyEntryData = pPrivData + *pPrivDataLength;
   pRsaPrivCrtKey->pMod2->keyEntryLength = byteLenPrime;
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportQ,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pRsaPrivCrtKey->pMod2->pKeyEntryData,
+      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                            pRsaPrivCrtKey->pMod2->pKeyEntryData,
                                             MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_Q,
                                                                MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1),
                                             pRsaPrivCrtKey->pMod2->keyEntryLength));
@@ -471,7 +473,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   pRsaPrivCrtKey->pQInv->pKeyEntryData = pPrivData + *pPrivDataLength;;
   pRsaPrivCrtKey->pQInv->keyEntryLength = byteLenPrime;
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportQinv,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pRsaPrivCrtKey->pQInv->pKeyEntryData,
+      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                            pRsaPrivCrtKey->pQInv->pKeyEntryData,
                                             MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_QINV,
                                                                MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1),
                                             pRsaPrivCrtKey->pQInv->keyEntryLength));
@@ -490,7 +493,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   pRsaPrivCrtKey->pExp1->pKeyEntryData = pPrivData + *pPrivDataLength;
   pRsaPrivCrtKey->pExp1->keyEntryLength = byteLenPrime;
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportDp,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pRsaPrivCrtKey->pExp1->pKeyEntryData,
+      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                            pRsaPrivCrtKey->pExp1->pKeyEntryData,
                                             MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_DP,
                                                                MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1),
                                             pRsaPrivCrtKey->pExp1->keyEntryLength));
@@ -509,7 +513,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   pRsaPrivCrtKey->pExp2->pKeyEntryData = pPrivData + *pPrivDataLength;
   pRsaPrivCrtKey->pExp2->keyEntryLength = byteLenPrime;
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportDq,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pRsaPrivCrtKey->pExp2->pKeyEntryData,
+      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
+                                            pRsaPrivCrtKey->pExp2->pKeyEntryData,
                                             MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_DQ,
                                                                MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1),
                                             pRsaPrivCrtKey->pExp2->keyEntryLength));

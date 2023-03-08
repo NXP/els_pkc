@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,6 +17,7 @@
 #include <mcuxClAead.h>
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 #include <internal/mcuxClAeadModes_ELS_Functions.h>
+#include <internal/mcuxClAeadModes_Common_Functions.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>

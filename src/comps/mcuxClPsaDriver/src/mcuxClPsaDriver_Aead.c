@@ -269,9 +269,13 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
         /* Create the key */
         mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
         mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
+
+        /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
+        mcuxClMemory_copy((uint8_t*)&operation->psaAttributes, (uint8_t *)attributes, sizeof(psa_key_attributes_t), sizeof(psa_key_attributes_t));
+
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
-        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, pKey);
+        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(&operation->psaAttributes, key_buffer, key_buffer_size, pKey);
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
@@ -466,14 +470,17 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
         /* Create the key */
         mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
         mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
+
+        /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
+        mcuxClMemory_copy((uint8_t*)&operation->psaAttributes, (uint8_t *)attributes, sizeof(psa_key_attributes_t), sizeof(psa_key_attributes_t));
+
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
-        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, pKey);
+        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(&operation->psaAttributes, key_buffer, key_buffer_size, pKey);
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
         }
-
         if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusSuspend(pKey))
         {
             return PSA_ERROR_GENERIC_ERROR;
@@ -590,6 +597,26 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
     /* Return with success */
     return PSA_SUCCESS;
 }
+
+psa_status_t mcuxClPsaDriver_psa_driver_get_tag_len(
+    psa_aead_operation_t *operation,
+    uint8_t *tag_len )
+{
+    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
+    
+    if(operation != NULL)
+    {
+        /* Create the key */
+        mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+        
+        /* Only update a valid tag length in clns_ctx*/
+        *tag_len = pClnsAeadData->ctx.tagLength;
+        
+        status = PSA_SUCCESS;
+    }
+    /* Return psa status */
+    return status;        
+}  
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_lengths(
    psa_aead_operation_t *operation,
@@ -914,15 +941,14 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
         return PSA_ERROR_INVALID_ARGUMENT;
     }
 
+    *plaintext_length = 0u;
+
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
 
     /* Validate the given buffer sizes */
-    uint32_t needed_output_size = PSA_AEAD_VERIFY_OUTPUT_SIZE(operation->key_type, operation->alg);
     /* Used stored tag length from pContext instead of determining it at run time,
     as operation->alg has been overwritten to base_algo value*/
-    if ((tag_length < pClnsAeadData->ctx.tagLength)
-        /* if input is not a multiple of blocksize, check sufficient buffer size for plaintext as well */
-        || ((0u != (pClnsAeadData->ctx.dataLength % MCUXCLAES_BLOCK_SIZE)) && (plaintext_size < needed_output_size)))
+    if (tag_length < pClnsAeadData->ctx.tagLength)
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
     }

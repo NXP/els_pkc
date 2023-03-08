@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,6 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+#include "common.h"
 
 #include <mcuxClCore_Examples.h> // Defines for example return codes and assertions
 #include <mcuxClExample_ELS_Helper.h>
@@ -19,7 +20,7 @@
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClAes.h> // Interface to AES-related definitions and types
@@ -91,19 +92,19 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
 
     /* Set up PSA key attributes. */
     psa_key_attributes_t attributes = {
-        .private_core = {                                // Core attributes
-            .private_type = PSA_KEY_TYPE_AES,            // Key is for AES operations
-            .private_bits = 0U,                          // No key bits
-            .private_lifetime = LIFETIME_EXTERNAL,       // Volatile (RAM), Local Storage (plain) key
-            .private_id = 0U,                            // ID zero
-            .private_policy = {
-                .private_usage = PSA_KEY_USAGE_ENCRYPT,  // Key may be used for encryption
-                .private_alg = PSA_ALG_CCM_SHORTER_TAG,  // Key may be used for AEAD CCM mode only
-                .private_alg2 = PSA_ALG_NONE
+        .core = {                                // Core attributes
+            .type = PSA_KEY_TYPE_AES,            // Key is for AES operations
+            .bits = 0U,                          // No key bits
+            .lifetime = LIFETIME_EXTERNAL,       // Volatile (RAM), Local Storage (plain) key
+            .id = 0U,                            // ID zero
+            .policy = {
+                .usage = PSA_KEY_USAGE_ENCRYPT,  // Key may be used for encryption
+                .alg = PSA_ALG_CCM_SHORTER_TAG,  // Key may be used for AEAD CCM mode only
+                .alg2 = PSA_ALG_NONE
             },
-            .private_flags = 0u},                        // No flags
-        .private_domain_parameters = NULL,               // No domain parameters
-        .private_domain_parameters_size = 0u
+            .flags = 0u},                        // No flags
+        .domain_parameters = NULL,               // No domain parameters
+        .domain_parameters_size = 0u
     };
 
     /* Initialize the operation with all zeros */
@@ -157,6 +158,9 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         input_size_part_1     // size_t input_length
     );
 
+     /* Update remaining ad bytes */
+    operation.ad_remaining -= input_size_part_1;
+
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
@@ -169,6 +173,9 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         msg_adata + input_size_part_1,  // const uint8_t *input
         input_size_part_2               // size_t input_length
     );
+
+     /* Update remaining ad bytes */
+    operation.ad_remaining -= input_size_part_2;
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -192,6 +199,15 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         &output_length        // size_t *output_length
     );
 
+     /* Update remaining bytes */
+    operation.body_remaining -= input_size_part_1;
+
+    /* Check the output length - no output was return */
+    if(0u != output_length)
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
@@ -208,8 +224,17 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         &output_length                       // size_t *output_length
     );
 
+     /* Update remaining bytes */
+    operation.body_remaining -= input_size_part_2;
+
     /* Check the return value */
     if(PSA_SUCCESS != result)
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
+    /* Check the output length */
+    if((input_size_part_1 + input_size_part_2) != output_length)
     {
         return MCUXCLEXAMPLE_ERROR;
     }
@@ -222,8 +247,8 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Call the AEAD finish operation */
     result = psa_driver_wrapper_aead_finish(
         &operation,                          // psa_aead_operation_t *operation
-        output_enc + output_length,          // const uint8_t *ciphertext
-        sizeof(output_enc) - output_length,  // size_t ciphertext_size
+        output_enc + (input_size_part_1 + input_size_part_2),          // const uint8_t *ciphertext
+        sizeof(output_enc) - (input_size_part_1 + input_size_part_2),  // size_t ciphertext_size
         &output_length,                      // size_t *ciphertext_length
         tag,                                 // uint8_t *tag
         sizeof(tag),                         // size_t tag_size
@@ -236,8 +261,14 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         return MCUXCLEXAMPLE_ERROR;
     }
 
+    /* Check the output length - no output was return */
+    if(0u != output_length)
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
     /* Check the output lengths */
-    if((sizeof(msg_enc_expected) != output_length) || (sizeof(msg_tag_expected) != tag_length))
+    if((sizeof(msg_tag_expected) != tag_length))
     {
         return MCUXCLEXAMPLE_ERROR;
     }
@@ -259,7 +290,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /****************/
 
     /* Update key usage */
-    attributes.private_core.private_policy.private_usage = PSA_KEY_USAGE_DECRYPT;  // Key may be used for decryption
+    attributes.core.policy.usage = PSA_KEY_USAGE_DECRYPT;  // Key may be used for decryption
 
     /* reset output length */
     output_length = 0u;
@@ -315,6 +346,9 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         input_size_part_1     // size_t input_length
     );
 
+    /* Update remaining ad bytes */
+    operation.ad_remaining -= input_size_part_1;
+
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
@@ -327,6 +361,9 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         msg_adata + input_size_part_1,  // const uint8_t *input
         input_size_part_2               // size_t input_length
     );
+
+    /* Update remaining ad bytes */
+    operation.ad_remaining -= input_size_part_2;
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -347,8 +384,17 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         &output_length        // size_t *output_length
     );
 
+    /* Update remaining bytes*/
+    operation.body_remaining -= input_size_part_1;
+
     /* Check the return value */
     if(PSA_SUCCESS != result)
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
+    /* Check the output length */
+    if(0 != output_length)
     {
         return MCUXCLEXAMPLE_ERROR;
     }
@@ -363,21 +409,8 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
         &output_length                       // size_t *output_length
     );
 
-    /* Check the return value */
-    if(PSA_SUCCESS != result)
-    {
-        return MCUXCLEXAMPLE_ERROR;
-    }
-
-    /* Call the AEAD verify operation */
-    result = psa_driver_wrapper_aead_verify(
-        &operation,                          // psa_aead_operation_t *operation
-        output_dec + output_length,          // const uint8_t *plaintext
-        sizeof(output_dec) - output_length,  // size_t plaintext_size
-        &output_length,                      // size_t *plaintext_length
-        tag,                                 // uint8_t *tag
-        sizeof(tag)                          // size_t tag_length
-    );
+    /* Update remaining bytes */
+    operation.body_remaining -= input_size_part_2;
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -386,7 +419,30 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     }
 
     /* Check the output length */
-    if(sizeof(msg_plain) != output_length)
+    if((input_size_part_1 + input_size_part_2) != output_length)
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
+    /* Call the AEAD verify operation */
+    result = psa_driver_wrapper_aead_verify(
+        &operation,                          // psa_aead_operation_t *operation
+        output_dec + (input_size_part_1 + input_size_part_2),          // const uint8_t *plaintext
+        sizeof(output_dec) - (input_size_part_1 + input_size_part_2),  // size_t plaintext_size
+        &output_length,                      // size_t *plaintext_length
+        tag,                                 // uint8_t *tag
+        sizeof(tag)                          // size_t tag_length
+    );
+
+
+    /* Check the output length - no output was return */
+    if(0u != output_length)
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
+    /* Check the return value */
+    if(PSA_SUCCESS != result)
     {
         return MCUXCLEXAMPLE_ERROR;
     }

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -72,7 +72,7 @@
   MCUX_CSSL_ANALYSIS_EXPAND(MCUX_CSSL_ANALYSIS_DEFER(MCUX_CSSL_ANALYSIS_PRAGMA)(coverity compliance end_block MCUX_CSSL_ANALYSIS_STR(MISRA C-2012 Rule rule_identifier)))
 
   
-#elif defined(__clang__)
+#elif defined(__clang__) || defined(__CC_ARM) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
   /* ... */
 #else
   #error Unsupported toolchain, \

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -34,6 +34,9 @@
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal_PkcWaLayout.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************************/
 /* Internal return codes of mcuxClEcc_TwEd                 */
@@ -163,5 +166,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
     const mcuxClEcc_TwEd_PtrSelectFunction_FP_t *pPtrSelectFctFP    ///<  [in]  pPtrSelectFct      Function to select accumulated ladder points
  );
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_TWED_INTERNAL_H_ */

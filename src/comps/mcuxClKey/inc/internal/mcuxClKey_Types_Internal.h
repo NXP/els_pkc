@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -30,6 +30,11 @@
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Buffer.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************
  * FUNCTION TYPE DEFINITIONS
@@ -84,6 +89,7 @@ typedef uint16_t mcuxClKey_LoadStatus_t;
  */
 struct mcuxClKey_TypeDescriptor {
   mcuxClKey_AlgorithmId_t    algoId; ///< the identifier of the algorithm, refer to #mcuxClKey_KeyTypes
+  /* uint16_t                  PADDING_FOR_32BIT_ALIGNMENT; */
   mcuxClKey_Size_t           size;   ///< the key size for the key type in bytes, refer to #mcuxClKey_KeySize
   void *                    info;   ///< pointer to additional information for this key type (e.g. curve parameters, public exponent)
 };
@@ -98,6 +104,7 @@ typedef struct mcuxClKey_Location {
   uint32_t              length;   ///< Length of the data buffer
   uint32_t              slot;     ///< Key slot to which the key is loaded
   mcuxClKey_LoadStatus_t status;   ///< Load status of the key
+  uint16_t              PADDING_FOR_32BIT_ALIGNMENT;
 } mcuxClKey_Location_t;
 
 /**
@@ -152,5 +159,10 @@ struct mcuxClKey_GenerationDescriptor
   const void *pProtocolDescriptor;    ///< Pointer to additional parameters for the protocol specific key generation function
 };
 
+
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLKEY_TYPES_INTERNAL_H_ */

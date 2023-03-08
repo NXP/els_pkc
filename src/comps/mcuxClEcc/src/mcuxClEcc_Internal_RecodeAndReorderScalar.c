@@ -16,7 +16,7 @@
  * @brief mcuxClEcc: implementation of mcuxClEcc_RecodeAndReorderScalar
  */
 
-
+#include <nxpClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -62,7 +62,7 @@
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_RecodeAndReorderScalar)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RecodeAndReorderScalar(mcuxClSession_Handle_t pSession,
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RecodeAndReorderScalar(mcuxClSession_Handle_t pSession UNUSED_PARAM,
                                                                         uint8_t scalarIndex,
                                                                         uint8_t f,
                                                                         uint32_t scalarBitLength)

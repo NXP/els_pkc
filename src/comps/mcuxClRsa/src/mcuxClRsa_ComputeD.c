@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -21,7 +21,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxCsslParamIntegrity.h>
-#include <mcuxCsslMemory_Compare.h>
 #include <mcuxClMemory.h>
 #include <mcuxClPkc.h>
 #include <mcuxClMath.h>
@@ -112,10 +111,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      * 3.2 Compute b = gcd(p-1,q-1)
      */
     MCUXCLPKC_PS1_SETLENGTH(primePQAlignLen, primePQAlignLen);
-    MCUXCLPKC_FP_CALCFUP(mcuxClRsa_ComputeD_Steps123,
-        mcuxClRsa_ComputeD_Steps123_LEN);
+    MCUXCLPKC_FP_CALCFUP(mcuxClRsa_ComputeD_Steps123_FUP,
+        mcuxClRsa_ComputeD_Steps123_FUP_LEN);
     MCUXCLPKC_WAITFORFINISH();
-    uint32_t leadingZeroN = MCUXCLMATH_FP_LEADINGZEROS(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_QSUB1);
+    uint32_t leadingZeroN;
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_QSUB1, &leadingZeroN));
     uint32_t realGcdByteLen = primePQAlignLen - (leadingZeroN >> 3u);
 
     /*
@@ -154,7 +155,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      * 5. Determine the length of d without leading zeros
      */
     MCUXCLPKC_WAITFORFINISH();
-    leadingZeroN = MCUXCLMATH_FP_LEADINGZEROS(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_D);
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_D, &leadingZeroN));
     pD->keyEntryLength = keyAlignLen - (leadingZeroN >> 3u);
 
     /*

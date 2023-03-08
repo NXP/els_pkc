@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,11 +19,13 @@
  * @brief Example for SECP_R1 256bits curve key pairs generating and public exporting
  */
 
+#include "common.h"
+
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>
@@ -57,18 +59,18 @@ bool mcuxClPsaDriver_keygen_export_public_key_secpr1_example(void)
     /**************************  Generate SECP_R1 256bits curve key pairs**************************/
     /**********************************************************************************************/
     psa_key_attributes_t keygenAttr = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve SECP_R1
-        .private_bits = MCUXCLKEY_SIZE_256 * 8u,                                     // Key bits of SECP_R1_P256
-        .private_lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 0U,                                                             // ID zero
-        .private_policy = {
-          .private_usage = PSA_ALG_NONE,
-          .private_alg = PSA_ALG_ECDSA_ANY,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = NULL,
-      .private_domain_parameters_size = 0U};
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve SECP_R1
+        .bits = MCUXCLKEY_SIZE_256 * 8u,                                     // Key bits of SECP_R1_P256
+        .lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 0U,                                                             // ID zero
+        .policy = {
+          .usage = PSA_ALG_NONE,
+          .alg = PSA_ALG_ECDSA_ANY,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = NULL,
+      .domain_parameters_size = 0U};
 
     /* Call generate_key operation */
     uint8_t key_buffer[MCUXCLKEY_SIZE_256] = {0U};
@@ -97,18 +99,18 @@ bool mcuxClPsaDriver_keygen_export_public_key_secpr1_example(void)
     /**********************************************************************************************/
 
     psa_key_attributes_t exportAttr = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve SECP_R1
-        .private_bits = MCUXCLKEY_SIZE_256 * 8u,                                     // Key bits of SECP_R1
-        .private_lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 0U,                                                             // ID zero
-        .private_policy = {
-          .private_usage = PSA_KEY_USAGE_EXPORT,
-          .private_alg = PSA_ALG_ECDSA_ANY,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = NULL,
-      .private_domain_parameters_size = 0U
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve SECP_R1
+        .bits = MCUXCLKEY_SIZE_256 * 8u,                                     // Key bits of SECP_R1
+        .lifetime = LIFETIME_EXTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 0U,                                                             // ID zero
+        .policy = {
+          .usage = PSA_KEY_USAGE_EXPORT,
+          .alg = PSA_ALG_ECDSA_ANY,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = NULL,
+      .domain_parameters_size = 0U
     };
 
     /* Call export_public_key operation */

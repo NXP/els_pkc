@@ -105,6 +105,15 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <div class="textblock">Here is a list of all documented functions, variables, defines, enums, and typedefs with links to the documentation:</div>
 
 <h3><a id="index_m"></a>- m -</h3><ul>
+<li>MCUX_CSSL_FP_ASSERT
+: <a class="el" href="group__cssl_fp_expect.html#ga301b8f23ac6981e62649c8f571a6c6eb">mcuxCsslFlowProtection.h</a>
+</li>
+<li>MCUX_CSSL_FP_ASSERT_CALLBACK
+: <a class="el" href="group__cssl_fp_cnt_expect.html#ga0c29c395a9104c6d918091b12f63ca74">mcuxCsslFlowProtection_SecureCounter_Common.h</a>
+</li>
+<li>MCUX_CSSL_FP_ASSERT_IMPL
+: <a class="el" href="group__cssl_fp_cnt_expect.html#ga391e0f29868a1dd17bd0d23a4737c129">mcuxCsslFlowProtection_SecureCounter_Local.h</a>
+</li>
 <li>MCUX_CSSL_FP_BRANCH_DECL
 : <a class="el" href="group__cssl_fp_branch.html#ga1406430491edf42797f1fbb6fec6d400">mcuxCsslFlowProtection.h</a>
 </li>
@@ -257,6 +266,12 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUX_CSSL_FP_FUNCTION_DEF_IMPL
 : <a class="el" href="group__cssl_fp_cnt_function.html#ga949e47c125d5c72ab83c3b873b7871ca">mcuxCsslFlowProtection_SecureCounter_Common.h</a>
+</li>
+<li>MCUX_CSSL_FP_FUNCTION_ENTERED
+: <a class="el" href="group__cssl_fp_function.html#ga9f7aa860f353079a6da5188bd18b977c">mcuxCsslFlowProtection.h</a>
+</li>
+<li>MCUX_CSSL_FP_FUNCTION_ENTERED_IMPL
+: <a class="el" href="group__cssl_fp_cnt_function.html#gaaf3937045ab2420f95b209d63d380b0e">mcuxCsslFlowProtection_SecureCounter_Common.h</a>
 </li>
 <li>MCUX_CSSL_FP_FUNCTION_ENTRY
 : <a class="el" href="group__cssl_fp_function.html#ga2fda8e2a0e7d862b113b28bcc1b4d9bb">mcuxCsslFlowProtection.h</a>
@@ -499,6 +514,9 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUX_CSSL_FP_USE_SECURE_COUNTER
 : <a class="el" href="group__mcux_cssl_flow_protection___c_f_g.html#ga645fafaa87e927ec807c9679dfa6d74e">mcuxCsslFlowProtection_Cfg.h</a>
+</li>
+<li>MCUX_CSSL_FP_VOID_EXPECTATION_IMPL
+: <a class="el" href="group__cssl_fp_cnt_expect.html#ga4ea20ab3d4d080887fdfc12f6c7f6bab">mcuxCsslFlowProtection_SecureCounter_Common.h</a>
 </li>
 <li>MCUX_CSSL_SC_ADD
 : <a class="el" href="group__sc_inc.html#gaebd375f1bd8786078a00d2d8326c23aa">mcuxCsslSecureCounter.h</a>
@@ -762,7 +780,7 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___w_a_p_k_c__.html#gac836b17e161566b045beb35f53828d1b">mcuxClEcc_MemoryConsumption.h</a>
 </li>
 <li>MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE
-: <a class="el" href="mcux_cl_ecc___memory_consumption_8h.html#ac8895d8165cf3c84b10ac986a30c37e4">mcuxClEcc_MemoryConsumption.h</a>
+: <a class="el" href="group__mcux_cl_ecc___memory_consumption.html#gac8895d8165cf3c84b10ac986a30c37e4">mcuxClEcc_MemoryConsumption.h</a>
 </li>
 <li>mcuxClEcc_DomainParam_misc_byteLenN_mask
 : <a class="el" href="group__mcux_cl_ecc___types.html#ga26e4695e9a47f6a7c7d36af8e8432fa0">mcuxClEcc_Types.h</a>
@@ -785,9 +803,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>mcuxClEcc_EdDSA_Ed25519_example()
 : <a class="el" href="mcux_cl_ecc___ed_d_s_a___ed25519__example_8c.html#a0a0bf85d9efa4c645dd14da0d05c1827">mcuxClEcc_EdDSA_Ed25519_example.c</a>
 </li>
-<li>MCUXCLECC_EDDSA_ED25519_SIGNATURE_SIZE
-: <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#ga7d8b3e2381eb938b13c13414b4aeb414">mcuxClEcc_Types.h</a>
-</li>
 <li>MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gab9dd06ce9086a33b19e20eba3aed8a7c">mcuxClEcc_ParameterSizes.h</a>
 </li>
@@ -796,17 +811,12 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gab2c2539baf2994a0baae71d5d5c8f9fe">mcuxClEcc_ParameterSizes.h</a>
-, <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gab2c2539baf2994a0baae71d5d5c8f9fe">mcuxClEcc_Types.h</a>
 </li>
 <li>MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gaf6cce889f1dc2b213479126d850af09c">mcuxClEcc_ParameterSizes.h</a>
-, <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gaf6cce889f1dc2b213479126d850af09c">mcuxClEcc_Types.h</a>
 </li>
 <li>MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gafd15d3ce72046f505d9763687d1614df">mcuxClEcc_ParameterSizes.h</a>
-</li>
-<li>MCUXCLECC_EDDSA_ED448_SIGNATURE_SIZE
-: <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#gad184e4d066e4901f0e9338abc111788a">mcuxClEcc_Types.h</a>
 </li>
 <li>MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga2fff3270c5870bb95a69c8f283d91ee4">mcuxClEcc_ParameterSizes.h</a>
@@ -816,14 +826,15 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga37d97fd46dcc20e7f93a5e06017ff967">mcuxClEcc_ParameterSizes.h</a>
-, <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga37d97fd46dcc20e7f93a5e06017ff967">mcuxClEcc_Types.h</a>
 </li>
 <li>MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga51affb40be89a5c0b1eb0d17a135786c">mcuxClEcc_ParameterSizes.h</a>
-, <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga51affb40be89a5c0b1eb0d17a135786c">mcuxClEcc_Types.h</a>
 </li>
 <li>MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#gae3ae89f1d488c9444e0f8c3813b9753a">mcuxClEcc_ParameterSizes.h</a>
+</li>
+<li>MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___g_e_n_k_e_y_p_a_i_r___d_e_s_c___s_i_z_e__.html#ga435b584a2a74e53c5987727a938aa65d">mcuxClEcc_MemoryConsumption.h</a>
 </li>
 <li>mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example()
 : <a class="el" href="mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c.html#ac18d1b11526087cf0f54cbb5736c8385">mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example.c</a>
@@ -840,6 +851,12 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___w_a_p_k_c__.html#ga4dd4582e5d6cdec3e4537a3447281348">mcuxClEcc_MemoryConsumption.h</a>
 </li>
+<li>mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t
+: <a class="el" href="group__mcux_cl_ecc___types.html#gadee46209e43c63814a86e882b3927b27">mcuxClEcc_Types.h</a>
+</li>
+<li>mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example()
+: <a class="el" href="mcux_cl_ecc___ed_d_s_a___generate_signature___ed25519__example_8c.html#a0c5f0c7389ab14034e77741f79fe3c25">mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c</a>
+</li>
 <li>MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___w_a_c_p_u__.html#ga9ec654b676b4d3e3ccdda604ba55e5ed">mcuxClEcc_MemoryConsumption.h</a>
 </li>
@@ -851,6 +868,12 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___w_a_p_k_c__.html#gaca347a8466c7addee0aa63eb112fcb72">mcuxClEcc_MemoryConsumption.h</a>
+</li>
+<li>mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t
+: <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_Types.h</a>
+</li>
+<li>mcuxClEcc_EdDSA_VerifySignature_Ed25519_example()
+: <a class="el" href="mcux_cl_ecc___ed_d_s_a___verify_signature___ed25519__example_8c.html#a6e7b2bc5861a95345774474f2fd8766a">mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c</a>
 </li>
 <li>MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___w_a_c_p_u__.html#gaf1baa23b5fa695897dade1e24bd60881">mcuxClEcc_MemoryConsumption.h</a>
@@ -944,6 +967,9 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLECC_STATUS_NEUTRAL_POINT
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gaad0d3ea3572cc175fe1608bca3ddac35">mcuxClEcc_Types.h</a>
+</li>
+<li>MCUXCLECC_STATUS_NOT_SUPPORTED
+: <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga7f2a86f80fcda4760372af6cdbc11c1b">mcuxClEcc_Types.h</a>
 </li>
 <li>MCUXCLECC_STATUS_OK
 : <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c">mcuxClEcc_Types.h</a>
@@ -2136,6 +2162,30 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>MCUXCLHASH_OUTPUT_SIZE_MD5
 : <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#gafe7e3fec63db293d11223cf996b0f933">mcuxClHash_Constants.h</a>
 </li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_224
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga9b455baf1195244a5a21f95d24d1bb78">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_256
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga2d4ce7c5407c45486781710968933d59">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_384
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga9ba519f3947e62fe3c33ba89912415f2">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_512
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga98c0f235847458f6e0785ce7e1fa4de1">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_128
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#gabee2279c4070bb6e490acc465d19f7b1">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_256
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga1310682860222f35228b9b69e9110b7b">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_SHAKE_128
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#gaf92c4c2afd86cf0276655d833fc92946">mcuxClHash_Constants.h</a>
+</li>
+<li>MCUXCLHASH_OUTPUT_SIZE_SHA3_SHAKE_256
+: <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga6208318273d199569492d2df54285bfb">mcuxClHash_Constants.h</a>
+</li>
 <li>MCUXCLHASH_OUTPUT_SIZE_SHA_1
 : <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___o_u_t_p_u_t___s_i_z_e__.html#ga8e6f2196aa9cc22514327290e9c6d265">mcuxClHash_Constants.h</a>
 </li>
@@ -2222,18 +2272,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA_1
 : <a class="el" href="group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga007b69adbd64212947ba7520c69cb1c9">mcuxClHash_MemoryConsumption.h</a>
-</li>
-<li>mcuxClKey_Agreement_ECDH
-: <a class="el" href="group__mcux_cl_ecc___key_agreement_descriptors.html#ga17bcc12a56c33f015f913d6bed36f8cc">mcuxClEcc_KeyMechanisms.h</a>
-</li>
-<li>mcuxClKey_Agreement_t
-: <a class="el" href="group__mcux_cl_key___types.html#gac992bd0bbe2ffcbf8c16a96141cb80ea">mcuxClKey_Types.h</a>
-</li>
-<li>mcuxClKey_AgreementDescriptor_ECDH
-: <a class="el" href="group__mcux_cl_ecc___key_agreement_descriptors.html#gaa8f7ba354fdad5294ea9cf738b0a5b30">mcuxClEcc_KeyMechanisms.h</a>
-</li>
-<li>mcuxClKey_AgreementDescriptor_t
-: <a class="el" href="group__mcux_cl_key___types.html#ga01e80989ed177ee950b67567a22d2c1e">mcuxClKey_Types.h</a>
 </li>
 <li>MCUXCLKEY_ALGO_ID_AES
 : <a class="el" href="group__mcux_cl_key___key_types.html#gaf342031191b667161f2db471ddbc1724">mcuxClKey_Constants.h</a>
@@ -2429,6 +2467,9 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLKEY_STATUS_FAULT_ATTACK
 : <a class="el" href="group___m_c_u_x_c_l_k_e_y___s_t_a_t_u_s__.html#ga7be083c8ca459a7290b5cf7784c75469">mcuxClKey_Constants.h</a>
+</li>
+<li>MCUXCLKEY_STATUS_INVALID_INPUT
+: <a class="el" href="group___m_c_u_x_c_l_k_e_y___s_t_a_t_u_s__.html#gaf5c8b802949e1a7920cfdd65ec3fe42b">mcuxClKey_Constants.h</a>
 </li>
 <li>MCUXCLKEY_STATUS_NOT_SUPPORTED
 : <a class="el" href="group___m_c_u_x_c_l_k_e_y___s_t_a_t_u_s__.html#gacb7a3820f23f7cc17d33498ab12e3b3c">mcuxClKey_Constants.h</a>
@@ -2889,12 +2930,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>mcuxClMacModes_cmac_oneshot_example()
 : <a class="el" href="mcux_cl_mac_modes__cmac__oneshot__example_8c.html#a2f564d265c279b2885698f062dde6ecc">mcuxClMacModes_cmac_oneshot_example.c</a>
 </li>
-<li>mcuxClMacModes_cmac_oneshot_internal_ckdf_key_example()
-: <a class="el" href="mcux_cl_mac_modes__cmac__oneshot__internal__ckdf__key__example_8c.html#a13bda42044e718832a7b172561ab4f78">mcuxClMacModes_cmac_oneshot_internal_ckdf_key_example.c</a>
-</li>
-<li>mcuxClMacModes_cmac_oneshot_internal_key_example()
-: <a class="el" href="mcux_cl_mac_modes__cmac__oneshot__internal__key__example_8c.html#af0ac0f95cf4ac117831a3f73c851adb5">mcuxClMacModes_cmac_oneshot_internal_key_example.c</a>
-</li>
 <li>MCUXCLMACMODES_GET_HMAC_INPUTBUFFER_LENGTH
 : <a class="el" href="group__mcux_cl_mac_modes___constants.html#ga4d14ba3d41a0e6f6ef41576477ee74f9">mcuxClMacModes_Constants.h</a>
 </li>
@@ -2909,12 +2944,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLMATH_FP_EXACTDIVIDEODD
 : <a class="el" href="group__mcux_cl_math___functions.html#gaf1d62616daa224745d2ed40fdfa4d724">mcuxClMath_Functions.h</a>
-</li>
-<li>MCUXCLMATH_FP_INITLOCALUPTRT
-: <a class="el" href="group__mcux_cl_math___functions.html#ga4c4f5d39d9afbaa83550c0e4dcd190db">mcuxClMath_Functions.h</a>
-</li>
-<li>MCUXCLMATH_FP_LEADINGZEROS
-: <a class="el" href="group__mcux_cl_math___functions.html#ga5e286eeaee0c98c3a1eb1a325632787f">mcuxClMath_Functions.h</a>
 </li>
 <li>MCUXCLMATH_FP_MODEXP_SQRMULTL2R
 : <a class="el" href="group__mcux_cl_math___functions.html#ga9f0c8d67f0c192341fbf9ac436f02173">mcuxClMath_Functions.h</a>
@@ -2937,9 +2966,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>MCUXCLMATH_FP_SHIFTMODULUS
 : <a class="el" href="group__mcux_cl_math___functions.html#ga35df7cdad4c81c5e276f373c70c571d0">mcuxClMath_Functions.h</a>
 </li>
-<li>MCUXCLMATH_FP_TRAILINGZEROS
-: <a class="el" href="group__mcux_cl_math___functions.html#gaf8e95ef7352377d28593d19cfa19e8f7">mcuxClMath_Functions.h</a>
-</li>
 <li>MCUXCLMATH_MODEXP_SQRMULTL2R
 : <a class="el" href="group__mcux_cl_math___functions.html#ga82842f4b45c0d86e4c2d6d29e23c259b">mcuxClMath_Functions.h</a>
 </li>
@@ -2959,7 +2985,7 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 : <a class="el" href="group__mcux_cl_math___functions.html#ga3ee39987ba7de0e36abc848d77b4eaa3">mcuxClMath_Functions.h</a>
 </li>
 <li>MCUXCLMATH_SECMODEXP
-: <a class="el" href="group__mcux_cl_math___functions.html#ga7f34036f34027bdbd97cda0e285fdcd2">mcuxClMath_Functions.h</a>
+: <a class="el" href="group__mcux_cl_math___functions.html#ga3e0168ff93f7bffd7d56ce509ba29c59">mcuxClMath_Functions.h</a>
 </li>
 <li>MCUXCLMATH_SHIFTMODULUS
 : <a class="el" href="group__mcux_cl_math___functions.html#gaadd4485b0f1db32b6da6e6b7a2e6cc11">mcuxClMath_Functions.h</a>
@@ -3002,12 +3028,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>mcuxClOsccaPkc_State_t
 : <a class="el" href="group__mcux_cl_oscca_pkc___functions.html#ga83f8544bc01ae0f871addbfe5600e706">mcuxClOsccaPkc_Functions.h</a>
-</li>
-<li>mcuxClOsccaSm3_Algorithm_Sm3
-: <a class="el" href="group__mcux_cl_oscca_sm3___modes.html#ga70eab59382fcd2e14c930e99fdffe9bf">mcuxClOsccaSm3_Algorithms.h</a>
-</li>
-<li>mcuxClOsccaSm3_AlgorithmDescriptor_Sm3
-: <a class="el" href="group__mcux_cl_oscca_sm3___modes.html#ga1141fcef2d157e10c22cee144b4fcf33">mcuxClOsccaSm3_Algorithms.h</a>
 </li>
 <li>MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_MAX
 : <a class="el" href="group___m_c_u_x_c_l_o_s_c_c_a_s_m3___w_a.html#gaac9381a82113d329dd25ab934c95dfd5">mcuxClOsccaSm3_MemoryConsumption.h</a>
@@ -3147,8 +3167,17 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>mcuxClRandomModes_ELS_example()
 : <a class="el" href="mcux_cl_random_modes___e_l_s__example_8c.html#a6f6a6f01edb2e9fe80130c41b92e14b6">mcuxClRandomModes_ELS_example.c</a>
 </li>
+<li>mcuxClRandomModes_mdCtrDrbg_AES256_DRG3
+: <a class="el" href="group__mcux_cl_random_modes___constants.html#ga9a6dad1896494a4a73045f18ff9d4115">mcuxClRandomModes_Constants.h</a>
+</li>
 <li>mcuxClRandomModes_mdELS_Drbg
 : <a class="el" href="group__mcux_cl_random_modes___constants.html#ga33a2ec75a1ffddc069c679de7c34b8fc">mcuxClRandomModes_Constants.h</a>
+</li>
+<li>mcuxClRandomModes_Mode_CtrDrbg_AES256
+: <a class="el" href="group__mcux_cl_random_modes___constants.html#ga666380b1403bb1e873899802474c8787">mcuxClRandomModes_Constants.h</a>
+</li>
+<li>mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG4
+: <a class="el" href="group__mcux_cl_random_modes___constants.html#ga3a5c639b5390a87053e4afe76313dbb9">mcuxClRandomModes_Constants.h</a>
 </li>
 <li>mcuxClRsa_Key
 : <a class="el" href="group__mcux_cl_rsa___types.html#gaa10abda6e87540ddd4db42c84aa5f8f5">mcuxClRsa_Types.h</a>
@@ -3168,11 +3197,20 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>mcuxClRsa_KeyEntry
 : <a class="el" href="group__mcux_cl_rsa___types.html#ga45ab9e1108bb7a629af14c74d8392622">mcuxClRsa_Types.h</a>
 </li>
+<li>MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#gad96d63918b029c58379a519458e0fe5e">mcuxClRsa_MemoryConsumption.h</a>
+</li>
 <li>MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#ga50df60e5ac10a4d18d91793b9975f931">mcuxClRsa_MemoryConsumption.h</a>
 </li>
+<li>MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#ga4f7ea947e335da713b995b3dd5756726">mcuxClRsa_MemoryConsumption.h</a>
+</li>
 <li>MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#ga9cddbdf9c06180c1ad4f1004c013a3b0">mcuxClRsa_MemoryConsumption.h</a>
+</li>
+<li>MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#ga7cd47280b5c29ab35fe15afdb1aff9b5">mcuxClRsa_MemoryConsumption.h</a>
 </li>
 <li>MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#ga046e2a5713b8ad6d69f9882d2fde5b3f">mcuxClRsa_MemoryConsumption.h</a>
@@ -3192,11 +3230,20 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___c_r_t___w_a.html#ga398705431e601a6309bcf59a65f72328">mcuxClRsa_MemoryConsumption.h</a>
 </li>
+<li>MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___p_l_a_i_n___w_a.html#ga8bfbe68f2ddf833c65badc56832310ff">mcuxClRsa_MemoryConsumption.h</a>
+</li>
 <li>MCUXCLRSA_KEYGENERATION_PLAIN_2048_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___p_l_a_i_n___w_a.html#gaeaf97fe967de3e01d06b80d4aecf62ba">mcuxClRsa_MemoryConsumption.h</a>
 </li>
+<li>MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___p_l_a_i_n___w_a.html#ga499a98e9b3b5f98b43d41bace11d6d2a">mcuxClRsa_MemoryConsumption.h</a>
+</li>
 <li>MCUXCLRSA_KEYGENERATION_PLAIN_3072_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___p_l_a_i_n___w_a.html#ga76dbc936b3c90bf4e66824697b16be80">mcuxClRsa_MemoryConsumption.h</a>
+</li>
+<li>MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___p_l_a_i_n___w_a.html#gacfaaad0cd3da9dd167a4068a2a2fda7f">mcuxClRsa_MemoryConsumption.h</a>
 </li>
 <li>MCUXCLRSA_KEYGENERATION_PLAIN_4096_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___k_e_y_g_e_n_e_r_a_t_i_o_n___p_l_a_i_n___w_a.html#ga2e6c1c9053ca24c4101e348c9f8d2588">mcuxClRsa_MemoryConsumption.h</a>
@@ -3300,9 +3347,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>MCUXCLRSA_SIGN_CRT_4096_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga56f2ed2760ce4db4e8246d96f768e23e">mcuxClRsa_MemoryConsumption.h</a>
 </li>
-<li>MCUXCLRSA_SIGN_CRT_8192_WAPKC_SIZE
-: <a class="el" href="group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gae3069a3437f12c9697da1ffb0669b88b">mcuxClRsa_MemoryConsumption.h</a>
-</li>
 <li>MCUXCLRSA_SIGN_CRT_NOENCODE_1024_WACPU_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga08af4d804d4c5dd22c246fe4ee55afd1">mcuxClRsa_MemoryConsumption.h</a>
 </li>
@@ -3365,9 +3409,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#gac51d995815daa1270660faa6c941556b">mcuxClRsa_MemoryConsumption.h</a>
-</li>
-<li>MCUXCLRSA_SIGN_PLAIN_8192_WAPKC_SIZE
-: <a class="el" href="group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga6b503e621adc1cdb724c7a4052ff5b83">mcuxClRsa_MemoryConsumption.h</a>
 </li>
 <li>MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___s_i_g_n___w_a.html#ga62affe57ed8b934c432d1e4957ca2b96">mcuxClRsa_MemoryConsumption.h</a>
@@ -3471,9 +3512,6 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 <li>MCUXCLRSA_VERIFY_4096_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___v_e_r_i_f_y___w_a.html#ga8472e567acdaf653ea64617586e69dd5">mcuxClRsa_MemoryConsumption.h</a>
 </li>
-<li>MCUXCLRSA_VERIFY_8192_WAPKC_SIZE
-: <a class="el" href="group___m_c_u_x_c_l_r_s_a___v_e_r_i_f_y___w_a.html#gafc4c17085576d49f25280cd32603cb69">mcuxClRsa_MemoryConsumption.h</a>
-</li>
 <li>mcuxClRsa_verify_NoVerify_example()
 : <a class="el" href="mcux_cl_rsa__verify___no_verify__example_8c.html#ae698230b5b34693292b89694623b9f7b">mcuxClRsa_verify_NoVerify_example.c</a>
 </li>
@@ -3487,7 +3525,7 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 : <a class="el" href="mcux_cl_rsa__verify__pssverify__sha2__256__example_8c.html#a7dd9e733a9752affa331539b2736861f">mcuxClRsa_verify_pssverify_sha2_256_example.c</a>
 </li>
 <li>MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE
-: <a class="el" href="group___m_c_u_x_c_l_r_s_a___v_e_r_i_f_y___w_a.html#gaf243c98cacd48e3a9fefd2791cf06dc3">mcuxClRsa_MemoryConsumption.h</a>
+: <a class="el" href="group___m_c_u_x_c_l_r_s_a___v_e_r_i_f_y___w_a.html#gaf4bcc54a8a49029c2454d0afdca0a18e">mcuxClRsa_MemoryConsumption.h</a>
 </li>
 <li>MCUXCLRSA_VERIFY_WAPKC_SIZE
 : <a class="el" href="group___m_c_u_x_c_l_r_s_a___v_e_r_i_f_y___w_a.html#ga1890b9a82cba6144b533121da365baeb">mcuxClRsa_MemoryConsumption.h</a>
@@ -3521,6 +3559,12 @@ $(document).ready(function(){initNavTree('globals_m.html','');});
 </li>
 <li>mcuxClSession_WorkArea_t
 : <a class="el" href="group__mcux_cl_session___types.html#ga13a1a61b81f8b8bdc5272d33b44a2dac">mcuxClSession_Types.h</a>
+</li>
+<li>MCUXCSSLMEMORY_KEEP_ORDER
+: <a class="el" href="group__mcux_cssl_memory___types___macros.html#ga0072c925d0ab8c5b0b071abd1d5218af">mcuxCsslMemory_Types.h</a>
+</li>
+<li>MCUXCSSLMEMORY_REVERSE_ORDER
+: <a class="el" href="group__mcux_cssl_memory___types___macros.html#ga9c4cf10d8106eca9894d9e3b131b52f9">mcuxCsslMemory_Types.h</a>
 </li>
 <li>MCUXCSSLMEMORY_STATUS_EQUAL
 : <a class="el" href="group__mcux_cssl_memory___types___macros.html#gafaad4a560714fdff8064ba9a50f7d572">mcuxCsslMemory_Types.h</a>

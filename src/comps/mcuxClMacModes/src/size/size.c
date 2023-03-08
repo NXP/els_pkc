@@ -19,6 +19,8 @@
  */
 
 #include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Analysis.h>
+
 #include <internal/mcuxClMacModes_Wa.h>
 #include <internal/mcuxClMacModes_Internal_Types.h>
 #include <internal/mcuxClMacModes_ELS_Ctx.h>
@@ -27,8 +29,12 @@
 /**** Work area sizes ****/
 /*************************/
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+
 /* Context and WA for MAC computation */
 volatile mcuxClMacModes_Context_t mcuxClMacModes_Context;
 volatile mcuxClMacModes_WorkArea_t mcuxClMacModes_WorkArea;
 
 /* Mode-specific structures */
+
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

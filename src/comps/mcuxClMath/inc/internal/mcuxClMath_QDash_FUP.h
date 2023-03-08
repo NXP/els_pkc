@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021,2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,6 +19,10 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * FUP program declaration mcuxClMath_QDash_Fup_Init
@@ -40,5 +44,9 @@ extern const mcuxClPkc_FUPEntry_t mcuxClMath_QDash_Fup_Loop0[mcuxClMath_QDash_Fu
 #define mcuxClMath_QDash_Fup_Loop1_LEN  3u
 
 extern const mcuxClPkc_FUPEntry_t mcuxClMath_QDash_Fup_Loop1[mcuxClMath_QDash_Fup_Loop1_LEN];
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMATH_QDASH_FUP_H_*/

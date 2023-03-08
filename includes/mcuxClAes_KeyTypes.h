@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,6 +25,10 @@
 #include <stdbool.h>
 
 #include <mcuxClKey_Types.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @defgroup mcuxClAes_KeyTypes mcuxClAes_KeyTypes
@@ -69,5 +73,8 @@ static const mcuxClKey_Type_t mcuxClKey_Type_Aes256 = &mcuxClKey_TypeDescriptor_
  * @}
  */ /* mcuxClAes_KeyTypes */
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLAES_KEYTYPES_H_ */

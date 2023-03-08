@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -219,8 +219,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
       MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_N, MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_R);
 
   /* Montgomery reduction and normalize the result */ 
-  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_Public_ReductionME,
-          mcuxClRsa_Public_ReductionME_LEN);
+  MCUXCLPKC_FP_CALCFUP(mcuxClRsa_Public_ReductionME_FUP,
+          mcuxClRsa_Public_ReductionME_FUP_LEN);
   MCUXCLPKC_WAITFORFINISH();
 
   /************************************************************************************************/

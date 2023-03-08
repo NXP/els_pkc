@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -81,7 +81,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
         if (MCUXCLELS_CIPHER_DECRYPT == pAlgo->direction)
         {
             MCUX_CSSL_FP_FUNCTION_CALL(copyState, mcuxClMemory_copy(tempBlock, (uint8_t const*)(pIn + inLength - MCUXCLAES_BLOCK_SIZE), MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
-            if(copyState != 0U)
+            if(0u != copyState)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
             }
@@ -123,18 +123,11 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
     }
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pOut, inLength));
-    if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
-    }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     if(MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CBC == elsOptions.bits.cphmde)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(copyState, mcuxClMemory_copy((uint8_t *) pContext->ivState, nextState, MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
-        if(copyState != 0U)
+        if(0u != copyState)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
         }
@@ -151,6 +144,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
 
 }
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_NoPadding_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -168,6 +162,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 16u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method1_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -185,6 +180,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 1u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method2_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -202,6 +198,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 1u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Dec_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -219,6 +216,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 16u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_NoPadding_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -236,6 +234,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 16u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method1_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -253,6 +252,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 1u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method2_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -270,6 +270,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 1u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Dec_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes
@@ -287,6 +288,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .granularity = 16u
 };
 
+/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CTR_Els = {
 /* [Design]
     mcuxClCipherModes_ModeSkeletonAes

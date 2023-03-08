@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021,2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,6 +23,9 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * FUP program declaration mcuxClEcc_FUP_Weier_Verify_Convert_G_PrecG_toMR
@@ -60,5 +63,8 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_Fup_Verify_Update_G_to_Prec1[mcuxClE
 #define mcuxClEcc_Fup_Verify_Update_pubkeyQ_P1_z_LEN  9u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_Fup_Verify_Update_pubkeyQ_P1_z[mcuxClEcc_Fup_Verify_Update_pubkeyQ_P1_z_LEN];
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_WEIER_VERIFY_FUP_H_ */

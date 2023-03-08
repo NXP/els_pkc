@@ -1,8 +1,6 @@
 var searchData=
 [
   ['mcuxclecc_5fdomainparam_5ft',['mcuxClEcc_DomainParam_t',['../structmcux_cl_ecc___domain_param__t.html',1,'']]],
-  ['mcuxclecc_5feddsa_5fgeneratekeypairdescriptor_5ft',['mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t',['../structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html',1,'']]],
-  ['mcuxclecc_5feddsa_5fsignatureprotocoldescriptor_5ft',['mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t',['../structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html',1,'']]],
   ['mcuxclecc_5fkeygen_5fparam_5ft',['mcuxClEcc_KeyGen_Param_t',['../structmcux_cl_ecc___key_gen___param__t.html',1,'']]],
   ['mcuxclecc_5fpointmult_5fparam_5ft',['mcuxClEcc_PointMult_Param_t',['../structmcux_cl_ecc___point_mult___param__t.html',1,'']]],
   ['mcuxclecc_5fsign_5fparam_5ft',['mcuxClEcc_Sign_Param_t',['../structmcux_cl_ecc___sign___param__t.html',1,'']]],

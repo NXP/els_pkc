@@ -123,7 +123,5 @@ var mcux_cl_ecc___key_mechanisms_8h =
     [ "mcuxClKey_TypeDescriptor_Ecc_MontDH_Curve25519_KeyPair", "group__mcux_cl_ecc___key_type_descriptors.html#gadfd782e0581049bb1fe40049295807f6", null ],
     [ "mcuxClKey_Type_Ecc_MontDH_Curve25519_KeyPair", "group__mcux_cl_ecc___key_type_descriptors.html#gadcf4ca8f2a1626610da5b9bea5be3d89", null ],
     [ "mcuxClKey_TypeDescriptor_Ecc_MontDH_Curve448_KeyPair", "group__mcux_cl_ecc___key_type_descriptors.html#ga033a43f0faf219f0e18ced032e1ad694", null ],
-    [ "mcuxClKey_Type_Ecc_MontDH_Curve448_KeyPair", "group__mcux_cl_ecc___key_type_descriptors.html#gae9116a45b5bfb237470625ae7d0fb29b", null ],
-    [ "mcuxClKey_AgreementDescriptor_ECDH", "group__mcux_cl_ecc___key_agreement_descriptors.html#gaa8f7ba354fdad5294ea9cf738b0a5b30", null ],
-    [ "mcuxClKey_Agreement_ECDH", "group__mcux_cl_ecc___key_agreement_descriptors.html#ga17bcc12a56c33f015f913d6bed36f8cc", null ]
+    [ "mcuxClKey_Type_Ecc_MontDH_Curve448_KeyPair", "group__mcux_cl_ecc___key_type_descriptors.html#gae9116a45b5bfb237470625ae7d0fb29b", null ]
 ];

@@ -17,6 +17,7 @@ var group__cssl_fp_cnt_function =
     [ "MCUX_CSSL_FP_PROTECTION_TOKEN_IMPL", "group__cssl_fp_cnt_function.html#ga5da930d2d73279d4361af98b96771185", null ],
     [ "MCUX_CSSL_FP_COUNTER_COMPRESSED", "group__cssl_fp_cnt_function.html#ga2aa4e71591c9e48638a5733885a77972", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALLED_IMPL", "group__cssl_fp_cnt_function.html#ga387940e23bd51390165c5cdffe5b2e6e", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_ENTERED_IMPL", "group__cssl_fp_cnt_function.html#gaaf3937045ab2420f95b209d63d380b0e", null ],
     [ "MCUX_CSSL_FP_PROTECTED_TYPE_IMPL", "group__cssl_fp_cnt_function.html#ga8c5845ea3e1b932b969db83484b26ecf", null ],
     [ "MCUX_CSSL_FP_FUNCTION_ENTRY_IMPLn", "group__cssl_fp_cnt_function.html#ga1a8ea6cc710859bcadb79a488dd8db25", null ],
     [ "MCUX_CSSL_FP_FUNCTION_ENTRY_IMPL1", "group__cssl_fp_cnt_function.html#gab4ce00a3b45306924fe9b0b6664bde0a", null ],

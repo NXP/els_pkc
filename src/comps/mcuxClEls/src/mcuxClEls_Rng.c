@@ -23,10 +23,21 @@
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
+
+/* Platform compatibility defines */
+
+#ifndef ELS_PRNG_DATOUT
+#define ELS_PRNG_DATOUT PRNG_DATOUT
+#endif
+
+#ifndef ELS_ERR_STATUS
+#define ELS_ERR_STATUS ERR_STATUS
+#endif
+/* END of Platform compatibility defines */  
 
 #define RANDOM_BIT_ARRAY_SIZE 4U
 
@@ -43,7 +54,7 @@
 static inline uint32_t els_getPRNGWord(
     void)
 {
-    return MCUXCLELS_SFR_READ(PRNG_DATOUT);
+    return MCUXCLELS_SFR_READ(ELS_PRNG_DATOUT);
 }
 
 // Implementation of mcuxClEls interface "Rng"

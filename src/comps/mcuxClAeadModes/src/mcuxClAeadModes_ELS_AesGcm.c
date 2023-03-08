@@ -547,7 +547,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
         /* Call the finalize function. */
         MCUX_CSSL_FP_FUNCTION_CALL(retFinal, pAlgo->pEngine(session, pContext,
                                                                    NULL,
-                                                                   NULL,
+                                                                   (uint32_t)NULL,
                                                                    pContext->partialData,
                                                                    NULL,
                                                                    MCUXCLAEAD_ENGINE_OPTION_FINISH));
@@ -614,7 +614,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             MCUX_CSSL_FP_CONDITIONAL((aadProFPFlag1 == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_CONDITIONAL((aadProFPFlag2 == 1u), pAlgo->protection_token_engine)
             ),
-            MCUX_CSSL_FP_CONDITIONAL((0 != ((adataLength / MCUXCLELS_AEAD_AAD_BLOCK_SIZE) * MCUXCLELS_AEAD_AAD_BLOCK_SIZE)), pAlgo->protection_token_engine),
+            MCUX_CSSL_FP_CONDITIONAL((0u != ((adataLength / MCUXCLELS_AEAD_AAD_BLOCK_SIZE) * MCUXCLELS_AEAD_AAD_BLOCK_SIZE)), pAlgo->protection_token_engine),
             MCUX_CSSL_FP_CONDITIONAL((bytesRemainingAad != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
             MCUX_CSSL_FP_CONDITIONAL((aadProFPFlag != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                                                           pAlgo->protection_token_engine)
@@ -623,7 +623,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             MCUX_CSSL_FP_CONDITIONAL((dataProFPFlag1 == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_CONDITIONAL((dataProFPFlag2 == 1u), pAlgo->protection_token_engine)
             ),
-            MCUX_CSSL_FP_CONDITIONAL((0 != ((inLength / MCUXCLAES_BLOCK_SIZE) * MCUXCLAES_BLOCK_SIZE)), pAlgo->protection_token_engine),
+            MCUX_CSSL_FP_CONDITIONAL((0u != ((inLength / MCUXCLAES_BLOCK_SIZE) * MCUXCLAES_BLOCK_SIZE)), pAlgo->protection_token_engine),
             MCUX_CSSL_FP_CONDITIONAL((bytesRemainingData != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
             MCUX_CSSL_FP_CONDITIONAL((dataProFPFlag != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                                                            pAlgo->protection_token_engine)

@@ -12,7 +12,7 @@
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaSm3_Core_sm3.h
- *  @brief Internal definitions and declarations of the *CORE* layer dedicated to CSS
+ *  @brief Internal definitions and declarations of the *CORE* layer dedicated to SAFO SM3
  */
 
 #ifndef MCUXCLOSCCASM3_CORE_SM3_H_

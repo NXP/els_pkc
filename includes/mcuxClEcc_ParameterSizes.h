@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -96,9 +96,9 @@
  * @{ */
 #define MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP                     (32U)
 #define MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER             (32U)
-#define MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIVATEKEY                 (MCUXCLECC_WEIERECC_SECP224K1_SIZE_BASEPOINTORDER)
-#define MCUXCLECC_WEIERECC_SECP256K1_SIZE_PUBLICKEY                  (2U * MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP)
-#define MCUXCLECC_WEIERECC_SECP256K1_SIZE_SHAREDSECRET               (MCUXCLECC_WEIERECC_SECP224K1_SIZE_PRIMEP)
+#define MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIVATEKEY                 (MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER)
+#define MCUXCLECC_WEIERECC_SECP256K1_SIZE_PUBLICKEY                  (2U * MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP)
+#define MCUXCLECC_WEIERECC_SECP256K1_SIZE_SHAREDSECRET               (MCUXCLECC_WEIERECC_SECP256K1_SIZE_PRIMEP)
 #define MCUXCLECC_WEIERECC_SECP256K1_SIZE_SIGNATURE                  (2U * MCUXCLECC_WEIERECC_SECP256K1_SIZE_BASEPOINTORDER)
 /** @} */  /* MCUXCLECC_WEIERECC_SECP256K1_SIZE_ */
 
@@ -406,9 +406,10 @@
  * @{ */
 #define MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP            (32u)   ///< Byte length of the underlying prime p used in Ed25519.
 #define MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER    (32u)   ///< Byte length of the base point order n used in Ed25519.
-#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY        (32u)   ///< Byte length of a Ed25519 private key.
-#define MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY         (32u)   ///< Byte length of a Ed25519 public key.
-#define MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE         (64u)   ///< Byte length of a Ed25519 signature.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY        (32u)   ///< Byte length of an Ed25519 private key.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA    (128u) // TODO: Change to 96 once copy of public key has been removed  ///< Byte length of an Ed25519 private key handle data buffer.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY         (32u)   ///< Byte length of an Ed25519 public key.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE         (64u)   ///< Byte length of an Ed25519 signature.
 /** @} */  /* MCUXCLECC_EDDSA_ED25519_SIZE_ */
 
 /** @addtogroup MCUXCLECC_EDDSA_ED448_SIZE_
@@ -416,9 +417,10 @@
  * @{ */
 #define MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP              (56u)   ///< Byte length of the underlying prime p used in Ed448.
 #define MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER      (56u)   ///< Byte length of the base point order n used in Ed448.
-#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY          (57u)   ///< Byte length of a Ed448 private key.
-#define MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY           (57u)   ///< Byte length of a Ed448 public key.
-#define MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE           (114u)  ///< Byte length of a Ed448 signature.
+#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY          (57u)   ///< Byte length of an Ed448 private key.
+#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA      (228u) // TODO: Change to 171 once copy of public key has been removed ///< Byte length of an Ed448 private key handle data buffer.
+#define MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY           (57u)   ///< Byte length of an Ed448 public key.
+#define MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE           (114u)  ///< Byte length of an Ed448 signature.
 /** @} */  /* MCUXCLECC_EDDSA_ED448_SIZE_ */
 /**
  * @}

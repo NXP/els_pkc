@@ -97,7 +97,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_DecodeCoordinat
     MCUXCLPKC_FP_IMPORTLITTLEENDIANTOPKC(ECC_T0, pCoordinateEnc, byteLenP);
 
     /* If leadingZerosP != 0 (X25519), mask MSByte according to rfc7748, Ch5. */
-    uint32_t leadingZerosP = MCUXCLMATH_FP_LEADINGZEROS(ECC_P);
+    uint32_t leadingZerosP;
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(ECC_P, &leadingZerosP));
     if (0u != leadingZerosP)
     {
         uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
@@ -175,7 +177,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     /* Securely calculate, R' = sigma * (u, 1), stored result in buffers (X0, Z0). */
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
-    uint32_t leadingZeroN = MCUXCLMATH_FP_LEADINGZEROS(ECC_N);
+    uint32_t leadingZeroN;
+    /* mcuxClMath_LeadingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(ECC_N, &leadingZeroN));
     uint32_t bitLenN = (operandSize * 8u) - leadingZeroN;
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult0,
         mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S1, bitLenN, MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT));

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_Public_FUP.h>
 
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_Public_ReductionME,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_Public_ReductionME_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     //Convert from Montgomery to normal representation
     FUP_MC1_MR(MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_R,

@@ -17,6 +17,7 @@
 
 
 #include <stdint.h>
+#include <nxpClToolchain.h>
 
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -49,15 +50,15 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_noEncode)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
-  const uint32_t              inputLength,
-  mcuxCl_Buffer_t              pVerificationInput,
-  mcuxClHash_Algo_t            pHashAlgo,
-  const uint8_t *             pLabel,
-  const uint32_t              saltlabelLength,
+  const uint32_t              inputLength UNUSED_PARAM,
+  mcuxCl_Buffer_t              pVerificationInput UNUSED_PARAM,
+  mcuxClHash_Algo_t            pHashAlgo UNUSED_PARAM,
+  const uint8_t *             pLabel UNUSED_PARAM,
+  const uint32_t              saltlabelLength UNUSED_PARAM,
   const uint32_t              keyBitLength,
-  const uint32_t              options,
+  const uint32_t              options UNUSED_PARAM,
   mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength)
+  uint32_t * const            pOutLength UNUSED_PARAM)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_noEncode);
 

@@ -13,8 +13,8 @@
 /* Security Classification:  Company Confidential                           */
 /*--------------------------------------------------------------------------*/
 
-#ifndef MCUXCLRANDOM_FUNCTIONS_PATCHMODE_H_
-#define MCUXCLRANDOM_FUNCTIONS_PATCHMODE_H_
+#ifndef MCUXCLRANDOMMODES_FUNCTIONS_PATCHMODE_H_
+#define MCUXCLRANDOMMODES_FUNCTIONS_PATCHMODE_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 
@@ -41,8 +41,8 @@ extern "C" {
 
 /* Interface definition for a custom RNG function */
 typedef mcuxClRandom_Status_t (* mcuxClRandomModes_CustomGenerateAlgorithm_t)(
-    mcuxClRandom_Context_t *pCustomCtx,
-    uint32_t *pCpuWa,
+    mcuxClSession_Handle_t session,
+    mcuxClRandom_Context_t pCustomCtx,
     uint8_t *pOut,
     uint32_t outLength
 );
@@ -65,11 +65,11 @@ typedef mcuxClRandom_Status_t (* mcuxClRandomModes_CustomGenerateAlgorithm_t)(
  *
  * \return status
  */
-
-mcuxClRandom_Status_t mcuxClRandomModes_createPatchMode(
-    mcuxClRandom_Mode_t patchMode,
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_createPatchMode)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createPatchMode(
+    mcuxClRandom_ModeDescriptor_t * patchMode,
     mcuxClRandomModes_CustomGenerateAlgorithm_t customGenerateAlgorithm,
-    mcuxClRandom_Context_t *pCustomCtx,
+    mcuxClRandom_Context_t pCustomCtx,
     uint32_t securityStrength
 );
 
@@ -78,4 +78,4 @@ mcuxClRandom_Status_t mcuxClRandomModes_createPatchMode(
 } /* extern "C" */
 #endif
 
-#endif /* MCUXCLRANDOM_FUNCTIONS_PATCHMODE_H_ */
+#endif /* MCUXCLRANDOMMODES_FUNCTIONS_PATCHMODE_H_ */

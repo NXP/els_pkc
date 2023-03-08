@@ -119,21 +119,13 @@ $(document).ready(function(){initNavTree('mcux_cl_math___functions_8h.html','');
 <code>#include &lt;<a class="el" href="mcux_cssl_flow_protection_8h_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_core___function_identifiers_8h_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_pkc_8h_source.html">mcuxClPkc.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="mcux_cl_session_8h_source.html">mcuxClSession.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClMath_Types.h&gt;</code><br />
 </div>
 <p><a href="mcux_cl_math___functions_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga4c4f5d39d9afbaa83550c0e4dcd190db"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#ga4c4f5d39d9afbaa83550c0e4dcd190db">MCUXCLMATH_FP_INITLOCALUPTRT</a>(i3_i2_i1_i0,  i7_i6_i5_i4,  localPtrUptrt,  noOfIndices)</td></tr>
-<tr class="memdesc:ga4c4f5d39d9afbaa83550c0e4dcd190db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMath_InitLocalUptrt with flow protection.  <a href="group__mcux_cl_math___functions.html#ga4c4f5d39d9afbaa83550c0e4dcd190db">More...</a><br /></td></tr>
-<tr class="separator:ga4c4f5d39d9afbaa83550c0e4dcd190db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5e286eeaee0c98c3a1eb1a325632787f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#ga5e286eeaee0c98c3a1eb1a325632787f">MCUXCLMATH_FP_LEADINGZEROS</a>(iX)</td></tr>
-<tr class="memdesc:ga5e286eeaee0c98c3a1eb1a325632787f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMath_LeadingZeros with flow protection.  <a href="group__mcux_cl_math___functions.html#ga5e286eeaee0c98c3a1eb1a325632787f">More...</a><br /></td></tr>
-<tr class="separator:ga5e286eeaee0c98c3a1eb1a325632787f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8e95ef7352377d28593d19cfa19e8f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#gaf8e95ef7352377d28593d19cfa19e8f7">MCUXCLMATH_FP_TRAILINGZEROS</a>(iX)</td></tr>
-<tr class="memdesc:gaf8e95ef7352377d28593d19cfa19e8f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMath_TrailingZeros with flow protection.  <a href="group__mcux_cl_math___functions.html#gaf8e95ef7352377d28593d19cfa19e8f7">More...</a><br /></td></tr>
-<tr class="separator:gaf8e95ef7352377d28593d19cfa19e8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaadd4485b0f1db32b6da6e6b7a2e6cc11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#gaadd4485b0f1db32b6da6e6b7a2e6cc11">MCUXCLMATH_SHIFTMODULUS</a>(iNShifted,  iN)</td></tr>
 <tr class="memdesc:gaadd4485b0f1db32b6da6e6b7a2e6cc11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for #mcuxClMath_ShiftModulus.  <a href="group__mcux_cl_math___functions.html#gaadd4485b0f1db32b6da6e6b7a2e6cc11">More...</a><br /></td></tr>
 <tr class="separator:gaadd4485b0f1db32b6da6e6b7a2e6cc11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,9 +168,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga9f0c8d67f0c192341fbf9ac436f02173"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#ga9f0c8d67f0c192341fbf9ac436f02173">MCUXCLMATH_FP_MODEXP_SQRMULTL2R</a>(pExp,  byteLenExp,  iR,  iX,  iN,  iT)</td></tr>
 <tr class="memdesc:ga9f0c8d67f0c192341fbf9ac436f02173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for #mcuxClMath_ModExp_SqrMultL2R with flow protection.  <a href="group__mcux_cl_math___functions.html#ga9f0c8d67f0c192341fbf9ac436f02173">More...</a><br /></td></tr>
 <tr class="separator:ga9f0c8d67f0c192341fbf9ac436f02173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7f34036f34027bdbd97cda0e285fdcd2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#ga7f34036f34027bdbd97cda0e285fdcd2">MCUXCLMATH_SECMODEXP</a>(pExp,  pExpTemp,  byteLenExp,  iR,  iX,  iN,  iTE,  iT0,  iT1,  iT2,  iT3)</td></tr>
-<tr class="memdesc:ga7f34036f34027bdbd97cda0e285fdcd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for #mcuxClMath_SecModExp.  <a href="group__mcux_cl_math___functions.html#ga7f34036f34027bdbd97cda0e285fdcd2">More...</a><br /></td></tr>
-<tr class="separator:ga7f34036f34027bdbd97cda0e285fdcd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e0168ff93f7bffd7d56ce509ba29c59"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#ga3e0168ff93f7bffd7d56ce509ba29c59">MCUXCLMATH_SECMODEXP</a>(session,  pExp,  pExpTemp,  byteLenExp,  iR,  iX,  iN,  iTE,  iT0,  iT1,  iT2,  iT3)</td></tr>
+<tr class="memdesc:ga3e0168ff93f7bffd7d56ce509ba29c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for #mcuxClMath_SecModExp.  <a href="group__mcux_cl_math___functions.html#ga3e0168ff93f7bffd7d56ce509ba29c59">More...</a><br /></td></tr>
+<tr class="separator:ga3e0168ff93f7bffd7d56ce509ba29c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae807c4ed789f67aa150addbae31de180"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_math___functions.html#gae807c4ed789f67aa150addbae31de180">MCUXCLMATH_EXACTDIVIDEODD</a>(iR,  iX,  iN,  iT,  xPkcByteLen,  yPkcByteLen)</td></tr>
 <tr class="memdesc:gae807c4ed789f67aa150addbae31de180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for #mcuxClMath_ExactDivideOdd.  <a href="group__mcux_cl_math___functions.html#gae807c4ed789f67aa150addbae31de180">More...</a><br /></td></tr>
 <tr class="separator:gae807c4ed789f67aa150addbae31de180"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,27 +210,30 @@ uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>pNumLeadingZero
 <tr class="memitem:ga20556fae861cd90038a5baceae1faf8a"><td class="memItemLeft" align="right" valign="top">
 uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>pNumTrailingZeros</b></td></tr>
 <tr class="separator:ga20556fae861cd90038a5baceae1faf8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1892eba2086d12ac2b09005aeb09ea3b"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:ga30461418a695751302d8e0067b232204"><td class="memItemLeft" align="right" valign="top">
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>length</b></td></tr>
-<tr class="separator:ga1892eba2086d12ac2b09005aeb09ea3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga30461418a695751302d8e0067b232204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga19c0795bafea7dc12049ca68553d1502"><td class="memItemLeft" align="right" valign="top">
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>iT1_iT2_iT3</b></td></tr>
 <tr class="separator:ga19c0795bafea7dc12049ca68553d1502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6d00303a91d73b8ea2cb3cc867220bc0"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:ga1b4ea15275874f910cb99e2430ca5e54"><td class="memItemLeft" align="right" valign="top">
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>expByteLength</b></td></tr>
-<tr class="separator:ga6d00303a91d73b8ea2cb3cc867220bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga1b4ea15275874f910cb99e2430ca5e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6b46696154c14a1c2e8a20272a6e2f35"><td class="memItemLeft" align="right" valign="top">
 uint32_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>iR_iX_iN_iT</b></td></tr>
 <tr class="separator:ga6b46696154c14a1c2e8a20272a6e2f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2e64c4526559ba76300d7591c8c429c2"><td class="memItemLeft" align="right" valign="top">
-uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>pExpTemp</b></td></tr>
-<tr class="separator:ga2e64c4526559ba76300d7591c8c429c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga06f22ae1493caccea8cd74e2e8a43503"><td class="memItemLeft" align="right" valign="top">
-uint32_t uint32_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>iT3_iX_iT2_iT1</b></td></tr>
-<tr class="separator:ga06f22ae1493caccea8cd74e2e8a43503"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9790dddc6642f5079c3abcc424d4fd0b"><td class="memItemLeft" align="right" valign="top">
-uint32_t uint32_t uint32_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>iN_iTE_iT0_iR</b></td></tr>
-<tr class="separator:ga9790dddc6642f5079c3abcc424d4fd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e9dde1324099335da288945a22be675"><td class="memItemLeft" align="right" valign="top">
+const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>pExp</b></td></tr>
+<tr class="separator:ga4e9dde1324099335da288945a22be675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0e15edbb95af11c4f4094b4bedc67fbb"><td class="memItemLeft" align="right" valign="top">
+const uint8_t uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>pExpTemp</b></td></tr>
+<tr class="separator:ga0e15edbb95af11c4f4094b4bedc67fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0bc1e7401d14e5e7cec2a163842e3f00"><td class="memItemLeft" align="right" valign="top">
+const uint8_t uint32_t uint32_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>iT3_iX_iT2_iT1</b></td></tr>
+<tr class="separator:ga0bc1e7401d14e5e7cec2a163842e3f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7f82dd238ffc2bcc89aba9218e1b5499"><td class="memItemLeft" align="right" valign="top">
+const uint8_t uint32_t uint32_t uint32_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>iN_iTE_iT0_iR</b></td></tr>
+<tr class="separator:ga7f82dd238ffc2bcc89aba9218e1b5499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae6e7ed3fb4da819a702256aae0c27cd7"><td class="memItemLeft" align="right" valign="top">
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>xPkcByteLength</b></td></tr>
 <tr class="separator:gae6e7ed3fb4da819a702256aae0c27cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>

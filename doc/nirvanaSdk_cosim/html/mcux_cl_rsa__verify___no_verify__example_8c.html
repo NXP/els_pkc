@@ -117,12 +117,12 @@ $(document).ready(function(){initNavTree('mcux_cl_rsa__verify___no_verify__examp
 <code>#include &lt;<a class="el" href="mcux_cssl_flow_protection_8h_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_core___function_identifiers_8h_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_pkc_8h_source.html">mcuxClPkc.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="mcux_cl_random_8h_source.html">mcuxClRandom.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_rsa_8h_source.html">mcuxClRsa.h</a>&gt;</code><br />
 <code>#include &lt;toolchain.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_els_8h_source.html">mcuxClEls.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClExample_ELS_Helper.h&gt;</code><br />
-<code>#include &lt;mcuxClExample_ELS_Key_Helper.h&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -238,7 +238,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <p>Initialize ELS, Enable the ELS</p>
-<p>// PRNG needs to be initialized; this can be done by calling mcuxClEls_KeyDelete_Async (delete any key slot, can be empty)</p>
 <p>Destroy Session and cleanup Session</p>
 <p>Disable the ELS </p>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="mcux_cl_rsa_verify__no_verify_example_8c-example.html#a2">mcuxClRsa_verify_NoVerify_example.c</a>.</dd>

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,8 +16,8 @@
  * \brief Selection of the implementation for the secure counter mechanism.
  */
 
-#ifndef MCUX_CSSL_SECURE_COUNTER_IMPL_H_
-#define MCUX_CSSL_SECURE_COUNTER_IMPL_H_
+#ifndef MCUXCSSLSECURECOUNTER_IMPL_H_
+#define MCUXCSSLSECURECOUNTER_IMPL_H_
 
 /* Include the configuration for the secure counter mechanism. */
 #include <mcuxCsslSecureCounter_Cfg.h>
@@ -45,4 +45,4 @@
 #  error "No secure counter implementation found/configured."
 #endif
 
-#endif /* MCUX_CSSL_SECURE_COUNTER_IMPL_H_ */
+#endif /* MCUXCSSLSECURECOUNTER_IMPL_H_ */

@@ -187,11 +187,13 @@ var mcux_cl_ecc___parameter_sizes_8h =
     [ "MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gac14b636a63b6ad2a4ba8edb45d213aea", null ],
     [ "MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gab9dd06ce9086a33b19e20eba3aed8a7c", null ],
     [ "MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gab2c2539baf2994a0baae71d5d5c8f9fe", null ],
+    [ "MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#ga550f1830c8403002664123225e0f594f", null ],
     [ "MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gaf6cce889f1dc2b213479126d850af09c", null ],
     [ "MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d25519___s_i_z_e__.html#gafd15d3ce72046f505d9763687d1614df", null ],
     [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga574cb628611266d5182378f52676024b", null ],
     [ "MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga2fff3270c5870bb95a69c8f283d91ee4", null ],
     [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga37d97fd46dcc20e7f93a5e06017ff967", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#gae310bda6e4756493489df624280503ef", null ],
     [ "MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#ga51affb40be89a5c0b1eb0d17a135786c", null ],
     [ "MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___e_d448___s_i_z_e__.html#gae3ae89f1d488c9444e0f8c3813b9753a", null ]
 ];

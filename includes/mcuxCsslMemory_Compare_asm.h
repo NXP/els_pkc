@@ -124,34 +124,7 @@ mcuxCsslMemory_Compare_fault:  \
 }while(false)
 
 #else
-#ifdef MCUXCL_FEATURE_CSSL_MEMORY_C_FALLBACK
-#warning Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax. \
-         Using (unsecure) C fallback implementation for now.
-
-#define MCUXCSSLMEMORY_COMPARE_ASM_COMPARISON(retval_, cur_lhs_, cur_rhs_, nwords_, cnt_, notValid_, result_) \
-do{  \
-    (retval_) = (result_) ^ (notValid_);  \
-    (nwords_) = (cnt_) / 4u;  \
-    (cnt_) -= (nwords_) * 4u;  \
-    while ((nwords_) > 0)  \
-    {  \
-      (retval_) &= ~((*((const uint32_t *) (cur_lhs_))) ^ (*((const uint32_t *) (cur_rhs_))));  \
-      (cur_lhs_) += sizeof(uint32_t);  \
-      (cur_rhs_) += sizeof(uint32_t);  \
-      --(nwords_);  \
-    }  \
-    while ((cnt_) > 0)  \
-    { \
-      (retval_) &= ~(((uint32_t)(*(cur_lhs_))) ^ ((uint32_t)(*(cur_rhs_))));  \
-      ++(cur_lhs_);  \
-      ++(cur_rhs_);  \
-      --(cnt_);  \
-    }  \
-}while(false)
-
-#else
     #error Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax.
-#endif /* MCUXCL_FEATURE_CSSL_MEMORY_C_FALLBACK */
 #endif
 
 
@@ -190,24 +163,7 @@ do{  \
 }while(false)
 
 #else
-#ifdef MCUXCL_FEATURE_CSSL_MEMORY_C_FALLBACK
-#warning Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax. \
-         Using (unsecure) C fallback implementation for now.
-
-#define MCUXCSSLMEMORY_COMPARE_ROR(x_, y_) (((x_) << (y_)) | (((x_) >> (32 - (y_)))))
-#define MCUXCSSLMEMORY_COMPARE_ASM_CALC_RETVAL(retval_, errCode_)  \
-do{  \
-  (retval_) &= MCUXCSSLMEMORY_COMPARE_ROR(retval_, 1); \
-  (retval_) &= MCUXCSSLMEMORY_COMPARE_ROR(retval_, 2); \
-  (retval_) &= MCUXCSSLMEMORY_COMPARE_ROR(retval_, 4); \
-  (retval_) &= MCUXCSSLMEMORY_COMPARE_ROR(retval_, 8); \
-  (retval_) &= MCUXCSSLMEMORY_COMPARE_ROR(retval_, 16); \
-  (retval_) ^= (errCode_); \
-}while(false)
-
-#else
     #error Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax.
-#endif /* MCUXCL_FEATURE_CSSL_MEMORY_C_FALLBACK */
 #endif
 
 

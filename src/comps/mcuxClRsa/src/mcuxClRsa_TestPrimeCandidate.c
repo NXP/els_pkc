@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -47,9 +47,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
         MCUXCLPKC_FP_CALLED_CALC_OP2_CMP);
 
     mcuxClRsa_Status_t status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_CMP_FAILED;
-    uint32_t flagGCDA0 = 0u;
-    uint32_t flagGCDE = 0u;
-    uint32_t flagMRT = 0u;
 
     const uint32_t primeByteLength = keyBitLength/8u/2u;
     const uint32_t pkcOperandSize = MCUXCLPKC_ROUNDUP_SIZE(primeByteLength);
@@ -115,6 +112,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
         if (MCUXCLPKC_FLAG_CARRY == MCUXCLPKC_WAITFORFINISH_GETCARRY())
         {
             status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_CMP_FAILED;
+            MCUX_CSSL_FP_EXPECT(0u - (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)) - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
             break;
         }
 
@@ -122,12 +120,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
         * 2. Pre-check the prime candidate: GCD(prime candidate, A0)
         *    where: A0 - product of the first 9 prime numbers (hardcoded value).
         */
-        flagGCDA0 = 1u;
-        MCUXCLPKC_FP_CALCFUP(mcuxClRsa_TestPrimeCandidate_Steps2,
-                    mcuxClRsa_TestPrimeCandidate_Steps2_LEN);
+        MCUXCLPKC_FP_CALCFUP(mcuxClRsa_TestPrimeCandidate_Steps2_FUP,
+                    mcuxClRsa_TestPrimeCandidate_Steps2_FUP_LEN);
         if (MCUXCLPKC_FLAG_CARRY != MCUXCLPKC_WAITFORFINISH_GETCARRY())
         {
             status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDA0_FAILED;
+            MCUX_CSSL_FP_EXPECT(0u - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
             break;
         }
 
@@ -135,12 +133,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
         * 3. Check if prime_candidate - 1 is coprime to the public exponent e:
         *    GCD(prime_candidate - 1, e))
         */
-        flagGCDE = 1u;
-        MCUXCLPKC_FP_CALCFUP(mcuxClRsa_TestPrimeCandidate_Steps3,
-                    mcuxClRsa_TestPrimeCandidate_Steps3_LEN);
+        MCUXCLPKC_FP_CALCFUP(mcuxClRsa_TestPrimeCandidate_Steps3_FUP,
+                    mcuxClRsa_TestPrimeCandidate_Steps3_FUP_LEN);
         if (MCUXCLPKC_FLAG_CARRY != MCUXCLPKC_WAITFORFINISH_GETCARRY())
         {
             status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDE_FAILED;
+            MCUX_CSSL_FP_EXPECT(0u - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
             break;
         }
 
@@ -149,7 +147,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
         *
         * Used functions: mcuxClRsa_MillerRabinTest
         */
-        flagMRT = 1u;
         uint32_t  iP_iT = (MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_CANDIDATE << 8u) | MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_GCD1;
         MCUX_CSSL_FP_FUNCTION_CALL(retTest, mcuxClRsa_MillerRabinTest(pSession, iP_iT, keyBitLength));
         status = (mcuxClRsa_Status_t) retTest;
@@ -162,7 +159,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
     MCUXCLPKC_SETUPTRT(bakUPTRT);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_TestPrimeCandidate, status,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) * flagGCDA0,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) * flagGCDE,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest) * flagMRT);
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
 }

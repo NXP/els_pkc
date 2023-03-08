@@ -23,8 +23,6 @@
 #define MCUXCLRANDOMMODES_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClRandom_Types.h>
-#include <mcuxClRandom_Functions.h>
 #include <mcuxClRandomModes_Functions_TestMode.h>
 #include <mcuxClRandomModes_Functions_PatchMode.h>
 #include <mcuxClRandomModes_MemoryConsumption.h>

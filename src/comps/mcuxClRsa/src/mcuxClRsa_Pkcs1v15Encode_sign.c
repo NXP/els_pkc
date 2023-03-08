@@ -16,6 +16,7 @@
  */
 
 #include <stdint.h>
+#include <nxpClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -26,7 +27,7 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
@@ -110,14 +111,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
   const uint32_t              inputLength,
-  mcuxCl_Buffer_t              pVerificationInput,
+  mcuxCl_Buffer_t              pVerificationInput UNUSED_PARAM,
   mcuxClHash_Algo_t            pHashAlgo,
-  const uint8_t *             pLabel,
-  const uint32_t              saltlabelLength,
+  const uint8_t *             pLabel UNUSED_PARAM,
+  const uint32_t              saltlabelLength UNUSED_PARAM,
   const uint32_t              keyBitLength,
   const uint32_t              options,
   mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength)
+  uint32_t * const            pOutLength UNUSED_PARAM)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_pkcs1v15Encode_sign);
   /*****************************************************/

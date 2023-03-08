@@ -46,7 +46,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_NDash(uint16_t iN_iT
 
     /* Prepare local UPTRT. */
     uint16_t pOperands[NDASH_UPTRT_SIZE];
-    const uint16_t *backupPtrUptrt = MCUXCLMATH_FP_INITLOCALUPTRT((uint32_t) iN_iT, 0, pOperands, 2u);
+    const uint16_t *backupPtrUptrt;
+    /* mcuxClMath_InitLocalUptrt always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt((uint32_t) iN_iT, 0, pOperands, 2u, &backupPtrUptrt));
 
     /* WAITFORREADY in mcuxClMath_InitLocalUptrt(...). */
     uint16_t offsetNDash = pOperands[NDASH_N] - MCUXCLPKC_WORDSIZE;

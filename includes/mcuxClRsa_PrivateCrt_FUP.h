@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_PrivateCrt_FUP.h>
 
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_T1mb,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_T1mb_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     /* Calculate Mq_bm = Mq_b * QDash mod p_b */
     FUP_MC1_MM(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET0 /* Mq_bm */,
@@ -28,7 +28,7 @@ MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_T1mb,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET0 /* Mq_bm */,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PQ_B /* p_b */)
 );
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_T2T3T4mb,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_T2T3T4mb_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     /* Calculate T2_mb = QDash*qInv_b mod p_b */
     FUP_MC1_MM(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET0 /* T2_mb */,
@@ -55,7 +55,7 @@ MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_T2T3T4mb,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET0  /* T4_mb */,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PQ_B /* p_b */)
 );
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_CalcM_b,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_CalcM_b_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     /* Calculate T5_b = T4_b*q in MODT4 which has a size of
      * (primeAlignLen + blindedPrimeAlignLen = blindedMessageAlignLen)
@@ -76,7 +76,7 @@ MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_CalcM_b,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT4 /* T5_b */,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N /* Mq_b */)
 );
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_CalcM1,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_CalcM1_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     /* Calculate reduction M_br of M_b mod N */
     FUP_MC2_MR(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT4 /* M_br */,
@@ -93,7 +93,7 @@ MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_CalcM1,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N /* N */,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N /* N */)
 );
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_ReductionME,
+MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivateCrt_ReductionME_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,
     /* Convert from Montgomery to normal representation */
     FUP_MC1_MR(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT4,

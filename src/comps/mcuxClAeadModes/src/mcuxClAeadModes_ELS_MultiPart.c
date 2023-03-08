@@ -17,6 +17,7 @@
 #include <mcuxClAead.h>
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 #include <internal/mcuxClAeadModes_ELS_Functions.h>
+#include <internal/mcuxClAeadModes_Common_Functions.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>

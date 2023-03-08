@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,8 +16,8 @@
  * @brief Provides the API for the CSSL secure counter mechanism.
  */
 
-#ifndef MCUX_CSSL_SECURE_COUNTER_H_
-#define MCUX_CSSL_SECURE_COUNTER_H_
+#ifndef MCUXCSSLSECURECOUNTER_H_
+#define MCUXCSSLSECURECOUNTER_H_
 
 /* Include the actual implementation of the secure counter mechanism. */
 #include <mcuxCsslSecureCounter_Impl.h>
@@ -301,4 +301,4 @@
 #define MCUX_CSSL_SC_ASSIGN(value) \
   MCUX_CSSL_SC_ASSIGN_IMPL(value)
 
-#endif /* MCUX_CSSL_SECURE_COUNTER_H_ */
+#endif /* MCUXCSSLSECURECOUNTER_H_ */

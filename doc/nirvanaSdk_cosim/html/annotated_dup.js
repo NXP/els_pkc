@@ -1,8 +1,6 @@
 var annotated_dup =
 [
     [ "mcuxClEcc_DomainParam_t", "structmcux_cl_ecc___domain_param__t.html", "structmcux_cl_ecc___domain_param__t" ],
-    [ "mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t", "structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t.html", "structmcux_cl_ecc___ed_d_s_a___generate_key_pair_descriptor__t" ],
-    [ "mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t.html", "structmcux_cl_ecc___ed_d_s_a___signature_protocol_descriptor__t" ],
     [ "mcuxClEcc_KeyGen_Param_t", "structmcux_cl_ecc___key_gen___param__t.html", "structmcux_cl_ecc___key_gen___param__t" ],
     [ "mcuxClEcc_PointMult_Param_t", "structmcux_cl_ecc___point_mult___param__t.html", "structmcux_cl_ecc___point_mult___param__t" ],
     [ "mcuxClEcc_Sign_Param_t", "structmcux_cl_ecc___sign___param__t.html", "structmcux_cl_ecc___sign___param__t" ],

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,6 +32,9 @@
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_Mont_Internal_PkcWaLayout.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**********************************************************/
 /* Internal return codes for MontDH functions             */
@@ -100,5 +103,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     const uint8_t *pCoordinateUEnc
     );
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLECC_MONT_INTERNAL_H_ */

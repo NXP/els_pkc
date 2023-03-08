@@ -23,13 +23,24 @@
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 
+/* Platform compatibility defines */
+
+#ifndef ELS_CMDCRC
+#define ELS_CMDCRC CMDCRC
+#endif
+
+#ifndef ELS_CMDCRC_CTRL
+#define ELS_CMDCRC_CTRL CMDCRC_CTRL
+#endif
+/* END of Platform compatibility defines */  
+
 #ifdef MCUXCL_FEATURE_ELS_CMD_CRC
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_ConfigureCommandCRC)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_ConfigureCommandCRC(
     mcuxClEls_CommandCrcConfig_t options)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_ConfigureCommandCRC);
-    MCUXCLELS_SFR_WRITE(CMDCRC_CTRL, options.word.value);
+    MCUXCLELS_SFR_WRITE(ELS_CMDCRC_CTRL, options.word.value);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_ConfigureCommandCRC, MCUXCLELS_STATUS_OK);
 }
 
@@ -44,7 +55,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetComma
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetCommandCRC, MCUXCLELS_STATUS_SW_INVALID_PARAM);
     }
 
-    *commandCrc = MCUXCLELS_SFR_READ(CMDCRC);
+    *commandCrc = MCUXCLELS_SFR_READ(ELS_CMDCRC);
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetCommandCRC, MCUXCLELS_STATUS_OK);
 }
 

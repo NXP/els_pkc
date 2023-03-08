@@ -1,20 +1,19 @@
-CLNS SDK (1.1.0) Release Notes
+CLNS SDK (1.2.0) Release Notes
 
-- Release: RedfinchSDK_EAR4
-- Version: V1.4.0
-- Date:    2023-01-19
+- Release: RedfinchSDK_EAR5
+- Version: CLNS_SDK_1.2.0
+- Date:    2023-02-24
 - Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: tags/RedfinchSDK_EAR4
+- Link to Bitbucket: tags/sdk_v1.2.0_nirvanasdk_ear4_redfinchsdk_ear5
 - Compiler: ARMCLANG keilmdk 533
 --- Test Target:   
    - RW610 A0 Sample
 --- CLNS memory consumption: static_library/redfinchSdk_sample/libclns.a
       TEXT RO RW ZI TOTAL_CONSUMPTION
-      72584 22768 0 0 95352
+      77438 23435 0 0 100873
 
---- New Features in version 1.4.0: 
-   - Renaming of CSS component to ELS
-   - PSA driver refactoring
+--- New Features 
+   - EDDSA functionality included
    - Bugfixes
    
 --- Features:
@@ -34,33 +33,29 @@ CLNS SDK (1.1.0) Release Notes
         - Random number Generation (DRBG/PRNG)
         - TLS Master/Session Key generation
 
---- Known Issues Limitations: 
-   - EDDSA functionality included but incomplete (under development, non-functional)
+--- Known Issues Limitations:
+   - psa/crypto_struct.h needs to be modified
+   - toolchain.h renaming still to be done
+   - ip_platform.h including fsl_device_registers.h to be done
    - occasional timeouts/iterations exceeded for RSA key generation (this is due to statistical variation)
    - failing test case on internal function for extracting TRNG values
    - dma final address readback checks are disabled on this release
-   - some failures in negative test cases
-  - Failing tests in PSA:   
-      - psa_driver_hash_multipart_abort and clone
-      - truncated mac 
-   - several examples failing (incorrect)
-      - PSA cipher multipart
-      - PSA aead multipart
 
-- Release: NirvanaSDK_EAR3
-- Version: V1.4.0
-- Date:    2023-01-19
+
+- Release: NirvanaSDK_EAR4
+- Version: CLNS_SDK_1.2.0
+- Date:    2023-02-24
 - Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: tags/nirvanasdk_ear3_v1_4_0
+- Link to Bitbucket: tags/sdk_v1.2.0_nirvanasdk_ear4_redfinchsdk_ear5
 - Compiler: IAR Compiler v.8.40.1
 --- Test Target:   
    - CoSim: FPGAv2 Cosim v13
 --- CLNS memory consumption: static_library/nirvanaSdk_cosim/libclns.a
-    TEXT  RO    RW ZI TOTAL_CONSUMPTION
-   61972 19080 0 0 81052
+     TEXT RO RW ZI TOTAL_CONSUMPTION
+     65746 19564 0 0 85310
 
---- New Features in version 1.4.0: 
-   - Renaming of CSS component to ELS
+--- New Features: 
+   - EDDSA functionality included
    - Bugfixes
    
 --- Features:
@@ -80,15 +75,9 @@ CLNS SDK (1.1.0) Release Notes
         - TLS Master/Session Key generation
 
 --- Known Issues Limitations: 
-   - EDDSA functionality included but incomplete (under development, non-functional)
    - occasional timeouts/iterations exceeded for RSA key generation (this is due to statistical variation)
    - failing test case on internal function for extracting TRNG values
-   - all tests that make use of interrupts could not be executed due to an issue on the test platform
    - dma final address readback checks are disabled on this release
-   - issue observed with test of CKDF from DUK
-   - example failing
-      - RSA: mcuxClRsa_verify_pssverify_sha2_256_example
-   - some failures in negative test cases
 
 
    

@@ -56,7 +56,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivideOdd(uint3
 
     /* Prepare local UPTRT. */
     uint16_t pOperands[DivOdd_UPTRT_SIZE];
-    const uint16_t *backupPtrUptrt = MCUXCLMATH_FP_INITLOCALUPTRT(iR_iX_iY_iT, 0u, pOperands, 4u);
+    const uint16_t *backupPtrUptrt;
+    /* mcuxClMath_InitLocalUptrt always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(iR_iX_iY_iT, 0u, pOperands, 4u, &backupPtrUptrt));
     uint32_t offsetT = (uint32_t) pOperands[DivOdd_T];
     pOperands[DivOdd_T1] = (uint16_t) (offsetT + MCUXCLPKC_WORDSIZE);
     pOperands[DivOdd_Ri] = 2u;  /* for _Fup_ExactDivideOdd_NDashY */

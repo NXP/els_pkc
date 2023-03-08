@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021,2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,6 +20,10 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClPkc_FupMacros.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * FUP program declaration mcuxClMath_ModInv_Fup1
  */
@@ -34,5 +38,9 @@ extern const mcuxClPkc_FUPEntry_t mcuxClMath_ModInv_Fup1[7];
 
 extern const mcuxClPkc_FUPEntry_t mcuxClMath_ModInv_Fup3a[mcuxClMath_ModInv_Fup3_LEN];
 extern const mcuxClPkc_FUPEntry_t mcuxClMath_ModInv_Fup3b[mcuxClMath_ModInv_Fup3_LEN];
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMATH_MODINV_FUP_H_ */

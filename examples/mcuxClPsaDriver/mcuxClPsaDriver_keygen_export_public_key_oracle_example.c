@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,11 +19,13 @@
  * @brief Example for generating and exporting internal key
  */
 
+#include "common.h"
+
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h> // Code flow protection
-#include <toolchain.h> // memory segment definitions
+#include <nxpClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>
@@ -303,18 +305,18 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     /**********************************************************************************************/
     /* Set up PSA key attributes. */
     psa_key_attributes_t attributes = {
-      .private_core = {                                                               // Core attributes
-        .private_type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve p-256
-        .private_bits = 256U,                                                         // Key bits of a curve p-256
-        .private_lifetime = LIFETIME_INTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
-        .private_id = 6U,                                                             // private key slot
-        .private_policy = {
-          .private_usage = PSA_ALG_NONE,
-          .private_alg = PSA_ALG_ECDSA_ANY,
-          .private_alg2 = PSA_ALG_NONE},
-        .private_flags = 0U},                                                         // No flags
-      .private_domain_parameters = NULL,
-      .private_domain_parameters_size = 0U};
+      .core = {                                                               // Core attributes
+        .type = PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1),            // Keypair family with curve p-256
+        .bits = 256U,                                                         // Key bits of a curve p-256
+        .lifetime = LIFETIME_INTERNAL,                                        // Volatile (RAM), S50 Temporary Storage for private key
+        .id = 6U,                                                             // private key slot
+        .policy = {
+          .usage = PSA_ALG_NONE,
+          .alg = PSA_ALG_ECDSA_ANY,
+          .alg2 = PSA_ALG_NONE},
+        .flags = 0U},                                                         // No flags
+      .domain_parameters = NULL,
+      .domain_parameters_size = 0U};
 
     /* Call generate_key operation */
     uint32_t keyBuffer[32u/sizeof(uint32_t)] = {0}; //key buffer to be able to store whole 256bit long key, but key index inside. keyIdx 32bit long, so buffer word wise aligned
@@ -419,7 +421,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     uint8_t data[MCUXCLELS_ECC_PUBLICKEY_SIZE] = {0U};
     size_t data_size = MCUXCLELS_ECC_PUBLICKEY_SIZE;
     size_t data_length = 0U;
-    attributes.private_core.private_policy.private_usage = PSA_KEY_USAGE_EXPORT;
+    attributes.core.policy.usage = PSA_KEY_USAGE_EXPORT;
     status = psa_driver_wrapper_export_public_key(
                 &attributes,
                 (uint8_t*)&keyIdxExp,  sizeof(privateKey),

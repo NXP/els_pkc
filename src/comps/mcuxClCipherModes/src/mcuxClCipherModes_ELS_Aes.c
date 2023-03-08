@@ -110,7 +110,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
                - for paddingNone it is set to blocksize
                - for other padding modes it is set to 1
             */
-            if ((inLength % pAlgo->granularity) != 0u)
+            if (0u != (inLength % pAlgo->granularity))
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
             }
@@ -129,17 +129,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         /* Total number of bytes that were encrypted is initialized with zero */
         pCtx->common.totalInputLength = 0u;
 
-        if ((pAlgo->ivLength != 0u) && (ivLength != pAlgo->ivLength))
+        if ((0u != pAlgo->ivLength) && (ivLength != pAlgo->ivLength))
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
         }
 
         /* If there is an IV, copy it to the ivState buffer. */
-        if (pAlgo->ivLength != 0u)
+        if (0u != pAlgo->ivLength)
         {
             MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy((uint8_t *) pCtx->ivState, pIv, ivLength, MCUXCLAES_BLOCK_SIZE));
 
-            if (copyResult != 0u)
+            if (0u != copyResult)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
             }
@@ -160,7 +160,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
     if ((MCUXCLCIPHER_OPTION_PROCESS == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps))
     {
         const uint32_t inputLength = inLength;
-        if (pCtx->common.blockBufferUsed != 0u)
+        if (0u != pCtx->common.blockBufferUsed)
         {
             processFPFlag_partData = 1u;
 
@@ -174,7 +174,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
                                                                    bytesToCopy,
                                                                    MCUXCLAES_BLOCK_SIZE));
 
-            if (copyResult != 0u)
+            if (0u != copyResult)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
             }
@@ -239,7 +239,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
                                                                    bytesRemaining,
                                                                    MCUXCLAES_BLOCK_SIZE));
 
-            if (copyResult != 0u)
+            if (0u != copyResult)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
             }
@@ -291,7 +291,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
                                                                    padOutLength,
                                                                    MCUXCLAES_BLOCK_SIZE));
 
-            if (copyResult != 0u)
+            if (0u != copyResult)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
             }
@@ -315,7 +315,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
     /* Exit and balance the flow protection. */
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
         MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_INIT == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),
-            MCUX_CSSL_FP_CONDITIONAL((ivLength != 0u),
+            MCUX_CSSL_FP_CONDITIONAL((0u != ivLength),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
             ),
             MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_ONESHOT == steps),
@@ -331,7 +331,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
             MCUX_CSSL_FP_CONDITIONAL((inLength >= MCUXCLAES_BLOCK_SIZE),
                 pAlgo->protection_token_engine
             ),
-            MCUX_CSSL_FP_CONDITIONAL((bytesRemaining != 0u),
+            MCUX_CSSL_FP_CONDITIONAL((0u != bytesRemaining),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
         ),
         MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_FINISH == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),

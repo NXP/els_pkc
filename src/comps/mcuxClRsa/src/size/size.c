@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,12 +11,16 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <stdint.h>
+#include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Analysis.h>
 
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
+
+
+MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 
 
@@ -43,7 +47,6 @@ volatile uint8_t mcuxClRsa_Sign_Plain_1024_WaPKC[MCUXCLRSA_INTERNAL_SIGN_PLAIN_W
 volatile uint8_t mcuxClRsa_Sign_Plain_2048_WaPKC[MCUXCLRSA_INTERNAL_SIGN_PLAIN_WAPKC_SIZE(2048/8)];
 volatile uint8_t mcuxClRsa_Sign_Plain_3072_WaPKC[MCUXCLRSA_INTERNAL_SIGN_PLAIN_WAPKC_SIZE(3072/8)];
 volatile uint8_t mcuxClRsa_Sign_Plain_4096_WaPKC[MCUXCLRSA_INTERNAL_SIGN_PLAIN_WAPKC_SIZE(4096/8)];
-volatile uint8_t mcuxClRsa_Sign_Plain_8192_WaPKC[MCUXCLRSA_INTERNAL_SIGN_PLAIN_WAPKC_SIZE(8192/8)];
 
 volatile uint8_t mcuxClRsa_Sign_CRT_NoEncode_1024_WaCPU[MCUXCLRSA_INTERNAL_SIGN_CRT_NOENCODE_WACPU_SIZE(1024/8/2)];
 volatile uint8_t mcuxClRsa_Sign_CRT_NoEncode_2048_WaCPU[MCUXCLRSA_INTERNAL_SIGN_CRT_NOENCODE_WACPU_SIZE(2048/8/2)];
@@ -64,7 +67,6 @@ volatile uint8_t mcuxClRsa_Sign_CRT_1024_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC
 volatile uint8_t mcuxClRsa_Sign_CRT_2048_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(2048/8/2)];
 volatile uint8_t mcuxClRsa_Sign_CRT_3072_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(3072/8/2)];
 volatile uint8_t mcuxClRsa_Sign_CRT_4096_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(4096/8/2)];
-volatile uint8_t mcuxClRsa_Sign_CRT_8192_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(8192/8/2)];
 
 /****************************************************************************/
 /* Computation of workarea sizes for the Rsa_verify function.               */
@@ -74,20 +76,13 @@ volatile uint8_t mcuxClRsa_Verify_NoVerify_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_NOVER
 
 volatile uint8_t mcuxClRsa_Verify_Pkcs1v15Verify_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_PKCS1V15VERIFY_WACPU_SIZE];
 
-#ifndef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
 volatile uint8_t mcuxClRsa_Verify_PssVerify_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_PSSVERIFY_WACPU_SIZE];
-#else
-volatile uint8_t mcuxClRsa_Verify_PssVerify_1024_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_PSSVERIFY_WACPU_SIZE(1024/8)];
-volatile uint8_t mcuxClRsa_Verify_PssVerify_2048_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_PSSVERIFY_WACPU_SIZE(2048/8)];
-volatile uint8_t mcuxClRsa_Verify_PssVerify_3072_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_PSSVERIFY_WACPU_SIZE(3072/8)];
-volatile uint8_t mcuxClRsa_Verify_PssVerify_4096_WaCPU[MCUXCLRSA_INTERNAL_VERIFY_PSSVERIFY_WACPU_SIZE(4096/8)];
-#endif
 
-volatile uint8_t mcuxClRsa_Verify_1024_WaPKC[MCUXCLRSA_INTERNAL_VERIFY(1024/8)];
-volatile uint8_t mcuxClRsa_Verify_2048_WaPKC[MCUXCLRSA_INTERNAL_VERIFY(2048/8)];
-volatile uint8_t mcuxClRsa_Verify_3072_WaPKC[MCUXCLRSA_INTERNAL_VERIFY(3072/8)];
-volatile uint8_t mcuxClRsa_Verify_4096_WaPKC[MCUXCLRSA_INTERNAL_VERIFY(4096/8)];
-volatile uint8_t mcuxClRsa_Verify_8192_WaPKC[MCUXCLRSA_INTERNAL_VERIFY(8192/8)];
+volatile uint8_t mcuxClRsa_Verify_1024_WaPKC[MCUXCLRSA_INTERNAL_VERIFY_WAPKC_SIZE(1024/8)];
+volatile uint8_t mcuxClRsa_Verify_2048_WaPKC[MCUXCLRSA_INTERNAL_VERIFY_WAPKC_SIZE(2048/8)];
+volatile uint8_t mcuxClRsa_Verify_3072_WaPKC[MCUXCLRSA_INTERNAL_VERIFY_WAPKC_SIZE(3072/8)];
+volatile uint8_t mcuxClRsa_Verify_4096_WaPKC[MCUXCLRSA_INTERNAL_VERIFY_WAPKC_SIZE(4096/8)];
+
 
 /***************************************************************************************************************/
 /* Computation of key data size for the mcuxClRsa_KeyGeneration_Crt and mcuxClRsa_KeyGeneration_Plain functions. */
@@ -111,13 +106,9 @@ volatile uint8_t mcuxClRsa_KeyGeneration_Plain_2048_WaPKC[MCUXCLRSA_INTERNAL_KEY
 volatile uint8_t mcuxClRsa_KeyGeneration_Plain_3072_WaPKC[MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WAPKC_SIZE(3072/8)];
 volatile uint8_t mcuxClRsa_KeyGeneration_Plain_4096_WaPKC[MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WAPKC_SIZE(4096/8)];
 
-#ifndef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-volatile uint8_t mcuxClRsa_KeyGeneration_Plain_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WACPU_SIZE];
-#else
 volatile uint8_t mcuxClRsa_KeyGeneration_Plain_2048_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WACPU_SIZE(2048/8/2)];
 volatile uint8_t mcuxClRsa_KeyGeneration_Plain_3072_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WACPU_SIZE(3072/8/2)];
 volatile uint8_t mcuxClRsa_KeyGeneration_Plain_4096_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WACPU_SIZE(4096/8/2)];
-#endif
 /****************************************************************************************************/
 /* Computation of workarea sizes for the mcuxClRsa_KeyGeneration_Crt function for typical key sizes. */
 /****************************************************************************************************/
@@ -125,12 +116,9 @@ volatile uint8_t mcuxClRsa_KeyGeneration_Crt_2048_WaPKC[MCUXCLRSA_INTERNAL_KEYGE
 volatile uint8_t mcuxClRsa_KeyGeneration_Crt_3072_WaPKC[MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WAPKC_SIZE(3072/8/2)];
 volatile uint8_t mcuxClRsa_KeyGeneration_Crt_4096_WaPKC[MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WAPKC_SIZE(4096/8/2)];
 
-#ifndef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-volatile uint8_t mcuxClRsa_KeyGeneration_Crt_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WACPU_SIZE];
-#else
 volatile uint8_t mcuxClRsa_KeyGeneration_Crt_2048_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WACPU_SIZE(2048/8/2)];
 volatile uint8_t mcuxClRsa_KeyGeneration_Crt_3072_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WACPU_SIZE(3072/8/2)];
 volatile uint8_t mcuxClRsa_KeyGeneration_Crt_4096_WaCPU[MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WACPU_SIZE(4096/8/2)];
-#endif
 
 
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

@@ -28,6 +28,8 @@
 #include <internal/mcuxClPsaDriver_Internal.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
 
+static const uint8_t defaultExponent[] = {0x01u, 0x00u, 0x01u};
+
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     mcuxClSession_Handle_t pSession, uint8_t *key_CrtBuf,
     uint8_t *key_PublicBuf, mcuxClRsa_KeyEntry_t dKey)
@@ -188,12 +190,20 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
         coefficient       INTEGER,  -- (inverse of q) mod p
       }
     */
-    encoded_key[0] = 0x02u;
-    encoded_key[1] = 0x01u;
-    encoded_key[2] = 0x00u;
-    *key_buffer_length = 0x03u;
+    encoded_key[0] = 0x30u; /* Sequence tag */
+    /* Constructed fields need to be shifted after construction
+       since it is too complex to calculate total constructed
+       fields length beforehand due to length encoding method of each constructed field
+       At most 5 bytes can be used for length (encoded_key[1] - encoded_key[5] reserved) */
+    /*
+     * Version field
+     */
+    encoded_key[6] = 0x02u;
+    encoded_key[7] = 0x01u;
+    encoded_key[8] = 0x00u;
 
-    uint8_t *pDerOtherData = &encoded_key[3];
+    uint8_t *pDerOtherData = &encoded_key[9];
+
     /*
      * Get parameter N
      */
@@ -234,7 +244,75 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
      */
     mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pQInv);
 
-    *key_buffer_length += pDerOtherData - encoded_key + 1u;
+    uint32_t constructed_fields_length = pDerOtherData - &encoded_key[6];
+    uint8_t *ptr = &encoded_key[1];
+
+    if(constructed_fields_length > 0x7Fu) //long form
+    {
+        uint8_t h3_byte = (constructed_fields_length & 0xFF000000u) >> 24u;
+        uint8_t h2_byte = (constructed_fields_length & 0xFF0000u) >> 16u;
+        uint8_t h1_byte = (constructed_fields_length & 0xFF00u) >> 8u;
+        uint8_t h0_byte =  constructed_fields_length & 0xFFu;
+        if(h3_byte != 0u)
+        {
+            *ptr = 0x84u;
+            ptr++;
+            *ptr = h3_byte;
+            ptr++;
+            *ptr = h2_byte;
+            ptr++;
+            *ptr = h1_byte;
+            ptr++;
+            *ptr = h0_byte;
+            ptr++;
+        }
+        else if(h2_byte != 0u)
+        {
+            *ptr = 0x83u;
+            ptr++;
+            *ptr = h2_byte;
+            ptr++;
+            *ptr = h1_byte;
+            ptr++;
+            *ptr = h0_byte;
+            ptr++;
+        }
+        else if(h1_byte != 0u)
+        {
+            *ptr = 0x82u;
+            ptr++;
+            *ptr = h1_byte;
+            ptr++;
+            *ptr = h0_byte;
+            ptr++;
+        }
+        else
+        {
+            *ptr = 0x81u;
+            ptr++;
+            *ptr = h0_byte;
+            ptr++;
+        }
+    }
+    else  //short from
+    {
+        *ptr = constructed_fields_length;
+        ptr++;
+    }
+
+    int i = 0;
+    for(i = 0; i < constructed_fields_length; ++i)
+    {
+        *ptr++ = encoded_key[6 + i];
+    }
+
+    *key_buffer_length = ptr - &encoded_key[0];
+
+    while(ptr != &encoded_key[6 + i + 1])
+    {
+        *ptr++ = 0u;
+    }
+
     return PSA_SUCCESS;
 }
 
@@ -293,11 +371,18 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Public exponent */
-    const mcuxClRsa_KeyEntry_t pubEKey =
+    mcuxClRsa_KeyEntry_t pubEKey = {0};
+    if(NULL == attributes->domain_parameters)
     {
-        .pKeyEntryData = (uint8_t*) attributes->domain_parameters,
-        .keyEntryLength = attributes->domain_parameters_size,
-    };
+        pubEKey.pKeyEntryData = (uint8_t *)defaultExponent;
+        pubEKey.keyEntryLength = 3u;
+    }
+    else
+    {
+        pubEKey.pKeyEntryData = (uint8_t*) attributes->domain_parameters;
+        pubEKey.keyEntryLength = attributes->domain_parameters_size;
+    }
+
 
     /* Key type structures */
     mcuxClKey_TypeDescriptor_t type;

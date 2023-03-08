@@ -25,6 +25,10 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Decrypt padding function, which copies a full block to the output buffer.
  * @api
@@ -212,6 +216,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Ran
   uint32_t * const pOutLength
 );
 
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLPADDING_FUNCTIONS_INTERNAL_H */
 

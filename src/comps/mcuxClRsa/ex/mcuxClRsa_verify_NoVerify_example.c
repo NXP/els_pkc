@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,12 +26,12 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClPkc.h>              // Interface to the entire mcuxClPkc component
+#include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
-#include <toolchain.h>             // Memory segment definitions
+#include <nxpClToolchain.h>             // Memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClExample_ELS_Helper.h>
-#include <mcuxClExample_ELS_Key_Helper.h>
 
 /**********************************************************/
 /* Example test vectors                                   */
@@ -130,19 +130,22 @@ bool mcuxClRsa_verify_NoVerify_example(void)
     {
         return false;
     }
-    /** // PRNG needs to be initialized; this can be done by calling mcuxClEls_KeyDelete_Async (delete any key slot, can be empty) **/
-    if(!mcuxClExample_Els_KeyDelete(18))
-    {
-        return false;
-    }
 
     /* Create session handle to be used by verify function */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-    //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, 
+
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session,
                                                  MCUXCLRSA_VERIFY_NOVERIFY_WACPU_SIZE,
                                                  MCUXCLRSA_VERIFY_2048_WAPKC_SIZE);
+
+    /* Initialize the PRNG */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
+    {
+        return false;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PUBLIC */
     const mcuxClRsa_KeyEntry_t Mod1 = {

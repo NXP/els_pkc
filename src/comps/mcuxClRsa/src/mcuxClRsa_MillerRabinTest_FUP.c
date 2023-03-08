@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021,2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,7 +19,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_MillerRabinTest_FUP.h>
 
-const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck[4] = {{0x10u,0x00u,0xefu,0x27u,0xb1u,0xf6u},{0x80u,0x33u,0x02u,0x00u,0x00u,0x03u},{0x80u,0x2au,0x00u,0x03u,0x00u,0x03u},{0x00u,0x1bu,0x00u,0x03u,0x09u,0x02u}};
+const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP[4] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0xefu,0x27u,0xb1u,0xf6u},{0x80u,0x33u,0x02u,0x00u,0x00u,0x03u},{0x80u,0x2au,0x00u,0x03u,0x00u,0x03u},{0x00u,0x1bu,0x00u,0x03u,0x09u,0x02u}};
 
 
 /*

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,7 +23,10 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClHash.h>
+#include <mcuxClPkc_Types.h>
+#include <mcuxClPkc_Functions.h>
 #include <mcuxClRsa_Types.h>
+#include <mcuxClKey.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,6 +80,7 @@ extern "C" {
  * @return Status of the mcuxClRsa_public operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
  * @retval #MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
+ * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_public)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
@@ -128,6 +132,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
  * @retval #MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_privatePlain)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
@@ -181,6 +187,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
  * @retval #MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_privateCRT)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
@@ -289,6 +297,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
  *
  * @return Status of the mcuxClRsa_noVerify operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
  * @retval #MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK  The function executed successfully.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_noVerify)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
@@ -406,6 +416,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
  * @retval #MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK   The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
+ *
+ * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pssEncode)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
@@ -682,6 +694,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_OK                    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED    The function exceeds the limit of iterations to generate a prime.
  * @retval #MCUXCLRSA_STATUS_RNG_ERROR                           An error occurred during random nubmer generation.
+ *
+ * @attention This function uses DRBG and PRNG (directly and indirectly) which have to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_GenerateProbablePrime)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
@@ -747,6 +761,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
  * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED       The prime candidate did not pass the Miller-Rabin test.
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_OK                    The prime candidate is probably prime.
  * @retval #MCUXCLRSA_STATUS_RNG_ERROR                           Random number (DRBG / PRNG) error (unexpected behavior).
+ *
+ * @attention This function uses DRBG and PRNG (indirectly) which have to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_TestPrimeCandidate)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
@@ -796,6 +812,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_OK               The prime candidate is probably prime.
  * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED  The prime candidate did not pass the Miller-Rabin test.
  * @retval #MCUXCLRSA_STATUS_RNG_ERROR                      Random number (DRBG / PRNG) error (unexpected behavior)
+ *
+ * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_MillerRabinTest)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
@@ -956,7 +974,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ModInv(uint32_t iR_iX_
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_VerifyE)
 mcuxClRsa_Status_Protected_t mcuxClRsa_VerifyE(mcuxClRsa_KeyEntry_t *pE, uint32_t *exactLength);
-
 
 
 

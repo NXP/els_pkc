@@ -65,7 +65,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(uint32
     uint32_t pOperands32[(REDUCEMODEVEN_UPTRT_SIZE + 1u) / 2u];
     /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */
     uint16_t *pOperands = (uint16_t *) pOperands32;
-    const uint16_t *backupPtrUptrt = MCUXCLMATH_FP_INITLOCALUPTRT(iR_iX_iN_iT0, iT1_iT2_iT3, pOperands, 7u);
+    const uint16_t *backupPtrUptrt;
+    /* mcuxClMath_InitLocalUptrt always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(iR_iX_iN_iT0, iT1_iT2_iT3, pOperands, 7u, &backupPtrUptrt));
     pOperands[REDUCEMODEVEN_T0H] = pOperands[REDUCEMODEVEN_T0] + MCUXCLPKC_WORDSIZE;
 
 
@@ -74,7 +76,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(uint32
     /****************************************************************/
 
     MCUXCLPKC_WAITFORFINISH();  /* Avoid any ongoing computation of N. */
-    uint32_t numTrailZeroBits = MCUXCLMATH_FP_TRAILINGZEROS(REDUCEMODEVEN_N);
+    uint32_t numTrailZeroBits;
+    /* mcuxClMath_TrailingZeros always returns _OK. */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_TrailingZeros(REDUCEMODEVEN_N, &numTrailZeroBits));
 
 
     /****************************************************************/

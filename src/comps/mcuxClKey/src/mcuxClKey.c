@@ -19,7 +19,7 @@
 #include <mcuxClKey.h>
 #include <mcuxClEls.h>
 #include <mcuxClMemory.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 #include <internal/mcuxClKey_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_init)

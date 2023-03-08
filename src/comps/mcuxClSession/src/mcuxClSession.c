@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,7 +19,7 @@
 #include <mcuxClSession.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <mcuxClMemory.h>
-#include <toolchain.h>
+#include <nxpClToolchain.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_init(
@@ -67,6 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_setRtf(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_setRtf, MCUXCLSESSION_STATUS_OK);
 }
 
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_cleanup)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_cleanup(
   mcuxClSession_Handle_t pSession
@@ -86,6 +87,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_cleanup(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_cleanup, MCUXCLSESSION_STATUS_ERROR);
     }
 
+    /* Reset dirty to used, in case not all memory has been freed (and gets used again). */
+    pSession->cpuWa.dirty = pSession->cpuWa.used;
+
     MCUX_CSSL_FP_FUNCTION_CALL(retCode1,
         mcuxClMemory_clear((uint8_t *) pSession->pkcWa.buffer,
                           (sizeof(uint32_t)) * pSession->pkcWa.dirty,
@@ -95,6 +99,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_cleanup(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_cleanup, MCUXCLSESSION_STATUS_ERROR);
     }
 
+    /* Reset dirty to used, in case not all memory has been freed (and gets used again). */
+    pSession->pkcWa.dirty = pSession->pkcWa.used;
+
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_cleanup, MCUXCLSESSION_STATUS_OK);
 }
 
@@ -103,9 +110,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_destroy(
     mcuxClSession_Handle_t pSession UNUSED_PARAM
 )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClSession_destroy);
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClSession_destroy,
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
 
-    //Empty function as there is no dedicated mechanism on this platform to free the memory space.
+    MCUX_CSSL_FP_FUNCTION_CALL(cleanupStatus, mcuxClSession_cleanup(pSession) );
+    if (MCUXCLSESSION_STATUS_OK != cleanupStatus)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_destroy, MCUXCLSESSION_STATUS_ERROR);
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL(clearStatus, mcuxClMemory_clear((uint8_t *) pSession,
+        sizeof(mcuxClSession_Descriptor_t), sizeof(mcuxClSession_Descriptor_t)));
+    if (0U != clearStatus)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_destroy, MCUXCLSESSION_STATUS_ERROR);
+    }
+
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_destroy, MCUXCLSESSION_STATUS_OK);
 }
 
