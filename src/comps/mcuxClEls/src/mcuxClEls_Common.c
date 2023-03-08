@@ -23,49 +23,6 @@
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 
-/* Platform compatibility defines */
-#ifndef ELS_VERSION
-#define ELS_VERSION VERSION
-#endif
-
-#ifndef ELS_STATUS
-#define ELS_STATUS STATUS
-#endif
-
-#ifndef ELS_ERR_STATUS
-#define ELS_ERR_STATUS ERR_STATUS
-#endif
-
-#ifndef ELS_ERR_STATUS_CLR
-#define ELS_ERR_STATUS_CLR ERR_STATUS_CLR
-#endif
-
-#ifndef ELS_INT_ENABLE
-#define ELS_INT_ENABLE INT_ENABLE
-#endif
-
-#ifndef ELS_INT_STATUS_CLR
-#define ELS_INT_STATUS_CLR INT_STATUS_CLR
-#endif
-
-#ifndef ELS_INT_STATUS_SET
-#define ELS_INT_STATUS_SET INT_STATUS_SET
-#endif
-
-#ifndef ELS_SESSION_ID
-#define ELS_SESSION_ID SESSION_ID
-#endif
-
-#ifndef ELS_MASTER_ID
-#define ELS_MASTER_ID MASTER_ID
-#endif
-
-#ifndef ELS_CFG
-#define ELS_CFG CFG
-#endif
-  
-/* END of Platform compatibility defines */  
-
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_GetHwVersion)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetHwVersion(
     mcuxClEls_HwVersion_t * result)
