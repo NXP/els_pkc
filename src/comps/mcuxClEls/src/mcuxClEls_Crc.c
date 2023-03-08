@@ -23,17 +23,6 @@
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 
-/* Platform compatibility defines */
-
-#ifndef ELS_CMDCRC
-#define ELS_CMDCRC CMDCRC
-#endif
-
-#ifndef ELS_CMDCRC_CTRL
-#define ELS_CMDCRC_CTRL CMDCRC_CTRL
-#endif
-/* END of Platform compatibility defines */  
-
 #ifdef MCUXCL_FEATURE_ELS_CMD_CRC
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_ConfigureCommandCRC)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_ConfigureCommandCRC(
