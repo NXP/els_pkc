@@ -157,7 +157,7 @@ static bool mcuxClExample_provision_key(
     #endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
     return true;
 }
-#endif /*((MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV == 1) || (MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM == 1))*/
+
 
 /*
  * Check only if the mcuxClEls_KeyDelete_Async is defined "because mcuxClEls_KeyProvision_Async will be always defined"
@@ -290,5 +290,7 @@ static bool mcuxClExample_load_els_key(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     return true;
 }
+
+#endif /*((MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV == 1) || (MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM == 1))*/
 
 #endif /* MCUXCLEXAMPLE_ELS_KEY_HELPER_H_ */

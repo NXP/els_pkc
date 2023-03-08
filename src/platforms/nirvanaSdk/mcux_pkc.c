@@ -7,8 +7,6 @@
 
 #include "mcux_pkc.h"
 
-#include <mcuxClPkc_Macros.h> //
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -40,7 +38,7 @@ status_t PKC_PowerDownWakeupInit(PKC_Type *base)
     CLOCK_EnableClock(kCLOCK_Pkc);
 
     /* Zeroize the PKC RAM */
-    for (int i = 0; i < MCUXCLPKC_RAM_SIZE / sizeof(uint32_t); i++)
+    for (int i = 0; i < PKC_RAM_SIZE / sizeof(uint32_t); i++)
     {
         ((uint32_t *)PKC_RAM_ADDR)[i] = 0x0;
     }

@@ -1682,7 +1682,8 @@ component.els_pkc.examples:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: examples/mcuxCsslFlowProtection/inc
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
     files:
     - source: examples/mcuxClAeadModes/mcuxClAeadModes_multiPart_ELS_CCM_example.c
     - source: examples/mcuxClAeadModes/mcuxClAeadModes_oneshot_ELS_CCM_example.c
@@ -1710,7 +1711,7 @@ component.els_pkc.examples:
     - source: examples/mcuxClEls/hash_sha256_one_block.c
     - source: examples/mcuxClEls/hash_sha384_one_block.c
     - source: examples/mcuxClEls/hash_sha512_one_block.c
-    - source: examples/mcuxClEls/key_import_puk_der.c
+    # - source: examples/mcuxClEls/key_import_puk_der.c
     - source: examples/mcuxClEls/rng_prng_get_random.c
     - source: examples/mcuxClEls/tls_master_key_session_keys.c
     - source: examples/mcuxClHash/mcuxClHash_sha224_oneshot_example.c
@@ -1736,6 +1737,8 @@ component.els_pkc.examples:
     - source: examples/mcuxCsslFlowProtection/inc/mcuxCsslExamples.h
     - source: examples/mcuxCsslMemory/data_invariant_memory_compare.c
     - source: examples/mcuxCsslMemory/data_invariant_memory_copy.c
+
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_Session_Helper.h
   component_info:
     common:
       version: "${els_pkc_version}"
