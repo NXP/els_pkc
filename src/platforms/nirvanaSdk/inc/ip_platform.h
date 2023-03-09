@@ -125,6 +125,8 @@
 #ifndef ELS_PRNG_DATOUT
 #define ELS_PRNG_DATOUT PRNG_DATOUT
 #endif
+
+#define MCUXCL_FEATURE_TRNG_RNG4_256
 /* END of Platform compatibility defines */
 
 /* ================================================================================ */
