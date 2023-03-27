@@ -1,17 +1,33 @@
-/* Copyright(C) NXP B.V. 2018*/
-/* All rights are reserved. Reproduction in whole or in part is prohibited*/
-/* without the prior written consent of the copy-right owner.*/
-/* This source code and any compilation or derivative thereof is the sole*/
-/* property of NXP B.V. and is provided pursuant to a Software License*/
-/* Agreement. This code is the proprietary information of NXP B.V. and*/
-/* is confidential in nature. Its use and dissemination by any party other*/
-/* than NXP B.V. is strictly limited by the confidential information*/
-/* provisions of the agreement referenced above.*/
-/* NXP makes no warranty, expressed, implied or statutory, including but*/
-/* not limited to any implied warranty of merchantability or fitness for any*/
-/* particular purpose, or that the use will not infringe any third party patent,*/
-/* copyright or trademark.*/
-/* NXP must not be liable for any loss or damage arising from its use.*/
+/*
+ * Copyright 2018 NXP
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of NXP Semiconductor, Inc. nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 /********************************************************************************************************
  * @file     ip_css_constants.h
  *
