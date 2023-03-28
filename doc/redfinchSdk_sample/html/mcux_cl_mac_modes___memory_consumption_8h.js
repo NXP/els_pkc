@@ -1,5 +1,6 @@
 var mcux_cl_mac_modes___memory_consumption_8h =
 [
+    [ "MCUXCLMAC_MAX_SIZE_IN_CPUWORDS", "group__mcux_cl_mac_modes___memory_consumption.html#ga84842218ae711915efb61e0367612a1a", null ],
     [ "MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE", "group__mcux_cl_mac_modes___memory_consumption.html#gadda00ba9831fbe307d2e351ffd68e881", null ],
     [ "MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS", "group__mcux_cl_mac_modes___memory_consumption.html#ga1b01f0c494353c88edd45e9db5ed645c", null ],
     [ "MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE", "group__mcux_cl_mac_modes___memory_consumption.html#ga714b7602c4434bdb9de3d0490fe86933", null ],

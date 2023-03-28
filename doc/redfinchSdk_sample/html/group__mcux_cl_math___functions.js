@@ -15,9 +15,11 @@ var group__mcux_cl_math___functions =
     [ "MCUXCLMATH_MODEXP_SQRMULTL2R", "group__mcux_cl_math___functions.html#ga82842f4b45c0d86e4c2d6d29e23c259b", null ],
     [ "MCUXCLMATH_FP_MODEXP_SQRMULTL2R", "group__mcux_cl_math___functions.html#ga9f0c8d67f0c192341fbf9ac436f02173", null ],
     [ "MCUXCLMATH_SECMODEXP", "group__mcux_cl_math___functions.html#ga3e0168ff93f7bffd7d56ce509ba29c59", null ],
+    [ "MCUXCLMATH_SECMODEXP_WITHOUT_RERANDOMIZATION", "group__mcux_cl_math___functions.html#ga32eaa55458996d636a82ac9bda34e3e0", null ],
     [ "MCUXCLMATH_EXACTDIVIDEODD", "group__mcux_cl_math___functions.html#gae807c4ed789f67aa150addbae31de180", null ],
     [ "MCUXCLMATH_FP_EXACTDIVIDEODD", "group__mcux_cl_math___functions.html#gaf1d62616daa224745d2ed40fdfa4d724", null ],
     [ "MCUXCLMATH_EXACTDIVIDE", "group__mcux_cl_math___functions.html#gae99e5e55dda4387e4384e974a112a760", null ],
     [ "MCUXCLMATH_FP_EXACTDIVIDE", "group__mcux_cl_math___functions.html#ga4dd21ea08b92f104bd3d9bff5ce7efe7", null ],
-    [ "MCUX_CSSL_FP_PROTECTED_TYPE", "group__mcux_cl_math___functions.html#gad55bcb5283c5bd35363e36ab7b368826", null ]
+    [ "MCUX_CSSL_FP_PROTECTED_TYPE", "group__mcux_cl_math___functions.html#gaf05d42c37f836335f81035bde1b5c2bb", null ],
+    [ "MCUX_CSSL_FP_PROTECTED_TYPE", "group__mcux_cl_math___functions.html#gaf40f87ea9a6016cd444733991730d35d", null ]
 ];

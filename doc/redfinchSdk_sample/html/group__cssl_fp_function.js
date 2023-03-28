@@ -2,8 +2,9 @@ var group__cssl_fp_function =
 [
     [ "MCUX_CSSL_FP_PROTECTED_TYPE", "group__cssl_fp_function.html#ga6cb5dab960bed02a02ad907bd2a54a4b", null ],
     [ "MCUX_CSSL_FP_COUNTER_STMT", "group__cssl_fp_function.html#gacb5d4268cc93c95b8e69da19d74de79f", null ],
-    [ "MCUX_CSSL_FP_FUNCTION_DECL", "group__cssl_fp_function.html#ga31d7a18ff70c4305c365b0efcf0e4b73", null ],
-    [ "MCUX_CSSL_FP_FUNCTION_DEF", "group__cssl_fp_function.html#gae4d56f8dc2571d04c0bbb07297be6e29", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_DECL", "group__cssl_fp_function.html#ga21e1a3f12fd2772ca92216b888b3bdff", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_DEF", "group__cssl_fp_function.html#ga7c1d29e4d644c86f11e337e30dd2b210", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_POINTER", "group__cssl_fp_function.html#gab9bdb43ee02202c53d729847dea78ccc", null ],
     [ "MCUX_CSSL_FP_FUNCTION_ENTRY", "group__cssl_fp_function.html#ga2fda8e2a0e7d862b113b28bcc1b4d9bb", null ],
     [ "MCUX_CSSL_FP_FUNCTION_EXIT", "group__cssl_fp_function.html#ga9d9934b6d02da9505dd20ac36236b61d", null ],
     [ "MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK", "group__cssl_fp_function.html#ga7c4b79e79eecb68ef4e4fb4fb9fbc1b8", null ],

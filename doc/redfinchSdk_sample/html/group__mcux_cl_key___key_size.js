@@ -14,6 +14,7 @@ var group__mcux_cl_key___key_size =
     [ "MCUXCLKEY_SIZE_2048", "group__mcux_cl_key___key_size.html#gacaf2b0cf43dc21e81e653d58be8320f6", null ],
     [ "MCUXCLKEY_SIZE_3072", "group__mcux_cl_key___key_size.html#gacdbba9c49cef3b7a47dc9570bdc72115", null ],
     [ "MCUXCLKEY_SIZE_4096", "group__mcux_cl_key___key_size.html#ga44cf02ee5c2944fa72ec10c3be54642a", null ],
+    [ "MCUXCLKEY_SIZE_6144", "group__mcux_cl_key___key_size.html#gaf8c45542e3fe919a3dddc532b44cecd2", null ],
     [ "MCUXCLKEY_SIZE_8192", "group__mcux_cl_key___key_size.html#gaaee55d800a45f767592c0071e5fca0d8", null ],
     [ "MCUXCLKEY_SIZE_128_IN_WORDS", "group__mcux_cl_key___key_size.html#ga46a4709b4a513ab6676ee24944d4d2f0", null ],
     [ "MCUXCLKEY_SIZE_160_IN_WORDS", "group__mcux_cl_key___key_size.html#ga468b330bc005b81ccfe88e11171f391f", null ],
@@ -28,5 +29,6 @@ var group__mcux_cl_key___key_size =
     [ "MCUXCLKEY_SIZE_2048_IN_WORDS", "group__mcux_cl_key___key_size.html#gae48b497b883fa63ef84465fcb4fb3ced", null ],
     [ "MCUXCLKEY_SIZE_3072_IN_WORDS", "group__mcux_cl_key___key_size.html#gabbd3d5e04feb2c2f43a94d238cfca369", null ],
     [ "MCUXCLKEY_SIZE_4096_IN_WORDS", "group__mcux_cl_key___key_size.html#gada1e24d3f9d8207287333085df1712dd", null ],
+    [ "MCUXCLKEY_SIZE_6144_IN_WORDS", "group__mcux_cl_key___key_size.html#ga4de61cf46c4577ba0019f92814cbf804", null ],
     [ "MCUXCLKEY_SIZE_8192_IN_WORDS", "group__mcux_cl_key___key_size.html#ga6c05f57184c5dd0da0cbb44ba28ce0f8", null ]
 ];

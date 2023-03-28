@@ -27,5 +27,5 @@ var mcux_cl_ecc___types_8h =
     [ "mcuxClEcc_Weier_DomainParams_t", "group__mcux_cl_ecc___types.html#gafe84edad82c8934ef1634e9f29effa55", null ],
     [ "MCUX_CSSL_FP_PROTECTED_TYPE", "group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f", null ],
     [ "mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor", "group__mcux_cl_ecc___types.html#ga86ce358d9af15d943c4a254ac4156363", null ],
-    [ "mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor", "group__mcux_cl_ecc___types.html#gadd43ca6894d3cf30d6bd5693c44fa8d4", null ]
+    [ "mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor", "group__mcux_cl_ecc___types.html#ga41770640b3d964f8add4ad005c6d81e6", null ]
 ];

@@ -104,6 +104,7 @@ $(document).ready(function(){initNavTree('group__mcux_cl_pkc___functions___u_p_t
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">McuxClPkc_Functions_UPTRT<div class="ingroups"><a class="el" href="group__mcux_cl_pkc.html">mcuxClPkc</a> &raquo; <a class="el" href="group__mcux_cl_pkc___functions.html">mcuxClPkc_Functions</a></div></div>  </div>
@@ -118,6 +119,12 @@ Macros</h2></td></tr>
 <tr class="memitem:ga26921e5d9a66bd8247a277794b04b42c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___u_p_t_r_t.html#ga26921e5d9a66bd8247a277794b04b42c">MCUXCLPKC_FP_GENERATEUPTRT</a>(pUPTRT,  pBaseBuffer,  bufferSize,  noOfBuffer)</td></tr>
 <tr class="memdesc:ga26921e5d9a66bd8247a277794b04b42c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClPkc_GenerateUPTRT with flow protection.  <a href="#ga26921e5d9a66bd8247a277794b04b42c">More...</a><br /></td></tr>
 <tr class="separator:ga26921e5d9a66bd8247a277794b04b42c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga346286b3547b68c3b07156b8e5b54ef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___u_p_t_r_t.html#ga346286b3547b68c3b07156b8e5b54ef4">MCUX_CSSL_FP_PROTECTED_TYPE</a> (<a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a>) mcuxClPkc_GenerateUPTRT(uint16_t *pUPTRT</td></tr>
+<tr class="memdesc:ga346286b3547b68c3b07156b8e5b54ef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize UPTR table.  <a href="#ga346286b3547b68c3b07156b8e5b54ef4">More...</a><br /></td></tr>
+<tr class="separator:ga346286b3547b68c3b07156b8e5b54ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -176,6 +183,147 @@ uint16_t *&#160;</td><td class="memItemRight" valign="bottom"><b>pUPTRT</b></td>
 </div><div class="memdoc">
 
 <p>Helper macro to call #mcuxClPkc_GenerateUPTRT with flow protection. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga346286b3547b68c3b07156b8e5b54ef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga346286b3547b68c3b07156b8e5b54ef4">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_PROTECTED_TYPE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MCUX_CSSL_FP_PROTECTED_TYPE </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize UPTR table. </p>
+<p>Deprecated type for mcuxClSession protected status codes.</p>
+<p>Deprecated type for RSA protected status codes.</p>
+<p>Deprecated type for error codes used by code-flow protected PKC component functions.</p>
+<p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
+<p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
+<p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
+<p>Deprecated type for ELS driver protected status codes.</p>
+<p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>Wait until PKC is ready to accept new calculation.</p>
+<p>Wait until PKC finishes calculations.</p>
+<p>Randomize UPTR table and operands in PKC workarea.</p>
+<p>Randomize UPTR table.</p>
+<p>This function initializes elements in UPTR table. UPTR table contains the address (16-bit offset in PKC workarea) of each buffer (PKC operand). Each element of the table will be initialized with a 16-bit offset, associated with a buffer allocated in sequence in PKC workarea. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be initialized in UPTR table. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pBaseBuffer</td><td>address of the buffer in PKC workarea, with which the first element will be associated. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be initialized.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl>
+<dt>Parameter properties </dt>
+<dd><dl>
+<dt><code>pUPTRT</code>  </dt>
+<dd>this pointer shall be 2-byte aligned. </dd>
+<dt><code>pBaseBuffer</code>  </dt>
+<dd>this address shall be MCUXCLPKC_WORDSIZE aligned. </dd>
+<dt><code>bufferLength</code>  </dt>
+<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
+</dl>
+</dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl>
+<dt>Parameter properties </dt>
+<dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
+<dt><code>pUPTRT</code>  </dt>
+<dd>this pointer shall be 2-byte aligned. </dd>
+</dl>
+</dd>
+</dl>
+<dl class="section attention"><dt>Attention</dt><dd>Only the buffer allocation will be randomized, existing operands stored in each buffer will not be moved accordingly. </dd>
+<dd>
+This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>if UPTR table is randomized successfully. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#gab1f0a5295736463652b7a8c1ba887991" title="PKC operation not successful.">MCUXCLPKC_STATUS_NOK</a></td><td>if the operation failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
+<p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl>
+<dt>Parameter properties </dt>
+<dd><dl>
+<dt>pSession: </dt>
+<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
+<dt><code>pUPTRT</code>  </dt>
+<dd>this pointer shall be 2-byte aligned. </dd>
+<dt><code>bufferLength</code>  </dt>
+<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
+</dl>
+</dd>
+</dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>if UPTR table is randomized successfully. </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#gab1f0a5295736463652b7a8c1ba887991" title="PKC operation not successful.">MCUXCLPKC_STATUS_NOK</a></td><td>if the operation failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
+<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
+<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation).</p>
+<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

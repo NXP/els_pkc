@@ -133,6 +133,12 @@ Variables</h2></td></tr>
 <tr class="memitem:ga22118bb02cf6c0eb05487f6a8fc21c84"><td class="memItemLeft" align="right" valign="top"><a id="ga22118bb02cf6c0eb05487f6a8fc21c84"></a>
 <a class="el" href="group__mcux_cl_key___types.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> <a class="el" href="group__mcux_cl_key___types.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> <a class="el" href="group__cl_core_types.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>keyDataLength</b></td></tr>
 <tr class="separator:ga22118bb02cf6c0eb05487f6a8fc21c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga24f095870266b31a9d3cb9b8043dff33"><td class="memItemLeft" align="right" valign="top"><a id="ga24f095870266b31a9d3cb9b8043dff33"></a>
+<a class="el" href="group__mcux_cl_key___types.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>privKey</b></td></tr>
+<tr class="separator:ga24f095870266b31a9d3cb9b8043dff33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77a5fc38fc7e3ecda6e63a7ec6e19c88"><td class="memItemLeft" align="right" valign="top"><a id="ga77a5fc38fc7e3ecda6e63a7ec6e19c88"></a>
+<a class="el" href="group__mcux_cl_key___types.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> <a class="el" href="group__mcux_cl_key___types.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pubKey</b></td></tr>
+<tr class="separator:ga77a5fc38fc7e3ecda6e63a7ec6e19c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8054ba350af7fc97d7422d385e1e72a8"><td class="memItemLeft" align="right" valign="top"><a id="ga8054ba350af7fc97d7422d385e1e72a8"></a>
 <a class="el" href="group__mcux_cl_key___types.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> <a class="el" href="group__mcux_cl_key___types.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>protection</b></td></tr>
 <tr class="separator:ga8054ba350af7fc97d7422d385e1e72a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,6 +191,7 @@ Variables</h2></td></tr>
 <p>Load key into destination memory buffer.</p>
 <p>Load key into destination key slot of a coprocessor.</p>
 <p>Configures they protection mechanism for to the given key handle.</p>
+<p>Establishes a key pair link between a private and public key handle.</p>
 <p>Initializes a key handle with default protection values.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -193,6 +200,22 @@ Variables</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Define which key type shall be initialized </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pKeyData</td><td>Provide pointer to source data of the key. This can be a pointer to a plain key buffer, a share, or a key blob. The protection function defines the purpose of this parameter </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">keyDataLength</td><td>Length of the provided key data <code>pKeyData</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_k_e_y___s_t_a_t_u_s__.html">MCUXCLKEY_STATUS_</a>, see individual documentation for more information</dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_k_e_y___s_t_a_t_u_s__.html#gaad298a05e6e023bc251b91ad5173ac59" title="Error occured during Key operation.">MCUXCLKEY_STATUS_ERROR</a></td><td>on unsuccessful operation </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_k_e_y___s_t_a_t_u_s__.html#ga3cac3b08cb53d2949698e19319010c49" title="Key operation successful.">MCUXCLKEY_STATUS_OK</a></td><td>on successful operation</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Session handle to provide session dependent information </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">privKey</td><td>Key handle of private key </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pubKey</td><td>Key handle of public key</td></tr>
   </table>
   </dd>
 </dl>

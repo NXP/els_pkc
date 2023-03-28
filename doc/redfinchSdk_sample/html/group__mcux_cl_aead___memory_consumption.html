@@ -109,11 +109,14 @@ $(document).ready(function(){initNavTree('group__mcux_cl_aead___memory_consumpti
 </div><!--header-->
 <div class="contents">
 
-<p>Defines the memory consumption for the mcuxClAead component.  
+<p>Defines the memory consumption for the mcuxClAead component All work area sizes in bytes are a multiple of CPU wordsize.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ga53e8c4dc830f50602ff699bf0b747495"><td class="memItemLeft" align="right" valign="top"><a id="ga53e8c4dc830f50602ff699bf0b747495"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_SIZE_IN_CPUWORDS</b>(size)</td></tr>
+<tr class="separator:ga53e8c4dc830f50602ff699bf0b747495"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d28570552a4193d7077054cbda8e618"><td class="memItemLeft" align="right" valign="top"><a id="ga0d28570552a4193d7077054cbda8e618"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_CRYPT_CPU_WA_BUFFER_SIZE</b></td></tr>
 <tr class="separator:ga0d28570552a4193d7077054cbda8e618"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,7 +170,7 @@ Macros</h2></td></tr>
 <tr class="separator:gaf71be8e9107754f330cd397794b12ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines the memory consumption for the mcuxClAead component. </p>
+<p>Defines the memory consumption for the mcuxClAead component All work area sizes in bytes are a multiple of CPU wordsize. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="gab4cc3939b235a6d122ce012c23d3e61a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gab4cc3939b235a6d122ce012c23d3e61a">&#9670;&nbsp;</a></span>MCUXCLAEAD_WA_SIZE_MAX</h2>
@@ -182,6 +185,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Define the max workarea size in bytes required for this component. </p>
+<p>Work area sizes in bytes are a multiple of CPU wordsize. </p>
 
 </div>
 </div>

@@ -140,9 +140,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6ade92ad6a6c35191bcbbdf58d4dd186"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#a6ade92ad6a6c35191bcbbdf58d4dd186">mcuxClPsaDriver_Oracle_StoreKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey)</td></tr>
 <tr class="memdesc:a6ade92ad6a6c35191bcbbdf58d4dd186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for saving a key.  <a href="#a6ade92ad6a6c35191bcbbdf58d4dd186">More...</a><br /></td></tr>
 <tr class="separator:a6ade92ad6a6c35191bcbbdf58d4dd186"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d4273da6db3238f9c04c058bf108ce"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#ab8d4273da6db3238f9c04c058bf108ce">mcuxClPsaDriver_Oracle_ImportKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey, size_t *bits)</td></tr>
-<tr class="memdesc:ab8d4273da6db3238f9c04c058bf108ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for checking the key before importing and getting the bit length of the key.  <a href="#ab8d4273da6db3238f9c04c058bf108ce">More...</a><br /></td></tr>
-<tr class="separator:ab8d4273da6db3238f9c04c058bf108ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa70e529f7af52dcd338e12863342c397"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#aa70e529f7af52dcd338e12863342c397">mcuxClPsaDriver_Oracle_ImportKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey, const uint8_t *data, size_t data_length, size_t *key_buffer_length, size_t *bits)</td></tr>
+<tr class="memdesc:aa70e529f7af52dcd338e12863342c397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for executing S50 specific activities when the import of key is done the PSA library will proceed with storing the key.  <a href="#aa70e529f7af52dcd338e12863342c397">More...</a><br /></td></tr>
+<tr class="separator:aa70e529f7af52dcd338e12863342c397"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API definition of the PSA driver Oracle. </p>
@@ -396,8 +396,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab8d4273da6db3238f9c04c058bf108ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8d4273da6db3238f9c04c058bf108ce">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_ImportKey()</h2>
+<a id="aa70e529f7af52dcd338e12863342c397"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa70e529f7af52dcd338e12863342c397">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_ImportKey()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -407,6 +407,24 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *&#160;</td>
           <td class="paramname"><em>pKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>data_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>key_buffer_length</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -422,13 +440,30 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Oracle function for checking the key before importing and getting the bit length of the key. </p>
-<p>This function is to perform checks on an (encrypted) key object.</p>
+<p>Oracle function for executing S50 specific activities when the import of key is done the PSA library will proceed with storing the key. </p>
+<p>After the evaluation the function will generate the buffer which will be stored in the memory by the PSA</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">attributes</td><td>defines the attributes associated with the input buffer PRECONDITION: The fields of pKey are initialized as follows:<ul>
+<li>container.pData : points to the psa key buffer (key_buffer)</li>
+<li>container.length : set to the length of the psa key buffer (key_buffer_size)</li>
+<li>container.used : set to the length of the psa key buffer (key_buffer_size)</li>
+<li>container.pAuxData : points to the psa attributes (attributes) All other fields shall be initialized</li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pKey</td><td>is the reference to the key descriptor of the ELS </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>is the buffer including public key for import </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data_length</td><td>is the length of data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key_buffer_length</td><td>is the effective number of data filled in the key_buffer returned by the function </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">bits</td><td>is the number of bits representing the key (e.g. 256 for the NISTP 256 key)</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">PSA_SUCCESS</td><td>The operation was succesful </td></tr>
-    <tr><td class="paramname">PSA_ERROR_NOT_SUPPORTED</td><td>The Oracle shall never return this error code </td></tr>
-    <tr><td class="paramname">PSA_ERROR_GENERIC_ERROR</td><td>The operation failed (other error codes can be used as well if more specific) </td></tr>
+    <tr><td class="paramname">PSA_ERROR_NOT_SUPPORTED</td><td>The lifetime is not supported, meaning that fallback functions will be executed by Oracle </td></tr>
+    <tr><td class="paramname">PSA_ERROR_INSUFFICIENT_MEMORY</td><td>The key_buffer size is not enough to include data to be stored </td></tr>
   </table>
   </dd>
 </dl>
