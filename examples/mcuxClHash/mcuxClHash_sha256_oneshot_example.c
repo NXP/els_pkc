@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020,2022 NXP                                                  */
+/* Copyright 2020,2022-2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,7 +17,7 @@
 #include <mcuxClHash.h>             // Interface to the entire mcuxClHash component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <nxpClToolchain.h>             // memory segment definitions
+#include <mcuxClToolchain.h>             // memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
@@ -31,7 +31,6 @@ static const uint8_t hashExpected[32] CSS_CONST_SEGMENT = {
     0x41u, 0x41u, 0x40u, 0xdeu, 0x5du, 0xaeu, 0x22u, 0x23u,
     0xb0u, 0x03u, 0x61u, 0xa3u, 0x96u, 0x17u, 0x7au, 0x9cu,
     0xb4u, 0x10u, 0xffu, 0x61u, 0xf2u, 0x00u, 0x15u, 0xadu
-
 };
 
 static const uint8_t rtfExpected[32] CSS_CONST_SEGMENT = {
@@ -55,12 +54,11 @@ bool mcuxClHash_sha256_oneshot_example(void)
     }
 
     /* Initialize session */
-    #define CPU_WA_BUFFER_SIZE MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
     //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, CPU_WA_BUFFER_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
     /**************************************************************************/
     /* Hash computation                                                       */
@@ -123,6 +121,15 @@ bool mcuxClHash_sha256_oneshot_example(void)
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
+
+    /**************************************************************************/
+    /* Session clean-up                                                       */
+    /**************************************************************************/
+    /** Destroy Session and cleanup Session **/
+    if(!mcuxClExample_Session_Clean(session))
     {
         return MCUXCLEXAMPLE_ERROR;
     }

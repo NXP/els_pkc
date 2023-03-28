@@ -60,7 +60,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
     /* Determine pointer table pointer */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy - TODO CLNS-6410: check if this is necessary
-    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
 
     /* Step 1: Initialize the accumulated points in YZ-coordinates */
     MCUXCLPKC_FP_CALC_OP1_OR_CONST(TWED_ML_Y1, TWED_Z, 0u);

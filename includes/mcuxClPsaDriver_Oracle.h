@@ -135,6 +135,7 @@ psa_status_t mcuxClPsaDriver_Oracle_UnloadKey( mcuxClKey_Descriptor_t   *pKey );
 
 */
 psa_status_t mcuxClPsaDriver_Oracle_ReserveKey( mcuxClKey_Descriptor_t   *pKey );
+
 /**
     @brief Oracle function for saving a key
 
@@ -147,20 +148,36 @@ psa_status_t mcuxClPsaDriver_Oracle_ReserveKey( mcuxClKey_Descriptor_t   *pKey )
 */
 psa_status_t mcuxClPsaDriver_Oracle_StoreKey( mcuxClKey_Descriptor_t   *pKey );
 
-
-
 /**
-    @brief Oracle function for checking the key before importing and getting the bit length of the key
-
-    This function is to perform checks on an (encrypted) key object.
-
-    @retval PSA_SUCCESS                 The operation was succesful
-    @retval PSA_ERROR_NOT_SUPPORTED     The Oracle shall never return this error code
-    @retval PSA_ERROR_GENERIC_ERROR     The operation failed (other error codes can be used as well if more specific)
-
-*/
-psa_status_t mcuxClPsaDriver_Oracle_ImportKey (  mcuxClKey_Descriptor_t *pKey,
-                                                size_t                *bits);
+ * @brief Oracle function for executing S50 specific activities when the import of key is done
+ * the PSA library will proceed with storing the key. After the evaluation the function will generate
+ * the buffer which will be stored in the memory by the PSA
+ *
+ * @param[in] attributes defines the attributes associated with the input buffer
+ *   PRECONDITION:
+ *       The fields of pKey are initialized as follows:
+ *       - container.pData    : points to the psa key buffer (key_buffer)
+ *       - container.length   : set to the length of the psa key buffer (key_buffer_size)
+ *       - container.used     : set to the length of the psa key buffer (key_buffer_size)
+ *       - container.pAuxData : points to the psa attributes (attributes)
+ *       All other fields shall be initialized
+ *
+ * @param[in] pKey  is the reference to the key descriptor of the ELS
+ * @param[in] data is the buffer including public key for import
+ * @param[in] data_length is the length of data
+ * @param[out] key_buffer_length is the effective number of data filled in the key_buffer returned by the function
+ * @param[out] bits is the number of bits representing the key (e.g. 256 for the NISTP 256 key)
+ *
+ * @retval PSA_SUCCESS                          The operation was succesful
+ * @retval PSA_ERROR_NOT_SUPPORTED              The lifetime is not supported, meaning that fallback functions will be
+ *                                              executed by Oracle
+ * @retval PSA_ERROR_INSUFFICIENT_MEMORY        The key_buffer size is not enough to include data to be stored
+ */
+psa_status_t mcuxClPsaDriver_Oracle_ImportKey(mcuxClKey_Descriptor_t  *pKey,
+                                             const uint8_t *data,
+                                             size_t data_length,
+                                             size_t *key_buffer_length,
+                                             size_t *bits);
 
 #ifdef __cplusplus
 } /* extern "C" */

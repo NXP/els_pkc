@@ -59,8 +59,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   /* Create and set local Uptrt table. */
   uint32_t pOperands32[(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_UPTRT_SIZE + 1u) / 2u];
 
-  /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t *pOperands = (uint16_t *) pOperands32;
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /* Get iP and iT indices */
   uint32_t uptrtIndexTmp = (iP_iT) & 0xFFu;
@@ -76,7 +77,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   const uint32_t bufferSizeT1 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T1
   const uint32_t bufferSizeT2 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T2
   const uint32_t bufferSizeT3 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T3
-  const uint32_t bufferSizeTE = 5u * MCUXCLPKC_WORDSIZE;                  // size of temp buffer TE
+  const uint32_t bufferSizeTE = 6u * MCUXCLPKC_WORDSIZE;                  // size of temp buffer TE
 
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE] = backupPtrUptrt[uptrtIndexPrimeCandidate];
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED] = backupPtrUptrt[uptrtIndexTmp];
@@ -129,8 +130,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   uint8_t * pExp = MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE]) + bufferSizeTE; //allocate space for it in the FXRAM, if there is not enough memory it can be in CPU
   MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(pExp, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X, byteLenPrime);
   /* Allocate space for the temporary buffer for exponent (aligned to CPU word, ength shall be a multiple of CPU word and greater than @p byteLenExp) */
-  /* MISRA Ex. 9 - Rule 11.3 - Cast to CPU word aligned */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("Cast to CPU word aligned")
   uint32_t * pExpTemp = (uint32_t *) pExp + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(byteLenPrime) / sizeof(uint32_t);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() 
 
   /* Calculate Ndash of w (primeCandidate) */
   MCUXCLMATH_FP_NDASH(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0);
@@ -140,8 +142,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
    * Due to fact that the most significant bit of prime candidate is 1 (this is because for FIPS) do not need computed shifted modulus,
    * can directly use the prime candidate as a shifted modulus.
    */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
   MCUXCLMATH_FP_QSQUARED(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED /* QSquared */, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE,
     MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
   /*
    * 3. Set iteration counter, and start loop
@@ -164,6 +168,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
        */
       ++witnessLoopCounterMain;
 
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE_WO_RNG(byteLenPrime) / sizeof(uint32_t);
       uint8_t * pWitnessCpu = (uint8_t*) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
       if (NULL == pWitnessCpu)
@@ -185,6 +190,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
       }
 
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
+#else
+      MCUX_CSSL_FP_FUNCTION_CALL(randomGenerateResult, mcuxClRandom_generate(pSession,
+                                                               pWitness,
+                                                               byteLenPrime));
+      if(MCUXCLRANDOM_STATUS_OK != randomGenerateResult)
+      {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest, MCUXCLRSA_STATUS_RNG_ERROR);
+      }
+#endif /* MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND */
 
       /*
        * 5. If ((b <= 1) or (b >= PrimeCandidate - 1)), then go to step 4.
@@ -219,7 +233,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
      * LEN and MCLEN was already initialized OPLEN = MCLEN = pkcPrimeByteLength,
      */
     MCUX_CSSL_FP_FUNCTION_CALL(secModExpResult,
-        MCUXCLMATH_SECMODEXP(pSession,
+        MCUXCLMATH_SECMODEXP_WITHOUT_RERANDOMIZATION(
+                            pSession,
                             pExp,
                             pExpTemp,
                             byteLenPrime,
@@ -297,9 +312,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
 
 /* Use temporary define to avoid preprocessor directive inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
   #define TMP_PKCRAM_WORKAROUND \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * witnessLoopCounterMain, \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * witnessLoopCounterMain
+#else
+  #define TMP_PKCRAM_WORKAROUND \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * witnessLoopCounterMain
+#endif
 
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest,
                             status,

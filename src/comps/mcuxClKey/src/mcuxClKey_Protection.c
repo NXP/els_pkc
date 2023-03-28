@@ -22,7 +22,7 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <internal/mcuxClKey_Internal.h>
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_protect_fct_none)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_protect_fct_none, mcuxClKey_LoadFuncPtr_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(mcuxClKey_Handle_t key)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_protect_fct_none);
@@ -45,7 +45,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(mcuxC
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUXCLKEY_STATUS_OK);
 }
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_protect_fct_ckdf)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_protect_fct_ckdf, mcuxClKey_LoadFuncPtr_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(mcuxClKey_Handle_t key)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_protect_fct_ckdf, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Ckdf_Sp800108_Async));

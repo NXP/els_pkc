@@ -11,6 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+#include <mcuxClToolchain.h>
 #include <mcuxClHash.h>
 #include <internal/mcuxClHash_Internal.h>
 #include <mcuxClSession.h>
@@ -21,14 +22,12 @@
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_init(
-    mcuxClSession_Handle_t session,
+    mcuxClSession_Handle_t session UNUSED_PARAM,
     mcuxClHash_Context_t pContext,
     mcuxClHash_Algo_t algorithm
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_init);
-
-    (void)session; // parameter not used
 
     pContext->data.unprocessedLength = 0u;
     pContext->data.processedLength[0] = 0u;

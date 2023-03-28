@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021,2023 NXP                                                  */
+/* Copyright 2023 NXP                                                       */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,13 +11,30 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <internal/mcuxClRsa_Internal_PkcDefs.h>
-#include <internal/mcuxClPkc_FupMacros.h>
-#include <internal/mcuxClRsa_PrivatePlain_FUP.h>
-
-const mcuxClPkc_FUPEntry_t mcuxClRsa_PrivatePlain_ReductionME_FUP[3] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0x54u,0xb5u,0xe5u,0x39u},{0x80u,0x33u,0x01u,0x00u,0x02u,0x03u},{0x80u,0x2au,0x02u,0x03u,0x02u,0x00u}};
-
-
-/*
- * FUP to do montgomery reduction and normalize the result
+/**
+ * @file  mcuxClEcc_Weier_Internal_FUP.h
+ * @brief defines FUP programs byte arrays
  */
+
+
+#ifndef MCUXCLECC_WEIER_INTERNAL_FUP_H_
+#define MCUXCLECC_WEIER_INTERNAL_FUP_H_
+
+#include <mcuxClConfig.h> // Exported features flags header
+#include <internal/mcuxClPkc_FupMacros.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_UpdateJacobianCoordinates
+ */
+#define mcuxClEcc_FUP_UpdateJacobianCoordinates_LEN  7u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_UpdateJacobianCoordinates[mcuxClEcc_FUP_UpdateJacobianCoordinates_LEN];
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* MCUXCLECC_WEIER_INTERNAL_FUP_H_ */

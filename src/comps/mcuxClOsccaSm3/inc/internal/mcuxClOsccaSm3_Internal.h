@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -48,7 +48,6 @@
 /**********************************************
  * Function declarations
  **********************************************/
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOsccaSm3_core_sm3_switch_endianness)
 void mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length);
 
 #endif /* MCUXCLOSCCASM3_INTERNAL_H_ */

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,7 +20,7 @@
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <nxpClToolchain.h> // memory segment definitions
+#include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClAes.h> // Interface to AES-related definitions and types
 #include <mcuxClCipher.h> // Interface to the entire mcuxClCipher component
@@ -79,7 +79,7 @@ bool mcuxClCipherModes_CBC_Oneshot_ELS_example(void)
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
     //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLCIPHER_MAX_AES_CPU_WA_BUFFER_SIZE_IN_WORDS, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLCIPHER_AES_CRYPT_CPU_WA_BUFFER_SIZE, 0u);
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
@@ -114,15 +114,15 @@ bool mcuxClCipherModes_CBC_Oneshot_ELS_example(void)
     uint32_t msg_enc_size = 0u;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClCipher_Mode_AES_CBC_Enc_NoPadding,
-    /* mcuxCl_InputBuffer_t pIv,       */ aes128_iv,
-    /* uint32_t ivLength,             */ sizeof(aes128_iv),
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_plain,
-    /* uint32_t inLength,             */ sizeof(msg_plain),
-    /* mcuxCl_Buffer_t pOut,           */ msg_enc,
-    /* uint32_t * const pOutLength    */ &msg_enc_size
+    /* mcuxClSession_Handle_t session: */ session,
+    /* mcuxClKey_Handle_t key:         */ key,
+    /* mcuxClCipher_Mode_t mode:       */ mcuxClCipher_Mode_AES_CBC_Enc_NoPadding,
+    /* mcuxCl_InputBuffer_t pIv:       */ aes128_iv,
+    /* uint32_t ivLength:             */ sizeof(aes128_iv),
+    /* mcuxCl_InputBuffer_t pIn:       */ msg_plain,
+    /* uint32_t inLength:             */ sizeof(msg_plain),
+    /* mcuxCl_Buffer_t pOut:           */ msg_enc,
+    /* uint32_t * const pOutLength:   */ &msg_enc_size
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) || (MCUXCLCIPHER_STATUS_OK != result_enc))
@@ -151,15 +151,15 @@ bool mcuxClCipherModes_CBC_Oneshot_ELS_example(void)
     uint32_t msg_dec_size = 0u;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec, token_dec, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClCipher_Mode_AES_CBC_Dec_NoPadding,
-    /* mcuxCl_InputBuffer_t pIv,       */ aes128_iv,
-    /* uint32_t ivLength,             */ sizeof(aes128_iv),
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
-    /* uint32_t inLength,             */ msg_enc_size,
-    /* mcuxCl_Buffer_t pOut,           */ msg_dec,
-    /* uint32_t * const pOutLength    */ &msg_dec_size
+    /* mcuxClSession_Handle_t session: */ session,
+    /* mcuxClKey_Handle_t key:         */ key,
+    /* mcuxClCipher_Mode_t mode:       */ mcuxClCipher_Mode_AES_CBC_Dec_NoPadding,
+    /* mcuxCl_InputBuffer_t pIv:       */ aes128_iv,
+    /* uint32_t ivLength:             */ sizeof(aes128_iv),
+    /* mcuxCl_InputBuffer_t pIn:       */ msg_enc,
+    /* uint32_t inLength:             */ msg_enc_size,
+    /* mcuxCl_Buffer_t pOut:           */ msg_dec,
+    /* uint32_t * const pOutLength:   */ &msg_dec_size
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_dec) || (MCUXCLCIPHER_STATUS_OK != result_dec))

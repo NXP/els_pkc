@@ -64,7 +64,11 @@ extern "C" {
         } \
     })
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+  #define MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_CompareDmaFinalOutputAddress)
+#else
   #define MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN (0u)
+#endif
 
 
 /**
@@ -767,7 +771,48 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_SetMaste
 #endif /* MCUXCL_FEATURE_ELS_LOCKING */
 
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_ADDRESS_READBACK
+/**
+ * @brief Reads back the last address processed by the ELS DMA (security feature)
+ *
+ * @param[out] pLastAddress	Pointer to the last address read/written by the ELS DMA
+ *
+ * @if (MCUXCL_FEATURE_CSSL_FP_USE_SECURE_COUNTER && MCUXCL_FEATURE_CSSL_SC_USE_SW_LOCAL)
+ *  @return A code-flow protected error code (see @ref mcuxCsslFlowProtection). The error code is always #MCUXCLELS_STATUS_OK
+ * @else
+ *  @return An error code that is always #MCUXCLELS_STATUS_OK
+ * @endif
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_GetLastDmaAddress)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetLastDmaAddress(
+    uint32_t* pLastAddress
+    );
+#endif /* MCUXCL_FEATURE_ELS_DMA_ADDRESS_READBACK */
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+/**
+ * @brief Compares the last address processed by the ELS DMA with the expected final address of the output buffer given to the last ELS command (security feature).
+ *        The given address @p outputStartAddress and expected length @p expectedLength determine the expected final address.
+ *        This function can be used to verify that the final DMA transfer of an ELS command has completed as expected.
+ *
+ * @param[in] outputStartAddress Pointer to the output buffer of the last ELS operation
+ * @param[in] expectedLength     Expected length of the output buffer of the last ELS operation
+ *
+ * @if (MCUXCL_FEATURE_CSSL_FP_USE_SECURE_COUNTER && MCUXCL_FEATURE_CSSL_SC_USE_SW_LOCAL)
+ *  @return A code-flow protected error code (see @ref mcuxCsslFlowProtection). The error code can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
+ * @else
+ *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
+ * @endif
+ *
+ * @retval #MCUXCLELS_STATUS_SW_COMPARISON_FAILED if the comparison between the expected final address and the actual final address processed by ELS fails
+ * @retval #MCUXCLELS_STATUS_OK_WAIT              if the comparison was successful
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_CompareDmaFinalOutputAddress)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_CompareDmaFinalOutputAddress(
+        uint8_t *outputStartAddress,
+        size_t expectedLength
+        );
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK  */
 
 #ifdef __cplusplus
 } /* extern "C" */

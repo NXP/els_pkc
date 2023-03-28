@@ -248,12 +248,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
 /**
  * @brief This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of https://datatracker.ietf.org/doc/html/rfc8032).
  *  For given hash prefix prefix (either dom2(x, y) or dom4(x, y) according to the chosen EdDSA variant; see Sections 5.1 and 5.2 of https://datatracker.ietf.org/doc/html/rfc8032),
- * a message digest m', i.e. either the message itself for PureEdDSA or the message hash for HashEdDSA (see Section 4 of https://datatracker.ietf.org/doc/html/rfc8032),
- * the signing keys s and (hb,...,h{2b-1}) derived from the private key d (see mcuxClEcc_EdDSA_GenerateKeyPair)
- * and a public key Qenc, this function calculates an EdDSA signature (Renc,S), where Renc and S are given by
+ *  a message digest m', i.e. either the message itself for PureEdDSA or the message hash for HashEdDSA (see Section 4 of https://datatracker.ietf.org/doc/html/rfc8032),
+ *  the signing keys s and (hb,...,h{2b-1}) derived from the private key d (see mcuxClEcc_EdDSA_GenerateKeyPair)
+ *  and a public key Qenc, this function calculates an EdDSA signature (Renc,S), where Renc and S are given by
  *
- * - Renc=(r*G)enc
- * - S=r+H(prefix||Renc||Qenc||m')*s mod n
+ *      - Renc = (r*G)enc
+ *      - S = r+H(prefix||Renc||Qenc||m')*s mod n
  *
  * where the secret scalar r is given by r=H(prefix||(hb,...,h{2b-1})||m') and G is the base point.
  *

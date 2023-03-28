@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021,2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,7 +18,8 @@
 #define MCUXCLECC_WEIER_INTERNAL_SECUREPOINTMULT_COZMONTLADDER_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoZPointAddSub[23];
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1[18];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoZPointAddSub[28];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1[20];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP[8];
 
 #endif /* MCUXCLECC_WEIER_INTERNAL_SECUREPOINTMULT_COZMONTLADDER_FUP*/ 

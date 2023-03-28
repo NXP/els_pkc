@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,7 +17,7 @@
 
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -64,8 +64,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
 
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_NOENCODE_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
-  /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_noEncode, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -79,8 +80,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
   /* Export message of size BYTE_LENGTH(keyBitLength) from pInput to pOutput in reverse order. */
 
   uint32_t keyByteLength = keyBitLength / 8U; /* keyBitLength is a multiple of 8 */
-  MCUXCLPKC_PS1_SETLENGTH(0u, MCUXCLPKC_ROUNDUP_SIZE(keyByteLength)); /* PS1 length = key byte length rounded up to PKC word size */
-
+  const uint32_t ps1OpLen = MCUXCLPKC_ROUNDUP_SIZE(keyByteLength); /* PS1 length = key byte length rounded up to PKC word size */
+  MCUXCLPKC_PS1_SETLENGTH(0u, ps1OpLen);
+  
   MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(MCUXCLRSA_INTERNAL_UPTRTINDEX_NOENCODE_OUT, (const uint8_t *)pInput, keyByteLength);
 
   mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);

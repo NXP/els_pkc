@@ -14,19 +14,17 @@
 /** @file  mcuxClRandom_PRNG.c
  *  @brief Implementation of the non-cryptographic PRNG functions. */
 
-
+#include <mcuxClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxClRandom.h>
 #include <internal/mcuxClPrng_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_ncInit)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncInit(
-    mcuxClSession_Handle_t pSession
+    mcuxClSession_Handle_t pSession UNUSED_PARAM
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_ncInit);
-
-    (void) pSession; // Parameter not needed.
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_Init, mcuxClPrng_init());
     if (MCUXCLPRNG_STATUS_OK != ret_Prng_Init)
@@ -42,14 +40,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncInit(
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_ncGenerate)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncGenerate(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint8_t *             pOut,
     uint32_t              outLength
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_ncGenerate);
-
-    (void) pSession; // Parameter not needed.
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_GetRandom, mcuxClPrng_generate(pOut, outLength));
     if (MCUXCLPRNG_STATUS_OK != ret_Prng_GetRandom)

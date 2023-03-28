@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,13 +25,18 @@
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
 
-// Define base address of CSS
+// Define base address of PUF
+#define PUF_SFR_BASE            PUF      ///< base of PUF SFRs
+#define PUF_SFR_NAME(sfr)       sfr      ///< full name of SFR
+#define PUF_SFR_PREFIX          PUF_     ///< sfr field name prefix
+#define PUF_SFR_SUFFIX_MSK     _MASK       ///< sfr field name suffix for mask
+#define PUF_SFR_SUFFIX_POS     _SHIFT      ///< sfr field name suffix for bit position
 
+
+// Define base address of CSS
 #define ELS_SFR_BASE            ELS         ///< base of CSS SFRs
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          ELS_        ///< sfr field name prefix
-
-
 
 // Define base address of PKC
 #define PKC_SFR_BASE            PKC         ///< base of PKC SFRs

@@ -28,7 +28,7 @@
 #include <internal/mcuxClMath_Internal_Utils.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_InitLocalUptrt)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_InitLocalUptrt(uint32_t i3_i2_i1_i0, uint32_t i7_i6_i5_i4, uint16_t *localPtrUptrt, uint8_t noOfIndices, const uint16_t **oldPtrUptrt)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_InitLocalUptrt(uint32_t i3_i2_i1_i0, uint32_t i7_i6_i5_i4, uint16_t *localPtrUptrt, uint8_t noOfIndices, const uint16_t **oldPtrUptrt)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_InitLocalUptrt);
 
@@ -59,18 +59,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_InitLocalUptrt(uint3
     MCUXCLPKC_SETUPTRT(localPtrUptrt);
 
     *oldPtrUptrt = pUptrt;
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_InitLocalUptrt, MCUXCLMATH_ERRORCODE_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_InitLocalUptrt);
 }
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_LeadingZeros)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_LeadingZeros(uint8_t iX, uint32_t *pNumLeadingZeros)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_LeadingZeros(uint8_t iX, uint32_t *pNumLeadingZeros)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_LeadingZeros);
 
     const uint16_t *pUptrt = MCUXCLPKC_GETUPTRT();
     uint32_t offsetX = (uint32_t) pUptrt[iX];  /* Assume offsetX is exactly a multiple of MCUXCLPKC_WORDSIZE. */
-    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
+    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
 
     uint32_t len = (uint32_t) MCUXCLPKC_PS1_GETOPLEN() / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t numLeadingZeros = 0u;
@@ -82,43 +84,46 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_LeadingZeros(uint8_t
         if (0u != xi)
         {
             *pNumLeadingZeros = numLeadingZeros + mcuxClMath_CountLeadingZerosWord(xi);
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_LeadingZeros, MCUXCLMATH_ERRORCODE_OK);
+            MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_LeadingZeros);
         }
 
         numLeadingZeros += ((sizeof(uint32_t)) * 8u);
     } while (0u < len);
 
     *pNumLeadingZeros = numLeadingZeros;
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_LeadingZeros, MCUXCLMATH_ERRORCODE_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_LeadingZeros);
 }
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_TrailingZeros)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_TrailingZeros(uint8_t iX, uint32_t *pNumTrailingZeros)
+MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClMath_TrailingZeros(uint8_t iX)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_TrailingZeros);
 
     const uint16_t *pUptrt = MCUXCLPKC_GETUPTRT();
     uint32_t offsetX = (uint32_t) pUptrt[iX];  /* Assume offsetX is exactly a multiple of MCUXCLPKC_WORDSIZE. */
-    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
+    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
 
     uint32_t opWords = (uint32_t) MCUXCLPKC_PS1_GETOPLEN() / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t index = 0u;
+    uint32_t numTrailingZeroes = 0u;
 
     do
     {
         uint32_t xi = pX[index];
         if (0u != xi)
         {
-            *pNumTrailingZeros = (index * (sizeof(uint32_t)) * 8u) + mcuxClMath_CountTrailingZeroesWord(xi);
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_TrailingZeros, MCUXCLMATH_ERRORCODE_OK);
+            numTrailingZeroes = (index * (sizeof(uint32_t)) * 8u) + mcuxClMath_CountTrailingZeroesWord(xi);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_TrailingZeros, numTrailingZeroes);
         }
 
         index++;
     } while (index < opWords);
 
-    *pNumTrailingZeros = index * (sizeof(uint32_t)) * 8u;
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_TrailingZeros, MCUXCLMATH_ERRORCODE_OK);
+    numTrailingZeroes = index * (sizeof(uint32_t)) * 8u;
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_TrailingZeros, numTrailingZeroes);
 }
 
 
@@ -134,7 +139,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_TrailingZeros(uint8_
  *     the same number of least significant PKC word(s) of shifted modulus.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ShiftModulus)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ShiftModulus(uint16_t iNShifted_iN)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ShiftModulus(uint16_t iNShifted_iN)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ShiftModulus);
 
@@ -174,7 +179,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ShiftModulus(uint16_
         MCUXCLPKC_FP_CALC_OP2_CONST(iNS, 0);
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_ShiftModulus, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_ShiftModulus,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),
         MCUX_CSSL_FP_CONDITIONAL_IMPL((0u != leadingZeroPkcWords_InBytes),
             MCUXCLPKC_FP_CALLED_CALC_OP2_CONST));

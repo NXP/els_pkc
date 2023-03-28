@@ -12,7 +12,9 @@
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClMacModes_MemoryConsumption.h
- *  @brief Defines the memory consumption for the mcuxClMacModes component */
+ *  @brief Defines the memory consumption for the mcuxClMacModes component
+ *         All work area sizes in bytes are a multiple of CPU wordsize.
+ */
 
 #ifndef MCUXCLMACMODES_MEMORYCONSUMPTION_H_
 #define MCUXCLMACMODES_MEMORYCONSUMPTION_H_
@@ -24,22 +26,24 @@
  * @{
  */
 
+#define MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(size)  (((uint32_t) (size))  / (sizeof(uint32_t)))
+
 /* Workarea sizes */
 #define MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE               (16u)
-#define MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS      (MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t))
+#define MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS      MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE)
 
 #define MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE           (16u)
-#define MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE_IN_WORDS  (MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE / sizeof(uint32_t))
+#define MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE_IN_WORDS  MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE)
 #define MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE              (sizeof(uint32_t))
-#define MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE_IN_WORDS     (1u)
+#define MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE_IN_WORDS     MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE)
 #define MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE           (sizeof(uint32_t))
-#define MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE_IN_WORDS  (1u)
+#define MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE_IN_WORDS  MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE)
 #define MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE            (16u)
-#define MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE_IN_WORDS   (MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE / sizeof(uint32_t))
+#define MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE_IN_WORDS   MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE)
 
 /* Context sizes */
 #define MCUXCLMAC_CONTEXT_SIZE                         (112u)
-#define MCUXCLMAC_CONTEXT_SIZE_IN_WORDS                (MCUXCLMAC_CONTEXT_SIZE / sizeof(uint32_t))
+#define MCUXCLMAC_CONTEXT_SIZE_IN_WORDS                MCUXCLMAC_MAX_SIZE_IN_CPUWORDS(MCUXCLMAC_CONTEXT_SIZE)
 
 /* Mode descriptor sizes */
 

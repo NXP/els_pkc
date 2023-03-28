@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021,2023 NXP                                                  */
+/* Copyright 2023 NXP                                                       */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,24 +11,13 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClRsa_PrivatePlain_FUP.h
-*  @brief defines FUP programs byte arrays for mcuxClRsa_PrivatePlain
+/** @file  mcuxClEcc_Weier_Internal_FUP.h
+*  @brief defines FUP programs byte arrays
 */
-#ifndef MCUXCLRSA_PRIVATEPLAIN_FUP_H_
-#define MCUXCLRSA_PRIVATEPLAIN_FUP_H_
-#include <mcuxClConfig.h> // Exported features flags header
+#ifndef MCUXCLECC_WEIER_INTERNAL_FUP_H_
+#define MCUXCLECC_WEIER_INTERNAL_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_UpdateJacobianCoordinates[7];
 
-#define mcuxClRsa_PrivatePlain_ReductionME_FUP_LEN  3u
-
-extern const mcuxClPkc_FUPEntry_t mcuxClRsa_PrivatePlain_ReductionME_FUP[mcuxClRsa_PrivatePlain_ReductionME_FUP_LEN];
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
-
-#endif /* MCUXCLRSA_PRIVATEPLAIN_FUP_H_ */ 
+#endif /* MCUXCLECC_WEIER_INTERNAL_FUP*/ 

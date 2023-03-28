@@ -60,21 +60,24 @@ extern "C" {
  * @{
  */
 
-#define MCUXCLELS_HKDF_VALUE_RTF_DERIV             ((uint32_t) 1u<< 0u) ///< Use RTF as derivation input
-#define MCUXCLELS_HKDF_VALUE_MEMORY_DERIV          ((uint32_t) 0u<< 0u) ///< Use derivation input from system memory
-
-#define MCUXCLELS_CKDF_RTF_DERIV                   1U ///< Use RTF as derivation input
-#define MCUXCLELS_CKDF_SYSTEM_MEMORY_DERIV         0U ///< Use derivation input from system memory
 
 #define MCUXCLELS_CKDF_DERIVATIONDATA_SIZE               12u ///< Size of CKDF SP800-108 derivation data
+#define MCUXCLELS_CKDF_ALGO_SP800108                     0x0u ///< Use SP800-108 algorithm
 
-#define MCUXCLELS_CKDF_ALGO_SP800108               0x0u ///< Use SP800-108 algorithm
+
+
 
 #define MCUXCLELS_HKDF_RFC5869_DERIVATIONDATA_SIZE 32u ///< Size of HKDF derivation data
 #define MCUXCLELS_HKDF_SP80056C_TARGETKEY_SIZE     32u ///< Size of HKDF SP800-56C derived key
 
+#define MCUXCLELS_HKDF_VALUE_RTF_DERIV             ((uint32_t) 1u<< 0u) ///< Use RTF as derivation input
+#define MCUXCLELS_HKDF_VALUE_MEMORY_DERIV          ((uint32_t) 0u<< 0u) ///< Use derivation input from system memory
+
 #define MCUXCLELS_HKDF_ALGO_RFC5869                0x0u ///< Use RFC5869 algorithm
 #define MCUXCLELS_HKDF_ALGO_SP80056C               0x1u ///< Use SP800-56C algorithm
+
+#define MCUXCLELS_HKDF_RTF_DERIV                   1U ///< Use RTF as derivation input
+#define MCUXCLELS_HKDF_SYSTEM_MEMORY_DERIV         0U ///< Use derivation input from system memory
 
 #define MCUXCLELS_TLS_DERIVATIONDATA_SIZE          ((size_t) 80u) ///< Size of TLS derivation data
 #define MCUXCLELS_TLS_RANDOM_SIZE                  ((size_t) 32u) ///< Size of random bytes for TLS
@@ -122,7 +125,7 @@ typedef union
     } word;
     struct
     {
-        uint32_t rtfdrvdat :1;  ///< #MCUXCLELS_CKDF_SYSTEM_MEMORY_DERIV=use derivation input from system memory, #MCUXCLELS_CKDF_RTF_DERIV=use RTF (runtime fingerprint) as derivation input
+        uint32_t rtfdrvdat :1;  ///< #MCUXCLELS_HKDF_SYSTEM_MEMORY_DERIV=use derivation input from system memory, #MCUXCLELS_HKDF_RTF_DERIV=use RTF (runtime fingerprint) as derivation input
         uint32_t hkdf_algo :1;  ///< Defines which algorithm shall be used. This option is set internally and will be ignored:
                                 ///< #MCUXCLELS_HKDF_ALGO_RFC5869 = Use RFC5869 algorithm
                                 ///< #MCUXCLELS_HKDF_ALGO_SP80056C = Use SP800-56C algorithm

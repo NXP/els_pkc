@@ -23,7 +23,9 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxCsslFlowProtection.h>
 
+#ifdef MCUXCL_FEATURE_SESSION_HAS_RANDOM
 #include <mcuxClRandom_Types.h>
+#endif /* MCUXCL_FEATURE_SESSION_HAS_RANDOM */
 
 /**********************************************
  * CONSTANTS
@@ -109,7 +111,9 @@ typedef struct mcuxClSession_Descriptor
 {
   mcuxClSession_WorkArea_t cpuWa;    ///< Workarea for the CPU
   mcuxClSession_WorkArea_t pkcWa;    ///< Workarea for the PKC
+#ifdef MCUXCL_FEATURE_SESSION_HAS_RANDOM
   mcuxClRandom_Config_t randomCfg;   ///< Configuration of the Rng (contexts and mode)
+#endif /* MCUXCL_FEATURE_SESSION_HAS_RANDOM */
   mcuxClSession_Rtf_t rtf;           ///< Configuration of the RTF
   uint8_t *pRtf;
 } mcuxClSession_Descriptor_t;

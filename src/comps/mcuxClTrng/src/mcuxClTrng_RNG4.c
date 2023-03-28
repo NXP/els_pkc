@@ -16,6 +16,7 @@
  *  handling of Trng random number. This file implements the functions
  *  declared in mcuxClTrng_Internal_Functions.h. */
 
+#include <mcuxClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxClMemory.h>
 #include <internal/mcuxClTrng_SfrAccess.h>
@@ -56,14 +57,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_checkConfig(void)
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClTrng_getEntropyInput)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint32_t *pEntropyInput,
     uint32_t entropyInputLength
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClTrng_getEntropyInput);
-
-    (void) pSession; // Parameter not needed in this mode.
 
     /* Call check configuration function to ensure the TRNG is properly configured for upcoming TRNG accesses */
     MCUX_CSSL_FP_FUNCTION_CALL(result_trngCheckConfig, mcuxClTrng_checkConfig());

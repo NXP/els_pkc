@@ -12,13 +12,13 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file  mcuxCsslMemory_Compare_asm.h
+ * @file  mcuxCsslMemory_Internal_Compare_asm.h
  * @brief Internal header of mcuxCsslMemory_Compare inline-asm macro
  */
 
 
-#ifndef MCUXCSSLMEMORY_COMPARE_ASM_H_
-#define MCUXCSSLMEMORY_COMPARE_ASM_H_
+#ifndef MCUXCSSLMEMORY_INTERNAL_COMPARE_ASM_H_
+#define MCUXCSSLMEMORY_INTERNAL_COMPARE_ASM_H_
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -167,4 +167,4 @@ do{  \
 #endif
 
 
-#endif /* MCUXCSSLMEMORY_COMPARE_ASM_H_ */
+#endif /* MCUXCSSLMEMORY_INTERNAL_COMPARE_ASM_H_ */

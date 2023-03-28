@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,7 +16,7 @@
  */
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxCsslMemory.h>
@@ -32,7 +32,6 @@
 /**********************************************************/
 /* Specifications of PKCS#1 v1.5 mode structures          */
 /**********************************************************/
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_224 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Verify),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha224,
@@ -40,7 +39,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_224 = {
     .pPaddingFunction   = mcuxClRsa_pkcs1v15Verify
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Verify),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha256,
@@ -48,7 +46,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256 = {
     .pPaddingFunction   = mcuxClRsa_pkcs1v15Verify
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_384 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Verify),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha384,
@@ -56,7 +53,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_384 = {
     .pPaddingFunction   = mcuxClRsa_pkcs1v15Verify
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_512 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Verify),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha512,

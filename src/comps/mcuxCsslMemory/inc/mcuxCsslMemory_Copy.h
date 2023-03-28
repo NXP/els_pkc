@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxCsslMemory_Copy.h
- * @brief Include file for robust memory copy function
+ * @brief Include file for memory copy function
  */
 
 #ifndef MCUXCSSLMEMORY_COPY_H

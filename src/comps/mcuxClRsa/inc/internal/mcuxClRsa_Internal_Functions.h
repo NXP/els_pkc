@@ -44,7 +44,7 @@ extern "C" {
  * \brief RSA public operation
  *
  * This function performs an RSA public key operation according to PKCS #1 v2.2.
- * The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8.
+ * The supported bit-lengths of the modulus range from 512 to 8192 in multiples of 8.
  * The public exponent is limited to 2 <= e < N.
  *
  * \param[in]  pSession             Pointer to #mcuxClSession_Descriptor
@@ -63,7 +63,7 @@ extern "C" {
  *              - Entry keytype must be set to #MCUXCLRSA_KEY_PUBLIC. In case of passing another key type, the function
  *                returns #MCUXCLRSA_STATUS_INVALID_INPUT. The functions checks, internally, whether the required key entries
  *                are not set to NULL. If so, the function returns #MCUXCLRSA_STATUS_INVALID_INPUT;
- *              - The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8;
+ *              - The supported bit-lengths of the modulus range from 512 to 8192 in multiples of 8;
  *              - It is required that e is greater or equal to 2 and smaller than n.
  *      <dt>pInput:</dt>
  *          <dd>The input must meet the following conditions:
@@ -95,7 +95,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
  * \brief RSA private plain operation
  *
  * This function performs an RSA private plain key operation according to PKCS #1 v2.2.
- * The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8.
+ * The supported bit-lengths of the modulus range from 512 to 8192 in multiples of 8.
  * The private exponent is limited to d < N.
  *
  * \param[in]  pSession             Pointer to #mcuxClSession_Descriptor
@@ -114,13 +114,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
  *              - Entry keytype must be set to #MCUXCLRSA_KEY_PRIVATEPLAIN. In case of passing another key type, the function
  *                returns #MCUXCLRSA_STATUS_INVALID_INPUT. The functions checks, internally, whether the required key entries
  *                are not set to NULL. If so, the function returns #MCUXCLRSA_STATUS_INVALID_INPUT;
- *              - The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8;
+ *              - The supported bit-lengths of the modulus range from 512 to 8192 in multiples of 8;
  *              - It is required that d is smaller than n.
  *      <dt>pInput:</dt>
  *          <dd>The input meets the following conditions:
  *               - It is located in PKC RAM;
  *               - It is provided in little-endian byte order;
- *               - The input length is determined by the modulus length.
+ *               - The input buffer length should be:
+ *                 MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(modulus length) = MCUXCLPKC_ROUNDUP_SIZE(modulus length) + 2*MCUXCLPKC_WORDSIZE.
+ *                 Inside this buffer, the input has the same byte length as the modulus, while upper bytes are used as temporary buffer for internal operations.
+ *               - It is overwritten by the function.
  *      <dt>pOutput:</dt>
  *          <dd>The output meets the following conditions:
  *               - A buffer of modulus length bytes has to be allocated;
@@ -139,7 +142,7 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_privatePlain)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   mcuxClSession_Handle_t      pSession,
   const mcuxClRsa_Key * const pKey,
-  mcuxCl_InputBuffer_t        pInput,
+  mcuxCl_Buffer_t             pInput,
   mcuxCl_Buffer_t             pOutput
 );
 
@@ -148,7 +151,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
  * \brief RSA private CRT operation
  *
  * This function performs an RSA private CRT key operation according to PKCS #1 v2.2.
- * The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8.
+ * The supported bit-lengths of the modulus range from 512 to 8192 in multiples of 8.
  * The length of the primes is limited to: size(p) = size(q) = 1/2 size(n).
  * The private exponent is limited to d < N.
  *
@@ -168,7 +171,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
  *              - Entry keytype must be set to #MCUXCLRSA_KEY_PRIVATECRT or #MCUXCLRSA_KEY_PRIVATECRT_DFA. In case of passing
  *                another key type, the function returns #MCUXCLRSA_STATUS_INVALID_INPUT. The functions checks, internally,
  *                whether the required key entries are not set to NULL. If so, the function returns #MCUXCLRSA_STATUS_INVALID_INPUT;
- *              - The supported bit-lengths of the modulus range from 512 to 4096 in multiples of 8;
+ *              - The supported bit-lengths of the modulus range from 512 to 8192 in multiples of 8;
  *              - The length of the primes is limited to: size(p) = size(q) = 1/2 size(n);
  *              - It is required that d is smaller than n.
  *      <dt>pInput:</dt>
@@ -641,6 +644,68 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
 );
 
 
+/**
+ * @brief Remove modulus blinding operation
+ *
+ * This function removes modulus blinding from the result of the exponentiation.
+ *
+ * @param[in] iR_iX_iNb_iB        indices of PKC operands
+ * @param[in] iT2_iT1             indices of PKC operands
+ * @param[in] nbPkcByteLength     length of Nb aligned to PKC word
+ * @param[in] bPkcByteLength      length of B aligned to PKC word
+ *
+ * <dl>
+ *  <dt>Parameter properties</dt>
+ *
+ *  <dd><dl>
+ *      <dt>iR_iX_iNb_iB:</dt>
+ *        <dd><code>iB</code> (bits 0~7): index of blinding value with size bPkcByteLength (PKC operand).
+ *        <br>Its size shall be at least bPkcByteLength.
+ *        <br>The most significant PKC word of B shall be nonzero.
+ *        <br><code>iNb</code> (bits 8~15): index of blinded modulus Nb (PKC operand).
+ *        <br>Its size shall be at least nbPkcByteLength.
+ *        <br>The NbDash of modulus shall be stored in the PKC word before modulus.
+ *        <br><code>iX</code> (bits 16~23): index of input X in Montgomery representation (PKC operand).
+ *        <br>Its size shall be at least nbPkcByteLength.
+ *        <br><code>iR</code> (bits 16~23: index of result R in normal representation (PKC operand)
+ *        <br>Its buffer size shall be at least (nbPkcByteLength - bPkcByteLength + 2 * MCUXCLPKC_WORDSIZE).
+ *        <br>The result fits in size = (nbPkcByteLength - bPkcByteLength + MCUXCLPKC_WORDSIZE).</dd>
+ *      <dt>iT2_iT1:</dt>
+ *       <dd><code>iT1</code> (bits 0~7): index of temp1 (PKC operand).
+ *       <br>Its buffer size shall be at least (nbPkcByteLength + MCUXCLPKC_WORDSIZE).
+ *       <br><code>iT2</code> (bits 8~15): index of temp2 (PKC operand).
+ *       <br>Its buffer size shall be at least MAX(nbPkcByteLength, 3 * MCUXCLPKC_WORDSIZE).</dd>
+ *     <dt>@p nbPkcByteLength</dt>
+ *       <dd>Length of modulus Nb. It shall be a multiple of MCUXCLPKC_WORDSIZE.</dd>
+ *     <dt>@p bPkcByteLength</dt>
+ *       <dd>Length of blinding value B. It shall be a multiple of MCUXCLPKC_WORDSIZE.</dd>
+ *  </dl></dd>
+ * </dl>
+ *
+ * <dl>
+ *   <dt>PKC properties</dt>
+ *   <dd><dl>
+ *     <dt>PS1 lengths</dt>
+ *       <dd>PS1 OPLEN = MCLEN defines operandSize = nbPkcByteLength (length of modulus Nb).</dd>
+ *     <dt>PS2 lengths</dt>
+ *       <dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored.</dd>
+ *     <dt>ACTIV/GOANY</dt>
+ *       <dd>#mcuxClPkc_WaitForReady will be called before returning to caller.
+ *       <br>The PKC calculation might be still on-going,
+ *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
+ *   </dl></dd>
+ * </dl>
+ *
+ */
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_RemoveBlinding)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClRsa_RemoveBlinding(uint32_t iR_iX_iNb_iB,
+     uint16_t iT2_iT1,
+     uint32_t nbPkcByteLength,
+     uint32_t bPkcByteLength);
+
+
+
 
 /**
  * @brief RSA key generation of probable prime number p or q
@@ -942,11 +1007,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPQDistance(uint32_
  *  </dl></dd>
  * </dl>
  *
- * @return Status of the mcuxClRsa_ModInv operation (see @ref mcuxClRsa_Status_t)
- * @retval #MCUXCLRSA_STATUS_KEYGENERATION_OK
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_ModInv)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ModInv(uint32_t iR_iX_iN_iT);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClRsa_ModInv(uint32_t iR_iX_iN_iT);
 
 
 /**

@@ -30,26 +30,7 @@
 
 
 /** Key wrapping key. */
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM
-const static uint8_t key_share[32] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-#endif
 
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
-const uint8_t key_share[32] = {
-    0x34, 0x9f, 0xf7, 0x65, 0x1f, 0xd0, 0x0b, 0xd4, 0xaf, 0x0a, 0xaa, 0xd8, 0x69, 0xcd, 0x5b, 0xfe,
-    0x01, 0xc9, 0xaf, 0x6e, 0x65, 0x03, 0xeb, 0xd9, 0x33, 0x27, 0x89, 0x68, 0x8d, 0x83, 0xef, 0xc1
-};
-const static uint8_t key_share2[36]  = {
-    0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
-    0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
-    0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
-    0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
-    0x22, 0x22, 0x22, 0x22
-};
-#endif
 
 
 /** Raw DER-encoded certificate. */
@@ -282,37 +263,7 @@ bool key_import_puk_der(
     key_provision_options.word.value = 0U;
     key_provision_options.bits.noic = MCUXCLELS_KEYPROV_NOIC_ENABLE;
 
-    #ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_KeyProvisionRom_Async(
-            key_provision_options,
-            key_share,
-            key_idx_helper_key,
-            key_idx_helper_key,
-            key_properties));
-    // mcuxClEls_KeyProvisionRom_Async is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyProvisionRom_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
-    {
-        return false;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-    #elif defined MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_KeyProvision_Async(
-            key_provision_options,
-            key_share,
-            key_share2,
-            sizeof(key_share2),
-            key_idx_helper_key,
-            key_properties));
-    // mcuxClEls_KeyProvision_Async is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyProvision_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
-    {
-        return false;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-    #else
         #error KEYPROV command not supported
-    #endif
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value

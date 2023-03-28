@@ -26,6 +26,11 @@
 #include <internal/mcuxClPsaDriver_Functions.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
 
+static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(
+        psa_mac_operation_t *operation,
+        mcuxClKey_Descriptor_t *pKey,
+        psa_algorithm_t alg);
+
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(
     psa_mac_operation_t *operation,
     const uint8_t *input,
@@ -44,7 +49,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(&session,
                                                                     cpuWorkarea,
-                                                                    sizeof(cpuWorkarea),
+                                                                    MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE,
                                                                     NULL,
                                                                     0u));
 
@@ -89,16 +94,18 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(
     return PSA_SUCCESS;
 }
 
-static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer_internal(
-        mcuxClKey_Descriptor_t *pKey,
-        psa_algorithm_t alg,
-        const uint8_t *input,
-        size_t input_length,
-        uint8_t *mac,
-        size_t mac_size,
-        size_t *mac_length)
+psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
+    const psa_key_attributes_t *attributes,
+    const uint8_t *key_buffer,
+    size_t key_buffer_size,
+    psa_algorithm_t alg,
+    const uint8_t *input,
+    size_t input_length,
+    uint8_t *mac,
+    size_t mac_size,
+    size_t *mac_length)
 {
-    psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     const mcuxClMac_ModeDescriptor_t * mode;
     mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
     if (mode == NULL)
@@ -106,17 +113,44 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer_internal
         return PSA_ERROR_NOT_SUPPORTED;
     }
 
-    /* Key buffer for the CPU workarea in memory. */
-    uint32_t cpuWorkarea[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
+    if ( mac_size == 0u ||  mac_size > mode->common.macByteSize)
+    {
+        return PSA_ERROR_INVALID_ARGUMENT;
+    }
 
+    // INIT
+    struct psa_mac_operation_s operation = psa_mac_operation_init();
+    mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation.ctx.clns_data;
+
+    /* Set alg in clns_data for update and finalize */
+    pClnsMacData->alg = alg;
+
+    /* No support for multipart Hmac */
+    if(PSA_ALG_IS_HMAC(alg) == 1u)
+    {
+        return PSA_ERROR_NOT_SUPPORTED;
+    }
+
+    mcuxClKey_Descriptor_t * keyDesc = &pClnsMacData->keydesc;
+    psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, keyDesc);
+    if(PSA_SUCCESS != keyStatus)
+    {
+        return keyStatus;
+    }
+    status = mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(&operation,
+                                                                       keyDesc,
+                                                                       alg);
+
+    // UPDATE
+    uint32_t cpuWorkarea[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
     /* Create session */
     mcuxClSession_Descriptor_t session;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(&session,
-                                                            cpuWorkarea,
-                                                            sizeof(cpuWorkarea),
-                                                            NULL,
-                                                            0u));
+                                                                    cpuWorkarea,
+                                                                    MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE,
+                                                                    NULL,
+                                                                    0u));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) || (MCUXCLSESSION_STATUS_OK != result))
     {
@@ -124,38 +158,42 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer_internal
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* allocate temperory buffer for the maxmum mac output */
-    uint8_t tempMaxMac[ MCUXCLMAC_MAX_OUTPUT_SIZE];
-    uint32_t outputSize = 0u;
+    /* Call the mcuxClMac_process */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(processResult, processToken, mcuxClMac_process(&session,
+                                                                                  (mcuxClMac_Context_t *) &pClnsMacData->ctx,
+                                                                                  input,
+                                                                                  input_length));
 
-    /* Call mcuxClMac_compute */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMac_compute(&session,
-                                                                    pKey,
-                                                                    mode,
-                                                                    input,
-                                                                    input_length,
-                                                                    tempMaxMac,
-                                                                    &outputSize));
-
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token) || (MCUXCLMAC_STATUS_OK != result))
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_process) != processToken) || (MCUXCLMAC_STATUS_OK != processResult))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Destroy the session */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_destroy(&session));
+    // FINALIZE
+    uint32_t outputSize = 0u;
+	uint8_t tempMaxMac[ MCUXCLMAC_MAX_OUTPUT_SIZE];
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(finishResult, finishToken, mcuxClMac_finish(&session,
+                                                                               (mcuxClMac_Context_t *) &pClnsMacData->ctx,
+                                                                               tempMaxMac,
+                                                                               &outputSize
+                                                                               ));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != token) || (MCUXCLSESSION_STATUS_OK != result))
+    if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(keyDesc))
     {
-        return PSA_ERROR_CORRUPTION_DETECTED;
+        return PSA_ERROR_GENERIC_ERROR;
+    }
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_finish) != finishToken) || (MCUXCLMAC_STATUS_OK != finishResult))
+    {
+        return PSA_ERROR_GENERIC_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* user should ensure that 0 < mac_size <  MCUXCLMAC_MAX_OUTPUT_SIZE */
-    mcuxClKey_AlgorithmId_t keyAlgorithm = mcuxClKey_getAlgorithm(pKey);
+    mcuxClKey_AlgorithmId_t keyAlgorithm = mcuxClKey_getAlgorithm(keyDesc);
     psa_key_type_t keyType = 0u;
-    size_t keySize = mcuxClKey_getSize(pKey);
+    size_t keySize = mcuxClKey_getSize(keyDesc);
 
     if(MCUXCLKEY_ALGO_ID_HMAC == keyAlgorithm)
     {
@@ -190,61 +228,18 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer_internal
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
+	MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /* Destroy the session */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_destroy(&session));
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != token) || (MCUXCLSESSION_STATUS_OK != result))
+    {
+        return PSA_ERROR_CORRUPTION_DETECTED;
+    }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Return with success */
     return PSA_SUCCESS;
-}
-
-
-psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
-    const psa_key_attributes_t *attributes,
-    const uint8_t *key_buffer,
-    size_t key_buffer_size,
-    psa_algorithm_t alg,
-    const uint8_t *input,
-    size_t input_length,
-    uint8_t *mac,
-    size_t mac_size,
-    size_t *mac_length)
-{
-    const mcuxClMac_ModeDescriptor_t * mode;
-    mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
-    if (mode == NULL)
-    {
-        return PSA_ERROR_NOT_SUPPORTED;
-    }
-
-    if ( mac_size == 0u ||  mac_size > mode->common.macByteSize)
-    {
-        return PSA_ERROR_INVALID_ARGUMENT;
-    }
-    
-    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    // The driver handles multiple storage locations, call it first then default to builtin driver
-    /* Create the key */
-    mcuxClKey_Descriptor_t key = {0};
-    psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
-    if(PSA_SUCCESS != keyStatus)
-    {
-        return keyStatus;
-    }
-    status = mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer_internal(&key,
-								                                            alg,
-								                                            input,
-								                                            input_length,
-								                                            mac,
-								                                            mac_size,
-								                                            mac_length);
-
-
-    keyStatus = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
-    if(PSA_SUCCESS !=  keyStatus)
-    {
-        return keyStatus;
-    }
-
-    return status;
 }
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
@@ -268,7 +263,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(&session,
                                                                     cpuWorkarea,
-                                                                    sizeof(cpuWorkarea),
+                                                                    MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE,
                                                                     NULL,
                                                                     0u));
 
@@ -371,7 +366,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(&session,
                                                                     cpuWorkarea,
-                                                                    sizeof(cpuWorkarea),
+                                                                    MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE,
                                                                     NULL,
                                                                     0u));
 

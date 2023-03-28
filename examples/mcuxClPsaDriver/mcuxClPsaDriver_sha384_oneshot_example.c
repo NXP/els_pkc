@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,7 +18,7 @@
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClCore_Examples.h>
 #include <mcuxClExample_ELS_Helper.h>
-#include <nxpClToolchain.h> // memory segment definitions
+#include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 

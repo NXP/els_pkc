@@ -45,10 +45,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_Sign);
 
-
     /**********************************************************/
     /* Initialization                                         */
     /**********************************************************/
+
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
     /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
@@ -69,16 +69,25 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
+    /* Randomize buffers XA/YA/ZA/Z/X0/Y0/X1/Y1. */
+    uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
+    MCUX_CSSL_FP_FUNCTION_CALL(retRandomUptrt,
+                              mcuxClPkc_RandomizeUPTRT(pSession,
+                                                      &pOperands[WEIER_XA],
+                                                      (WEIER_Y1 - WEIER_XA + 1u)) );
+    if (MCUXCLPKC_STATUS_OK != retRandomUptrt)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_RNG_ERROR);
+    }
+
     MCUXCLMATH_FP_QSQUARED(ECC_NQSQR, ECC_NS, ECC_N, ECC_T0);
 
-    uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint32_t *pOperands32 = (uint32_t *) pOperands;
     const uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     const uint32_t bufferSize = operandSize + MCUXCLPKC_WORDSIZE;
 
     const uint32_t byteLenP = (pParam->curveParam.misc & mcuxClEcc_DomainParam_misc_byteLenP_mask) >> mcuxClEcc_DomainParam_misc_byteLenP_offset;
     const uint32_t byteLenN = (pParam->curveParam.misc & mcuxClEcc_DomainParam_misc_byteLenN_mask) >> mcuxClEcc_DomainParam_misc_byteLenN_offset;
-
 
     /* Main loop of signature generation until both r and s are nonzero. */
     uint32_t fail_r = 0u;
@@ -181,8 +190,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
         /* In case k1 is even, perform scalar multiplication k1 * Q0 by computing (n - k1) * (-Q0)
          *     as this avoids the exceptional case d1 = n-1. scalar modification will need to be reverted later on
          */
-        /* MISRA Ex. 9 - Rule 11.3 - Cast to CPU word aligned */
-        volatile uint32_t *ptrS1 = (volatile uint32_t *)MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S1]);  /* PKC word is CPU word aligned. */
+        volatile uint8_t * const ptr8S1 = (volatile uint8_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S1]);
+        MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+        volatile uint32_t *ptrS1 = (volatile uint32_t *) ptr8S1;
+        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
         MCUX_CSSL_FP_BRANCH_DECL(scalarEvenBranch);
         MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();
         uint32_t k1Lsbit = *ptrS1 & 0x01u;
@@ -275,7 +286,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
 
         /* Import message hash (up to byteLenN bytes). */
         uint32_t byteLenHash = (pParam->optLen & mcuxClEcc_Verify_Param_optLen_byteLenHash_mask) >> mcuxClEcc_Verify_Param_optLen_byteLenHash_offset;
-        uint32_t byteLenHashImport = ((byteLenHash < byteLenN) ? byteLenHash: byteLenN);
+        uint32_t byteLenHashImport = MCUXCLECC_TRUNCATED_HASH_LEN(byteLenHash, byteLenN);
         MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_S2, pParam->pHash, byteLenHashImport);
 
         /* Truncate message hash if its bit length is longer than that of n. */

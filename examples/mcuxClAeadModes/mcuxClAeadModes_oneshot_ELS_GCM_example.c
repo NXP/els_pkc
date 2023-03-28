@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -22,7 +22,7 @@
 #include <mcuxClAeadModes.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <nxpClToolchain.h> // memory segment definitions
+#include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 
 /** Key for the AES encryption. */
@@ -73,12 +73,10 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
     }
 
     /* Initialize session */
-    //#define CPU_WA_BUFFER_SIZE CIPHER_WA_SIZE_MAX
-    #define CPU_WA_BUFFER_SIZE 1u
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
     //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, CPU_WA_BUFFER_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLAEAD_CRYPT_CPU_WA_BUFFER_SIZE , 0u);
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];

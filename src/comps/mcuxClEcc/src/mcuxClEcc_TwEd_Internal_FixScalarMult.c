@@ -94,8 +94,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
      *       Hence, scalarBitLength is also an appropriate scalar length for the negative scalar.
      */
     // TODO: hardening
-    /* MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned");
     uint32_t *pScalar = (uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
     MCUXCLPKC_WAITFORFINISH();
     const uint32_t scalarLsb = pScalar[0u] & 0x1u;
     if(0u == scalarLsb)

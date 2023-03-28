@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,6 +32,8 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClKey_Internal.h>
+#include <mcuxClCore_Analysis.h>
+#include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
 
 #define mcuxClRsa_sign mcuxClRsa_sign
 
@@ -55,8 +57,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
 
   /* Initialize PKC */
   uint32_t cpuWaUsedBackup = mcuxClSession_getUsage_cpuWa(pSession);
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClPkc_State_t * pkcStateBackup = (mcuxClPkc_State_t *) mcuxClSession_allocateWords_cpuWa(pSession, (sizeof(mcuxClPkc_State_t)) / (sizeof(uint32_t)));
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
   if (NULL == pkcStateBackup)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -94,14 +97,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
 
   /* Locate paddedMessage buffer at beginning of PKC WA and update session info */
   uint32_t keyByteLength = keyBitLength / 8u;
-  uint32_t pkcWaUsedByte = MCUXCLPKC_ROUNDUP_SIZE(keyByteLength);
+  uint32_t pkcWaUsedByte = (MCUXCLRSA_KEY_PRIVATEPLAIN == pKey->keytype) ? MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength) : MCUXCLPKC_ROUNDUP_SIZE(keyByteLength);
   uint32_t pkcWaUsedBackup = mcuxClSession_getUsage_pkcWa(pSession);
-  uint8_t * const pPkcWorakara = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaUsedByte / (sizeof(uint32_t)));
-  if (NULL == pPkcWorakara)
+  uint8_t * const pPkcWorakarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaUsedByte / (sizeof(uint32_t)));
+  if (NULL == pPkcWorakarea)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
-  uint8_t * pPaddedMessage = pPkcWorakara;
+  uint8_t * pPaddedMessage = pPkcWorakarea;
 
   /* Call the padding function */
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_PaddingOperation, pPaddingMode->pPaddingFunction(
@@ -126,7 +129,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
     /* Clear pkcWa */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
     (void) ret_MemoryClear;
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
@@ -143,7 +146,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
     /* Clear pkcWa */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
     (void) ret_MemoryClear;
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
@@ -162,7 +165,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
         mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
         /* Clear pkcWa */
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
         (void) ret_MemoryClear;
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
@@ -192,7 +195,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
       (void) ret_MemoryClear;
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
@@ -207,7 +210,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
       (void) ret_MemoryClear;
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
@@ -230,7 +233,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
       (void) ret_MemoryClear;
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
@@ -249,7 +252,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakara, pkcWaTotalSize, pkcWaTotalSize));
+      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
       (void) ret_MemoryClear;
 
       MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_sign, MCUXCLRSA_STATUS_SIGN_OK,

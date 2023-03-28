@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,7 +16,7 @@
  */
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -27,7 +27,6 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
-#include <nxpClToolchain.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
@@ -73,7 +72,6 @@ static const struct mcuxClRsa_oid_t mcuxClRsa_oidTable[] = {
 /**********************************************************/
 /* Specifications of PKCS#1 v1.5 mode structures          */
 /**********************************************************/
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_224 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Encode_sign),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha224,
@@ -81,7 +79,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_224 = {
     .pPaddingFunction   = mcuxClRsa_pkcs1v15Encode_sign
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_256 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Encode_sign),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha256,
@@ -89,7 +86,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_256 = {
     .pPaddingFunction   = mcuxClRsa_pkcs1v15Encode_sign
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_384 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Encode_sign),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha384,
@@ -97,7 +93,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_384 = {
     .pPaddingFunction   = mcuxClRsa_pkcs1v15Encode_sign
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_512 = {
     .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Encode_sign),
     .pHashAlgo1         = &mcuxClHash_AlgorithmDescriptor_Sha512,
@@ -192,7 +187,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
                                              hashAlgorithmIdentifierLength,
                                              hashAlgorithmIdentifierLength));
 
-
   /*****************************************************/
   /* Perform hash operation or just copy the digest    */
   /*****************************************************/
@@ -233,8 +227,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
 
   mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pOutput PKC buffer is CPU word aligned.")
   MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pOutput, emLen);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /************************************************************************************************/
   /* Function exit                                                                                */

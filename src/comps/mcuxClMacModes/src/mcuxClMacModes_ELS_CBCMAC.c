@@ -27,7 +27,7 @@
 
 #include <internal/mcuxClKey_Internal.h>
 
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
@@ -103,6 +103,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_One
 
         MCUX_CSSL_FP_FUNCTION_CALL(waitResult1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         if (MCUXCLELS_STATUS_OK != waitResult1)
         {
@@ -154,6 +162,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_One
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     }
 
     if((0u != inLength) || (paddingOutLength != 0u))
@@ -266,6 +283,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         pInNrProcessedBytes = MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed;
 
@@ -301,6 +327,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLAES_BLOCK_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
         pInNrProcessedBytes += (noOfFullBlocks * MCUXCLAES_BLOCK_SIZE);
     }
@@ -388,6 +422,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Finalize, MCUXCLMAC_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     }
 
@@ -409,9 +452,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async)));
 }
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_NoPadding = {
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
   .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,
@@ -424,9 +466,7 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_None),
 };
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_PaddingISO9797_1_Method1 = {
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
   .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,
@@ -439,9 +479,7 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_ISO9797_1_Method1),
 };
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_PaddingISO9797_1_Method2 = {
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
   .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,
@@ -453,4 +491,5 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
   .addPadding = mcuxClPadding_addPadding_ISO9797_1_Method2,
   .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_ISO9797_1_Method2),
 };
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 

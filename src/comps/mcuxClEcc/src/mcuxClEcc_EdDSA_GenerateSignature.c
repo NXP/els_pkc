@@ -57,6 +57,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
      * Step 1: Set up the environment
      */
 
+    /* Derive the pointer to the public key handle and verify that the key handles are correctly initialized for the EdDSA use case */
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) mcuxClKey_getLinkedData(key);
+    if((MCUXCLKEY_ALGO_ID_ECC_EDDSA != mcuxClKey_getAlgorithm(key))
+                || (MCUXCLKEY_ALGO_ID_ECC_EDDSA != mcuxClKey_getAlgorithm(pubKey))
+                || (mcuxClKey_getTypeInfo(key) != mcuxClKey_getTypeInfo(pubKey))
+                || (MCUXCLKEY_ALGO_ID_PRIVATE_KEY != mcuxClKey_getKeyUsage(key))
+                || (MCUXCLKEY_ALGO_ID_PUBLIC_KEY != mcuxClKey_getKeyUsage(pubKey)) )
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
+
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
     mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);  /* MISRA Ex. 9 to Rule 11.3 - Interaction with hardware */
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) mcuxClKey_getTypeInfo(key);
@@ -196,15 +207,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
      * Step 5: Calculate H(prefix || R^{enc} || Q^{enc} || m') mod n using the hash function algoHash specified in the EdDSA domain parameters
      *         and store it in buffer ECC_S0
      */
+
+    /* Derive the pointer to the public key data */
+    const uint8_t *pPubData = mcuxClKey_getKeyData(pubKey);
+
+    /* Calculate H(prefix || R^{enc} || Q^{enc} || m') mod n */
     const uint8_t *pSignatureR = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD02]);
-    const uint8_t *pPubKey = &pPrivData[(2u * keyLength) + scalarSLength];
     MCUX_CSSL_FP_FUNCTION_CALL(ret_CalcHashModN, mcuxClEcc_EdDSA_CalcHashModN(pSession,
                                                                             pCtx,
                                                                             pDomainParams,
                                                                             mode->pHashPrefix,
                                                                             mode->hashPrefixLen,
                                                                             pSignatureR,
-                                                                            pPubKey,
+                                                                            pPubData,
                                                                             pIn,
                                                                             inSize));
     if (MCUXCLECC_STATUS_OK != ret_CalcHashModN)

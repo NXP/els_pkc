@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -21,6 +21,7 @@
 
 #include <internal/mcuxClCipherModes_Wa.h>
 #include <internal/mcuxClCipherModes_Internal_Types.h>
+#include <internal/mcuxClCipherModes_Internal.h>
 
 /* *********************** */
 /* *** Work area sizes *** */
@@ -28,7 +29,7 @@
 
 MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
-volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_WorkArea_Aes_Els_Oneshot; // ELS Oneshot Context needs to be in WA
+volatile uint8_t mcuxClCipherModes_WorkArea_Aes_Els_Oneshot[MCUXCLCIPHERMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClCipherModes_Context_Aes_Els_t))];  // ELS Oneshot Context needs to be in WA
 
 volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_Context_Aes_Els;
 

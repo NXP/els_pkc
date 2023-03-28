@@ -18,6 +18,6 @@
 #define MCUXCLECC_EDDSA_INTERNAL_CALCHASHMODN_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN[7];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN[7];
 
 #endif /* MCUXCLECC_EDDSA_INTERNAL_CALCHASHMODN_FUP*/ 

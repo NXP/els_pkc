@@ -67,19 +67,14 @@ typedef struct
  *
  * @param[out] pState  pointer to PKC state backup structure. If it's not a NULL pointer, PKC state before initialization will be stored in this structure.
  *
- * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
- * @retval #MCUXCLPKC_STATUS_OK  this function always returns OK.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_Initialize)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Initialize(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Initialize(
     mcuxClPkc_State_t *pState
     );
 /** Helper macro to call #mcuxClPkc_Initialize with flow protection. */
 #define MCUXCLPKC_FP_INITIALIZE(pState)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Initialize(pState));  \
-        /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Initialize(pState))
 
 /**
  * @brief deinitialize PKC hardware
@@ -88,19 +83,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Initialize(
  *
  * @param[in] pState  pointer to PKC state backup structure. If it's not a NULL pointer, PKC state will be restored from this structure.
  *
- * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
- * @retval #MCUXCLPKC_STATUS_OK  this function always returns OK.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_Deinitialize)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Deinitialize(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Deinitialize(
     const mcuxClPkc_State_t *pState
     );
 /** Helper macro to call #mcuxClPkc_Deinitialize with flow protection. */
 #define MCUXCLPKC_FP_DEINITIALIZE(pState)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Deinitialize(pState));  \
-        /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Deinitialize(pState))
+
 
 /**
  * @}
@@ -258,13 +249,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(
  *                         <br> mode (the lower 8 bits) indicates the calculation, either an L0 operation or L1 microcode.
  * @param[in] iR_iX_iY_iZ  indices of the operand(s) and the result in UPTR table.
  *
- * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
- * @retval #MCUXCLPKC_STATUS_OK  this function always returns OK.
  *
  * @attention The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_Calc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Calc(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Calc(
     uint16_t param_mode,
     uint32_t iR_iX_iY_iZ
     );
@@ -280,13 +269,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Calc(
                           <br> mode (the lower 8 bits) indicates the calculation, an L0 operation.
  * @param[in] iR_iX_iY_C  indices of the operand(s) and the result in UPTR table, and a direct 8-bit constant.
  *
- * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
- * @retval #MCUXCLPKC_STATUS_OK  this function always returns OK.
  *
  * @attention The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_CalcConst)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_CalcConst(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcConst(
     uint16_t param_mode,
     uint32_t iR_iX_iY_C
     );
@@ -302,28 +289,20 @@ typedef const struct mcuxClPkc_FUPEntry * mcuxClPkc_PtrFUPEntry_t;
  * @param[in] pUPTR    2-byte aligned address of the FUP program.
  * @param[in] uLength  length (number of calculation) of the FUP program.
  *
- * @return A flow-protected status code (see @ref mcuxCsslFlowProtection).
- * @retval #MCUXCLPKC_STATUS_OK  this function always returns OK.
- *
  * @attention The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_CalcFup)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_CalcFup(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcFup(
     mcuxClPkc_PtrFUPEntry_t pUPTR,
     uint8_t uLength
     );
 /** Helper macro to call #mcuxClPkc_CalcFup with flow protection. */
 #define MCUXCLPKC_FP_CALCFUP(pUPTR, ulen)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcFup(pUPTR, ulen));  \
-        /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcFup(pUPTR, ulen))
+        
 /** Helper macro to call #mcuxClPkc_CalcFup (skipping first skipLen calculation(s)) with flow protection. */
 #define MCUXCLPKC_FP_CALCFUP_OFFSET(pUPTR, skipLen, ulen)  \
-    do{ \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcFup(&((mcuxClPkc_PtrFUPEntry_t) (pUPTR))[(skipLen)], ulen));  \
-        /* Checking is unnecessary, because it always returns OK. */  \
-    } while (false)
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcFup(&((mcuxClPkc_PtrFUPEntry_t) (pUPTR))[(skipLen)], ulen))
 
 /**
  * @}

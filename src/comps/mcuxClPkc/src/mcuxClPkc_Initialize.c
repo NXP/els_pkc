@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2014-2022 NXP                                                  */
+/* Copyright 2014-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -39,7 +39,7 @@
  * (4) initialize and set PKC according to PKC specification.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Initialize)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Initialize(mcuxClPkc_State_t *pState)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Initialize(mcuxClPkc_State_t *pState)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_Initialize);
 
@@ -97,7 +97,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Initialize(mcuxClPkc_S
     /* Poll the PW_READY bit until it is set, on supported platforms. */
     MCUXCLPKC_PKC_WAIT_PW_READY();
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_Initialize, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_Initialize);
 }
 
 
@@ -110,7 +110,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Initialize(mcuxClPkc_S
  * (4) restore PKC state (except STOP bit) if it is provided (pState != NULL).
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Deinitialize)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Deinitialize(const mcuxClPkc_State_t *pState)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Deinitialize(const mcuxClPkc_State_t *pState)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_Deinitialize);
 
@@ -160,5 +160,5 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Deinitialize(const mcu
         MCUXCLPKC_SFR_WRITE(CTRL, (uint32_t) pState->ctrl);
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_Deinitialize, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_Deinitialize);
 }

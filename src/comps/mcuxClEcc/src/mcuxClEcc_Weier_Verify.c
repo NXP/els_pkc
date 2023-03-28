@@ -159,7 +159,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
 
     /* Import message hash (up to byteLenN bytes). */
     uint32_t byteLenHash = (pParam->optLen & mcuxClEcc_Verify_Param_optLen_byteLenHash_mask) >> mcuxClEcc_Verify_Param_optLen_byteLenHash_offset;
-    uint32_t byteLenHashImport = ((byteLenHash < byteLenN) ? byteLenHash: byteLenN);
+    uint32_t byteLenHashImport = MCUXCLECC_TRUNCATED_HASH_LEN(byteLenHash, byteLenN);
     MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(ECC_S2, pParam->pHash, byteLenHashImport);
 
     /* Truncate message hash if its bit length is longer than that of n. */

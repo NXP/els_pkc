@@ -31,7 +31,9 @@
 
 #include "ip_css.h"
 #include "ip_pkc.h"
+#ifdef MCUXCL_FEATURE_HW_TRNG
 #include "sa_trng_256.h"
+#endif /* MCUXCL_FEATURE_HW_TRNG */
 #ifdef MCUXCL_FEATURE_HW_ROPUF
 #include "ip_puf.h"
 #endif /* MCUXCL_FEATURE_HW_ROPUF */
@@ -141,18 +143,22 @@
 #define PKC_SFR_SUFFIX_MSK      _MASK       ///< sfr field name suffix for mask
 #define PKC_SFR_SUFFIX_POS      _SHIFT      ///< sfr field name suffix for bit position
 
+#ifdef MCUXCL_FEATURE_HW_TRNG
 // Define base address of TRNG
 #define TRNG_SFR_BASE           TRNG        ///< base of TRNG SFRs
 #define TRNG_SFR_NAME(sfr)      sfr         ///< full name of SFR
 #define TRNG_SFR_PREFIX         TRNG_       ///< sfr field name prefix
 #define TRNG_SFR_SUFFIX_MSK     _MASK       ///< sfr field name suffix for mask
 #define TRNG_SFR_SUFFIX_POS     _SHIFT      ///< sfr field name suffix for bit position
+#endif /* MCUXCL_FEATURE_HW_TRNG */
 
 #ifdef MCUXCL_FEATURE_HW_ROPUF
 // Define base address of PUF
 #define PUF_SFR_BASE            IP_PUF      ///< base of PUF SFRs
-#define PUF_SFR_NAME(sfr)       sfr         ///< full name of SFR
-#define PUF_SFR_PREFIX          IP_PUF_     ///< sfr field name prefix
+#define PUF_SFR_NAME(sfr)       PUF_ ## sfr         ///< full name of SFR
+#define PUF_SFR_PREFIX          IP_PUF_PUF_     ///< sfr field name prefix
+#define PUF_SFR_SUFFIX_MSK     _MASK       ///< sfr field name suffix for mask
+#define PUF_SFR_SUFFIX_POS     _SHIFT      ///< sfr field name suffix for bit position
 #endif /* MCUXCL_FEATURE_HW_ROPUF */
 
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM3
@@ -176,9 +182,11 @@ extern const uint32_t __ICFEDIT_region_RAM_PKC_start__;
 #define PKC_RAM_ADDR  (&__ICFEDIT_region_RAM_PKC_start__)
 #define PKC_WORD_SIZE  8u
 
+#ifdef MCUXCL_FEATURE_HW_TRNG
 #undef TRNG_BASE
 extern const uint32_t Image$$TRNG_BASE_ADDRESS$$Base;
 #define TRNG_BASE ((uint32_t) &Image$$TRNG_BASE_ADDRESS$$Base)
+#endif /* MCUXCL_FEATURE_HW_TRNG */
 
 #ifdef MCUXCL_FEATURE_HW_ROPUF
 #undef IP_PUF_BASE
@@ -207,5 +215,12 @@ extern const uint32_t Image$$SM3_BASE_ADDRESS$$Base ;
 #define MCUXCLELS_HW_VERSION_FW_MINOR            4
 #define MCUXCLELS_HW_VERSION_FW_MAJOR            2
 
+
+#define MCUXCL_CACHE_FLUSH(addr, len) 
+#define MCUXCL_CACHE_CLEAR(addr, len) 
+#ifndef MCUXCL_CACHE_ALIGNED
+/* MCUXCL_CACHE_ALIGNED should be defined externally */
+#define MCUXCL_CACHE_ALIGNED
+#endif
 
 #endif

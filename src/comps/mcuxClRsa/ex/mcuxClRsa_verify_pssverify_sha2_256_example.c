@@ -28,7 +28,7 @@
 #include <mcuxClPkc.h>              // Interface to the entire mcuxClPkc component
 #include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
-#include <nxpClToolchain.h>             // Memory segment definitions
+#include <mcuxClToolchain.h>             // Memory segment definitions
 #include <stdbool.h>               // bool type for the example's return code
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClExample_ELS_Helper.h>

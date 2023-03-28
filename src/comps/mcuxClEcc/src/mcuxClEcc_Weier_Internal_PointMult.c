@@ -64,7 +64,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_PointMult(uint8_t 
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint32_t *pOperands32 = (uint32_t *) pOperands;  /* UPTR table is 32-bit aligned in ECC component. */
-    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
 
     uint32_t scalarWord;
     uint32_t scalarBits;

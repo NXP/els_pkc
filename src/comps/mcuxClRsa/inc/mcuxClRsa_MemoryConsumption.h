@@ -33,10 +33,10 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE    (148u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
-#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_2048_WACPU_SIZE    (276u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
-#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_3072_WACPU_SIZE    (404u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
-#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_4096_WACPU_SIZE    (532u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
+#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE    (152u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
+#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_2048_WACPU_SIZE    (280u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
+#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_3072_WACPU_SIZE    (408u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
+#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_4096_WACPU_SIZE    (536u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys using mode mcuxClRsa_Mode_Sign_NoEncode.
 
 #define MCUXCLRSA_SIGN_PLAIN_NOENCODE_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_NOENCODE_4096_WACPU_SIZE : \
@@ -44,30 +44,30 @@
     ((1024u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_NOENCODE_2048_WACPU_SIZE : \
                                  MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE)))  ///< Macro to extract CPU workarea size to be used with a non-standard key length, with a key of type MCUXCLRSA_KEY_PRIVATEPLAIN.
 
-#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_1024_WACPU_SIZE    (148u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
-#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE    (276u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
-#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_3072_WACPU_SIZE    (404u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
-#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE    (532u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_1024_WACPU_SIZE    (152u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE    (280u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_3072_WACPU_SIZE    (408u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE    (536u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys using mode mcuxClRsa_Mode_Sign_Pss_Sha2_*.
 #define MCUXCLRSA_SIGN_PLAIN_PSSENCODE_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_PSSENCODE_3072_WACPU_SIZE : \
     ((1024u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE : \
                                  MCUXCLRSA_SIGN_PLAIN_PSSENCODE_1024_WACPU_SIZE)))  ///< Macro to extract CPU workarea size to be used with a non-standard key length, with a key of type MCUXCLRSA_KEY_PRIVATEPLAIN.
 
-#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_1024_WACPU_SIZE    (148u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
-#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_2048_WACPU_SIZE    (276u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
-#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_3072_WACPU_SIZE    (404u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
-#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_4096_WACPU_SIZE    (532u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_1024_WACPU_SIZE    (152u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_2048_WACPU_SIZE    (280u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_3072_WACPU_SIZE    (408u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
+#define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_4096_WACPU_SIZE    (536u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*.
 #define MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_4096_WACPU_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_3072_WACPU_SIZE : \
     ((1024u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_2048_WACPU_SIZE : \
                                  MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_1024_WACPU_SIZE)))  ///< Macro to extract CPU workarea size to be used with a non-standard key length, with a key of type MCUXCLRSA_KEY_PRIVATEPLAIN.
 
-#define MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE     (976u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys.
-#define MCUXCLRSA_SIGN_PLAIN_2048_WAPKC_SIZE     (1872u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys.
-#define MCUXCLRSA_SIGN_PLAIN_3072_WAPKC_SIZE     (2768u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys.
-#define MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE     (3664u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys.
+#define MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE     (1064u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys.
+#define MCUXCLRSA_SIGN_PLAIN_2048_WAPKC_SIZE     (1960u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 2048-bit private plain keys.
+#define MCUXCLRSA_SIGN_PLAIN_3072_WAPKC_SIZE     (2856u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 3072-bit private plain keys.
+#define MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE     (3752u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 4096-bit private plain keys.
 #define MCUXCLRSA_SIGN_PLAIN_WAPKC_SIZE(keyBitLength) \
         ((3072u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE : \
         ((2048u < (keyBitLength)) ? MCUXCLRSA_SIGN_PLAIN_3072_WAPKC_SIZE : \
@@ -157,19 +157,28 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-#define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (596u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (724u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (852u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
+#ifdef MCUXCL_FEATURE_PROJECT_NIOBE4ANALOG
+
+#define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
+#define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
+#define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
+
+#else
+
+#define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (620u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
+#define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (748u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
+#define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (876u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
+
+#endif
 
 #define MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE : \
                                 MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE))  ///< Macro to extract CPU workarea size (in bytes) for the given key length.
 
-#define MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE    (1648u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE    (2416u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE    (3184u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
-
+#define MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE    (1656u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
+#define MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE    (2424u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
+#define MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE    (3192u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
 #define MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE : \
@@ -186,9 +195,19 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-#define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (584u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE    (712u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE    (840u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
+#ifdef MCUXCL_FEATURE_PROJECT_NIOBE4ANALOG
+
+#define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
+#define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
+#define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
+
+#else
+
+#define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (608u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
+#define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE    (736u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
+#define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE    (864u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
+
+#endif
 
 #define MCUXCLRSA_KEYGENERATION_PLAIN_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE : \
@@ -198,7 +217,6 @@
 #define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WAPKC_SIZE    (1832u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
 #define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WAPKC_SIZE    (2728u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
 #define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WAPKC_SIZE    (3624u) ///< Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
-
 #define MCUXCLRSA_KEYGENERATION_PLAIN_WAPKC_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_PLAIN_4096_WAPKC_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_PLAIN_3072_WAPKC_SIZE : \
@@ -226,7 +244,6 @@
 #define MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_2048_SIZE    (556u)  ///< Definition of bufer size (in bytes) for the public key data for 2048-bit keys
 #define MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_3072_SIZE    (812u)  ///< Definition of bufer size (in bytes) for the public key data for 3072-bit keys
 #define MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_4096_SIZE    (1068u)  ///< Definition of bufer size (in bytes) for the public key data for 4096-bit keys
-
 
 /** @} */
 

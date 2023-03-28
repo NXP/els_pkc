@@ -22,7 +22,6 @@
 #include <stdbool.h>
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_Hash_Async)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Async(

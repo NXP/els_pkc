@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -56,10 +56,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPQDistance(uint32_
   uint32_t backupPs1LenReg = MCUXCLPKC_PS1_GETLENGTH_REG();
 
   /* Create and set local Uptrt table. */
-  uint32_t pOperands32[(MCUXCLRSA_INTERNAL_TESTPQDISTANCE_UPTRT_SIZE + 1u) / 2u];
+  uint16_t pOperands[MCUXCLRSA_INTERNAL_TESTPQDISTANCE_UPTRT_SIZE];
 
-  /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */
-  uint16_t *pOperands = (uint16_t *) pOperands32;
   const uint32_t pkcOperandLen = 128 / 8;
   const uint32_t pkcPrimeLen = primeByteLength;
 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxCsslMemory_Set.h
- * @brief header file of robust memory set function
+ * @brief header file of memory set function
  */
 
 
@@ -50,10 +50,10 @@
  * Code flow protection: the function call is protected.
  * Buffer overflow protection: no data is written to @p pDst beyond @p bufLength bytes.
  *
- * @param[in]  chk       The parameter checksum, generated with #mcuxCsslParamIntegrity_Protect.
- * @param[in]  pDst      The destination pointer to buffer to be set. Must not be NULL.
- * @param[in]  val       The byte value to be set. 
- * @param[in]  length       The size in bytes to set.
+ * @param[in]  chk          The parameter checksum, generated with #mcuxCsslParamIntegrity_Protect.
+ * @param[in]  pDst         The destination pointer to buffer to be set. Must not be NULL.
+ * @param[in]  val          The byte value to be set. 
+ * @param[in]  length       The size in bytes to set. Must be different from zero.
  * @param[in]  bufLength    The buffer size (if bufLength < length, only bufLength bytes are set).
  *
  * @return A status code encapsulated in a flow-protection type.

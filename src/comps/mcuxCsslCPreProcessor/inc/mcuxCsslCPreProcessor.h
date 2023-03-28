@@ -20,6 +20,8 @@
  * functionality
  */
 
+#define MCUX_CSSL_CPP_STR(a) #a
+
 #define MCUX_CSSL_CPP_ADD(a) + (a)
 
 #define MCUX_CSSL_CPP_CAT_IMPL(a, b) a##b

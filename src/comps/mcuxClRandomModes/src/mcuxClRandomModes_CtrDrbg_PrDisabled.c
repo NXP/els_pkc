@@ -15,6 +15,7 @@
 
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
+#include <mcuxClCore_Analysis.h>
 
 #include <mcuxClRandomModes_MemoryConsumption.h>
 #include <internal/mcuxClRandom_Internal_Types.h>
@@ -49,196 +50,106 @@
  * Data has been adapted from BE Byte Order to LE Byte Order
  */
 
-// TODO: Add test vectors for AES-192
 
-/* MISRA Ex. 20 - Rule 5.1 */
-/* EntropyInput = ed1e7f21ef66ea5d8e2a85b9337245445b71d6393a4eecb0e63c193d0f72f9a9 */
-static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Aes128_PrDisabled[] =
+/* EntropyInput = db6a6c4d5f17710eb1a65e7f82b390ffaf8f2c43f43eef29e4ffc350a2f475339c7b2d12259c9d */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Init_Aes128_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-  0x217f1eedu, 0x5dea66efu, 0xb9852a8eu, 0x44457233u,
-  0x39d6715bu, 0xb0ec4e3au, 0x3d193ce6u, 0xa9f9720fu
-
+  0x4d6c6adbu, 0x0e71175fu, 0x7f5ea6b1u, 0xff90b382u, 0x432c8fafu, 0x29ef3ef4u, 0x50c3ffe4u, 0x3375f4a2u,
+  0x122d7b9cu, 0x009d9c25u
 };
-/* MISRA Ex. 20 - Rule 5.1 */
-/* EntropyInput = e4bc23c5089a19d86f4119cb3fa08c0a4991e0a1def17e101e4c14d9c323460a7c2fb58e0b086c6c57b55f56cae25bad */
-static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Aes256_PrDisabled[] =
+/* EntropyInput = 6c0764088dd3d30d93ed2cbbe6a8ac115098e458e74d34527ecd4183df2bb34a07c934a8793cc5c76a2a94cb7aa1fe2cd1b615d566b204 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Init_Aes192_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-  0xc523bce4u, 0xd8199a08u, 0xcb19416fu, 0x0a8ca03fu,
-  0xa1e09149u, 0x107ef1deu, 0xd9144c1eu, 0x0a4623c3u,
-  0x8eb52f7cu, 0x6c6c080bu, 0x565fb557u, 0xad5be2cau
+  0x0864076cu, 0x0dd3d38du, 0xbb2ced93u, 0x11aca8e6u, 0x58e49850u, 0x52344de7u, 0x8341cd7eu, 0x4ab32bdfu,
+  0xa834c907u, 0xc7c53c79u, 0xcb942a6au, 0x2cfea17au, 0xd515b6d1u, 0x0004b266u
+};
+/* EntropyInput = 04e6975d5082bf4593c1fd93c2020624ee887666cec3fec73d6bcd376cba3f0f18c07c7ef6773a145a7f9e926cb3cd2c42cc66b30a52ec1c7a75964712933985f5e8b42d4af007 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Init_Aes256_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+{
+  0x5d97e604u, 0x45bf8250u, 0x93fdc193u, 0x240602c2u, 0x667688eeu, 0xc7fec3ceu, 0x37cd6b3du, 0x0f3fba6cu,
+  0x7e7cc018u, 0x143a77f6u, 0x929e7f5au, 0x2ccdb36cu, 0xb366cc42u, 0x1cec520au, 0x4796757au, 0x85399312u,
+  0x2db4e8f5u, 0x0007f04au
 };
 
 
-/* MISRA Ex. 20 - Rule 5.1 */
-/* EntropyInputReseed = 303fb519f0a4e17d6df0b6426aa0ecb2a36079bd48be47ad2a8dbfe48da3efad */
+/* EntropyInputReseed = 3e3a397ad3edbd5d2505814805f51f20f356d541cb40f9 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Reseed_Aes128_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-  0x19b53f30u, 0x7de1a4f0u, 0x42b6f06du, 0xb2eca06au,
-  0xbd7960a3u, 0xad47be48u, 0xe4bf8d2au, 0xadefa38du
-
+  0x7a393a3eu, 0x5dbdedd3u, 0x48810525u, 0x201ff505u, 0x41d556f3u, 0x00f940cbu
 };
-/* MISRA Ex. 20 - Rule 5.1 */
-/* EntropyInputReseed = fd85a836bba85019881e8c6bad23c9061adc75477659acaea8e4a01dfe07a1832dad1c136f59d70f8653a5dc118663d6 */
+/* EntropyInputReseed = 58c7b1da4f8b13a2acb8648ab51e36131ed31289c0924f2e6739e1b41c74039714d28c913573e5 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Reseed_Aes192_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+{
+  0xdab1c758u, 0xa2138b4fu, 0x8a64b8acu, 0x13361eb5u, 0x8912d31eu, 0x2e4f92c0u, 0xb4e13967u, 0x9703741cu,
+  0x918cd214u, 0x00e57335u
+};
+/* EntropyInputReseed = 41e7cf20e5b487d9d981ed7a0186872d774e610b4e246c5a899da1f4a0538c05c6d43b9726575560d3a6c4117f39cba6ba9eef65a8469d */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 static const uint32_t mcuxClRandomModes_TestVectors_Entropy_Reseed_Aes256_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-  0x36a885fdu, 0x1950a8bbu, 0x6b8c1e88u, 0x06c923adu,
-  0x4775dc1au, 0xaeac5976u, 0x1da0e4a8u, 0x83a107feu,
-  0x131cad2du, 0x0fd7596fu, 0xdca55386u, 0xd6638611u
+  0x20cfe741u, 0xd987b4e5u, 0x7aed81d9u, 0x2d878601u, 0x0b614e77u, 0x5a6c244eu, 0xf4a19d89u, 0x058c53a0u,
+  0x973bd4c6u, 0x60555726u, 0x11c4a6d3u, 0xa6cb397fu, 0x65ef9ebau, 0x009d46a8u
 };
 
 
-/* MISRA Ex. 20 - Rule 5.1 */
-//Key, V after Init (No PR)
-/* Key = b5fc83ef1518da3cb85598ee9795001e */
-static const uint32_t mcuxClRandomModes_TestVectors_Init_Aes128_Key_PrDisabled[] =
+/* ReturnedBits = 7a766353d1b809fd97d89219972debbce3f53d1be1b3dbddf1e4c2e15954e1338d0ff1f411326348f1e85a29b5feeb93554eb54a98c3b0e691f244dad72fd80b */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t mcuxClRandomModes_TestVectors_RandomData_Aes128_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-  0xef83fcb5u, 0x3cda1815u, 0xee9855b8u, 0x1e009597u
+  0x5363767au, 0xfd09b8d1u, 0x1992d897u, 0xbceb2d97u, 0x1b3df5e3u, 0xdddbb3e1u, 0xe1c2e4f1u, 0x33e15459u,
+  0xf4f10f8du, 0x48633211u, 0x295ae8f1u, 0x93ebfeb5u, 0x4ab54e55u, 0xe6b0c398u, 0xda44f291u, 0x0bd82fd7u
 };
-/* MISRA Ex. 20 - Rule 5.1 */
-/* Key = b7b3a93ecfdf2f61c622ad3afb6bff818736a09c9391157e1902d10a79d0db12 */
-static const uint32_t mcuxClRandomModes_TestVectors_Init_Aes256_Key_PrDisabled[] = {
-  0x3ea9b3b7u, 0x612fdfcfu, 0x3aad22c6u, 0x81ff6bfbu,
-  0x9ca03687u, 0x7e159193u, 0x0ad10219u, 0x12dbd079u
+/* ReturnedBits = 35f96c8d58335a75b537d3c794d6a363619bf76f1f28fe6595c9630e9e5e2770093c20bedffd17778105d52654cd27cd20ad46b8fba58926b2401344c8a493bc */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t mcuxClRandomModes_TestVectors_RandomData_Aes192_PrDisabled[] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+{
+  0x8d6cf935u, 0x755a3358u, 0xc7d337b5u, 0x63a3d694u, 0x6ff79b61u, 0x65fe281fu, 0x0e63c995u, 0x70275e9eu,
+  0xbe203c09u, 0x7717fddfu, 0x26d50581u, 0xcd27cd54u, 0xb846ad20u, 0x2689a5fbu, 0x441340b2u, 0xbc93a4c8u
 };
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = 58f90cf75af84f221514db847ec007d1 */
-static const uint32_t mcuxClRandomModes_TestVectors_Init_Aes128_V_PrDisabled[] = {
-  0xf70cf958u, 0x224ff85au, 0x84db1415u, 0xd107c07eu
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = 0e4fb6443cae46188617aad8bfe46e23 */
-static const uint32_t mcuxClRandomModes_TestVectors_Init_Aes256_V_PrDisabled[] = {
-  0x44b64f0eu, 0x1846ae3cu, 0xd8aa1786u, 0x236ee4bfu
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-//Key, V after Reseed (No PR)
-/* Key = 577a79cc512258c3e255fcf3f4cf0c1a */
-static const uint32_t mcuxClRandomModes_TestVectors_Reseed_Aes128_Key_PrDisabled[] = {
-  0xcc797a57u, 0xc3582251u, 0xf3fc55e2u, 0x1a0ccff4u,
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* Key = d230044c2594510d195ffe9923de8848bdbd19f24d0e7558b28e55b2d4de7841 */
-static const uint32_t mcuxClRandomModes_TestVectors_Reseed_Aes256_Key_PrDisabled[] = {
-  0x4c0430d2u, 0x0d519425u, 0x99fe5f19u, 0x4888de23u,
-  0xf219bdbdu, 0x58750e4du, 0xb2558eb2u, 0x4178ded4u
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = 531599fd616f33678192928bf771bb2b */
-static const uint32_t mcuxClRandomModes_TestVectors_Reseed_Aes128_V_PrDisabled[] = {
-  0xfd991553u, 0x67336f61u, 0x8b929281u, 0x2bbb71f7u
-
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = e18637ff12f514f37adc2013a40f38c1 */
-static const uint32_t mcuxClRandomModes_TestVectors_Reseed_Aes256_V_PrDisabled[] = {
-  0xff3786e1u, 0xf314f512u, 0x1320dc7au, 0xc1380fa4u
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-//Key, V after first Generate (No PR)
-/* Key = ac373fb3773597b0d6cb6f37e6b59293 */
-static const uint32_t mcuxClRandomModes_TestVectors_GenOne_Aes128_Key_PrDisabled[] = {
-  0xb33f37acu, 0xb0973577u, 0x376fcbd6u, 0x9392b5e6u
-
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* Key = ec871bb7a4f2c45dccdd0e514a21628959aa21e9643934f619b2709b3e38697c */
-static const uint32_t mcuxClRandomModes_TestVectors_GenOne_Aes256_Key_PrDisabled[] = {
-  0xb71b87ecu, 0x5dc4f2a4u, 0x510eddccu, 0x8962214au,
-  0xe921aa59u, 0xf6343964u, 0x9b70b219u, 0x7c69383eu
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = cd9bf115d35c60cbf7f2ebac8e43f53b */
-static const uint32_t mcuxClRandomModes_TestVectors_GenOne_Aes128_V_PrDisabled[] = {
-  0x15f19bcdu, 0xcb605cd3u, 0xacebf2f7u, 0x3bf5438eu
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = d8bbe7bfc60bfb710f39acd1088c9f41 */
-static const uint32_t mcuxClRandomModes_TestVectors_GenOne_Aes256_V_PrDisabled[] = {
-  0xbfe7bbd8u, 0x71fb0bc6u, 0xd1ac390fu, 0x419f8c08u
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-//Key, V, Random after second Generate (No PR)
-/* Key = 964c57946a104aa93fc3c2137bb9bc11 */
-static const uint32_t mcuxClRandomModes_TestVectors_GenTwo_Aes128_Key_PrDisabled[] = {
-  0x94574c96u, 0xa94a106au, 0x13c2c33fu, 0x11bcb97bu
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* Key = e728308a0e92cbacb269d12246d8e2d24cf5fcc678aa09564132e4972c456eda */
-static const uint32_t mcuxClRandomModes_TestVectors_GenTwo_Aes256_Key_PrDisabled[] = {
-  0x8a3028e7u, 0xaccb920eu, 0x22d169b2u, 0xd2e2d846u,
-  0xc6fcf54cu, 0x5609aa78u, 0x97e43241u, 0xda6e452cu
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = 9d58008033ac007c9ead254bfa8de2b6 */
-static const uint32_t mcuxClRandomModes_TestVectors_GenTwo_Aes128_V_PrDisabled[] = {
-  0x8000589du, 0x7c00ac33u, 0x4b25ad9eu, 0xb6e28dfau
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* V   = c95f38da34ecb65ebf8b34c32bc215a5 */
-static const uint32_t mcuxClRandomModes_TestVectors_GenTwo_Aes256_V_PrDisabled[] = {
-  0xda385fc9u, 0x5eb6ec34u, 0xc3348bbfu, 0xa515c22bu
-};
-
-
-/* MISRA Ex. 20 - Rule 5.1 */
-/* ReturnedBits = f80111d08e874672f32f42997133a5210f7a9375e22cea70587f9cfafebe0f6a6aa2eb68e7dd9164536d53fa020fcab20f54caddfab7d6d91e5ffec1dfd8deaa */
-static const uint32_t mcuxClRandomModes_TestVectors_RandomData_Aes128_PrDisabled[] = {
-  0xd01101f8u, 0x7246878eu, 0x99422ff3u, 0x21a53371u,
-  0x75937a0fu, 0x70ea2ce2u, 0xfa9c7f58u, 0x6a0fbefeu,
-  0x68eba26au, 0x6491dde7u, 0xfa536d53u, 0xb2ca0f02u,
-  0xddca540fu, 0xd9d6b7fau, 0xc1fe5f1eu, 0xaaded8dfu
-};
-/* MISRA Ex. 20 - Rule 5.1 */
-/* ReturnedBits = b2cb8905c05e5950ca31895096be29ea3d5a3b82b269495554eb80fe07de43e193b9e7c3ece73b80e062b1c1f68202fbb1c52a040ea2478864295282234aaada */
+/* ReturnedBits = 8e929981e59b246182c93b161a0f7900b1a65bff6579ab3dbf13ac040e9eb7964c23e17ece53d5e68adcae46c9feb06f4d48601f3483dbce99c314aa77a95f92 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 static const uint32_t mcuxClRandomModes_TestVectors_RandomData_Aes256_PrDisabled[] = {
-  0x0589cbb2u, 0x50595ec0u, 0x508931cau, 0xea29be96u,
-  0x823b5a3du, 0x554969b2u, 0xfe80eb54u, 0xe143de07u,
-  0xc3e7b993u, 0x803be7ecu, 0xc1b162e0u, 0xfb0282f6u,
-  0x042ac5b1u, 0x8847a20eu, 0x82522964u, 0xdaaa4a23u
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+  0x8199928eu, 0x61249be5u, 0x163bc982u, 0x00790f1au, 0xff5ba6b1u, 0x3dab7965u, 0x04ac13bfu, 0x96b79e0eu,
+  0x7ee1234cu, 0xe6d553ceu, 0x46aedc8au, 0x6fb0fec9u, 0x1f60484du, 0xcedb8334u, 0xaa14c399u, 0x925fa977u
 };
 #endif
 
 static const uint32_t * const mcuxClRandomModes_TestVectors_Aes128_PrDisabled[MCUXCLRANDOMMODES_NO_OF_TESTVECTORS_PRDISABLED] =
 {
- mcuxClRandomModes_TestVectors_Entropy_Aes128_PrDisabled,
+  mcuxClRandomModes_TestVectors_Entropy_Init_Aes128_PrDisabled,
   mcuxClRandomModes_TestVectors_Entropy_Reseed_Aes128_PrDisabled,
-  mcuxClRandomModes_TestVectors_Init_Aes128_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_Init_Aes128_V_PrDisabled,
-  mcuxClRandomModes_TestVectors_Reseed_Aes128_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_Reseed_Aes128_V_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenOne_Aes128_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenOne_Aes128_V_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenTwo_Aes128_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenTwo_Aes128_V_PrDisabled,
   mcuxClRandomModes_TestVectors_RandomData_Aes128_PrDisabled
 };
 
-static const uint32_t * const mcuxClRandomModes_TestVectors_Aes256_PrDisabled[MCUXCLRANDOMMODES_NO_OF_TESTVECTORS_PRDISABLED] =
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t * const mcuxClRandomModes_TestVectors_Aes192_PrDisabled[MCUXCLRANDOMMODES_NO_OF_TESTVECTORS_PRDISABLED] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-  mcuxClRandomModes_TestVectors_Entropy_Aes256_PrDisabled,
+  mcuxClRandomModes_TestVectors_Entropy_Init_Aes192_PrDisabled,
+  mcuxClRandomModes_TestVectors_Entropy_Reseed_Aes192_PrDisabled,
+  mcuxClRandomModes_TestVectors_RandomData_Aes192_PrDisabled
+};
+
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const uint32_t * const mcuxClRandomModes_TestVectors_Aes256_PrDisabled[MCUXCLRANDOMMODES_NO_OF_TESTVECTORS_PRDISABLED] =
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+{
+  mcuxClRandomModes_TestVectors_Entropy_Init_Aes256_PrDisabled,
   mcuxClRandomModes_TestVectors_Entropy_Reseed_Aes256_PrDisabled,
-  mcuxClRandomModes_TestVectors_Init_Aes256_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_Init_Aes256_V_PrDisabled,
-  mcuxClRandomModes_TestVectors_Reseed_Aes256_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_Reseed_Aes256_V_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenOne_Aes256_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenOne_Aes256_V_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenTwo_Aes256_Key_PrDisabled,
-  mcuxClRandomModes_TestVectors_GenTwo_Aes256_V_PrDisabled,
   mcuxClRandomModes_TestVectors_RandomData_Aes256_PrDisabled
 };
 
@@ -255,7 +166,7 @@ static const mcuxClRandomModes_DrbgModeDescriptor_t mcuxClRandomModes_DrbgModeDe
 {
     .pDrbgAlgorithms = &mcuxClRandomModes_DrbgAlgorithmsDescriptor_CtrDrbg,
     .pDrbgVariant = &mcuxClRandomModes_DrbgVariantDescriptor_CtrDrbg_AES192,
-    .pDrbgTestVectors = mcuxClRandomModes_TestVectors_Aes128_PrDisabled   /* ToDo done in CLNS-5053. */
+    .pDrbgTestVectors = mcuxClRandomModes_TestVectors_Aes192_PrDisabled
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */

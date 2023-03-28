@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -53,6 +53,12 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_Status_Prote
 
 #define MCUXCLMATH_ERRORCODE_OK    ((mcuxClMath_Status_t) 0x17171717u) ///< Math operation successful
 #define MCUXCLMATH_ERRORCODE_ERROR ((mcuxClMath_Status_t) 0x17177171u) ///< Error occurred during Math operation
+
+/**
+ * @brief Option to disable the operand re-randomization in the secure modular exponentiation.
+ * TODO CLNS-7824: analyze how to use the SecModExp in RsaKg MillerRabinTest, and remove secOption to always re-randomize
+ */
+#define MCUXCLMATH_SECMODEXP_OPTION_DIS_RERAND (0xA5A5A5A5u)
 
 /**
  * @}

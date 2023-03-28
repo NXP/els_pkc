@@ -19,6 +19,10 @@
  #include "mcuxClCore_Analysis.h"
  
  MCUXCLCORE_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
+ #include "fsl_device_registers.h" 
+ #include "RW610.h" 
+ #include "RW610_features.h" 
+ #include "system_RW610.h" 
  #include "ip_platform.h" 
  #include "ip_css_constants.h" 
  #include "ip_css_design_configuration.h" 

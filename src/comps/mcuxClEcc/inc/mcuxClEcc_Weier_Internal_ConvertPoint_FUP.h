@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,6 +18,9 @@
 #define MCUXCLECC_WEIER_INTERNAL_CONVERTPOINT_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertAffinePoint_ToJacobian[5];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertAffinePointsToJac[7];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertJacToAffine[10];
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertPoint_ToAffine[11];
 
 #endif /* MCUXCLECC_WEIER_INTERNAL_CONVERTPOINT_FUP*/ 

@@ -112,32 +112,6 @@ extern "C" {
  * @}
  */
 
-#if defined(MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV) || defined(MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM) 
-/**
- * @defgroup MCUXCLELS_KEYPROV_ MCUXCLELS_KEYPROV_
- * @brief Defines for #mcuxClEls_KeyProvision_Async
- * @ingroup mcuxClEls_KeyManagement_Macros
- *
- * @{
- */
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
-#define MCUXCLELS_KEYPROV_KEY_PART_1_SIZE        ((uint32_t) 32u)     ///< Size of external UDF key part1
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
-
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM
-#define MCUXCLELS_KEYPROV_TESTERSHARE_SIZE       ((uint32_t) 32u)     ///< Size of external tester share
-#define MCUXCLELS_KEYPROV_KEYSHARE_TABLE_SIZE    ((uint32_t) 8u)		 ///< Number of key shares available in the key share table
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM */
-
-#define MCUXCLELS_KEYPROV_VALUE_NOIC             ((uint32_t) 1u<< 0u) ///< Exclude hardware data from key calculation
-
-#define MCUXCLELS_KEYPROV_NOIC_DISABLE           ((uint32_t) 0u)      ///< Include hardware date into key calculation
-#define MCUXCLELS_KEYPROV_NOIC_ENABLE            ((uint32_t) 1u)      ///< Exclude hardware data from key calculation
-
-/**
- * @}
- */
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
 /**
  * @}
  */
@@ -175,25 +149,6 @@ typedef union
     } bits;                 ///< Access #mcuxClEls_KeyImportOption_t bit-wise
 } mcuxClEls_KeyImportOption_t;
 
-#if defined(MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV) || defined(MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM) 
-/**
- * @brief Command option bit field for @if ELS_KEY_MGMT_KEYPROV #mcuxClEls_KeyProvision_Async @if ELS_KEY_MGMT_KEYPROV_ROM and @endif @endif @if ELS_KEY_MGMT_KEYPROV_ROM #mcuxClEls_KeyProvisionRom_Async @endif
- *
- * Bit field to configure @if ELS_KEY_MGMT_KEYPROV #mcuxClEls_KeyProvision_Async @if ELS_KEY_MGMT_KEYPROV_ROM and @endif @endif @if ELS_KEY_MGMT_KEYPROV_ROM #mcuxClEls_KeyProvisionRom_Async @endif . See @ref MCUXCLELS_KEYPROV_ for possible options.
- */
-typedef union
-{
-    struct
-    {
-        uint32_t value;     ///< Accesses the bit field as a full word; initialize with a combination of constants from @ref MCUXCLELS_KEYPROV_
-    } word;                 ///< Access #mcuxClEls_KeyProvisionOption_t word-wise
-    struct
-    {
-        uint32_t noic :1;   ///< Defines if hardware data shall be considered for key calculation
-        uint32_t :31;       ///< RFU
-    } bits;                 ///< Access #mcuxClEls_KeyProvisionOption_t bit-wise
-} mcuxClEls_KeyProvisionOption_t;
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
 /**
  * @}
  */
@@ -230,65 +185,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelet
         mcuxClEls_KeyIndex_t keyIdx
 );
 
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
-/** @brief Restores a provisioned key to the ELS keystore.
- *
- * Call #mcuxClEls_WaitForOperation to complete the operation.
- *
- * @param[in]    options              Include/Exclude hardware data. For more information, see #mcuxClEls_KeyProvisionOption_t
- * @param[in]    pKeyPart1            External key material part 1 (fixed size of #MCUXCLELS_KEYPROV_KEY_PART_1_SIZE)
- * @param[in]    pKeyPart2            External key material part 2
- * @param[in]    part2Length          The length of pKeyPart2 (must be at least 36 byte)
- * @param[in]    targetKeyIdx         Keystore index of the output key
- * @param[in]    targetKeyProperties  Properties of the output key
- *
- * @if (MCUXCL_FEATURE_CSSL_FP_USE_SECURE_COUNTER && MCUXCL_FEATURE_CSSL_SC_USE_SW_LOCAL)
- *  @return A code-flow protected error code (see @ref mcuxCsslFlowProtection). The error code can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
- * @else
- *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
- * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
- * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
- * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_KeyProvision_Async)
-MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyProvision_Async(
-        mcuxClEls_KeyProvisionOption_t options,
-        uint8_t const * pKeyPart1,
-        uint8_t const * pKeyPart2,
-        size_t part2Length,
-        mcuxClEls_KeyIndex_t targetKeyIdx,
-        mcuxClEls_KeyProp_t targetKeyProperties
-);
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
 
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM
-/** @brief Restores a provisioned key to the ELS keystore.  
- *                                                          
- * Call #mcuxClEls_WaitForOperation to complete the operation.
- *
- * @param[in]    options              Include/Exclude hardware data. For more information, see #mcuxClEls_KeyProvisionOption_t
- * @param[in]    pTesterShare         External Tester Share (fixed size of #MCUXCLELS_KEYPROV_TESTERSHARE_SIZE)
- * @param[in]    keyShareIdx          Key share table index for the input key shares (up to #MCUXCLELS_KEYPROV_KEYSHARE_TABLE_SIZE)
- * @param[in]    targetKeyIdx         Keystore index of the output key
- * @param[in]    targetKeyProperties  Properties of the output key
- *
- * @if (MCUXCL_FEATURE_CSSL_FP_USE_SECURE_COUNTER && MCUXCL_FEATURE_CSSL_SC_USE_SW_LOCAL)
- *  @return A code-flow protected error code (see @ref mcuxCsslFlowProtection). The error code can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
- * @else
- *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
- * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
- * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
- * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_KeyProvisionRom_Async)
-MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyProvisionRom_Async(
-        mcuxClEls_KeyProvisionOption_t options,
-        uint8_t const * pTesterShare,
-        uint32_t keyShareIdx,
-        mcuxClEls_KeyIndex_t targetKeyIdx,
-        mcuxClEls_KeyProp_t targetKeyProperties
-);
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM */
 
 /** @brief Imports a key from external storage to an internal key register.
  * 

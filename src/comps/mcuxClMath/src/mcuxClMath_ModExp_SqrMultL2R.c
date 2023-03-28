@@ -46,7 +46,7 @@
  * and then the loop moves to the next bit.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ModExp_SqrMultL2R)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pExp, uint32_t expByteLength, uint32_t iR_iX_iN_iT)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pExp, uint32_t expByteLength, uint32_t iR_iX_iN_iT)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ModExp_SqrMultL2R);
 
@@ -124,7 +124,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModExp_SqrMultL2R(co
         MCUXCLPKC_FP_CALC_OP1_OR_CONST(iR, iT, 0u);  /* Copy result to R. */
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_ModExp_SqrMultL2R, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_ModExp_SqrMultL2R,
         MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
         MCUX_CSSL_FP_LOOP_ITERATIONS(SquMulLoop, loopIteration),
         MCUX_CSSL_FP_CONDITIONAL((1u == (loopIteration & 0x01u)), MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST) );

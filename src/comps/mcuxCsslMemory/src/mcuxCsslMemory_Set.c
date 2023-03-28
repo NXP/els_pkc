@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxCsslMemory_Set.c
- * @brief mcuxCsslMemory: implementation of robust memory set function
+ * @brief mcuxCsslMemory: implementation of memory set function
  */
 
 

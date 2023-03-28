@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,7 +17,7 @@
 #include <mcuxClHash.h>              // Interface to the entire mcuxClHash component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>  // Code flow protection
-#include <nxpClToolchain.h>              // memory segment definitions
+#include <mcuxClToolchain.h>              // memory segment definitions
 #include <stdbool.h>                // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
@@ -54,12 +54,11 @@ bool mcuxClHash_sha256_streaming_example(void)
     }
 
     /* Initialize session */
-    #define CPU_WA_BUFFER_SIZE MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
     //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, CPU_WA_BUFFER_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
     /* RTF update is set to false by default */
 
@@ -156,6 +155,15 @@ bool mcuxClHash_sha256_streaming_example(void)
 	{
 		return MCUXCLEXAMPLE_ERROR;
 	}
+
+    /**************************************************************************/
+    /* Session clean-up                                                       */
+    /**************************************************************************/
+    /** Destroy Session and cleanup Session **/
+    if(!mcuxClExample_Session_Clean(session))
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())

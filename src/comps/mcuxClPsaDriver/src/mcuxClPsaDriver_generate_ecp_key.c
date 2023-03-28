@@ -87,19 +87,22 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
             uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
             mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
             uint8_t pubKeyBuffer[MCUXCLECC_MONT_CURVE448_SIZE_PUBLICKEY]={0};
-            uint32_t pubKeySize = 0u;
+            uint32_t privKeyLength = 0u;
+            uint32_t pubKeyLength = 0u;
 
             /* Call Dh KeyGeneration for keys generation and check FP and return code */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygeneration_result, keygeneration_token, mcuxClEcc_Mont_DhKeyGeneration(&session,
                                                                  mcuxClKey_Type_Ecc_MontDH_Curve448_KeyPair,
                                                                  mcuxClKey_Protection_None,
-                                                                 privKeyHandler, key_buffer, (uint32_t *)key_buffer_length,
-                                                                 pubKeyHandler, pubKeyBuffer, &pubKeySize));
+                                                                 privKeyHandler, key_buffer, &privKeyLength,
+                                                                 pubKeyHandler, pubKeyBuffer, &pubKeyLength));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != keygeneration_token) || (MCUXCLECC_STATUS_OK != keygeneration_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
+            
+            *key_buffer_length = (size_t) privKeyLength;
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(cleanup_result, cleanup_token, mcuxClSession_cleanup(&session));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != cleanup_token) || (MCUXCLSESSION_STATUS_OK != cleanup_result))
@@ -159,19 +162,22 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
             uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
             mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
             uint8_t pubKeyBuffer[MCUXCLECC_MONT_CURVE25519_SIZE_PUBLICKEY]={0};
-            uint32_t pubKeySize = 0u;
+            uint32_t privKeyLength = 0u;
+            uint32_t pubKeyLength = 0u;
 
             /* Call Dh KeyGeneration for keys generation and check FP and return code */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygeneration_result, keygeneration_token, mcuxClEcc_Mont_DhKeyGeneration(&session,
                                                                   mcuxClKey_Type_Ecc_MontDH_Curve25519_KeyPair,
                                                                   mcuxClKey_Protection_None,
-                                                                  privKeyHandler, key_buffer, (uint32_t *)key_buffer_length,
-                                                                  pubKeyHandler, pubKeyBuffer, &pubKeySize));
+                                                                  privKeyHandler, key_buffer, &privKeyLength,
+                                                                  pubKeyHandler, pubKeyBuffer, &pubKeyLength));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != keygeneration_token) || (MCUXCLECC_STATUS_OK != keygeneration_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+            *key_buffer_length = (size_t) privKeyLength;
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(cleanup_result, cleanup_token, mcuxClSession_cleanup(&session));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != cleanup_token) || (MCUXCLSESSION_STATUS_OK != cleanup_result))

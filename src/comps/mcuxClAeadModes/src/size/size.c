@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -22,10 +22,11 @@
 
 #include <mcuxClCore_Platform.h>
 #include <mcuxClCore_Analysis.h>
-
-/* ******************************* */
-/* *** Work area and ctx sizes *** */
-/* ******************************* */
+#include <internal/mcuxClAeadModes_Internal.h>
+/* *********************************************************** */
+/* Work area and ctx sizes.                                    */
+/* All work area size shall be a multiple of CPU wordsize.     */
+/* *********************************************************** */
 
 
 
@@ -33,8 +34,8 @@
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 
 MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
-volatile uint8_t mcuxClAead_WorkArea[1];
-volatile uint8_t mcuxClAead_OneShot[sizeof(mcuxClAeadModes_Context_t)];
+volatile uint8_t mcuxClAead_WorkArea[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(1)];
+volatile uint8_t mcuxClAead_OneShot[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClAeadModes_Context_t))];
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 
 

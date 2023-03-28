@@ -18,7 +18,7 @@
 
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -55,10 +55,11 @@
  *   when t = 4~7, this function accesses these t-byte word-wisely.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_SwitchEndianness)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint32_t length)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint32_t length)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_SwitchEndianness);
 
+#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     if (0u != (length % (sizeof(uint32_t))))
     {
         uint8_t *ptrL = (uint8_t *) ptr;
@@ -78,13 +79,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
             remainLength--;
         }
 
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SwitchEndianness, MCUXCLPKC_STATUS_OK);
+        MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_SwitchEndianness);
     }
 
     /* When the length is a multiple of CPU word size, fall down to the original implementation. */
 
     /* length is a multiple of CPU word size (4). */
     uint32_t *ptrH32 = (uint32_t *) ((uint8_t *) ptr + length - 4u);
+#else
+    /* MISRA Ex. 9 - Rule 11.3 - Use of UNALIGNED keyword. */
+    uint32_t UNALIGNED *ptrH32 = (uint32_t UNALIGNED *) ((uint8_t *) ptr + length - 4u);
+#endif
     uint32_t *ptrL32 = ptr;
 
     /* While there are >= 4 bytes to switch the endianness. */
@@ -102,9 +107,26 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
         ptrL32++;
     }
 
+#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     /* Now, ptrH32 = phtL32 - 4 or ptrL32 - 8, nothing more to do. */
+#else
+    /* If ptrH <= ptrL - 4, nothing more to do. */
+    /* If ptrH == ptrL - 3, swap ptrL[0] with ptrH[3] = ptrL[0], i.e., nothing to do. */
+    /* If ptrH == ptrL - 2, swap ptrL[0] with ptrH[3] = ptrL[1]. */
+    /* If ptrH == ptrL - 1, swap ptrL[0] with ptrH[3] = ptrL[2], and leave ptrL[1] unchanged. */
+    uint8_t *ptrL8 = (uint8_t *) ptrL32;
+    uint8_t *ptrH8 = (uint8_t *) ptrH32 + 3u;
+    if (ptrH8 > ptrL8)
+    {
+        uint8_t byteL = *ptrL8;
+        uint8_t byteH = *ptrH8;
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SwitchEndianness, MCUXCLPKC_STATUS_OK);
+        *ptrH8 = byteL;
+        *ptrL8 = byteH;
+    }
+#endif
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_SwitchEndianness);
 }
 
 
@@ -119,7 +141,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
  *     in-place in the target PKC buffer.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_ImportBigEndianToPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_ImportBigEndianToPkc);
 
@@ -143,7 +165,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportBigEndianToPkc(u
     MCUXCLMEMORY_FP_MEMORY_COPY(pTarget + offset, pSource, length);
     MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTarget, alignedLength);  /* PKC buffer is CPU word aligned. */
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_ImportBigEndianToPkc, MCUXCLPKC_STATUS_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_ImportBigEndianToPkc,
         MCUX_CSSL_FP_CONDITIONAL((operandSize != length),
             MCUXCLPKC_FP_CALLED_CALC_OP1_CONST),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
@@ -194,7 +216,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportLittleEndianToPk
  *     (pSource+offset)[], where offset = "aligned length" - length) to the target buffer.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_ExportBigEndianFromPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_ExportBigEndianFromPkc);
 
@@ -212,7 +234,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportBigEndianFromPkc
     MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pSource, alignedLength);  /* PKC buffer is CPU word aligned. */
     MCUXCLMEMORY_FP_MEMORY_COPY(pTarget, pSource + offset, length);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_ExportBigEndianFromPkc, MCUXCLPKC_STATUS_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_ExportBigEndianFromPkc,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) );
 }
@@ -287,6 +309,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
 
     MCUXCLPKC_FP_CALC_OP1_XOR(iTarget, iTarget, iTemp);
 
+#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     uint32_t alignedLength = (length + (sizeof(uint32_t)) - 1u) & (~ ((sizeof(uint32_t)) - 1u));
 
     MCUXCLPKC_WAITFORFINISH();
@@ -300,6 +323,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
 
     /* Clear the extra byte(s) by right-shifting. */
     MCUXCLPKC_FP_CALC_OP1_SHR(iTarget, iTarget, (alignedLength - length) * 8u);
+#else
+    MCUXCLPKC_WAITFORFINISH();
+    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTemp,   length);  /* PKC buffer is CPU word aligned. */
+    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTarget, length);  /* PKC buffer is CPU word aligned. */
+
+    MCUXCLPKC_FP_CALC_OP1_XOR(iTarget, iTarget, iTemp);
+#endif
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_SecureImportBigEndianToPkc, MCUXCLPKC_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
@@ -309,7 +339,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR
+#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
         , MCUXCLPKC_FP_CALLED_CALC_OP1_SHR
+#endif
         );
 }
 
@@ -389,6 +421,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
 
     MCUXCLPKC_FP_CALC_OP1_XOR(iSource, iSource, iTemp);
 
+#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     uint32_t alignedLength = (length + (sizeof(uint32_t)) - 1u) & (~ ((sizeof(uint32_t)) - 1u));
 
     MCUXCLPKC_WAITFORFINISH();
@@ -402,6 +435,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
 
     /* Clear the extra byte(s) by right-shifting. */
     MCUXCLPKC_FP_CALC_OP1_SHR(iSource, iSource, (alignedLength - length) * 8u);
+#else
+
+    MCUXCLPKC_WAITFORFINISH();
+    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pTemp,   length);  /* PKC buffer is CPU word aligned. */
+    MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pSource, length);  /* PKC buffer is CPU word aligned. */
+
+    MCUXCLPKC_FP_CALC_OP1_XOR(iSource, iSource, iTemp);
+#endif
 
     MCUXCLPKC_WAITFORFINISH();
 
@@ -419,7 +460,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
         MCUXCLPKC_FP_CALLED_CALC_OP1_XOR,
+#ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
         MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
+#endif
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy)
         );
 }

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                       */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -78,8 +78,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
 
     /* Setup UPTR table */
     const uint32_t cpuWaSizeWord =  MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE_WO_TESTPRIME_AND_MILLERRABIN(keyBitLength/8u/2u) / (sizeof(uint32_t));
-    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-    uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);  /* UPTRT table is assigned in CPU workarea */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+    uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     if (NULL == pOperands)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_GenerateProbablePrime, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -87,8 +88,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
 
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_NUMTOCOMPARE] = MCUXCLPKC_PTR2OFFSET(pNumToCompare);
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_A0] = MCUXCLPKC_PTR2OFFSET(pA0);
-    const uint32_t iNumToCmp_iA0 = (MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_NUMTOCOMPARE << 8u) | MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_A0;
-
+    const uint32_t iNumToCmp_iA0 = ((uint32_t)MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_NUMTOCOMPARE << 8u) | MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_A0;
+ 
     /* Backup Ps1 length and UPTRT, restore them when returning */
     uint16_t *bakUPTRT = MCUXCLPKC_GETUPTRT();
     uint32_t bakPs1LenReg = MCUXCLPKC_PS1_GETLENGTH_REG();
@@ -109,7 +110,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pA0, a0, sizeof(a0), sizeof(a0)));
 
 
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
     uint8_t * pPrimeKeyDataCpu = (uint8_t*) pOperands + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_GENPRIME_UPTRT_SIZE * sizeof(uint16_t)));
+#endif
 
     do
     {
@@ -124,6 +127,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
         * Used functions: RNG provided through the pSession
         */
         cntRandomGen++;
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
         MCUX_CSSL_FP_FUNCTION_CALL(retRandomGen, mcuxClRandom_generate(pSession, pPrimeKeyDataCpu, pPrimeCandidate->keyEntryLength));
         if(MCUXCLRANDOM_STATUS_OK != retRandomGen)
         {
@@ -136,11 +140,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
             status =  MCUXCLRSA_STATUS_ERROR;
             break;
         }
+#else
+        MCUX_CSSL_FP_FUNCTION_CALL(retRandomGen, mcuxClRandom_generate(pSession, pPrimeCandidate->pKeyEntryData, pPrimeCandidate->keyEntryLength));
+        if (MCUXCLRANDOM_STATUS_OK != retRandomGen)
+        {
+            status = MCUXCLRSA_STATUS_RNG_ERROR;
+            break;
+        }
+#endif
         pPrimeCandidate->pKeyEntryData[0] |= 0x03u;
 
         cntTestPrime++;
         MCUX_CSSL_FP_FUNCTION_CALL(retTest, mcuxClRsa_TestPrimeCandidate(pSession, pE, pPrimeCandidate, keyBitLength, iNumToCmp_iA0));
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
         if ((MCUXCLRSA_STATUS_KEYGENERATION_OK == retTest) || (MCUXCLRSA_STATUS_RNG_ERROR == retTest) || (MCUXCLRSA_STATUS_ERROR == retTest))
+#else
+        if ((MCUXCLRSA_STATUS_KEYGENERATION_OK == retTest) || (MCUXCLRSA_STATUS_RNG_ERROR == retTest))
+#endif
         {
             status = retTest;
             break;
@@ -163,10 +179,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     MCUXCLPKC_SETUPTRT(bakUPTRT);
 
 /* Check define outside of macro so the MISRA rule 20.6 does not get violated */
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_GenerateProbablePrime, status,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * cntRandomGen,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * cntRandomGen,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_TestPrimeCandidate) * cntTestPrime);
+#else
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_GenerateProbablePrime, status,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) * cntRandomGen,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_TestPrimeCandidate) * cntTestPrime);
+#endif
 
 }
 

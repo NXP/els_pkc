@@ -33,6 +33,17 @@ extern "C" {
  * Type declarations
  **********************************************************/
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+/**
+ * @brief DMA protection function type
+ *
+ * This function will verify if the DMA transfer of the last hardware accelerator operation finished on the expected address
+ *
+ */
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoDmaProtection_t)(uint8_t *startAddress,
+                                                        size_t expectedLength);
+
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 /**********************************************************
  * Function declarations

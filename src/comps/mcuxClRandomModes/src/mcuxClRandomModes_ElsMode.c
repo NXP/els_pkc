@@ -16,7 +16,7 @@
  *  handling of random number generators. This file implements the functions
  *  declared in mcuxClRandom.h. */
 
-
+#include <mcuxClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxClEls.h>
 #include <mcuxClRandom.h>
@@ -49,48 +49,43 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_init)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_init(
-    mcuxClSession_Handle_t pSession
+    mcuxClSession_Handle_t pSession UNUSED_PARAM
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_init);
 
-    (void) pSession; // Parameter not needed in this mode.
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_init, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_reseed)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_reseed(
-    mcuxClSession_Handle_t pSession
+    mcuxClSession_Handle_t pSession UNUSED_PARAM
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_reseed);
 
-    (void) pSession; // Parameter not needed in this mode.
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_reseed, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_selftest)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_selftest(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     mcuxClRandom_Mode_t mode
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_selftest);
 
-    (void) pSession; // Parameter not needed in this mode.
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_selftest, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_generate)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_generate(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint8_t *             pOut,
     uint32_t              outLength
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_generate);
-
-    (void) pSession; // Parameter not needed in this mode.
 
     /**
      * ELS DRBG output size must be a multiple of 4.

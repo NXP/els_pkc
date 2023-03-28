@@ -35,18 +35,18 @@ extern "C" {
 #define MCUXCLRANDOMMODES_SEEDLEN_CTR_DRBG_AES192 (40u)
 #define MCUXCLRANDOMMODES_SEEDLEN_CTR_DRBG_AES256 (48u)
 
+#if defined(MCUXCL_FEATURE_RANDOMMODES_DERIVATION_FUNCTION)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES128 (39u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES192 (55u)
-#define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 (64u)
+#define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256 (71u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES128  (23u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES192  (39u)
 #define MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES256  (55u)
+#endif
 
 #define MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES128 (0x0001000000000000u)
 #define MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES192 (0x0001000000000000u)
 #define MCUXCLRANDOMMODES_RESEED_INTERVAL_CTR_DRBG_AES256 (0x0001000000000000u)
-
-#define MCUXCLRANDOMMODES_RESEED_INTERVAL_PTG3            (0x0000000000000020u) /*Reseed after 256 Bit have been drawn */
 
 /* Internal structure of a CTR_DRBG AES128 random context */
 typedef struct
@@ -77,26 +77,40 @@ typedef struct
 
 /* Internal function prototypes */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_instantiateAlgorithm)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_instantiateAlgorithm(mcuxClSession_Handle_t pSession, uint32_t *pEntropyInput);
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_instantiateAlgorithm(
+    mcuxClSession_Handle_t pSession,
+    uint32_t *pEntropyInput);
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_reseedAlgorithm)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_reseedAlgorithm(mcuxClSession_Handle_t pSession, uint32_t *pEntropyInput);
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_reseedAlgorithm(
+    mcuxClSession_Handle_t pSession,
+    uint32_t *pEntropyInput);
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_generateAlgorithm)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_generateAlgorithm(mcuxClSession_Handle_t pSession, uint8_t *pOut, uint32_t outLength);
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_generateAlgorithm(
+    mcuxClSession_Handle_t pSession,
+    uint8_t *pOut,
+    uint32_t outLength);
 
 /* Refer to the NIST SP 800-90A 10.3.2 Derivation function using a block cipher algorithm */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_df)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
-    mcuxClSession_Handle_t pSession, uint8_t *pInputString, uint32_t inputStringLen, uint32_t outputLen);
+    mcuxClSession_Handle_t pSession,
+    uint8_t *pInputString,
+    uint32_t inputStringLen,
+    uint32_t outputLen);
 
 /* Refer to the NIST SP 800-90A 10.3.3 BCC and Block_Encrypt */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_bcc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_bcc(uint8_t const *pKey, uint32_t keyLength,
-    uint32_t * const pData, uint32_t dataLen, uint32_t *pOut);
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_bcc(
+    mcuxClSession_Handle_t pSession,
+    uint8_t const *pKey,
+    uint32_t * const pData,
+    uint32_t dataLen,
+    uint32_t *pOut);
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_CtrDrbg_UpdateState)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_UpdateState(
     mcuxClSession_Handle_t pSession,
-    uint8_t *pProvidedData
+    uint32_t *pProvidedData
 );
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_CtrDrbg_generateOutput)

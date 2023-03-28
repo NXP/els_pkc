@@ -76,7 +76,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Status_Protect
  */
 /** @brief Round-up a length to a multiple of PKC wordsize. */
 #define MCUXCLPKC_ROUNDUP_SIZE(byteLen)  \
-    (((uint32_t) (byteLen) + MCUXCLPKC_WORDSIZE - 1u) & (~((uint32_t) MCUXCLPKC_WORDSIZE - 1u)))
+    (((uint32_t) (byteLen) + (uint32_t)MCUXCLPKC_WORDSIZE - (uint32_t)1u) & (~((uint32_t) MCUXCLPKC_WORDSIZE - (uint32_t)1u)))
 
 /** @brief Macros for packing 4 8-bit parameters. */
 #define MCUXCLPKC_PACKARGS4(byte3_MSByte, byte2, byte1, byte0_LSByte)  \

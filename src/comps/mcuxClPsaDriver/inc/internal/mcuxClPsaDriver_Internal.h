@@ -97,10 +97,13 @@ typedef struct
     mcuxClKey_Descriptor_t keydesc;
 } mcuxClPsaDriver_ClnsData_Cipher_t;
 
+
+#define MCUXCLPSADRIVER_AEAD_KEYATT_SIZE 0x24u
 typedef struct
 {
     mcuxClAeadModes_Context_t ctx;
     mcuxClKey_Descriptor_t keydesc;
+    uint8_t keyAttributes[MCUXCLPSADRIVER_AEAD_KEYATT_SIZE];
 } mcuxClPsaDriver_ClnsData_Aead_t;
 
 typedef struct

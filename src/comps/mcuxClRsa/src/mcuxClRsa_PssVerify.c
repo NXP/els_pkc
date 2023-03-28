@@ -16,7 +16,7 @@
  */
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -30,7 +30,6 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
-#include <nxpClToolchain.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
@@ -42,7 +41,6 @@
 /**********************************************************/
 /* Specification of PSS-verify mode structures            */
 /**********************************************************/
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_Pss_Sha2_224 =
 {
   .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pssVerify),
@@ -51,7 +49,6 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_Pss_Sha2_224 =
   .pPaddingFunction = mcuxClRsa_pssVerify
 };
 
-/* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_Pss_Sha2_256 =
 {
   .EncodeVerify_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pssVerify),
@@ -177,8 +174,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   }
 
   /* Switch endianess of EM buffer to big-endian byte order in place */
-  /* MISRA Ex. 9 to Rule 11.3 */
-  MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pEm, emLen);  /* the pEm PKC buffer is CPU word aligned. */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pEm PKC buffer is CPU word aligned.")
+  MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pEm, emLen);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /* Step 5: Let maskedDB be the leftmost emLen-hLen-1 octets of EM and let H be the next hLen octets. */
   mcuxCl_Buffer_t maskedDB = pEm;
@@ -275,6 +273,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   }
 
   /* Step 14 verify5 = (HPrime == H) ? true : false. */
+#ifndef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
+  MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pH, pHprim, hLen),
+                                                                  pH,
+                                                                  pHprim,
+                                                                  hLen));
+
+  mcuxClRsa_Status_t pssVerifyStatus = MCUXCLRSA_STATUS_VERIFY_FAILED;
+  if(compare_result == MCUXCSSLMEMORY_STATUS_EQUAL)
+  {
+    pssVerifyStatus = MCUXCLRSA_STATUS_VERIFY_OK;
+  }
+#else
   /* Becasue pH and pHprim are unaligned and taking into account the properties:
    * - dbLen = emLen - hLen - 1U
    * - emLen % CpuWord = 0
@@ -308,6 +318,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   {
     pssVerifyStatus = MCUXCLRSA_STATUS_VERIFY_OK;
   }
+#endif
 
   /************************************************************************************************/
   /* Function exit                                                                                */
@@ -316,10 +327,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 
 /* Use temporary defines to avoid preprocessor directives inside the function exit macro below,
    as this would violate the MISRA rule 20.6 otherwise. */
+#if defined(MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS)
   #define FP_RSA_PSSVERIFY_COMPARISON \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
+#else
+  #define FP_RSA_PSSVERIFY_COMPARISON \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare), \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
+#endif
 
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, pssVerifyStatus,
     MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_PLAIN == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),

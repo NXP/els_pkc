@@ -114,14 +114,16 @@
  * @expectation{MCUX_CSSL_FP_FUNCTION_CALLED}
  *
  * @see MCUX_CSSL_FP_FUNCTION_DEF
+ * @see MCUX_CSSL_FP_FUNCTION_POINTER
  * @see MCUX_CSSL_FP_FUNCTION_ENTRY
  * @see MCUX_CSSL_FP_FUNCTION_EXIT
  * @see MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK
  *
  * @param id Identifier for the function that is flow protected.
+ * @param ptrType Optional, pointer type matching this function.
  */
-#define MCUX_CSSL_FP_FUNCTION_DECL(id) \
-  MCUX_CSSL_FP_FUNCTION_DECL_IMPL(id)
+#define MCUX_CSSL_FP_FUNCTION_DECL(...) \
+  MCUX_CSSL_FP_FUNCTION_DECL_IMPL(__VA_ARGS__)
 
 /**
  * @def MCUX_CSSL_FP_FUNCTION_DEF
@@ -146,14 +148,52 @@
  * @endcode
  *
  * @see MCUX_CSSL_FP_FUNCTION_DECL
+ * @see MCUX_CSSL_FP_FUNCTION_POINTER
  * @see MCUX_CSSL_FP_FUNCTION_ENTRY
  * @see MCUX_CSSL_FP_FUNCTION_EXIT
  * @see MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK
  *
  * @param id Identifier for the function that is flow protected.
+ * @param ptrType Optional, pointer type matching this function.
  */
-#define MCUX_CSSL_FP_FUNCTION_DEF(id) \
-  MCUX_CSSL_FP_FUNCTION_DEF_IMPL(id)
+#define MCUX_CSSL_FP_FUNCTION_DEF(...) \
+  MCUX_CSSL_FP_FUNCTION_DEF_IMPL(__VA_ARGS__)
+
+/**
+ * @def MCUX_CSSL_FP_FUNCTION_POINTER
+ * @brief Definition of a flow protected function pointer.
+ * @api
+ * @ingroup csslFpFunction
+ *
+ * This definition macro must be placed around a function pointer
+ * definition. For example:
+ * @code
+ * // someHeader.h
+ * MCUX_CSSL_FP_FUNCTION_POINTER(ptrType,
+ * typedef void (*ptrType)(void));
+ *
+ * MCUX_CSSL_FP_FUNCTION_DECL(someFunction, ptrType) // Note: no semicolon here
+ * uint32_t someFunction(void);
+ *
+ * // someFile.c
+ * MCUX_CSSL_FP_FUNCTION_DEF(someFunction, ptrType) // Note: no semicolon here
+ * uint32_t someFunction(void)
+ * {
+ *   // some function body
+ * }
+ * @endcode
+ *
+ * @see MCUX_CSSL_FP_FUNCTION_DECL
+ * @see MCUX_CSSL_FP_FUNCTION_DEF
+ * @see MCUX_CSSL_FP_FUNCTION_ENTRY
+ * @see MCUX_CSSL_FP_FUNCTION_EXIT
+ * @see MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK
+ *
+ * @param type Identifier for the function pointer type that is flow protected.
+ * @param definition Actual type definition of the function pointer type.
+ */
+#define MCUX_CSSL_FP_FUNCTION_POINTER(type, definition) \
+  MCUX_CSSL_FP_FUNCTION_POINTER_IMPL(type, definition)
 
 /**
  * @def MCUX_CSSL_FP_FUNCTION_ENTRY

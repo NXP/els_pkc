@@ -20,8 +20,12 @@
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
 
 
-/*Example global SC*/
+/* Example global SC */
 static volatile uint32_t testVariable = 0u; 
+
+/* Protected function pointer type */
+MCUX_CSSL_FP_FUNCTION_POINTER(functionPointerType_t,
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) (*functionPointerType_t)(void));
 
 
 /****************************************************************************/
@@ -42,7 +46,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) functionOnly0(void);
 MCUX_CSSL_FP_FUNCTION_DECL(functionOnly1) /* Important: no semicolon here! */
 MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionOnly1(void);
 
-MCUX_CSSL_FP_FUNCTION_DECL(functionOnly2) /* Important: no semicolon here! */
+MCUX_CSSL_FP_FUNCTION_DECL(functionOnly2, functionPointerType_t) /* Important: no semicolon here & adding functionPointerType info! */
 MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionOnly2(void);
 
 MCUX_CSSL_FP_FUNCTION_DECL(functionCall) /* Important: no semicolon here! */
@@ -380,28 +384,38 @@ MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode, token, functionCalls());
   
-  if(!(MCUX_CSSL_FP_FUNCTION_CALLED(functionCalls) == token) || !(0xC0E4u == returnCode))
+  if (!(MCUX_CSSL_FP_FUNCTION_CALLED(functionCalls) == token) || !(0xC0E4u == returnCode))
   {
     return MCUX_CSSL_EX_ERROR;
   }
   
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode1, token1, functionLoop(10));
   
-  if(!(MCUX_CSSL_FP_FUNCTION_CALLED(functionLoop) == token1) || !(0xC0DEu == returnCode1))
+  if (!(MCUX_CSSL_FP_FUNCTION_CALLED(functionLoop) == token1) || !(0xC0DEu == returnCode1))
   {
     return MCUX_CSSL_EX_ERROR;
   }
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode2, token2, functionBranch(0xC0DEu));
   
-  if(!(MCUX_CSSL_FP_FUNCTION_CALLED(functionBranch) == token2) || !(0xC0DEu == returnCode2))
+  if (!(MCUX_CSSL_FP_FUNCTION_CALLED(functionBranch) == token2) || !(0xC0DEu == returnCode2))
   {
     return MCUX_CSSL_EX_ERROR;
   }
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode3, token3, functionSwitch(0xC0DEu));
   
-  if(!(MCUX_CSSL_FP_FUNCTION_CALLED(functionSwitch) == token3) || !(0xC0DEu == returnCode3))
+  if (!(MCUX_CSSL_FP_FUNCTION_CALLED(functionSwitch) == token3) || !(0xC0DEu == returnCode3))
+  {
+    return MCUX_CSSL_EX_ERROR;
+  }
+
+  functionPointerType_t funcPtr = functionOnly2;
+  const uint32_t funcPtrToken = MCUX_CSSL_FP_FUNCTION_CALLED(functionOnly2);
+
+  MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode4, token4, funcPtr());
+
+  if (!(funcPtrToken == token4) || !(0x2u == returnCode4))
   {
     return MCUX_CSSL_EX_ERROR;
   }

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,6 +20,5 @@
 
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR[5];
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P[4];
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR[10];
 
 #endif /* MCUXCLECC_WEIERECC_INTERNAL_GENERATEDOMAINPARAMS_FUP*/ 

@@ -19,15 +19,12 @@
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <mcuxClCore_Analysis.h>
 
-
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 // Only support ELS internal keys, only supports 256 bits HMAC keys
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256_variableLength = {.algoId = MCUXCLKEY_ALGO_ID_HMAC + MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY, .size = 0u, .info = NULL};
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
 
 /* key types supported by coprocessor keystore only */
 // HMAC internal only supports 256-bit keys
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
 const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256 = {.algoId = MCUXCLKEY_ALGO_ID_HMAC + MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY, .size = MCUXCLKEY_SIZE_256, .info = NULL};
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
 
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

@@ -130,7 +130,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                         mcuxClSession_init(&session,
                                                           cpuWorkarea,
-                                                          sizeof(cpuWorkarea),
+                                                          MCUXCLAEAD_WA_SIZE_MAX,
                                                           NULL,
                                                           0u));
 
@@ -271,11 +271,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
         mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
 
         /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
-        mcuxClMemory_copy((uint8_t*)&operation->psaAttributes, (uint8_t *)attributes, sizeof(psa_key_attributes_t), sizeof(psa_key_attributes_t));
+        mcuxClMemory_copy(pClnsAeadData->keyAttributes, (uint8_t *)attributes, MCUXCLPSADRIVER_AEAD_KEYATT_SIZE, sizeof(psa_key_attributes_t));
 
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
-        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(&operation->psaAttributes, key_buffer, key_buffer_size, pKey);
+        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey((const psa_key_attributes_t *)pClnsAeadData->keyAttributes, key_buffer, key_buffer_size, pKey);
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
@@ -344,7 +344,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_internal(
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                         mcuxClSession_init(&session,
                                                           cpuWorkarea,
-                                                          sizeof(cpuWorkarea),
+                                                          MCUXCLAEAD_WA_SIZE_MAX,
                                                           NULL,
                                                           0u));
 
@@ -472,11 +472,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
         mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
 
         /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
-        mcuxClMemory_copy((uint8_t*)&operation->psaAttributes, (uint8_t *)attributes, sizeof(psa_key_attributes_t), sizeof(psa_key_attributes_t));
+        mcuxClMemory_copy(pClnsAeadData->keyAttributes, (uint8_t *)attributes, MCUXCLPSADRIVER_AEAD_KEYATT_SIZE, sizeof(psa_key_attributes_t));
 
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
-        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(&operation->psaAttributes, key_buffer, key_buffer_size, pKey);
+        psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey((const psa_key_attributes_t *)pClnsAeadData->keyAttributes, key_buffer, key_buffer_size, pKey);
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
@@ -544,7 +544,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
-                                                      sizeof(cpuWorkarea),
+                                                      MCUXCLAEAD_WA_SIZE_MAX,
                                                       NULL,
                                                       0u));
 
@@ -690,7 +690,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
-                                                      sizeof(cpuWorkarea),
+                                                      MCUXCLAEAD_WA_SIZE_MAX,
                                                       NULL,
                                                       0u));
 
@@ -772,7 +772,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
-                                                      sizeof(cpuWorkarea),
+                                                      MCUXCLAEAD_WA_SIZE_MAX,
                                                       NULL,
                                                       0u));
 
@@ -859,7 +859,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
-                                                      sizeof(cpuWorkarea),
+                                                      MCUXCLAEAD_WA_SIZE_MAX,
                                                       NULL,
                                                       0u));
 
@@ -961,7 +961,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
-                                                      sizeof(cpuWorkarea),
+                                                      MCUXCLAEAD_WA_SIZE_MAX,
                                                       NULL,
                                                       0u));
 

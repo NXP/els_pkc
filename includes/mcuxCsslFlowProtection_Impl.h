@@ -23,8 +23,8 @@
 #include <mcuxCsslFlowProtection_Cfg.h>
 
 /* Include the selected implementation of the flow protection mechanism. */
-#if defined(MCUX_CSSL_FP_USE_HW_CSW) && (1 == MCUX_CSSL_FP_USE_HW_CSW)
-#  include <mcuxCsslFlowProtection_HW_CSW.h>
+#if defined(MCUX_CSSL_FP_USE_CODE_SIGNATURE) && (1 == MCUX_CSSL_FP_USE_CODE_SIGNATURE)
+#  include <mcuxCsslFlowProtection_CodeSignature.h>
 #elif defined(MCUX_CSSL_FP_USE_SECURE_COUNTER) \
       && (1 == MCUX_CSSL_FP_USE_SECURE_COUNTER)
 #  include <mcuxCsslSecureCounter_Cfg.h>

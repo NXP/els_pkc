@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -38,11 +38,14 @@
 #define SECMODEXP_N      7u
 #define SECMODEXP_V0     8u
 #define SECMODEXP_V1     9u
-#define SECMODEXP_R0    10u
-#define SECMODEXP_R1    11u
-#define SECMODEXP_R2    12u
-#define SECMODEXP_ZERO  13u
-#define SECMODEXP_UPTRT_SIZE  14u
+#define SECMODEXP_NDASH 10u
+#define SECMODEXP_R0    11u
+#define SECMODEXP_R1    12u
+#define SECMODEXP_R2    13u
+#define SECMODEXP_R2H   14u
+#define SECMODEXP_ZERO  15u
+#define SECMODEXP_ONE   16u
+#define SECMODEXP_UPTRT_SIZE  17u
 
 /**********************************************************/
 /* Inline asm macro                                       */
@@ -63,7 +66,7 @@
  * expW0 ^= rndW (can be skipped in functional version)
  * expW1 ^= rndW (can be skipped in functional version)
  * expW = expW0 ^ expW1
- * expBits = (expW >> bIdx) & 3
+ * expBits = (expW >> (bIdx & 31)) & 3
  * rotateAmount = expBits*8 + 4
  * miH = oMsH8 >>> rotateAmount (right rotate)
  * miL = oMsL8 >>> rotateAmount (right rotate)
@@ -73,16 +76,16 @@
  * It swaps ofsAt and ofsA(1-t) (stored in ofsAs), and outputs ofsYX = ofsA(1-t) || ofsMi.
  */
 #if defined(__RISCV32)
-#define MCUXCLMATH_ROR(x,y) ((x >> y) | (x << ((32u - y) & 31u)))
+#define MCUXCLMATH_ROR(x,y) (((x) >> (y)) | ((x) << ((32u - (y)) & 31u)))
 #define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0, expW1, ofsA, ofsYX, rndW, bIdx, oMsH8, oMsL8)  \
 do{                                                                                       \
-        (void) rndW; /* unused variable, avoid compiler warning */                        \
+        (void) (rndW); /* unused variable, avoid compiler warning */                      \
         uint32_t expW = (expW0) ^ (expW1);                                                \
-        uint32_t expBits = (expW >> (bIdx)) & 3u;                                         \
+        uint32_t expBits = (expW >> ((bIdx) & 31u)) & 3u;                                 \
         uint32_t rotateAmount = expBits * 8u + 4u;                                        \
         uint32_t miH = MCUXCLMATH_ROR((oMsH8), rotateAmount);                              \
         uint32_t miL = MCUXCLMATH_ROR((oMsL8), rotateAmount);                              \
-        (ofsYX) = ((((ofsA) & 0xFFFF) << 16u) | ((miH & 0xFFu) << 8u) | (miL & 0xFFu));   \
+        (ofsYX) = ((((ofsA) & 0xFFFFu) << 16u) | ((miH & 0xFFu) << 8u) | (miL & 0xFFu));  \
         (ofsA) = MCUXCLMATH_ROR((ofsA), 16u);                                              \
 } while (false)
 

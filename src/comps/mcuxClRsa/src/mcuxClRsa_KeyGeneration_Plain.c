@@ -59,17 +59,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   /*
    * 1. Check the key type, i.e.:
    * - algorithm IDs
-   * - key sizes (it should be 2048, 3072 or 4096).
+   * - key sizes (it should be 1024, 2048, 3072, 4096, 6144 or 8192).
    *
    * If did not pass verification, function returns MCUXCLRSA_STATUS_INVALID_INPUT error.
    *
    */
-  // TODO CLNS-5567: support more key sizes for S5xy
   const uint32_t bitLenKey = type->size;
   if(((MCUXCLKEY_ALGO_ID_RSA | MCUXCLKEY_ALGO_ID_KEY_PAIR) != type->algoId)
-       || ((MCUXCLKEY_SIZE_2048 != bitLenKey) &&
-           (MCUXCLKEY_SIZE_3072 != bitLenKey) &&
-           (MCUXCLKEY_SIZE_4096 != bitLenKey)))
+       || ((MCUXCLKEY_SIZE_2048 != bitLenKey)
+            && (MCUXCLKEY_SIZE_3072 != bitLenKey)
+            && (MCUXCLKEY_SIZE_4096 != bitLenKey)
+            ))
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
@@ -96,8 +96,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
 
   /* 4. Initialize PKC. */
   const uint32_t cpuWaSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sizeof(mcuxClPkc_State_t)) / (sizeof(uint32_t));
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClPkc_State_t * pPkcStateBackup = (mcuxClPkc_State_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
   if (NULL == pPkcStateBackup)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -143,8 +144,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   d.pKeyEntryData = pPkcBufferD;
 
   /* Setup UPTR table. */
-  const uint32_t uptrtSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * (sizeof(uint16_t))) / (sizeof(uint32_t));
+  const uint32_t uptrtSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * (sizeof(uint16_t))) / (sizeof(uint32_t)); 
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, uptrtSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -325,18 +328,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    *
    * Used functions: mcuxClPkc_ExportBigEndianFromPkc (to export n and e).
    */
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) pPubData;
   pRsaPubKey->keytype = MCUXCLRSA_KEY_PUBLIC;
   *pPubDataLength = sizeof(mcuxClRsa_Key);
 
-  /* MISRA Ex. 9 to Rule 11.3 */
   pRsaPubKey->pMod1 = (mcuxClRsa_KeyEntry_t *) (pPubData + *pPubDataLength);
   *pPubDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPubKey->pMod2 = NULL;
   pRsaPubKey->pQInv = NULL;
-  /* MISRA Ex. 9 to Rule 11.3 */
+
   pRsaPubKey->pExp1 = (mcuxClRsa_KeyEntry_t *) (pPubData + *pPubDataLength);
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
   *pPubDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPubKey->pExp2 = NULL;
   pRsaPubKey->pExp3 = NULL;
@@ -366,18 +370,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    * Used functions: mcuxClPkc_ExportBigEndianFromPkc (to export n);
    *                 mcuxClPkc_SecureExportBigEndianFromPkc (to export d).
    */
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClRsa_Key *pRsaPrivatePlainKey = (mcuxClRsa_Key *) pPrivData;
   pRsaPrivatePlainKey->keytype = MCUXCLRSA_KEY_PRIVATEPLAIN;
   *pPrivDataLength = sizeof(mcuxClRsa_Key);
 
-  /* MISRA Ex. 9 to Rule 11.3 */
   pRsaPrivatePlainKey->pMod1 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
   *pPrivDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPrivatePlainKey->pMod2 = NULL;
   pRsaPrivatePlainKey->pQInv = NULL;
-  /* MISRA Ex. 9 to Rule 11.3 */
+
   pRsaPrivatePlainKey->pExp1 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
   *pPrivDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPrivatePlainKey->pExp2 = NULL;
   pRsaPrivatePlainKey->pExp3 = NULL;

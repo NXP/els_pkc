@@ -16,7 +16,7 @@
  */
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -28,7 +28,6 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
-#include <nxpClToolchain.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
@@ -247,8 +246,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
 
   /* Step 13:  Output EM. */
   /* Switch endianess of EM buffer in-place to little-endian byte order. */
-  /* MISRA Ex. 9 to Rule 11.3 */
-  MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pEm, emLen);  /* the pEm PKC buffer is CPU word aligned. */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pEm PKC buffer is CPU word aligned.")
+  MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pEm, emLen);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /************************************************************************************************/
   /* Function exit                                                                                */

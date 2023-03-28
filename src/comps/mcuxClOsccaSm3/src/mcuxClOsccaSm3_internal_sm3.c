@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -110,7 +110,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
      **************************************************************************************/
 
     /** \brief Global standard initialization vectors for SM3 */
-    MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result1, mcuxClMemory_copy(stateBuffer, (uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
+    MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result1, mcuxClMemory_copy(stateBuffer, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
                 MCUXCLOSCCASM3_STATE_SIZE_SM3, MCUXCLOSCCASM3_STATE_SIZE_SM3));
     if(0u != memcopy_result1)
     {
@@ -118,6 +118,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     }
 
     //Load initial IV to HW SM3
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)stateBuffer));
 
     /**************************************************************************************
@@ -136,6 +137,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
         }
 
         /* Switch endianess of words in accumulation buffer */
+        /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
         mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
 
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)stateBuffer, (uint32_t *)accumulationBuffer));
@@ -177,6 +179,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     {
         /* need another block */
         /* Switch endianess of words in accumulation buffer */
+        /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
         mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)stateBuffer, (uint32_t *)accumulationBuffer));
         MCUX_CSSL_FP_FUNCTION_CALL(memclear_result2, mcuxClMemory_clear(accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3, MCUXCLOSCCASM3_BLOCK_SIZE_SM3));
@@ -193,19 +196,21 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     accumulationBuffer[--counterEntry] = (uint8_t)(inSize >>  5u);
     accumulationBuffer[--counterEntry] = (uint8_t)(inSize >> 13u);
     accumulationBuffer[--counterEntry] = (uint8_t)(inSize >> 21u);
-    accumulationBuffer[--counterEntry] = (uint8_t)(inSize >> 29u);
+    accumulationBuffer[counterEntry - 1u] = (uint8_t)(inSize >> 29u);
 
     /* Switch endianess of words in accumulation buffer */
     mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
 
     /* Process the data in the accumulation buffer */
     /* Return code will be handled by Exit-Gate functionality within processMessageBlock */
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)stateBuffer, (uint32_t *)accumulationBuffer));
 
     /**************************************************************************************
      * Step 4: Copy result to output buffers
      **************************************************************************************/
     /* Switch endianess of words in state buffer */
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)stateBuffer, MCUXCLOSCCASM3_STATE_SIZE_SM3);
     MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result4, mcuxClMemory_copy(pOut, stateBuffer, algorithm->hashSize, algorithm->hashSize));
     if(0u != memcopy_result4)
@@ -263,6 +268,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
      * Step 1: Initialization - Calculate sizes, set pointers, and set initial IV, 
        continuation from external state, or from internal state
      **************************************************************************************/
+    /* MISRA Ex. 9 to Rule 11.3 */
     uint8_t *pInput = (uint8_t *)pIn;
     uint32_t inLength = inSize;
     uint8_t *pUnprocessed = pSM3Ctx->buffer.unprocessed;
@@ -273,14 +279,14 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
     if((processedLengthNotZero == 0) && (pSM3Ctx->data.unprocessedLength == 0u))
     {
         /** \brief Global standard initialization vectors for SM3 */
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pState, (uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
+        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pState, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
                     MCUXCLOSCCASM3_STATE_SIZE_SM3, MCUXCLOSCCASM3_STATE_SIZE_SM3));
         if(0u != memcopy_result)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_processSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
         }
     }
-
+     /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)pState));
 
     /**************************************************************************************/
@@ -310,6 +316,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
         {
             /* Switch endianess in accumulation buffer */
             /* Switch endianess of words in accumulation buffer */
+            /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
             mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize);
             MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)pState, (uint32_t *)pUnprocessed));
             MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)pState));
@@ -358,7 +365,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     if((processedLengthNotZero == 0) && (pSM3Ctx->data.unprocessedLength == 0u))
     {
         /** \brief Global standard initialization vectors for SM3 */
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pSM3Ctx->buffer.state, (uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
+        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pSM3Ctx->buffer.state, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
                     MCUXCLOSCCASM3_STATE_SIZE_SM3, MCUXCLOSCCASM3_STATE_SIZE_SM3));
         if(0u != memcopy_result)
         {
@@ -367,6 +374,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     }
 
     /* need preload Update phase prehash into HW SM3 */
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)pSM3Ctx->buffer.state));
 
     mcuxClHash_processedLength_add(pSM3Ctx->data.processedLength, pSM3Ctx->data.unprocessedLength);
@@ -389,6 +397,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
         }
 
         /* Switch endianess of words in accumulation buffer */
+        /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
         mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize);
         /* Call core function */
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)pState, (uint32_t *)pUnprocessed));
@@ -414,9 +423,10 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     pUnprocessed[--counterEntry] = (uint8_t)(pSM3Ctx->data.processedLength[0] >> 29u);
     pUnprocessed[--counterEntry] = (uint8_t)(pSM3Ctx->data.processedLength[0] >> 37u);
     pUnprocessed[--counterEntry] = (uint8_t)(pSM3Ctx->data.processedLength[0] >> 45u);
-    pUnprocessed[--counterEntry] = (uint8_t)(pSM3Ctx->data.processedLength[0] >> 53u);
+    pUnprocessed[counterEntry - 1u] = (uint8_t)(pSM3Ctx->data.processedLength[0] >> 53u);
 
     /* Switch endianess of words in accumulation buffer */
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize);
 
     /* Call core function to process last block */

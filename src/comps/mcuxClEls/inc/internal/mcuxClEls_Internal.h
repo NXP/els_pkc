@@ -34,6 +34,7 @@ extern "C" {
 /**** ELS Hardware Abstraction Layer ****/
 /****                                ****/
 
+
 /** Asserts the correctness of the supplied parameters*/
 #define MCUXCLELS_INPUT_PARAM_CHECK(x) if((x)) { return MCUXCLELS_STATUS_SW_INVALID_PARAM; }
 #define MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(funcid, x)                         \
@@ -285,6 +286,7 @@ static inline bool mcuxClEls_isBusy(void)
 #define MCUXCLELS_HASH_BUFFER_SIZE(options)  MCUXCLELS_HASH_BUFFER_SIZE_DIGEST(options) +  MCUXCLELS_HASH_BUFFER_SIZE_RTF(options)
 #define MCUXCLELS_HASH_BUFFER_SIZE_RTF(options) ( (MCUXCLELS_HASH_RTF_OUTPUT_ENABLE == options.bits.rtfoe) ? MCUXCLELS_HASH_RTF_OUTPUT_SIZE : 0u )
 #define MCUXCLELS_HASH_BUFFER_SIZE_DIGEST(options) ( (1u < options.bits.hashmd) ? MCUXCLELS_HASH_OUTPUT_SIZE_SHA_512 : MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256 )
+
 
 #ifdef __cplusplus
 } /* extern "C" */

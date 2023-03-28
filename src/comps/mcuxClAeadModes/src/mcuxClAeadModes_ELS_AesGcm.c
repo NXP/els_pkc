@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -547,7 +547,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
         /* Call the finalize function. */
         MCUX_CSSL_FP_FUNCTION_CALL(retFinal, pAlgo->pEngine(session, pContext,
                                                                    NULL,
-                                                                   (uint32_t)NULL,
+                                                                   0u,
                                                                    pContext->partialData,
                                                                    NULL,
                                                                    MCUXCLAEAD_ENGINE_OPTION_FINISH));

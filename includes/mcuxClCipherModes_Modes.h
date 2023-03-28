@@ -20,6 +20,8 @@
 
 #include <mcuxClCipher_Types.h>
 
+#include <mcuxClCore_Analysis.h>
+
 #include <mcuxClConfig.h> // Exported features flags header
 
 #ifdef __cplusplus
@@ -33,6 +35,7 @@ extern "C" {
  * @{
  */
 
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED("Consumed by user / customer. Hence, it is declared but never referenced. ")
 /**
  * @brief AES ECB Encryption mode descriptor without padding
  */
@@ -135,6 +138,8 @@ extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CTR;
 static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_CTR =
   &mcuxClCipher_ModeDescriptor_AES_CTR;
 
+
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED()
 
 /** @} */
 

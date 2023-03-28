@@ -225,8 +225,8 @@ extern const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_Generat
 /* Signature protocol descriptors                         */
 /**********************************************************/
 
-/* Pure EdDSA signature protocol descriptor */
-extern const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor;
+/* Ed25519 signature protocol descriptor */
+extern const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor;
 
 /**
  * @}

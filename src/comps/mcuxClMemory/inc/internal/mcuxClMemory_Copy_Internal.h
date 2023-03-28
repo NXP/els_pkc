@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,6 +20,7 @@
 #define MCUXCLMEMORY_COPY_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Analysis.h>
 
 /**
  * @ingroup mcuxClMemory_Copy
@@ -34,9 +35,7 @@
 /** Helper macro to call #mcuxClMemory_copy with flow protection. */
 #define MCUXCLMEMORY_FP_MEMORY_COPY(pTarget, pSource, byteLen)  \
     do {  \
-        MCUX_CSSL_FP_FUNCTION_CALL(retCodeTemp,  \
-            mcuxClMemory_copy((uint8_t *) (pTarget), (const uint8_t *) (pSource), byteLen, byteLen)); \
-        (void) retCodeTemp;  \
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy((uint8_t *) (pTarget), (const uint8_t *) (pSource), byteLen, byteLen)); \
     } while(false)
 
 

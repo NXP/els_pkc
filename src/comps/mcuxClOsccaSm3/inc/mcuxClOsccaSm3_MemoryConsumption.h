@@ -29,18 +29,18 @@
 /****************************************************************************/
 /* Definitions of workarea buffer sizes for the mcuxClOsccaSm3 functions.    */
 /****************************************************************************/
-#define MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_SM3          (128u)   ///< Defines the workarea size required for mcuxClOsccaSm3_compute on SM3
-#define MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_MAX          (128u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_compute
+#define MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_SM3          (160u)   ///< Defines the workarea size required for mcuxClOsccaSm3_compute on SM3
+#define MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_MAX          (160u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_compute
 
 #define MCUXCLOSCCASM3_INIT_CPU_WA_BUFFER_SIZE                 (0u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_init
 
 #define MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_SM3          (32u)  ///< Defines the workarea size required for mcuxClOsccaSm3_process on SM3
 #define MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_MAX          (32u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_process
 
-#define MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_SM3          (32u)  ///< Defines the workarea size required for mcuxClOsccaSm3_finish on SM3
-#define MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_MAX          (32u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_finish
+#define MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_SM3          (64u)  ///< Defines the workarea size required for mcuxClOsccaSm3_finish on SM3
+#define MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_MAX          (64u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_finish
 
-#define MCUXCLOSCCASM3_MAX_CPU_WA_BUFFER_SIZE                 (128u)  ///< Defines the max workarea size required this component
+#define MCUXCLOSCCASM3_MAX_CPU_WA_BUFFER_SIZE                 (160u)  ///< Defines the max workarea size required this component
 
 /** @} */
 

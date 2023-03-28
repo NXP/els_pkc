@@ -27,6 +27,8 @@
 #include <mcuxClPsaDriver_MemoryConsumption.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
+#include <internal/mcuxClEcc_Internal.h>
+
 
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     mcuxClKey_Descriptor_t *pKey,
@@ -261,13 +263,16 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     else
     {
       // Perform signature verificaton
+      mcuxClEcc_Weier_DomainParams_t * domainParams = (mcuxClEcc_Weier_DomainParams_t *) mcuxClKey_getTypeInfo(pKey);
+      const uint32_t pLen = domainParams->common.byteLenP;
+      const uint32_t nLen = domainParams->common.byteLenN;
       uint8_t * pKeyData = mcuxClKey_getLoadedKeyData(pKey);
       uint8_t pOutputR[MCUXCLPSADRIVER_ECC_N_SIZE_MAX];
 
       /* buffer for hash */
       uint8_t hash[64] = {0};
-      const uint8_t * pHash = input;
-      uint32_t hashOutputSize = 0u;
+      const uint8_t * pHash = NULL;
+      uint32_t hashSize = 0u;
       if(true != isHash)
       {
         /* Select algorithm descriptor */
@@ -281,7 +286,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
                                                               input,
                                                               input_length,
                                                               hash,
-                                                              &hashOutputSize));
+                                                              &hashSize));
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) != token) || (MCUXCLHASH_STATUS_OK != result))
         {
           return PSA_ERROR_CORRUPTION_DETECTED;
@@ -289,11 +294,15 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         MCUX_CSSL_FP_FUNCTION_CALL_END();
         pHash = hash;
       }
-      mcuxClEcc_Weier_DomainParams_t * domainParams = (mcuxClEcc_Weier_DomainParams_t *) mcuxClKey_getTypeInfo(pKey);
+      else
+      {
+        /* Needs to be truncated before calling ECC in case input_length value is too large to be represented
+           using optLen bits in verify function  */
+        hashSize = MCUXCLECC_TRUNCATED_HASH_LEN(input_length, nLen);
+        pHash = input;
+      }
 
       /* Initialize buffers on the stack for domain parameters endianess swap (LE -> BE) */
-      const uint32_t pLen = domainParams->common.byteLenP;
-      const uint32_t nLen = domainParams->common.byteLenN;
       uint8_t a[MCUXCLECC_WEIERECC_MAX_SIZE_PRIMEP];
       uint8_t b[MCUXCLECC_WEIERECC_MAX_SIZE_PRIMEP];
       uint8_t p[MCUXCLECC_WEIERECC_MAX_SIZE_PRIMEP];
@@ -387,11 +396,11 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         .pSignature = signature,
         .pPublicKey = publicKey,
         .pOutputR = pOutputR,
-        .optLen = mcuxClEcc_Verify_Param_optLen_Pack((true != isHash) ? hashOutputSize : input_length)
+        .optLen = mcuxClEcc_Verify_Param_optLen_Pack(hashSize)
       };
-      MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Verify(&session, &paramVerify));
+      MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClEcc_Verify(&session, &paramVerify));
 
-      if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Verify) != sign_token) || (MCUXCLECC_STATUS_OK != sign_result))
+      if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Verify) != verify_token) || (MCUXCLECC_STATUS_OK != verify_result))
       {
         return PSA_ERROR_INVALID_SIGNATURE;
       }

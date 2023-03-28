@@ -73,8 +73,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
 
     /* Setup UPTR table */
     const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_TESTPRIMECANDIDATE_WACPU_SIZE_WO_MILLERRABIN / sizeof(uint32_t);
-    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-    uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);  /* UPTRT table is assigned in CPU workarea */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+    uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     if (NULL == pOperands)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_TestPrimeCandidate, MCUXCLRSA_STATUS_FAULT_ATTACK);

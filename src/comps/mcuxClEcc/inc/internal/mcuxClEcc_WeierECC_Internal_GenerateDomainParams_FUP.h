@@ -38,12 +38,6 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_
 #define mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR_Len   5u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR[mcuxClEcc_FUP_GenerateDomainParams_Convert_G_toJacMR_Len];
 
-/**
- * FUP program declaration mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR
- */
-#define mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len   10u
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR[mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len];
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

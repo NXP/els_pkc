@@ -40,7 +40,7 @@
  * x_{i+1} \equiv 2*xi + xi^2 * n = (xi * n + 2) * xi (mod 2^(2^(i+1))).
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_NDash)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_NDash(uint16_t iN_iT)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_NDash(uint16_t iN_iT)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_NDash);
 
@@ -73,7 +73,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_NDash(uint16_t iN_iT
 
 
 #if (16u == MCUXCLPKC_WORDSIZE)
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_NDash, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_NDash,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUXCLPKC_FP_CALLED_CALC_OP2_NEG,
         /* hard-coded (log2PkcWordsize + 3) - 1 = 5 iterations of the loop. */
@@ -85,7 +85,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_NDash(uint16_t iN_iT
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)    /* calculate x7 = ... (mod 2^(2^7)). */
         );
 #else
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_NDash, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_NDash,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUXCLPKC_FP_CALLED_CALC_OP2_NEG,
         /* hard-coded (log2PkcWordsize + 3) - 1 = 5 iterations of the loop. */

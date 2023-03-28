@@ -14,7 +14,7 @@
 /** @file  mcuxClPadding.c
  *  @brief implementation of padding functions for different components */
 
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <internal/mcuxClPadding_Internal.h>
 #include <mcuxClMemory.h>
 #include <mcuxClSession.h>
@@ -44,10 +44,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Non
 }
 
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method1)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method1(
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   uint32_t blockLength,
   const uint8_t * const pIn,
   uint32_t lastBlockLength,
@@ -92,10 +92,10 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
 }
 
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method2)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method2 (
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   uint32_t blockLength,
   const uint8_t * const pIn,
   uint32_t lastBlockLength,

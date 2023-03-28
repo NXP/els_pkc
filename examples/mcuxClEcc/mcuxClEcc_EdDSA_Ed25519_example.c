@@ -67,15 +67,15 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
 
     /* Prepare buffers for generated data */
     uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privKeyDesc;
+    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
     uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
     uint8_t pPrivKeyData[MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA];
     uint8_t pPubKeyData[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY];
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
-    /* mcuxClKey_Handle_t key                 */ privKeyHandler,
+    /* mcuxClKey_Handle_t key                 */ privKey,
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Priv,
     /* mcuxCl_Buffer_t pKeyData               */ (mcuxCl_Buffer_t) pPrivKeyData,
     /* uint32_t keyDataLength                */ sizeof(pPrivKeyData)));
@@ -88,7 +88,7 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
-    /* mcuxClKey_Handle_t key                 */ pubKeyHandler,
+    /* mcuxClKey_Handle_t key                 */ pubKey,
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Pub,
     /* mcuxCl_Buffer_t pKeyData               */ (mcuxCl_Buffer_t) pPubKeyData,
     /* uint32_t keyDataLength                */ sizeof(pPubKeyData)));
@@ -103,8 +103,8 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygen_result, keygen_token, mcuxClEcc_EdDSA_GenerateKeyPair(
     /*  mcuxClSession_Handle_t pSession                          */ &session,
     /*  const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode  */ &mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor,
-    /*  mcuxClKey_Handle_t privKey                               */ privKeyHandler,
-    /*  mcuxClKey_Handle_t pubKey                                */ pubKeyHandler));
+    /*  mcuxClKey_Handle_t privKey                               */ privKey,
+    /*  mcuxClKey_Handle_t pubKey                                */ pubKey));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateKeyPair) != keygen_token) || (MCUXCLECC_STATUS_OK != keygen_result))
     {
@@ -117,8 +117,8 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
     uint32_t signatureSize = 0u;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_EdDSA_GenerateSignature(
     /*  mcuxClSession_Handle_t pSession                           */ &session,
-    /*  mcuxClKey_Handle_t key                                    */ privKeyHandler,
-    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode */ &mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor,
+    /*  mcuxClKey_Handle_t key                                    */ privKey,
+    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
     /*  const uint8_t *pIn                                       */ input,
     /*  uint32_t inSize                                          */ sizeof(input),
     /*  uint8_t *pSignature                                      */ signature_buffer,
@@ -135,8 +135,8 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClEcc_EdDSA_VerifySignature(
     /* mcuxClSession_Handle_t pSession */ &session,
-    /* mcuxClKey_Handle_t key          */ pubKeyHandler,
-    /* const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t * */ &mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor,
+    /* mcuxClKey_Handle_t key          */ pubKey,
+    /* const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t * */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
     /* const uint8_t *pIn             */ input,
     /* uint32_t inSize                */ sizeof(input),
     /* const uint8_t *pSignature      */ signature_buffer,

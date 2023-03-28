@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021,2023 NXP                                                  */
+/* Copyright 2023 NXP                                                       */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,20 +11,18 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <internal/mcuxClRsa_Internal_PkcDefs.h>
-#include <internal/mcuxClPkc_FupMacros.h>
-#include <internal/mcuxClRsa_PrivatePlain_FUP.h>
+#ifndef MCUXCLMACMODES_INTERNAL_MACROS_H_
+#define MCUXCLMACMODES_INTERNAL_MACROS_H_
 
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivatePlain_ReductionME_FUP,
-    PH_CLNS_UTILS_FAME_CRC_ENTRY,
-    /* Convert from Montgomery to normal representation */
-    FUP_MC1_MR(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N),
+#include <mcuxClConfig.h> // Exported features flags header
 
-    /* Normalize the result (case if R > N) */
-    FUP_MC1_MS(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N)
-);
+/* Macro used to align the size to the CPU wordsize */
+#define MCUXCLMACMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size)  \
+    (((uint32_t) (((uint32_t) (size)) + ((sizeof(uint32_t)) - 1U))) & ((uint32_t) (~((sizeof(uint32_t)) - 1U))))
+
+/* Macro used to compute number of CPU words */
+#define MCUXCLMACMODES_INTERNAL_COMPUTE_CPUWORDS(size)  \
+    (MCUXCLMACMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size) / (sizeof(uint32_t)))
+
+#endif /* MCUXCLMACMODES_INTERNAL_MACROS_H_ */
+

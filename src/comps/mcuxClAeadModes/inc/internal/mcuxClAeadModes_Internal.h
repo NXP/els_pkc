@@ -26,6 +26,12 @@
 #include <internal/mcuxClAeadModes_ELS_Functions.h>
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 
+/* Macro used to align the size to the CPU wordsize */
+#define MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size)  \
+    (((uint32_t) (((uint32_t) (size)) + ((sizeof(uint32_t)) - 1U))) & ((uint32_t) (~((sizeof(uint32_t)) - 1U))))
 
+/* Macro used to compute number of CPU words */
+#define MCUXCLAEADMODES_INTERNAL_COMPUTE_CPUWORDS(size)  \
+    (MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size) / (sizeof(uint32_t)))
 
 #endif /* MCUXCLAEADMODES_INTERNAL_H_ */

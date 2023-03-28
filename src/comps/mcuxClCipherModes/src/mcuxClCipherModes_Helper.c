@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -12,15 +12,6 @@
 /*--------------------------------------------------------------------------*/
 
 #include <internal/mcuxClCipherModes_Internal.h>
-
-/* TODO CLNS-3515: replace with improved implementation */
-void mcuxClCipherModes_MemCopy(uint8_t *pDst, const uint8_t *pSrc, uint32_t length)
-{
-  for (uint32_t i = 0u; i < length; ++i)
-  {
-    pDst[i] = pSrc[i];
-  }
-}
 
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length)
 {

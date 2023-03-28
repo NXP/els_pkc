@@ -108,7 +108,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK    if fault attack (unexpected behavior) is detected.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_GenerateCustomKeyType)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateCustomKeyType(
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateCustomKeyType(
     mcuxClKey_CustomType_t customType,
     mcuxClKey_AlgorithmId_t algoId,
     mcuxClKey_Size_t size,

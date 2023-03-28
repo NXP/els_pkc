@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,7 +23,9 @@
 #define MCUXCLRANDOMMODES_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+#ifdef MCUXCL_FEATURE_RANDOMMODES_TESTMODE
 #include <mcuxClRandomModes_Functions_TestMode.h>
+#endif /* MCUXCL_FEATURE_RANDOMMODES_TESTMODE */
 #include <mcuxClRandomModes_Functions_PatchMode.h>
 #include <mcuxClRandomModes_MemoryConsumption.h>
 #include <mcuxClRandomModes_Constants.h>

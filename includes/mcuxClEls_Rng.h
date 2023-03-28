@@ -291,7 +291,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
@@ -402,6 +401,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Prng_Get
     uint8_t * pOutput,
     size_t outputLength
     );
+
 
 /**
  * @}

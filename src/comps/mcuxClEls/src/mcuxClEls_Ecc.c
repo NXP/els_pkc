@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,7 +19,6 @@
 
 #include <platform_specific_headers.h>
 #include <mcuxClEls_Ecc.h>
-#include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <stdbool.h>
@@ -46,6 +45,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccKeyGe
     }
 
     options.bits.revf = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
+
 
     mcuxClEls_setKeystoreIndex0(privateKeyIdx);
     mcuxClEls_setKeystoreIndex1(signingKeyIdx);
@@ -111,7 +111,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccKeyEx
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_EccKeyExchangeInt_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
-	
+
     mcuxClEls_EccKeyExchOption_t options = {0};
     options.bits.revf = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
     options.bits.extkey = MCUXCLELS_ECC_EXTKEY_INTERNAL;
@@ -148,6 +148,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccSign_
 
     options.bits.revf = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
 
+
     mcuxClEls_setKeystoreIndex0(keyIdx);
     mcuxClEls_setInput0((options.bits.echashchl == 0u) ? pInputHash : pInputMessage, inputMessageLength);
     mcuxClEls_setOutput_fixedSize(pOutput);
@@ -178,6 +179,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccVerif
 #ifdef MCUXCL_FEATURE_ELS_PUK_INTERNAL_BIT
     options.bits.extkey = MCUXCLELS_ECC_EXTKEY_EXTERNAL;
 #endif /* MCUXCL_FEATURE_ELS_PUK_INTERNAL_BIT */
+
 
     mcuxClEls_setInput0((options.bits.echashchl == 0u) ? pInputHash : pInputMessage, inputMessageLength);
     mcuxClEls_setInput1_fixedSize(pSignatureAndPubKey);
@@ -211,6 +213,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccVerif
 
     options.bits.revf   = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
     options.bits.extkey = MCUXCLELS_ECC_EXTKEY_INTERNAL;
+
 
     mcuxClEls_setInput0((options.bits.echashchl == 0u) ? pInputHash : pInputMessage, inputMessageLength);
     mcuxClEls_setInput1_fixedSize(pSignature);

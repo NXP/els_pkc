@@ -111,8 +111,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_CalcHashModN(
     MCUXCLPKC_WAITFORREADY();
     pOperands[ECC_V0] = MCUXCLPKC_PTR2OFFSET(&pT1[MCUXCLPKC_WORDSIZE]);
     MCUXCLPKC_PS2_SETLENGTH(operandSize + bufferSize, operandSize);
-    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN,
-                        mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN_LEN);
+    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN,
+                        mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN_LEN);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_CalcHashModN, MCUXCLECC_STATUS_OK,
         /* Step 1 */

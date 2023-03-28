@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -16,12 +16,12 @@
  *  handling of DRBG random number generators. This file implements the functions
  *  declared in mcuxClRandom.h. */
 
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxClSession.h>
-#include <mcuxClMemory.h>
 #include <mcuxClRandom.h>
 
 #include <internal/mcuxClRandom_Internal_Types.h>
+#include <internal/mcuxClRandom_Internal_Memory.h>
 
 /**
  * @brief This function verifies a Random mode
@@ -37,8 +37,7 @@
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_verifyMode)
 static inline mcuxClRandom_Status_t mcuxClRandom_verifyMode(mcuxClRandom_Mode_t mode)
 {
-    // TODO: To be implemented
-    // TODO: Need to be discussed whether INVALID_PARAM or FAULT_ATTACK should be returned
+    // TODO CLNS-7923: Need to be discussed whether INVALID_PARAM or FAULT_ATTACK should be returned
     if(mode == NULL)
     {
         return MCUXCLRANDOM_STATUS_INVALID_PARAM;
@@ -59,7 +58,7 @@ static inline mcuxClRandom_Status_t mcuxClRandom_verifyMode(mcuxClRandom_Mode_t 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_verifyContext)
 static inline mcuxClRandom_Status_t mcuxClRandom_verifyContext(mcuxClRandom_Context_t pRngCtx UNUSED_PARAM)
 {
-    // TODO: To be implemented
+    // TODO CLNS-7390: To be implemented
     return MCUXCLRANDOM_STATUS_OK;
 }
 
@@ -151,6 +150,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_uninit(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_uninit);
 
+    mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
+    /* In patch mode the context is not used so the context integrity check and clearing needs to be skipped */
+    if(0u == sessionMode->contextSize)
+    {
+        /* Clear pointers stored in the session. */
+        pSession->randomCfg.ctx = NULL;
+        pSession->randomCfg.mode = NULL;
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_uninit, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    }
+
     /* Verify context integrity */
     mcuxClRandom_Context_t pRngCtx = pSession->randomCfg.ctx;
     mcuxClRandom_Status_t retCode_verifyContext = mcuxClRandom_verifyContext(pRngCtx);
@@ -160,22 +169,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_uninit(
     }
 
     /* Clear the context */
-    mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
-    //TODO: Replace the functional memory clear function with a secure one
-    MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClMemory_clear((uint8_t *) pSession->randomCfg.ctx,
-                                                         sessionMode->contextSize,
-                                                         sessionMode->contextSize));
-    if(0u != result)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandom_uninit, MCUXCLRANDOM_STATUS_ERROR);
-    }
+    MCUXCLRANDOM_SECURECLEAR(mcuxClRandom_uninit, MCUXCLRANDOM_STATUS_ERROR, (uint8_t *) pSession->randomCfg.ctx, sessionMode->contextSize);
 
     /* Clear pointers stored in the session. */
     pSession->randomCfg.ctx = NULL;
     pSession->randomCfg.mode = NULL;
-
+      
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_uninit, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
+        MCUXCLRANDOM_FP_CALLED_SECURECLEAR);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_selftest)

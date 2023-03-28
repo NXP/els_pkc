@@ -29,7 +29,6 @@
 typedef struct mcuxClCipherModes_WorkArea
 {
   uint8_t paddingBuff[MCUXCLAES_BLOCK_SIZE];
-  uint32_t tempBuff[MCUXCLAES_BLOCK_SIZE_IN_WORDS];
   uint32_t *pIV;
 } mcuxClCipherModes_WorkArea_t;
 

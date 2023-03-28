@@ -32,7 +32,7 @@
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ModInv)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModInv(uint32_t iR_iX_iN_iT)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModInv(uint32_t iR_iX_iN_iT)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ModInv);
 
@@ -52,15 +52,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModInv(uint32_t iR_i
     pOperands[MODINV_CONST1] = 0x0001u;
     pOperands[MODINV_CONST0] = 0x0000u;
 
-    MCUXCLPKC_PS1_SETLENGTH(31u * MCUXCLPKC_WORDSIZE, operandSize);  /* Loop counter = 31 for MCUXCLPKC_MC_MI. */
+    MCUXCLPKC_PS1_SETLENGTH((uint32_t)31u * (uint32_t)MCUXCLPKC_WORDSIZE, operandSize);  /* Loop counter = 31 for MCUXCLPKC_MC_MI. */
     MCUXCLPKC_PS2_SETLENGTH_REG(operandSize + MCUXCLPKC_WORDSIZE);   /* MCLEN on higher 16 bits is not used. */
 
     MCUXCLPKC_FP_CALCFUP(mcuxClMath_ModInv_Fup1, mcuxClMath_ModInv_Fup1_LEN );
 
-    /* MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
     const volatile uint32_t *pExp = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetT);
-    /* MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned. */
     volatile uint32_t *pR = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[MODINV_R]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
 
     MCUXCLPKC_WAITFORFINISH();
     MCUXCLPKC_PS1_SETLENGTH_REG(backupPs1LenReg);
@@ -89,7 +89,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ModInv(uint32_t iR_i
     MCUXCLPKC_WAITFORREADY();
     MCUXCLPKC_SETUPTRT(backupPtrUptrt);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_ModInv, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_ModInv,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),   /* Fup1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup));  /* Fup3a or Fup3b */

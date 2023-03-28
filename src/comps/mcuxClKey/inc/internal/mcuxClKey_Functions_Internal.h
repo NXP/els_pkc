@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -80,6 +80,23 @@ static inline void mcuxClKey_setProtectionType(mcuxClKey_Handle_t key, const mcu
   key->protection = pProtection;
 }
 
+/**
+ * Returns the linked data pointer of the key handle
+ *
+ * @return linked data pointer of the given key
+ */
+static inline void * mcuxClKey_getLinkedData(mcuxClKey_Handle_t key)
+{
+  return key->pLinkedData;
+}
+
+/**
+ * Sets the linked data pointer of the key handle
+ */
+static inline void mcuxClKey_setLinkedData(mcuxClKey_Handle_t key, void * pLinkedData)
+{
+  key->pLinkedData = pLinkedData;
+}
 
 /**
  * Gets the type structure of the key handle

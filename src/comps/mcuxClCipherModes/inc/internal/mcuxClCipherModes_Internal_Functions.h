@@ -31,10 +31,7 @@ extern "C" {
 /*
  * Helper functions
  */
-void mcuxClCipherModes_MemCopy(uint8_t *pDst, const uint8_t *pSrc, uint32_t length);
-
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length);
-
 
 /*
  * Skeleton and Engine functions

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -65,7 +65,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_Init(
     }
 
     /* clear the error */
-    MCUXCLOSCCAPKC_SFR_BITSET(ACCESS_ERR_CLR, ERR_CLR);
+    MCUXCLOSCCAPKC_SFR_WRITE(ACCESS_ERR_CLR, 1U);
     /* configure Pkc */
     MCUXCLOSCCAPKC_SFR_WRITE(CTRL,
         ( (uint32_t)1U << MCUXCLOSCCAPKC_SFR_BITPOS(CTRL, RESET) ) |
@@ -74,7 +74,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_Init(
         PKC_CTRL_DEFAULT_SETUP );
 
     MCUXCLOSCCAPKC_SFR_WRITE(CFG, PKC_CFG_DEFAULT_SETUP);
-
 
     /* clear reset bit */
     MCUXCLOSCCAPKC_SFR_BITCLEAR(CTRL, RESET);

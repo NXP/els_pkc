@@ -53,13 +53,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     // Initialize PKC.
     mcuxClPkc_State_t * pPkcStateBackup = (mcuxClPkc_State_t *) &pSession->cpuWa.buffer[pSession->cpuWa.used];
     pSession->cpuWa.used += (sizeof(mcuxClPkc_State_t) / (sizeof(uint32_t)));
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClPkc_Initialize(pPkcStateBackup));
-
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize) != token) || (MCUXCLPKC_STATUS_OK != result))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED(pkcInitialize_token, mcuxClPkc_Initialize(pPkcStateBackup));
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize) != pkcInitialize_token))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     //Allocate buffers in PKC RAM
     const uint32_t byteLenPrime = pRsaCrtKey->pMod1->keyEntryLength;
     const uint32_t byteLenKey = byteLenPrime * 2u;
@@ -151,13 +150,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     /* De-initialize PKC */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClPkc_Deinitialize(pPkcStateBackup));
-
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) != token) || (MCUXCLPKC_STATUS_OK != result))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED(pkcDeInitialize_token, mcuxClPkc_Deinitialize(pPkcStateBackup));
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) != pkcDeInitialize_token))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     /* Recover session info */
     pSession->pkcWa.used = backup_pkcWaUsed;
     pSession->cpuWa.used = backup_cpuWaUsed;

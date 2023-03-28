@@ -22,7 +22,7 @@
 #include <mcuxClKey.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <internal/mcuxClKey_Internal.h>
 #include <mcuxClAes.h>
 
@@ -33,6 +33,8 @@
 #include <internal/mcuxClMacModes_ELS_Types.h>
 #include <internal/mcuxClMacModes_ELS_CMAC.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
+#include <internal/mcuxClMacModes_Internal_Macros.h>
+
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CMAC_Oneshot)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Oneshot(
@@ -55,11 +57,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
     }
 
     /* Create workarea */
-    mcuxClMacModes_WorkArea_t * workArea;
     /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
-    MCUX_CSSL_FP_FUNCTION_CALL(allocateWA, mcuxClSession_allocateCpuBuffer(session, (uint32_t **) &workArea,
-                                                                         sizeof(mcuxClMacModes_WorkArea_t) / sizeof(uint32_t)));
-    if(MCUXCLSESSION_STATUS_OK != allocateWA)
+    uint32_t cpuWaSizeInWords = MCUXCLMACMODES_INTERNAL_COMPUTE_CPUWORDS(sizeof(mcuxClMacModes_WorkArea_t));
+    MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClMacModes_WorkArea_t *workArea = (mcuxClMacModes_WorkArea_t *) mcuxClSession_allocateWords_cpuWa(session, cpuWaSizeInWords);
+    MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    if(NULL == workArea)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAILURE);
     }
@@ -101,7 +104,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
       if (MCUXCLELS_STATUS_OK_WAIT != result)
       {
           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async) );
       }
 
@@ -109,11 +111,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
 
       if (MCUXCLELS_STATUS_OK != resultWait) {
           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
       }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+      if(NULL != pOut)
+      {
+          MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult1, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
+
+          if (MCUXCLELS_STATUS_OK != addressComparisonResult1)
+          {
+              MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAULT_ATTACK);
+          }
+      }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
       pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
 
@@ -129,7 +141,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
       /* Check that the buffer is long enough */
       if(copyResult != 0U) {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
             MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
@@ -142,7 +153,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
 
       if(setResult1 != 0U) {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
             MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
@@ -155,7 +165,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
 
       if(setResult2 != 0U) {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
             MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
@@ -179,7 +188,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
       if (MCUXCLELS_STATUS_OK_WAIT != result)
       {
           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
               MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
@@ -193,7 +201,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
 
       if (MCUXCLELS_STATUS_OK != resultWait) {
           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
               MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
@@ -204,19 +211,25 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
       }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+      if(NULL != pOut)
+      {
+          MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult2, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_CMAC_OUT_SIZE));
+
+          if (MCUXCLELS_STATUS_OK != addressComparisonResult2)
+          {
+              MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAULT_ATTACK);
+          }
+      }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     }
 
     *pOutLength = MCUXCLELS_CMAC_OUT_SIZE;
 
     /* Free workArea in Session */
-    MCUX_CSSL_FP_FUNCTION_CALL(freeSessionBuffers, mcuxClSession_freeAllCpuBuffers(session));
-    if(MCUXCLSESSION_STATUS_OK != freeSessionBuffers)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAILURE);
-    }
+    mcuxClSession_freeWords_cpuWa(session, cpuWaSizeInWords);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_OK, MCUXCLMAC_STATUS_FAULT_ATTACK,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer),
         MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
@@ -229,8 +242,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
           MCUX_CSSL_FP_CONDITIONAL(NULL != pOut,  MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN)
-        ),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_freeAllCpuBuffers)
+        )
     );
 }
 
@@ -326,6 +338,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) );
     }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult1, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+    if (MCUXCLELS_STATUS_OK != addressComparisonResult1)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_FAULT_ATTACK);
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     //update options for the next operations
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
@@ -378,6 +398,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) );
     }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult2, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+    if (MCUXCLELS_STATUS_OK != addressComparisonResult2)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_FAULT_ATTACK);
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
 
@@ -423,16 +451,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
   {
     ((uint8_t*)(pContext->blockBuffer))[pContext->blockBufferUsed] = 0x80U;
 
-    //fill the rest of the buffer with 0x00. In case pContext->blockBufferUsed==15, the length for mcuxClMemory_set will be zero
-    MCUX_CSSL_FP_FUNCTION_CALL(resultSet1, mcuxClMemory_set(((uint8_t*)pContext->blockBuffer) + pContext->blockBufferUsed + 1u, 0x00,
-                    MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u),
-                    MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u) ));
-    if(resultSet1 != 0U) {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_ERROR,
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) );
-    }
+    if((MCUXCLAES_BLOCK_SIZE - 1u) > pContext->blockBufferUsed)
+    {
+      //fill the rest of the buffer with 0x00 if there is more to fill
+      MCUX_CSSL_FP_FUNCTION_CALL(resultSet1, mcuxClMemory_set(((uint8_t*)pContext->blockBuffer) + pContext->blockBufferUsed + 1u, 0x00,
+                      MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u),
+                      MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u) ));
+      if(resultSet1 != 0U) {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) );
+      }
 
-    MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
+      MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
+    }
   }
 
   //perform cmac operation
@@ -457,6 +488,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) );
   }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+  MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult1, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+  if (MCUXCLELS_STATUS_OK != addressComparisonResult1)
+  {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_FAULT_ATTACK);
+  }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
   //copy result to output buffer
   MCUX_CSSL_FP_FUNCTION_CALL(resultCopy, mcuxClMemory_copy(pOut,

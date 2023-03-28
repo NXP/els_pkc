@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,12 +23,13 @@
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
 
 #define RANDOM_BIT_ARRAY_SIZE 4U
+
 
 // Command name change -- should move to top level platform header
 #ifndef ID_CFG_ELS_CMD_RND_REQ
@@ -64,6 +65,8 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Rng_DrbgRequest_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
+
+
 
     mcuxClEls_setOutput(pOutput, outputLength);
 
@@ -322,3 +325,4 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Prng_Get
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Prng_GetRandom, MCUXCLELS_STATUS_OK);
 }
+

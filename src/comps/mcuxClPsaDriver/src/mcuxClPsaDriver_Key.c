@@ -179,6 +179,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
     mcuxClKey_setKeyContainerSize(out_key_descriptor, (uint32_t)key_buffer_size);
     mcuxClKey_setKeyContainerUsedSize(out_key_descriptor, (uint32_t)key_buffer_size);
     mcuxClKey_setAuxData(out_key_descriptor, (void*)attributes);
+    mcuxClKey_setLoadStatus(out_key_descriptor, MCUXCLKEY_LOADSTATUS_NOTLOADED);
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
@@ -310,11 +311,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
 
 static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     const psa_key_attributes_t *attributes,
-    uint8_t *key_buffer, size_t key_buffer_size, size_t *key_buffer_length, uint8_t * ecc_public_key)
+    mcuxClEls_KeyIndex_t key_index_private_key,
+    uint8_t * public_key_buffer, uint32_t public_key_buffer_size)
 {
     size_t bitLength = psa_get_key_bits(attributes);
     size_t bytes = PSA_BITS_TO_BYTES(bitLength);
-    if(key_buffer_size < bytes)
+    if(public_key_buffer_size < (2u * bytes))
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
     }
@@ -322,8 +324,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     {
         return PSA_ERROR_NOT_SUPPORTED;
     }
-
-    mcuxClEls_KeyIndex_t keyIdxExp = MBEDTLS_SVC_KEY_ID_GET_KEY_ID(psa_get_key_id(attributes));
 
     mcuxClEls_KeyProp_t  keyProp;
     keyProp.word.value       = 0;
@@ -347,12 +347,12 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
         - Public Key will be stored in external RAM
     */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyGen_Async( // Perform key generation.
-            KeyGenOptions,                                  // Set the prepared configuration.
-            (mcuxClEls_KeyIndex_t) 0U,                       // This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.
-            keyIdxExp,                                      // Keystore index at which the generated private key is stored.
-            keyProp,                                        // Set the generated key properties.
-            NULL,                                           // No random data is provided
-            ecc_public_key                                  // Output buffer, which the operation will write the public key to.
+            KeyGenOptions,                   // Set the prepared configuration.
+            (mcuxClEls_KeyIndex_t) 0U,        // This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.
+            key_index_private_key,           // Keystore index at which the generated private key is stored.
+            keyProp,                         // Set the generated key properties.
+            NULL,                            // No random data is provided
+            public_key_buffer                // Output buffer, which the operation will write the public key to.
             ));
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
@@ -369,21 +369,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /*  Step 2:
-        export private keyslot
-    */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (key_buffer,
-                                                                     (uint8_t*)&keyIdxExp,
-                                                                     16u,
-                                                                     16u));
-
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
-    {
-        return PSA_ERROR_GENERIC_ERROR;
-    }
-
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-    *key_buffer_length = (keyProp.bits.ksize == MCUXCLELS_KEYPROPERTY_KEY_SIZE_256) ? 32U : 16U;
     return PSA_SUCCESS;
 }
 
@@ -402,55 +387,69 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
         return PSA_ERROR_INVALID_ARGUMENT;
     }
 
-    /*Step 1:
-       allocating storage for a key to be generated
+    /* Step 1:
+       Allocate storage for a key to be generated
     */
-    mcuxClKey_Descriptor_t key = {0};
-    key.container.pAuxData  = (void*)attributes;
-    key.container.pData     = key_buffer;
-    key.container.length    = key_buffer_size;
-    key.container.used      = key_buffer_size;
-    status = mcuxClPsaDriver_Oracle_ReserveKey(&key);
-    if(PSA_SUCCESS != status)
+    mcuxClKey_Descriptor_t key = {0u};
+    /* Initialize the key container */
+    mcuxClKey_setKeyData(&key, (uint8_t *)key_buffer);
+    mcuxClKey_setKeyContainerSize(&key, (uint32_t)key_buffer_size);
+    mcuxClKey_setAuxData(&key, (void*)attributes);
+
+    /* Initialize the loaded key data (location descr.) as a storage for the public key */
+    if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
     {
-        return status;
+        /* key stored in orace - call Orcale to reserve memory for the key */
+        status = mcuxClPsaDriver_Oracle_ReserveKey(&key);
+        if(PSA_SUCCESS != status)
+        {
+            return status;
+        }
+    }
+    else
+    {
+        /* local storage - setup loaded key with buffer from caller */
+        mcuxClKey_setLoadedKeyData(&key, (uint32_t *)key_buffer);
+        mcuxClKey_setLoadedKeyLength(&key, (uint32_t)key_buffer_size);
+        mcuxClKey_setLoadStatus(&key, MCUXCLKEY_LOADSTATUS_MEMORY);
     }
 
-    /*Step 2:
+    /* Step 2:
        Depending on the location, see how to generate the private key
     */
-    if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
+    if(MCUXCLKEY_LOADSTATUS_COPRO == mcuxClKey_getLoadStatus(&key))
     {
-        /* TODO: ecc_public_key should store in RAM, then can be used in public_key_export
-         *       Need to get memory through mcuxClPsaDriver_Oracle_reserveKey
-         */
-        uint32_t ecc_public_key[MCUXCLCSS_ECC_PUBLICKEY_SIZE / sizeof(uint32_t)];
-        status = mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(attributes,
-                                               key_buffer,
-                                               key_buffer_size,
-                                               key_buffer_length,
-                                               (uint8_t*)ecc_public_key);
+        /* LoadedKeyData serves as a throw-away buffer for the public key.
+           The private key will be kept in the given key slot of the keystore. */
+
+        status = mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
+            /* const psa_key_attributes_t *attributes:     */ attributes,
+            /* mcuxClEls_KeyIndex_t key_index_private_key:  */ mcuxClKey_getLoadedKeySlot(&key),
+            /* uint8_t *public_key_buffer:                 */ mcuxClKey_getLoadedKeyData(&key),
+            /* uint32_t public_key_buffer_size:            */ mcuxClKey_getLoadedKeyLength(&key)
+        );
+
         if(status != PSA_SUCCESS)
         {
             return status;
         }
-
     }
-    else
+    else /* MCUXCLKEY_LOADSTATUS_MEMORY */
     {
         if(key_type_is_raw_bytes(type))
         {
-            status = mcuxClPsaDriver_psa_driver_wrapper_generate_random(key_buffer, key_buffer_size);
+            status = mcuxClPsaDriver_psa_driver_wrapper_generate_random(mcuxClKey_getLoadedKeyData(&key), mcuxClKey_getLoadedKeyLength(&key));
             if(status != PSA_SUCCESS)
             {
                 return status;
             }
+            *key_buffer_length = mcuxClKey_getLoadedKeyLength(&key);
         }
         else if(type == PSA_KEY_TYPE_RSA_KEY_PAIR)
         {
             status = mcuxClPsaDriver_psa_driver_wrapper_rsa_key(attributes,
-                                               key_buffer,
-                                               key_buffer_size,
+                                               mcuxClKey_getLoadedKeyData(&key),
+                                               mcuxClKey_getLoadedKeyLength(&key),
                                                key_buffer_length);
             if(status != PSA_SUCCESS)
             {
@@ -460,8 +459,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
         else if(PSA_KEY_TYPE_IS_ECC(type) && PSA_KEY_TYPE_IS_KEY_PAIR(type))
         {
             status = mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(attributes,
-                                                  key_buffer,
-                                                  key_buffer_size,
+                                                  mcuxClKey_getLoadedKeyData(&key),
+                                                  mcuxClKey_getLoadedKeyLength(&key),
                                                   key_buffer_length);
             if(status != PSA_SUCCESS)
             {
@@ -475,15 +474,21 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
         }
     }
 
-    /*Step 3:
-        Store generated private key:
-        TODO:if S50, public key should also store
+    /* Step 3:
+       Store the generated private key in the buffer provided by the caller
     */
-    status = mcuxClPsaDriver_Oracle_StoreKey(&key);
-    if(PSA_SUCCESS != status)
+    if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
     {
-        return status;
+        status = mcuxClPsaDriver_Oracle_StoreKey(&key);
+        if(PSA_SUCCESS != status)
+        {
+            return status;
+        }
+        *key_buffer_length = mcuxClKey_getKeyContainerUsedSize(&key);
     }
+    /* Note: For keys in local storage no additional store or copy operation is needed,
+             because the key_buffer was already used during the key generation. */
+
     return PSA_SUCCESS;
 }
 

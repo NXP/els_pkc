@@ -47,7 +47,8 @@ extern "C" {
  *
  * @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
  */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_LoadFuncPtr_t)(mcuxClKey_Handle_t key);
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClKey_LoadFuncPtr_t,
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_LoadFuncPtr_t)(mcuxClKey_Handle_t key));
 
 /**
  * @brief Functions to store a key.
@@ -56,7 +57,8 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_LoadFuncPtr_
  *
  * @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
  */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_StoreFuncPtr_t)(mcuxClKey_Handle_t key);
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClKey_StoreFuncPtr_t,
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_StoreFuncPtr_t)(mcuxClKey_Handle_t key));
 
 /**
  * @brief Functions to flush a key from coprocessor or memory buffer.
@@ -65,7 +67,8 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_StoreFuncPtr
  *
  * @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
  */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_FlushFuncPtr_t)(mcuxClKey_Handle_t key);
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClKey_FlushFuncPtr_t,
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (*mcuxClKey_FlushFuncPtr_t)(mcuxClKey_Handle_t key));
 
 
 
@@ -137,6 +140,7 @@ struct mcuxClKey_Descriptor {
   mcuxClKey_TypeDescriptor_t               type;        ///< Type of the key
   mcuxClKey_Location_t                     location;    ///< Internal location of the key
   const mcuxClKey_ProtectionDescriptor_t * protection;  ///< Protection mechanism applied to the key stored in the container
+  void *                                  pLinkedData; ///< Pointer to auxiliary data linked to the key
 };
 
 /**
@@ -156,10 +160,15 @@ struct mcuxClKey_GenerationDescriptor
 {
   mcuxClKey_KeyGenFct_t pKeyGenFct;    ///< Pointer to the protocol specific key pair generation function
   uint32_t protectionTokenKeyGenFct;  ///< Protection token of the protocol specific key generation function
-  const void *pProtocolDescriptor;    ///< Pointer to additional parameters for the protocol specific key generation function
+  void *pProtocolDescriptor;    ///< Pointer to additional parameters for the protocol specific key generation function
 };
 
 
+
+#ifdef MCUXCL_FEATURE_KEY_SELFTEST
+struct mcuxClKey_TestDescriptor {
+};
+#endif /* MCUXCL_FEATURE_KEY_SELFTEST */
 
 #ifdef __cplusplus
 } /* extern "C" */

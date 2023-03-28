@@ -19,115 +19,7 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include "fsl_device_registers.h"
-
-/* Platform compatibility defines */
-#ifndef ELS_DMA_SRC0
-#define ELS_DMA_SRC0 DMA_SRC0
-#endif
-
-#ifndef ELS_DMA_SRC0_LEN
-#define ELS_DMA_SRC0_LEN DMA_SRC0_LEN
-#endif
-
-#ifndef ELS_DMA_SRC1
-#define ELS_DMA_SRC1 DMA_SRC1
-#endif
-
-#ifndef ELS_DMA_SRC2
-#define ELS_DMA_SRC2 DMA_SRC2
-#endif
-
-#ifndef ELS_DMA_SRC2_LEN
-#define ELS_DMA_SRC2_LEN DMA_SRC2_LEN
-#endif
-
-#ifndef ELS_DMA_RES0
-#define ELS_DMA_RES0 DMA_RES0
-#endif
-
-#ifndef ELS_DMA_RES0_LEN
-#define ELS_DMA_RES0_LEN DMA_RES0_LEN
-#endif
-
-#ifndef ELS_KIDX0
-#define ELS_KIDX0 KIDX0
-#endif
-
-#ifndef ELS_KIDX1
-#define ELS_KIDX1 KIDX1
-#endif
-
-#ifndef ELS_KIDX2
-#define ELS_KIDX2 KIDX2
-#endif
-
-#ifndef ELS_KPROPIN
-#define ELS_KPROPIN KPROPIN
-#endif
-
-#ifndef ELS_CTRL
-#define ELS_CTRL CTRL
-#endif
-
-#ifndef ELS_CMDCFG0
-#define ELS_CMDCFG0 CMDCFG0
-#endif
-
-#ifndef ELS_STATUS
-#define ELS_STATUS STATUS
-#endif
-
-#ifndef ELS_VERSION
-#define ELS_VERSION VERSION
-#endif
-
-#ifndef ELS_ERR_STATUS
-#define ELS_ERR_STATUS ERR_STATUS
-#endif
-
-#ifndef ELS_ERR_STATUS_CLR
-#define ELS_ERR_STATUS_CLR ERR_STATUS_CLR
-#endif
-
-#ifndef ELS_INT_ENABLE
-#define ELS_INT_ENABLE INT_ENABLE
-#endif
-
-#ifndef ELS_INT_STATUS_CLR
-#define ELS_INT_STATUS_CLR INT_STATUS_CLR
-#endif
-
-#ifndef ELS_INT_STATUS_SET
-#define ELS_INT_STATUS_SET INT_STATUS_SET
-#endif
-
-#ifndef ELS_SESSION_ID
-#define ELS_SESSION_ID SESSION_ID
-#endif
-
-#ifndef ELS_MASTER_ID
-#define ELS_MASTER_ID MASTER_ID
-#endif
-
-#ifndef ELS_CFG
-#define ELS_CFG CFG
-#endif
-
-#ifndef ELS_CMDCRC
-#define ELS_CMDCRC CMDCRC
-#endif
-
-#ifndef ELS_CMDCRC_CTRL
-#define ELS_CMDCRC_CTRL CMDCRC_CTRL
-#endif
-
-#ifndef ELS_PRNG_DATOUT
-#define ELS_PRNG_DATOUT PRNG_DATOUT
-#endif
-
-#define MCUXCL_FEATURE_TRNG_RNG4_256
-/* END of Platform compatibility defines */
+#include <MCXN947_cm33_core0.h>
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
@@ -147,7 +39,6 @@
 
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x400B3000u)
-#define PKC_RAM_SIZE  ((uint32_t)0x1000u)
 #define PKC_WORD_SIZE  8u
 
 // Define base address of TRNG

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,20 +26,12 @@ extern "C" {
 
 #define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_ENTROPY_PRDISABLED        ( 0u)
 #define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_ENTROPY_RESEED_PRDISABLED ( 1u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_INIT_KEY_PRDISABLED       ( 2u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_INIT_V_PRDISABLED         ( 3u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RESEED_KEY_PRDISABLED     ( 4u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RESEED_V_PRDISABLED       ( 5u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_GENONE_KEY_PRDISABLED     ( 6u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_GENONE_V_PRDISABLED       ( 7u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_GENTWO_KEY_PRDISABLED     ( 8u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_GENTWO_V_PRDISABLED       ( 9u)
-#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RANDOMDATA_PRDISABLED     (10u)
+#define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RANDOMDATA_PRDISABLED     ( 2u)
 #define MCUXCLRANDOMMODES_NO_OF_TESTVECTORS_PRDISABLED (MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RANDOMDATA_PRDISABLED + 1u)
 
 /* Internal function prototypes */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_PrDisabled_selftestPrHandler)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_selftestPrHandler(mcuxClSession_Handle_t pSession, mcuxClRandom_Context_t testCtx, mcuxClRandom_Mode_t testMode);
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_PrDisabled_selftestAlgorithm)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_selftestAlgorithm(mcuxClSession_Handle_t pSession, mcuxClRandom_Context_t pTestCtx, mcuxClRandom_ModeDescriptor_t *pTestMode);
 
 
 #ifdef __cplusplus

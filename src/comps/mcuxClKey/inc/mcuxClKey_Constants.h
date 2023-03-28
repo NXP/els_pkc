@@ -107,6 +107,7 @@
 #define MCUXCLKEY_SIZE_2048              2048u   ///< 2048 bit key, size in bits
 #define MCUXCLKEY_SIZE_3072              3072u   ///< 3072 bit key, size in bits
 #define MCUXCLKEY_SIZE_4096              4096u   ///< 4096 bit key, size in bits
+#define MCUXCLKEY_SIZE_6144              6144u   ///< 6144 bit key, size in bits
 #define MCUXCLKEY_SIZE_8192              8192u   ///< 8192 bit key, size in bits
 
 // TODO CLNS-6135: replace these divides by a macro that ensures rounding up
@@ -123,6 +124,7 @@
 #define MCUXCLKEY_SIZE_2048_IN_WORDS     (MCUXCLKEY_SIZE_2048 / (sizeof(uint32_t) * 8u))    ///< 2048 bit key, size in words
 #define MCUXCLKEY_SIZE_3072_IN_WORDS     (MCUXCLKEY_SIZE_3072 / (sizeof(uint32_t) * 8u))    ///< 3072 bit key, size in words
 #define MCUXCLKEY_SIZE_4096_IN_WORDS     (MCUXCLKEY_SIZE_4096 / (sizeof(uint32_t) * 8u))    ///< 4096 bit key, size in words
+#define MCUXCLKEY_SIZE_6144_IN_WORDS     (MCUXCLKEY_SIZE_6144 / (sizeof(uint32_t) * 8u))    ///< 6144 bit key, size in words
 #define MCUXCLKEY_SIZE_8192_IN_WORDS     (MCUXCLKEY_SIZE_8192 / (sizeof(uint32_t) * 8u))    ///< 8192 bit key, size in words
 /** @} */
 

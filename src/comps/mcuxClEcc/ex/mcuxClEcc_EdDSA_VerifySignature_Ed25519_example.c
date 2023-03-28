@@ -101,7 +101,7 @@ bool mcuxClEcc_EdDSA_VerifySignature_Ed25519_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClEcc_EdDSA_VerifySignature(
     /*  mcuxClSession_Handle_t pSession  */ &session,
     /*  mcuxClKey_Handle_t pubKey        */ pubKeyHandler,
-    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t * */ &mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor,
+    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t * */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
     /*  const uint8_t *pIn              */ pIn,
     /*  uint32_t inSize                 */ sizeof(pIn),
     /*  const uint8_t *pSignature       */ pSignature,

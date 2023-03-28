@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -30,7 +30,7 @@
 #include <internal/mcuxClRsa_Internal_Functions.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_ModInv)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ModInv(uint32_t iR_iX_iN_iT)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClRsa_ModInv(uint32_t iR_iX_iN_iT)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_ModInv);
 
@@ -77,8 +77,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ModInv(uint32_t iR_iX_
     MCUXCLPKC_FP_CALC_OP1_ADD(uptrtIndexR, uptrtIndexR, uptrtIndexN);
   }
 
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_ModInv,
-                            MCUXCLRSA_STATUS_KEYGENERATION_OK,
+  MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClRsa_ModInv,
                             MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_NDash),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),

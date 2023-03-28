@@ -14,6 +14,7 @@
 /** @file  mcuxClCipherModes_ELS_EngineAes.c
  *  @brief implementation of the Engine functions of the mcuxClCipher component */
 
+#include <mcuxClToolchain.h>
 #include <mcuxClEls.h>
 #include <mcuxClMemory.h>
 #include <mcuxClSession.h>
@@ -29,7 +30,7 @@
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
   MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_EngineEls(
-  mcuxClSession_Handle_t session,
+  mcuxClSession_Handle_t session UNUSED_PARAM,
   mcuxClCipherModes_Context_Aes_Els_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
@@ -123,6 +124,20 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
     }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+    uint8_t *pFinalOutputStartAddress = pOut;
+    uint32_t finalLength = inLength;
+    if (MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CTR == pAlgo->mode)
+    {
+        pFinalOutputStartAddress = (uint8_t *)pContext->ivState;
+        finalLength = MCUXCLAES_BLOCK_SIZE;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pFinalOutputStartAddress, finalLength));
+    if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     if(MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CBC == elsOptions.bits.cphmde)
     {

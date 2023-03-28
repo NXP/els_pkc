@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021,2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,7 +14,7 @@
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_copy)

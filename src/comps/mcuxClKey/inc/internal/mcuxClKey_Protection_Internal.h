@@ -41,7 +41,7 @@ extern "C" {
  * @retval MCUXCLKEY_STATUS_ERROR   On error
  * @retval MCUXCLKEY_STATUS_OK      On success
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_protect_fct_none)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_protect_fct_none, mcuxClKey_LoadFuncPtr_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(
   mcuxClKey_Handle_t key
   );
@@ -59,7 +59,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(
  * @retval MCUXCLKEY_STATUS_OK      On success
  *
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_protect_fct_ckdf)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_protect_fct_ckdf, mcuxClKey_LoadFuncPtr_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(
   mcuxClKey_Handle_t key
   );

@@ -47,7 +47,7 @@
  *     too many iterations of subtraction loop.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_QDash)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_QDash(uint32_t iQDash_iNShifted_iN_iT, uint16_t length)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QDash(uint32_t iQDash_iNShifted_iN_iT, uint16_t length)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_QDash);
 
@@ -98,7 +98,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_QDash(uint32_t iQDas
 
     MCUX_CSSL_FP_COUNTER_STMT(uint32_t leadingZeroExponent = (uint32_t) mcuxClMath_CountLeadingZerosWord((uint32_t) length) - 3u);
     MCUX_CSSL_FP_COUNTER_STMT(uint32_t lterationsSquareMultiply = ((sizeof(uint32_t)) * 8u) - leadingZeroExponent - 1u);  /* "-1" to skip the first nonzero bit. */
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_QDash, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_QDash,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
         MCUX_CSSL_FP_LOOP_ITERATIONS(QDash_SquareMultiply, lterationsSquareMultiply));
@@ -111,13 +111,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_QDash(uint32_t iQDas
  * by calling the above mcuxClMath_QDash.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_QSquared)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_QSquared(uint32_t iQSqr_iNShifted_iN_iT)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QSquared(uint32_t iQSqr_iNShifted_iN_iT)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_QSquared,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_QDash));
 
     uint16_t len = (uint16_t) MCUXCLPKC_PS1_GETOPLEN();
-    MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClMath_QDash(iQSqr_iNShifted_iN_iT, len));
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_QDash(iQSqr_iNShifted_iN_iT, len));
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_QSquared, retValTemp);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_QSquared);
 }

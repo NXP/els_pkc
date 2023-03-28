@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -34,6 +34,7 @@
 #include <internal/mcuxClEcc_Weier_Internal_FP.h>
 #include <internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.h>
 #include <internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h>
+#include <internal/mcuxClEcc_Weier_Internal_ConvertPoint_FUP.h>
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_WeierECC_GenerateDomainParams)
@@ -150,8 +151,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
         /* Convert precG to affine coordinates in NR and store them in (WEIER_X0,WEIER_Y0). */
         MCUXCLMATH_FP_MODINV(ECC_T0, WEIER_ZA, ECC_P, ECC_T1);
         /* MISRA Ex. 22, while(0) is allowed */
-        MCUXCLPKC_FP_CALCFUP(mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR,
-                            mcuxClEcc_Fup_GenerateDomainParams_Convert_precG_toAffineNR_Len);
+        MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_ConvertJacToAffine,
+                            mcuxClEcc_FUP_Weier_ConvertJacToAffine_LEN);
     }
     else if (MCUXCLECC_OPTION_GENERATEPRECPOINT_NO != (options & MCUXCLECC_OPTION_GENERATEPRECPOINT_MASK))
     {

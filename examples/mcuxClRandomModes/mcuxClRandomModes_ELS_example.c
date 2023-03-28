@@ -51,9 +51,10 @@ bool mcuxClRandomModes_ELS_example(void)
     uint8_t drbg_buffer2[4u];
     uint8_t drbg_buffer3[5u];
 
-    mcuxClSession_Descriptor_t session;
+    mcuxClSession_Descriptor_t sessionDesc;
+    mcuxClSession_Handle_t session = &sessionDesc;
     //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, 0u, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, 0u, 0u);
 
     /* We don't need a context for ELS Rng. */
     mcuxClRandom_Context_t context = NULL;
@@ -64,7 +65,7 @@ bool mcuxClRandomModes_ELS_example(void)
 
     /* Initialize the Random session with ELS mode. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInitresult, token, mcuxClRandom_init(
-                                                  &session,
+                                                  session,
                                                   context,
                                                   mcuxClRandomModes_Mode_ELS_Drbg));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != token) || (MCUXCLRANDOM_STATUS_OK != randomInitresult))
@@ -80,7 +81,7 @@ bool mcuxClRandomModes_ELS_example(void)
 
     /* Generate random values of smaller amount than one word size. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult1, token, mcuxClRandom_generate(
-                                                  &session,
+                                                  session,
                                                   drbg_buffer1,
                                                   3u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult1))
@@ -92,7 +93,7 @@ bool mcuxClRandomModes_ELS_example(void)
 
     /* Generate random values of multiple of word size. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult2, token, mcuxClRandom_generate(
-                                                  &session,
+                                                  session,
                                                   drbg_buffer2,
                                                   4u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult2))
@@ -104,7 +105,7 @@ bool mcuxClRandomModes_ELS_example(void)
 
     /* Generate random values of larger amount than but not multiple of one word size. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult3, token, mcuxClRandom_generate(
-                                                  &session,
+                                                  session,
                                                   drbg_buffer3,
                                                   5u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult3))
@@ -119,7 +120,7 @@ bool mcuxClRandomModes_ELS_example(void)
     /**************************************************************************/
 
     /* Initialize non-cryptographic Rng. */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomNcInitresult, token, mcuxClRandom_ncInit(&session));
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomNcInitresult, token, mcuxClRandom_ncInit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != token) || (MCUXCLRANDOM_STATUS_OK != randomNcInitresult))
     {
         return MCUXCLEXAMPLE_ERROR;
@@ -129,7 +130,7 @@ bool mcuxClRandomModes_ELS_example(void)
 
     /* Generate random values. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomNcGenerateresult, token, mcuxClRandom_ncGenerate(
-                                                  &session,
+                                                  session,
                                                   prng_buffer,
                                                   10u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) != token) || (MCUXCLRANDOM_STATUS_OK != randomNcGenerateresult))
@@ -144,7 +145,7 @@ bool mcuxClRandomModes_ELS_example(void)
     /**************************************************************************/
 
     /* Random uninit. */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomUninitresult, token, mcuxClRandom_uninit(&session));
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomUninitresult, token, mcuxClRandom_uninit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_uninit) != token) || (MCUXCLRANDOM_STATUS_OK != randomUninitresult))
     {
         return MCUXCLEXAMPLE_ERROR;
@@ -153,7 +154,7 @@ bool mcuxClRandomModes_ELS_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
-    if(!mcuxClExample_Session_Clean(&session))
+    if(!mcuxClExample_Session_Clean(session))
     {
         return MCUXCLEXAMPLE_ERROR;
     }

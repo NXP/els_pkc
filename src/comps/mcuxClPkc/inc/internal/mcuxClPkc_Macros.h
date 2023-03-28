@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,7 +25,7 @@
 #include <stdbool.h>
 #include <mcuxClConfig.h> // Exported features flags header
 #include <platform_specific_headers.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 
 #include <mcuxClPkc_Types.h>
 #include <internal/mcuxClPkc_SfrAccess.h>

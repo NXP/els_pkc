@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -28,7 +28,7 @@
 #include "tfm_crypto_defs.h"
 #endif /* PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER */
 
-/* if TF-M builtin key driver is enabled (only aplicable for tfm examples) */
+/* If TF-M builtin key driver is enabled (only aplicable for tfm examples) */
 #if defined(PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER)
 #define MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location) ((location) == PSA_KEY_LOCATION_LOCAL_STORAGE || (location) == TFM_BUILTIN_KEY_LOADER_KEY_LOCATION)
 #else

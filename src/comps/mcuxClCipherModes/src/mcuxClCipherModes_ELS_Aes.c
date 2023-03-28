@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -80,6 +80,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
 
     /* Correct Context type for Aes ELS Skeleton */
     mcuxClCipherModes_Context_Aes_Els_t * pCtx = NULL;
+    uint32_t cpuWaSizeInWords = 0;
 
     /* Correct algorithm type for Aes ELS Skeleton */
     const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *pAlgo = NULL;
@@ -97,9 +98,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         {
             /* Create context for Oneshot, needed by ELS */
             /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-            MCUX_CSSL_FP_FUNCTION_CALL(allocateContext, mcuxClSession_allocateCpuBuffer(session, (uint32_t **) &pCtx,
-                                                                                      sizeof(mcuxClCipherModes_Context_Aes_Els_t) / sizeof(uint32_t)));
-            if(MCUXCLSESSION_STATUS_OK != allocateContext)
+            cpuWaSizeInWords = MCUXCLCIPHERMODES_INTERNAL_COMPUTE_CPUWORDS(sizeof(mcuxClCipherModes_Context_Aes_Els_t));
+            MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+            pCtx = (mcuxClCipherModes_Context_Aes_Els_t *) mcuxClSession_allocateWords_cpuWa(session, cpuWaSizeInWords);
+            MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+            if(NULL == pCtx)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_FAILURE);
             }
@@ -302,14 +305,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
 
     if(MCUXCLCIPHER_OPTION_ONESHOT == steps)
     {
-        // TODO: Will we provide function mcuxClSession_freeCpuBuffer?
-
         /* Free context in Session */
-        MCUX_CSSL_FP_FUNCTION_CALL(freeSessionBuffers, mcuxClSession_freeAllCpuBuffers(session));
-        if(MCUXCLSESSION_STATUS_OK != freeSessionBuffers)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_FAILURE);
-        }
+        mcuxClSession_freeWords_cpuWa(session, cpuWaSizeInWords);
     }
 
     /* Exit and balance the flow protection. */
@@ -317,9 +314,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_INIT == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),
             MCUX_CSSL_FP_CONDITIONAL((0u != ivLength),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
-            ),
-            MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_ONESHOT == steps),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_allocateCpuBuffer)
             )
         ),
         MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_PROCESS == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),
@@ -341,9 +335,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
                 pAlgo->protection_token_engine,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
             )
-        ),
-        MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_ONESHOT == steps),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_freeAllCpuBuffers)
         )
     );
 }

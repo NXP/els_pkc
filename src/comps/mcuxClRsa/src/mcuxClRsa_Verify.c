@@ -62,7 +62,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
   }
 
   /* Initialize PKC */
-  /* MISRA Ex. 9 to Rule 11.3 */
   const uint32_t cpuWaSizeWord = (sizeof(mcuxClPkc_State_t)) / (sizeof(uint32_t));
   mcuxClPkc_State_t * pkcStateBackup = (mcuxClPkc_State_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
   if (NULL == pkcStateBackup)

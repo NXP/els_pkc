@@ -137,32 +137,28 @@
 #define MCUXCLPKC_FP_CALC_OP1Z(symbo,R,X,Y,Z)  \
     do{ \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Calc(MCUXCLPKC_PARAMMODE_OP1(symbo), MCUXCLPKC_PACKARGS4(R,X,Y,Z)));  \
-        /* Checking is unnecessary because mcuxClPkc_Calc always returns OK. */  \
     } while (false)
 #define MCUXCLPKC_FP_CALC_OP2Z(symbo,R,X,Y,Z)  \
     do{ \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Calc(MCUXCLPKC_PARAMMODE_OP2(symbo), MCUXCLPKC_PACKARGS4(R,X,Y,Z)));  \
-        /* Checking is unnecessary. */  \
     } while (false)
 #define MCUXCLPKC_FP_CALC_MC1Z(symbo,R,X,Y,Z)  \
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \
     do{ \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Calc(MCUXCLPKC_PARAMMODE_MC1(symbo), MCUXCLPKC_PACKARGS4(R,X,Y,Z)));  \
-        /* Checking is unnecessary. */  \
-    } while (false)
+    } while (false) \
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 #define MCUXCLPKC_FP_CALC_MC2Z(symbo,R,X,Y,Z)  \
     do{ \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_Calc(MCUXCLPKC_PARAMMODE_MC2(symbo), MCUXCLPKC_PACKARGS4(R,X,Y,Z)));  \
-        /* Checking is unnecessary. */  \
     } while (false)
 #define MCUXCLPKC_FP_CALC_OP1C(symbo,R,X,Y,C)  \
     do{ \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcConst(MCUXCLPKC_PARAMMODE_OP1(symbo), MCUXCLPKC_PACKARGS4(R,X,Y,C)));  \
-        /* Checking is unnecessary because mcuxClPkc_CalcConst always returns OK. */  \
     } while (false)
 #define MCUXCLPKC_FP_CALC_OP2C(symbo,R,X,Y,C)  \
     do{ \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcConst(MCUXCLPKC_PARAMMODE_OP2(symbo), MCUXCLPKC_PACKARGS4(R,X,Y,C)));  \
-        /* Checking is unnecessary. */  \
     } while (false)
 
 
@@ -345,7 +341,7 @@
 #define MCUXCLPKC_FP_CALC_MC1_PMA_GF2(R,X,Y,Z)     MCUXCLPKC_FP_CALC_MC1Z(PMA_GF2,    R,X,Y,Z)
 #define MCUXCLPKC_FP_CALC_MC1_MA(R,Y,Z,N)          MCUXCLPKC_FP_CALC_MC1Z(MA,         R,N,Y,Z)
 #define MCUXCLPKC_FP_CALC_MC1_MS(R,Y,Z,N)          MCUXCLPKC_FP_CALC_MC1Z(MS,         R,N,Y,Z)
-#define MCUXCLPKC_FP_CALC_MC1_MR(R,X,N)            MCUXCLPKC_FP_CALC_MC1Z(MR,         R,X,R,N)
+#define MCUXCLPKC_FP_CALC_MC1_MR(R,X,N)            MCUXCLPKC_FP_CALC_MC1Z(MR,         R,X,R,N) 
 #define MCUXCLPKC_FP_CALC_MC1_MR_GF2(R,X,N)        MCUXCLPKC_FP_CALC_MC1Z(MR_GF2,     R,X,R,N)
 #define MCUXCLPKC_FP_CALC_MC1_MMP2(R,X,Y)          MCUXCLPKC_FP_CALC_MC1Z(MMP2,       R,X,Y,R)
 #define MCUXCLPKC_FP_CALC_MC1_MMAP2(R,X,Y,Z)       MCUXCLPKC_FP_CALC_MC1Z(MMAP2,      R,X,Y,Z)

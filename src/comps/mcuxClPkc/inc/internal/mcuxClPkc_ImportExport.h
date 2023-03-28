@@ -57,18 +57,13 @@ extern "C" {
  *   </dl></dd>
  * </dl>
  *
- * @return Status of the mcuxClPkc_SwitchEndianness operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
- * @retval #MCUXCLPKC_STATUS_OK    The function executed successfully
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_SwitchEndianness)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint32_t length);
 
 /** Helper macro to call #mcuxClPkc_SwitchEndianness with flow protection. */
-#define MCUXCLPKC_FP_SWITCHENDIANNESS(ptr, length)  \
-    do{ \
-        /* mcuxClPkc_SwitchEndianness always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_SwitchEndianness(ptr, length));  \
-    } while (false)
+#define MCUXCLPKC_FP_SWITCHENDIANNESS(ptr, length) \
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_SwitchEndianness(ptr, length))
 
 
 /**
@@ -89,18 +84,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SwitchEndianness(uint3
  *   </dl></dd>
  * </dl>
  *
- * @return Status of the mcuxClPkc_ImportBigEndianToPkc operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
- * @retval #MCUXCLPKC_STATUS_OK    The function executed successfully
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_ImportBigEndianToPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length);
 
 /** Helper macro to call #mcuxClPkc_ImportBigEndianToPkc with flow protection. */
-#define MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(indexTarget, ptrSource, length)  \
-    do{ \
-        /* mcuxClPkc_ImportBigEndianToPkc always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ImportBigEndianToPkc(indexTarget, ptrSource, length));  \
-    } while (false)
+#define MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(indexTarget, ptrSource, length) \
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ImportBigEndianToPkc(indexTarget, ptrSource, length))
 
 
 /**
@@ -155,18 +145,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportLittleEndianToPk
  *   </dl></dd>
  * </dl>
  *
- * @return Status of the mcuxClPkc_ExportBigEndianFromPkc operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
- * @retval #MCUXCLPKC_STATUS_OK    The function executed successfully
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_ExportBigEndianFromPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
 
 /** Helper macro to call #mcuxClPkc_ExportBigEndianFromPkc with flow protection. */
 #define MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(ptrTarget, indexSource, length)  \
-    do{ \
-        /* mcuxClPkc_ExportBigEndianFromPkc always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ExportBigEndianFromPkc(ptrTarget, indexSource, length));  \
-    } while (false)
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ExportBigEndianFromPkc(ptrTarget, indexSource, length))
 
 
 /**

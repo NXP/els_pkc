@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -55,10 +55,11 @@ extern "C" {
  * \return status
  */
 // TODO: Create defines for entropy input sizes using object size filler
-mcuxClRandom_Status_t mcuxClRandomModes_createTestFromNormalMode(
-    mcuxClRandom_Mode_t testMode,
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_createTestFromNormalMode)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createTestFromNormalMode(
+    mcuxClRandom_ModeDescriptor_t *pTestMode,
     mcuxClRandom_Mode_t normalMode,
-    uint32_t *pEntropyInput
+    const uint32_t * const pEntropyInput
 );
 
 /**
@@ -70,9 +71,10 @@ mcuxClRandom_Status_t mcuxClRandomModes_createTestFromNormalMode(
  * \return
  *   - MCUXCLRANDOM_STATUS_OK         if the TEST_MODE descriptor generation was successful
  */
-mcuxClRandom_Status_t mcuxClRandomModes_updateEntropyInput(
-    mcuxClRandom_Mode_t testMode,
-    uint32_t *pEntropyInput
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_updateEntropyInput)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_updateEntropyInput(
+    mcuxClRandom_ModeDescriptor_t *pTestMode,
+    const uint32_t * const pEntropyInput
 );
 
 #ifdef __cplusplus

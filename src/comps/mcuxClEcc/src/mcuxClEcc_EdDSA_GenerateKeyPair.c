@@ -55,13 +55,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
      */
 
     /* Verify that the key handles are correctly initialized for the EdDSA use case */
-    if(MCUXCLKEY_ALGO_ID_ECC_EDDSA != mcuxClKey_getAlgorithm(privKey)
-            || MCUXCLKEY_ALGO_ID_ECC_EDDSA != mcuxClKey_getAlgorithm(pubKey)
-            || mcuxClKey_getTypeInfo(privKey) != mcuxClKey_getTypeInfo(pubKey)
-            || MCUXCLKEY_ALGO_ID_PRIVATE_KEY != mcuxClKey_getKeyUsage(privKey)
-            || MCUXCLKEY_ALGO_ID_PUBLIC_KEY != mcuxClKey_getKeyUsage(pubKey) )
+    if((MCUXCLKEY_ALGO_ID_ECC_EDDSA != mcuxClKey_getAlgorithm(privKey))
+            || (MCUXCLKEY_ALGO_ID_ECC_EDDSA != mcuxClKey_getAlgorithm(pubKey))
+            || (mcuxClKey_getTypeInfo(privKey) != mcuxClKey_getTypeInfo(pubKey))
+            || (MCUXCLKEY_ALGO_ID_PRIVATE_KEY != mcuxClKey_getKeyUsage(privKey))
+            || (MCUXCLKEY_ALGO_ID_PUBLIC_KEY != mcuxClKey_getKeyUsage(pubKey)) )
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
@@ -88,6 +88,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     MCUX_CSSL_FP_BRANCH_DECL(privKeyOption);
     if (MCUXCLECC_EDDSA_PRIVKEY_GENERATE == options)
     {
+        /* Derive the security strength required for the RNG from (keyLength * 8) / 2 and check whether it can be provided. */
         /* Reserve space on CPU workarea for the private key. */
         const uint32_t privKeyWords = MCUXCLECC_ALIGNED_SIZE(keyLength) / (sizeof(uint32_t));
         pPrivKey = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, privKeyWords);
@@ -100,7 +101,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_RNG_ERROR);
         }
 
-        MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
+        MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption, 
+                                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
     }
     else if (MCUXCLECC_EDDSA_PRIVKEY_INPUT == options)
     {
@@ -204,10 +206,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
 
 
     /*
-     * Step 6: (Securely) copy the key data to the key handles.
+     * Step 6: (Securely) copy the key data to the key handles and link the key pair.
      */
     // TODO: Is this copy function secure enough?
-    // TODO: Is the second length parameter correctly set here? Or must it be *pPrivDataLength from below
     MCUX_CSSL_FP_FUNCTION_CALL(ret_CopyPrivKey, mcuxClMemory_copy(pPrivData, pPrivKey, keyLength, keyLength));
     if (0u != ret_CopyPrivKey)
     {
@@ -229,10 +230,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
-    /* Export the public key to the private and public key handles. */
-    // TODO: Should one use a secure version for the first export to avoid leakage for unaligned data?
-    MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(&pPrivData[2u * keyLength + scalarSLength], ECC_COORD02, keyLength);
+    /* Export the public key to the public key handle. */
     MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pubKey->container.pData, ECC_COORD02, keyLength);
+
+    /* Create link between private and public key handles */
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_linkKeyPair, mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
+    if (MCUXCLKEY_STATUS_OK != ret_linkKeyPair)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
 
     /* Clean up and exit */
@@ -263,7 +269,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
         /* Step 7 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
 }

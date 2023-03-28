@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,7 +17,6 @@
 
 #include <stdbool.h>
 #include <platform_specific_headers.h>
-#include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClEls.h>
@@ -211,6 +210,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Reset_As
     mcuxClEls_ResetOption_t options)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Reset_Async);
+
     if (mcuxClEls_isBusy() && (MCUXCLELS_RESET_DO_NOT_CANCEL == options))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Reset_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
@@ -335,4 +335,42 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_SetMaste
 #endif /* MCUXCL_FEATURE_ELS_LOCKING */
 
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_ADDRESS_READBACK
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_GetLastDmaAddress)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetLastDmaAddress(uint32_t* pLastAddress)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetLastDmaAddress);
 
+    *pLastAddress = MCUXCLELS_SFR_READ(ELS_DMA_FIN_ADDR);
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetLastDmaAddress, MCUXCLELS_STATUS_OK);
+
+}
+#endif /* MCUXCL_FEATURE_ELS_DMA_ADDRESS_READBACK */
+
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_CompareDmaFinalOutputAddress)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_CompareDmaFinalOutputAddress(
+        uint8_t *outputStartAddress,
+        size_t expectedLength)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_CompareDmaFinalOutputAddress,
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetLastDmaAddress));
+
+    /* Calculate the expected final address from the input */
+    uint32_t expectedFinalAddress = (uint32_t)outputStartAddress + expectedLength;
+
+    /* Get the actual final address from ELS - no result check as function always returns OK */
+    uint32_t finalAddress;
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEls_GetLastDmaAddress(&finalAddress));
+
+    /* Compare the expected address to the actual one */
+    if(finalAddress != expectedFinalAddress)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_CompareDmaFinalOutputAddress, MCUXCLELS_STATUS_SW_COMPARISON_FAILED);
+    }
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_CompareDmaFinalOutputAddress, MCUXCLELS_STATUS_OK);
+
+}
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */

@@ -165,7 +165,7 @@ bool mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_EdDSA_GenerateSignature(
     /*  mcuxClSession_Handle_t pSession                           */ &session,
     /*  mcuxClKey_Handle_t key                                    */ privKey,
-    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode */ &mcuxClEcc_EdDsa_PureEdDsaProtocolDescriptor,
+    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
     /*  const uint8_t *pIn                                       */ pMessage,
     /*  uint32_t inSize                                          */ sizeof(pMessage),
     /*  uint8_t *pSignature                                      */ signatureBuffer,

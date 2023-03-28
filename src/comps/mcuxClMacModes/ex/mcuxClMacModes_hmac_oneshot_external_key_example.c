@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,6 +14,7 @@
 
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClCore_Examples.h> // Defines and assertions for examples
+#include <mcuxClExample_Session_Helper.h>
 
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClKey.h>
@@ -85,24 +86,10 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
     /* Output buffer for the computed MAC. */
     static uint8_t result_buffer[MCUXCLMAC_HMAC_SHA_256_OUTPUT_SIZE];
 
-    /* Workarea. */
-    uint32_t pWa[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)];
-
+    /* Allocate and initialize session / workarea */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(session,
-                                                                     pWa,
-                                                                     MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE,
-                                                                     NULL,
-                                                                     NULL));
-
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) || (MCUXCLSESSION_STATUS_OK != result))
-    {
-        return MCUXCLEXAMPLE_FAILURE;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
     /**************************************************************************/
     /* Key setup                                                              */

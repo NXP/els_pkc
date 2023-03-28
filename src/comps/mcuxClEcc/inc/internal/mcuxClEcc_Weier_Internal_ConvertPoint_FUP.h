@@ -33,6 +33,24 @@ extern "C" {
 #define mcuxClEcc_FUP_Weier_ConvertPoint_ToAffine_LEN  11u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertPoint_ToAffine[mcuxClEcc_FUP_Weier_ConvertPoint_ToAffine_LEN];
 
+/**
+ * FUP program declaration mcuxClEcc_FUP_Weier_ConvertAffinePointsToJac
+ */
+#define mcuxClEcc_FUP_Weier_ConvertAffinePointsToJac_LEN  7u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertAffinePointsToJac[mcuxClEcc_FUP_Weier_ConvertAffinePointsToJac_LEN];
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_Weier_ConvertJacToAffine
+ */
+#define mcuxClEcc_FUP_Weier_ConvertJacToAffine_LEN   10u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertJacToAffine[mcuxClEcc_FUP_Weier_ConvertJacToAffine_LEN];
+
+/*
+ * FUP program declaration mcuxClEcc_FUP_Weier_ConvertAffinePoint_ToJacobian
+ */
+#define mcuxClEcc_FUP_Weier_ConvertAffinePoint_ToJacobian_LEN 5u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_ConvertAffinePoint_ToJacobian[mcuxClEcc_FUP_Weier_ConvertAffinePoint_ToJacobian_LEN];
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

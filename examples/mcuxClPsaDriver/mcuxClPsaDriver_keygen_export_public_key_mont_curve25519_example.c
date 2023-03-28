@@ -25,7 +25,7 @@
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h> // Code flow protection
-#include <nxpClToolchain.h> // memory segment definitions
+#include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>

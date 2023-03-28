@@ -27,9 +27,16 @@ extern "C" {
 /*
  * FUP program declaration mcuxClMath_Fup_Aws_Init
  */
-#define mcuxClMath_Fup_Aws_Init_LEN  5u
+#define mcuxClMath_Fup_Aws_Init_LEN  3u
 
 extern const mcuxClPkc_FUPEntry_t mcuxClMath_Fup_Aws_Init[mcuxClMath_Fup_Aws_Init_LEN];
+
+/*
+ * FUP program declaration mcuxClMath_Fup_Aws_Rerand
+ */
+#define mcuxClMath_Fup_Aws_Rerand_LEN  5u
+
+extern const mcuxClPkc_FUPEntry_t mcuxClMath_Fup_Aws_Rerand[mcuxClMath_Fup_Aws_Rerand_LEN];
 
 /*
  * FUP program declaration mcuxClMath_Fup_EuclideanSplit_1
@@ -51,6 +58,20 @@ extern const mcuxClPkc_FUPEntry_t mcuxClMath_Fup_EuclideanSplit_2[mcuxClMath_Fup
 #define mcuxClMath_Fup_ExactDivideLoop_LEN  9u
 
 extern const mcuxClPkc_FUPEntry_t mcuxClMath_Fup_ExactDivideLoop[mcuxClMath_Fup_ExactDivideLoop_LEN];
+
+/*
+ * FUP program declaration mcuxClMath_Fup_CalcQAndInterleave
+ */
+#define mcuxClMath_Fup_CalcQAndInterleave_LEN  6u
+
+extern const mcuxClPkc_FUPEntry_t mcuxClMath_Fup_CalcQAndInterleave[mcuxClMath_Fup_CalcQAndInterleave_LEN];
+
+/*
+ * FUP program declaration mcuxClMath_Fup_PrepareFirstExp
+ */
+#define mcuxClMath_Fup_PrepareFirstExp_LEN  5u
+
+extern const mcuxClPkc_FUPEntry_t mcuxClMath_Fup_PrepareFirstExp[mcuxClMath_Fup_PrepareFirstExp_LEN];
 
 #ifdef __cplusplus
 } /* extern "C" */

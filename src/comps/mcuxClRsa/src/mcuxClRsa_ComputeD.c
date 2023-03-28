@@ -77,8 +77,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
 
     /* Setup UPTR table */
     const uint32_t cpuWaSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_COMPD_UPTRT_SIZE * (sizeof(uint16_t))) / (sizeof(uint32_t));
-    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
     uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     if (NULL == pOperands)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_ComputeD, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -115,7 +116,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
         mcuxClRsa_ComputeD_Steps123_FUP_LEN);
     MCUXCLPKC_WAITFORFINISH();
     uint32_t leadingZeroN;
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_QSUB1, &leadingZeroN));
     uint32_t realGcdByteLen = primePQAlignLen - (leadingZeroN >> 3u);
 
@@ -155,7 +155,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      * 5. Determine the length of d without leading zeros
      */
     MCUXCLPKC_WAITFORFINISH();
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_D, &leadingZeroN));
     pD->keyEntryLength = keyAlignLen - (leadingZeroN >> 3u);
 

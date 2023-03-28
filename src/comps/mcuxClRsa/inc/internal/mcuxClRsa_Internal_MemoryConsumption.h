@@ -36,12 +36,18 @@ extern "C" {
 /****************************************************************************/
 /* Definitions of workarea sizes for the mcuxClRsa_privatePlain function.    */
 /****************************************************************************/
+#define MCUXCLRSA_INTERNAL_PRIVATEPLAIN_BLINDING_SIZE (4UL)
+
 /**
  * @defgroup MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WA MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WA
  * @brief Workarea size macros of mcuxClRsa_privatePlain.
  * @ingroup mcuxClRsa_Internal_Macros
  * @{
  */
+#define MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength) \
+    (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength) + 2U * MCUXCLPKC_WORDSIZE)
+    ///< Size of the input buffer for mcuxClRsa_privatePlain, that is allocated in PKC RAM.
+
 #define MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WACPU_SIZE(keyByteLength)  \
     (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_PRIVPLAIN_UPTRT_SIZE * sizeof(uint16_t))) \
      + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(keyByteLength))
@@ -49,7 +55,8 @@ extern "C" {
     ///< Internally, it depends on the byte-length of the exponent, and it is rounded up here, based on the fact that d < n.
 
 #define MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WAPKC_SIZE(keyByteLength)  \
-    (6U * MCUXCLPKC_ROUNDUP_SIZE(keyByteLength) + 10U * MCUXCLPKC_WORDSIZE)
+    (6U * (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength) + MCUXCLPKC_ROUNDUP_SIZE(MCUXCLRSA_INTERNAL_PRIVATEPLAIN_BLINDING_SIZE)) + 12U * MCUXCLPKC_WORDSIZE \
+     + MCUXCLPKC_ROUNDUP_SIZE(MCUXCLRSA_INTERNAL_PRIVATEPLAIN_BLINDING_SIZE))
     ///< Definition of PKC workarea size for the mcuxClRsa_privatePlain function depending on the key byte-length.
 /** @} */
 
@@ -72,7 +79,7 @@ extern "C" {
 
 #define MCUXCLRSA_INTERNAL_PRIVATECRT_WAPKC_SIZE(primeByteLength)  \
     (MCUXCLPKC_ROUNDUP_SIZE(MCUXCLRSA_INTERNAL_PRIVATECRT_BLINDING_SIZE) \
-     + MCUXCLRSA_MAX((8U * MCUXCLPKC_ROUNDUP_SIZE(primeByteLength)) + (8U * MCUXCLPKC_ROUNDUP_SIZE(MCUXCLRSA_INTERNAL_PRIVATECRT_BLINDING_SIZE)) + (12U * MCUXCLPKC_WORDSIZE), \
+     + MCUXCLRSA_MAX((8U * MCUXCLPKC_ROUNDUP_SIZE(primeByteLength)) + (8U * MCUXCLPKC_ROUNDUP_SIZE(MCUXCLRSA_INTERNAL_PRIVATECRT_BLINDING_SIZE)) + (14U * MCUXCLPKC_WORDSIZE), \
                     (6U * MCUXCLPKC_ROUNDUP_SIZE(primeByteLength * 2u)) + (8U * MCUXCLPKC_WORDSIZE)))
     ///< Definition of PKC workarea size for the mcuxClRsa_privateCRT function depending on the byte-length of p.
 /** @} */
@@ -356,19 +363,19 @@ extern "C" {
     ///< Definitions of CPU workarea size for the mcuxClRsa_sign function with pss encoding and a private plain key.
 
 #define MCUXCLRSA_INTERNAL_SIGN_PLAIN_NOENCODE_WAPKC_SIZE(keyByteLength)  \
-    (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength)  \
+    (MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength)  \
      + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_NOENCODE_WAPKC_SIZE,  \
                     MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WAPKC_SIZE(keyByteLength)))
     ///< Definition of PKC workarea size for the mcuxClRsa_Sign function using NOENCODE option and a private plain key.
 
 #define MCUXCLRSA_INTERNAL_SIGN_PLAIN_PSSENCODE_WAPKC_SIZE(keyByteLength)  \
-    (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength)  \
+    (MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength)  \
      + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_PSSENCODE_MAX_WAPKC_SIZE(keyByteLength),  \
                     MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WAPKC_SIZE(keyByteLength)))
     ///< Definition of PKC workarea size for the mcuxClRsa_sign function with pss encoding and a private plain key.
 
 #define MCUXCLRSA_INTERNAL_SIGN_PLAIN_PKCS1V15ENCODE_WAPKC_SIZE(keyByteLength)  \
-    (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength)  \
+    (MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength)  \
      + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_PKCS1V15ENCODE_SIGN_WAPKC_SIZE(keyByteLength),  \
                     MCUXCLRSA_INTERNAL_PRIVATEPLAIN_WAPKC_SIZE(keyByteLength)))
     ///< Definition of PKC workarea size for the mcuxClRsa_sign function with pkcs1v15 encoding and a private plain key.
@@ -430,15 +437,22 @@ extern "C" {
  * @ingroup mcuxClRsa_Internal_Macros
  * @{
  */
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
 #define MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE_WO_RNG(primeByteLength)  \
     MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(primeByteLength)
 ///< Definition of CPU workarea size for the mcuxClRsa_MillerRabinTest function depending on the byte-length of primeByteLength.
+#else
+//The parameters are just to keep the API consistent
+#define MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE_WO_RNG(primeByteLength)  \
+    (0u)
+///< Definition of CPU workarea size for the mcuxClRsa_MillerRabinTest function depending on the byte-length of primeByteLength.
+#endif
 
 #define MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE(primeByteLength)  \
     (MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE_WO_RNG(primeByteLength) + MCUXCLRANDOMMODES_CPUWA_MAXSIZE)
 
 #define MCUXCLRSA_INTERNAL_MILLERRABINTEST_T_BUFFER_SIZE(primeByteLength)  \
-    (9u * MCUXCLPKC_ROUNDUP_SIZE(primeByteLength) + 10u * MCUXCLPKC_WORDSIZE)
+    (9u * MCUXCLPKC_ROUNDUP_SIZE(primeByteLength) + 11u * MCUXCLPKC_WORDSIZE)
     ///< Definition of PKC workarea size for the mcuxClRsa_MillerRabinTest function depending on the byte-length of primeByteLength.
 /** @} */
 
@@ -475,10 +489,17 @@ extern "C" {
  * @ingroup mcuxClRsa_Internal_Macros
  * @{
  */
+#ifndef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
+//The parameters are just to keep the API consistent
+#define MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE_WO_TESTPRIME_AND_MILLERRABIN(primeByteLength)  \
+    (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_GENPRIME_UPTRT_SIZE * sizeof(uint16_t))))
+    ///< Definition of CPU workarea size for the mcuxClRsa_GenerateProbablePrime function depending on the byte-length of primeByteLength without mcuxClRsa_TestPrimeCandidate and mcuxClRsa_MillerRabinTest
+#else
 #define MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE_WO_TESTPRIME_AND_MILLERRABIN(primeByteLength)  \
     (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_GENPRIME_UPTRT_SIZE * sizeof(uint16_t))) \
     + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(primeByteLength))
     ///< Definition of CPU workarea size for the mcuxClRsa_GenerateProbablePrime function depending on the byte-length of primeByteLength without mcuxClRsa_TestPrimeCandidate and mcuxClRsa_MillerRabinTest
+#endif
 
 #define MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE(primeByteLength)  \
     (MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE_WO_TESTPRIME_AND_MILLERRABIN(primeByteLength) \
@@ -515,10 +536,17 @@ extern "C" {
 /*************************************************************************************************************************/
 /* Definitions of generated key data size for the mcuxClRsa_KeyGeneration_Crt and mcuxClRsa_KeyGeneration_Plain functions. */
 /*************************************************************************************************************************/
+#ifndef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
+#define MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WACPU_SIZE  \
+    (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sizeof(mcuxClPkc_State_t)) \
+     + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_UPTRT_SIZE * sizeof(uint16_t))) \
+     + MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE(0))
+#else
 #define MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WACPU_SIZE(primeByteLength)  \
     (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sizeof(mcuxClPkc_State_t)) \
      + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE((MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_UPTRT_SIZE * sizeof(uint16_t))) \
      + MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE(primeByteLength))
+#endif
 
 #define MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_WAPKC_SIZE(primeByteLength)  \
     (MCUXCLPKC_ROUNDUP_SIZE(primeByteLength) \
@@ -527,10 +555,17 @@ extern "C" {
                                  (6u * (MCUXCLPKC_ROUNDUP_SIZE(primeByteLength) + MCUXCLPKC_WORDSIZE) + MCUXCLPKC_WORDSIZE)), \
                                   MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WAPKC_SIZE(primeByteLength)))
 
+#ifndef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
+#define MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WACPU_SIZE  \
+     (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sizeof(mcuxClPkc_State_t)) \
+     + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * sizeof(uint16_t)) \
+     + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE(0), MCUXCLRSA_INTERNAL_COMPUTED_WACPU_SIZE))
+#else
 #define MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WACPU_SIZE(primeByteLength)  \
     (MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sizeof(mcuxClPkc_State_t)) \
      + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * sizeof(uint16_t)) \
      + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE(primeByteLength), MCUXCLRSA_INTERNAL_COMPUTED_WACPU_SIZE))
+#endif
 
 #define MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_WAPKC_SIZE(keyByteLength)  \
     ((2u * (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength / 2u) + MCUXCLPKC_WORDSIZE)) \

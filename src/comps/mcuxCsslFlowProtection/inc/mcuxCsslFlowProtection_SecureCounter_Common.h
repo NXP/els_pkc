@@ -224,9 +224,10 @@
  * \event{MCUX_CSSL_FP_FUNCTION_CALL_IMPL}
  * \expectation{MCUX_CSSL_FP_FUNCTION_CALLED_IMPL}
  *
- * \param id Identifier for the function that is flow protected.
+ * @param id Identifier for the function that is flow protected.
+ * @param ptrType Optional, pointer type matching this function.
  */
-#define MCUX_CSSL_FP_FUNCTION_DECL_IMPL(id) \
+#define MCUX_CSSL_FP_FUNCTION_DECL_IMPL(...) \
   /* Intentionally empty */
 
 /**
@@ -247,10 +248,22 @@
  *
  * Not used in the current implementation.
  *
- * \param id Identifier for the function that is flow protected.
+ * @param id Identifier for the function that is flow protected.
+ * @param ptrType Optional, pointer type matching this function.
  */
-#define MCUX_CSSL_FP_FUNCTION_DEF_IMPL(id) \
+#define MCUX_CSSL_FP_FUNCTION_DEF_IMPL(...) \
   /* Intentionally empty. */
+
+/**
+ * \def MCUX_CSSL_FP_FUNCTION_POINTER_IMPL
+ * \brief Definition implementation of a flow protected function pointer.
+ * \ingroup csslFpNoneFunction
+ *
+ * @param type Identifier for the function pointer type that is flow protected.
+ * @param definition Actual type definition of the function pointer type.
+ */
+#define MCUX_CSSL_FP_FUNCTION_POINTER_IMPL(type, definition) \
+  definition
 
 /**
  * \def MCUX_CSSL_FP_RESULT_OFFSET

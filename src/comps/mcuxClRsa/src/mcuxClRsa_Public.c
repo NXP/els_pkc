@@ -31,6 +31,7 @@
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
+#include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
 #include <internal/mcuxClRsa_Public_FUP.h>
 
@@ -66,7 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
 
 
   /************************************************************************************************/
-  /* Check that modulus is odd and that 64 < pKey->pMod1->keyEntryLength < 512;                   */
+  /* Check that modulus is odd and that 64 < pKey->pMod1->keyEntryLength < 512 or 1024;           */
   /* otherwise return MCUXCLRSA_STATUS_INVALID_INPUT.                                              */
   /************************************************************************************************/
   const uint32_t byteLenN = pKey->pMod1->keyEntryLength;
@@ -76,7 +77,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
 
-  if((byteLenN < 64U) || (byteLenN > 512U) )
+  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
@@ -104,8 +105,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
 
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_PUBLIC_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
-  /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t *pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_FAULT_ATTACK);

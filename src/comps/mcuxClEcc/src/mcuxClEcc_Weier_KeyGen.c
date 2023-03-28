@@ -42,10 +42,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_KeyGen(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_KeyGen);
 
-
     /**********************************************************/
     /* Initialization                                         */
     /**********************************************************/
+
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
     /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
@@ -66,16 +66,25 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_KeyGen(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_KeyGen, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
+    /* Randomize buffers XA/YA/ZA/Z/X0/Y0/X1/Y1. */
+    uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
+    MCUX_CSSL_FP_FUNCTION_CALL(retRandomUptrt,
+                              mcuxClPkc_RandomizeUPTRT(pSession,
+                                                      &pOperands[WEIER_XA],
+                                                      (WEIER_Y1 - WEIER_XA + 1u)) );
+    if (MCUXCLPKC_STATUS_OK != retRandomUptrt)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_KeyGen, MCUXCLECC_STATUS_RNG_ERROR);
+    }
+
     MCUXCLMATH_FP_QSQUARED(ECC_NQSQR, ECC_NS, ECC_N, ECC_T0);
 
-    uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint32_t *pOperands32 = (uint32_t *) pOperands;
     const uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     const uint32_t bufferSize = operandSize + MCUXCLPKC_WORDSIZE;
 
     const uint32_t byteLenP = (pParam->curveParam.misc & mcuxClEcc_DomainParam_misc_byteLenP_mask) >> mcuxClEcc_DomainParam_misc_byteLenP_offset;
     const uint32_t byteLenN = (pParam->curveParam.misc & mcuxClEcc_DomainParam_misc_byteLenN_mask) >> mcuxClEcc_DomainParam_misc_byteLenN_offset;
-
 
     /**********************************************************/
     /* Import and check base point G                          */
@@ -158,8 +167,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_KeyGen(
     }
 
     /* In case d1 is even, perform scalar multiplication d1 * Q0 by computing (n-d1) * (-Q0) as this avoids the exceptional case d1 = n-1 */
-    /* MISRA Ex. 9 - Rule 11.3 - Cast to CPU word aligned */
-    volatile uint32_t *ptrS1 = (volatile uint32_t *)MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S1]);  /* PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    volatile uint32_t *ptrS1 = (volatile uint32_t *)MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S1]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
     MCUX_CSSL_FP_BRANCH_DECL(scalarEvenBranch);
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();
     uint32_t d1Lsbit = *ptrS1 & 0x01u;
@@ -229,10 +239,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_KeyGen(
     if (   (zeroFlag_checkP == MCUXCLPKC_FLAG_ZERO)
         && (zeroFlag_checkN == MCUXCLPKC_FLAG_ZERO) )
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExport, 
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExport,
             mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
-                                                  pParam->pPrivateKey, 
-                                                  MCUXCLPKC_PACKARGS2(ECC_S2, ECC_T0), 
+                                                  pParam->pPrivateKey,
+                                                  MCUXCLPKC_PACKARGS2(ECC_S2, ECC_T0),
                                                   byteLenN) );
         if (MCUXCLPKC_STATUS_OK != ret_SecExport)
         {

@@ -48,7 +48,7 @@
  * needs to calculate only the least significant (rPkcWord - (i+1)) PKC words of X{i+1}.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ExactDivideOdd)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ExactDivideOdd);
 
@@ -67,8 +67,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivideOdd(uint3
     MCUX_CSSL_FP_LOOP_DECL(NDashY);
 
     MCUXCLPKC_PS2_SETLENGTH(0u, MCUXCLPKC_WORDSIZE);  /* MCLEN on higher 16 bits is not used. */
-    /* MISRA Ex. 9 to Rule 11.3 - PKC buffer is CPU word aligned */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
     volatile uint32_t *pT = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetT);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
     MCUXCLPKC_WAITFORFINISH();
     pT[0] = 1u;  /* 1 = (-Y)^(-1) mod 2. */
 
@@ -152,7 +153,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivideOdd(uint3
     MCUXCLPKC_SETUPTRT(backupPtrUptrt);
     MCUXCLPKC_PS1_SETLENGTH_REG(backupPs1LenReg);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_ExactDivideOdd, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_ExactDivideOdd,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUX_CSSL_FP_LOOP_ITERATIONS(NDashY, MCUXCLPKC_LOG2_WORDSIZE + 3u),
         MCUXCLPKC_FP_CALLED_CALC_OP1_NEG );

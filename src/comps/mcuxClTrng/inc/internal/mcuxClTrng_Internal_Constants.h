@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -52,7 +52,7 @@ extern "C" {
  * @ingroup mcuxClTrng_ELS
  * @{
  */
-#define MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE  (32u / sizeof(uint32_t))                    ///< output word size of #mcuxClEls_Rng_DrbgRequestRaw_Async
+#define MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE  (32u)                    ///< output byte size of #mcuxClEls_Rng_DrbgRequestRaw_Async
 #endif
 
 /**

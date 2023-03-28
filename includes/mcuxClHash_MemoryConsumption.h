@@ -30,12 +30,13 @@
 
 #define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MD5          (1u)   ///< Defines the workarea size required for mcuxClHash_compute on MD5
 #define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA_1        (1u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA-1
-#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_224     (64u)  ///< Defines the workarea size required mcuxClHash_compute on for SHA2-224
-#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_256     (64u)  ///< Defines the workarea size required mcuxClHash_compute on for SHA2-256
-#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_384     (128u)  ///< Defines the workarea size required mcuxClHash_compute on for SHA2-384
-#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512     (128u)  ///< Defines the workarea size required mcuxClHash_compute on for SHA2-512
-#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_224 (128u)  ///< Defines the workarea size required mcuxClHash_compute on for SHA2-512/224
-#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_256 (128u)  ///< Defines the workarea size required mcuxClHash_compute on for SHA2-512/256
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_224     (64u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA2-224
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_256     (64u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA2-256
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_384     (128u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA2-384
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512     (128u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA2-512
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_224 (128u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA2-512/224
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_256 (128u)  ///< Defines the workarea size required for mcuxClHash_compute on SHA2-512/256
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA3         (0u)  ///< Defines the workarea size required for mcuxClHash_compute on all SHA3 modes
 #define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX          (128u)  ///< Defines the max workarea size required for mcuxClHash_compute
 
 
@@ -47,6 +48,7 @@
 #define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA2_512     MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512  ///< Defines the workarea size required for mcuxClHash_compare on SHA2-512
 #define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA2_512_224 MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_224  ///< Defines the workarea size required for mcuxClHash_compare on SHA2-512/224
 #define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA2_512_256 MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_256  ///< Defines the workarea size required for mcuxClHash_compare on SHA2-512/256
+#define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA3         (0u)  ///< Defines the workarea size required for mcuxClHash_compare on all SHA3 modes
 #define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MAX          MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX  ///< Defines the max workarea size required for mcuxClHash_compare
 
 #define MCUXCLHASH_INIT_CPU_WA_BUFFER_SIZE                 (0u)  ///< Defines the max workarea size required for mcuxClHash_init
@@ -59,6 +61,7 @@
 #define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA2_512     (1u)  ///< Defines the workarea size required for mcuxClHash_process on SHA2-512
 #define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA2_512_224 (1u)  ///< Defines the workarea size required for mcuxClHash_process on SHA2-512/224
 #define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA2_512_256 (1u)  ///< Defines the workarea size required for mcuxClHash_process on SHA2-512/256
+#define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA3         (0u)  ///< Defines the workarea size required for mcuxClHash_process on all SHA3 modes
 #define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX          (4u)  ///< Defines the max workarea size required for mcuxClHash_process
 
 #define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MD5          (1u)  ///< Defines the workarea size required for mcuxClHash_finish on MD5
@@ -69,6 +72,7 @@
 #define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512     (128u)  ///< Defines the workarea size required for mcuxClHash_finish on SHA2-512
 #define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512_224 (128u)  ///< Defines the workarea size required for mcuxClHash_finish on SHA2-512/224
 #define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512_256 (128u)  ///< Defines the workarea size required for mcuxClHash_finish on SHA2-512/256
+#define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA3         (0u)  ///< Defines the workarea size required for mcuxClHash_finish on all SHA3 modes
 #define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX          (128u)  ///< Defines the max workarea size required for mcuxClHash_finish
 
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MD5          MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MD5  ///< Defines the workarea size required for mcuxClHash_verify on MD5
@@ -79,6 +83,7 @@
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_512     MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512  ///< Defines the workarea size required for mcuxClHash_verify on SHA2-512
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_512_224 MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512_224  ///< Defines the workarea size required for mcuxClHash_verify on SHA2-512/224
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_512_256 MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512_256  ///< Defines the workarea size required for mcuxClHash_verify on SHA2-512/256
+#define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA3         (0u)  ///< Defines the workarea size required for mcuxClHash_verify on all SHA3 modes
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MAX          MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX  ///< Defines the max workarea size required for mcuxClHash_verify
 
 #define MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE               (MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX > MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX ?   \

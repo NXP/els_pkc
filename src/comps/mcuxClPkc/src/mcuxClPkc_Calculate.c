@@ -29,7 +29,7 @@
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Calc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Calc(uint16_t param_mode, uint32_t iR_iX_iY_iZ)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Calc(uint16_t param_mode, uint32_t iR_iX_iY_iZ)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_Calc);
 
@@ -74,12 +74,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Calc(uint16_t param_mo
     MCUXCLPKC_SFR_WRITE(CTRL, pkc_ctrl);
     MCUXCLPKC_PKC_BLOCK_CPU_WORKAROUND();
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_Calc, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_Calc);
 }
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_CalcConst)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_CalcConst(uint16_t param_mode, uint32_t iR_iX_iY_C)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcConst(uint16_t param_mode, uint32_t iR_iX_iY_C)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_CalcConst);
 
@@ -116,12 +116,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_CalcConst(uint16_t par
     MCUXCLPKC_SFR_WRITE(CTRL, pkc_ctrl);
     MCUXCLPKC_PKC_BLOCK_CPU_WORKAROUND();
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_CalcConst, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_CalcConst);
 }
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_CalcFup)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_CalcFup(mcuxClPkc_PtrFUPEntry_t pUPTR, uint8_t uLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcFup(mcuxClPkc_PtrFUPEntry_t pUPTR, uint8_t uLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_CalcFup);
 
@@ -135,7 +135,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_CalcFup(mcuxClPkc_PtrF
     MCUXCLPKC_SFR_WRITE(CTRL, pkc_ctrl);
     MCUXCLPKC_PKC_BLOCK_CPU_WORKAROUND();
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_CalcFup, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_CalcFup);
 }
 
 

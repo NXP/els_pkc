@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2018-2022 NXP                                                  */
+/* Copyright 2018-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -36,8 +36,7 @@
 /* PKC information                                        */
 /**********************************************************/
 #define MCUXCLOSCCAPKC_PKC_RAM_BASEADDR              ((uint32_t)PKC_RAM_ADDR)
-#define MCUXCLOSCCAPKC_WORD_SIZE                     (8U)
-#define MCUXCLOSCCAPKC_PKC_WORD_SIZE_REDMUL          (0x2U)
+#define MCUXCLOSCCAPKC_WORD_SIZE                     (PKC_WORD_SIZE)
 
 /**
  * @}

@@ -181,6 +181,11 @@ struct mcuxClEcc_CommonDomainParams
 /**********************************************************/
 
 /**
+ * Macro to provide truncated digest length
+ */
+#define MCUXCLECC_TRUNCATED_HASH_LEN(hash, max_len) ((hash < max_len) ? hash: max_len)
+
+/**
  * Options to determine whether scalar multiplication input/output are in affine or projective format.
  */
 #define MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT    (0x000000A5u)
@@ -207,6 +212,9 @@ struct mcuxClEcc_CommonDomainParams
 /* Internal function declarations                         */
 /*                                                        */
 /**********************************************************/
+
+/** Helper macro to get the minimum of two given constants. */
+#define MCUXCLECC_MIN(value0, value1)  (((value0) < (value1)) ? (value0) : (value1))
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_InterleaveTwoScalars)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_InterleaveTwoScalars(uint16_t iScalar0_iScalar1, uint32_t scalarBitLength);

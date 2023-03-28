@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -30,8 +30,9 @@
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_KeyDelete_Async)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelete_Async(
         mcuxClEls_KeyIndex_t keyIdx)
-{   
+{
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_KeyDelete_Async);
+
     MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_KeyDelete_Async, (ELS_KS_CNT <= keyIdx));
 
     /* ELS SFRs are not cached => Tell SW to wait for ELS to come back from BUSY state before modifying the SFRs */
@@ -40,68 +41,14 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelet
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyDelete_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
 
+
     mcuxClEls_setKeystoreIndex0(keyIdx);
     mcuxClEls_startCommand(ID_CFG_ELS_CMD_KDELETE, 0U, ELS_CMD_BIG_ENDIAN);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyDelete_Async, MCUXCLELS_STATUS_OK_WAIT);
 }
 
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_KeyProvision_Async)
-MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyProvision_Async(
-    mcuxClEls_KeyProvisionOption_t options,
-    uint8_t const * pKeyPart1,
-    uint8_t const * pKeyPart2,
-    size_t part2Length,
-    mcuxClEls_KeyIndex_t targetKeyIdx,
-    mcuxClEls_KeyProp_t targetKeyProperties)
-{
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_KeyProvision_Async);
-    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_KeyProvision_Async, (ELS_KS_CNT <= targetKeyIdx) || (0U == part2Length));
 
-    if (mcuxClEls_isBusy())
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyProvision_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
-    }
-
-    mcuxClEls_setInput0(pKeyPart2, part2Length);
-    mcuxClEls_setInput1_fixedSize(pKeyPart1);
-    mcuxClEls_setKeystoreIndex1(targetKeyIdx);
-    mcuxClEls_setRequestedKeyProperties(targetKeyProperties.word.value);
-
-    mcuxClEls_startCommand(ID_CFG_ELS_CMD_KEYPROV, options.word.value, ELS_CMD_BIG_ENDIAN);
-
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyProvision_Async, MCUXCLELS_STATUS_OK_WAIT);
-}
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
-
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_KeyProvisionRom_Async)
-MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyProvisionRom_Async(
-        mcuxClEls_KeyProvisionOption_t options,
-        uint8_t const * pTesterShare,
-        uint32_t keyShareIdx,
-        mcuxClEls_KeyIndex_t targetKeyIdx,
-        mcuxClEls_KeyProp_t targetKeyProperties)
-{
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_KeyProvisionRom_Async);
-    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_KeyProvisionRom_Async, (ELS_KS_CNT <= targetKeyIdx) || (MCUXCLELS_KEYPROV_KEYSHARE_TABLE_SIZE <= keyShareIdx));
-
-    if (mcuxClEls_isBusy())
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyProvisionRom_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
-    }
-
-    mcuxClEls_setInput0(pTesterShare, MCUXCLELS_KEYPROV_TESTERSHARE_SIZE);
-    mcuxClEls_setKeystoreIndex1(keyShareIdx);
-    mcuxClEls_setKeystoreIndex0(targetKeyIdx);
-    mcuxClEls_setRequestedKeyProperties(targetKeyProperties.word.value);
-
-    mcuxClEls_startCommand(ID_CFG_ELS_CMD_KEYPROV, options.word.value, ELS_CMD_BIG_ENDIAN);
-
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyProvisionRom_Async, MCUXCLELS_STATUS_OK_WAIT);
-}
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM */
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_KeyImport_Async)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyImport_Async(

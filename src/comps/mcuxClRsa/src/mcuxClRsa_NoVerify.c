@@ -17,7 +17,7 @@
 
 
 #include <stdint.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
@@ -62,8 +62,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
 
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_NOVERIFY_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
-  /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   const uint32_t keyByteLength = keyBitLength / 8U; /* keyBitLength is a multiple of 8 */
   const uint32_t pkcWaSizeWord = MCUXCLPKC_ROUNDUP_SIZE(keyByteLength) / (sizeof(uint32_t));
@@ -80,7 +81,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
   MCUXCLPKC_SETUPTRT(pOperands);
 
   /* Export result of size BYTE_LENGTH(keyBitLength) from pInput to pOutput in reverse order. */
-  MCUXCLPKC_PS1_SETLENGTH(0u, MCUXCLPKC_ROUNDUP_SIZE(keyByteLength)); /* PS1 length = key byte length rounded up to PKC word size */
+  const uint32_t ps1OpLen = MCUXCLPKC_ROUNDUP_SIZE(keyByteLength); /* PS1 length = key byte length rounded up to PKC word size */
+  MCUXCLPKC_PS1_SETLENGTH(0u, ps1OpLen);
   MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExport, mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
                                                                                  (uint8_t * )pOutput,
                                                                                  MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_NOVERIFY_IN,

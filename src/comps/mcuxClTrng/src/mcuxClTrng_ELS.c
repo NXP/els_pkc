@@ -16,7 +16,7 @@
  *  handling of Trng random number. This file implements the functions
  *  declared in mcuxClTrng_Internal_Functions.h. */
 
-
+#include <mcuxClToolchain.h>
 #include <mcuxClSession.h>
 #include <mcuxClEls.h>
 #include <mcuxCsslMemory.h>
@@ -32,14 +32,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void)
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClTrng_getEntropyInput)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
-    mcuxClSession_Handle_t pSession,
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint32_t *pEntropyInput,
     uint32_t entropyInputLength
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClTrng_getEntropyInput);
-
-    (void) pSession; // Parameter not needed in this mode.
 
     /**
      * ELS DTRNG output size must be 32 bytes.
@@ -65,7 +63,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
     {
         for(uint32_t i = 0; i < requestSizeLoop; i++)
         {
-            MCUX_CSSL_FP_FUNCTION_CALL(ret_DTRNG_GetTrng1, mcuxClEls_Rng_DrbgRequestRaw_Async((uint8_t *)&pEntropyInput[i*MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE]));
+            MCUX_CSSL_FP_FUNCTION_CALL(ret_DTRNG_GetTrng1, mcuxClEls_Rng_DrbgRequestRaw_Async((uint8_t *)&pEntropyInput[i*MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE/sizeof(uint32_t)]));
             if (MCUXCLELS_STATUS_OK_WAIT != ret_DTRNG_GetTrng1)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_ERROR,
@@ -86,9 +84,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
     /* If requested size is not a multiple of 32, request one (additional) 32 bytes and use it only partially. */
     if (requestSizeRemainingBytes > 0u)
     {
-        uint32_t requestRemainingBuffer[MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE] = {0u};
+        uint8_t requestRemainingBuffer[MCUXCLTRNG_ELS_TRNG_OUTPUT_SIZE] = {0u};
 
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_DTRNG_GetTrng2, mcuxClEls_Rng_DrbgRequestRaw_Async((uint8_t *)requestRemainingBuffer));
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_DTRNG_GetTrng2, mcuxClEls_Rng_DrbgRequestRaw_Async(requestRemainingBuffer));
         if (MCUXCLELS_STATUS_OK_WAIT != ret_DTRNG_GetTrng2)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_ERROR,
@@ -106,9 +104,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
 
         /* Copy the remaining bytes from the buffer to output. */
         MCUX_CSSL_FP_FUNCTION_CALL(copy_result, mcuxCsslMemory_Copy(
-           mcuxCsslParamIntegrity_Protect(4u, requestRemainingBuffer, &pEntropyInput[requestSizeFullWordsBytes], requestSizeRemainingBytes, requestSizeRemainingBytes),
+           mcuxCsslParamIntegrity_Protect(4u, requestRemainingBuffer, &pEntropyInput[requestSizeFullWordsBytes/sizeof(uint32_t)], requestSizeRemainingBytes, requestSizeRemainingBytes),
                requestRemainingBuffer,
-               &pEntropyInput[requestSizeFullWordsBytes],
+               &pEntropyInput[requestSizeFullWordsBytes/sizeof(uint32_t)],
                requestSizeRemainingBytes,
                requestSizeRemainingBytes)
         );

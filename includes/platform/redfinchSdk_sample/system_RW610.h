@@ -1,10 +1,8 @@
 /*
 ** ###################################################################
-**     Processors:          RW610EVA0IK
-**                          RW610EVA0IMP
-**                          RW610HNA0IK
-**                          RW610HNA0IMP
-**                          RW610UKA0IZ
+**     Processors:          RW610ETA1I
+**                          RW610HNA1I
+**                          RW610UKA1I
 **
 **     Compilers:           GNU C Compiler
 **                          IAR ANSI C/C++ Compiler for ARM
@@ -13,7 +11,7 @@
 **
 **     Reference manual:    RW61X User manual Rev. 0.95, June 2022
 **     Version:             rev. 1.0, 2021-03-16
-**     Build:               b220615
+**     Build:               b221116
 **
 **     Abstract:
 **         Provides a system configuration function and a global variable that
@@ -39,7 +37,7 @@
 /*!
  * @file RW610
  * @version 1.0
- * @date 2022-06-15
+ * @date 2022-11-16
  * @brief Device specific configuration file for RW610 (header file)
  *
  * Provides a system configuration function and a global variable that contains
@@ -47,7 +45,7 @@
  * (PLL) that is part of the microcontroller device.
  */
 #ifndef _SYSTEM_RW610_H_
-#define _SYSTEM_RW610_H_ /**< Symbol preventing repeated inclusion */
+#define _SYSTEM_RW610_H_                    /**< Symbol preventing repeated inclusion */
 
 #ifdef __cplusplus
 extern "C" {

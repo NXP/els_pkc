@@ -29,6 +29,7 @@
 /* Initialization */
 #define MCUXCLECC_FP_KEYGEN_INIT  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Weier_SetupEnvironment),  \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_RandomizeUPTRT),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_QSquared)
 
 /* Import/check base point */
@@ -83,6 +84,7 @@
 
 #define MCUXCLECC_FP_SIGN_BEFORE_LOOP  \
     MCUXCLECC_FP_SIGN_INIT, \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_RandomizeUPTRT),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_QSquared)
 
 /* Mail loop - first part, until checking r */
@@ -136,6 +138,7 @@
 /* Initialization */
 #define MCUXCLECC_FP_POINTMULT_INIT  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Weier_SetupEnvironment),  \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_RandomizeUPTRT),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_QDash)
 
 /* Import/check base point */

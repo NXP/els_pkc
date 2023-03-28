@@ -28,10 +28,10 @@ extern "C" {
 #endif
 
 /**
- * FUP program declaration mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN
+ * FUP program declaration mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN
  */
-#define mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN_LEN  7u
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN[mcuxClEcc_EdDSA_Internal_CalcHashModN_ModN_LEN];
+#define mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN_LEN  7u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN[mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN_LEN];
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -16,7 +16,7 @@
 
 #include <mcuxClCore_Platform.h>
 
-#define MCUXCLKEY_DESCRIPTOR_SIZE          (52u)
+#define MCUXCLKEY_DESCRIPTOR_SIZE          (56u)
 #define MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS (MCUXCLKEY_DESCRIPTOR_SIZE / sizeof(uint32_t))
 
 #define MCUXCLKEY_TYPEDESCRIPTOR_SIZE          (12u)

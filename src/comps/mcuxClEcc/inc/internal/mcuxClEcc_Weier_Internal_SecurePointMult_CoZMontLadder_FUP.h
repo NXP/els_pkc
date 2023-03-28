@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021,2023 NXP                                             */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -27,17 +27,26 @@
 /**
  * FUP program declaration mcuxClEcc_FUP_Weier_CoZPointAddSub
  */
-#define mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN1  16u
-#define mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN2   7u
+#define mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN1   7u
+#define mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN2   18u
+#define mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN3   3u
 #define mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN  \
-    (mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN1 + mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN2)
+    (mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN1 + mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN2 + mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN3)
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoZPointAddSub[mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN];
+
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP
+ */
+#define mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP_LEN  8
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP[mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP_LEN];
+
 
 /**
  * FUP program declaration mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1
  */
 #define mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN1  4u
-#define mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN2  9u
+#define mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN2  11u
 #define mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN3  5u
 #define mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN  \
     (  mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN1  \

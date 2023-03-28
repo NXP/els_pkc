@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,6 +25,7 @@
 #include <mcuxClMath.h>
 #include <mcuxClSession.h>
 #include <mcuxClEcc.h>
+#include <mcuxClRandom.h>
 
 #include <internal/mcuxClMath_Internal_Utils.h>
 #include <internal/mcuxClPkc_Operations.h>
@@ -76,7 +77,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     const uint32_t opLen = MCUXCLPKC_PS1_UNPACK_OPLEN(mcLen_opLen);
 
     /* Count leading zeros in most significant word of n. */
-    const uint32_t *ptr32N = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);  /* PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    const uint32_t *ptr32N = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
     const uint32_t wordNumN = (nByteLength + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t nMSWord = ptr32N[wordNumN - 1u];
@@ -99,14 +102,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     /*         compute v = ModInv(d0) = d0^(-1) mod n.        */
     /**********************************************************/
 
-    uint32_t *ptr32S0 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S0]);  /* PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    uint32_t *ptr32S0 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S0]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
 
     /* Generate S0 = 64-bit random d0, with PRNG. */
     MCUXCLPKC_WAITFORFINISH();
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng1, mcuxClRandom_ncGenerate(pSession, (uint8_t*)&ptr32S0[0], (2U * sizeof(uint32_t))));
     if (MCUXCLRANDOM_STATUS_OK != ret_Prng1)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
     }
     ptr32S0[0] |= 0x00000001u;  /* Set LSbit. */
     ptr32S0[1] |= 0x80000000u;  /* Set MSbit. */
@@ -121,14 +127,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     uint8_t *ptrS2 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S2]);
 
     /* Derive the security strength required for the RNG from bitLenN / 2 and check whether it can be provided. */
-//  TODO: activate this check when 256-bit RNG is available (CLNS-2440)
-//  MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, (nByteLength * 8u) / 2u));
-//  if (MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
-//  {
-//      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
-//          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-//          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength) );
-//  }
 
     const uint32_t keySeedLength = (wordNumN * (sizeof(uint32_t))) + 8u;
     MCUXCLECC_FP_RANDOM_HQRNG_PKCWA(mcuxClEcc_Int_CoreKeyGen, pSession, ptrS2, keySeedLength);
@@ -145,7 +143,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom_r, mcuxClRandom_ncGenerate(pSession, ptrS3, (wordNumN * (sizeof(uint32_t))) + 8u));
     if (MCUXCLRANDOM_STATUS_OK != ret_PRNG_GetRandom_r)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
     }
 
     /* Step 3: Truncate c and r to (bitLenN + 64)-bit, with OPLEN = pkcByteLenN65.                */
@@ -227,7 +227,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
         /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
         /* Step 2 */
-//      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
         MCUXCLECC_FP_CALLED_RANDOM_HQRNG_PKCWA,
         /* Step 3 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),

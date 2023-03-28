@@ -12,13 +12,13 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file  mcuxCsslMemory_Copy_asm.h
+ * @file  mcuxCsslMemory_Internal_Copy_asm.h
  * @brief Internal header of mcuxCsslMemory_Copy inline-asm macro
  */
 
 
-#ifndef MCUXCSSLMEMORY_COPY_ASM_H_
-#define MCUXCSSLMEMORY_COPY_ASM_H_
+#ifndef MCUXCSSLMEMORY_INTERNAL_COPY_ASM_H_ 
+#define MCUXCSSLMEMORY_INTERNAL_COPY_ASM_H_ 
 
 
 #if defined( __ICCARM__ ) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
@@ -294,4 +294,4 @@ mcuxCsslMemory_Copy_fault:  \
 #endif /* Compiler selection */
 
 
-#endif /* MCUXCSSLMEMORY_COPY_ASM_H_ */
+#endif /* MCUXCSSLMEMORY_INTERNAL_COPY_ASM_H_  */

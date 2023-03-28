@@ -47,12 +47,17 @@ extern "C" {
  * @ingroup mcuxClHash_Constants
  * @{
  */
-#define MCUXCLHASH_BLOCK_SIZE_SHA_1         (64U) ///< SHA-1 block size: 512 bit (64 bytes)
-#define MCUXCLHASH_BLOCK_SIZE_SHA_224       (64U) ///< SHA-224 block size: 512 bit (64 bytes)
-#define MCUXCLHASH_BLOCK_SIZE_SHA_256       (64U) ///< SHA-256 block size: 512 bit (64 bytes)
-#define MCUXCLHASH_BLOCK_SIZE_SHA_384      (128U) ///< SHA-384 block size: 1024 bit (128 bytes)
-#define MCUXCLHASH_BLOCK_SIZE_SHA_512      (128U) ///< SHA-512 block size: 1024 bit (128 bytes)
-#define MCUXCLHASH_BLOCK_SIZE_MD5           (64U) ///< MD5 block size: MD5 bit (64 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA_1              (64U) ///< SHA-1 block size: 512 bit (64 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA_224            (64U) ///< SHA-224 block size: 512 bit (64 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA_256            (64U) ///< SHA-256 block size: 512 bit (64 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA_384           (128U) ///< SHA-384 block size: 1024 bit (128 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA_512           (128U) ///< SHA-512 block size: 1024 bit (128 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_MD5                (64U) ///< MD5 block size: MD5 bit (64 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA3_224          (144U) ///< SHA3-224 block size: 1152 bit (144 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA3_256          (136U) ///< SHA3-256 block size: 1088 bit (136 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA3_384          (104U) ///< SHA3-384 block size: 832 bit (104 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA3_512           (72U) ///< SHA3-512 block size: 576 bit (72 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SM3                (64U) ///< SM3 block size: 512 bit (64 bytes)
 
 #define MCUXCLHASH_STATE_SIZE_SHA_1         (20U) ///< SHA-1 state size: 160 bit (20 bytes)
 #define MCUXCLHASH_STATE_SIZE_SHA_224       (32U) ///< SHA-224 state size: 256 bit (32 bytes)
@@ -60,8 +65,8 @@ extern "C" {
 #define MCUXCLHASH_STATE_SIZE_SHA_384       (64U) ///< SHA-224 state size: 512 bit (64 bytes)
 #define MCUXCLHASH_STATE_SIZE_SHA_512       (64U) ///< SHA-224 state size: 623 bit (64 bytes)
 #define MCUXCLHASH_STATE_SIZE_MD5           (16U) ///< MD5 state size: 64 bit (8 bytes)
-
-#define MCUXCLHASH_STATE_SIZE_SHA3         (200U) ///< SHA3 all variants state size: (200 bytes of the ctx S3HA)
+#define MCUXCLHASH_STATE_SIZE_SM3           (32u) ///< SM3 state size: 256 bit (32 bytes)
+#define MCUXCLHASH_STATE_SIZE_SHA3         (200U) ///< SHA3 all variants state size: 1600 bits (200 bytes)
 
 #define MCUXCLHASH_COUNTER_SIZE_SHA_1        (8U) ///< Counter size for SHA-1 padding
 #define MCUXCLHASH_COUNTER_SIZE_SHA_224      (8U) ///< Counter size for SHA-224 padding
@@ -72,7 +77,6 @@ extern "C" {
 
 #define MCUXCLHASH_NO_OF_ROUNDS_SHA_1       (80U) ///< Number of rounds for SHA-1 algorithm
 #define MCUXCLHASH_NO_OF_ROUNDS_MD5         (64u) ///< Number of rounds for MD5 algorithm
-
 
 /**@}*/
 
@@ -98,6 +102,7 @@ extern "C" {
  */
 typedef struct mcuxClHash_ContextBuffer
 {
+ /* Warning: Entries must be added in the correct sorted order, from max to min. */
   uint8_t unprocessed[MCUXCLHASH_BLOCK_SIZE_SHA_512];
   uint8_t state[MCUXCLHASH_STATE_SIZE_SHA_512];
 } mcuxClHash_ContextBuffer_t;
@@ -203,6 +208,10 @@ struct mcuxClHash_AlgorithmDescriptor
   uint32_t protection_token_processSkeleton;               ///< Protection token value for the used process skeleton
   mcuxClHash_AlgoSkeleton_Finish_t finishSkeleton;          ///< Multi-part hash skeleton function
   uint32_t protection_token_finishSkeleton;                ///< Protection token value for the used multi-part skeleton
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+  mcuxClHash_AlgoDmaProtection_t dmaProtection;             ///< DMA protection function
+  uint32_t protection_token_dma_protection;                ///< Protection token value for the used DMA protection function
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
   size_t blockSize;                                        ///< Size of the block used by the hash algorithm
   size_t hashSize;                                         ///< Size of the output of the hash algorithm
   size_t stateSize;                                        ///< Size of the state used by the hash algorithm

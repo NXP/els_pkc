@@ -716,30 +716,32 @@ psa_status_t psa_driver_wrapper_import_key(
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result,tokenNxpClMemory_copy,mcuxClMemory_copy(
-                                                                                      key_buffer,
-                                                                                      data,
-                                                                                      data_length,
-                                                                                      data_length));
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy) || (0u != result))
+        mcuxClKey_Descriptor_t key_descriptor = {0};
+
+        /* prepare the key container as expected by oracle */
+        key_descriptor.container.pData    = (uint8_t *)key_buffer;
+        key_descriptor.container.length   = (uint16_t)key_buffer_size;
+        key_descriptor.container.used     = (uint16_t)key_buffer_size;
+        key_descriptor.container.pAuxData = (void *)attributes;
+
+        status = mcuxClPsaDriver_Oracle_ImportKey(&key_descriptor,
+                                                  data,
+                                                  data_length,
+                                                  key_buffer_length,
+                                                  bits);
+
+        if ((PSA_ERROR_NOT_SUPPORTED != status) && (PSA_SUCCESS != status))
         {
             return PSA_ERROR_GENERIC_ERROR;
+            return status;
         }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-        *key_buffer_length = data_length;
-
-        mcuxClKey_Descriptor_t key_descriptor;
-        // store/backup the attributes and key buffer to the key container, the Oracle expects them to be there
-        key_descriptor.container.pData     = (uint8_t*)key_buffer;
-        key_descriptor.container.length    = (uint16_t)key_buffer_size;
-        key_descriptor.container.used      = (uint16_t)key_buffer_size;
-        key_descriptor.container.pAuxData  = (void*)attributes;
-        psa_status_t ret = mcuxClPsaDriver_Oracle_ImportKey (&key_descriptor, bits);
-        if(PSA_SUCCESS == ret)
+        else
         {
-            return PSA_SUCCESS;
+            // reset to default
+            status = PSA_ERROR_CORRUPTION_DETECTED;
         }
+
+        return PSA_SUCCESS;
     }
     else
     {

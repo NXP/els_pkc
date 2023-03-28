@@ -258,16 +258,20 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             pubKeyData.container.pData = (uint8_t *)pDomainParameters->common.pGx;
 
             /* Call Dh KeyAgreement for public keys generation and check FP and return code */
+            uint32_t outLength = 0u;
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyagreement_result, keyagreement_token, mcuxClEcc_Mont_DhKeyAgreement(&session,
                                                                                             (mcuxClKey_Handle_t) &privKeyData,
                                                                                             (mcuxClKey_Handle_t) &pubKeyData,
                                                                                             (uint8_t *)(data+1u),
-                                                                                            (uint32_t *)data_length));
+                                                                                            &outLength));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != keyagreement_token) || (MCUXCLECC_STATUS_OK != keyagreement_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+            *data_length = (size_t)outLength;
+
             *data = 0x04;
             *data_length += 1u;
 
@@ -341,16 +345,20 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             pubKeyData.container.pData = (uint8_t *)pDomainParameters->common.pGx;
 
             /* Call Dh KeyAgreement for public keys generation and check FP and return code */
+            uint32_t outLength = 0u;
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyagreement_result, keyagreement_token, mcuxClEcc_Mont_DhKeyAgreement(&session,
                                                                                             (mcuxClKey_Handle_t) &privKeyData,
                                                                                             (mcuxClKey_Handle_t) &pubKeyData,
                                                                                             (uint8_t *)(data+1u),
-                                                                                            (uint32_t *)data_length));
+                                                                                            &outLength));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != keyagreement_token) || (MCUXCLECC_STATUS_OK != keyagreement_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+            *data_length = (size_t)outLength;
+
             *data = 0x04;
             *data_length += 1u;
 

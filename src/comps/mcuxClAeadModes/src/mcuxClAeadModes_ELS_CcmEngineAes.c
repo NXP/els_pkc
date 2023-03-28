@@ -14,6 +14,7 @@
 /** @file  mcuxClAeadModes_ELS_CcmEngineAes.c
  *  @brief implementation of the AES CCM Engine functions of the mcuxClAead component */
 
+#include <mcuxClToolchain.h>
 #include <mcuxClAead.h>
 #include <internal/mcuxClAeadModes_Internal.h>
 #include <mcuxClMemory.h>
@@ -30,7 +31,7 @@
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAead_ModeEngineAesCcmEls)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls (
-  mcuxClSession_Handle_t session,
+  mcuxClSession_Handle_t session UNUSED_PARAM,
   mcuxClAeadModes_Context_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
@@ -134,6 +135,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 
     }
@@ -177,6 +187,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
 
     }
@@ -205,6 +223,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeEngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
+        }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     }
 

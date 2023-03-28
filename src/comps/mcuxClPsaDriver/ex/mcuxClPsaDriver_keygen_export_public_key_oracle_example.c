@@ -25,7 +25,7 @@
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxCsslFlowProtection.h> // Code flow protection
-#include <nxpClToolchain.h> // memory segment definitions
+#include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>
@@ -54,19 +54,6 @@ static bool load_key_udf(
     uint8_t * pOutKey                       ///< Pointer to a memory location which receives the key which was loaded
 )
 {
-    #if MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM == 1
-    uint8_t tester_share[MCUXCLELS_KEYPROV_TESTERSHARE_SIZE] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-    };
-
-    uint8_t key_share_idx  = 0x00;
-    // Desired key value
-    const static uint8_t aes256_key[MCUXCLELS_CIPHER_KEY_SIZE_AES_256] = {
-        0x6F, 0x64, 0x63, 0xC2, 0xE7, 0x5E, 0xC4, 0x93, 0x98, 0x83, 0x95, 0xCA, 0x65, 0xB5, 0xBD, 0xAC,
-        0xE0, 0xF1, 0x84, 0xE0, 0xAE, 0xE7, 0xD5, 0x24, 0x93, 0x88, 0x09, 0xA4, 0x82, 0x69, 0xE2, 0x2C
-    };
-    #else
     uint8_t keyprov_external_part1[MCUXCLELS_KEYPROV_KEY_PART_1_SIZE]  = {
         0x02, 0xed, 0x0c, 0xee, 0x10, 0x3d, 0x7b, 0x5a,
         0x74, 0xbf, 0x2e, 0xdf, 0x9f, 0x08, 0x68, 0xb6,
@@ -88,34 +75,7 @@ static bool load_key_udf(
       0xee, 0x72, 0x57, 0x7b, 0x51, 0x42, 0xce, 0xe7,
       0x54, 0x9a, 0x67, 0xb2, 0x96, 0x63, 0x4c, 0x68
     };
-    #endif
 
-    #if MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM == 1
-    mcuxClEls_KeyProvisionOption_t key_provision_options;
-    key_provision_options.word.value = 0U;
-    key_provision_options.bits.noic = MCUXCLELS_KEYPROV_NOIC_ENABLE;
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_KeyProvisionRom, token_KeyProvisionRom, mcuxClEls_KeyProvisionRom_Async(
-            key_provision_options,
-            tester_share,
-            key_share_idx,
-            targetKeyIdx,
-            targetKeyProperties
-    ));
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyProvisionRom_Async) != token_KeyProvisionRom) || (MCUXCLELS_STATUS_OK_WAIT != ret_KeyProvisionRom))
-    {
-        return false; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_WaitForOperation, token_WaitForOperation, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token_WaitForOperation) || (MCUXCLELS_STATUS_OK != ret_WaitForOperation))
-    {
-        return false; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    #else
     mcuxClEls_KeyProvisionOption_t options;
     options.word.value = 0;
     options.bits.noic  = 1;
@@ -141,7 +101,6 @@ static bool load_key_udf(
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    #endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
     if (NULL != pOutKey)
     {
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (&pOutKey[0],
@@ -319,7 +278,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
       .domain_parameters_size = 0U};
 
     /* Call generate_key operation */
-    uint32_t keyBuffer[32u/sizeof(uint32_t)] = {0}; //key buffer to be able to store whole 256bit long key, but key index inside. keyIdx 32bit long, so buffer word wise aligned
+    uint32_t keyBuffer[32u/sizeof(uint32_t)] = {0};
     size_t key_buffer_length = 0U;
 
     psa_status_t status = psa_driver_wrapper_generate_key(

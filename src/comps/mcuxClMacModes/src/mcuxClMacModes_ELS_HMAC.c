@@ -14,7 +14,7 @@
 /** @file  mcuxClMacModes_ELS_HMAC.c
  *  @brief implementation of the HMAC part of mcuxClMac component using ELS */
 
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <mcuxClMac.h>
 
 #include <mcuxClEls.h>
@@ -157,6 +157,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_HMAC_Onesh
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
     }
 
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+    if(NULL != pOut)
+    {
+        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(pOut, MCUXCLELS_HMAC_OUTPUT_SIZE));
+
+        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_HMAC_Oneshot, MCUXCLMAC_STATUS_FAULT_ATTACK);
+        }
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     *pOutLength = MCUXCLELS_HMAC_OUTPUT_SIZE;
 
@@ -206,9 +217,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_HMAC_Final
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_HMAC_Finalize, MCUXCLMAC_STATUS_ERROR);
 }
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_HMAC_Els = {
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_LONG_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   .engineInit = mcuxClMacModes_Engine_HMAC_Init,
   .protectionToken_engineInit = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_HMAC_Init),
   .engineUpdate = mcuxClMacModes_Engine_HMAC_Update,

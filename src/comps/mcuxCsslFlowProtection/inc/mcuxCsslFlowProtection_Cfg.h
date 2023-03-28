@@ -28,12 +28,12 @@
  */
 
 /**
- * \def MCUX_CSSL_FP_USE_HW_CSW
+ * \def MCUX_CSSL_FP_USE_CODE_SIGNATURE
  * \brief If set to 1, use the flow protection mechanism implementation based on
- *        the code signature watchdog (CSW) HW IP block.
+ *        the Zen-V code signature HW mechanism.
  * \ingroup mcuxCsslFlowProtection_CFG
  */
-    #define MCUX_CSSL_FP_USE_HW_CSW      0
+    #define MCUX_CSSL_FP_USE_CODE_SIGNATURE      0
 
 /**
  * \def MCUX_CSSL_FP_USE_SECURE_COUNTER

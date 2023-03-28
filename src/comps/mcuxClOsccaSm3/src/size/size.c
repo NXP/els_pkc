@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,14 +23,14 @@
 #if defined(MCUXCL_FEATURE_HASH_HW_SM3)
 
 /* Hash Cpu Workarea size generation */
-volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
-volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuMax [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 3u * MCUXCLOSCCASM3_STATE_SIZE_SM3]; // one additional state for compare
+volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuMax [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 3u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
 volatile uint8_t mcuxClOsccaSm3_process_WaCpuSm3 [MCUXCLOSCCASM3_STATE_SIZE_SM3];
 volatile uint8_t mcuxClOsccaSm3_process_WaCpuMax [MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
-volatile uint8_t mcuxClOsccaSm3_finish_WaCpuSm3 [MCUXCLOSCCASM3_STATE_SIZE_SM3];
-volatile uint8_t mcuxClOsccaSm3_finish_WaCpuMax [MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_finish_WaCpuSm3 [2u * MCUXCLOSCCASM3_STATE_SIZE_SM3]; // one additional state for compare
+volatile uint8_t mcuxClOsccaSm3_finish_WaCpuMax [2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
 /* Hash multi-part context size generation */
 volatile uint8_t mcuxClOsccaSm3_Ctx_size[sizeof(mcuxClHash_ContextDescriptor_t)];

@@ -43,7 +43,7 @@
  * of Y' if the number of leading zeros of Y' exceeds a PKC word.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ExactDivide)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivide(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ExactDivide);
 
@@ -59,19 +59,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t
 
     uint32_t uptrtIndexY = (iR_iX_iY_iT >> 8) & 0xFFu;
 
-    uint32_t noOfTrailingZeroBits;
-    /* mcuxClMath_TrailingZeros always returns _OK. */
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_TrailingZeros(uptrtIndexY, &noOfTrailingZeroBits));
+    MCUX_CSSL_FP_FUNCTION_CALL(noOfTrailingZeroBits, mcuxClMath_TrailingZeros((uint8_t)uptrtIndexY));
     uint32_t noOfTrailingZeroPkcWords = noOfTrailingZeroBits / (8u * MCUXCLPKC_WORDSIZE);
 
     /* If number of trailing zero bits exceeds a PKC word, shift pointer in UPTR table. */
     uint32_t noOfShiftBytes = noOfTrailingZeroPkcWords * MCUXCLPKC_WORDSIZE;
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    pOperands[uptrtIndexY] = pOperands[uptrtIndexY] + noOfShiftBytes;
+    pOperands[uptrtIndexY] = (uint16_t) (pOperands[uptrtIndexY] + noOfShiftBytes);
 
     uint32_t uptrtIndexX = (iR_iX_iY_iT >> 16) & 0xFFu;
-    pOperands[uptrtIndexX] = pOperands[uptrtIndexX] + noOfShiftBytes;
+    pOperands[uptrtIndexX] = (uint16_t) (pOperands[uptrtIndexX] + noOfShiftBytes);
 
     /* Shift number of bits, which are less than one PKC word. */
     uint32_t noOfShiftBits = noOfTrailingZeroBits % (8u * MCUXCLPKC_WORDSIZE);
@@ -85,7 +83,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t
     MCUXCLPKC_WAITFORFINISH();
     uint32_t leadingZeroBits;
     /* mcuxClMath_LeadingZeros always returns _OK. */
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(uptrtIndexY, &leadingZeroBits));
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros((uint8_t)uptrtIndexY, &leadingZeroBits));
 
     if((8u * MCUXCLPKC_WORDSIZE) <= leadingZeroBits)
     {
@@ -130,13 +128,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ExactDivide(uint32_t
     MCUXCLPKC_FP_CALC_OP2_SHR(uptrtIndexR, uptrtIndexR, noOfShiftBits);
 
     /* Restore UPTR table and PKC settings. */
-    pOperands[uptrtIndexY] = pOperands[uptrtIndexY] - noOfShiftBytes;
-    pOperands[uptrtIndexX] = pOperands[uptrtIndexX] - noOfShiftBytes;
+    pOperands[uptrtIndexY] = (uint16_t) (pOperands[uptrtIndexY] - noOfShiftBytes);
+    pOperands[uptrtIndexX] = (uint16_t) (pOperands[uptrtIndexX] - noOfShiftBytes);
 
     MCUXCLPKC_WAITFORREADY();
     MCUXCLPKC_PS1_SETLENGTH_REG(backupPs1LenReg);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_ExactDivide, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_ExactDivide,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_TrailingZeros),
             MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),

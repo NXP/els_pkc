@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxCsslMemory_Clear.c
- * @brief mcuxCsslMemory: implementation of robust memory clear function
+ * @brief mcuxCsslMemory: implementation of secure memory clear function
  */
 
 
@@ -50,37 +50,5 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Clear
     MCUX_CSSL_FP_FUNCTION_CALL(retCode_memSet, mcuxCsslMemory_Set(mcuxCsslParamIntegrity_Protect(4u, pDst, 0u, length, dstLength), pDst, 0u, length, dstLength) );
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_Clear, retCode_memSet,
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Set ));
-}
-
-
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslMemory_SecureClear)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_SecureClear
-(
-    mcuxCsslParamIntegrity_Checksum_t chk,
-    void * pDst,
-    size_t dstLength,
-    size_t length
-)
-{
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxCsslMemory_SecureClear,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslParamIntegrity_Validate) );
-
-    MCUX_CSSL_FP_FUNCTION_CALL(retCode_paramIntegrityValidate, mcuxCsslParamIntegrity_Validate(chk, 3u, pDst, dstLength, length));
-    if ((retCode_paramIntegrityValidate != MCUXCSSLPARAMINTEGRITY_CHECK_VALID))
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_SecureClear, MCUXCSSLMEMORY_STATUS_FAULT);
-    }
-
-    if (length > dstLength)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_SecureClear, MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER);
-    }
-
-    //TODO CLNS-7208: Call secure set instead of set.
-
-    MCUX_CSSL_FP_FUNCTION_CALL(retCode_memSet, mcuxCsslMemory_Set(mcuxCsslParamIntegrity_Protect(4u, pDst, 0u, length, dstLength), pDst, 0u, length, dstLength) );
-
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_SecureClear, retCode_memSet,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Set ));
 }

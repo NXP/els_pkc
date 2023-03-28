@@ -375,21 +375,7 @@ extern "C" {
 #define MCUXCLELS_CMD_CRC_REFERENCE_UPDATE_KEYDELETE(crc)                         \
     mcuxClEls_UpdateRefCRC(MCUXCLELS_CMD_CRC_CMD_ID_KDELETE, 0u, &(crc))
 
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV
-/**
- * @brief Updates given reference command CRC with command @ref mcuxClEls_KeyProvision_Async.
- */
-#define MCUXCLELS_CMD_CRC_REFERENCE_UPDATE_KEYPROVISION(crc, options)             \
-    mcuxClEls_UpdateRefCRC(MCUXCLELS_CMD_CRC_CMD_ID_KEYPROV, (options).word.value, &(crc))
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV */
 
-#ifdef MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM
-/**
- * @brief Updates given reference command CRC with command @ref mcuxClEls_KeyProvisionRom_Async.
- */
-#define MCUXCLELS_CMD_CRC_REFERENCE_UPDATE_KEYPROVISIONROM(crc, options)          \
-    mcuxClEls_UpdateRefCRC(MCUXCLELS_CMD_CRC_CMD_ID_KEYPROV, (options).word.value, &(crc))
-#endif /* MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM */
 
 /**
  * @brief Updates given reference command CRC with command @ref mcuxClEls_KeyImport_Async.

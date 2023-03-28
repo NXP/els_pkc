@@ -61,16 +61,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   /*
    * 1. Check the key type, i.e.:
    * - algorithm IDs
-   * - key sizes (it should be 2048, 3072 or 4096).
+   * - key sizes (it should be 1024, 2048, 3072, 4096, 6144 or 8192).
    *
    * If did not pass verification, function returns MCUXCLRSA_STATUS_INVALID_INPUT error.
    *
    */
   const uint32_t bitLenKey = type->size;
   if(((MCUXCLKEY_ALGO_ID_RSA | MCUXCLKEY_ALGO_ID_KEY_PAIR) != type->algoId)
-       || ((MCUXCLKEY_SIZE_2048 != bitLenKey) &&
-           (MCUXCLKEY_SIZE_3072 != bitLenKey) &&
-           (MCUXCLKEY_SIZE_4096 != bitLenKey)))
+       || ((MCUXCLKEY_SIZE_2048 != bitLenKey)
+            && (MCUXCLKEY_SIZE_3072 != bitLenKey)
+            && (MCUXCLKEY_SIZE_4096 != bitLenKey)
+            ))
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
@@ -97,8 +98,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
 
   /* 4. Initialize PKC. */
   const uint32_t cpuWaSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(sizeof(mcuxClPkc_State_t)) / (sizeof(uint32_t));
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  /* Session buffer is 32 bit aligned */
   mcuxClPkc_State_t * pPkcStateBackup = (mcuxClPkc_State_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
   if (NULL == pPkcStateBackup)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -138,8 +141,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
 
   /* Setup UPTR table. */
   const uint32_t uptrtSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_CRT_UPTRT_SIZE * (sizeof(uint16_t))) / (sizeof(uint32_t));
-  /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, uptrtSizeWord);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -331,7 +335,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   /* Calculate NDash of p */
   MCUXCLMATH_FP_NDASH(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T3, MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T1);
   MCUX_CSSL_FP_FUNCTION_CALL_VOID(
-    mcuxClMath_ModInv(
+    mcuxClMath_ModInv(     
       MCUXCLPKC_PACKARGS4(
         MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_QINV,
         MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_T2,
@@ -372,30 +376,33 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *
    * Used functions: mcuxClPkc_ExportBigEndianFromPkc (to export n and e).
    */
-  /* MISRA Ex. 9 to Rule 11.3 */
+
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) pPubData;
   pRsaPubKey->keytype = MCUXCLRSA_KEY_PUBLIC;
   *pPubDataLength = sizeof(mcuxClRsa_Key);
 
-  /* MISRA Ex. 9 to Rule 11.3 */
   pRsaPubKey->pMod1 = (mcuxClRsa_KeyEntry_t *) (pPubData + *pPubDataLength);
   *pPubDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPubKey->pMod2 = NULL;
   pRsaPubKey->pQInv = NULL;
-  /* MISRA Ex. 9 to Rule 11.3 */
+
   pRsaPubKey->pExp1 = (mcuxClRsa_KeyEntry_t *) (pPubData + *pPubDataLength);
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
   *pPubDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPubKey->pExp2 = NULL;
   pRsaPubKey->pExp3 = NULL;
 
   pRsaPubKey->pMod1->pKeyEntryData = pPubData + *pPubDataLength;
   pRsaPubKey->pMod1->keyEntryLength = byteLenKey;
+
   MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(
     pRsaPubKey->pMod1->pKeyEntryData,
     MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_CRT_N,
     pRsaPubKey->pMod1->keyEntryLength);
   *pPubDataLength += pRsaPubKey->pMod1->keyEntryLength;
-
+  
   pRsaPubKey->pExp1->pKeyEntryData = pPubData + *pPubDataLength;
   pRsaPubKey->pExp1->keyEntryLength = e.keyEntryLength;
   MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(
@@ -412,12 +419,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *
    * Used functions: mcuxClPkc_SecureExportBigEndianFromPkc
    */
-  /* MISRA Ex. 9 to Rule 11.3 */
+
+  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClRsa_Key *pRsaPrivCrtKey = (mcuxClRsa_Key *) pPrivData;
+
   pRsaPrivCrtKey->keytype = MCUXCLRSA_KEY_PRIVATECRT;
   *pPrivDataLength = sizeof(mcuxClRsa_Key);
 
-  /* MISRA Ex. 9 to Rule 11.3 */
+
   pRsaPrivCrtKey->pMod1 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
   *pPrivDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPrivCrtKey->pMod2 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
@@ -429,6 +438,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   pRsaPrivCrtKey->pExp2 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
   *pPrivDataLength += sizeof(mcuxClRsa_KeyEntry_t);
   pRsaPrivCrtKey->pExp3 = NULL;
+  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
   pRsaPrivCrtKey->pMod1->pKeyEntryData = pPrivData + *pPrivDataLength;
   pRsaPrivCrtKey->pMod1->keyEntryLength = byteLenPrime;

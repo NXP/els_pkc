@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -62,7 +62,9 @@ extern "C" {
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T2        (5u) ///< UPTR table index for buffer t2
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T3        (6u) ///< UPTR table index for buffer t3
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_TE        (7u) ///< UPTR table index for buffer te
-#define MCUXCLRSA_INTERNAL_PRIVPLAIN_UPTRT_SIZE           (8u) ///< UPTR table size of function mcuxClRsa_privatePlain
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_RAND      (8u) ///< UPTR table index for the buffer with random data used for bliding
+#define MCUXCLRSA_INTERNAL_PRIVPLAIN_UPTRT_SIZE           (9u) ///< UPTR table size of function mcuxClRsa_privatePlain
+
 /** @} */
 
 /****************************************************************************/
@@ -76,7 +78,7 @@ extern "C" {
  * @{
  */
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_INPUT       (0u) ///< UPTR table index for the input buffer
-#define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_RAND        (1u) ///< UPTR table index for the buffer with random 32-bit data
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_RAND        (1u) ///< UPTR table index for the buffer with random data used for bliding
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PQ_B        (2u) ///< UPTR table index for buffer pq_b
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET0     (3u) ///< UPTR table index for buffer primeT0
 #define MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET1     (4u) ///< UPTR table index for buffer primeT1
@@ -271,6 +273,25 @@ extern "C" {
 #define MCUXCLRSA_INTERNAL_TESTPQDISTANCE_CONSTANT28    (4u)
 #define MCUXCLRSA_INTERNAL_TESTPQDISTANCE_UPTRT_SIZE    (5u)
 
+
+/****************************************************************************/
+/* Indices of operands in PKC workarea and UPTR table for                   */
+/* the mcuxClRsa_RemoveBlinding                                              */
+/****************************************************************************/
+/**
+ * @defgroup MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_ MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_
+ * @brief UPTR table defines for function mcuxClRsa_RemoveBlinding
+ * @ingroup mcuxClRsa_Internal_Macros
+ * @{
+ */
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_B             (0u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_NB            (1u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_X             (2u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_R             (3u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_T1            (4u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_T2            (5u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_ZERO          (6u)
+#define MCUXCLRSA_INTERNAL_UPTRTINDEX_REMOVEBLINDING_UPTRT_SIZE    (7u)
 
 
 #ifdef __cplusplus

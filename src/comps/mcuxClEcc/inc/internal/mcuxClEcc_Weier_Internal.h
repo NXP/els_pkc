@@ -116,6 +116,7 @@ struct mcuxClEcc_Weier_DomainParams
 
 
 
+
 /**********************************************************/
 /* Helper macros of import/export with flow protection    */
 /**********************************************************/
@@ -171,7 +172,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RepeatPointDouble(uint
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_PointFullAdd)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void);
 
-
 /**********************************************************/
 /* Internal function declaration - point multiplication   */
 /**********************************************************/
@@ -217,6 +217,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateKeyPa
     mcuxClKey_Handle_t privKey,
     mcuxClKey_Handle_t pubKey
     );
+
+
+
+/**********************************************************/
+/* Internal function declaration - key agreement          */
+/**********************************************************/
+
 
 
 #ifdef __cplusplus

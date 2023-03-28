@@ -49,9 +49,15 @@ bool common_get_info(void)
     uint32_t revision = hw_version.bits.revision;                                        // Extended revision version
     uint32_t minor = hw_version.bits.minor;                                              // Minor version
     uint32_t major = hw_version.bits.major;                                              // Major version
+    (void) revision;
+    (void) minor;
+    (void) major;
     uint32_t fw_revision = hw_version.bits.fw_revision;                                  // Firmware Extended revision version
     uint32_t fw_minor = hw_version.bits.fw_minor;                                        // Firmware Minor version
     uint32_t fw_major = hw_version.bits.fw_major;                                        // Firmware Major version
+    (void) fw_revision;
+    (void) fw_minor;
+    (void) fw_major;
 
 #ifdef MCUXCL_FEATURE_ELS_HWCONFIG
     // Read the ELS hardware configuration bitmap.

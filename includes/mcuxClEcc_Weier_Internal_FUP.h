@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021,2023 NXP                                                  */
+/* Copyright 2023 NXP                                                       */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,20 +11,13 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <internal/mcuxClRsa_Internal_PkcDefs.h>
+/** @file  mcuxClEcc_Weier_Internal_FUP.h
+*  @brief defines FUP programs byte arrays
+*/
+#ifndef MCUXCLECC_WEIER_INTERNAL_FUP_H_
+#define MCUXCLECC_WEIER_INTERNAL_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
-#include <internal/mcuxClRsa_PrivatePlain_FUP.h>
 
-MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_PrivatePlain_ReductionME_FUP,
-    PH_CLNS_UTILS_FAME_CRC_ENTRY,
-    /* Convert from Montgomery to normal representation */
-    FUP_MC1_MR(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N),
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_UpdateJacobianCoordinates[7];
 
-    /* Normalize the result (case if R > N) */
-    FUP_MC1_MS(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N,
-        MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N)
-);
+#endif /* MCUXCLECC_WEIER_INTERNAL_FUP*/ 

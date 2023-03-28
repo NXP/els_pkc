@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -35,6 +35,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_reseedFunction)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_reseedFunction(mcuxClSession_Handle_t pSession);
 
+#ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_generateFunction_PrDisabled)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_generateFunction_PrDisabled(mcuxClSession_Handle_t pSession, uint8_t *pOut, uint32_t outLength);
 
@@ -42,11 +43,12 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_selftestFunction_PrDisab
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled(mcuxClSession_Handle_t pSession, mcuxClRandom_Mode_t mode);
 
 extern const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_NormalMode_PrDisabled;
+#endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
 
-mcuxClRandom_Status_t mcuxClRandomModes_selftest_VerifyArrays(uint32_t length, uint32_t *expected, uint32_t *actual);
-mcuxClRandom_Status_t mcuxClRandomModes_selftest_CheckContext(mcuxClRandomModes_Context_Generic_t *pCtx, uint32_t *pExpectedKey, uint32_t *pExpectedCounterV);
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_selftest_VerifyArrays)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_selftest_VerifyArrays(uint32_t wordLength, const uint32_t * const expected, uint32_t *actual);
 
 #ifdef __cplusplus
 } /* extern "C" */

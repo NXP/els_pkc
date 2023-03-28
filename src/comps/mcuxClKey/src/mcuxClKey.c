@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,7 +19,7 @@
 #include <mcuxClKey.h>
 #include <mcuxClEls.h>
 #include <mcuxClMemory.h>
-#include <nxpClToolchain.h>
+#include <mcuxClToolchain.h>
 #include <internal/mcuxClKey_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_init)
@@ -40,6 +40,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
     mcuxClKey_setKeyContainerSize(key, keyDataLength);
     mcuxClKey_setKeyContainerUsedSize(key, keyDataLength);
     mcuxClKey_setLoadStatus(key, MCUXCLKEY_LOADSTATUS_NOTLOADED);
+    mcuxClKey_setLinkedData(key, NULL);
 
     /* Check if this is a variable-length external HMAC key */
     if(0u == type->size)
@@ -49,6 +50,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_init, MCUXCLKEY_STATUS_OK);
+}
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_linkKeyPair)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_linkKeyPair(
+    mcuxClSession_Handle_t pSession UNUSED_PARAM,
+    mcuxClKey_Handle_t privKey,
+    mcuxClKey_Handle_t pubKey)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_linkKeyPair);
+
+    /* Link key pair handles */
+    mcuxClKey_setLinkedData(privKey, (void *) pubKey);
+    mcuxClKey_setLinkedData(pubKey, (void *) privKey);
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_linkKeyPair, MCUXCLKEY_STATUS_OK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setProtection)

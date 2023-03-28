@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,7 +15,7 @@
 #include <mcuxCsslSecureCounter.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
-#include <mcuxCsslMemory_Copy_asm.h>
+#include <internal/mcuxCsslMemory_Internal_Copy_asm.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslMemory_Copy)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Copy

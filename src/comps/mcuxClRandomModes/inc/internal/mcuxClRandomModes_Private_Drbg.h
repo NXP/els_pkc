@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -33,6 +33,12 @@ extern "C" {
  */
 #define MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(bytesize) \
     (((bytesize) + sizeof(uint32_t) - 1U ) / (sizeof(uint32_t)))
+
+/*
+ * Takes a byte size and returns the next largest multiple of MCUXCLAES_BLOCK_SIZE
+ */
+#define MCUXCLRANDOMMODES_ROUND_UP_TO_AES_BLOCKSIZE(bytesize) \
+    ((((bytesize) + MCUXCLAES_BLOCK_SIZE - 1U) / MCUXCLAES_BLOCK_SIZE) * MCUXCLAES_BLOCK_SIZE)
 
 /**
  * @brief Defines to specify which mode a DRBG is operated in
@@ -70,10 +76,10 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_
         uint32_t outLength
 );
 
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_selftestPrHandler_t)(
+typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_selftestAlgorithm_t)(
         mcuxClSession_Handle_t pSession,
         mcuxClRandom_Context_t testCtx,
-        mcuxClRandom_Mode_t mode
+        mcuxClRandom_ModeDescriptor_t *mode
 );
 
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_generatePrHandler_t)(
@@ -86,11 +92,13 @@ typedef struct
     mcuxClRandomModes_instantiateAlgorithm_t instantiateAlgorithm;  ///< DRBG instantiation algorithm depending on the chosen DRBG variant
     mcuxClRandomModes_reseedAlgorithm_t reseedAlgorithm;            ///< DRBG reseeding algorithm depending on the chosen DRBG variant
     mcuxClRandomModes_generateAlgorithm_t generateAlgorithm;        ///< DRBG random number generation algorithm depending on the chosen DRBG variant
+    mcuxClRandomModes_selftestAlgorithm_t selftestAlgorithm;        ///< DRBG self-test handler depending on the chosen DRBG variant
 
     /* Protection tokens of DRBG algorithm function pointers */
     uint32_t protectionTokenInstantiateAlgorithm;             ///< Protection token of DRBG instantiate algorithm
     uint32_t protectionTokenReseedAlgorithm;                  ///< Protection token of DRBG reseed algorithm
     uint32_t protectionTokenGenerateAlgorithm;                ///< Protection token of DRBG generate algorithm
+    uint32_t protectionTokenSelftestAlgorithm;                ///< Protection token of DRBG generate algorithm
 } mcuxClRandomModes_DrbgAlgorithmsDescriptor_t;
 
 typedef struct

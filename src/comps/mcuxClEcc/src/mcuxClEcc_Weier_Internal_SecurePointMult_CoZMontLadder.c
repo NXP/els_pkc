@@ -74,13 +74,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
         MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,
         MCUXCLECC_FP_CALLED_CALCFUP_ONE_DOUBLE,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) );
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint32_t *pOperands32 = (uint32_t *) pOperands;  /* UPTR table is 32-bit aligned in ECC component. */
-    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);  /* MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
 
-    /* Randomize P: (X0,Y0, Z) -> (X0,Y0, new Z) Jacobian. */
+    /**
+     * Step 1: Randomize input point P coordinates (X0, Y0, Z)
+     */
+
+    /* Generate a randomized relative Z-coordinate in ZA */
     uint8_t *pZA = MCUXCLPKC_OFFSET2PTR(pOperands[WEIER_ZA]);
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     MCUXCLPKC_WAITFORFINISH();
@@ -91,11 +98,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_SecurePointMult, MCUXCLECC_STATUS_RNG_ERROR);
     }
 
+    /* Reduce ZA modulo p, update the Z-coordinate and update the coordinates of P0 to the new Z-coordinate */
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1,
                         mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN1      /* PrepareZ */
                         + mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN2);  /* UpdateZ and P0 */
 
-    /* Scan scalar and skip leading zero bits. */
+
+    /**
+     * Step 2: Skip leading scalar zeros and read and XOR-mask first non-zero scalar word
+     */
+
+    /* Initialize scalar word shares variables and generate XOR-mask for the first non-zero scalar word */
     uint32_t scalarBitIndex = scalarBitLength - 1u;
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t scalarWord0 = pScalar[scalarBitIndex / 32u];
@@ -107,6 +120,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_SecurePointMult, MCUXCLECC_STATUS_RNG_ERROR);
     }
 
+    /* Scan scalar and skip leading zero bits. */
     while (0u == scalarWord0)
     {
         scalarBitIndex -= 32u;
@@ -114,6 +128,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
     }
     scalarBitIndex = (scalarBitIndex | 31u) - mcuxClMath_CountLeadingZerosWord(scalarWord0);  /* bit position of most significant non-zero bit */
     scalarWord0 ^= scalarWord1;
+
+
+    /**
+     * Step 3: Prepare accumulated ladder points R0 (X0, Y0, Z) and R1 (X1, Y1, Z) and ensure that their
+     *         X- and Y-coordinates are in range [0,p-1], a prerequisite for each ladder step.
+     */
 
     /* Initialize z' = 1 in MR. */
     MCUXCLPKC_FP_CALC_OP1_NEG(WEIER_ZA, ECC_P);
@@ -128,11 +148,29 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
     pOperands[WEIER_VT]  = pOperands[ECC_T3];    /* 5th temp */
     MCUXCLECC_FP_CALCFUP_ONE_DOUBLE();
 
-    /* Update z = z * z', so R1: (X1,Y1, ZA) relative-z -> (X1,Y1, Z) Jacobian. */
-    /* Update R0: (X0,Y0, old Z) -> (X0,Y0, Z) Jacobian. */
+    /* Ensure that X1 and Y1 are in range [0,p-1] as a prerequisite for the scalar multiplication loop.
+     * Also ensure ZA < p as a prerequisite for the upcoming coordinate update*/
+    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP, mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_ModP_LEN);
+
+    /* Update z = z * z', so R1: (X1,Y1, ZA) relative-z -> (X1,Y1, Z) Jacobian.
+     * Update Jacobian coordinates in MR of R0 (X0,Y0, Z).
+     *
+     * NOTE: Since ZA < p before the FUP program, the same holds for X0 and Y0 after the FUP program
+     *       which is a prerequisite for the scalar multiplication loop */
     MCUXCLPKC_FP_CALCFUP_OFFSET(mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1,
                                mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN1,   /* Skip the first part (PrepareZA) */
                                mcuxClEcc_FUP_Weier_SecurePointMult_PrepareZA_UpdateZ_P0_P1_LEN2);  /* Only UpdateZ and P0 */
+
+
+    /**
+     * Step 4: Execute Montgomery ladder to process the remaining scalar words and compute the result
+     *
+     * NOTES:
+     *   - It is ensured that before and after every ladder step the X- and Y-coordinates of the accumulated points are in range [0,p-1].
+     *     This shall help to avoid side-channel leakage.
+     *   - For every new scalar word, the coordinates of the accumulated points are re-randomized with a fresh random Z-coordinate and
+     *     also buffers are shuffled
+     */
 
     /* FP balance here, to avoid keeping another copy of scalarBitIndex. */
     MCUX_CSSL_FP_LOOP_DECL(MainLoop);
@@ -159,20 +197,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
 
-            /* Randomize buffers X0/Y0/X1/Y1. */
+            /* Randomize offsets UPTRT XA/YA/ZA/Z/X0/Y0/X1/Y1. */
+            /* (pkcwa order is changed accordingly)            */
             MCUXCLPKC_WAITFORFINISH();
-            MCUX_CSSL_FP_FUNCTION_CALL(retReRandomUptrt,  // TODO CLNS-3449, check if removing it
+            MCUX_CSSL_FP_FUNCTION_CALL(retReRandomUptrt,
                                       mcuxClPkc_ReRandomizeUPTRT(pSession,
-                                                                &pOperands[WEIER_X0],
+                                                                &pOperands[WEIER_XA],
                                                                 (uint16_t) operandSize,
-                                                                (WEIER_Y1 - WEIER_X0 + 1u)) );
+                                                                (WEIER_Y1 - WEIER_XA + 1u)) );
             if (MCUXCLPKC_STATUS_OK != retReRandomUptrt)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_SecurePointMult, MCUXCLECC_STATUS_RNG_ERROR);
             }
 
-            /* Randomize R0: (X0,Y0, Z) -> (X0,Y0, new Z) Jacobian. */
-            /*           R1: (X1,Y1, Z) -> (X1,Y1, new Z) Jacobian. */
+            /* After rerandomization, pointer pZA (used in mcuxClRandom_ncGenerate call)         */
+            /* and pOperands[WEIER_VZ] (used by double-and-add FUP program) need to be updated. */
+            pOperands[WEIER_VZ]  = pOperands[WEIER_Z];
+            pZA = MCUXCLPKC_OFFSET2PTR(pOperands[WEIER_ZA]);
+            /* Rerandomize R0 (X0,Y0, Z) and R1 (X1,Y1, Z) and ensure that the X- and Y-coordinates are in range [0,p-1]. */
             MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_GetRandom1, mcuxClRandom_ncGenerate(pSession, pZA, operandSize));
             if (MCUXCLRANDOM_STATUS_OK != ret_Prng_GetRandom1)
             {
@@ -215,8 +257,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
         MCUXCLECC_STORE_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, offsetsP0);
         MCUXCLECC_STORE_2OFFSETS(pOperands32, WEIER_VX1, WEIER_VY1, offsetsP1);
 
+        /* Perform double-and-add step.
+         *
+         * NOTE: Since X0, Y0, X1, Y1 < p before the double-and-add step, the same holds for those coordinates afterwards. */
+        MCUXCLPKC_FP_CALCFUP_OFFSET(mcuxClEcc_FUP_Weier_CoZPointAddSub,
+                                   mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN1,
+                                   mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN2);
         MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_CoZPointAddSub, mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN);
-        MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_CoZPointAddSub, mcuxClEcc_FUP_Weier_CoZPointAddSub_LEN1);
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_SecurePointMult, MCUXCLECC_STATUS_OK);
