@@ -451,6 +451,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Sign_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Verify.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Verify_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignature_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_InitPrivKeyInputMode.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_CalcHashModN.c
@@ -491,6 +492,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_PointMult_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Sign_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Verify_FUP.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_FUP.h
 
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_GenerateSignature_FUP.h
@@ -531,6 +533,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_PointMult_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Sign_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Verify_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FUP.h
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -762,6 +765,7 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Functions.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Types.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Wa.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Macros.h
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -851,6 +855,7 @@ component.els_pkc.memory:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxClMemory/inc/
     - repo_relative_path: src/comps/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxCsslMemory/inc/internal
     files:
     - source: src/comps/mcuxClMemory/src/mcuxClMemory.c
 
@@ -871,11 +876,12 @@ component.els_pkc.memory:
     - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory.h
     - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Clear.h
     - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Compare.h
-    - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Compare_asm.h
     - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Copy.h
-    - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Copy_asm.h
     - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Set.h
     - source: src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Types.h
+
+    - source: src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Compare_asm.h
+    - source: src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Copy_asm.h
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -1138,6 +1144,7 @@ component.els_pkc.random:
     - source: src/comps/mcuxClRandom/inc/mcuxClRandom_Types.h
 
     - source: src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Types.h
+    - source: src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Memory.h
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -1173,6 +1180,8 @@ component.els_pkc.random_modes:
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_ElsMode.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PatchMode.c
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_TestMode.c
 
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Constants.h
@@ -1186,6 +1195,8 @@ component.els_pkc.random_modes:
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_Drbg.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_NormalMode.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PrDisabled.h
+    - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PatchMode.h
+    - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_TestMode.h
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -1231,7 +1242,6 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_PrivateCrt.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_PrivateCrt_FUP.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_PrivatePlain.c
-    - source: src/comps/mcuxClRsa/src/mcuxClRsa_PrivatePlain_FUP.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_PssEncode.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_PssVerify.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_Public.c
@@ -1243,6 +1253,8 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_TestPrimeCandidate_FUP.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_Verify.c
     - source: src/comps/mcuxClRsa/src/mcuxClRsa_VerifyE.c
+    - source: src/comps/mcuxClRsa/src/mcuxClRsa_RemoveBlinding.c
+    - source: src/comps/mcuxClRsa/src/mcuxClRsa_RemoveBlinding_FUP.c
 
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_ComputeD_FUP.h
@@ -1252,11 +1264,12 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_MemoryConsumption.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_MillerRabinTest_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_PrivateCrt_FUP.h
-    - source: src/comps/mcuxClRsa/inc/mcuxClRsa_PrivatePlain_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_Public_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_TestPQDistance_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_TestPrimeCandidate_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_Types.h
+    - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_RemoveBlinding_FUP.h
+    - source: src/comps/mcuxClRsa/inc/mcuxClRsa_RemoveBlinding_FUP.h
 
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_ComputeD_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Functions.h
@@ -1267,7 +1280,6 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_KeyGeneration_Crt_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_MillerRabinTest_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_PrivateCrt_FUP.h
-    - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_PrivatePlain_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Public_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPQDistance_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPrimeCandidate_FUP.h
@@ -1558,7 +1570,7 @@ component.els_pkc.toolchain:
     - repo_relative_path: "./"
     - repo_relative_path: src/compiler
     files:
-    - source: /src/compiler/nxpClToolchain.h
+    - source: /src/compiler/mcuxClToolchain.h
 
   component_info:
     common:
@@ -1716,6 +1728,7 @@ component.els_pkc.examples:
     # - source: examples/mcuxClEls/key_import_puk_der.c
     - source: examples/mcuxClEls/rng_prng_get_random.c
     - source: examples/mcuxClEls/tls_master_key_session_keys.c
+    - source: examples/mcuxClEls/hash_hw_security_counter.c
     - source: examples/mcuxClHash/mcuxClHash_sha224_oneshot_example.c
     - source: examples/mcuxClHash/mcuxClHash_sha256_longMsgOneshot_example.c
     - source: examples/mcuxClHash/mcuxClHash_sha256_oneshot_example.c
@@ -1730,6 +1743,9 @@ component.els_pkc.examples:
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_ELS_example.c
     - source: examples/mcuxClRsa/mcuxClRsa_sign_NoEncode_example.c
     - source: examples/mcuxClRsa/mcuxClRsa_sign_pss_sha2_256_example.c
@@ -1811,8 +1827,6 @@ component.els_pkc.psa_driver_examples:
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_ecdsa_sign_verify_hash_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_ecdsa_sign_verify_message_example.c
-    - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_els_eccp256_ecdsa_example.c
-    - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_hmac_oneshot_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_keygen_export_public_key_brainpoolpr1_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_keygen_export_public_key_mont_curve25519_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_keygen_export_public_key_oracle_example.c
@@ -1832,6 +1846,8 @@ component.els_pkc.psa_driver_examples:
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_sha384_oneshot_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_sha512_oneshot_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_truncated_mac_oneshot_example.c
+    - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example.c
+    - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_ecdsa_keygen_oracleS50_sign_verify_hash_example.c
   component_info:
     common:
       version: "${els_pkc_version}"
