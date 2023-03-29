@@ -204,6 +204,35 @@ psa_status_t mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData(const psa_key_at
                                                                 size_t data_length,
                                                                 size_t *key_buffer_length);
 
+/**
+ * @brief Oracle function for making keys that are installed upon boot in S50 and keys derived
+ * from those (built-in) available to be used with PSA API.
+ *
+ * PSA does store information about such keys (either the S50 slot number or a
+ * derivation recipe). Therefore it needs to know the size to reserve for a particular key.
+ *
+ * @param[in] key_id the PSA key id of a built-in key
+ * @param[out] key_buffer_size the required size of the buffer to store a built-in key
+ */
+psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize(mbedtls_svc_key_id_t key_id, size_t *key_buffer_size);
+
+/**
+ * @brief Oracle function for making keys that are installed upon boot in S50 and keys derived
+ * from those (built-in) available to be used with PSA API.
+ *
+ * PSA does store information about such keys (either the S50 slot number or a
+ * derivation recipe). This function fills the PSA owned buffer with the required information to use the key.
+ *
+ * @param[in] attributes defines the attributes associated with the input buffer
+ * @param[out] key_buffer is the buffer which will be stored by PSA in the memory
+ * @param[in] key_buffer_size is the size of the allocated
+ * @param[out] key_buffer_length is the effective number of data filled in the key_buffer by the function
+ */
+psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer(psa_key_attributes_t *attributes,
+                                                        uint8_t *key_buffer,
+                                                        size_t key_buffer_size,
+                                                        size_t *key_buffer_length);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

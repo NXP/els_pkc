@@ -596,6 +596,22 @@ psa_status_t psa_driver_wrapper_get_key_buffer_size(
     psa_key_type_t key_type = attributes->core.type;
     size_t key_bits = attributes->core.bits;
 
+#if defined(MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS)
+    if (psa_key_id_is_builtin(MBEDTLS_SVC_KEY_ID_GET_KEY_ID(psa_get_key_id(attributes))))
+    {
+        psa_status_t status = mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize(psa_get_key_id(attributes),
+                                                                key_buffer_size);
+        if (status == PSA_SUCCESS)
+        {
+            return status;
+        }
+        if (status != PSA_ERROR_INVALID_ARGUMENT)
+        {
+            return status;
+        }
+    }
+#endif
+
     *key_buffer_size = 0;
     switch( location )
     {
@@ -1007,8 +1023,27 @@ psa_status_t psa_driver_wrapper_get_builtin_key(
     psa_key_attributes_t *attributes,
     uint8_t *key_buffer, size_t key_buffer_size, size_t *key_buffer_length )
 {
+    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     psa_key_location_t location = PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
-    switch( location )
+
+#if defined(MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS)
+    if (false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
+    {
+        status = mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer(
+            attributes,
+            key_buffer, key_buffer_size, key_buffer_length);
+        if (status == PSA_SUCCESS || status == PSA_ERROR_BUFFER_TOO_SMALL)
+        {
+            return status;
+        }
+        if (status != PSA_ERROR_INVALID_ARGUMENT)
+        {
+            return status;
+        }
+    }
+#endif // defined(MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS)
+
+    switch (location)
     {
 #if defined(PSA_CRYPTO_DRIVER_TEST)
         case PSA_CRYPTO_TEST_DRIVER_LOCATION:
