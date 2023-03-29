@@ -1728,7 +1728,7 @@ component.els_pkc.examples:
     # - source: examples/mcuxClEls/key_import_puk_der.c
     - source: examples/mcuxClEls/rng_prng_get_random.c
     - source: examples/mcuxClEls/tls_master_key_session_keys.c
-    - source: examples/mcuxClEls/hash_hw_security_counter.c
+    #- source: examples/mcuxClEls/hash_hw_security_counter.c
     - source: examples/mcuxClHash/mcuxClHash_sha224_oneshot_example.c
     - source: examples/mcuxClHash/mcuxClHash_sha256_longMsgOneshot_example.c
     - source: examples/mcuxClHash/mcuxClHash_sha256_oneshot_example.c
