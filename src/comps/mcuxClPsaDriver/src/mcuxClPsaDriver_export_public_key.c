@@ -525,21 +525,26 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
         return PSA_ERROR_BUFFER_TOO_SMALL;
     }
 
-    psa_status_t psa_status = PSA_ERROR_NOT_SUPPORTED;
     mcuxClKey_Descriptor_t key = {0};
 
-    psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
-
-    if (PSA_ERROR_NOT_SUPPORTED != psa_status)
-    {
-        psa_status = mcuxClPsaDriver_Oracle_ExportPublicKey (&key, data, data_size, data_length);
+    status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
+    if (status != PSA_SUCCESS) {
+        return status;
     }
 
-    if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
+    if (false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
     {
-        status = mcuxClPsaDriver_psa_driver_wrapper_export_s50_public(attributes,
-                                                      key_buffer, key_buffer_size,
-                                                      data, data_size, data_length);
+        status = mcuxClPsaDriver_Oracle_ExportPublicKey (&key, data, data_size, data_length);
+
+        // The proposed approach below does not work for me. After the oracle loads the key to the slot, the (second)
+        // KEYGEN done in here on the already existing key fails with a CSS error.
+        //
+        // What the oracle does instead, it keeps the public key the output of the first KEYGEN in RAM and therefore can
+        // return it later.
+
+        // status = mcuxClPsaDriver_psa_driver_wrapper_export_s50_public(attributes,
+        //                                               key_buffer, key_buffer_size,
+        //                                               data, data_size, data_length);
     }
     else
     {
