@@ -179,6 +179,31 @@ psa_status_t mcuxClPsaDriver_Oracle_ImportKey(mcuxClKey_Descriptor_t  *pKey,
                                              size_t *key_buffer_length,
                                              size_t *bits);
 
+
+/**
+ * @brief Oracle function for determine the size required for a key buffer from the data supplied when
+ * importing a key.
+ *
+ * The size of the data required to store a key is not necessarily the same as the size of the date supplied when
+ * importing a key. In particular for key recipes, the recipe gets parsed upon import and stored in an internal
+ * representation which consumes a different amount of space.
+ *
+ * @param[in] attributes defines the attributes associated with the input buffer
+ * @param[in] data includes the input buffer as passed to the psa import function
+ * @param[in] data_length is the length of data
+ * @param[out] key_buffer is the buffer which will be stored by PSA in the memory
+ * @param[out] key_buffer_length is the required number of bytes required as key_buffer
+ *
+ * @retval PSA_SUCCESS                          The operation was succesful
+ * @retval PSA_ERROR_NOT_SUPPORTED              The lifetime is not supported, meaning that fallback functions will be
+ * executed by Oracle
+ * @retval PSA_ERROR_INSUFFICIENT_MEMORY        The key_buffer size is not enough to include data to be stored
+ */
+psa_status_t mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData(const psa_key_attributes_t *attributes,
+                                                                const uint8_t *data,
+                                                                size_t data_length,
+                                                                size_t *key_buffer_length);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

@@ -538,6 +538,15 @@ psa_status_t psa_driver_wrapper_get_key_buffer_size_from_key_data(
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
+        psa_status_t status = mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData(
+                    attributes,
+                    data,
+                    data_length,
+                    key_buffer_size);
+        if (PSA_ERROR_NOT_SUPPORTED != status)
+        {
+            return status;
+        }
         *key_buffer_size = data_length;
         return PSA_SUCCESS;
     }
