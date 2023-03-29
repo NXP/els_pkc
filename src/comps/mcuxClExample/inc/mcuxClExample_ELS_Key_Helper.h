@@ -69,7 +69,7 @@ static inline bool mcuxClExample_Els_KeyDeleteAll(void)
     return true;
 }
 
-
+#if defined(MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV) || defined(MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM)
 /*
  * Check only if the mcuxClEls_KeyDelete_Async is defined "because mcuxClEls_KeyProvision_Async will be always defined"
  * via CL library or via the TEST OS
@@ -202,4 +202,5 @@ static bool mcuxClExample_load_els_key(
     return true;
 }
 
+#endif /*((MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV == 1) || (MCUXCL_FEATURE_ELS_KEY_MGMT_KEYPROV_ROM == 1))*/
 #endif /* MCUXCLEXAMPLE_ELS_KEY_HELPER_H_ */

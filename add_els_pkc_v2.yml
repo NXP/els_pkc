@@ -1745,7 +1745,7 @@ component.els_pkc.examples:
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c
+    # - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_ELS_example.c
     - source: examples/mcuxClRsa/mcuxClRsa_sign_NoEncode_example.c
     - source: examples/mcuxClRsa/mcuxClRsa_sign_pss_sha2_256_example.c

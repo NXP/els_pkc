@@ -88,7 +88,7 @@ static status_t ELS_PRNG_KickOff(void)
 {
 
     /* Check if PRNG already ready */
-    if ((ELS->STATUS & S50_STATUS_PRNG_RDY_MASK) == 0u)
+    if ((ELS->ELS_STATUS & S50_ELS_STATUS_PRNG_RDY_MASK) == 0u)
     {
         MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(result0, token0, mcuxClCss_Prng_Init_Async());
         if ((token0 != MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Prng_Init_Async)) ||
