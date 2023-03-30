@@ -535,16 +535,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
     if (false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
     {
         status = mcuxClPsaDriver_Oracle_ExportPublicKey (&key, data, data_size, data_length);
-
-        // The proposed approach below does not work for me. After the oracle loads the key to the slot, the (second)
-        // KEYGEN done in here on the already existing key fails with a CSS error.
-        //
-        // What the oracle does instead, it keeps the public key the output of the first KEYGEN in RAM and therefore can
-        // return it later.
-
-        // status = mcuxClPsaDriver_psa_driver_wrapper_export_s50_public(attributes,
-        //                                               key_buffer, key_buffer_size,
-        //                                               data, data_size, data_length);
     }
     else
     {
