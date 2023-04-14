@@ -1730,16 +1730,15 @@ set.component.els_pkc:
           ui_category: Middleware
       cmsis_pack:
         vendor: NXP
-        supported: false
+        # supported: false
+        pack_root:
+          pack_type: SWP
+          pack_name: NXP_ELE_PKC
   dependency:
     anyOf:
     - device:
       - LPC55S36
-    - device:
       - MCXN947
-    - device:
       - MCXN548
-    - device:
       - RW610
-    - device:
       - RW612
