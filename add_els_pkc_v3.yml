@@ -29,8 +29,8 @@ component.els_pkc.doc:
     full_name: Component els_pkc.doc
     description: Component els_pkc.doc
     taxonomy:
-      csub: doc
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: doc
     display_name: els_pkc.doc
 component.els_pkc.static_lib.mcxn:
   section-type: component
@@ -60,8 +60,8 @@ component.els_pkc.static_lib.mcxn:
     description: Component els_pkc static_lib MCXN
     user_visible: always
     taxonomy:
-      csub: mcxn
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: static_lib_mcxn
     display_name: els_pkc static_lib MCXN
   dependency:
     allOf:
@@ -100,8 +100,8 @@ component.els_pkc.static_lib.rw61x:
     description: Component els_pkc static_lib rw61x
     user_visible: always
     taxonomy:
-      csub: rw61x
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: static_lib_rw61x
     display_name: els_pkc static_lib rw61x
   dependency:
     allOf:
@@ -129,8 +129,8 @@ component.els_pkc.common:
     description: Component els pkc common
     user_visible: never
     taxonomy:
-      csub: els_pkc_common
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_common
     display_name: Component els pkc common
   dependency:
     allOf:
@@ -161,8 +161,8 @@ component.els_pkc.aead:
     description: Component els_pkc.aead
     user_visible: never
     taxonomy:
-      csub: els_pkc_aead
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_aead
     display_name: els_pkc.aead
   dependency:
     allOf:
@@ -202,8 +202,8 @@ component.els_pkc.aead_modes:
     description: Component els_pkc.aead_modes
     user_visible: never
     taxonomy:
-      csub: els_pkc_aead_modes
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_aead_modes
     display_name: els_pkc.aead_modes
   dependency:
     allOf:
@@ -234,8 +234,8 @@ component.els_pkc.aes:
     description: Component aes
     user_visible: never
     taxonomy:
-      csub: els_pkc_aes
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_aes
     display_name: els-pkc aes
   dependency:
     allOf:
@@ -267,8 +267,8 @@ component.els_pkc.cipher:
     description: Component els_pkc.cipher
     user_visible: never
     taxonomy:
-      csub: els_pkc_cipher
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_cipher
     display_name: els_pkc.cipher
   dependency:
     allOf:
@@ -305,8 +305,8 @@ component.els_pkc.cipher_modes:
     description: Component els_pkc.cipher
     user_visible: never
     taxonomy:
-      csub: els_pkc_cipher_modes
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_cipher_modes
     display_name: els_pkc.cipher
   dependency:
     allOf:
@@ -334,8 +334,8 @@ component.els_pkc.core:
     description: Component els_pkc.core
     user_visible: never
     taxonomy:
-      csub: els_pkc_core
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_core
     display_name: els_pkc.core
 component.els_pkc.ecc:
   section-type: component
@@ -494,8 +494,8 @@ component.els_pkc.ecc:
     description: Component els_pkc.ecc
     user_visible: never
     taxonomy:
-      csub: els_pkc_ecc
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_ecc
     display_name: els_pkc.ecc
   dependency:
     allOf:
@@ -551,8 +551,8 @@ component.els_pkc.els:
     description: Component els
     user_visible: never
     taxonomy:
-      csub: els_pkc_comp_els
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_els
     display_name: els
   dependency:
     allOf:
@@ -595,8 +595,8 @@ component.els_pkc.hash:
     description: Component els_pkc.hash
     user_visible: never
     taxonomy:
-      csub: els_pkc_hash
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_hash
     display_name: els_pkc.hash
   dependency:
     allOf:
@@ -633,8 +633,8 @@ component.els_pkc.key:
     description: Component els_pkc.key
     user_visible: never
     taxonomy:
-      csub: els_pkc_key
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_key
     display_name: els_pkc.key
   dependency:
     allOf:
@@ -670,8 +670,8 @@ component.els_pkc.mac:
     description: Component els_pkc.mac
     user_visible: never
     taxonomy:
-      csub: els_pkc_mac
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_mac
     display_name: els_pkc.mac
   dependency:
     allOf:
@@ -719,8 +719,8 @@ component.els_pkc.mac_modes:
     description: Component els_pkc.mac_modes
     user_visible: never
     taxonomy:
-      csub: els_pkc_mac_modes
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_mac_modes
     display_name: els_pkc.mac_modes
   dependency:
     allOf:
@@ -776,8 +776,8 @@ component.els_pkc.math:
     description: Component els_pkc.math
     user_visible: never
     taxonomy:
-      csub: els_pkc_math
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_math
     display_name: els_pkc.math
   dependency:
     allOf:
@@ -824,8 +824,8 @@ component.els_pkc.memory:
     description: Component els_pkc.memory
     user_visible: never
     taxonomy:
-      csub: els_pkc_memory
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_memory
     display_name: els_pkc.memory
   dependency:
     allOf:
@@ -860,8 +860,8 @@ component.els_pkc.oscca_pkc:
     description: Component els_pkc.oscca_pkc
     user_visible: never
     taxonomy:
-      csub: els_pkc_oscca_pkc
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_oscca_pkc
     display_name: els_pkc.oscca_pkc
   dependency:
     allOf:
@@ -895,8 +895,8 @@ component.els_pkc.oscca_sm3:
     description: Component els_pkc.oscca_sm3
     user_visible: never
     taxonomy:
-      csub: els_pkc_oscca_sm3
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_oscca_sm3
     display_name: els_pkc.oscca_sm3
   dependency:
     allOf:
@@ -926,8 +926,8 @@ component.els_pkc.padding:
     description: Component els_pkc.padding
     user_visible: never
     taxonomy:
-      csub: els_pkc_padding
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_padding
     display_name: els_pkc.padding
 component.els_pkc.pkc:
   section-type: component
@@ -958,8 +958,8 @@ component.els_pkc.pkc:
     description: Component pkc
     user_visible: never
     taxonomy:
-      csub: els_pkc_comp_pkc
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_pkc
     display_name: pkc
   dependency:
     allOf:
@@ -989,8 +989,8 @@ component.els_pkc.prng:
     description: Component prng
     user_visible: never
     taxonomy:
-      csub: els_pkc_prng
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_prng
     display_name: els_pkc.prng
   dependency:
     allOf:
@@ -1035,8 +1035,8 @@ component.els_pkc.psa_driver:
     description: Component els_pkc_psa_driver
     user_visible: never
     taxonomy:
-      csub: els_pkc_psa_driver
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_psa_driver
     display_name: els_pkc_psa_driver
   dependency:
     allOf:
@@ -1067,8 +1067,8 @@ component.els_pkc.random:
     description: Component els_pkc.random
     user_visible: never
     taxonomy:
-      csub: els_pkc_random
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_random
     display_name: els_pkc.random
   dependency:
     allOf:
@@ -1117,8 +1117,8 @@ component.els_pkc.random_modes:
     description: Component els_pkc.random_modes
     user_visible: never
     taxonomy:
-      csub: els_pkc_random_modes
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_random_modes
     display_name: els_pkc.random_modes
   dependency:
     allOf:
@@ -1201,8 +1201,8 @@ component.els_pkc.rsa:
     description: Component els_pkc.rsa
     user_visible: never
     taxonomy:
-      csub: els_pkc_rsa
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_rsa
     display_name: els_pkc.rsa
   dependency:
     allOf:
@@ -1236,8 +1236,8 @@ component.els_pkc.session:
     description: Component els_pkc.session
     user_visible: never
     taxonomy:
-      csub: els_pkc_session
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_session
     display_name: els_pkc.session
   dependency:
     allOf:
@@ -1269,8 +1269,8 @@ component.els_pkc.trng:
     description: Component els_pkc.trng
     user_visible: never
     taxonomy:
-      csub: els_pkc_trng
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_trng
     display_name: els_pkc.trng
   dependency:
     allOf:
@@ -1296,8 +1296,8 @@ component.els_pkc.trng.type_els:
     description: Component els_pkc.trng.type_els
     user_visible: never
     taxonomy:
-      csub: els_pkc_trng_type_els
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_trng_type_els
     display_name: els_pkc.trng.type_els
   dependency:
     allOf:
@@ -1324,8 +1324,8 @@ component.els_pkc.trng.type_rng4:
     description: Component els_pkc.trng.type_rng4
     user_visible: never
     taxonomy:
-      csub: els_pkc_trng_type_rng4
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_trng_type_rng4
     display_name: els_pkc.trng.type_rng4
   dependency:
     allOf:
@@ -1349,8 +1349,8 @@ component.els_pkc.pre_processor:
     description: Component els_pkc.pre_processor
     user_visible: never
     taxonomy:
-      csub: els_pkc_pre_processor
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_pre_processor
     display_name: els_pkc.pre_processor
 component.els_pkc.flow_protection:
   section-type: component
@@ -1375,8 +1375,8 @@ component.els_pkc.flow_protection:
     description: Component els_pkc.flow_protection
     user_visible: never
     taxonomy:
-      csub: els_pkc_flow_protection
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_flow_protection
     display_name: els_pkc.flow_protection
   dependency:
     allOf:
@@ -1400,8 +1400,8 @@ component.els_pkc.param_integrity:
     description: Component els_pkc.param_integrity
     user_visible: never
     taxonomy:
-      csub: els_pkc_param_integrity
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_param_integrity
     display_name: els_pkc.param_integrity
   dependency:
     allOf:
@@ -1430,8 +1430,8 @@ component.els_pkc.secure_counter:
     description: Component els_pkc.secure_counter
     user_visible: never
     taxonomy:
-      csub: els_pkc_secure_counter
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_secure_counter
     display_name: els_pkc.secure_counter
 component.els_pkc:
   section-type: component
@@ -1453,8 +1453,8 @@ component.els_pkc:
     description: Component els_pkc of Crypto Lib
     user_visible: never
     taxonomy:
-      csub: els_pkc
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_main
     display_name: els_pkc
   dependency:
     allOf:
@@ -1479,8 +1479,8 @@ component.els_pkc.toolchain:
     description: Component els_pkc toolchain
     user_visible: never
     taxonomy:
-      csub: els_pkc_toolchain
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_toolchain
     display_name: els_pkc toolchain
 component.els_pkc.platform.mcxn:
   section-type: component
@@ -1508,8 +1508,8 @@ component.els_pkc.platform.mcxn:
     full_name: Component els_pkc_mcxn
     description: Component els_pkc_mcxn
     taxonomy:
-      csub: els_pkc_platform_mcxn
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup: els_pkc_platform
     display_name: els_pkc_mcxn
   dependency:
     allOf:
@@ -1545,8 +1545,8 @@ component.els_pkc.platform.rw61x:
     description: Component els_pkc for RW61x platform
     user_visible: always
     taxonomy:
-      csub: els_pkc_platform_rw61x
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup:
     display_name: els_pkc_rw61x
   dependency:
     allOf:
@@ -1634,8 +1634,8 @@ component.els_pkc.examples:
     description: Component els_pkc_test
     user_visible: never
     taxonomy:
-      csub: els_pkc_examples
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup:
     display_name: els_pkc_test
   dependency:
     allOf:
@@ -1695,8 +1695,8 @@ component.els_pkc.psa_driver_examples:
     description: Component els_pkc psa_driver examples
     user_visible: never
     taxonomy:
-      csub: els_pkc_psa_driver_examples
-      belong_to: drivers
+      belong_to: els_pkc_main
+      cgroup:
     display_name: els_pkc psa_driver examples
   dependency:
     allOf:
@@ -1715,12 +1715,14 @@ set.component.els_pkc:
     fixed_id: nxp_els_pkc
     version: "${els_pkc_version}"
     display_name: ELS PKC
-    description: Cryptographic library running on NXP ELS and PKC Crypto Hardware
-      IP
+    description: Cryptographic library running on NXP ELS and PKC Crypto Hardware IP
     set_location:
       repo_base_path: components/els_pkc
     type: middleware
     vendor: NXP
+    component_taxonomy:
+      els_pkc_main:
+        cclass: els_pkc
     product:
       kex_package:
         kex_web_ui:
