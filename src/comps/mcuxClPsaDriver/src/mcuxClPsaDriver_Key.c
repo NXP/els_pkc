@@ -570,8 +570,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(const psa_key_attribut
     {
          MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, tokenNxpClMemory_copy, mcuxClMemory_copy(
                                                                                         data,
-                                                                                        key.container.pData,
-                                                                                        key_buffer_size,
+                                                                                        key.location.pData,
+                                                                                        key.location.length,
                                                                                         data_size));
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy) || (0u != result))
         {
