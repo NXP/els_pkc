@@ -35,6 +35,9 @@
 
 // Define base address of CSS
 #define ELS_SFR_BASE            ELS         ///< base of CSS SFRs
+
+#define ELS_GDET_EVTCNT_CLR     ELS_GDET_EVTCNT_CLR ///< only to support GDET related crypto-lib #defines
+
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          ELS_        ///< sfr field name prefix
 

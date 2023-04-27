@@ -575,6 +575,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Rng.c
+    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
 
     - source: src/comps/mcuxClEls/inc/mcuxClEls.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
@@ -590,6 +591,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
 
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
