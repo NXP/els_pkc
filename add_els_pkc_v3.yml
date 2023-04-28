@@ -1461,6 +1461,32 @@ component.els_pkc:
     - component.els_pkc.els
     - component.els_pkc.pkc
     - component.els_pkc.trng
+component.els_pkc.glitchdetector:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClEls/inc
+    - repo_relative_path: src/comps/mcuxClEls/inc/internal
+    files:
+    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc glithdetector
+    description: Component els_pkc glithdetector
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_glithdetector
+    display_name: els_pkc.glitchdetector
+  dependency:
+    allOf:
+    - component.els_pkc.els
 component.els_pkc.toolchain:
   section-type: component
   contents:
@@ -1555,6 +1581,7 @@ component.els_pkc.platform.rw61x:
       - RW612
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
+    - component.els_pkc.glitchdetector
 component.els_pkc.examples:
   section-type: component
   contents:

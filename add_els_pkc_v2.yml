@@ -575,7 +575,6 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Rng.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
 
     - source: src/comps/mcuxClEls/inc/mcuxClEls.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
@@ -591,7 +590,6 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
 
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
@@ -1524,6 +1522,31 @@ component.els_pkc.secure_counter:
     cmsis_pack:
       sub: "els_pkc_secure_counter"
 
+component.els_pkc.glitchdetector:
+  __requires__:
+  - component.els_pkc.els
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClEls/inc
+    - repo_relative_path: src/comps/mcuxClEls/inc/internal
+    files:
+    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
+  component_info:
+    common:
+      version: "${els_pkc_version}"
+      component_bundle: bundle.drivers
+      type: software_component
+      full_name: Component els_pkc glithdetector
+      description: Component els_pkc glithdetector
+      manifest_name: els_pkc glithdetector
+      user_visible: false
+    cmsis_pack:
+      sub: "els_pkc_glithdetector"
 # --------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------
 #                ELS-PKC main component that can be used by platforms
@@ -1647,6 +1670,7 @@ component.els_pkc.platform.rw61x:
     component.els_pkc.platform.rw61x.devices
     component.els_pkc
     component.els_pkc.trng.type_rng4
+    component.els_pkc.glitchdetector
 
   section-type: component
   contents:
