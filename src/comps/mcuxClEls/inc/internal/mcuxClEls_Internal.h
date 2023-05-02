@@ -272,9 +272,21 @@ static inline bool mcuxClEls_isBusy(void)
 #define MCUXCLELS_GET_SHA2_STATUS_FIELD(field) \
   mcuxClEls_getSfrField(MCUXCLELS_SFR_READ(ELS_SHA2_STATUS), MCUXCLELS_SFR_FIELD_MASK(ELS_SHA2_STATUS, field), MCUXCLELS_SFR_FIELD_SHIFT(ELS_SHA2_STATUS, field))
 
+/**
+ * Macros to access the bit fields for the ELS_GDET_EVTCNT SFR
+ * */
+#define MCUXCLELS_SFR_GDET_EVTCNT_GDET_EVTCNT            GDET_EVTCNT
+#define MCUXCLELS_SFR_GDET_EVTCNT_GDET_EVTCNT_CLR_DONE   GDET_EVTCNT_CLR_DONE
+
+/** Gets a specific field in ELS_GDET_EVTCNT SFR.
+ *  @param field: Any field name in MCUXCLELS_SFR_GDET_EVTCNT_* */
+#define MCUXCLELS_GET_GDET_EVTCNT_FIELD(field) \
+  mcuxClEls_getSfrField(MCUXCLELS_SFR_READ(ELS_GDET_EVTCNT), MCUXCLELS_SFR_FIELD_MASK(ELS_GDET_EVTCNT, field), MCUXCLELS_SFR_FIELD_SHIFT(ELS_GDET_EVTCNT, field))
+
 
 /** Macros to access the bit fields for the ELS_INT_ENABLE SFR */
 #define MCUXCLELS_SFR_INT_ENABLE_INT_EN           INT_EN
+#define MCUXCLELS_SFR_INT_ENABLE_GDET_INT_EN      GDET_INT_EN
 
 /** Gets a specific field in the ELS_INT_ENABLE SFR.
  *  @param field: Any field name in MCUXCLELS_SFR_INT_ENABLE_* */

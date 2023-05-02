@@ -250,5 +250,6 @@
 #include <mcuxClEls_Rng.h>
 #include <mcuxClEls_Ecc.h>
 #include <mcuxClEls_Kdf.h>
+#include <mcuxClEls_GlitchDetector.h>
 
 #endif /* MCUXCLELS_H_ */
