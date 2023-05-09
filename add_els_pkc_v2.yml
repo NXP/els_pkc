@@ -1531,8 +1531,7 @@ component.els_pkc.glitchdetector:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEls/inc
-    - repo_relative_path: src/comps/mcuxClEls/inc/internal
+    - repo_relative_path: src/comps/mcuxClEls/inc/
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
