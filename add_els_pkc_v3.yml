@@ -1678,7 +1678,6 @@ component.els_pkc.psa_driver_examples:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: examples/mcuxCsslFlowProtection/inc
     files:
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_aead_ccm_multipart_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_aead_ccm_oneshot_example.c
