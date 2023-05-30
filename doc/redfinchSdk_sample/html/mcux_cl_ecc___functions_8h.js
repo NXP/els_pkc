@@ -20,5 +20,10 @@ var mcux_cl_ecc___functions_8h =
     [ "inSize", "group__mcux_cl_ecc___functions.html#gaf3e40d58bbcee527b32a82db1c49c1b3", null ],
     [ "pSignature", "group__mcux_cl_ecc___functions.html#gac62070e4338bc94077962af94fe1bb64", null ],
     [ "pSignatureSize", "group__mcux_cl_ecc___functions.html#gae8416e51b02ecd25f30b1717e35c11c9", null ],
-    [ "signatureSize", "group__mcux_cl_ecc___functions.html#gad5ae1f8a4aa62308f0186f774d44e3b6", null ]
+    [ "signatureSize", "group__mcux_cl_ecc___functions.html#gad5ae1f8a4aa62308f0186f774d44e3b6", null ],
+    [ "pDomainParams", "group__mcux_cl_ecc___functions.html#ga775309e825e6d5a54929aaac94cedbdd", null ],
+    [ "pProtocolDescriptor", "group__mcux_cl_ecc___functions.html#gad63f63500d460e8489c7fb8159d549ed", null ],
+    [ "phflag", "group__mcux_cl_ecc___functions.html#ga1eb97e35c323aba3cd42c0469fea701d", null ],
+    [ "pContext", "group__mcux_cl_ecc___functions.html#gafce211557034d093d311cf5a1bdfe5b0", null ],
+    [ "contextLen", "group__mcux_cl_ecc___functions.html#gae14a77104bd72e45398140a8ea27ea91", null ]
 ];

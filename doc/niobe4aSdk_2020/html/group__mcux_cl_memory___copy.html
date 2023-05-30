@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('group__mcux_cl_memory___copy.html','')
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -113,11 +114,20 @@ $(document).ready(function(){initNavTree('group__mcux_cl_memory___copy.html','')
 <p>This function copies a memory region from <code>src</code> to <code>dst</code>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga5d16560ac24ef6ba2dae129206e70208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___copy.html#ga5d16560ac24ef6ba2dae129206e70208">MCUXCLMEMORY_FP_MEMORY_COPY</a>(pTarget,  pSource,  byteLen)</td></tr>
+<tr class="memdesc:ga5d16560ac24ef6ba2dae129206e70208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMemory_copy with flow protection.  <a href="#ga5d16560ac24ef6ba2dae129206e70208">More...</a><br /></td></tr>
+<tr class="separator:ga5d16560ac24ef6ba2dae129206e70208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab249829be1231ec5f08f90093943a40"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___copy.html#gaab249829be1231ec5f08f90093943a40">MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF</a>(pTarget,  pSource,  byteLen,  buffLen)</td></tr>
+<tr class="memdesc:gaab249829be1231ec5f08f90093943a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMemory_copy with flow protection with buffer.  <a href="#gaab249829be1231ec5f08f90093943a40">More...</a><br /></td></tr>
+<tr class="separator:gaab249829be1231ec5f08f90093943a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga8288180e81966cfc3b68f3fc97581601"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___copy.html#ga8288180e81966cfc3b68f3fc97581601">MCUX_CSSL_FP_PROTECTED_TYPE</a> (<a class="el" href="group__mcux_cl_memory___types.html#gad25887c99517f13c547e1d2bf027ccd1">mcuxClMemory_Status_t</a>) mcuxClMemory_copy(uint8_t *pDst</td></tr>
-<tr class="memdesc:ga8288180e81966cfc3b68f3fc97581601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a memory buffer to another location.  <a href="#ga8288180e81966cfc3b68f3fc97581601">More...</a><br /></td></tr>
-<tr class="separator:ga8288180e81966cfc3b68f3fc97581601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga249dd757b99442941de8f781a4d76c55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___copy.html#ga249dd757b99442941de8f781a4d76c55">MCUX_CSSL_FP_PROTECTED_TYPE</a> (void) mcuxClMemory_copy(uint8_t *pDst</td></tr>
+<tr class="memdesc:ga249dd757b99442941de8f781a4d76c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a memory buffer to another location.  <a href="#ga249dd757b99442941de8f781a4d76c55">More...</a><br /></td></tr>
+<tr class="separator:ga249dd757b99442941de8f781a4d76c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -133,9 +143,88 @@ uint8_t const size_t size_t&#160;</td><td class="memItemRight" valign="bottom"><
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>This function copies a memory region from <code>src</code> to <code>dst</code>. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga5d16560ac24ef6ba2dae129206e70208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d16560ac24ef6ba2dae129206e70208">&#9670;&nbsp;</a></span>MCUXCLMEMORY_FP_MEMORY_COPY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLMEMORY_FP_MEMORY_COPY</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pTarget, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pSource, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">byteLen&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper macro to call #mcuxClMemory_copy with flow protection. </p>
+
+</div>
+</div>
+<a id="gaab249829be1231ec5f08f90093943a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaab249829be1231ec5f08f90093943a40">&#9670;&nbsp;</a></span>MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pTarget, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pSource, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">byteLen, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">buffLen&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper macro to call #mcuxClMemory_copy with flow protection with buffer. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga8288180e81966cfc3b68f3fc97581601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8288180e81966cfc3b68f3fc97581601">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_PROTECTED_TYPE()</h2>
+<a id="ga249dd757b99442941de8f781a4d76c55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga249dd757b99442941de8f781a4d76c55">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_PROTECTED_TYPE()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,7 +232,7 @@ uint8_t const size_t size_t&#160;</td><td class="memItemRight" valign="bottom"><
         <tr>
           <td class="memname">MCUX_CSSL_FP_PROTECTED_TYPE </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__mcux_cl_memory___types.html#gad25887c99517f13c547e1d2bf027ccd1">mcuxClMemory_Status_t</a>&#160;</td>
+          <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -151,25 +240,17 @@ uint8_t const size_t size_t&#160;</td><td class="memItemRight" valign="bottom"><
 </div><div class="memdoc">
 
 <p>Copies a memory buffer to another location. </p>
-<p>Deprecated type for mcuxClSession protected status codes.</p>
-<p>Deprecated type for RSA protected status codes.</p>
-<p>Deprecated type for error codes used by code-flow protected PKC component functions.</p>
-<p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
-<p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
-<p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
-<p>Deprecated type for ELS driver protected status codes.</p>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>The two buffers must not overlap.</p>
+<p>If the destination buffer is too small, i.e. if bufLength &lt; length, (length-bufLength) is added to the Flow Protection token (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>pointer to the buffer to be copied to. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pSrc</td><td>pointer to the buffer to copy. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be copied. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are copied).</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are copied). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not copied (nonzero if the destination buffer is too small) </dd></dl>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var mcux_cl_random_modes___e_l_s__example_8c =
 [
-    [ "mcuxClRandomModes_ELS_example", "mcux_cl_random_modes___e_l_s__example_8c.html#a6f6a6f01edb2e9fe80130c41b92e14b6", null ]
+    [ "MCUXCLEXAMPLE_FUNCTION", "mcux_cl_random_modes___e_l_s__example_8c.html#a91004e78f2323ae2750f3db18d7ed12f", null ]
 ];

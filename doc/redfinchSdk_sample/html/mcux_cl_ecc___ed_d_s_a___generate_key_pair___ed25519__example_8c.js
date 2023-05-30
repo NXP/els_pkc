@@ -4,5 +4,5 @@ var mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c =
     [ "MAX_CPUWA_SIZE", "mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c.html#ad43fc61273c08b0081fddb5f9f4cdd0b", null ],
     [ "MAX_PKCWA_SIZE", "mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c.html#ac83e4873883f213b8ba03e33cfa954cd", null ],
     [ "__attribute__", "mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c.html#ae9c827d8da99018b2d53224871c9bd3d", null ],
-    [ "mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example", "mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c.html#ac18d1b11526087cf0f54cbb5736c8385", null ]
+    [ "MCUXCLEXAMPLE_FUNCTION", "mcux_cl_ecc___ed_d_s_a___generate_key_pair___ed25519__example_8c.html#af5b6bd565fa272941054b7f59ab05272", null ]
 ];

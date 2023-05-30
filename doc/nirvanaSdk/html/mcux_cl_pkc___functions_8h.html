@@ -115,11 +115,9 @@ $(document).ready(function(){initNavTree('mcux_cl_pkc___functions_8h.html','');}
 
 <p>APIs of mcuxClPkc component.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &lt;stdbool.h&gt;</code><br />
-<code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="mcux_cssl_flow_protection_8h_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;mcuxClCore_Platform.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_core___function_identifiers_8h_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="mcux_cssl_flow_protection_8h_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_session_8h_source.html">mcuxClSession.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_pkc___types_8h_source.html">mcuxClPkc_Types.h</a>&gt;</code><br />
 </div>
@@ -163,12 +161,18 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gad57dff217d8a0617af4383352f2d4578"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___init.html#gad57dff217d8a0617af4383352f2d4578">MCUX_CSSL_FP_FUNCTION_POINTER</a> (mcuxClPkc_PkcInitializeEngine_t, typedef <a class="el" href="group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f">MCUX_CSSL_FP_PROTECTED_TYPE</a>(void)(*mcuxClPkc_PkcInitializeEngine_t)(<a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState))</td></tr>
+<tr class="memdesc:gad57dff217d8a0617af4383352f2d4578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type for PKC initialization engine.  <a href="group__mcux_cl_pkc___functions___init.html#gad57dff217d8a0617af4383352f2d4578">More...</a><br /></td></tr>
+<tr class="separator:gad57dff217d8a0617af4383352f2d4578"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaadbb64a51d20233d8da8d4b79d2b1b03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___init.html#gaadbb64a51d20233d8da8d4b79d2b1b03">MCUX_CSSL_FP_FUNCTION_POINTER</a> (mcuxClPkc_PkcDeInitializeEngine_t, typedef <a class="el" href="group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f">MCUX_CSSL_FP_PROTECTED_TYPE</a>(void)(*mcuxClPkc_PkcDeInitializeEngine_t)(const <a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState))</td></tr>
+<tr class="memdesc:gaadbb64a51d20233d8da8d4b79d2b1b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type for PKC deinitialization engine.  <a href="group__mcux_cl_pkc___functions___init.html#gaadbb64a51d20233d8da8d4b79d2b1b03">More...</a><br /></td></tr>
+<tr class="separator:gaadbb64a51d20233d8da8d4b79d2b1b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa192705c81d178911d3a78dd6e0914eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___init.html#gaa192705c81d178911d3a78dd6e0914eb">MCUX_CSSL_FP_PROTECTED_TYPE</a> (void) mcuxClPkc_Initialize(<a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState)</td></tr>
 <tr class="memdesc:gaa192705c81d178911d3a78dd6e0914eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize PKC hardware  <a href="group__mcux_cl_pkc___functions___init.html#gaa192705c81d178911d3a78dd6e0914eb">More...</a><br /></td></tr>
 <tr class="separator:gaa192705c81d178911d3a78dd6e0914eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga346286b3547b68c3b07156b8e5b54ef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___u_p_t_r_t.html#ga346286b3547b68c3b07156b8e5b54ef4">MCUX_CSSL_FP_PROTECTED_TYPE</a> (<a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a>) mcuxClPkc_GenerateUPTRT(uint16_t *pUPTRT</td></tr>
-<tr class="memdesc:ga346286b3547b68c3b07156b8e5b54ef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize UPTR table.  <a href="group__mcux_cl_pkc___functions___u_p_t_r_t.html#ga346286b3547b68c3b07156b8e5b54ef4">More...</a><br /></td></tr>
-<tr class="separator:ga346286b3547b68c3b07156b8e5b54ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6a691f9257e9623e84ba18b9a5fd6e45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___u_p_t_r_t.html#ga6a691f9257e9623e84ba18b9a5fd6e45">MCUX_CSSL_FP_PROTECTED_TYPE</a> (<a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a>) mcuxClPkc_RandomizeUPTRT(<a class="el" href="group__mcux_cl_session___types.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession</td></tr>
+<tr class="memdesc:ga6a691f9257e9623e84ba18b9a5fd6e45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randomize UPTR table.  <a href="group__mcux_cl_pkc___functions___u_p_t_r_t.html#ga6a691f9257e9623e84ba18b9a5fd6e45">More...</a><br /></td></tr>
+<tr class="separator:ga6a691f9257e9623e84ba18b9a5fd6e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

@@ -41,6 +41,7 @@ var files_dup =
     [ "mcuxClEls_Cmac.h", "mcux_cl_els___cmac_8h.html", "mcux_cl_els___cmac_8h" ],
     [ "mcuxClEls_Common.h", "mcux_cl_els___common_8h.html", "mcux_cl_els___common_8h" ],
     [ "mcuxClEls_Ecc.h", "mcux_cl_els___ecc_8h.html", "mcux_cl_els___ecc_8h" ],
+    [ "mcuxClEls_GlitchDetector.h", "mcux_cl_els___glitch_detector_8h.html", "mcux_cl_els___glitch_detector_8h" ],
     [ "mcuxClEls_Hash.h", "mcux_cl_els___hash_8h.html", "mcux_cl_els___hash_8h" ],
     [ "mcuxClEls_Hmac.h", "mcux_cl_els___hmac_8h.html", "mcux_cl_els___hmac_8h" ],
     [ "mcuxClEls_Kdf.h", "mcux_cl_els___kdf_8h.html", "mcux_cl_els___kdf_8h" ],

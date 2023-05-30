@@ -5,6 +5,8 @@ var mcux_cl_ecc___constants_8h =
     [ "mcuxClEcc_Weier_DomainParams_NIST_P256", "group__mcux_cl_ecc___constants.html#ga13b24b605539761b3dbf567c6a836188", null ],
     [ "mcuxClEcc_Weier_DomainParams_NIST_P384", "group__mcux_cl_ecc___constants.html#ga8e7697891b0bb90edfe86c54fe30c869", null ],
     [ "mcuxClEcc_Weier_DomainParams_NIST_P521", "group__mcux_cl_ecc___constants.html#ga245bc63cdc97b931d33814f0786aa2d7", null ],
+    [ "MCUXCLECC_EDDSA_PHFLAG_ZERO", "group__mcux_cl_ecc___constants.html#gaf1be797d5a17411e0259ed8885dc1d17", null ],
+    [ "MCUXCLECC_EDDSA_PHFLAG_ONE", "group__mcux_cl_ecc___constants.html#ga834b59a03ee5e206312030a46844598a", null ],
     [ "mcuxClEcc_MontDH_DomainParams_Curve25519", "group__mcux_cl_ecc___constants.html#ga0a4b1c3036d360b7a5954b6763edcd4d", null ],
     [ "mcuxClEcc_MontDH_DomainParams_Curve448", "group__mcux_cl_ecc___constants.html#ga41c84ad3d583df9a60c756afab58cbbf", null ],
     [ "mcuxClEcc_Weier_DomainParams_secp160k1", "group__mcux_cl_ecc___constants.html#ga598afef59bd9f6448224a9df05d4ff71", null ],

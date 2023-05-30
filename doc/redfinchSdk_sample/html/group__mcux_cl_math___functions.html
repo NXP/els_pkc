@@ -1267,13 +1267,17 @@ uint32_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>yPkcByte
 </div><div class="memdoc">
 
 <p>Initializes and uses the new UPTRT and returns the address of original UPTRT. </p>
+<p>Wait until PKC is ready to accept new calculation.</p>
+<p>Wait until PKC finishes calculations.</p>
 <p>Start a PKC FUP program calculation.</p>
 <p>Start a PKC calculation with one constant parameter.</p>
 <p>Start a PKC calculation.</p>
+<p>Initialize UPTR table.</p>
 <p>deinitialize PKC hardware</p>
 <p>Calculates exact division (supporting even divisor).</p>
 <p>Calculates exact division with odd divisor.</p>
 <p>Calculates modular exponentiation.</p>
+<p>Calculates modular reduction with even modulus.</p>
 <p>Calculates modular inversion, with odd modulus.</p>
 <p>Calculates QSquared = Q^2 mod n, where Q = 256^(operandSize) mod n.</p>
 <p>Calculates QDash = Q * Q' mod n, where Q = 256^(operandSize) mod n, and Q' = 256^length mod n.</p>
@@ -1325,7 +1329,6 @@ This function will overwrite this address by <code>localPtrUptrt</code>. </dd>
 </dl>
 </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p>This function counts the number of leading zero bits of a PKC operand at offset UPTRT[iX] and of size PS1 OPLEN.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1530,6 +1533,52 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 </dl>
 </dd>
 </dl>
+<p>This function calculates modular reduction result = X mod n, where the modulus n is even.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">iR_iX_iN_iT0</td><td>indices of PKC operands </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">iT1_iT2_iT3</td><td>indices of PKC operands</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl>
+<dt>Parameter properties </dt>
+<dd><dl>
+<dt><code>iR_iX_iN_iT0</code>  </dt>
+<dd><code>iT0</code> (bits 0~7): index of temp0 (PKC operand). <br />
+Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
+The operand of modulus can be used as temp0 (i.e., iT0 = iN), but the modulus will be destroyed. <br />
+<code>iN</code> (bits 8~15): index of modulus (PKC operand), size = lenN. <br />
+The offset (UPTRT[iN]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
+<code>iX</code> (bits 16~23): index of X (PKC operand). <br />
+Its size shall be at least (lenX + MCUXCLPKC_WORDSIZE). <br />
+<code>iR</code> (bits 24~31): index of result (PKC operand). <br />
+Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
+<dt><code>iT1_iT2_iT3</code>  </dt>
+<dd><code>iT3</code> (bits 0~7): index of temp3 (PKC operand). <br />
+Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
+<code>iT2</code> (bits 8~15): index of temp2 (PKC operand). <br />
+Its size shall be at least lenN. <br />
+<code>iT1</code> (bits 16~23): index of temp1 (PKC operand). <br />
+Its size shall be at least lenN. <br />
+The operand of result can be used as temp1 (i.e., iT1 = iR). TODO: always use R (any reason not using R?) </dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>PKC properties </dt>
+<dd><dl>
+<dt>PS1 lengths </dt>
+<dd>PS1 OPLEN defines lenN (length of modulus n), and MCLEN defines lenX (length of X). <br />
+Both OPLEN and MCLEN shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
+<dt>PS2 lengths </dt>
+<dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored. </dd>
+<dt>ACTIV/GOANY </dt>
+<dd>#mcuxClPkc_WaitForReady will be called before returning to caller. <br />
+The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd>
+</dl>
+</dd>
+</dl>
 <p>This function calculates modular exponentiation with left-to-right binary square-and-multiply algorithm.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1581,6 +1630,7 @@ Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
 <dt><code>iR_iX_iY_iT</code>  </dt>
 <dd><code>iT</code> (bits 0~7): index of temp (PKC operand). <br />
 Its size shall be at least (3 * MCUXCLPKC_WORDSIZE). <br />
+The offset (UPTRT[iT]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
 <code>iY</code> (bits 8~15): index of divisor Y (PKC operand), size = yPkcByteLength. <br />
 The most significant PKC word of Y shall be nonzero. <br />
 <code>iX</code> (bits 16~23): index of dividend X (PKC operand), size = xPkcByteLength. <br />
@@ -1657,6 +1707,28 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
   </table>
   </dd>
 </dl>
+<p>This function initializes elements in UPTR table. UPTR table contains the address (16-bit offset in PKC workarea) of each buffer (PKC operand). Each element of the table will be initialized with a 16-bit offset, associated with a buffer allocated in sequence in PKC workarea. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be initialized in UPTR table. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pBaseBuffer</td><td>address of the buffer in PKC workarea, with which the first element will be associated. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be initialized.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl>
+<dt>Parameter properties </dt>
+<dd><dl>
+<dt><code>pUPTRT</code>  </dt>
+<dd>this pointer shall be 2-byte aligned. </dd>
+<dt><code>pBaseBuffer</code>  </dt>
+<dd>this address shall be MCUXCLPKC_WORDSIZE aligned. </dd>
+<dt><code>bufferLength</code>  </dt>
+<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
+</dl>
+</dd>
+</dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1685,7 +1757,9 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
   </table>
   </dd>
 </dl>
-<dl class="section attention"><dt>Attention</dt><dd>The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd></dl>
+<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
+<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation). </p>
 
 </div>
 </div>
@@ -1715,7 +1789,6 @@ The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish befor
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>Securely calculates modular exponentiation.</p>
-<p>Calculates modular reduction with even modulus.</p>
 <p>This function counts the number of trailing zero bits of a PKC operand at offset UPTRT[iX] and of size PS1 OPLEN.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1748,59 +1821,6 @@ The offset (UPTRT[iX]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">#numTrailingZeroes</td><td>Number of trailing zeroes</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function calculates modular reduction result = X mod n, where the modulus n is even.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">iR_iX_iN_iT0</td><td>indices of PKC operands </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">iT1_iT2_iT3</td><td>indices of PKC operands</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>iR_iX_iN_iT0</code>  </dt>
-<dd><code>iT0</code> (bits 0~7): index of temp0 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-The operand of modulus can be used as temp0 (i.e., iT0 = iN), but the modulus will be destroyed. <br />
-<code>iN</code> (bits 8~15): index of modulus (PKC operand), size = lenN. <br />
-The offset (UPTRT[iN]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
-<code>iX</code> (bits 16~23): index of X (PKC operand). <br />
-Its size shall be at least (lenX + MCUXCLPKC_WORDSIZE). <br />
-<code>iR</code> (bits 24~31): index of result (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
-<dt><code>iT1_iT2_iT3</code>  </dt>
-<dd><code>iT3</code> (bits 0~7): index of temp3 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-<code>iT2</code> (bits 8~15): index of temp2 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-<code>iT1</code> (bits 16~23): index of temp1 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-The operand of result can be used as temp1 (i.e., iT1 = iR). TODO: always use R (any reason not using R?) </dd>
-</dl>
-</dd>
-</dl>
-<dl>
-<dt>PKC properties </dt>
-<dd><dl>
-<dt>PS1 lengths </dt>
-<dd>PS1 OPLEN defines lenN (length of modulus n), and MCLEN defines lenX (length of X). <br />
-Both OPLEN and MCLEN shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
-<dt>PS2 lengths </dt>
-<dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored. </dd>
-<dt>ACTIV/GOANY </dt>
-<dd>#mcuxClPkc_WaitForReady will be called before returning to caller. <br />
-The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>) </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_math___macros.html#gacc4f37c95272b523a0ca1eca8d2e3735" title="Math operation successful.">MCUXCLMATH_ERRORCODE_OK</a></td><td>function executed successfully</td></tr>
   </table>
   </dd>
 </dl>

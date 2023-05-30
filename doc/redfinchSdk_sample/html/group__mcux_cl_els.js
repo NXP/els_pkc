@@ -5,6 +5,7 @@ var group__mcux_cl_els =
     [ "mcuxClEls_Cmac", "group__mcux_cl_els___cmac.html", "group__mcux_cl_els___cmac" ],
     [ "mcuxClEls_Common", "group__mcux_cl_els___common.html", "group__mcux_cl_els___common" ],
     [ "mcuxClEls_Ecc", "group__mcux_cl_els___ecc.html", "group__mcux_cl_els___ecc" ],
+    [ "mcuxClEls_GlitchDetector", "group__mcux_cl_els___glitch_detector.html", "group__mcux_cl_els___glitch_detector" ],
     [ "mcuxClEls_Hash", "group__mcux_cl_els___hash.html", "group__mcux_cl_els___hash" ],
     [ "mcuxClEls_Hmac", "group__mcux_cl_els___hmac.html", "group__mcux_cl_els___hmac" ],
     [ "mcuxClEls_Kdf", "group__mcux_cl_els___kdf.html", "group__mcux_cl_els___kdf" ],

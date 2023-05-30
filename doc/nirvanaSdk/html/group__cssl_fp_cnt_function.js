@@ -35,5 +35,7 @@ var group__cssl_fp_cnt_function =
     [ "MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED_IMPL", "group__cssl_fp_cnt_function.html#gacf0993520e666067ce074749c90e3d84", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED_IMPL", "group__cssl_fp_cnt_function.html#gadc1544cfd424c8ea5e09a97a6b48defa", null ],
     [ "MCUX_CSSL_FP_FUNCTION_CALL_BEGIN_IMPL", "group__cssl_fp_cnt_function.html#gab0ff0e165d943faba9241de4f57c2d75", null ],
-    [ "MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL", "group__cssl_fp_cnt_function.html#ga260f6caaf5d3f526e664835f6889fec5", null ]
+    [ "MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL", "group__cssl_fp_cnt_function.html#ga260f6caaf5d3f526e664835f6889fec5", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL", "group__cssl_fp_cnt_function.html#ga8f9fbedb24cf72ef01632cc7a2df1f91", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL", "group__cssl_fp_cnt_function.html#gae44806e59bfa6e136c7df9c641809621", null ]
 ];

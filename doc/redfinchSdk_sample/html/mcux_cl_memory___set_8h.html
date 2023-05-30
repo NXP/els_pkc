@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('mcux_cl_memory___set_8h.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -113,14 +114,25 @@ $(document).ready(function(){initNavTree('mcux_cl_memory___set_8h.html','');});
 <p>Memory header for set function.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="mcux_cl_memory___types_8h_source.html">mcuxClMemory_Types.h</a>&gt;</code><br />
+<code>#include &lt;mcuxClCore_Analysis.h&gt;</code><br />
 </div>
 <p><a href="mcux_cl_memory___set_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga039e0b482faab4d1aabe2dd5c79d3eb5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___set.html#ga039e0b482faab4d1aabe2dd5c79d3eb5">MCUXCLMEMORY_FP_MEMORY_SET</a>(pTarget,  val,  byteLen)</td></tr>
+<tr class="memdesc:ga039e0b482faab4d1aabe2dd5c79d3eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMemory_set with flow protection.  <a href="group__mcux_cl_memory___set.html#ga039e0b482faab4d1aabe2dd5c79d3eb5">More...</a><br /></td></tr>
+<tr class="separator:ga039e0b482faab4d1aabe2dd5c79d3eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad65a5023a0b0263462b6cfcd6761b904"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___set.html#gad65a5023a0b0263462b6cfcd6761b904">MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF</a>(pTarget,  val,  byteLen,  buffLen)</td></tr>
+<tr class="memdesc:gad65a5023a0b0263462b6cfcd6761b904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call #mcuxClMemory_set with flow protection with buffer.  <a href="group__mcux_cl_memory___set.html#gad65a5023a0b0263462b6cfcd6761b904">More...</a><br /></td></tr>
+<tr class="separator:gad65a5023a0b0263462b6cfcd6761b904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga4d855d05699848dab0b4a740f11a0207"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___set.html#ga4d855d05699848dab0b4a740f11a0207">MCUX_CSSL_FP_PROTECTED_TYPE</a> (<a class="el" href="group__mcux_cl_memory___types.html#gad25887c99517f13c547e1d2bf027ccd1">mcuxClMemory_Status_t</a>) mcuxClMemory_set(uint8_t *pDst</td></tr>
-<tr class="memdesc:ga4d855d05699848dab0b4a740f11a0207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all bytes of a memory buffer to a specified value.  <a href="group__mcux_cl_memory___set.html#ga4d855d05699848dab0b4a740f11a0207">More...</a><br /></td></tr>
-<tr class="separator:ga4d855d05699848dab0b4a740f11a0207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0db848a88a7210049210689032f72fce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_memory___set.html#ga0db848a88a7210049210689032f72fce">MCUX_CSSL_FP_PROTECTED_TYPE</a> (void) mcuxClMemory_set(uint8_t *pDst</td></tr>
+<tr class="memdesc:ga0db848a88a7210049210689032f72fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all bytes of a memory buffer to a specified value.  <a href="group__mcux_cl_memory___set.html#ga0db848a88a7210049210689032f72fce">More...</a><br /></td></tr>
+<tr class="separator:ga0db848a88a7210049210689032f72fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

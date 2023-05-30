@@ -6,5 +6,5 @@ var mcux_cl_rsa__verify__pssverify__sha2__256__example_8c =
     [ "RSA_MESSAGE_DIGEST_LENGTH", "mcux_cl_rsa__verify__pssverify__sha2__256__example_8c.html#a5621c168ff2d53aa21bf267fa5f5d88c", null ],
     [ "RSA_PSS_SALT_LENGTH", "mcux_cl_rsa__verify__pssverify__sha2__256__example_8c.html#aa130e86f5b203dd9bcd2b0daf72cc2d5", null ],
     [ "__attribute__", "mcux_cl_rsa__verify__pssverify__sha2__256__example_8c.html#ac653ec70e8637a68edb49fd66e7e3edc", null ],
-    [ "mcuxClRsa_verify_pssverify_sha2_256_example", "mcux_cl_rsa__verify__pssverify__sha2__256__example_8c.html#a7dd9e733a9752affa331539b2736861f", null ]
+    [ "MCUXCLEXAMPLE_FUNCTION", "mcux_cl_rsa__verify__pssverify__sha2__256__example_8c.html#a7299c7736f173efca4ade8d274e7d75b", null ]
 ];

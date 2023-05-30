@@ -119,9 +119,9 @@ $(document).ready(function(){initNavTree('mcux_cl_psa_driver___oracle_8h.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a966be947e7c1376c080081b3acac767d"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#a966be947e7c1376c080081b3acac767d">mcuxClPsaDriver_Oracle_ExportPublicKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey, uint8_t *data, size_t data_size, size_t *data_length)</td></tr>
-<tr class="memdesc:a966be947e7c1376c080081b3acac767d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for exporting of the public key created in ELS during KEY_GEN command.  <a href="#a966be947e7c1376c080081b3acac767d">More...</a><br /></td></tr>
-<tr class="separator:a966be947e7c1376c080081b3acac767d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcfc3eb30f8118b55740824564c6df36"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#adcfc3eb30f8118b55740824564c6df36">mcuxClPsaDriver_Oracle_ExportPublicKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey, uint8_t *data, size_t data_size, size_t *data_length, bool internal_representation)</td></tr>
+<tr class="memdesc:adcfc3eb30f8118b55740824564c6df36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for exporting of the public key created in ELS during KEY_GEN command.  <a href="#adcfc3eb30f8118b55740824564c6df36">More...</a><br /></td></tr>
+<tr class="separator:adcfc3eb30f8118b55740824564c6df36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21416927fc67dc0db13e64d44e1f534"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#ad21416927fc67dc0db13e64d44e1f534">mcuxClPsaDriver_Oracle_LoadKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey)</td></tr>
 <tr class="memdesc:ad21416927fc67dc0db13e64d44e1f534"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for loading a key.  <a href="#ad21416927fc67dc0db13e64d44e1f534">More...</a><br /></td></tr>
 <tr class="separator:ad21416927fc67dc0db13e64d44e1f534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,12 +143,21 @@ Functions</h2></td></tr>
 <tr class="memitem:aa70e529f7af52dcd338e12863342c397"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#aa70e529f7af52dcd338e12863342c397">mcuxClPsaDriver_Oracle_ImportKey</a> (<a class="el" href="group__mcux_cl_key___types.html#ga1b7557c7a8892e65d43b90f8d6226d6a">mcuxClKey_Descriptor_t</a> *pKey, const uint8_t *data, size_t data_length, size_t *key_buffer_length, size_t *bits)</td></tr>
 <tr class="memdesc:aa70e529f7af52dcd338e12863342c397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for executing S50 specific activities when the import of key is done the PSA library will proceed with storing the key.  <a href="#aa70e529f7af52dcd338e12863342c397">More...</a><br /></td></tr>
 <tr class="separator:aa70e529f7af52dcd338e12863342c397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1638efe4265ebc5a46eb4514cbec4b2f"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#a1638efe4265ebc5a46eb4514cbec4b2f">mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData</a> (const psa_key_attributes_t *attributes, const uint8_t *data, size_t data_length, size_t *key_buffer_length)</td></tr>
+<tr class="memdesc:a1638efe4265ebc5a46eb4514cbec4b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for determine the size required for a key buffer from the data supplied when importing a key.  <a href="#a1638efe4265ebc5a46eb4514cbec4b2f">More...</a><br /></td></tr>
+<tr class="separator:a1638efe4265ebc5a46eb4514cbec4b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a46af82599a799db12b9207968c2faf"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#a0a46af82599a799db12b9207968c2faf">mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize</a> (mbedtls_svc_key_id_t key_id, size_t *key_buffer_size)</td></tr>
+<tr class="memdesc:a0a46af82599a799db12b9207968c2faf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for making keys that are installed upon boot in S50 and keys derived from those (built-in) available to be used with PSA API.  <a href="#a0a46af82599a799db12b9207968c2faf">More...</a><br /></td></tr>
+<tr class="separator:a0a46af82599a799db12b9207968c2faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec7ace9faf5db20fdd142afd5d514f36"><td class="memItemLeft" align="right" valign="top">psa_status_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_psa_driver___oracle_8h.html#aec7ace9faf5db20fdd142afd5d514f36">mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer</a> (psa_key_attributes_t *attributes, uint8_t *key_buffer, size_t key_buffer_size, size_t *key_buffer_length)</td></tr>
+<tr class="memdesc:aec7ace9faf5db20fdd142afd5d514f36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Oracle function for making keys that are installed upon boot in S50 and keys derived from those (built-in) available to be used with PSA API.  <a href="#aec7ace9faf5db20fdd142afd5d514f36">More...</a><br /></td></tr>
+<tr class="separator:aec7ace9faf5db20fdd142afd5d514f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API definition of the PSA driver Oracle. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a966be947e7c1376c080081b3acac767d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a966be947e7c1376c080081b3acac767d">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_ExportPublicKey()</h2>
+<a id="adcfc3eb30f8118b55740824564c6df36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcfc3eb30f8118b55740824564c6df36">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_ExportPublicKey()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,7 +184,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>data_length</em>&#160;</td>
+          <td class="paramname"><em>data_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>internal_representation</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -191,7 +206,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pKey</td><td>is the reference to the key descriptor of the ELS </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>is the buffer including the exported public key </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">data_size</td><td>is the size of the allocated memory for the data buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">data_length</td><td>is the lenght of the exported key</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data_length</td><td>is the lenght of the exported key </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">internal_representation</td><td>is the flag to indicate internal representation</td></tr>
   </table>
   </dd>
 </dl>
@@ -464,6 +480,157 @@ Functions</h2></td></tr>
     <tr><td class="paramname">PSA_SUCCESS</td><td>The operation was succesful </td></tr>
     <tr><td class="paramname">PSA_ERROR_NOT_SUPPORTED</td><td>The lifetime is not supported, meaning that fallback functions will be executed by Oracle </td></tr>
     <tr><td class="paramname">PSA_ERROR_INSUFFICIENT_MEMORY</td><td>The key_buffer size is not enough to include data to be stored </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1638efe4265ebc5a46eb4514cbec4b2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1638efe4265ebc5a46eb4514cbec4b2f">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">psa_status_t mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData </td>
+          <td>(</td>
+          <td class="paramtype">const psa_key_attributes_t *&#160;</td>
+          <td class="paramname"><em>attributes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>data_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>key_buffer_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Oracle function for determine the size required for a key buffer from the data supplied when importing a key. </p>
+<p>The size of the data required to store a key is not necessarily the same as the size of the date supplied when importing a key. In particular for key recipes, the recipe gets parsed upon import and stored in an internal representation which consumes a different amount of space.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">attributes</td><td>defines the attributes associated with the input buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>includes the input buffer as passed to the psa import function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data_length</td><td>is the length of data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key_buffer</td><td>is the buffer which will be stored by PSA in the memory </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key_buffer_length</td><td>is the required number of bytes required as key_buffer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">PSA_SUCCESS</td><td>The operation was succesful </td></tr>
+    <tr><td class="paramname">PSA_ERROR_NOT_SUPPORTED</td><td>The lifetime is not supported, meaning that fallback functions will be executed by Oracle </td></tr>
+    <tr><td class="paramname">PSA_ERROR_INSUFFICIENT_MEMORY</td><td>The key_buffer size is not enough to include data to be stored </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0a46af82599a799db12b9207968c2faf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a46af82599a799db12b9207968c2faf">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize </td>
+          <td>(</td>
+          <td class="paramtype">mbedtls_svc_key_id_t&#160;</td>
+          <td class="paramname"><em>key_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>key_buffer_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Oracle function for making keys that are installed upon boot in S50 and keys derived from those (built-in) available to be used with PSA API. </p>
+<p>PSA does store information about such keys (either the S50 slot number or a derivation recipe). Therefore it needs to know the size to reserve for a particular key.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">key_id</td><td>the PSA key id of a built-in key </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key_buffer_size</td><td>the required size of the buffer to store a built-in key </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aec7ace9faf5db20fdd142afd5d514f36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec7ace9faf5db20fdd142afd5d514f36">&#9670;&nbsp;</a></span>mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer </td>
+          <td>(</td>
+          <td class="paramtype">psa_key_attributes_t *&#160;</td>
+          <td class="paramname"><em>attributes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>key_buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>key_buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>key_buffer_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Oracle function for making keys that are installed upon boot in S50 and keys derived from those (built-in) available to be used with PSA API. </p>
+<p>PSA does store information about such keys (either the S50 slot number or a derivation recipe). This function fills the PSA owned buffer with the required information to use the key.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">attributes</td><td>defines the attributes associated with the input buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key_buffer</td><td>is the buffer which will be stored by PSA in the memory </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key_buffer_size</td><td>is the size of the allocated </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key_buffer_length</td><td>is the effective number of data filled in the key_buffer by the function </td></tr>
   </table>
   </dd>
 </dl>

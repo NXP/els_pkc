@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('mcux_cl_rsa__verify___no_verify__examp
 <code>#include &lt;<a class="el" href="mcux_cl_random_8h_source.html">mcuxClRandom.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_rsa_8h_source.html">mcuxClRsa.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClToolchain.h&gt;</code><br />
-<code>#include &lt;stdbool.h&gt;</code><br />
+<code>#include &lt;mcuxClCore_Examples.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="mcux_cl_els_8h_source.html">mcuxClEls.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClExample_ELS_Helper.h&gt;</code><br />
 </div><table class="memberdecls">
@@ -138,9 +138,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ac653ec70e8637a68edb49fd66e7e3edc"><td class="memItemLeft" align="right" valign="top">static const uint8_t modulus [<a class="el" href="mcux_cl_rsa__sign___no_encode__example_8c.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_rsa__verify___no_verify__example_8c.html#ac653ec70e8637a68edb49fd66e7e3edc">__attribute__</a> ((aligned(4)))</td></tr>
 <tr class="memdesc:ac653ec70e8637a68edb49fd66e7e3edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Example value for public RSA modulus N.  <a href="#ac653ec70e8637a68edb49fd66e7e3edc">More...</a><br /></td></tr>
 <tr class="separator:ac653ec70e8637a68edb49fd66e7e3edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae698230b5b34693292b89694623b9f7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_rsa__verify___no_verify__example_8c.html#ae698230b5b34693292b89694623b9f7b">mcuxClRsa_verify_NoVerify_example</a> (void)</td></tr>
-<tr class="memdesc:ae698230b5b34693292b89694623b9f7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a session set-up; a call to function mcuxClRsa_verify using mode mcuxClRsa_Mode_Verify_NoVerify; a session clean-up.  <a href="#ae698230b5b34693292b89694623b9f7b">More...</a><br /></td></tr>
-<tr class="separator:ae698230b5b34693292b89694623b9f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0f06c91945e4c60608e1508e1a40fdf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mcux_cl_rsa__verify___no_verify__example_8c.html#ab0f06c91945e4c60608e1508e1a40fdf">MCUXCLEXAMPLE_FUNCTION</a> (mcuxClRsa_verify_NoVerify_example)</td></tr>
+<tr class="memdesc:ab0f06c91945e4c60608e1508e1a40fdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a session set-up; a call to function mcuxClRsa_verify using mode mcuxClRsa_Mode_Verify_NoVerify; a session clean-up.  <a href="#ab0f06c91945e4c60608e1508e1a40fdf">More...</a><br /></td></tr>
+<tr class="separator:ab0f06c91945e4c60608e1508e1a40fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Example of using function mcuxClRsa_verify to perform the RSA signature verification primitive RSAVP1 (public exponentiation and NO padding verification) according to PKCS #1 v2.2. </p>
@@ -213,16 +213,16 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae698230b5b34693292b89694623b9f7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae698230b5b34693292b89694623b9f7b">&#9670;&nbsp;</a></span>mcuxClRsa_verify_NoVerify_example()</h2>
+<a id="ab0f06c91945e4c60608e1508e1a40fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0f06c91945e4c60608e1508e1a40fdf">&#9670;&nbsp;</a></span>MCUXCLEXAMPLE_FUNCTION()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool mcuxClRsa_verify_NoVerify_example </td>
+          <td class="memname">MCUXCLEXAMPLE_FUNCTION </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
+          <td class="paramtype">mcuxClRsa_verify_NoVerify_example&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -232,8 +232,8 @@ Functions</h2></td></tr>
 <p>Performs a session set-up; a call to function mcuxClRsa_verify using mode mcuxClRsa_Mode_Verify_NoVerify; a session clean-up. </p>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname">true</td><td>The example code completed successfully </td></tr>
-    <tr><td class="paramname">false</td><td>The example code failed </td></tr>
+    <tr><td class="paramname">MCUXCLEXAMPLE_OK</td><td>The example code completed successfully </td></tr>
+    <tr><td class="paramname">MCUXCLEXAMPLE_ERROR</td><td>The example code failed </td></tr>
   </table>
   </dd>
 </dl>

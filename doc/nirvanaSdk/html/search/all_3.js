@@ -1,10 +1,6 @@
 var searchData=
 [
   ['cfg',['cfg',['../structmcux_cl_pkc___state__t.html#a5d5778eef90af40b0ba73b22fdeedb57',1,'mcuxClPkc_State_t']]],
-  ['cipher_5faes128_5fcbc_5fencrypt',['cipher_aes128_cbc_encrypt',['../cipher__aes128__cbc__encrypt_8c.html#aad8f8051adfb549b5e6b9ad22e4fb687',1,'cipher_aes128_cbc_encrypt.c']]],
-  ['cipher_5faes128_5fcbc_5fencrypt_2ec',['cipher_aes128_cbc_encrypt.c',['../cipher__aes128__cbc__encrypt_8c.html',1,'']]],
-  ['cipher_5faes128_5fecb_5fencrypt',['cipher_aes128_ecb_encrypt',['../cipher__aes128__ecb__encrypt_8c.html#a864cd902d3eac2a2a6741d0116cb1715',1,'cipher_aes128_ecb_encrypt.c']]],
-  ['cipher_5faes128_5fecb_5fencrypt_2ec',['cipher_aes128_ecb_encrypt.c',['../cipher__aes128__ecb__encrypt_8c.html',1,'']]],
   ['ciphersup',['ciphersup',['../unionmcux_cl_els___hw_config__t.html#ac0db95aaf62ac50581111452e89de3ba',1,'mcuxClEls_HwConfig_t']]],
   ['ckdf_5falgo',['ckdf_algo',['../unionmcux_cl_els___ckdf_option__t.html#afc52662f6e41b83e0c731d77c616506c',1,'mcuxClEls_CkdfOption_t']]],
   ['ckdfsup',['ckdfsup',['../unionmcux_cl_els___hw_config__t.html#a05b73ed0395351b9504c35f54ac50495',1,'mcuxClEls_HwConfig_t']]],
@@ -13,8 +9,6 @@ var searchData=
   ['core_20type_20definitions',['Core type definitions',['../group__cl_core_types.html',1,'']]],
   ['constants_20definitions',['Constants definitions',['../group__cl_padding.html',1,'']]],
   ['cmacsup',['cmacsup',['../unionmcux_cl_els___hw_config__t.html#ad30966f27a451f027aed32c036289515',1,'mcuxClEls_HwConfig_t']]],
-  ['common_5fget_5finfo',['common_get_info',['../common__get__info_8c.html#a087b0de818fd4014a0221194e72cf8d8',1,'common_get_info.c']]],
-  ['common_5fget_5finfo_2ec',['common_get_info.c',['../common__get__info_8c.html',1,'']]],
   ['cphmde',['cphmde',['../unionmcux_cl_els___cipher_option__t.html#a2e1e4a5d815c2559f0ef02e4fd0e5523',1,'mcuxClEls_CipherOption_t']]],
   ['cphsie',['cphsie',['../unionmcux_cl_els___cipher_option__t.html#af8735651384f21746fcea24b5c935a1d',1,'mcuxClEls_CipherOption_t']]],
   ['cphsoe',['cphsoe',['../unionmcux_cl_els___cipher_option__t.html#aa37b413e9a8ffa66655bc529aadaadbc',1,'mcuxClEls_CipherOption_t']]],

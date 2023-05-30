@@ -61,5 +61,6 @@ var mcux_cl_key___constants_8h =
     [ "MCUXCLKEY_SIZE_4096_IN_WORDS", "group__mcux_cl_key___key_size.html#gada1e24d3f9d8207287333085df1712dd", null ],
     [ "MCUXCLKEY_SIZE_6144_IN_WORDS", "group__mcux_cl_key___key_size.html#ga4de61cf46c4577ba0019f92814cbf804", null ],
     [ "MCUXCLKEY_SIZE_8192_IN_WORDS", "group__mcux_cl_key___key_size.html#ga6c05f57184c5dd0da0cbb44ba28ce0f8", null ],
-    [ "MCUXCLKEY_WA_SIZE_MAX", "group__mcux_cl_key___macros.html#ga617470bb5f7da932c271545154fe31b7", null ]
+    [ "MCUXCLKEY_WA_SIZE_MAX", "group__mcux_cl_key___macros.html#ga617470bb5f7da932c271545154fe31b7", null ],
+    [ "MCUXCLKEY_INVALID_KEYSLOT", "group__mcux_cl_key___macros.html#ga016a12d0d9ac976c44d4cf1f8a493763", null ]
 ];

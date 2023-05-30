@@ -1,5 +1,6 @@
 var group___m_c_u_x_c_l_h_a_s_h___w_a =
 [
+    [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MIYAGUCHI_PRENEEL", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gadd0e5e84a4ef1afc23e2c3be91d3fe3a", null ],
     [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MD5", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gadfe5ffc0913d433f964f90263e7ffbd8", null ],
     [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA_1", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga14881d145695774cf943f028e20d0952", null ],
     [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_224", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga40b9eff6f42215fc5c98c0513fbd2c79", null ],
@@ -10,6 +11,7 @@ var group___m_c_u_x_c_l_h_a_s_h___w_a =
     [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA2_512_256", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gac7c04d4fd538f29eb200ae68a076853e", null ],
     [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA3", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga007917c497acd34bc8f980ecee864363", null ],
     [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga8b3af117f171a613124593df58ada62a", null ],
+    [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MIYAGUCHI_PRENEEL", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga68fc6f2b4592b00ed130bddf8a18e12c", null ],
     [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MD5", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga11a8381ed30e3895b5bddb464ffcb141", null ],
     [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA_1", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gad33c626f9a5f7f3a313b38e1b7e945dc", null ],
     [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA2_224", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga8ff96915814df592db3d68d925408a98", null ],
@@ -21,6 +23,7 @@ var group___m_c_u_x_c_l_h_a_s_h___w_a =
     [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA3", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga7c105c9ceaef1f145691b28fb49fc19d", null ],
     [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MAX", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga8e985e955759e3f5f6fb1d11c3901e2c", null ],
     [ "MCUXCLHASH_INIT_CPU_WA_BUFFER_SIZE", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga8434a263faa18d7d5f1db037eca3a130", null ],
+    [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MIYAGUCHI_PRENEEL", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga8ed9fdc5f79c3a875502444205d3776f", null ],
     [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MD5", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gaf32f87afa331a93b1b8f50eac2c94a6f", null ],
     [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA_1", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gad8e7decc1e3081fbd63e3be3b34ca39e", null ],
     [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA2_224", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga2ff77f524496774f46c5294dfc7619bf", null ],
@@ -31,6 +34,7 @@ var group___m_c_u_x_c_l_h_a_s_h___w_a =
     [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA2_512_256", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gac38cbbdbd0ae6c935f09f75ba51bf8de", null ],
     [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA3", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga45605d90de0887e17c279fa9c6341808", null ],
     [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gac7007695fab49af24194295d81f80b56", null ],
+    [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MIYAGUCHI_PRENEEL", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga9379b5b477b8b834891db99e8bea7d2e", null ],
     [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MD5", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga110eb06687e9e5f02cb3eaba412899b2", null ],
     [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA_1", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga6a2eb3d48d2a2c22a4c4339ff2828907", null ],
     [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_224", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gae23cdd9e00a486600ee5b90949f3842f", null ],
@@ -41,6 +45,7 @@ var group___m_c_u_x_c_l_h_a_s_h___w_a =
     [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA2_512_256", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga95fcec323ebd8dbfddc56a99e6f49900", null ],
     [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA3", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga4db65f73343d78cc7af6b64402d639cb", null ],
     [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga63da111398b07963ed1a77da6c97a64d", null ],
+    [ "MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MIYAGUCHI_PRENEEL", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga0c349178df40e25036fef02706e8afdf", null ],
     [ "MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MD5", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga3946c5fd711b84346367562222f28359", null ],
     [ "MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA_1", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#ga007b69adbd64212947ba7520c69cb1c9", null ],
     [ "MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_224", "group___m_c_u_x_c_l_h_a_s_h___w_a.html#gabf598385358401cea01d065d9d421d87", null ],

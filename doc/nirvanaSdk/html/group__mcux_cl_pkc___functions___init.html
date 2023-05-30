@@ -131,6 +131,12 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gad57dff217d8a0617af4383352f2d4578"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___init.html#gad57dff217d8a0617af4383352f2d4578">MCUX_CSSL_FP_FUNCTION_POINTER</a> (mcuxClPkc_PkcInitializeEngine_t, typedef <a class="el" href="group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f">MCUX_CSSL_FP_PROTECTED_TYPE</a>(void)(*mcuxClPkc_PkcInitializeEngine_t)(<a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState))</td></tr>
+<tr class="memdesc:gad57dff217d8a0617af4383352f2d4578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type for PKC initialization engine.  <a href="#gad57dff217d8a0617af4383352f2d4578">More...</a><br /></td></tr>
+<tr class="separator:gad57dff217d8a0617af4383352f2d4578"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaadbb64a51d20233d8da8d4b79d2b1b03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___init.html#gaadbb64a51d20233d8da8d4b79d2b1b03">MCUX_CSSL_FP_FUNCTION_POINTER</a> (mcuxClPkc_PkcDeInitializeEngine_t, typedef <a class="el" href="group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f">MCUX_CSSL_FP_PROTECTED_TYPE</a>(void)(*mcuxClPkc_PkcDeInitializeEngine_t)(const <a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState))</td></tr>
+<tr class="memdesc:gaadbb64a51d20233d8da8d4b79d2b1b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type for PKC deinitialization engine.  <a href="#gaadbb64a51d20233d8da8d4b79d2b1b03">More...</a><br /></td></tr>
+<tr class="separator:gaadbb64a51d20233d8da8d4b79d2b1b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa192705c81d178911d3a78dd6e0914eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mcux_cl_pkc___functions___init.html#gaa192705c81d178911d3a78dd6e0914eb">MCUX_CSSL_FP_PROTECTED_TYPE</a> (void) mcuxClPkc_Initialize(<a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState)</td></tr>
 <tr class="memdesc:gaa192705c81d178911d3a78dd6e0914eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize PKC hardware  <a href="#gaa192705c81d178911d3a78dd6e0914eb">More...</a><br /></td></tr>
 <tr class="separator:gaa192705c81d178911d3a78dd6e0914eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +185,80 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gad57dff217d8a0617af4383352f2d4578"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad57dff217d8a0617af4383352f2d4578">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_FUNCTION_POINTER() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MCUX_CSSL_FP_FUNCTION_POINTER </td>
+          <td>(</td>
+          <td class="paramtype">mcuxClPkc_PkcInitializeEngine_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typedef <a class="el" href="group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f">MCUX_CSSL_FP_PROTECTED_TYPE</a>(void)(*)(<a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState)&#160;</td>
+          <td class="paramname"><em>mcuxClPkc_PkcInitializeEngine_t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function type for PKC initialization engine. </p>
+<p>Generic function pointer to PKC initialization function</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pState</td><td>pointer to PKC state backup structure. If it's not a NULL pointer, PKC state before initialization will be stored in this structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaadbb64a51d20233d8da8d4b79d2b1b03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaadbb64a51d20233d8da8d4b79d2b1b03">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_FUNCTION_POINTER() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MCUX_CSSL_FP_FUNCTION_POINTER </td>
+          <td>(</td>
+          <td class="paramtype">mcuxClPkc_PkcDeInitializeEngine_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typedef <a class="el" href="group__mcux_cl_ecc___macros.html#ga70dccfd1866bd438f7ee6545ddf2187f">MCUX_CSSL_FP_PROTECTED_TYPE</a>(void)(*)(const <a class="el" href="structmcux_cl_pkc___state__t.html">mcuxClPkc_State_t</a> *pState)&#160;</td>
+          <td class="paramname"><em>mcuxClPkc_PkcDeInitializeEngine_t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function type for PKC deinitialization engine. </p>
+<p>Generic function pointer to PKC deinitialization function</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pState</td><td>pointer to PKC state backup structure. If it's not a NULL pointer, PKC state will be restored from this structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gaa192705c81d178911d3a78dd6e0914eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa192705c81d178911d3a78dd6e0914eb">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_PROTECTED_TYPE()</h2>
 
@@ -196,9 +276,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>initialize PKC hardware </p>
+<p>Wait until PKC is ready to accept new calculation.</p>
+<p>Wait until PKC finishes calculations.</p>
 <p>Start a PKC FUP program calculation.</p>
 <p>Start a PKC calculation with one constant parameter.</p>
 <p>Start a PKC calculation.</p>
+<p>Initialize UPTR table.</p>
 <p>deinitialize PKC hardware</p>
 <p>This function initializes PKC hardware, and optionally backups the original PKC configuration (except STOP bit).</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -213,6 +296,28 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pState</td><td>pointer to PKC state backup structure. If it's not a NULL pointer, PKC state will be restored from this structure.</td></tr>
   </table>
   </dd>
+</dl>
+<p>This function initializes elements in UPTR table. UPTR table contains the address (16-bit offset in PKC workarea) of each buffer (PKC operand). Each element of the table will be initialized with a 16-bit offset, associated with a buffer allocated in sequence in PKC workarea. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be initialized in UPTR table. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pBaseBuffer</td><td>address of the buffer in PKC workarea, with which the first element will be associated. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be initialized.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl>
+<dt>Parameter properties </dt>
+<dd><dl>
+<dt><code>pUPTRT</code>  </dt>
+<dd>this pointer shall be 2-byte aligned. </dd>
+<dt><code>pBaseBuffer</code>  </dt>
+<dd>this address shall be MCUXCLPKC_WORDSIZE aligned. </dd>
+<dt><code>bufferLength</code>  </dt>
+<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
+</dl>
+</dd>
 </dl>
 <p>This function performs one specified PKC calculation, of which the operand(s) and result are specified by the indices of UPTR table.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -242,7 +347,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section attention"><dt>Attention</dt><dd>The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>The PKC calculation might be still on-going when returning to caller, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd></dl>
+<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
+<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation). </p>
 
 </div>
 </div>

@@ -40,5 +40,6 @@ var mcux_cl_ecc___memory_consumption_8h =
     [ "MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___w_a_p_k_c__.html#ga1a0b00eab2150578dc7afc98f8e82f2a", null ],
     [ "MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WAPKC_SIZE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___w_a_p_k_c__.html#gad04926b8f100205fb4726200c825e1f6", null ],
     [ "MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE", "group__mcux_cl_ecc___memory_consumption.html#gac8895d8165cf3c84b10ac986a30c37e4", null ],
-    [ "MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___g_e_n_k_e_y_p_a_i_r___d_e_s_c___s_i_z_e__.html#ga435b584a2a74e53c5987727a938aa65d", null ]
+    [ "MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___g_e_n_k_e_y_p_a_i_r___d_e_s_c___s_i_z_e__.html#ga435b584a2a74e53c5987727a938aa65d", null ],
+    [ "MCUXCLECC_EDDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE", "group___m_c_u_x_c_l_e_c_c___e_d_d_s_a___s_i_g_n_a_t_u_r_e___p_r_o_t_o_c_o_l___d_e_s_c___s_i_z_e__.html#ga045352e805adba9dfc25b087371872a6", null ]
 ];

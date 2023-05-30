@@ -181,6 +181,21 @@ Variables</h2></td></tr>
 <tr class="memitem:gad5ae1f8a4aa62308f0186f774d44e3b6"><td class="memItemLeft" align="right" valign="top"><a id="gad5ae1f8a4aa62308f0186f774d44e3b6"></a>
 <a class="el" href="group__mcux_cl_key___types.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> const <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a> const uint8_t uint32_t const uint8_t uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>signatureSize</b></td></tr>
 <tr class="separator:gad5ae1f8a4aa62308f0186f774d44e3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga775309e825e6d5a54929aaac94cedbdd"><td class="memItemLeft" align="right" valign="top"><a id="ga775309e825e6d5a54929aaac94cedbdd"></a>
+const <a class="el" href="group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321">mcuxClEcc_EdDSA_DomainParams_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pDomainParams</b></td></tr>
+<tr class="separator:ga775309e825e6d5a54929aaac94cedbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad63f63500d460e8489c7fb8159d549ed"><td class="memItemLeft" align="right" valign="top"><a id="gad63f63500d460e8489c7fb8159d549ed"></a>
+const <a class="el" href="group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321">mcuxClEcc_EdDSA_DomainParams_t</a> <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pProtocolDescriptor</b></td></tr>
+<tr class="separator:gad63f63500d460e8489c7fb8159d549ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1eb97e35c323aba3cd42c0469fea701d"><td class="memItemLeft" align="right" valign="top"><a id="ga1eb97e35c323aba3cd42c0469fea701d"></a>
+const <a class="el" href="group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321">mcuxClEcc_EdDSA_DomainParams_t</a> <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a> uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>phflag</b></td></tr>
+<tr class="separator:ga1eb97e35c323aba3cd42c0469fea701d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafce211557034d093d311cf5a1bdfe5b0"><td class="memItemLeft" align="right" valign="top"><a id="gafce211557034d093d311cf5a1bdfe5b0"></a>
+const <a class="el" href="group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321">mcuxClEcc_EdDSA_DomainParams_t</a> <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a> uint32_t <a class="el" href="group__cl_core_types.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pContext</b></td></tr>
+<tr class="separator:gafce211557034d093d311cf5a1bdfe5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae14a77104bd72e45398140a8ea27ea91"><td class="memItemLeft" align="right" valign="top"><a id="gae14a77104bd72e45398140a8ea27ea91"></a>
+const <a class="el" href="group__mcux_cl_ecc___types.html#ga365359e63f156889e46845381455b321">mcuxClEcc_EdDSA_DomainParams_t</a> <a class="el" href="group__mcux_cl_ecc___types.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a> uint32_t <a class="el" href="group__cl_core_types.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>contextLen</b></td></tr>
+<tr class="separator:gae14a77104bd72e45398140a8ea27ea91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Defines all functions of <a class="el" href="group__mcux_cl_ecc.html">mcuxClEcc</a>. </p>
@@ -210,6 +225,7 @@ Variables</h2></td></tr>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>This function implements the protocol descriptor generation for Ed25519ctx, Ed25519ph, Ed448 and Ed448ph.</p>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
@@ -414,6 +430,25 @@ Variables</h2></td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gae739e1f3f62d1a66e2a862e40d5a0f37" title="ECDSA Signature is invalid.">MCUXCLECC_STATUS_INVALID_SIGNATURE</a></td><td>EdDSA signature is invalid </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>input parameters are invalid </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>pointer to <a class="el" href="structmcux_cl_session___descriptor.html" title="Type for mcuxClSession Descriptor.">mcuxClSession_Descriptor</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDomainParams</td><td>Pointer to domain parameters of the used curve </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pProtocolDescriptor</td><td>Protocol descriptor specifying the EdDSA variant </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">phflag</td><td>Option whether pre-hashing is enabled </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>User input context for the hash prefix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contextLen</td><td>Length of the context</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected </td></tr>
   </table>
   </dd>

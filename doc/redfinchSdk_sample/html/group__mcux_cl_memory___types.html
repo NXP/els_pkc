@@ -189,12 +189,8 @@ Functions</h2></td></tr>
 <p>Random data generator uninitialization function.</p>
 <p>Random data generation function.</p>
 <p>Random data generator reseed function.</p>
-<p>Wait until PKC is ready to accept new calculation.</p>
-<p>Wait until PKC finishes calculations.</p>
 <p>Randomize UPTR table and operands in PKC workarea.</p>
-<p>Randomize UPTR table.</p>
 <p>Securely calculates modular exponentiation.</p>
-<p>Calculates modular reduction with even modulus.</p>
 <p>Finalize a MAC generation for a multipart MAC computation.</p>
 <p>Data processing for a multipart MAC computation.</p>
 <p>Initialization for a multipart MAC computation.</p>
@@ -222,6 +218,9 @@ Functions</h2></td></tr>
 <p>Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1.2 specification.</p>
 <p>Derives a key using the NIST SP 800-108 CMAC-based Extract-and-Expand Key Derivation Function.</p>
 <p>Derives a key using the HKDF (HMAC-based key derivation function) according to SP800-56C one-step approach with Sha2-256.</p>
+<p>Resets the glitch detector's event counter.</p>
+<p>Reads the glitch detector's event counter.</p>
+<p>Calculates optimal ELS glitch detector configuration and writes it to system memory.</p>
 <p>Verifies an ECDSA signature of a given message.</p>
 <p>Generates an ECDSA signature of a given message.</p>
 <p>Performs a Diffie-Hellman key exchange with an internal ECC private key and an external ECC public key.</p>
@@ -245,6 +244,7 @@ Functions</h2></td></tr>
 <p>AES-GCM update of the Additional Authenticated Data (AAD)</p>
 <p>AES-GCM partial initialization.</p>
 <p>Key type constructor.</p>
+<p>This function implements the protocol descriptor generation for Ed25519ctx, Ed25519ph, Ed448 and Ed448ph.</p>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
@@ -581,6 +581,25 @@ Functions</h2></td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gae739e1f3f62d1a66e2a862e40d5a0f37" title="ECDSA Signature is invalid.">MCUXCLECC_STATUS_INVALID_SIGNATURE</a></td><td>EdDSA signature is invalid </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>input parameters are invalid </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>pointer to <a class="el" href="structmcux_cl_session___descriptor.html" title="Type for mcuxClSession Descriptor.">mcuxClSession_Descriptor</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDomainParams</td><td>Pointer to domain parameters of the used curve </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pProtocolDescriptor</td><td>Protocol descriptor specifying the EdDSA variant </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">phflag</td><td>Option whether pre-hashing is enabled </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>User input context for the hash prefix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contextLen</td><td>Length of the context</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
   </table>
   </dd>
@@ -1038,6 +1057,43 @@ An error code that is always <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t
   </table>
   </dd>
 </dl>
+<p>Call #mcuxClEls_WaitForOperation to complete the operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">Pointer</td><td>to the memory area which receives the glitch detector trim value. The size is fixed at <a class="el" href="group__mcux_cl_els___glitch_detector___macros.html#ga38a93e9e15614af275f56eace687e4ab" title="Glitch detector trim value size.">MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE</a> bytes.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call #mcuxClEls_WaitForOperation to complete ...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
+<p>This function converts the event counter from Gray code to an unsigned number.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">Pointer</td><td>to the word where the counter value will be stored.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga022996920a649ed71428ed73e53eae8a" title="No error occurred.">MCUXCLELS_STATUS_OK</a></td><td>on successful request</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga022996920a649ed71428ed73e53eae8a" title="No error occurred.">MCUXCLELS_STATUS_OK</a></td><td>on successful request</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
 <p>Call #mcuxClEls_WaitForOperation to complete the operation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1587,59 +1643,6 @@ mcuxClMac_process</dd></dl>
   </table>
   </dd>
 </dl>
-<p>This function calculates modular reduction result = X mod n, where the modulus n is even.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">iR_iX_iN_iT0</td><td>indices of PKC operands </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">iT1_iT2_iT3</td><td>indices of PKC operands</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>iR_iX_iN_iT0</code>  </dt>
-<dd><code>iT0</code> (bits 0~7): index of temp0 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-The operand of modulus can be used as temp0 (i.e., iT0 = iN), but the modulus will be destroyed. <br />
-<code>iN</code> (bits 8~15): index of modulus (PKC operand), size = lenN. <br />
-The offset (UPTRT[iN]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
-<code>iX</code> (bits 16~23): index of X (PKC operand). <br />
-Its size shall be at least (lenX + MCUXCLPKC_WORDSIZE). <br />
-<code>iR</code> (bits 24~31): index of result (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
-<dt><code>iT1_iT2_iT3</code>  </dt>
-<dd><code>iT3</code> (bits 0~7): index of temp3 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-<code>iT2</code> (bits 8~15): index of temp2 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-<code>iT1</code> (bits 16~23): index of temp1 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-The operand of result can be used as temp1 (i.e., iT1 = iR). TODO: always use R (any reason not using R?) </dd>
-</dl>
-</dd>
-</dl>
-<dl>
-<dt>PKC properties </dt>
-<dd><dl>
-<dt>PS1 lengths </dt>
-<dd>PS1 OPLEN defines lenN (length of modulus n), and MCLEN defines lenX (length of X). <br />
-Both OPLEN and MCLEN shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
-<dt>PS2 lengths </dt>
-<dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored. </dd>
-<dt>ACTIV/GOANY </dt>
-<dd>#mcuxClPkc_WaitForReady will be called before returning to caller. <br />
-The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>) </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_math___macros.html#gacc4f37c95272b523a0ca1eca8d2e3735" title="Math operation successful.">MCUXCLMATH_ERRORCODE_OK</a></td><td>function executed successfully</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>This function calculates modular exponentiation in a secure manner. It randomizes the computation by Euclidean splitting: exponent = b * q + r, where b is a 64-bit odd random number (with both MSbit and LSbit set), and r = exponent % b. The exponentiation is calculated by two steps: (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n. In addition, base operands are re-randomized, by adding random multiples of the modulus to them before performing modular multiplications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1707,37 +1710,6 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
-<p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt>pSession: </dt>
-<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>Only the buffer allocation will be randomized, existing operands stored in each buffer will not be moved accordingly. </dd>
-<dd>
-This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>if UPTR table is randomized successfully. </td></tr>
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#gab1f0a5295736463652b7a8c1ba887991" title="PKC operation not successful.">MCUXCLPKC_STATUS_NOK</a></td><td>if the operation failed.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1754,7 +1726,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dt>pSession: </dt>
 <dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
+<dd>this pointer shall be 2-byte aligned. <br />
+All offsets (pUPTRT[0~(noOfBuffer-1)]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dt><code>bufferLength</code>  </dt>
 <dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
 </dl>
@@ -1770,22 +1743,6 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
-<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation).</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>This function performs the reseeding of a random data generator. This operation fetches a fresh seed from a TRNG and updates the state in the Random context referenced in the session handle.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2136,6 +2093,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>This function implements the protocol descriptor generation for Ed25519ctx, Ed25519ph, Ed448 and Ed448ph.</p>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
@@ -2340,6 +2298,25 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gae739e1f3f62d1a66e2a862e40d5a0f37" title="ECDSA Signature is invalid.">MCUXCLECC_STATUS_INVALID_SIGNATURE</a></td><td>EdDSA signature is invalid </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>input parameters are invalid </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>pointer to <a class="el" href="structmcux_cl_session___descriptor.html" title="Type for mcuxClSession Descriptor.">mcuxClSession_Descriptor</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDomainParams</td><td>Pointer to domain parameters of the used curve </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pProtocolDescriptor</td><td>Protocol descriptor specifying the EdDSA variant </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">phflag</td><td>Option whether pre-hashing is enabled </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>User input context for the hash prefix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contextLen</td><td>Length of the context</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
   </table>
   </dd>
@@ -3908,7 +3885,6 @@ mcuxClMac_process</dd></dl>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>Securely calculates modular exponentiation.</p>
-<p>Calculates modular reduction with even modulus.</p>
 <p>This function counts the number of trailing zero bits of a PKC operand at offset UPTRT[iX] and of size PS1 OPLEN.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3941,59 +3917,6 @@ The offset (UPTRT[iX]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">#numTrailingZeroes</td><td>Number of trailing zeroes</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function calculates modular reduction result = X mod n, where the modulus n is even.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">iR_iX_iN_iT0</td><td>indices of PKC operands </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">iT1_iT2_iT3</td><td>indices of PKC operands</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>iR_iX_iN_iT0</code>  </dt>
-<dd><code>iT0</code> (bits 0~7): index of temp0 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-The operand of modulus can be used as temp0 (i.e., iT0 = iN), but the modulus will be destroyed. <br />
-<code>iN</code> (bits 8~15): index of modulus (PKC operand), size = lenN. <br />
-The offset (UPTRT[iN]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
-<code>iX</code> (bits 16~23): index of X (PKC operand). <br />
-Its size shall be at least (lenX + MCUXCLPKC_WORDSIZE). <br />
-<code>iR</code> (bits 24~31): index of result (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
-<dt><code>iT1_iT2_iT3</code>  </dt>
-<dd><code>iT3</code> (bits 0~7): index of temp3 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-<code>iT2</code> (bits 8~15): index of temp2 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-<code>iT1</code> (bits 16~23): index of temp1 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-The operand of result can be used as temp1 (i.e., iT1 = iR). TODO: always use R (any reason not using R?) </dd>
-</dl>
-</dd>
-</dl>
-<dl>
-<dt>PKC properties </dt>
-<dd><dl>
-<dt>PS1 lengths </dt>
-<dd>PS1 OPLEN defines lenN (length of modulus n), and MCLEN defines lenX (length of X). <br />
-Both OPLEN and MCLEN shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
-<dt>PS2 lengths </dt>
-<dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored. </dd>
-<dt>ACTIV/GOANY </dt>
-<dd>#mcuxClPkc_WaitForReady will be called before returning to caller. <br />
-The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>) </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_math___macros.html#gacc4f37c95272b523a0ca1eca8d2e3735" title="Math operation successful.">MCUXCLMATH_ERRORCODE_OK</a></td><td>function executed successfully</td></tr>
   </table>
   </dd>
 </dl>
@@ -4069,84 +3992,7 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
 <p>Deprecated type for ELS driver protected status codes.</p>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>Pointer to the buffer to be cleared. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be cleared. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; len, only bufLength bytes are cleared).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not cleared (nonzero if the destination buffer is too small)</dd></dl>
-<p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
-<p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
-<p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
-<p>Deprecated type for ELS driver protected status codes.</p>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
-<p>The two buffers must not overlap.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>pointer to the buffer to be copied to. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSrc</td><td>pointer to the buffer to copy. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be copied. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are copied).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not copied (nonzero if the destination buffer is too small)</dd></dl>
-<p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
-<p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
-<p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
-<p>Deprecated type for ELS driver protected status codes.</p>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>pointer to the buffer to be set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>byte value to be set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are set).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not copied (nonzero if the destination buffer is too small)</dd></dl>
-<p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
-<p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
-<p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
-<p>Deprecated type for ELS driver protected status codes.</p>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
-<p>Wait until PKC is ready to accept new calculation.</p>
-<p>Wait until PKC finishes calculations.</p>
 <p>Randomize UPTR table and operands in PKC workarea.</p>
-<p>Randomize UPTR table.</p>
-<p>This function initializes elements in UPTR table. UPTR table contains the address (16-bit offset in PKC workarea) of each buffer (PKC operand). Each element of the table will be initialized with a 16-bit offset, associated with a buffer allocated in sequence in PKC workarea. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be initialized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pBaseBuffer</td><td>address of the buffer in PKC workarea, with which the first element will be associated. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be initialized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
-<dt><code>pBaseBuffer</code>  </dt>
-<dd>this address shall be MCUXCLPKC_WORDSIZE aligned. </dd>
-<dt><code>bufferLength</code>  </dt>
-<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4194,7 +4040,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dt>pSession: </dt>
 <dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
+<dd>this pointer shall be 2-byte aligned. <br />
+All offsets (pUPTRT[0~(noOfBuffer-1)]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dt><code>bufferLength</code>  </dt>
 <dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
 </dl>
@@ -4210,22 +4057,6 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
-<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation).</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.</p>
 <p>Deprecated type for error codes used by code-flow protected Math component functions.</p>
 <p>Deprecated type for Key component error codes, returned by functions with code-flow protection.</p>
@@ -4804,12 +4635,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>Random data generator uninitialization function.</p>
 <p>Random data generation function.</p>
 <p>Random data generator reseed function.</p>
-<p>Wait until PKC is ready to accept new calculation.</p>
-<p>Wait until PKC finishes calculations.</p>
 <p>Randomize UPTR table and operands in PKC workarea.</p>
-<p>Randomize UPTR table.</p>
 <p>Securely calculates modular exponentiation.</p>
-<p>Calculates modular reduction with even modulus.</p>
 <p>Finalize a MAC generation for a multipart MAC computation.</p>
 <p>Data processing for a multipart MAC computation.</p>
 <p>Initialization for a multipart MAC computation.</p>
@@ -4837,6 +4664,9 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1.2 specification.</p>
 <p>Derives a key using the NIST SP 800-108 CMAC-based Extract-and-Expand Key Derivation Function.</p>
 <p>Derives a key using the HKDF (HMAC-based key derivation function) according to SP800-56C one-step approach with Sha2-256.</p>
+<p>Resets the glitch detector's event counter.</p>
+<p>Reads the glitch detector's event counter.</p>
+<p>Calculates optimal ELS glitch detector configuration and writes it to system memory.</p>
 <p>Verifies an ECDSA signature of a given message.</p>
 <p>Generates an ECDSA signature of a given message.</p>
 <p>Performs a Diffie-Hellman key exchange with an internal ECC private key and an external ECC public key.</p>
@@ -4860,6 +4690,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <p>AES-GCM update of the Additional Authenticated Data (AAD)</p>
 <p>AES-GCM partial initialization.</p>
 <p>Key type constructor.</p>
+<p>This function implements the protocol descriptor generation for Ed25519ctx, Ed25519ph, Ed448 and Ed448ph.</p>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
@@ -5196,6 +5027,25 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gae739e1f3f62d1a66e2a862e40d5a0f37" title="ECDSA Signature is invalid.">MCUXCLECC_STATUS_INVALID_SIGNATURE</a></td><td>EdDSA signature is invalid </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>input parameters are invalid </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>pointer to <a class="el" href="structmcux_cl_session___descriptor.html" title="Type for mcuxClSession Descriptor.">mcuxClSession_Descriptor</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDomainParams</td><td>Pointer to domain parameters of the used curve </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pProtocolDescriptor</td><td>Protocol descriptor specifying the EdDSA variant </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">phflag</td><td>Option whether pre-hashing is enabled </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>User input context for the hash prefix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contextLen</td><td>Length of the context</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
   </table>
   </dd>
@@ -5653,6 +5503,43 @@ An error code that is always <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t
   </table>
   </dd>
 </dl>
+<p>Call #mcuxClEls_WaitForOperation to complete the operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">Pointer</td><td>to the memory area which receives the glitch detector trim value. The size is fixed at <a class="el" href="group__mcux_cl_els___glitch_detector___macros.html#ga38a93e9e15614af275f56eace687e4ab" title="Glitch detector trim value size.">MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE</a> bytes.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call #mcuxClEls_WaitForOperation to complete ...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
+<p>This function converts the event counter from Gray code to an unsigned number.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">Pointer</td><td>to the word where the counter value will be stored.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga022996920a649ed71428ed73e53eae8a" title="No error occurred.">MCUXCLELS_STATUS_OK</a></td><td>on successful request</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html#ga022996920a649ed71428ed73e53eae8a" title="No error occurred.">MCUXCLELS_STATUS_OK</a></td><td>on successful request</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="group___m_c_u_x_c_l_e_l_s___s_t_a_t_u_s__.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
 <p>Call #mcuxClEls_WaitForOperation to complete the operation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -6202,59 +6089,6 @@ mcuxClMac_process</dd></dl>
   </table>
   </dd>
 </dl>
-<p>This function calculates modular reduction result = X mod n, where the modulus n is even.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">iR_iX_iN_iT0</td><td>indices of PKC operands </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">iT1_iT2_iT3</td><td>indices of PKC operands</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>iR_iX_iN_iT0</code>  </dt>
-<dd><code>iT0</code> (bits 0~7): index of temp0 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-The operand of modulus can be used as temp0 (i.e., iT0 = iN), but the modulus will be destroyed. <br />
-<code>iN</code> (bits 8~15): index of modulus (PKC operand), size = lenN. <br />
-The offset (UPTRT[iN]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
-<code>iX</code> (bits 16~23): index of X (PKC operand). <br />
-Its size shall be at least (lenX + MCUXCLPKC_WORDSIZE). <br />
-<code>iR</code> (bits 24~31): index of result (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
-<dt><code>iT1_iT2_iT3</code>  </dt>
-<dd><code>iT3</code> (bits 0~7): index of temp3 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-<code>iT2</code> (bits 8~15): index of temp2 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-<code>iT1</code> (bits 16~23): index of temp1 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-The operand of result can be used as temp1 (i.e., iT1 = iR). TODO: always use R (any reason not using R?) </dd>
-</dl>
-</dd>
-</dl>
-<dl>
-<dt>PKC properties </dt>
-<dd><dl>
-<dt>PS1 lengths </dt>
-<dd>PS1 OPLEN defines lenN (length of modulus n), and MCLEN defines lenX (length of X). <br />
-Both OPLEN and MCLEN shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
-<dt>PS2 lengths </dt>
-<dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored. </dd>
-<dt>ACTIV/GOANY </dt>
-<dd>#mcuxClPkc_WaitForReady will be called before returning to caller. <br />
-The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>) </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_math___macros.html#gacc4f37c95272b523a0ca1eca8d2e3735" title="Math operation successful.">MCUXCLMATH_ERRORCODE_OK</a></td><td>function executed successfully</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>This function calculates modular exponentiation in a secure manner. It randomizes the computation by Euclidean splitting: exponent = b * q + r, where b is a 64-bit odd random number (with both MSbit and LSbit set), and r = exponent % b. The exponentiation is calculated by two steps: (1) m0 = m^q mod n; and (2) result = m0^b * m^r mod n. In addition, base operands are re-randomized, by adding random multiples of the modulus to them before performing modular multiplications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -6322,37 +6156,6 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
-<p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt>pSession: </dt>
-<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>Only the buffer allocation will be randomized, existing operands stored in each buffer will not be moved accordingly. </dd>
-<dd>
-This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>if UPTR table is randomized successfully. </td></tr>
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#gab1f0a5295736463652b7a8c1ba887991" title="PKC operation not successful.">MCUXCLPKC_STATUS_NOK</a></td><td>if the operation failed.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -6369,7 +6172,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dt>pSession: </dt>
 <dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
+<dd>this pointer shall be 2-byte aligned. <br />
+All offsets (pUPTRT[0~(noOfBuffer-1)]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dt><code>bufferLength</code>  </dt>
 <dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
 </dl>
@@ -6385,22 +6189,6 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
-<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation).</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>This function performs the reseeding of a random data generator. This operation fetches a fresh seed from a TRNG and updates the state in the Random context referenced in the session handle.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -6743,6 +6531,7 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status</dd></dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
+<p>This function implements the protocol descriptor generation for Ed25519ctx, Ed25519ph, Ed448 and Ed448ph.</p>
 <p>This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
 <p>This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.5 and 5.2.5 of <a href="https://datatracker.ietf.org/doc/html/rfc8032">https://datatracker.ietf.org/doc/html/rfc8032</a>).</p>
@@ -6947,6 +6736,25 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gae739e1f3f62d1a66e2a862e40d5a0f37" title="ECDSA Signature is invalid.">MCUXCLECC_STATUS_INVALID_SIGNATURE</a></td><td>EdDSA signature is invalid </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>input parameters are invalid </td></tr>
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>pointer to <a class="el" href="structmcux_cl_session___descriptor.html" title="Type for mcuxClSession Descriptor.">mcuxClSession_Descriptor</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pDomainParams</td><td>Pointer to domain parameters of the used curve </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pProtocolDescriptor</td><td>Protocol descriptor specifying the EdDSA variant </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">phflag</td><td>Option whether pre-hashing is enabled </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>User input context for the hash prefix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contextLen</td><td>Length of the context</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>signature verification passed </td></tr>
     <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_e_c_c___s_t_a_t_u_s__.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>fault attack (unexpected behavior) is detected</td></tr>
   </table>
   </dd>
@@ -8455,7 +8263,6 @@ mcuxClMac_process</dd></dl>
 </dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>Securely calculates modular exponentiation.</p>
-<p>Calculates modular reduction with even modulus.</p>
 <p>This function counts the number of trailing zero bits of a PKC operand at offset UPTRT[iX] and of size PS1 OPLEN.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -8488,59 +8295,6 @@ The offset (UPTRT[iX]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">#numTrailingZeroes</td><td>Number of trailing zeroes</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function calculates modular reduction result = X mod n, where the modulus n is even.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">iR_iX_iN_iT0</td><td>indices of PKC operands </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">iT1_iT2_iT3</td><td>indices of PKC operands</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>iR_iX_iN_iT0</code>  </dt>
-<dd><code>iT0</code> (bits 0~7): index of temp0 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-The operand of modulus can be used as temp0 (i.e., iT0 = iN), but the modulus will be destroyed. <br />
-<code>iN</code> (bits 8~15): index of modulus (PKC operand), size = lenN. <br />
-The offset (UPTRT[iN]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. <br />
-<code>iX</code> (bits 16~23): index of X (PKC operand). <br />
-Its size shall be at least (lenX + MCUXCLPKC_WORDSIZE). <br />
-<code>iR</code> (bits 24~31): index of result (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). </dd>
-<dt><code>iT1_iT2_iT3</code>  </dt>
-<dd><code>iT3</code> (bits 0~7): index of temp3 (PKC operand). <br />
-Its size shall be at least (lenN + MCUXCLPKC_WORDSIZE). <br />
-<code>iT2</code> (bits 8~15): index of temp2 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-<code>iT1</code> (bits 16~23): index of temp1 (PKC operand). <br />
-Its size shall be at least lenN. <br />
-The operand of result can be used as temp1 (i.e., iT1 = iR). TODO: always use R (any reason not using R?) </dd>
-</dl>
-</dd>
-</dl>
-<dl>
-<dt>PKC properties </dt>
-<dd><dl>
-<dt>PS1 lengths </dt>
-<dd>PS1 OPLEN defines lenN (length of modulus n), and MCLEN defines lenX (length of X). <br />
-Both OPLEN and MCLEN shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
-<dt>PS2 lengths </dt>
-<dd>PS2 OPLEN and MCLEN will be modified, and original values will not be restored. </dd>
-<dt>ACTIV/GOANY </dt>
-<dd>#mcuxClPkc_WaitForReady will be called before returning to caller. <br />
-The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>) </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group__mcux_cl_math___macros.html#gacc4f37c95272b523a0ca1eca8d2e3735" title="Math operation successful.">MCUXCLMATH_ERRORCODE_OK</a></td><td>function executed successfully</td></tr>
   </table>
   </dd>
 </dl>
@@ -8612,72 +8366,7 @@ NDash of modulus shall be stored in the PKC word before modulus. </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>Pointer to the buffer to be cleared. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be cleared. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; len, only bufLength bytes are cleared).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not cleared (nonzero if the destination buffer is too small)</dd></dl>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
-<p>The two buffers must not overlap.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>pointer to the buffer to be copied to. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSrc</td><td>pointer to the buffer to copy. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be copied. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are copied).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not copied (nonzero if the destination buffer is too small)</dd></dl>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>pointer to the buffer to be set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>byte value to be set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are set).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected value (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>), indicating the number of bytes not copied (nonzero if the destination buffer is too small)</dd></dl>
-<p>Deprecated type for mcuxClEcc component return codes.</p>
-<p>Wait until PKC is ready to accept new calculation.</p>
-<p>Wait until PKC finishes calculations.</p>
 <p>Randomize UPTR table and operands in PKC workarea.</p>
-<p>Randomize UPTR table.</p>
-<p>This function initializes elements in UPTR table. UPTR table contains the address (16-bit offset in PKC workarea) of each buffer (PKC operand). Each element of the table will be initialized with a 16-bit offset, associated with a buffer allocated in sequence in PKC workarea. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be initialized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pBaseBuffer</td><td>address of the buffer in PKC workarea, with which the first element will be associated. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be initialized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
-<dt><code>pBaseBuffer</code>  </dt>
-<dd>this address shall be MCUXCLPKC_WORDSIZE aligned. </dd>
-<dt><code>bufferLength</code>  </dt>
-<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -8725,7 +8414,8 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
 <dt>pSession: </dt>
 <dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
 <dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
+<dd>this pointer shall be 2-byte aligned. <br />
+All offsets (pUPTRT[0~(noOfBuffer-1)]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
 <dt><code>bufferLength</code>  </dt>
 <dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
 </dl>
@@ -8741,22 +8431,6 @@ This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function.</dd></dl>
-<p>This function waits until PKC finishes on-going and pending calculations (if there is any). When returning to caller, PKC is in idle state, and result in PKC workarea is ready.</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function waits until PKC is ready to accept next calculation (i.e., no pending calculation).</p>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="group__mcux_cssl_flow_protection.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="group___m_c_u_x_c_l_p_k_c___s_t_a_t_u_s__.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>this function always returns OK.</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>Deprecated type for mcuxClEcc component return codes.</p>
 <p>Non-cryptographic PRNG data generation function.</p>
 <p>Non-cryptographic PRNG initialization function.</p>
