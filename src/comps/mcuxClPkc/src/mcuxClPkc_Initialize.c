@@ -18,11 +18,11 @@
 
 
 #include <platform_specific_headers.h>
-#include <stdint.h>
-#include <stddef.h>
-
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Analysis.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
+
 #include <mcuxClPkc_Types.h>
 #include <mcuxClPkc_Functions.h>
 #include <internal/mcuxClPkc_Macros.h>
@@ -38,7 +38,7 @@
  * (3) if PKC is not in RESET, wait any on-going calculation;
  * (4) initialize and set PKC according to PKC specification.
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Initialize)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Initialize, mcuxClPkc_PkcInitializeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Initialize(mcuxClPkc_State_t *pState)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_Initialize);
@@ -109,7 +109,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Initialize(mcuxClPkc_State_t *pState
  * (3) clear PKC SFRs;
  * (4) restore PKC state (except STOP bit) if it is provided (pState != NULL).
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Deinitialize)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_Deinitialize, mcuxClPkc_PkcDeInitializeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_Deinitialize(const mcuxClPkc_State_t *pState)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_Deinitialize);

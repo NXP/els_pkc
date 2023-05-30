@@ -36,11 +36,6 @@
 /* Definition of maximum lengths of key for RSA in bits */
 #define MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX (4096u)
 
-/* Definition of maximum lengths of base point order n in bytes */
-#define MCUXCLPSADRIVER_ECC_N_SIZE_MAX (256u/8u)  //only secp256r1 supported for now
-/* Definition of maximum lengths of prime modulus in bytes */
-#define MCUXCLPSADRIVER_ECC_P_SIZE_MAX (256u/8u)  //only secp256r1 supported for now
-
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_Sign function */
 #define MCUXCLPSADRIVER_MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -56,7 +51,7 @@
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_WACPU_SIZE_MAX \
             MCUXCLPSADRIVER_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE, \
                                MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_WACPU_SIZE_MAX, \
-                                                  MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLPSADRIVER_ECC_N_SIZE_MAX)), \
+                                                  MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER)), \
                                                   MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX))
 
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_Verify function */
@@ -71,7 +66,7 @@
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_Sign function */
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_WAPKC_SIZE_MAX  \
             MCUXCLPSADRIVER_MAX(MCUXCLRSA_SIGN_CRT_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
-                               MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLPSADRIVER_ECC_N_SIZE_MAX))
+                               MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER))
 
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_Verify function */
 #define MCUXCLPSADRIVER_VERIFY_BY_CLNS_WAPKC_SIZE_MAX  \

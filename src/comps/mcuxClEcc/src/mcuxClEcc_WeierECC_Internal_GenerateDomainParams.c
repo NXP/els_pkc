@@ -75,7 +75,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     }
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    uint32_t *pOperands32 = (uint32_t *) pOperands;  /* UPTRT is CPU word aligned in mcuxClEcc */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
+    uint32_t *pOperands32 = (uint32_t *) pOperands;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     const uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
 
     /* Calculate R3N, and then reduce R2N < N and R2P < P. */
@@ -145,7 +147,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
         MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_X0, WEIER_Y0);
         pOperands[WEIER_VZ2] = pOperands[WEIER_ZA];
         pOperands[WEIER_VT] = pOperands[ECC_S2];
-        /* mcuxClEcc_RepeatPointDouble always returns _OK. */
+
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_RepeatPointDouble((byteLenN * 8u) / 2u));
 
         /* Convert precG to affine coordinates in NR and store them in (WEIER_X0,WEIER_Y0). */

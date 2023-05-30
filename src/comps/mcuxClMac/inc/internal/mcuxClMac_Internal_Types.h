@@ -38,6 +38,7 @@ extern "C" {
  * This function will perform the actual MAC compute operation based on the given mode
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClMac_ComputeFunc_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ComputeFunc_t)(
   mcuxClSession_Handle_t session,
   mcuxClKey_Handle_t key,
@@ -46,7 +47,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ComputeFunc_
   uint32_t inLength,
   mcuxCl_Buffer_t pMac,
   uint32_t * const pMacLength
-);
+));
 
 /**
  * @brief Mac Multipart Init function type
@@ -54,11 +55,12 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ComputeFunc_
  * This function will perform the actual MAC init operation based on the given mode
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClMac_InitFunc_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_InitFunc_t)(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
   mcuxClKey_Handle_t key
-);
+));
 
 /**
  * @brief Mac Multipart Process function type
@@ -66,12 +68,13 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_InitFunc_t)(
  * This function will perform the actual MAC process operation based on the given mode
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClMac_ProcessFunc_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ProcessFunc_t)(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength
-);
+));
 
 /**
  * @brief Mac Multipart Finish function type
@@ -79,12 +82,13 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_ProcessFunc_
  * This function will perform the actual MAC finish operation based on the given mode
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClMac_FinishFunc_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) (*mcuxClMac_FinishFunc_t)(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
   mcuxCl_Buffer_t pMac,
   uint32_t * const pMacLength
-);
+));
 
 
 

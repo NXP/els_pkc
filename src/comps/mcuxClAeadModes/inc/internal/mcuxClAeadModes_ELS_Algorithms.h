@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAeadModes_ELS_Algorithms.h
  *  @brief Internal exports of the algorithm descriptors for the mcuxClAeadModes component

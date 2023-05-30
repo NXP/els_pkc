@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef COMPILER_TOOLCHAIN_H_
 #define COMPILER_TOOLCHAIN_H_
@@ -26,12 +24,12 @@
         Use of UNALIGNED on ARMCLANG
 
         The __unaligned keyword is a type qualifier that tells the compiler to treat the pointer or variable as an unaligned pointer or variable.
-        https://www.keil.com/support/man/docs/armclang_ref/armclang_ref_pfl1493130433688.htm
+        www.keil.com/support/man/docs/armclang_ref/armclang_ref_pfl1493130433688.htm
 
         The use of __attribute__((packed)) is incorrect on ARMCLANG
 
         The packed type attribute specifies that a type must have the smallest possible alignment. This attribute only applies to struct and union types.
-        https://www.keil.com/support/man/docs/armclang_ref/armclang_ref_chr1393328521340.htm
+        www.keil.com/support/man/docs/armclang_ref/armclang_ref_chr1393328521340.htm
 
         -munaligned-access is the default for architectures that support unaligned accesses to data. This default applies to all architectures supported by Arm Compiler for Embedded 6, except Armv6-M, and Armv8-M without the Main Extension.
     */

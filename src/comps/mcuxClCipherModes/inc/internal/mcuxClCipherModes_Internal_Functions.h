@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #ifndef MCUXCLCIPHERMODES_INTERNAL_FUNCTONS_H_
 #define MCUXCLCIPHERMODES_INTERNAL_FUNCTONS_H_
 
@@ -31,6 +30,7 @@ extern "C" {
 /*
  * Helper functions
  */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClCipherModes_MemClear)
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length);
 
 /*

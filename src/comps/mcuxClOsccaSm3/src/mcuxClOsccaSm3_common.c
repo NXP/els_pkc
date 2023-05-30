@@ -22,8 +22,10 @@
  * This function reverses a byte string in-place (switches the endianness).
  *
  */
-void mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_core_sm3_switch_endianness)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length)
 {
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_core_sm3_switch_endianness);
 #ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     if (0u != (length % (sizeof(uint32_t))))
     {
@@ -44,11 +46,12 @@ void mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length)
             remainLength--;
         }
 
-        return;
+        MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness);
     }
 
     /* When the length is a multiple of CPU word size, fall down to the original implementation. */
     /* length is a multiple of CPU word size (4). */
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     uint32_t *ptrH32 = (uint32_t *) ((uint8_t *) ptr + length - 4u);
 #else
     /* MISRA Ex. 9 - Rule 11.3 - Use of UNALIGNED keyword. */
@@ -90,5 +93,5 @@ void mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length)
         *ptrL8 = byteH;
     }
 #endif
-    return;
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness);
 }

@@ -146,12 +146,13 @@ struct mcuxClKey_Descriptor {
 /**
  * @brief Function prototype for protocol specific key generation function pointer.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClKey_KeyGenFct_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) (* mcuxClKey_KeyGenFct_t)(
         mcuxClSession_Handle_t pSession,
         mcuxClKey_Generation_t generation,
         mcuxClKey_Handle_t privKey,
         mcuxClKey_Handle_t pubKey
-);
+));
 
 /**
  * @brief Struct of generation descriptor
@@ -160,15 +161,12 @@ struct mcuxClKey_GenerationDescriptor
 {
   mcuxClKey_KeyGenFct_t pKeyGenFct;    ///< Pointer to the protocol specific key pair generation function
   uint32_t protectionTokenKeyGenFct;  ///< Protection token of the protocol specific key generation function
-  void *pProtocolDescriptor;    ///< Pointer to additional parameters for the protocol specific key generation function
+  const void *pProtocolDescriptor;    ///< Pointer to additional parameters for the protocol specific key generation function
 };
 
 
 
-#ifdef MCUXCL_FEATURE_KEY_SELFTEST
-struct mcuxClKey_TestDescriptor {
-};
-#endif /* MCUXCL_FEATURE_KEY_SELFTEST */
+
 
 #ifdef __cplusplus
 } /* extern "C" */

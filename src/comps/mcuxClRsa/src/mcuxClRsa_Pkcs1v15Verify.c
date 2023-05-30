@@ -61,7 +61,7 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_512 = {
 };
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pkcs1v15Verify)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pkcs1v15Verify, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,

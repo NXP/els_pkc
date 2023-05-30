@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,9 +17,9 @@
  */
 
 
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc.h>
 #include <mcuxClMath_Functions.h>
@@ -59,7 +59,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT
     const uint16_t *backupPtrUptrt;
     /* mcuxClMath_InitLocalUptrt always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(iR_iX_iY_iT, 0u, pOperands, 4u, &backupPtrUptrt));
-    uint32_t offsetT = (uint32_t) pOperands[DivOdd_T];
+    uint16_t offsetT = pOperands[DivOdd_T];
     pOperands[DivOdd_T1] = (uint16_t) (offsetT + MCUXCLPKC_WORDSIZE);
     pOperands[DivOdd_Ri] = 2u;  /* for _Fup_ExactDivideOdd_NDashY */
     pOperands[DivOdd_CONST0] = 0u;
@@ -67,9 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT
     MCUX_CSSL_FP_LOOP_DECL(NDashY);
 
     MCUXCLPKC_PS2_SETLENGTH(0u, MCUXCLPKC_WORDSIZE);  /* MCLEN on higher 16 bits is not used. */
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
-    volatile uint32_t *pT = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetT);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
+    volatile uint32_t *pT = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTRWORD(offsetT);
     MCUXCLPKC_WAITFORFINISH();
     pT[0] = 1u;  /* 1 = (-Y)^(-1) mod 2. */
 

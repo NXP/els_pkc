@@ -11,12 +11,12 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #include "common.h"
 
 #include <mcuxClMemory.h>
 #include <mcuxClPsaDriver.h>
 #include <mcuxClRsa.h>
+#include <mcuxCsslFlowProtection.h>
 /**
  * \brief       Updates the pointer to immediately behind the full tag.
  *
@@ -226,16 +226,16 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_integer(uint8_t **p,
     }
 
     *p = ptr;
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret, token, mcuxClMemory_copy(
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
                                                   *p,
                                                   key->pKeyEntryData,
                                                   key->keyEntryLength,
                                                   key->keyEntryLength));
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != ret))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     *p += key->keyEntryLength;
 
     return PSA_SUCCESS;

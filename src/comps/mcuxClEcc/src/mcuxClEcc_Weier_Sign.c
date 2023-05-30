@@ -26,6 +26,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClEcc.h>
+#include <mcuxClCore_Analysis.h>
 
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClMath_Internal_Utils.h>
@@ -51,7 +52,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
     /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned")
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, 0u);
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SetupEnvironment,
         mcuxClEcc_Weier_SetupEnvironment(pSession,
@@ -82,7 +85,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
 
     MCUXCLMATH_FP_QSQUARED(ECC_NQSQR, ECC_NS, ECC_N, ECC_T0);
 
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
     uint32_t *pOperands32 = (uint32_t *) pOperands;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     const uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     const uint32_t bufferSize = operandSize + MCUXCLPKC_WORDSIZE;
 
@@ -377,3 +382,5 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
 }
+
+

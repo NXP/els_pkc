@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -25,7 +25,7 @@ extern "C" {
 
 typedef struct mcuxClMacModes_WorkArea
 {
-  uint8_t paddingBuff[MCUXCLAES_BLOCK_SIZE];                /* Buffer for padding */
+  uint32_t paddingBuff[MCUXCLAES_BLOCK_SIZE_IN_WORDS];       /* Buffer for padding */
 } mcuxClMacModes_WorkArea_t;
 
 

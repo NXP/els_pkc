@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020,2023 NXP                                                  */
+/* Copyright 2020, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,13 +11,15 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMath_NDash_FUP.h
-*  @brief defines FUP program byte arrays for mcuxClMath_NDash
-*/
+/**
+ * @file  mcuxClMath_NDash_FUP.h
+ * @brief defines FUP program byte arrays for mcuxClMath_NDash
+ */
+
 #ifndef MCUXCLMATH_NDASH_FUP_H_
 #define MCUXCLMATH_NDASH_FUP_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <internal/mcuxClPkc_FupMacros.h>
 
 #ifdef __cplusplus

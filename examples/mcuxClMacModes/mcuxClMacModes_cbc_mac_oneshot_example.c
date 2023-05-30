@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,8 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
-#include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClCore_Examples.h> // Defines and assertions for examples
 
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
@@ -29,8 +27,8 @@
 
 /** Performs a CMAC computation using functions of the mcuxClKey component.
  * @retval MCUXCLEXAMPLE_OK         The example code completed successfully
- * @retval MCUXCLEXAMPLE_FAILURE    The example code failed */
-bool mcuxClMacModes_cbc_mac_oneshot_example(void)
+ * @retval MCUXCLEXAMPLE_ERROR      The example code failed */
+MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_oneshot_example)
 {
     /* Example AES-128 key. */
     static const uint8_t aes128_key[MCUXCLAES_AES128_KEY_SIZE] = {
@@ -60,7 +58,7 @@ bool mcuxClMacModes_cbc_mac_oneshot_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
 
@@ -121,7 +119,7 @@ bool mcuxClMacModes_cbc_mac_oneshot_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token) || (MCUXCLMAC_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -132,7 +130,7 @@ bool mcuxClMacModes_cbc_mac_oneshot_example(void)
     /* Compare the result to the reference value. */
     if(!mcuxClCore_assertEqual(cmac_output_reference16, result_buffer, sizeof(cmac_output_reference16)))
     {
-            return MCUXCLEXAMPLE_FAILURE;
+            return MCUXCLEXAMPLE_ERROR;
     }
 
     /**************************************************************************/
@@ -145,14 +143,14 @@ bool mcuxClMacModes_cbc_mac_oneshot_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/

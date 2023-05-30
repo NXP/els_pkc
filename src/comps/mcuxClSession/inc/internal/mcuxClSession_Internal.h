@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -78,6 +78,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_freeAllCpuBuff
  * @return pointer to the buffer if it is allocated successfully;
  *         NULL if the buffer cannot be allocated.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_allocateWords_cpuWa)
 static inline uint32_t* mcuxClSession_allocateWords_cpuWa(
     mcuxClSession_Handle_t pSession,
     uint32_t wordsToAllocate)
@@ -122,6 +123,7 @@ static inline uint32_t* mcuxClSession_allocateWords_cpuWa(
  * @return pointer to the buffer if it is allocated successfully;
  *         NULL if the buffer cannot be allocated.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_allocateWords_pkcWa)
 static inline uint32_t* mcuxClSession_allocateWords_pkcWa(
     mcuxClSession_Handle_t pSession,
     uint32_t wordsToAllocate)
@@ -157,6 +159,7 @@ static inline uint32_t* mcuxClSession_allocateWords_pkcWa(
  * @param[in] pSession     Session handle.
  * @param[in] wordsToFree  The size of CPU workarea to be freed, in number of CPU words (uint32_t)
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_freeWords_cpuWa)
 static inline void mcuxClSession_freeWords_cpuWa(
     mcuxClSession_Handle_t pSession,
     uint32_t wordsToFree)
@@ -173,6 +176,7 @@ static inline void mcuxClSession_freeWords_cpuWa(
  * @param[in] pSession     Session handle.
  * @param[in] wordsToFree  The size of PKC workarea to be freed, in number of CPU words (uint32_t)
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_freeWords_pkcWa)
 static inline void mcuxClSession_freeWords_pkcWa(
     mcuxClSession_Handle_t pSession,
     uint32_t wordsToFree)
@@ -189,6 +193,7 @@ static inline void mcuxClSession_freeWords_pkcWa(
  *
  * @return The number of CPU words (uint32_t) of used part of CPU workarea.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_getUsage_cpuWa)
 static inline uint32_t mcuxClSession_getUsage_cpuWa(
     mcuxClSession_Handle_t pSession)
 {
@@ -204,6 +209,7 @@ static inline uint32_t mcuxClSession_getUsage_cpuWa(
  *
  * @return The number of CPU words (uint32_t) of used part of PKC workarea.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_getUsage_pkcWa)
 static inline uint32_t mcuxClSession_getUsage_pkcWa(
     mcuxClSession_Handle_t pSession)
 {
@@ -220,6 +226,7 @@ static inline uint32_t mcuxClSession_getUsage_pkcWa(
  * @param[in] pSession         Session handle.
  * @param[in] backupUsedCpuWa  backup of the number of used word(s).
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_setUsage_cpuWa)
 static inline void mcuxClSession_setUsage_cpuWa(
     mcuxClSession_Handle_t pSession,
     uint32_t backupUsedCpuWa)
@@ -237,6 +244,7 @@ static inline void mcuxClSession_setUsage_cpuWa(
  * @param[in] pSession         Session handle.
  * @param[in] backupUsedPkcWa  backup of the number of used word(s).
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_setUsage_pkcWa)
 static inline void mcuxClSession_setUsage_pkcWa(
     mcuxClSession_Handle_t pSession,
     uint32_t backupUsedPkcWa)

@@ -19,6 +19,7 @@
 #include <mcuxClSession.h>
 #include <mcuxClMemory_Copy.h>
 #include <mcuxClMemory_Clear.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
@@ -283,20 +284,20 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_clone(
 {
 
     /* Copy hash context to target hash operation handle */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (
                                                       target_operation->ctx.clns_data,
                                                       source_operation->ctx.clns_data,
                                                       MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE,
                                                       MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
     target_operation->id = source_operation->id;
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     return PSA_SUCCESS;
 }
@@ -305,17 +306,17 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_abort(
     psa_hash_operation_t *operation )
 {
     /* Clear hash clns data (context) */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_clear (
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_clear (
                                                         operation->ctx.clns_data,
                                                         MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE,
                                                         MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != token)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     return PSA_SUCCESS;
 

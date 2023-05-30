@@ -22,6 +22,7 @@
 #include <mcuxClRsa.h>
 #include <mcuxClSession.h>
 #include <mcuxClMemory_Copy.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
@@ -73,18 +74,18 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
         }
 
         /* Copy the digest into the local digest buffer */
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultCopy, tokenCopy, mcuxClMemory_copy(
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenCopy, mcuxClMemory_copy(
             (uint8_t*)digest,
             input,
             MCUXCLHASH_OUTPUT_SIZE_SHA_256,
             input_length
         ));
 
-        if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenCopy) || (0u != resultCopy))
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenCopy)
         {
             return PSA_ERROR_GENERIC_ERROR;
         }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     }
 
     mcuxClEls_EccSignOption_t SignOptions = {0}; // Initialize a new configuration for the planned mcuxClEls_EccSign_Async operation
@@ -118,18 +119,18 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Copy the computed signature to the provided signature/output buffer */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultCopy, tokenCopy, mcuxClMemory_copy(
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenCopy, mcuxClMemory_copy(
         signature,
         (uint8_t*)signatureAligned,
         MCUXCLELS_ECC_SIGNATURE_SIZE,
         MCUXCLELS_ECC_SIGNATURE_SIZE
     ));
 
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenCopy) || (0u != resultCopy))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenCopy)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     *signature_length = MCUXCLELS_ECC_SIGNATURE_SIZE;
     return PSA_SUCCESS;
@@ -346,18 +347,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
                                                       (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS,
                                                       MCUXCLPSADRIVER_SIGN_BY_CLNS_WAPKC_SIZE_MAX));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != tokenSessionInit) || (MCUXCLSESSION_STATUS_OK != resultSessionInit))
-    {
-      return PSA_ERROR_GENERIC_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    /* Initialize the RNG context */
-    mcuxClRandom_Context_t rng_ctx = NULL;
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token,
-                                    mcuxClRandom_init(&session,
-                                                     rng_ctx,
-                                                     mcuxClRandomModes_Mode_ELS_Drbg));
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
       return PSA_ERROR_GENERIC_ERROR;
     }
@@ -643,6 +632,29 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
       {
           return PSA_ERROR_BUFFER_TOO_SMALL;
       }
+
+      /* Initialize the RNG context, with maximum size */
+      uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
+
+      mcuxClRandom_Mode_t randomMode = NULL;
+      if(nLen <= 32u)  /* 128-bit security strength */
+      {
+        randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+      }
+      else  /* 256-bit security strength */
+      {
+        randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
+      }
+
+      MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token,
+                                      mcuxClRandom_init(&session,
+                                                       (mcuxClRandom_Context_t)rng_ctx,
+                                                       randomMode));
+      if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
+      {
+        return PSA_ERROR_GENERIC_ERROR;
+      }
+      MCUX_CSSL_FP_FUNCTION_CALL_END();
 
       MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(&session, &paramSign));
       *signature_length = 2u * nLen;

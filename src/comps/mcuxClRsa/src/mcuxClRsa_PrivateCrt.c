@@ -142,14 +142,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
           MCUXCLRSA_MAX(bufferSizePrimePQb + bufferSizePrimeT0 + bufferSizePrimeT1 + bufferSizePrimeT2 + bufferSizePrimeT3 + bufferSizePrimeT4 + bufferSizePrimeTE + bufferSizePrimeR + bufferSizePrimeT5,
                        bufferSizeModM + bufferSizeModT1 + bufferSizeModT2 + bufferSizeModT3 + bufferSizeModT4 + bufferSizeModN);
   const uint32_t pkcWaSizeWord = (uint32_t) bufferSizeTotal / (sizeof(uint32_t));
-  uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
+  uint32_t *pPkcWorkarea = mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
   if (NULL == pPkcWorkarea)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
 
   /* PKC buffers used for operations modulo P,Q and modulo N */
-  uint32_t *pBlind = (uint32_t *) pPkcWorkarea;
+  uint32_t *pBlind = pPkcWorkarea;
 
   /* PKC buffers for exponentiations and operations modulo primes P,Q */
   uint8_t *pPQ_b = (uint8_t *) pBlind + bufferSizePrimeRand + MCUXCLPKC_WORDSIZE;  // one extra PKC word for NDash
@@ -184,7 +184,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   }
 
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_INPUT]   = MCUXCLPKC_PTR2OFFSET(pInput);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_RAND]    = MCUXCLPKC_PTR2OFFSET(pBlind);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_RAND]    = MCUXCLPKC_PTR2OFFSET((uint8_t *) pBlind);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PQ_B]    = MCUXCLPKC_PTR2OFFSET(pPQ_b);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET0] = MCUXCLPKC_PTR2OFFSET(pPrimeT0);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET1] = MCUXCLPKC_PTR2OFFSET(pPrimeT1);

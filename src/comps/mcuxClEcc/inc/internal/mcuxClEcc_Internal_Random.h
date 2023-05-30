@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -45,12 +45,8 @@
             MCUX_CSSL_FP_FUNCTION_EXIT(callerID, MCUXCLECC_STATUS_RNG_ERROR);                       \
         }                                                                                         \
         /* Copy generated random numbers to PKC workarea. */                                      \
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_memCopy,                                                    \
-            mcuxClMemory_copy(pOutPKCWA, pTemp, length, length) );                                 \
-        if (0u != ret_memCopy)                                                                    \
-        {                                                                                         \
-            MCUX_CSSL_FP_FUNCTION_EXIT(callerID, MCUXCLECC_STATUS_FAULT_ATTACK);                    \
-        }                                                                                         \
+        MCUXCLMEMORY_FP_MEMORY_COPY(pOutPKCWA, pTemp, length);                                     \
+                                                                                                  \
         /* Release temporary buffer. */                                                           \
         mcuxClSession_freeWords_cpuWa(pSession, tempSizeWord);                                     \
     } while(false)

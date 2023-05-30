@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,9 +17,9 @@
  */
 
 
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc.h>
 #include <mcuxClMath_Functions.h>
@@ -57,10 +57,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModInv(uint32_t iR_iX_iN_iT)
 
     MCUXCLPKC_FP_CALCFUP(mcuxClMath_ModInv_Fup1, mcuxClMath_ModInv_Fup1_LEN );
 
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
-    const volatile uint32_t *pExp = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetT);
-    volatile uint32_t *pR = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[MODINV_R]);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
+    const volatile uint32_t *pExp = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTRWORD(offsetT);
+    volatile uint32_t *pR = (volatile uint32_t *) MCUXCLPKC_OFFSET2PTRWORD(pOperands[MODINV_R]);
 
     MCUXCLPKC_WAITFORFINISH();
     MCUXCLPKC_PS1_SETLENGTH_REG(backupPs1LenReg);

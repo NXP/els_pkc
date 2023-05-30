@@ -18,6 +18,18 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+/*--------------------------------------------------------------------------*/
+/* Copyright 2022-2023 MCUX                                                  */
+/*                                                                          */
+/* MCUX Confidential. This software is owned or controlled by MCUX and may    */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms. If you do not agree to be bound by the applicable license */
+/* terms, then you may not retain, install, activate or otherwise use the   */
+/* software.                                                                */
+/*--------------------------------------------------------------------------*/
 
 #include "common.h"
 #include "psa_crypto_aead.h"
@@ -539,14 +551,16 @@ psa_status_t psa_driver_wrapper_get_key_buffer_size_from_key_data(
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
         psa_status_t status = mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData(
-                    attributes,
-                    data,
-                    data_length,
-                    key_buffer_size);
+            attributes,
+            data,
+            data_length,
+            key_buffer_size);
+
         if (PSA_ERROR_NOT_SUPPORTED != status)
         {
             return status;
         }
+
         *key_buffer_size = data_length;
         return PSA_SUCCESS;
     }
@@ -600,12 +614,12 @@ psa_status_t psa_driver_wrapper_get_key_buffer_size(
     if (psa_key_id_is_builtin(MBEDTLS_SVC_KEY_ID_GET_KEY_ID(psa_get_key_id(attributes))))
     {
         psa_status_t status = mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize(psa_get_key_id(attributes),
-                                                                key_buffer_size);
-        if (status == PSA_SUCCESS)
+                                                               key_buffer_size);
+        if (PSA_SUCCESS == status)
         {
             return status;
         }
-        if (status != PSA_ERROR_INVALID_ARGUMENT)
+        if (PSA_ERROR_INVALID_ARGUMENT != status)
         {
             return status;
         }
@@ -757,13 +771,7 @@ psa_status_t psa_driver_wrapper_import_key(
 
         if ((PSA_ERROR_NOT_SUPPORTED != status) && (PSA_SUCCESS != status))
         {
-            return PSA_ERROR_GENERIC_ERROR;
             return status;
-        }
-        else
-        {
-            // reset to default
-            status = PSA_ERROR_CORRUPTION_DETECTED;
         }
 
         return PSA_SUCCESS;
@@ -874,7 +882,7 @@ psa_status_t psa_driver_wrapper_export_key(
 
     status = mcuxClPsaDriver_psa_driver_wrapper_exportKey(attributes, key_buffer, key_buffer_size, data, data_size, data_length);
 
-    if (status != PSA_ERROR_NOT_SUPPORTED)
+    if (PSA_ERROR_NOT_SUPPORTED != status)
     {
         return status;
     }
@@ -961,18 +969,6 @@ psa_status_t psa_driver_wrapper_export_public_key(
     }
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
 
-    status = mcuxClPsaDriver_psa_driver_wrapper_exportPublicKey(attributes, key_buffer, key_buffer_size, data, data_size, data_length);
-
-    if (status != PSA_ERROR_NOT_SUPPORTED)
-    {
-        return status;
-    }
-    else
-    {
-        // reset to default state
-        status = PSA_ERROR_INVALID_ARGUMENT;
-    }
-
     switch( location )
     {
         case PSA_KEY_LOCATION_LOCAL_STORAGE:
@@ -1025,23 +1021,20 @@ psa_status_t psa_driver_wrapper_get_builtin_key(
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     psa_key_location_t location = PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
-
-#if defined(MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS)
     if (false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
     {
         status = mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer(
             attributes,
             key_buffer, key_buffer_size, key_buffer_length);
-        if (status == PSA_SUCCESS || status == PSA_ERROR_BUFFER_TOO_SMALL)
+        if ((PSA_SUCCESS == status) || (PSA_ERROR_BUFFER_TOO_SMALL == status))
         {
             return status;
         }
-        if (status != PSA_ERROR_INVALID_ARGUMENT)
+        if (PSA_ERROR_INVALID_ARGUMENT != status)
         {
             return status;
         }
     }
-#endif // defined(MBEDTLS_PSA_CRYPTO_BUILTIN_KEYS)
 
     switch (location)
     {
@@ -2827,7 +2820,7 @@ psa_status_t psa_driver_wrapper_mac_sign_finish(
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
         {
             uint8_t macCalc[MCUXCLMAC_MAX_OUTPUT_SIZE];
-            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, NULL, NULL);
+            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, mac_size, NULL);
             if (status == PSA_SUCCESS)
             {
                 for(unsigned int i = 0u; i < mac_size; i++)
@@ -2877,7 +2870,7 @@ psa_status_t psa_driver_wrapper_mac_verify_finish(
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
         {
             uint8_t macCalc[ MCUXCLMAC_MAX_OUTPUT_SIZE];
-            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, NULL, NULL);
+            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, mac_length, NULL);
             if (status == PSA_SUCCESS)
             {
                 mcuxCsslMemory_Status_t compare_result = mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, mac, macCalc, mac_length),
@@ -2987,8 +2980,6 @@ psa_status_t psa_driver_get_tag_len( psa_aead_operation_t *operation,
         default:
             return( PSA_ERROR_INVALID_ARGUMENT );
     }
-
-    return( PSA_ERROR_INVALID_ARGUMENT );
 }
 
 /*

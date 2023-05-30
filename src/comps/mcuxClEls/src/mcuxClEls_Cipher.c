@@ -44,10 +44,14 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Cipher_A
     #define TMP_NO_INTERNAL_STATE_FLAGS (false)
 #endif /* MCUXCL_FEATURE_ELS_NO_INTERNAL_STATE_FLAGS */
 
-    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Cipher_Async, (0U == inputLength) || (0U != (inputLength % MCUXCLELS_CIPHER_BLOCK_SIZE_AES)) || (MCUXCLELS_CIPHER_INTERNAL_KEY == options.bits.extkey && ELS_KS_CNT <= keyIdx)
-            || (MCUXCLELS_CIPHER_EXTERNAL_KEY == options.bits.extkey && ((MCUXCLELS_CIPHER_KEY_SIZE_AES_128 != keyLength && MCUXCLELS_CIPHER_KEY_SIZE_AES_192 != keyLength && MCUXCLELS_CIPHER_KEY_SIZE_AES_256 != keyLength))) || (MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CTR < options.bits.cphmde)
+    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Cipher_Async,
+                                          (0U == inputLength) 
+                                          || (0U != (inputLength % MCUXCLELS_CIPHER_BLOCK_SIZE_AES))
+                                          || ((MCUXCLELS_CIPHER_INTERNAL_KEY == options.bits.extkey) && (ELS_KS_CNT <= keyIdx))
+                                          || ((MCUXCLELS_CIPHER_EXTERNAL_KEY == options.bits.extkey) && ((MCUXCLELS_CIPHER_KEY_SIZE_AES_128 != keyLength) && (MCUXCLELS_CIPHER_KEY_SIZE_AES_192 != keyLength) && (MCUXCLELS_CIPHER_KEY_SIZE_AES_256 != keyLength)))
+                                          || (MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CTR < options.bits.cphmde)
             /* ECB doesn't support importing or exporting an IV */
-            || ((MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB == options.bits.cphmde) && ((MCUXCLELS_CIPHER_STATE_OUT_ENABLE == options.bits.cphsoe) || TMP_NO_INTERNAL_STATE_FLAGS)));
+                                          || ((MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB == options.bits.cphmde) && ((MCUXCLELS_CIPHER_STATE_OUT_ENABLE == options.bits.cphsoe) || (TMP_NO_INTERNAL_STATE_FLAGS == true))));
     
 #undef TMP_NO_INTERNAL_STATE_FLAGS
 

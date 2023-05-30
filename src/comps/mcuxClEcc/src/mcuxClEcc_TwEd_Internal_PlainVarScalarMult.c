@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -33,7 +33,7 @@ static const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelect
  * Function that performs a scalar multiplication with a variable point P on a twisted Edwards curve, unprotected against SCA.
  * This function is a wrapper to mcuxClEcc_TwEd_VarScalarMult.
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainVarScalarMult)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainVarScalarMult, mcuxClEcc_ScalarMultFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainVarScalarMult(
     mcuxClSession_Handle_t pSession,
     mcuxClEcc_CommonDomainParams_t *pDomainParams,

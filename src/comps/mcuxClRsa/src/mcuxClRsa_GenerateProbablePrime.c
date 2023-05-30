@@ -107,7 +107,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pNumToCompare + MCUXCLPKC_WORDSIZE - sizeof(numToCompare),
         numToCompare, sizeof(numToCompare), sizeof(numToCompare)));
 
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pA0, a0, sizeof(a0), sizeof(a0)));
+    MCUXCLMEMORY_FP_MEMORY_COPY(pA0, a0, sizeof(a0));
 
 
 #ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
@@ -134,12 +134,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
             status = MCUXCLRSA_STATUS_RNG_ERROR;
             break;
         }
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pPrimeCandidate->pKeyEntryData, pPrimeKeyDataCpu, pPrimeCandidate->keyEntryLength, pPrimeCandidate->keyEntryLength));
-        if(0u != memcopy_result)
-        {
-            status =  MCUXCLRSA_STATUS_ERROR;
-            break;
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(pPrimeCandidate->pKeyEntryData, pPrimeKeyDataCpu, pPrimeCandidate->keyEntryLength);
+
 #else
         MCUX_CSSL_FP_FUNCTION_CALL(retRandomGen, mcuxClRandom_generate(pSession, pPrimeCandidate->pKeyEntryData, pPrimeCandidate->keyEntryLength));
         if (MCUXCLRANDOM_STATUS_OK != retRandomGen)

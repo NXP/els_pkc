@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #ifndef MCUXCLCIPHER_H_
 #define MCUXCLCIPHER_H_
 

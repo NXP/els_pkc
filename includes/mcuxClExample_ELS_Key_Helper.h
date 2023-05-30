@@ -16,7 +16,6 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
-#include <mcuxClSession.h>
 #include <mcuxClEls.h>
 #include <mcuxClExample_RFC3394_Helper.h>
 #include <mcuxCsslFlowProtection.h>

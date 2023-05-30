@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,6 +15,12 @@
 #define MCUXCLKEY_MEMORYCONSUMPTION_H_
 
 #include <mcuxClCore_Platform.h>
+
+
+/** Round up a size (in bytes) to a multiple of the CPU wordsize (4 bytes). */
+#define MCUXCLKEY_ROUND_UP_TO_CPU_WORDSIZE(size) \
+    ((((size) + sizeof(uint32_t) - 1U ) / (sizeof(uint32_t))) * (sizeof(uint32_t)))
+
 
 #define MCUXCLKEY_DESCRIPTOR_SIZE          (56u)
 #define MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS (MCUXCLKEY_DESCRIPTOR_SIZE / sizeof(uint32_t))

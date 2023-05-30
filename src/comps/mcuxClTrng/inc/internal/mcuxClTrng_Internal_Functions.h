@@ -70,6 +70,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClTrng_Init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void);
 
+#ifdef MCUXCL_FEATURE_TRNG_RNG4
 /**
  * @brief Function to check that TRNG is properly configured
  *
@@ -80,6 +81,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void);
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClTrng_checkConfig)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_checkConfig(void);
+#endif
 
 #ifdef __cplusplus
 } /* extern "C" */

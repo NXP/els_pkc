@@ -28,6 +28,8 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE MCUXCLEXAMPLE_MAX(MCUXCLEXAMPLE_MAX(\
@@ -49,7 +51,7 @@ static uint8_t const input[] =     {0x11u, 0x11u, 0x11u, 0x11u,
                                     0x11u, 0x11u, 0x11u, 0x11u,
                                     0x11u, 0x11u, 0x11u, 0x11u};
 
-bool mcuxClEcc_EdDSA_Ed25519_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
@@ -63,7 +65,7 @@ bool mcuxClEcc_EdDSA_Ed25519_example(void)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
 
     /* Initialize the RNG context and Initialize the PRNG*/
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg)
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg);
 
     /* Prepare buffers for generated data */
     uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];

@@ -30,7 +30,7 @@
 
 #define MCUXCL_VERSION_MAX_SIZE ((size_t) 16U) ///< Maximum size of the CLNS version string, in bytes (including zero-terminator)
 
-#define MCUXCL_VERSION "CLNS_SDK_1.3.0" ///< String literal for the version string of CLNS release that this header is part of
+#define MCUXCL_VERSION "CLNS_SDK_1.5.0" ///< String literal for the version string of CLNS release that this header is part of
 
 /**********************************************
  * FUNCTIONS

@@ -107,6 +107,7 @@ static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha512 = &mcuxClHash_AlgorithmDesc
 
 
 
+
 /**@}*/
 
 #ifdef __cplusplus

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2022 NXP                                                  */
 /*                                                                          */
-/* All rights are reserved. Reproduction in whole or in part is prohibited  */
-/* without the prior written consent of the copy-right owner.               */
-/* This source code and any compilation or derivative thereof is the sole   */
-/* property of NXP N.V. and is provided pursuant to a Software License      */
-/* Agreement. This code is the proprietary information of NXP N.V. and      */
-/* is confidential in nature. Its use and dissemination by any party other  */
-/* than NXP N.V. is strictly limited by the confidential information        */
-/* provisions of the agreement referenced above.                            */
+/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms. If you do not agree to be bound by the applicable license */
+/* terms, then you may not retain, install, activate or otherwise use the   */
+/* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
 /** @file  ip_platform.h
@@ -59,6 +59,11 @@
 #define PUF_DIR          *(volatile uint32_t *) (IP_PUF_BASE + 0xA0)
 #define PUF_DOR          *(volatile uint32_t *) (IP_PUF_BASE + 0xA8)
 
+// ELS version
+#define ELS_HW_VERSION_REVISION            0
+#define ELS_HW_VERSION_MINOR               19
+#define ELS_HW_VERSION_MAJOR               2
+#define ELS_HW_VERSION_LEVEL               0
 
 #ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS
 /* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from the platform header file

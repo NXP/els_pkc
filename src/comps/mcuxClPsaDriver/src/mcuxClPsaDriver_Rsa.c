@@ -22,6 +22,7 @@
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
 #include <mcuxClSession.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPsaDriver_MemoryConsumption.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
@@ -72,39 +73,39 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     /* Allocate space in session for p, q and e for now */
     pSession->pkcWa.used += (2u * (pkcByteLenPrime + MCUXCLPKC_WORDSIZE) + pkcByteLenKey) / (sizeof(uint32_t));
     //copy parameter to pkc address firstly
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (pPkcBufferE,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (pPkcBufferE,
                                                                      pRsaPubKey->pExp1->pKeyEntryData,
                                                                      pRsaPubKey->pExp1->keyEntryLength,
                                                                      pRsaPubKey->pExp1->keyEntryLength));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (pPkcBufferP,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (pPkcBufferP,
                                                                      pRsaCrtKey->pMod1->pKeyEntryData,
                                                                      pRsaCrtKey->pMod1->keyEntryLength,
                                                                      pRsaCrtKey->pMod1->keyEntryLength));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (pPkcBufferQ,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (pPkcBufferQ,
                                                                      pRsaCrtKey->pMod2->pKeyEntryData,
                                                                      pRsaCrtKey->pMod2->keyEntryLength,
                                                                      pRsaCrtKey->pMod2->keyEntryLength));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     uint32_t byteLenE;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClRsa_VerifyE(pRsaPubKey->pExp1, &byteLenE));
@@ -137,18 +138,18 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (dKey.pKeyEntryData,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (dKey.pKeyEntryData,
                                                                      d.pKeyEntryData,
                                                                      d.keyEntryLength,
                                                                      d.keyEntryLength));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
     dKey.keyEntryLength = d.keyEntryLength;
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     /* De-initialize PKC */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED(pkcDeInitialize_token, mcuxClPkc_Deinitialize(pPkcStateBackup));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) != pkcDeInitialize_token))
@@ -349,11 +350,21 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key(
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Initialize the RNG context */
-    mcuxClRandom_Context_t rng_ctx = NULL;
+    /* Initialize the RNG context, with maximum size */
+    uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
+    mcuxClRandom_Mode_t randomMode = NULL;
+    if(bitLength == MCUXCLKEY_SIZE_4096)  /* 256-bit security strength */
+    {
+      randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
+    }
+    else  /* 128-bit security strength */
+    {
+      randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+    }
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                           rng_ctx,
-                                                           mcuxClRandomModes_Mode_ELS_Drbg));
+                                                           (mcuxClRandom_Context_t)rng_ctx,
+                                                           randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
         return PSA_ERROR_GENERIC_ERROR;

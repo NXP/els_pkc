@@ -47,7 +47,7 @@ static const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelect
     .ptrSelectFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainPtrSelectComb),
 };
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainFixScalarMult25519)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainFixScalarMult25519, mcuxClEcc_ScalarMultFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainFixScalarMult25519(
     mcuxClSession_Handle_t pSession,                 ///<  [in]  pSession            Handle for the current CL session
     mcuxClEcc_CommonDomainParams_t *pDomainParams,   ///<  [in]  pDomainParams       Pointer to ECC common domain parameters structure

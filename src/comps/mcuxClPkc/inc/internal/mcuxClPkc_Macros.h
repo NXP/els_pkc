@@ -21,11 +21,10 @@
 #define MCUXCLPKC_MACROS_H_
 
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
 #include <platform_specific_headers.h>
 #include <mcuxClToolchain.h>
+#include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Analysis.h>
 
 #include <mcuxClPkc_Types.h>
 #include <internal/mcuxClPkc_SfrAccess.h>
@@ -39,20 +38,26 @@
 #define MCUXCLPKC_LOG2_WORDSIZE  3u  ///< log2(PKC wordsize in byte)
 
 
+/* Included intentionally after the above PKC definitions. */
+#include <internal/mcuxClPkc_Inline_Functions.h>
+
+
 /**********************************************************/
 /* Macros for UPTR table and offsets                      */
 /**********************************************************/
 /** Sets the address of UPTRT (Universal pointer FUP table). */
-#define MCUXCLPKC_SETUPTRT(pUptrt)  MCUXCLPKC_SFR_WRITE(UPTRT, (uint32_t) (pUptrt))
+#define MCUXCLPKC_SETUPTRT(pUptrt)  mcuxClPkc_inline_setUptrt(pUptrt)
 /** Gets the address of UPTRT (Universal pointer FUP table). */
-#define MCUXCLPKC_GETUPTRT()  ((uint16_t *) MCUXCLPKC_SFR_READ(UPTRT))
+#define MCUXCLPKC_GETUPTRT()  mcuxClPkc_inline_getUptrt()
 
-/** Converts CPU pointer to PKC offset. */
-#define MCUXCLPKC_PTR2OFFSET(cpuPointer)  \
-    ((uint16_t) ((uint32_t) (cpuPointer) & MCUXCLPKC_RAM_OFFSET_MASK))
+/** Converts CPU pointer to PKC offset.
+ * **CAUTION** This macro does not guarantee the returned offset is PKC-word aligned. */
+#define MCUXCLPKC_PTR2OFFSET(cpuPointer)  mcuxClPkc_inline_ptr2Offset(cpuPointer)
 /** Converts PKC offset to CPU pointer. */
-#define MCUXCLPKC_OFFSET2PTR(pkcOffset)  \
-    ((uint8_t *) ((uint32_t) (pkcOffset) | (uint32_t) MCUXCLPKC_RAM_START_ADDRESS))
+#define MCUXCLPKC_OFFSET2PTR(pkcOffset)  mcuxClPkc_inline_offset2Ptr(pkcOffset)
+/** Converts PKC offset to CPU word-aligned pointer.
+ * **CAUTION** This macro assumes the offset provided is PKC-word aligned. */
+#define MCUXCLPKC_OFFSET2PTRWORD(pkcOffset)  mcuxClPkc_inline_offset2PtrWord(pkcOffset)
 
 
 /**********************************************************/
@@ -65,7 +70,7 @@
 /** Sets packed offsets to buffers of result R and operand Z of parameter set 1. */
 #define MCUXCLPKC_PS1_SETZR_REG(offsetR_offsetZ)  MCUXCLPKC_SFR_WRITE(ZRPTR1, offsetR_offsetZ)
 /** Sets packed MCLEN and (OP)LEN of parameter set 1. */
-#define MCUXCLPKC_PS1_SETLENGTH_REG(mclen_oplen)  MCUXCLPKC_SFR_WRITE(LEN1, mclen_oplen)
+#define MCUXCLPKC_PS1_SETLENGTH_REG(mclen_oplen)  mcuxClPkc_inline_ps1_setLengthReg(mclen_oplen)
 
 /** Sets two offsets to buffers of operands Y and X of parameter set 1. */
 #define MCUXCLPKC_PS1_SETXY(offsetX, offsetY)  \
@@ -78,11 +83,11 @@
     MCUXCLPKC_PS1_SETLENGTH_REG( ((uint32_t) (mclen) << MCUXCLPKC_SFR_BITPOS(LEN1, MCLEN)) | (uint32_t) (oplen) )
 
 /** Gets packed MCLEN and (OP)LEN of parameter set 1. */
-#define MCUXCLPKC_PS1_GETLENGTH_REG()  MCUXCLPKC_SFR_READ(LEN1)
+#define MCUXCLPKC_PS1_GETLENGTH_REG()  mcuxClPkc_inline_ps1_getLengthReg()
 /** Gets (OP)LEN of parameter set 1. */
-#define MCUXCLPKC_PS1_GETOPLEN()  MCUXCLPKC_SFR_BITREAD(LEN1, LEN)
+#define MCUXCLPKC_PS1_GETOPLEN()  mcuxClPkc_inline_ps1_getOplen()
 /** Gets MCLEN of parameter set 1. */
-#define MCUXCLPKC_PS1_GETMCLEN()  MCUXCLPKC_SFR_BITREAD(LEN1, MCLEN)
+#define MCUXCLPKC_PS1_GETMCLEN()  mcuxClPkc_inline_ps1_getMclen()
 
 #define MCUXCLPKC_PS1_UNPACK_OPLEN(lenRegValue)  \
     ( ((lenRegValue) & MCUXCLPKC_SFR_BITMSK(LEN1, LEN)) >> MCUXCLPKC_SFR_BITPOS(LEN1, LEN) )
@@ -107,7 +112,7 @@
 /** Sets packed offsets to buffers of result R and operand Z of parameter set 2. */
 #define MCUXCLPKC_PS2_SETZR_REG(offsetR_offsetZ)  MCUXCLPKC_SFR_WRITE(ZRPTR2, offsetR_offsetZ)
 /** Sets packed MCLEN and (OP)LEN of parameter set 2. */
-#define MCUXCLPKC_PS2_SETLENGTH_REG(mclen_oplen)  MCUXCLPKC_SFR_WRITE(LEN2, mclen_oplen)
+#define MCUXCLPKC_PS2_SETLENGTH_REG(mclen_oplen)  mcuxClPkc_inline_ps2_setLengthReg(mclen_oplen)
 
 /** Sets two offsets to buffers of operands Y and X of parameter set 2. */
 #define MCUXCLPKC_PS2_SETXY(offsetX, offsetY)  \
@@ -120,7 +125,7 @@
     MCUXCLPKC_PS2_SETLENGTH_REG( ((uint32_t) (mclen) << MCUXCLPKC_SFR_BITPOS(LEN2, MCLEN)) | (uint32_t) (oplen) )
 
 /** Gets packed MCLEN and (OP)LEN of parameter set 2. */
-#define MCUXCLPKC_PS2_GETLENGTH_REG()  MCUXCLPKC_SFR_READ(LEN2)
+#define MCUXCLPKC_PS2_GETLENGTH_REG()  mcuxClPkc_inline_ps2_getLengthReg()
 /** Gets (OP)LEN of parameter set 2. */
 #define MCUXCLPKC_PS2_GETOPLEN()  MCUXCLPKC_SFR_BITREAD(LEN2, LEN)
 /** Gets MCLEN of parameter set 2. */
@@ -137,27 +142,22 @@
 /**********************************************************/
 /* Other macros                                           */
 /**********************************************************/
+/** Sets the SFR Data Mask. */
+#define MCUXCLPKC_SETSFRMASK(sfrMask)  MCUXCLPKC_SFR_WRITE(SFR_MASK, (uint32_t) (sfrMask))
 /** Wait until PKC finishes both on-going and pending calculations (if there is any). */
 #define MCUXCLPKC_WAITFORFINISH()  \
-    do{} while(0u != MCUXCLPKC_SFR_BITREAD(STATUS, ACTIV))
+    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_2, "this function checks PKC SFR.")  \
+    mcuxClPkc_inline_waitForFinish()  \
+    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_2)
+
 /** Wait until PKC is ready to accept next calculation (i.e., no pending calculation). */
 #define MCUXCLPKC_WAITFORREADY()  \
-    do{} while(0u != MCUXCLPKC_SFR_BITREAD(STATUS, GOANY))
+    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_2, "this function checks PKC SFR.")  \
+    mcuxClPkc_inline_waitForReady()  \
+    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_2)
 
-static inline uint32_t mcuxClPkc_waitForFinishGetStatus(void)
-{
-    uint32_t pkc_status_;
- 
-    do {
-        pkc_status_ = MCUXCLPKC_SFR_READ(STATUS);
-    } while (0u != (pkc_status_ & MCUXCLPKC_SFR_BITMSK(STATUS, ACTIV)));
- 
-    return pkc_status_;
-}
-
-/** Macro to wait PKC calculation and then get PKC status. */
-#define MCUXCLPKC_WAITFORFINISH_GETSTATUS()  \
-    mcuxClPkc_waitForFinishGetStatus()
+/** Wait PKC calculation and then get PKC status. */
+#define MCUXCLPKC_WAITFORFINISH_GETSTATUS()  mcuxClPkc_inline_waitForFinishGetStatus()
 
 /* Macros to enable and disable GF2 calculation mode. */
 #define MCUXCLPKC_ENABLEGF2()   MCUXCLPKC_SFR_BITSET(CTRL, GF2CONV)    ///< Enable GF2 calculation mode.

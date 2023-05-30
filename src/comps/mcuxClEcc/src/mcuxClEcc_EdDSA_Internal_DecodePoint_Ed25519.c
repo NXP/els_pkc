@@ -54,7 +54,7 @@
  *  - MCUXCLECC_STATUS_OK                if the function executed successfully
  *  - MCUXCLECC_STATUS_INVALID_PARAMS    if the input point is invalid, i.e. the decoing failed
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_DecodePoint_Ed25519)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_DecodePoint_Ed25519, mcuxClEcc_EdDSA_DecodePointFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25519(
     mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
     const uint8_t *pEncPoint
@@ -97,13 +97,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common,
                         mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common_LEN);
     MCUXCLPKC_WAITFORFINISH();
-    /* MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("pOperands is 32-bit aligned.")
     MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t*)pC3, pDomainParams->common.byteLenP); // the exponent should be in big endian format for MCUXCLMATH_FP_MODEXP_SQRMULTL2R
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     MCUXCLPKC_FP_CALC_MC1_MM(ECC_T2, ECC_T0, ECC_T3, ECC_P);                 // = u * v^3 in MR
     MCUXCLPKC_FP_CALC_MC1_MM(ECC_COORD00, ECC_T2, ECC_T3, ECC_P);            // = u * v^6 in MR
     MCUXCLPKC_FP_CALC_MC1_MM(ECC_T3, ECC_COORD00, ECC_T1, ECC_P);            // = u * v^7 in MR
     MCUXCLMATH_FP_MODEXP_SQRMULTL2R(pC3, (uint32_t) pDomainParams->common.byteLenP, ECC_COORD00, ECC_T3, ECC_P, TWED_PP_Y0); // ECC_COORD00 = (u * v^7)^((p-5)/8) mod p; use TWED_PP_Y0 as temp buffer
-    
+
     /* Compute the x~ candidate, x~^2 * v + u, and the square root of -1 mod p */
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed25519,
                         mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed25519_LEN);
@@ -152,7 +153,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
     /* After this, we have x' in ECC_COORD00 in MR in range [0,p-1], y in MR in ECC_COORD01, 1 in MR in ECC_COORD02, and PKC_ZERO is set if and only if x' = 0 */
 
     /* Step 6: If the ZERO flag of the PKC is set and x0=1, return #MCUXCLECC_STATUS_INVALID_PARAMS, decoding failed. */
-    if (MCUXCLPKC_FLAG_ZERO == MCUXCLPKC_WAITFORFINISH_GETZERO() && x0 == 1u)
+    if ((MCUXCLPKC_FLAG_ZERO == MCUXCLPKC_WAITFORFINISH_GETZERO()) && (1u == x0))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_DecodePoint_Ed25519, MCUXCLECC_STATUS_INVALID_PARAMS,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportLittleEndianToPkc),  /* Step 1 */
@@ -171,8 +172,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
     MCUXCLPKC_FP_CALC_MC1_MR(ECC_T3, ECC_COORD00, ECC_P);                    // x' mod n in NR in range [0,p]
     MCUXCLPKC_FP_CALC_MC1_MS(ECC_T3, ECC_T3, ECC_P, ECC_P);                  // x' mod n in NR in range [0,p-1]
 
-    /* MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned */
-    uint32_t *pT3FirstWord = (uint32_t*)&MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T3])[0u];            // Loading a word is usually cheaper than loading a byte
+    uint32_t *pT3FirstWord = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_T3]);            // Loading a word is usually cheaper than loading a byte
     MCUXCLPKC_WAITFORFINISH();
     uint8_t x0_candidate = (uint8_t)(*pT3FirstWord) & 0x01u;                // first bit of x~
 

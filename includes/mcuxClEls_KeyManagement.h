@@ -79,16 +79,16 @@ extern "C" {
  *
  * @{
  */
-#define MCUXCLELS_KEYIMPORT_KFMT_UDF             ((uint32_t) 0x00u) ///< Key format UDF with shares in RTL or memory
-#define MCUXCLELS_KEYIMPORT_KFMT_RFC3394         ((uint32_t) 0x01u) ///< Key format RFC3394 with shares in memory
-#define MCUXCLELS_KEYIMPORT_KFMT_PUF             ((uint32_t) 0x02u) ///< Key from PUF
+#define MCUXCLELS_KEYIMPORT_KFMT_UDF             (0x00u) ///< Key format UDF with shares in RTL or memory
+#define MCUXCLELS_KEYIMPORT_KFMT_RFC3394         (0x01u) ///< Key format RFC3394 with shares in memory
+#define MCUXCLELS_KEYIMPORT_KFMT_PUF             (0x02u) ///< Key from PUF
 #ifdef MCUXCL_FEATURE_ELS_PUK_INTERNAL
-#define MCUXCLELS_KEYIMPORT_KFMT_PBK             ((uint32_t) 0x03u) ///< Key from Public Key Certificate
+#define MCUXCLELS_KEYIMPORT_KFMT_PBK             (0x03u) ///< Key from Public Key Certificate
 #endif /* MCUXCL_FEATURE_ELS_PUK_INTERNAL */
 
 #ifdef MCUXCL_FEATURE_ELS_PUK_INTERNAL
-#define MCUXCLELS_KEYIMPORT_REVERSEFETCH_ENABLE  ((uint32_t) 1U) ///< Reverse fetch enabled. For internal use
-#define MCUXCLELS_KEYIMPORT_REVERSEFETCH_DISABLE ((uint32_t) 0U) ///< Reverse fetch disabled. For internal use
+#define MCUXCLELS_KEYIMPORT_REVERSEFETCH_ENABLE  (0x01U) ///< Reverse fetch enabled. For internal use
+#define MCUXCLELS_KEYIMPORT_REVERSEFETCH_DISABLE (0x00U) ///< Reverse fetch disabled. For internal use
 #endif /* MCUXCL_FEATURE_ELS_PUK_INTERNAL */
 
 #define MCUXCLELS_RFC3394_OVERHEAD               ((size_t) 16u)     ///< Overhead between RFC3394 blob and key size

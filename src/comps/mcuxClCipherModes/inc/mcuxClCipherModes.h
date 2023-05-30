@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #ifndef MCUXCLCIPHERMODES_H_
 #define MCUXCLCIPHERMODES_H_
 

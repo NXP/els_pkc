@@ -41,6 +41,26 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelet
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyDelete_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    /* Get key properties */
+    mcuxClEls_KeyProp_t key_properties;
+    MCUX_CSSL_FP_FUNCTION_CALL(status_keyprop, mcuxClEls_GetKeyProperties(keyIdx, &key_properties));
+    if(MCUXCLELS_STATUS_OK != status_keyprop)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyDelete_Async, MCUXCLELS_STATUS_SW_FAULT);
+    }
+    uint32_t drbg_counter_increase =
+            ((key_properties.bits.ksize == MCUXCLELS_KEYPROPERTY_KEY_SIZE_128)
+                    ? MCUXCLELS_RNG_DRBG_KEYDELETE128_INCREASE
+                    : MCUXCLELS_RNG_DRBG_KEYDELETE256_INCREASE
+            );
+
+    /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
+     * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+    mcuxClEls_rng_drbg_block_counter += drbg_counter_increase;
+
+    MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties));
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
     mcuxClEls_setKeystoreIndex0(keyIdx);
     mcuxClEls_startCommand(ID_CFG_ELS_CMD_KDELETE, 0U, ELS_CMD_BIG_ENDIAN);
@@ -319,8 +339,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetKeyPr
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetKeyProperties, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     } 
-
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")
     pKeyProp->word.value = ((const volatile uint32_t *) (&MCUXCLELS_SFR_READ(ELS_KS0)))[keyIdx];
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetKeyProperties, MCUXCLELS_STATUS_OK);
 }

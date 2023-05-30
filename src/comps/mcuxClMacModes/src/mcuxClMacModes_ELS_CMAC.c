@@ -91,7 +91,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
         pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_ENABLE;
       }
 
-      MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_Cmac_Async(
+      MCUX_CSSL_FP_FUNCTION_CALL(resultCmac, mcuxClEls_Cmac_Async(
                             pContext->cmac_options,
                             (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key),
                             (uint8_t const *) mcuxClKey_getLoadedKeyData(pContext->key),
@@ -101,7 +101,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
                             pOut
                             ));
       // mcuxClEls_Cmac_Async is a flow-protected function: Check the protection token and the return value
-      if (MCUXCLELS_STATUS_OK_WAIT != result)
+      if (MCUXCLELS_STATUS_OK_WAIT != resultCmac)
       {
           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async) );
@@ -135,57 +135,28 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
     if((0u != remainingLen) || (0u == inLength))
     {
       //maximum 15 bytes left to process
-      MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(workArea->paddingBuff, pIn + completeLen, remainingLen, bufLen ));
+      MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF((uint8_t *)workArea->paddingBuff, pIn + completeLen, remainingLen, bufLen);
       bufLen -= remainingLen;
 
-      /* Check that the buffer is long enough */
-      if(copyResult != 0U) {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) );
-      }
-
-
-      MCUX_CSSL_FP_FUNCTION_CALL(setResult1, mcuxClMemory_set(workArea->paddingBuff + remainingLen,0x80,0x01U,bufLen));
+      MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF((uint8_t *)workArea->paddingBuff + remainingLen, 0x80, 0x01U, bufLen);
       bufLen--;
 
-      if(setResult1 != 0U) {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) );
-      }
-
       //fill the rest of the buffer with 0x00
-      MCUX_CSSL_FP_FUNCTION_CALL(setResult2, mcuxClMemory_set(workArea->paddingBuff + remainingLen + 1u, 0x00, bufLen, bufLen ));
-
-      if(setResult2 != 0U) {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) );
-      }
+      MCUXCLMEMORY_FP_MEMORY_SET((uint8_t *)workArea->paddingBuff + remainingLen + 1u, 0x00, bufLen);
 
       pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_ENABLE;
 
-      MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_Cmac_Async(
+      MCUX_CSSL_FP_FUNCTION_CALL(resultCmac, mcuxClEls_Cmac_Async(
                           pContext->cmac_options,
                           (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key),
                           (uint8_t const *) mcuxClKey_getLoadedKeyData(pContext->key),
                           (size_t) mcuxClKey_getSize(pContext->key),
-                          workArea->paddingBuff,
+                          (uint8_t *)workArea->paddingBuff,
                           remainingLen,
                           pOut
                           ));
 
-      if (MCUXCLELS_STATUS_OK_WAIT != result)
+      if (MCUXCLELS_STATUS_OK_WAIT != resultCmac)
       {
           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
               MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
@@ -253,11 +224,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Init(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_Engine_CMAC_Init, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
   pContext->blockBufferUsed = 0;
-  MCUX_CSSL_FP_FUNCTION_CALL(resultSet1, mcuxClMemory_set((uint8_t*)(pContext->blockBuffer),0x00,MCUXCLAES_BLOCK_SIZE,MCUXCLAES_BLOCK_SIZE));
-  MCUX_CSSL_FP_FUNCTION_CALL(resultSet2, mcuxClMemory_set((uint8_t*)(pContext->state),0x00,MCUXCLAES_BLOCK_SIZE,MCUXCLAES_BLOCK_SIZE));
-  if((resultSet1 != 0U) || (resultSet2 != 0U)) {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Init, MCUXCLMAC_STATUS_ERROR);
-  }
+  MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext->blockBuffer),0x00,MCUXCLAES_BLOCK_SIZE);
+  MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext->state), 0x00, MCUXCLAES_BLOCK_SIZE);
 
   pContext->cmac_options.word.value = 0U;
 
@@ -300,18 +268,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
   if((pContext->blockBufferUsed > 0U) && ((pContext->blockBufferUsed + inLength) > MCUXCLAES_BLOCK_SIZE))
   {
     //copy new input data
-    MCUX_CSSL_FP_FUNCTION_CALL(resultCopy, mcuxClMemory_copy((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed,
-                      pIn,
-                      MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed,
-                      MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed ));
-
-    if(resultCopy != 0U) {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_ERROR,
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) );
-    }
-
+    MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed, pIn, MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
     //perform cmac operation
-    MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_Cmac_Async(
+    MCUX_CSSL_FP_FUNCTION_CALL(resultCmac, mcuxClEls_Cmac_Async(
                         pContext->cmac_options,
                         (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key),
                         (uint8_t const *) mcuxClKey_getLoadedKeyData(pContext->key),
@@ -322,7 +281,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
                         ));
 
     // mcuxClEls_Cmac_Async is a flow-protected function: Check the protection token and the return value
-    if (MCUXCLELS_STATUS_OK_WAIT != result)
+    if (MCUXCLELS_STATUS_OK_WAIT != resultCmac)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
@@ -375,7 +334,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
     }
 
     //perform cmac operation
-    MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_Cmac_Async(
+    MCUX_CSSL_FP_FUNCTION_CALL(resultCmac, mcuxClEls_Cmac_Async(
                                  pContext->cmac_options,
                                  (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key),
                                  (uint8_t const *) mcuxClKey_getLoadedKeyData(pContext->key),
@@ -385,7 +344,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
                                  (uint8_t*)pContext->state
                                  ));
     // mcuxClEls_Cmac_Async is a flow-protected function: Check the protection token and the return value
-    if (MCUXCLELS_STATUS_OK_WAIT != result) {
+    if (MCUXCLELS_STATUS_OK_WAIT != resultCmac) {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async) );
     }
@@ -418,15 +377,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
   if(remainingLength != 0u)
   {
     //maximum 16 bytes left
-    MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClMemory_copy((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed,
+    MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed,
                      pIn + alreadyProcessedBytes,
                      remainingLength,
-                     sizeof(pContext->blockBuffer) - pContext->blockBufferUsed));
-
-    if(result != 0U) {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_ERROR,
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) );
-    }
+                     sizeof(pContext->blockBuffer) - pContext->blockBufferUsed);
 
     pContext->blockBufferUsed += (uint8_t) remainingLength;
   }
@@ -454,20 +408,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
     if((MCUXCLAES_BLOCK_SIZE - 1u) > pContext->blockBufferUsed)
     {
       //fill the rest of the buffer with 0x00 if there is more to fill
-      MCUX_CSSL_FP_FUNCTION_CALL(resultSet1, mcuxClMemory_set(((uint8_t*)pContext->blockBuffer) + pContext->blockBufferUsed + 1u, 0x00,
-                      MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u),
-                      MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u) ));
-      if(resultSet1 != 0U) {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) );
-      }
+      MCUXCLMEMORY_FP_MEMORY_SET(((uint8_t*)pContext->blockBuffer) + pContext->blockBufferUsed + 1u, 0x00, MCUXCLAES_BLOCK_SIZE - ((size_t) pContext->blockBufferUsed + 1u) );
 
       MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
     }
   }
 
   //perform cmac operation
-  MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_Cmac_Async(pContext->cmac_options,
+  MCUX_CSSL_FP_FUNCTION_CALL(resultCmac, mcuxClEls_Cmac_Async(pContext->cmac_options,
                                (mcuxClEls_KeyIndex_t) (mcuxClKey_getLoadedKeySlot(pContext->key)),
                                (uint8_t const *) mcuxClKey_getLoadedKeyData(pContext->key),
                                (size_t) mcuxClKey_getSize(pContext->key),
@@ -475,7 +423,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
                                pContext->blockBufferUsed,
                                (uint8_t*)(pContext->state)));
   // mcuxClEls_Cmac_Async is a flow-protected function: Check the protection token and the return value
-  if (MCUXCLELS_STATUS_OK_WAIT != result) {
+  if (MCUXCLELS_STATUS_OK_WAIT != resultCmac) {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_ERROR,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async) );
   }
@@ -498,32 +446,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
   //copy result to output buffer
-  MCUX_CSSL_FP_FUNCTION_CALL(resultCopy, mcuxClMemory_copy(pOut,
-                   (uint8_t*)pContext->state,
-                   pContext->common.pMode->common.macByteSize,
-                   pContext->common.pMode->common.macByteSize));
+  MCUXCLMEMORY_FP_MEMORY_COPY(pOut,(uint8_t*)pContext->state,pContext->common.pMode->common.macByteSize);
 
-  if(resultCopy != 0U) {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_ERROR,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
-  }
 
   *pOutLength = MCUXCLELS_CMAC_OUT_SIZE;
 
   //context isn't needed any longer; destroy it
-  MCUX_CSSL_FP_FUNCTION_CALL(resultSet, mcuxClMemory_set((uint8_t*)(pContext),0x00,sizeof(mcuxClMacModes_Context_t),sizeof(mcuxClMacModes_Context_t)));
-
-  if(resultSet != 0U) {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_ERROR,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
-  }
+  MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext), 0x00, sizeof(mcuxClMacModes_Context_t));
 
 
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_OK, MCUXCLMAC_STATUS_FAULT_ATTACK,

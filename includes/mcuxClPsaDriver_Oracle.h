@@ -35,6 +35,7 @@ extern "C" {
  * @param[out] data is the buffer including the exported public key
  * @param[in] data_size is the size of the allocated memory for the data buffer
  * @param[out] data_length is the lenght of the exported key
+ * @param[in] internal_representation is the flag to indicate internal representation
  *
  * @retval PSA_SUCCESS                 The operation was succesful
  * @retval PSA_ERROR_DOES_NOT_EXIST    No key with the associated key_id found in ELS
@@ -42,7 +43,8 @@ extern "C" {
 psa_status_t mcuxClPsaDriver_Oracle_ExportPublicKey(mcuxClKey_Descriptor_t *pKey,
                                                    uint8_t *data,
                                                    size_t data_size,
-                                                   size_t *data_length);
+                                                   size_t *data_length,
+                                                   bool internal_representation);
 
 /**
     @brief Oracle function for loading a key
@@ -178,6 +180,65 @@ psa_status_t mcuxClPsaDriver_Oracle_ImportKey(mcuxClKey_Descriptor_t  *pKey,
                                              size_t data_length,
                                              size_t *key_buffer_length,
                                              size_t *bits);
+
+/**
+ * @brief Oracle function for determine the size required for a key buffer from the data supplied when
+ * importing a key.
+ *
+ * The size of the data required to store a key is not necessarily the same as the size of the date supplied when
+ * importing a key. In particular for key recipes, the recipe gets parsed upon import and stored in an internal
+ * representation which consumes a different amount of space.
+ *
+ * @param[in] attributes defines the attributes associated with the input buffer
+ * @param[in] data includes the input buffer as passed to the psa import function
+ * @param[in] data_length is the length of data
+ * @param[out] key_buffer is the buffer which will be stored by PSA in the memory
+ * @param[out] key_buffer_length is the required number of bytes required as key_buffer
+ *
+ * @retval PSA_SUCCESS                          The operation was succesful
+ * @retval PSA_ERROR_NOT_SUPPORTED              The lifetime is not supported, meaning that fallback functions will be
+ * executed by Oracle
+ * @retval PSA_ERROR_INSUFFICIENT_MEMORY        The key_buffer size is not enough to include data to be stored
+ */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+psa_status_t mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData(const psa_key_attributes_t *attributes,
+                                                               const uint8_t *data,
+                                                               size_t data_length,
+                                                               size_t *key_buffer_length);
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+
+/**
+ * @brief Oracle function for making keys that are installed upon boot in S50 and keys derived
+ * from those (built-in) available to be used with PSA API.
+ *
+ * PSA does store information about such keys (either the S50 slot number or a
+ * derivation recipe). Therefore it needs to know the size to reserve for a particular key.
+ *
+ * @param[in] key_id the PSA key id of a built-in key
+ * @param[out] key_buffer_size the required size of the buffer to store a built-in key
+ */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize(mbedtls_svc_key_id_t key_id, size_t *key_buffer_size);
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+
+/**
+ * @brief Oracle function for making keys that are installed upon boot in S50 and keys derived
+ * from those (built-in) available to be used with PSA API.
+ *
+ * PSA does store information about such keys (either the S50 slot number or a
+ * derivation recipe). This function fills the PSA owned buffer with the required information to use the key.
+ *
+ * @param[in] attributes defines the attributes associated with the input buffer
+ * @param[out] key_buffer is the buffer which will be stored by PSA in the memory
+ * @param[in] key_buffer_size is the size of the allocated
+ * @param[out] key_buffer_length is the effective number of data filled in the key_buffer by the function
+ */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer(psa_key_attributes_t *attributes,
+                                                       uint8_t *key_buffer,
+                                                       size_t key_buffer_size,
+                                                       size_t *key_buffer_length);
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 #ifdef __cplusplus
 } /* extern "C" */

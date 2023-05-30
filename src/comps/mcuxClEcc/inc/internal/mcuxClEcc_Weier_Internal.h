@@ -28,7 +28,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClSession.h>
-
 #include <mcuxClEcc_Types.h>
 
 #include <internal/mcuxClEcc_Internal.h>
@@ -120,13 +119,6 @@ struct mcuxClEcc_Weier_DomainParams
 /**********************************************************/
 /* Helper macros of import/export with flow protection    */
 /**********************************************************/
-/** Helper macro to call #mcuxClMemory_copy with flow protection. */
-#define MCUXCLECC_FP_MEMORY_COPY(pTarget, pSource, byteLen)  \
-    do {  \
-        MCUX_CSSL_FP_FUNCTION_CALL(retCodeTemp,  \
-            mcuxClMemory_copy((uint8_t *) (pTarget), (const uint8_t *) (pSource), byteLen, byteLen)); \
-        (void) retCodeTemp;  \
-    } while(false)
 
 /** Helper macro to call #mcuxClMemory_copy for importing data to PKC workarea with flow protection. */
 #define MCUXCLECC_FP_IMPORT_TO_PKC_BUFFER(pOffsetTable, iTarget, pSource, byteLen)  \
@@ -155,10 +147,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_SetupEnvironm
         );
 
 
+
 /**********************************************************/
 /* Internal function declaration - point check            */
 /**********************************************************/
-
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_PointCheckAffineNR)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointCheckAffineNR(void);
 
@@ -167,7 +159,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointCheckAffineNR(voi
 /* Internal function declaration - point arithmetic       */
 /**********************************************************/
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_RepeatPointDouble)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RepeatPointDouble(uint32_t iteration);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_RepeatPointDouble(uint32_t iteration);
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_PointFullAdd)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void);
@@ -176,7 +168,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void);
 /* Internal function declaration - point multiplication   */
 /**********************************************************/
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_Int_PointMult)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_PointMult(uint8_t iScalar, uint32_t scalarBitLength);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_Int_PointMult(uint8_t iScalar, uint32_t scalarBitLength);
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_SecurePointMult)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxClSession_Handle_t pSession,
@@ -192,7 +184,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
                                                                       uint32_t nByteLength);
 
 /**
- * @brief WeierECC key pair generation.
+ * @brief Function implementing WeierECC key pair generation.
  * @api
  *
  * This function generates an ECC key pair for usage within WeierECC protocols such as ECDSA and ECDH.
@@ -210,7 +202,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
  *
  * @attention This function uses DRBG and PRNG. Caller needs to check if DRBG and PRNG are ready.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_GenerateKeyPair)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_GenerateKeyPair, mcuxClKey_KeyGenFct_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateKeyPair(
     mcuxClSession_Handle_t pSession,
     mcuxClKey_Generation_t generation,
@@ -223,6 +215,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_GenerateKeyPa
 /**********************************************************/
 /* Internal function declaration - key agreement          */
 /**********************************************************/
+
 
 
 

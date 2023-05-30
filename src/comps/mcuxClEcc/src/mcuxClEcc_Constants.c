@@ -26,8 +26,10 @@
 #include <mcuxClHash_Algorithms.h>
 #include <mcuxClEcc_Constants.h>
 #include <mcuxClEcc_ParameterSizes.h>
+#include <mcuxClCore_Analysis.h>
 
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 /**********************************************************/
@@ -2786,6 +2788,13 @@ static const uint8_t pEd25519_LADDER_CONST[MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP] 
     0x99u, 0x30u, 0x46u, 0x32u, 0xebu, 0xdeu, 0xe9u, 0xd4u, 0xbcu, 0x31u, 0x2au, 0xebu, 0x2du, 0x81u, 0x6fu, 0x3fu
 };
 
+/* ASCII "SigEd25519 no Ed25519 collisions" in hex for prefix generation function dom2 */
+static const uint32_t pEd25519_dom2Prefix[8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
+{
+    0x45676953u, 0x35353264u, 0x6e203931u, 0x6445206fu,
+    0x31353532u, 0x6f632039u, 0x73696c6cu, 0x736e6f69u
+};
+
 /* Ed448 domain parameters */
 static const uint8_t pEd448_FullP[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP + 8u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
 {
@@ -2893,6 +2902,12 @@ static const uint8_t pEd448_LADDER_CONST[MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP] __at
     0xe6u, 0x50u, 0xf2u, 0x80u, 0x23u, 0xb4u, 0x74u, 0x28u
 };
 
+/* ASCII "SigEd448" in hex for prefix generation function dom4 */
+static const uint32_t pEd448_dom4Prefix[2u] __attribute__ ((aligned (4))) __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
+{
+    0x45676953u, 0x38343464u
+};
+
 /* MISRA Ex. 20 - Rule 5.1 */
 static const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainFixScalarMult25519_FP = {
     .pScalarMultFct = mcuxClEcc_TwEd_PlainFixScalarMult25519,
@@ -2930,7 +2945,9 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 __attr
   .algoSecHash = &mcuxClHash_AlgorithmDescriptor_Sha512,
   .algoHash = &mcuxClHash_AlgorithmDescriptor_Sha512,
   .pDecodePointFct = mcuxClEcc_EdDSA_DecodePoint_Ed25519,
-  .pDecodePoint_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_DecodePoint_Ed25519)
+  .pDecodePoint_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_DecodePoint_Ed25519),
+  .pDomPrefix = pEd25519_dom2Prefix,
+  .domPrefixLen = 32u
 };
 
 const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
@@ -2958,6 +2975,9 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 __attrib
   .algoSecHash =  NULL,
   .algoHash = NULL,
   .pDecodePointFct = NULL,
-  .pDecodePoint_FP_FuncId = 0u
+  .pDecodePoint_FP_FuncId = 0u,
+  .pDomPrefix = pEd448_dom4Prefix,
+  .domPrefixLen = 8u
 };
 
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

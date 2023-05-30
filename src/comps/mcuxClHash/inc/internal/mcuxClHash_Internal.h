@@ -19,15 +19,13 @@
 #ifndef MCUXCLHASH_INTERNAL_H_
 #define MCUXCLHASH_INTERNAL_H_
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <mcuxClHash_Types.h>
 #include <mcuxClCore_Buffer.h>
 #include <mcuxClSession_Types.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+
 
 #include <mcuxClEls_Hash.h>
 #include <internal/mcuxClHash_Internal_els_sha2.h>
@@ -68,12 +66,14 @@ extern "C" {
 #define MCUXCLHASH_STATE_SIZE_SM3           (32u) ///< SM3 state size: 256 bit (32 bytes)
 #define MCUXCLHASH_STATE_SIZE_SHA3         (200U) ///< SHA3 all variants state size: 1600 bits (200 bytes)
 
-#define MCUXCLHASH_COUNTER_SIZE_SHA_1        (8U) ///< Counter size for SHA-1 padding
-#define MCUXCLHASH_COUNTER_SIZE_SHA_224      (8U) ///< Counter size for SHA-224 padding
-#define MCUXCLHASH_COUNTER_SIZE_SHA_256      (8U) ///< Counter size for SHA-256 padding
-#define MCUXCLHASH_COUNTER_SIZE_SHA_384     (16U) ///< Counter size for SHA-384 padding
-#define MCUXCLHASH_COUNTER_SIZE_SHA_512     (16U) ///< Counter size for SHA-512 padding
-#define MCUXCLHASH_COUNTER_SIZE_MD5          (8U) ///< Counter size for MD5 padding
+#define MCUXCLHASH_COUNTER_SIZE_SHA_1              (8U) ///< Counter size for SHA-1 padding
+#define MCUXCLHASH_COUNTER_SIZE_SHA_224            (8U) ///< Counter size for SHA-224 padding
+#define MCUXCLHASH_COUNTER_SIZE_SHA_256            (8U) ///< Counter size for SHA-256 padding
+#define MCUXCLHASH_COUNTER_SIZE_SHA_384            (16U) ///< Counter size for SHA-384 padding
+#define MCUXCLHASH_COUNTER_SIZE_SHA_512            (16U) ///< Counter size for SHA-512 padding
+#define MCUXCLHASH_COUNTER_SIZE_MD5                (8U) ///< Counter size for MD5 padding
+#define MCUXCLHASH_COUNTER_SIZE_SHA3               (16U) ///< Counter size for SHA3 padding
+#define MCUXCLHASH_COUNTER_SIZE_MIYAGUCHI_PRENEEL  (1U) ///< Counter size for Miyaguchi Preneel, only indicates whether a block has already been processed
 
 #define MCUXCLHASH_NO_OF_ROUNDS_SHA_1       (80U) ///< Number of rounds for SHA-1 algorithm
 #define MCUXCLHASH_NO_OF_ROUNDS_MD5         (64u) ///< Number of rounds for MD5 algorithm
@@ -110,6 +110,7 @@ typedef struct mcuxClHash_ContextBuffer
 /**
  * @brief support bigger input length up to 2^128 bits
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_processedLength_add)
 static inline void mcuxClHash_processedLength_add(uint64_t *pLen128, uint32_t addLen)
 {
     if (pLen128[0] > (0xffffffffffffffffu - addLen))
@@ -122,6 +123,7 @@ static inline void mcuxClHash_processedLength_add(uint64_t *pLen128, uint32_t ad
 /**
  * @brief support 128bit number compare
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_processedLength_cmp)
 static inline int mcuxClHash_processedLength_cmp(uint64_t *pLen128, uint64_t cmpLenHigh64, uint64_t cmpLenLow64)
 {
   return pLen128[1] > cmpLenHigh64 ? 1 : (cmpLenHigh64 > pLen128[1] ? -1 : ((pLen128[0] > cmpLenLow64 ? 1 : (pLen128[0] == cmpLenLow64 ? 0 : -1))));
@@ -162,13 +164,14 @@ struct mcuxClHash_ContextDescriptor
  * This function will accumulate, padd, etc. the input message and then process it with the Hash core function (mcuxClHash_AlgoCore_t)
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClHash_AlgoSkeleton_OneShot_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoSkeleton_OneShot_t)(
                                     mcuxClSession_Handle_t session,
                                     mcuxClHash_Algo_t algorithm,
                                     mcuxCl_InputBuffer_t pIn,
                                     uint32_t inSize,
                                     mcuxCl_Buffer_t pOut,
-                                    uint32_t *const pOutSize);
+                                    uint32_t *const pOutSize));
 
 /**
  * @brief Hash process skeleton function type
@@ -176,11 +179,12 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoSkelet
  * This function will accumulate the input message and then process it with the Hash core function (mcuxClHash_AlgoEngine_t)
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClHash_AlgoSkeleton_Process_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoSkeleton_Process_t)(
                         mcuxClSession_Handle_t session,
                         mcuxClHash_Context_t context,
                         mcuxCl_InputBuffer_t pIn,
-                        uint32_t inSize);
+                        uint32_t inSize));
 
 /**
  * @brief Hash multi-part skeleton function type
@@ -188,11 +192,12 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoSkelet
  * This function will accumulate, padd, etc. the input message and then process it with the Hash core function (mcuxClHash_AlgoCore_t)
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClHash_AlgoSkeleton_Finish_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_AlgoSkeleton_Finish_t)(
                         mcuxClSession_Handle_t session,
                         mcuxClHash_Context_t context,
                         mcuxCl_Buffer_t pOut,
-                        uint32_t *const pOutSize);
+                        uint32_t *const pOutSize));
 
 /**
  * @brief Hash Algorithm structure

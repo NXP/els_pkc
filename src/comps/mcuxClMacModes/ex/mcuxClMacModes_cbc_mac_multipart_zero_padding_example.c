@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,8 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
-#include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClCore_Examples.h> // Defines and assertions for examples
 
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
@@ -29,8 +27,8 @@
 
 /** Performs a CMAC computation using functions of the mcuxClKey component.
  * @retval MCUXCLEXAMPLE_OK         The example code completed successfully
- * @retval MCUXCLEXAMPLE_FAILURE    The example code failed */
-bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
+ * @retval MCUXCLEXAMPLE_ERROR      The example code failed */
+MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 {
     static uint8_t key256[] = {
         0x12u, 0xE6u, 0xDFu, 0x61u, 0xD7u, 0xEBu, 0xD1u, 0xAEu,
@@ -60,7 +58,7 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
 
@@ -100,7 +98,7 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
                                        &cmac_key_properties,
                                        key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /**************************************************************************/
@@ -122,7 +120,7 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_init) != initToken) || (MCUXCLMAC_STATUS_OK != initResult))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -136,7 +134,7 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_process) != processToken) || (MCUXCLMAC_STATUS_OK != processResult))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -151,7 +149,7 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_finish) != finishToken) || (MCUXCLMAC_STATUS_OK != finishResult))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -162,13 +160,13 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
     /* Compare the output size with the expected MAC size */
     if(sizeof(resZeroPadd) != result_size)
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Compare the result to the reference value. */
     if(!mcuxClCore_assertEqual(resZeroPadd, result_buffer, sizeof(resZeroPadd)))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /**************************************************************************/
@@ -181,14 +179,14 @@ bool mcuxClMacModes_cbc_mac_multipart_zero_padding_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/

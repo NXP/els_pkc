@@ -40,6 +40,7 @@ volatile uint8_t mcuxClEcc_Weier_PointMult_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + MCUXCL
 volatile uint8_t mcuxClEcc_WeierECC_GenerateDomainParams_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + MCUXCLECC_ALIGNED_SIZE(sizeof(uint16_t) * (ECC_GENERATEDOMAINPARAMS_NO_OF_BUFFERS + ECC_GENERATEDOMAINPARAMS_NO_OF_VIRTUALS))];
 
 
+
 volatile uint8_t mcuxClEcc_PKC_wordsize[MCUXCLPKC_WORDSIZE];
 
 volatile uint8_t mcuxClEcc_KeyGen_WaPKC_NoOfBuffers   [ECC_KEYGEN_NO_OF_BUFFERS];
@@ -63,7 +64,9 @@ volatile uint8_t mcuxClEcc_Weierecc_GenerateDomainParams_WaPKC_Size_640 [(ECC_GE
 
 
 
+
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+
 
 #include <internal/mcuxClEcc_Mont_Internal_PkcWaLayout.h>
 
@@ -95,30 +98,22 @@ MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile uint8_t mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
                                                                    + MCUXCLECC_ALIGNED_SIZE(MCUXCLRANDOMMODES_CPUWA_MAXSIZE)
                                                                    + MCUXCLECC_ALIGNED_SIZE(MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY)
-                                                                   + MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY)
                                                                    + MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClEcc_EdDSA_GenerateKeyPair_Ed448_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
                                                                  + MCUXCLECC_ALIGNED_SIZE(MCUXCLRANDOMMODES_CPUWA_MAXSIZE)
                                                                  + MCUXCLECC_ALIGNED_SIZE(MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY)
-                                                                 + MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY)
                                                                  + 0u /* TODO: Add hash CPU workarea size (CLNS-4207) */];
 volatile uint8_t mcuxClEcc_EdDSA_GenerateSignature_Ed25519_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
                                                                      + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
-                                                                     + MCUXCLECC_MAX(MCUXCLECC_EDDSA_SIGN_CALC_SCALAR_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY),
-                                                                                    MCUXCLECC_EDDSA_SIGN_VERIFY_CALC_HASH_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY))
                                                                      + MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClEcc_EdDSA_GenerateSignature_Ed448_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
                                                                    + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
-                                                                   + MCUXCLECC_MAX(MCUXCLECC_EDDSA_SIGN_CALC_SCALAR_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY),
-                                                                                  MCUXCLECC_EDDSA_SIGN_VERIFY_CALC_HASH_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY))
                                                                    + 0u /* TODO: Add hash CPU workarea size (CLNS-4207) */];
 volatile uint8_t mcuxClEcc_EdDSA_VerifySignature_Ed25519_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
                                                                      + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
-                                                                     + MCUXCLECC_EDDSA_SIGN_VERIFY_CALC_HASH_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY)
                                                                      + MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClEcc_EdDSA_VerifySignature_Ed448_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
                                                                      + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
-                                                                     + MCUXCLECC_EDDSA_SIGN_VERIFY_CALC_HASH_HASHOUTPUT_CPUWA(2u * MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY)
                                                                      + 0u]; /* TODO: Add hash CPU workarea size (CLNS-4207) */
 
 /* byteLenP = byteLenN in both Ed25519 and Ed448. */
@@ -130,6 +125,10 @@ volatile uint8_t mcuxClEcc_EdDSA_VerifySignature_Ed25519_WaPKC_SIZE[ECC_EDDSA_NO
 volatile uint8_t mcuxClEcc_EdDSA_VerifySignature_Ed448_WaPKC_SIZE[ECC_EDDSA_NO_OF_BUFFERS * (MCUXCLPKC_ROUNDUP_SIZE(MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP) + MCUXCLPKC_WORDSIZE)];
 
 /* EdDSA key pair generation descriptor size */
-volatile uint8_t mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_SIZE[sizeof(mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t)];
+volatile uint8_t mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_SIZE[MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t))];
+
+/* EdDSA signature mode generation descriptor size */
+volatile uint8_t mcuxClEcc_EdDSA_SignatureProtocolDescriptor_SIZE[MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t))];
+
 
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

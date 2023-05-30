@@ -26,6 +26,7 @@
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
+#include <internal/mcuxClRsa_Internal_Functions.h>
 #include <internal/mcuxClRsa_RemoveBlinding_FUP.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_RemoveBlinding)

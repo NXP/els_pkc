@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020,2022 NXP                                                  */
+/* Copyright 2020, 2022 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -250,6 +250,8 @@
 #include <mcuxClEls_Rng.h>
 #include <mcuxClEls_Ecc.h>
 #include <mcuxClEls_Kdf.h>
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
 #include <mcuxClEls_GlitchDetector.h>
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
 
 #endif /* MCUXCLELS_H_ */

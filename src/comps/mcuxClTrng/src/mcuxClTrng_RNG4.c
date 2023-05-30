@@ -74,7 +74,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
 
     if ((NULL == pEntropyInput) || ((entropyInputLength % sizeof(uint32_t)) != 0u))
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_ERROR, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
     }
 
     /* Write 1 to clear ERR flag. */

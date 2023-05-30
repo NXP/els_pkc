@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,7 +20,7 @@
 #include <internal/mcuxClEls_Internal.h>
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_els_core_sha2)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_els_core_sha2, mcuxClHash_els_AlgoCore_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_core_sha2(
                         uint32_t options,
                         mcuxCl_InputBuffer_t pIn,

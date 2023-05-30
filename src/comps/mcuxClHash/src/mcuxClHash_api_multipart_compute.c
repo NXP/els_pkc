@@ -27,17 +27,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
     uint32_t *const pOutSize
     )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_finish,
-                               pContext->algo->protection_token_finishSkeleton);
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_finish);
 
     if((NULL == pContext->algo) || (NULL == pContext->algo->finishSkeleton)
-#if(1 == MCUX_CSSL_SC_USE_SW_LOCAL)
+#if(defined(MCUX_CSSL_SC_USE_SW_LOCAL) && 1 == MCUX_CSSL_SC_USE_SW_LOCAL)
             || (0u == pContext->algo->protection_token_finishSkeleton)
 #endif /* (1 == MCUX_CSSL_SC_USE_SW_LOCAL) */
             )
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_finish, MCUXCLHASH_STATUS_INVALID_PARAMS);
     }
+
+    uint32_t token = pContext->algo->protection_token_finishSkeleton;
 
     MCUX_CSSL_FP_FUNCTION_CALL(result, pContext->algo->finishSkeleton(session,
                                                                      pContext,
@@ -47,5 +48,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClHash_finish,
                                          result,
-                                         MCUXCLHASH_STATUS_FAULT_ATTACK);
+                                         MCUXCLHASH_STATUS_FAULT_ATTACK,
+                                         token);
 }

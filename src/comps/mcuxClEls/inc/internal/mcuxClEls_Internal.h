@@ -22,9 +22,11 @@
 #include <platform_specific_headers.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClEls_Internal_mapping.h>
 #include <internal/mcuxClEls_SfrAccess.h>
+#include <mcuxClCore_Analysis.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -147,10 +149,12 @@ static inline uint32_t mcuxClEls_getSfrField(uint32_t sfrValue, uint32_t mask, u
   * The unrelated fields/bits will not be changed */
 static inline void mcuxClEls_setSfrField(volatile uint32_t *pSfr, uint32_t value, uint32_t mask, uint32_t shift)
 {
+  MCUXCLCORE_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")
 	/* get the current value of the SFR and clear the bits that will be set */
-    uint32_t sfrValue = *pSfr & (~mask);
+  uint32_t sfrValue = *pSfr & (~mask);
 	/* set the bits and re-write the full value to the SFR */
-    *pSfr = sfrValue | (((uint32_t)(value << shift)) & mask);
+  *pSfr = sfrValue | (((uint32_t)(value << shift)) & mask);
+  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()
 }
 
 /** Tests if the ELS is in BUSY state.
@@ -272,6 +276,7 @@ static inline bool mcuxClEls_isBusy(void)
 #define MCUXCLELS_GET_SHA2_STATUS_FIELD(field) \
   mcuxClEls_getSfrField(MCUXCLELS_SFR_READ(ELS_SHA2_STATUS), MCUXCLELS_SFR_FIELD_MASK(ELS_SHA2_STATUS, field), MCUXCLELS_SFR_FIELD_SHIFT(ELS_SHA2_STATUS, field))
 
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
 /**
  * Macros to access the bit fields for the ELS_GDET_EVTCNT SFR
  * */
@@ -283,10 +288,13 @@ static inline bool mcuxClEls_isBusy(void)
 #define MCUXCLELS_GET_GDET_EVTCNT_FIELD(field) \
   mcuxClEls_getSfrField(MCUXCLELS_SFR_READ(ELS_GDET_EVTCNT), MCUXCLELS_SFR_FIELD_MASK(ELS_GDET_EVTCNT, field), MCUXCLELS_SFR_FIELD_SHIFT(ELS_GDET_EVTCNT, field))
 
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
 
 /** Macros to access the bit fields for the ELS_INT_ENABLE SFR */
 #define MCUXCLELS_SFR_INT_ENABLE_INT_EN           INT_EN
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
 #define MCUXCLELS_SFR_INT_ENABLE_GDET_INT_EN      GDET_INT_EN
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
 
 /** Gets a specific field in the ELS_INT_ENABLE SFR.
  *  @param field: Any field name in MCUXCLELS_SFR_INT_ENABLE_* */
@@ -299,6 +307,30 @@ static inline bool mcuxClEls_isBusy(void)
 #define MCUXCLELS_HASH_BUFFER_SIZE_RTF(options) ( (MCUXCLELS_HASH_RTF_OUTPUT_ENABLE == options.bits.rtfoe) ? MCUXCLELS_HASH_RTF_OUTPUT_SIZE : 0u )
 #define MCUXCLELS_HASH_BUFFER_SIZE_DIGEST(options) ( (1u < options.bits.hashmd) ? MCUXCLELS_HASH_OUTPUT_SIZE_SHA_512 : MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256 )
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+extern uint32_t mcuxClEls_rng_drbg_block_counter;
+
+#define MCUXCLELS_RNG_DRBG_ITERATIVE_SEEDING_ITERATIONS  8u
+#define MCUXCLELS_RNG_DRBG_BLOCK_COUNTER_THRESHOLD       4096u
+#define MCUXCLELS_RNG_DRBG_ECCKEYGEN_INCREASE            10u
+#define MCUXCLELS_RNG_DRBG_ECCSIGN_INCREASE              14u
+#define MCUXCLELS_RNG_DRBG_ECCVERIFY_INCREASE            5u
+#define MCUXCLELS_RNG_DRBG_KEYDELETE128_INCREASE         4u
+#define MCUXCLELS_RNG_DRBG_KEYDELETE256_INCREASE         6u
+#define MCUXCLELS_RNG_DRBG_DRBGREQUEST_INCREASE(outputLength) ((outputLength + 15u) / 16u)
+
+/**
+ * @brief This function resets the internal ELS DRBG block counter and reseeds the ELS DRBG
+ *        using the iterative reseeding procedure
+ *
+ * @retval #MCUXCLELS_STATUS_SW_FAULT            if a failure occurred
+ * @retval #MCUXCLELS_STATUS_OK                  on successful operation
+ */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_Dtrng_IterativeReseeding_Reseed)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Dtrng_IterativeReseeding_Reseed(const uint8_t *pDtrngConfig);
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
 #ifdef __cplusplus
 } /* extern "C" */

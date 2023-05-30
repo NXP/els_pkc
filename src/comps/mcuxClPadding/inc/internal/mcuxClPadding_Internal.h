@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,7 +18,6 @@
 #ifndef MCUXCLPADDING_INTERNAL_H_
 #define MCUXCLPADDING_INTERNAL_H_
 
-#include <internal/mcuxClPadding_Internal.h>
 #include <internal/mcuxClPadding_Types_Internal.h>
 #include <internal/mcuxClPadding_Functions_Internal.h>
 

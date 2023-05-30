@@ -13,10 +13,12 @@
 
 #include "common.h"
 
+#include <mcuxClCore_Analysis.h>
 #include <mcuxClEls.h>
 #include <mcuxClEcc.h>
 #include <mcuxClHash.h>
 #include <mcuxClPsaDriver.h>
+#include <mcuxClPsaDriver_Oracle.h>
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
@@ -40,17 +42,19 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     bool isHash
 )
 {
+    MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
-    if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) != 1u
-        && PSA_ALG_IS_RSA_PSS(alg) != 1u
-        && PSA_ALG_IS_ECDSA(alg)  != 1u)
+    if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) != true
+        && PSA_ALG_IS_RSA_PSS(alg) != true
+        && PSA_ALG_IS_ECDSA(alg)  != true)
     {
       return PSA_ERROR_NOT_SUPPORTED;
     }
 
-    if((PSA_KEY_TYPE_IS_KEY_PAIR(attributes->core.type) != 1u)
-        && (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != 1u))
+    if((PSA_KEY_TYPE_IS_KEY_PAIR(attributes->core.type) != true)
+        && (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != true))
     {
         /* Invalid key type detected, The response shall be  PSA_ERROR_NOT_SUPPORTED */
         return PSA_ERROR_NOT_SUPPORTED;
@@ -58,7 +62,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
 
     if(true == isHash)
     {
-      if(PSA_ALG_IS_SIGN_HASH(alg) != 1u)
+      if(PSA_ALG_IS_SIGN_HASH(alg) != true)
       {
         return PSA_ERROR_NOT_SUPPORTED;
       }
@@ -69,7 +73,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     }
     else
     {
-      if(PSA_ALG_IS_SIGN_MESSAGE(alg) != 1u)
+      if(PSA_ALG_IS_SIGN_MESSAGE(alg) != true)
       {
         return PSA_ERROR_NOT_SUPPORTED;
       }
@@ -106,23 +110,23 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) == 1u
-        || PSA_ALG_IS_RSA_PSS(alg) == 1u)
+    if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) == true
+        || PSA_ALG_IS_RSA_PSS(alg) == true)
     {
       /*
        * Decode key
        */
       uint8_t * pDerData = mcuxClKey_getLoadedKeyData(pKey);
       /* check and skip the sequence + constructed tag */
-      if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&pDerData, 0x10 | 0x20))
+      if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&pDerData, 0x10u | 0x20u))
       {
         return PSA_ERROR_GENERIC_ERROR;
       }
 
-      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != 1u)
+      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != true)
       {
         /* check and skip the version tag */
-        if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&pDerData, 0x02))
+        if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&pDerData, 0x02u))
         {
           return PSA_ERROR_GENERIC_ERROR;
         }
@@ -267,7 +271,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       const uint32_t pLen = domainParams->common.byteLenP;
       const uint32_t nLen = domainParams->common.byteLenN;
       uint8_t * pKeyData = mcuxClKey_getLoadedKeyData(pKey);
-      uint8_t pOutputR[MCUXCLPSADRIVER_ECC_N_SIZE_MAX];
+      uint8_t pOutputR[MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER];
 
       /* buffer for hash */
       uint8_t hash[64] = {0};
@@ -328,7 +332,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
 
       /* Decode as described in ANSI X9.62
          Octet String to Elliptic Curve Point Conversion */
-      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) == 1u)
+      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) == true)
       {
         /* Currently only uncompressed format is supported */
         if(MCUXCLPSADRIVER_PREFIX_ANSI_X9_62_UNCOMPRESSED_POINT != *pKeyData)
@@ -337,47 +341,54 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         }
         ++pKeyData;
 
-        for(int i = 0u; i < 2u * pLen; ++i)
+        for(uint32_t i = 0u; i < 2u * pLen; ++i)
         {
           publicKey[i] = pKeyData[i];
         }
       }
       else
       {
-        /* Calculate public point */
-        mcuxClEcc_PointMult_Param_t params = {
-            .curveParam = (mcuxClEcc_DomainParam_t){.pA   = a,
-            .pB   = b,
-            .pP   = p,
-            .pG   = G,
-            .pN   = n,
-            .misc = mcuxClEcc_DomainParam_misc_Pack(nLen, pLen)},
-            .pScalar    = pKeyData,
-            .pPoint     = G,
-            .pResult    = publicKey,
-            .optLen     = 0u};
-
-        /* Initialize the RNG context */
-        mcuxClRandom_Context_t rng_ctx = NULL;
-
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token,
-                                         mcuxClRandom_init(&session, rng_ctx, (nLen > 32u) ?
-                                          mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3 : mcuxClRandomModes_Mode_ELS_Drbg));
-        if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) ||
-          (MCUXCLRANDOM_STATUS_OK != randomInit_result))
+        if(MCUXCLKEY_LOADSTATUS_COPRO == mcuxClKey_getLoadStatus(pKey))
         {
-          return PSA_ERROR_GENERIC_ERROR;
+          size_t pubKeyLen = 0u;
+          psa_status_t exportPublicKeyStatus = mcuxClPsaDriver_Oracle_ExportPublicKey(
+            pKey,
+            publicKey,
+            sizeof(publicKey),
+            &pubKeyLen,
+            true);
+          
+          if((2u * pLen != pubKeyLen)
+             || (PSA_SUCCESS != exportPublicKeyStatus))
+          {
+            return PSA_ERROR_GENERIC_ERROR;
+          }
         }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-        /* Call PointMult for public keys calculation and check FP and return code */
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pointMult_result, pointMult_token, mcuxClEcc_PointMult(&session, &params));
-        if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != pointMult_token) ||
-          (MCUXCLECC_STATUS_OK != pointMult_result))
+        else
         {
-          return PSA_ERROR_GENERIC_ERROR;
+          /* TODO: CLNS-8546 Check if this can be replaced by direct loading of public key (since it is keypair) */
+          /* Calculate public point */
+          mcuxClEcc_PointMult_Param_t params = {
+              .curveParam = (mcuxClEcc_DomainParam_t){.pA   = a,
+              .pB   = b,
+              .pP   = p,
+              .pG   = G,
+              .pN   = n,
+              .misc = mcuxClEcc_DomainParam_misc_Pack(nLen, pLen)},
+              .pScalar    = pKeyData,
+              .pPoint     = G,
+              .pResult    = publicKey,
+              .optLen     = 0u};
+
+          /* Call PointMult for public keys calculation and check FP and return code */
+          MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pointMult_result, pointMult_token, mcuxClEcc_PointMult(&session, &params));
+          if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != pointMult_token) ||
+            (MCUXCLECC_STATUS_OK != pointMult_result))
+          {
+            return PSA_ERROR_GENERIC_ERROR;
+          }
+          MCUX_CSSL_FP_FUNCTION_CALL_END();
         }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
       }
 
       mcuxClEcc_Verify_Param_t paramVerify =

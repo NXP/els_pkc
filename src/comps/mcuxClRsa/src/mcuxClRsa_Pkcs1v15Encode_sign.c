@@ -101,7 +101,7 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_512 = {
 };
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pkcs1v15Encode_sign)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pkcs1v15Encode_sign, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -172,11 +172,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   *(pEm + 1u) = (uint8_t) 0x01;
 
   /* Write padding bytes */
-  MCUX_CSSL_FP_FUNCTION_CALL(memset_result, mcuxClMemory_set(pPs, 0xFFU, paddingLength, emLen - 2u));
-  if(0u != memset_result)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Encode_sign, MCUXCLRSA_STATUS_ERROR);
-  }
+  MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF(pPs, 0xFFU, paddingLength, emLen - 2u);
 
   /* Write 0x00 divider */
   *(pPs + paddingLength) = (uint8_t) 0x00;
@@ -211,7 +207,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   else if (MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK))
   {
     /* Copy pInput to buffer at pH (located at the end of the buffer) */
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pH, pInput, hLength, hLength));
+    MCUXCLMEMORY_FP_MEMORY_COPY(pH, pInput, hLength);
   }
   else
   {
@@ -223,7 +219,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   /*****************************************************/
 
   /* Copy encoded message to beginning of PKC workarea and switch the endianness */
-  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pOutput, pPkcWorkarea, emLen, emLen));
+  MCUXCLMEMORY_FP_MEMORY_COPY(pOutput, pPkcWorkarea, emLen);
 
   mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 

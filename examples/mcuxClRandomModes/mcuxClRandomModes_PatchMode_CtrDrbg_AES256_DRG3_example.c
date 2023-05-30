@@ -22,7 +22,6 @@
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
-#include <internal/mcuxClSession_Internal.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClExample_Session_Helper.h>
@@ -40,11 +39,13 @@ static mcuxClRandom_Status_t RNG_Patch_function(
     uint32_t outLength
 )
 {
-    mcuxClSession_Descriptor_t *sessionCustom = (mcuxClSession_Descriptor_t *) mcuxClSession_allocateWords_cpuWa(session, sizeof(mcuxClSession_Descriptor_t) / sizeof(uint32_t));
+    mcuxClSession_Descriptor_t sessionDesc;
+    mcuxClSession_Handle_t sessionCustom = &sessionDesc;
+    uint32_t cpuWa[MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)];
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, token, mcuxClSession_init(
     /* mcuxClSession_Handle_t session:      */ sessionCustom,
-    /* uint32_t * const cpuWaBuffer:       */ mcuxClSession_allocateWords_cpuWa(session, MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)),
+    /* uint32_t * const cpuWaBuffer:       */ cpuWa,
     /* uint32_t cpuWaSize:                 */ MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE,
     /* uint32_t * const pkcWaBuffer:       */ NULL,
     /* uint32_t pkcWaSize:                 */ 0U
@@ -103,16 +104,13 @@ static mcuxClRandom_Status_t RNG_Patch_function(
         return MCUXCLRANDOM_STATUS_ERROR;
     }
 
-    /* Free workarea (sessionCustom and random cpuWaBuffer) */
-    mcuxClSession_freeWords_cpuWa(session, (MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)) + (sizeof(mcuxClSession_Descriptor_t) / sizeof(uint32_t)));
-
     return MCUXCLRANDOM_STATUS_OK;
 }
 
 /** Performs an example usage of the mcuxClRandom and mcuxClRandomModes components with patch mode.
  * @retval true  The example code completed successfully
  * @retval false The example code failed */
-bool mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -179,8 +177,7 @@ bool mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg1_status, generate1_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer1,
-                                        3u
-                                   ));
+                                        sizeof(drbg_buffer1)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate1_token) || (MCUXCLRANDOM_STATUS_OK != rg1_status))
     {
@@ -192,8 +189,7 @@ bool mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg2_status, generate2_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer2,
-                                        16u
-                                   ));
+                                        sizeof(drbg_buffer2)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate2_token) || (MCUXCLRANDOM_STATUS_OK != rg2_status))
     {
@@ -205,8 +201,7 @@ bool mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg3_status, generate3_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer3,
-                                        31u
-                                   ));
+                                        sizeof(drbg_buffer3)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate3_token) || (MCUXCLRANDOM_STATUS_OK != rg3_status))
     {

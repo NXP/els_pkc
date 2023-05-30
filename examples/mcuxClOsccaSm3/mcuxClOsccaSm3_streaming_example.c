@@ -132,3 +132,8 @@ bool mcuxClOsccaSm3_streaming_example(void)
     }
     return MCUXCLEXAMPLE_OK;
 }
+bool nxpClOsccaSm3_streaming_example(void)
+{
+    bool result = mcuxClOsccaSm3_streaming_example();
+    return result;
+}

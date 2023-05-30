@@ -44,16 +44,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_prepareHMACKey(
     {
         /* Given key must be zero-padded up to MCUXCLMAC_HMAC_PADDED_KEY_SIZE */
         // TODO: use secure memory copy?
-        MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pPreparedHmacKey,
+        MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pPreparedHmacKey,
                                                                pKeyData,
                                                                keySize,
-                                                               MCUXCLMAC_HMAC_PADDED_KEY_SIZE));
-
-        if(0u != copyResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_prepareHMACKey, MCUXCLMAC_STATUS_ERROR,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
-        }
+                                                               MCUXCLMAC_HMAC_PADDED_KEY_SIZE);
 
         alreadyFilledKeyDataSize = keySize;
     }
@@ -78,23 +72,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_prepareHMACKey(
     }
 
     /* Zero-pad the key */
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult, mcuxClMemory_set(pPreparedHmacKey + alreadyFilledKeyDataSize,
-                                                          0u,
-                                                          MCUXCLMAC_HMAC_PADDED_KEY_SIZE - alreadyFilledKeyDataSize,
-                                                          MCUXCLMAC_HMAC_PADDED_KEY_SIZE - alreadyFilledKeyDataSize));
-
-    if(0u != setResult)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_prepareHMACKey, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_CONDITIONAL((mcuxClKey_getSize(key) <= MCUXCLMAC_HMAC_PADDED_KEY_SIZE),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
-            ),
-            MCUX_CSSL_FP_CONDITIONAL((mcuxClKey_getSize(key) > MCUXCLMAC_HMAC_PADDED_KEY_SIZE),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
-            ),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set)
-        );
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET(pPreparedHmacKey + alreadyFilledKeyDataSize, 0u, MCUXCLMAC_HMAC_PADDED_KEY_SIZE - alreadyFilledKeyDataSize);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClMacModes_prepareHMACKey, MCUXCLMAC_STATUS_OK, MCUXCLMAC_STATUS_FAULT_ATTACK,
         MCUX_CSSL_FP_CONDITIONAL((mcuxClKey_getSize(key) <= MCUXCLMAC_HMAC_PADDED_KEY_SIZE),

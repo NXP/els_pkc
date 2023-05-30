@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
 #include <mcuxClRandom.h>
@@ -53,17 +51,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createTestF
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_createTestFromNormalMode);
 
-    pTestMode->pOperationMode = NULL;
-    #ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
-    if (normalMode->pOperationMode == &mcuxClRandomModes_OperationModeDescriptor_NormalMode_PrDisabled)
-    {
-        pTestMode->pOperationMode   = &mcuxClRandomModes_OperationModeDescriptor_TestMode_PrDisabled;
-    }
-    #endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
-    if (pTestMode->pOperationMode == NULL)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_createTestFromNormalMode, MCUXCLRANDOM_STATUS_INVALID_PARAM);
-    }
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("For a normal mode, auxParam contains a pointer to mcuxClRandom_OperationModeDescriptor_t")
+    pTestMode->pOperationMode   = (mcuxClRandom_OperationModeDescriptor_t *) normalMode->auxParam;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
     pTestMode->pDrbgMode        = normalMode->pDrbgMode;
     pTestMode->auxParam         = (uint32_t) pEntropyInput;
     pTestMode->contextSize      = normalMode->contextSize;
@@ -95,25 +85,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_updateEntro
  *   - MCUXCLRANDOM_STATUS_OK         if the DRBG instantiation finished successfully
  *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK    if the DRBG instantiation failed due to other unexpected reasons
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_TestMode_initFunction)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_TestMode_initFunction, mcuxClRandom_initFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_initFunction(mcuxClSession_Handle_t pSession)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_TestMode_initFunction);
 
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-    mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
     mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
 
     /* Derive the initial DRBG state from the generated entropy input */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_instantiate, pDrbgMode->pDrbgAlgorithms->instantiateAlgorithm(pSession, (uint32_t*)pMode->auxParam));
+    MCUX_CSSL_FP_FUNCTION_CALL(result_instantiate, pDrbgMode->pDrbgAlgorithms->instantiateAlgorithm(pSession, (uint8_t *) pMode->auxParam));
     if (MCUXCLRANDOM_STATUS_OK != result_instantiate)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_TestMode_initFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
 
-    /* Initialize the reseed counter. This is done here and not in the generateAlgorithm as specified in NIST SP800-90A,
-     * because this makes it easier to handle PTG.3. Functionally there is no difference. */
-    pRngCtxGeneric->reseedCounter = 0u;
+    /* Initialize the reseedSeedOffset field of the context */
+    pRngCtxGeneric->reseedSeedOffset = 0u;
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_TestMode_initFunction, MCUXCLRANDOM_STATUS_OK,
         pDrbgMode->pDrbgAlgorithms->protectionTokenInstantiateAlgorithm);
@@ -129,28 +118,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_in
  * \param  session[in]          Handle for the current CL session
  *
  * \return
- *   - MCUXCLRANDOM_STATUS_OK         if the DRBG reseeding finished successfully
- *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK    if the DRBG reseeding failed due to other unexpected reasons
+ *   - MCUXCLRANDOM_STATUS_OK            if the DRBG reseeding finished successfully
+ *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK  if the DRBG reseeding failed due to other unexpected reasons
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_TestMode_reseedFunction)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_TestMode_reseedFunction, mcuxClRandom_reseedFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_reseedFunction(mcuxClSession_Handle_t pSession)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_TestMode_reseedFunction);
 
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-    mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
-    mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
+    const mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
 
     /* Derive the initial DRBG state from the generated entropy input */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_reseed, pDrbgMode->pDrbgAlgorithms->reseedAlgorithm(pSession, (uint32_t*)pMode->auxParam));
+    MCUX_CSSL_FP_FUNCTION_CALL(result_reseed, pDrbgMode->pDrbgAlgorithms->reseedAlgorithm(pSession, (((uint8_t *) pMode->auxParam) + pRngCtxGeneric->reseedSeedOffset)));
     if (MCUXCLRANDOM_STATUS_OK != result_reseed)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_TestMode_reseedFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
-
-    /* Reset the reseed counter. This is done here and not in the generateAlgorithm as specified in NIST SP800-90A,
-     * because this makes it easier to handle PTG.3. Functionally there is no difference. */
-    pRngCtxGeneric->reseedCounter = 0u;
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_TestMode_reseedFunction, MCUXCLRANDOM_STATUS_OK,
         pDrbgMode->pDrbgAlgorithms->protectionTokenReseedAlgorithm);

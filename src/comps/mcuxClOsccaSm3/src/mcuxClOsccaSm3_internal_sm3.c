@@ -38,9 +38,8 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi)
 static MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(uint32_t *workArea, uint32_t *stateBuff)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi);
-    int32_t i;
 
-    for(i = 0; i < MCUXCLOSCCASM3_SGI_LOOP_SIZE; i++)
+    for(uint32_t i = 0; i < MCUXCLOSCCASM3_SGI_LOOP_SIZE; i++)
     {
         workArea[i] = (uint32_t)stateBuff[i];
     }
@@ -52,11 +51,10 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_ProcessMessageBlock_Sgi)
 static MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_ProcessMessageBlock_Sgi(uint32_t *workArea, uint32_t *stateBuff, uint32_t *pInput)
 {
    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_ProcessMessageBlock_Sgi);
-   int32_t i;
 
    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_Safo_Hash_Auto(workArea, pInput));
 
-   for(i = 0; i < MCUXCLOSCCASM3_SGI_LOOP_SIZE; i++)
+   for(uint32_t i = 0u; i < MCUXCLOSCCASM3_SGI_LOOP_SIZE; i++)
    {
        stateBuff[i] = (uint32_t)workArea[i];
    }
@@ -68,14 +66,14 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_ProcessMessageBlock_Sgi(
  * *INTERNAL* layer functions
  **********************************************************/
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_oneShotSkeleton)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_oneShotSkeleton, mcuxClHash_AlgoSkeleton_OneShot_t)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneShotSkeleton (
                         mcuxClSession_Handle_t session,
                         mcuxClHash_Algo_t algorithm,
                         mcuxCl_InputBuffer_t pIn,
                         uint32_t inSize,
                         mcuxCl_Buffer_t pOut,
-                        int32_t *const pOutSize
+                        uint32_t *const pOutSize
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_sm3_oneShotSkeleton);
@@ -87,6 +85,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     }
 
     uint8_t *stateBuffer;
+    /* MISRA Ex. 9 to Rule 11.3 */
     MCUX_CSSL_FP_FUNCTION_CALL(bufPrepRes1, mcuxClSession_allocateCpuBuffer(session, (uint32_t **)&stateBuffer, MCUXCLOSCCASM3_STATE_SIZE_SM3/sizeof(uint32_t)));
     if(MCUXCLSESSION_STATUS_OK != bufPrepRes1)
     {
@@ -110,12 +109,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
      **************************************************************************************/
 
     /** \brief Global standard initialization vectors for SM3 */
-    MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result1, mcuxClMemory_copy(stateBuffer, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
-                MCUXCLOSCCASM3_STATE_SIZE_SM3, MCUXCLOSCCASM3_STATE_SIZE_SM3));
-    if(0u != memcopy_result1)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_oneShotSkeleton, MCUXCLHASH_FAILURE);
-    }
+    MCUXCLMEMORY_FP_MEMORY_COPY(stateBuffer, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV, MCUXCLOSCCASM3_STATE_SIZE_SM3);
 
     //Load initial IV to HW SM3
     /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
@@ -129,16 +123,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     const uint8_t *pInput = pIn;
     while((0U != inputLen) && (inputLen >= MCUXCLOSCCASM3_BLOCK_SIZE_SM3))
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result2, mcuxClMemory_copy(accumulationBuffer, pInput,
-                      MCUXCLOSCCASM3_BLOCK_SIZE_SM3, MCUXCLOSCCASM3_BLOCK_SIZE_SM3));
-        if(0u != memcopy_result2)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_oneShotSkeleton, MCUXCLHASH_FAILURE);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(accumulationBuffer, pInput, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
 
         /* Switch endianess of words in accumulation buffer */
         /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-        mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3));
 
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)stateBuffer, (uint32_t *)accumulationBuffer));
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)stateBuffer));
@@ -153,11 +142,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     **************************************************************************************/
     if(0U != inputLen)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result3, mcuxClMemory_copy(accumulationBuffer, pInput, inputLen, inputLen));
-        if(0u != memcopy_result3)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_oneShotSkeleton, MCUXCLHASH_FAILURE);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(accumulationBuffer, pInput, inputLen);
     }
 
     /* get the accumulation buffer index */
@@ -169,24 +154,17 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     accumulationBufferIndex++;
 
     /* then fill with zeros */
-    MCUX_CSSL_FP_FUNCTION_CALL(memclear_result1, mcuxClMemory_clear(&accumulationBuffer[accumulationBufferIndex], MCUXCLOSCCASM3_BLOCK_SIZE_SM3 - accumulationBufferIndex, MCUXCLOSCCASM3_BLOCK_SIZE_SM3 - accumulationBufferIndex));
-    if(0u != memclear_result1)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_oneShotSkeleton, MCUXCLHASH_FAILURE);
-    }
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(&accumulationBuffer[accumulationBufferIndex], MCUXCLOSCCASM3_BLOCK_SIZE_SM3 - accumulationBufferIndex);
+
     /* check if we can put the byte counter into this block */
     if((accumulationBufferIndex + 8U ) > MCUXCLOSCCASM3_BLOCK_SIZE_SM3)
     {
         /* need another block */
         /* Switch endianess of words in accumulation buffer */
         /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-        mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3));
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)stateBuffer, (uint32_t *)accumulationBuffer));
-        MCUX_CSSL_FP_FUNCTION_CALL(memclear_result2, mcuxClMemory_clear(accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3, MCUXCLOSCCASM3_BLOCK_SIZE_SM3));
-        if(0u != memclear_result2)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_oneShotSkeleton, MCUXCLHASH_FAILURE);
-        }
+        MCUXCLMEMORY_FP_MEMORY_CLEAR(accumulationBuffer,MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)stateBuffer));
     }
 
@@ -199,7 +177,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     accumulationBuffer[counterEntry - 1u] = (uint8_t)(inSize >> 29u);
 
     /* Switch endianess of words in accumulation buffer */
-    mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3);
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)accumulationBuffer, MCUXCLOSCCASM3_BLOCK_SIZE_SM3));
 
     /* Process the data in the accumulation buffer */
     /* Return code will be handled by Exit-Gate functionality within processMessageBlock */
@@ -211,12 +189,8 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
      **************************************************************************************/
     /* Switch endianess of words in state buffer */
     /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-    mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)stateBuffer, MCUXCLOSCCASM3_STATE_SIZE_SM3);
-    MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result4, mcuxClMemory_copy(pOut, stateBuffer, algorithm->hashSize, algorithm->hashSize));
-    if(0u != memcopy_result4)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_oneShotSkeleton, MCUXCLHASH_FAILURE);
-    }
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)stateBuffer, MCUXCLOSCCASM3_STATE_SIZE_SM3));
+    MCUXCLMEMORY_FP_MEMORY_COPY(pOut, stateBuffer, algorithm->hashSize);
 
     MCUX_CSSL_FP_FUNCTION_CALL(free_result, mcuxClSession_freeAllCpuBuffers(session));
 
@@ -231,20 +205,23 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi),
                                                      updateLoopCount * (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
+                                                                        + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_core_sm3_switch_endianness)
                                                                         + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi)
                                                                         + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi)),
-                                                     (0U != inputLen) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                     (0U != inputLen ? 1u : 0u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi),
+                                                     2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_core_sm3_switch_endianness),
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_freeAllCpuBuffers),
-                                                     ((accumulationBufferIndex + 8U ) > MCUXCLOSCCASM3_BLOCK_SIZE_SM3) *
+                                                     ((accumulationBufferIndex + 8U ) > MCUXCLOSCCASM3_BLOCK_SIZE_SM3 ? 1u : 0u) *
                                                      (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi)
+                                                     + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_core_sm3_switch_endianness)
                                                      + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
                                                      + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi)));
 }
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_processSkeleton)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_processSkeleton, mcuxClHash_AlgoSkeleton_Process_t)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_processSkeleton (
                         mcuxClSession_Handle_t session,
                         mcuxClHash_Context_t pContext,
@@ -254,7 +231,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
     mcuxClHash_Context_t pSM3Ctx = pContext;
     int32_t processedLengthNotZero = mcuxClHash_processedLength_cmp(pSM3Ctx->data.processedLength, 0, 0);
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_sm3_processSkeleton,
-                ((processedLengthNotZero == 0) && (pContext->data.unprocessedLength == 0u))
+                (((processedLengthNotZero == 0) && (pContext->data.unprocessedLength == 0u)) ? (uint32_t)1u : (uint32_t)0u)
                   * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi));
 
@@ -265,7 +242,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
     }
     uint32_t *workArea = (uint32_t*) &(session->cpuWa.buffer[session->cpuWa.used]);
     /**************************************************************************************
-     * Step 1: Initialization - Calculate sizes, set pointers, and set initial IV, 
+     * Step 1: Initialization - Calculate sizes, set pointers, and set initial IV,
        continuation from external state, or from internal state
      **************************************************************************************/
     /* MISRA Ex. 9 to Rule 11.3 */
@@ -279,12 +256,8 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
     if((processedLengthNotZero == 0) && (pSM3Ctx->data.unprocessedLength == 0u))
     {
         /** \brief Global standard initialization vectors for SM3 */
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pState, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
-                    MCUXCLOSCCASM3_STATE_SIZE_SM3, MCUXCLOSCCASM3_STATE_SIZE_SM3));
-        if(0u != memcopy_result)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_processSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(pState, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV, MCUXCLOSCCASM3_STATE_SIZE_SM3);
+
     }
      /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)pState));
@@ -300,11 +273,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
         uint32_t dataToCopyLength = (inLength < (algoBlockSize - pSM3Ctx->data.unprocessedLength)) ? inLength : (algoBlockSize - pSM3Ctx->data.unprocessedLength);
         /* Copy input to accumulation buffer */
         /* Copy input to accumulation buffer */
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pUnprocessed + pSM3Ctx->data.unprocessedLength, pInput, dataToCopyLength, dataToCopyLength));
-        if(0u != memcopy_result)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_processSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(pUnprocessed + pSM3Ctx->data.unprocessedLength, pInput, dataToCopyLength);
 
         /* Update counter / pSM3Ctx data / input pointer */
         inLength -= dataToCopyLength;
@@ -317,7 +286,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
             /* Switch endianess in accumulation buffer */
             /* Switch endianess of words in accumulation buffer */
             /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-            mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize);
+            MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize));
             MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)pState, (uint32_t *)pUnprocessed));
             MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)pState));
 
@@ -335,22 +304,23 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_processSkeleton, MCUXCLHASH_STATUS_OK,
                 loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                loopTimes1 * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi),
-                loopTimes1 * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi));
+                loopTimes1 * ( MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi)
+                             + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi)
+                             + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_core_sm3_switch_endianness)));
 }
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_finishSkeleton)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_finishSkeleton, mcuxClHash_AlgoSkeleton_Finish_t)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finishSkeleton (
                             mcuxClSession_Handle_t session,
                             mcuxClHash_Context_t pContext,
                             mcuxCl_Buffer_t pOut,
-                            int32_t *const pOutSize
+                            uint32_t *const pOutSize
                     )
 {
     mcuxClHash_Context_t pSM3Ctx = pContext;
     int32_t processedLengthNotZero = mcuxClHash_processedLength_cmp(pSM3Ctx->data.processedLength, 0, 0);
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_sm3_finishSkeleton,
-	            ((processedLengthNotZero == 0) && (pContext->data.unprocessedLength == 0u))
+               (((processedLengthNotZero == 0) && (pContext->data.unprocessedLength == 0u)) ? (uint32_t)1u : (uint32_t)0u)
                   * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi));
 
@@ -365,12 +335,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     if((processedLengthNotZero == 0) && (pSM3Ctx->data.unprocessedLength == 0u))
     {
         /** \brief Global standard initialization vectors for SM3 */
-        MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pSM3Ctx->buffer.state, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV,
-                    MCUXCLOSCCASM3_STATE_SIZE_SM3, MCUXCLOSCCASM3_STATE_SIZE_SM3));
-        if(0u != memcopy_result)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_finishSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(pSM3Ctx->buffer.state, (const uint8_t*)gkmcuxClOsccaSm3_SM3_IV, MCUXCLOSCCASM3_STATE_SIZE_SM3);
     }
 
     /* need preload Update phase prehash into HW SM3 */
@@ -390,15 +355,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     {
         loopTimes++;
         /* Set remaining bytes in accumulation buffer to zero */
-        MCUX_CSSL_FP_FUNCTION_CALL(memset_result1, mcuxClMemory_set(pUnprocessed + pSM3Ctx->data.unprocessedLength, 0x00u, remainingBlockLength, remainingBlockLength));
-        if(0u != memset_result1)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_finishSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
-        }
+        MCUXCLMEMORY_FP_MEMORY_SET(pUnprocessed + pSM3Ctx->data.unprocessedLength, 0x00u, remainingBlockLength);
 
         /* Switch endianess of words in accumulation buffer */
         /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-        mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize);
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize));
         /* Call core function */
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)pState, (uint32_t *)pUnprocessed));
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi(workArea, (uint32_t *)pState));
@@ -408,11 +369,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     }
 
     /* Set remaining bytes in accumulation buffer to zero */
-    MCUX_CSSL_FP_FUNCTION_CALL(memset_result2, mcuxClMemory_set(pUnprocessed + pSM3Ctx->data.unprocessedLength, 0x00u, remainingBlockLength, remainingBlockLength));
-    if(0u != memset_result2)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_finishSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET(pUnprocessed + pSM3Ctx->data.unprocessedLength, 0x00u, remainingBlockLength);
 
     /* Perform padding by adding data counter - length is added from end of the array; byte-length is converted to bit-length */
     uint32_t counterEntry = algoBlockSize;
@@ -427,28 +384,26 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
 
     /* Switch endianess of words in accumulation buffer */
     /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-    mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize);
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pUnprocessed, algoBlockSize));
 
     /* Call core function to process last block */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_ProcessMessageBlock_Sgi(workArea, (uint32_t *)pState, (uint32_t *)pUnprocessed));
 
     /* Switch endianess of words in state buffer */
-    mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pState, MCUXCLOSCCASM3_STATE_SIZE_SM3);
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm3_core_sm3_switch_endianness((uint32_t*)pState, MCUXCLOSCCASM3_STATE_SIZE_SM3));
     /* Copy hash digest to output buffer */
-    MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pOut, pState, MCUXCLOSCCASM3_OUTPUT_SIZE_SM3, MCUXCLOSCCASM3_OUTPUT_SIZE_SM3));
-    if(0u != memcopy_result)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_finishSkeleton, MCUXCLHASH_STATUS_FAULT_ATTACK);
-    }
+    MCUXCLMEMORY_FP_MEMORY_COPY(pOut, pState, MCUXCLOSCCASM3_OUTPUT_SIZE_SM3);
     *pOutSize += pSM3Ctx->algo->hashSize;
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_finishSkeleton, MCUXCLHASH_STATUS_OK,
-                            loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-                            loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi),
-                            loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi),
+                            loopTimes * ( MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set)
+                                        + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi)
+                                        + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi)
+                                        + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_core_sm3_switch_endianness)),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi),
-                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
-                            );
+                            2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_core_sm3_switch_endianness),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 
 }
 
@@ -458,11 +413,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
 
 #ifdef MCUXCL_FEATURE_HASH_HW_SM3
 const mcuxClHash_AlgorithmDescriptor_t mcuxClOsccaSm3_AlgorithmDescriptor_Sm3 = {
-    .oneShotSkeleton                  = (mcuxClHash_AlgoSkeleton_OneShot_t)mcuxClOsccaSm3_sm3_oneShotSkeleton,
+    .oneShotSkeleton                  = mcuxClOsccaSm3_sm3_oneShotSkeleton,
     .protection_token_oneShotSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_sm3_oneShotSkeleton),
-    .processSkeleton                  = (mcuxClHash_AlgoSkeleton_Process_t)mcuxClOsccaSm3_sm3_processSkeleton,
+    .processSkeleton                  = mcuxClOsccaSm3_sm3_processSkeleton,
     .protection_token_processSkeleton = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_sm3_processSkeleton),
-    .finishSkeleton                   = (mcuxClHash_AlgoSkeleton_Finish_t)mcuxClOsccaSm3_sm3_finishSkeleton,
+    .finishSkeleton                   = mcuxClOsccaSm3_sm3_finishSkeleton,
     .protection_token_finishSkeleton  = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_sm3_finishSkeleton),
     .blockSize                        = MCUXCLOSCCASM3_BLOCK_SIZE_SM3,
     .hashSize                         = MCUXCLOSCCASM3_OUTPUT_SIZE_SM3,

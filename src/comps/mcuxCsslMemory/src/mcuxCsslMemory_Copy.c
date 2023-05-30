@@ -54,7 +54,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Copy
 
     MCUX_CSSL_SC_ADD(word); // -> should be 0
     MCUX_CSSL_SC_ADD(xorword); // -> should be 0
-    MCUX_CSSL_SC_SUB(2U * nwords); // -> corresponds to `cha ^ chb + word` after the below assembly has executed
+    MCUX_CSSL_SC_SUB(2U * nwords); // -> corresponds to `~(cha ^ chb) + word` after the below assembly has executed
     // The following value is essentially a precalculation of the function xorchain(n) = 1 ^ 2 ^ 3 ^ 4 ^ 5 ^ ... ^ n (a chain of XOR operations), where n is substituted by nwords.
     // If n % 4 == 0, then xorchain(n) == n.
     // If n % 4 == 1, then xorchain(n) == 1.

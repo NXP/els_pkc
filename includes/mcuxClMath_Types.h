@@ -20,10 +20,9 @@
 #ifndef MCUXCLMATH_TYPES_H_
 #define MCUXCLMATH_TYPES_H_
 
-#include <stdint.h>
-#include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 
 /**********************************************

@@ -216,6 +216,11 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Reset_As
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Reset_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    /* Set the drbg_block_counter to a value triggering a reseed after the upcoming RESET operation via interrupt */
+    mcuxClEls_rng_drbg_block_counter = MCUXCLELS_RNG_DRBG_BLOCK_COUNTER_THRESHOLD;
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
+
     MCUXCLELS_SET_CTRL_FIELD(MCUXCLELS_SFR_CTRL_RESET, 1u);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Reset_Async, MCUXCLELS_STATUS_OK_WAIT);

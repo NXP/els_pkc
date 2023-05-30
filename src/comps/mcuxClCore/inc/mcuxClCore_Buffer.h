@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLCORE_BUFFER_H_
 #define MCUXCLCORE_BUFFER_H_

@@ -135,13 +135,14 @@ typedef struct mcuxClEcc_CommonDomainParams mcuxClEcc_CommonDomainParams_t;
  * The scalar multiplication function declaration
  * and structure containing the function pointer and its associated flow protection ID.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClEcc_ScalarMultFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_ScalarMultFunction_t)(
     mcuxClSession_Handle_t pSession,                ///< Handle for the current CL session
     mcuxClEcc_CommonDomainParams_t *pDomainParams,  ///< Pointer to ECC domain parameters structure
     uint8_t iScalar,                               ///< Pointer table index of scalar buffer in PKC RAM
     uint32_t scalarBitLength,                      ///< Bit length of the scalar
     uint32_t options                               ///< Parameter to pass options
-    );
+    ));
 typedef struct
 {
     mcuxClEcc_ScalarMultFunction_t pScalarMultFct;   ///< scalar multiplication function pointer
@@ -183,7 +184,7 @@ struct mcuxClEcc_CommonDomainParams
 /**
  * Macro to provide truncated digest length
  */
-#define MCUXCLECC_TRUNCATED_HASH_LEN(hash, max_len) ((hash < max_len) ? hash: max_len)
+#define MCUXCLECC_TRUNCATED_HASH_LEN(hash, max_len) (((hash) < (max_len)) ? (hash) : (max_len))
 
 /**
  * Options to determine whether scalar multiplication input/output are in affine or projective format.
@@ -215,6 +216,16 @@ struct mcuxClEcc_CommonDomainParams
 
 /** Helper macro to get the minimum of two given constants. */
 #define MCUXCLECC_MIN(value0, value1)  (((value0) < (value1)) ? (value0) : (value1))
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_InterleaveScalar)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_InterleaveScalar(uint16_t iScalar, uint32_t scalarBitLength, uint32_t numberOfInterleavings);
+
+/** Helper macro to call #mcuxClEcc_InterleaveScalar with flow protection. */
+#define MCUXCLECC_FP_INTERLEAVESCALAR(iScalar, bitLenScalar, numberOfInterleavings)  \
+    do{ \
+        MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClEcc_InterleaveScalar(iScalar, bitLenScalar, numberOfInterleavings));  \
+        (void) retValTemp;  /* Checking is unnecessary, because it always returns OK. */  \
+    } while (false)
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_InterleaveTwoScalars)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_InterleaveTwoScalars(uint16_t iScalar0_iScalar1, uint32_t scalarBitLength);

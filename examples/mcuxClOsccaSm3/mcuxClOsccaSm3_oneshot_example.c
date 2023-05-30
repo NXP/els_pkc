@@ -86,3 +86,8 @@ bool mcuxClOsccaSm3_oneshot_example(void)
     }
     return MCUXCLEXAMPLE_OK;
 }
+bool nxpClOsccaSm3_oneshot_example(void)
+{
+    bool result = mcuxClOsccaSm3_oneshot_example();
+    return result;
+}

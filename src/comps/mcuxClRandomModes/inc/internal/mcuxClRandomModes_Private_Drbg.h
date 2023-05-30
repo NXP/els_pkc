@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLRANDOMMODES_PRIVATE_DRBG_H_
 #define MCUXCLRANDOMMODES_PRIVATE_DRBG_H_
@@ -31,7 +29,7 @@ extern "C" {
 /*
  * Takes a byte size and returns a number of words
  */
-#define MCUXCLRANDOMMODES_ROUND_UP_TO_CPU_WORDSIZE(bytesize) \
+#define MCUXCLRANDOMMODES_ROUNDED_UP_CPU_WORDSIZE(bytesize) \
     (((bytesize) + sizeof(uint32_t) - 1U ) / (sizeof(uint32_t)))
 
 /*
@@ -48,11 +46,15 @@ extern "C" {
 #define MCUXCLRANDOMMODES_ELSMODE     (0xd3d3d3d3u)
 #define MCUXCLRANDOMMODES_PATCHMODE   (0x3d3d3d3du)
 
-/* Shared generic internal structure of a random context used by DRBGs.
- * For DRG.3 and DRG.4 the reseedCounter is used to count the number of generate function calls.
- * For PTG.3 the reseedCounter is used to count the number of bytes drawn between reseeds */
-#define MCUXCLRANDOMMODES_CONTEXT_DRBG_ENTRIES   \
-        uint64_t reseedCounter;
+/* Shared generic internal structure of a random context used by DRBGs:
+ *   - reseedCounter    This value is used to count the number of generateAlgorithm function calls since the last reseedAlgorithm call.
+ *   - reseedSeedOffset For PTG.3 in test mode, the reseedSeedOffset counts the number of entropy input bytes already drawn from the entropy input buffer
+ *                      for reseeding during an mcuxClRandom_generate call. Otherwise it's set to zero.
+ *                      This value is not taken into account during reseeding in normal mode. It is only used to determine the right offset
+ *                      in the entropy buffer during mcuxClRandom_generate calls for PTG.3 in test mode. */
+#define MCUXCLRANDOMMODES_CONTEXT_DRBG_ENTRIES  \
+        uint64_t reseedCounter;  \
+        uint32_t reseedSeedOffset;
 
 typedef struct
 {
@@ -60,27 +62,31 @@ typedef struct
 } mcuxClRandomModes_Context_Generic_t;
 
 /* Signatures for internal functions */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandomModes_instantiateAlgorithm_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_instantiateAlgorithm_t)(
         mcuxClSession_Handle_t pSession,
-        uint32_t *pEntropyInput
-);
+        uint8_t *pEntropyInput
+));
 
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandomModes_reseedAlgorithm_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_reseedAlgorithm_t)(
         mcuxClSession_Handle_t pSession,
-        uint32_t *pEntropyInput
-);
+        uint8_t *pEntropyInput
+));
 
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandomModes_generateAlgorithm_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_generateAlgorithm_t)(
         mcuxClSession_Handle_t pSession,
         uint8_t *pOut,
         uint32_t outLength
-);
+));
 
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandomModes_selftestAlgorithm_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_selftestAlgorithm_t)(
         mcuxClSession_Handle_t pSession,
         mcuxClRandom_Context_t testCtx,
         mcuxClRandom_ModeDescriptor_t *mode
-);
+));
 
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandomModes_generatePrHandler_t)(
         mcuxClSession_Handle_t pSession
@@ -114,6 +120,7 @@ typedef struct
     const mcuxClRandomModes_DrbgAlgorithmsDescriptor_t *pDrbgAlgorithms;
     const mcuxClRandomModes_DrbgVariantDescriptor_t *pDrbgVariant;
     const uint32_t * const *pDrbgTestVectors;
+    uint32_t continuousReseedInterval;
 } mcuxClRandomModes_DrbgModeDescriptor_t;
 
 #ifdef __cplusplus

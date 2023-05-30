@@ -49,6 +49,13 @@ extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_A
  */
 extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method2_Els;
 
+
+/**
+ * @brief AES ECB Encryption algorithm descriptor with PKCS7 padding, using ELS
+ */
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingPKCS7_Els;
+
+
 /**
  * @brief AES ECB Decryption algorithm descriptor, using ELS
  */
@@ -69,6 +76,13 @@ extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_A
  * @brief AES CBC Encryption algorithm descriptor with ISO/IEC 9797-1 padding method 2, using ELS
  */
 extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method2_Els;
+
+
+/**
+ * @brief AES CBC Encryption algorithm descriptor with PKCS7 padding, using ELS
+ */
+extern const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingPKCS7_Els;
+
 
 /**
  * @brief AES CBC Decryption algorithm descriptor, using ELS

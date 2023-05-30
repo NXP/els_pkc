@@ -25,6 +25,8 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClEcc_ParameterSizes.h>
+#include <mcuxClCore_Analysis.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -114,7 +116,6 @@ struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor;
 typedef struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t;
 
 
-
 /** Type for Weierstrass ECC domain parameters */
 typedef struct mcuxClEcc_Weier_DomainParams mcuxClEcc_Weier_DomainParams_t;
 
@@ -145,6 +146,7 @@ typedef struct
 #define mcuxClEcc_DomainParam_misc_byteLenP_mask    ((uint32_t) 0x000000FFu)     ///< Mask to extract byteLenP from packed misc parameter of #mcuxClEcc_DomainParam_t
 #define mcuxClEcc_DomainParam_misc_byteLenN_offset  8                            ///< Offset of byteLenN in packed misc parameter of #mcuxClEcc_DomainParam_t
 #define mcuxClEcc_DomainParam_misc_byteLenN_mask    ((uint32_t) 0x0000FF00u)     ///< Mask to extract byteLenN from packed misc parameter of #mcuxClEcc_DomainParam_t
+
 
 /** Parameter structure for function #mcuxClEcc_KeyGen. */
 typedef struct
@@ -210,7 +212,19 @@ typedef struct
     uint32_t  optLen;         ///< [in] packed options (reserved):
                               ///< bits 0~31: reserved.  **CAUTION** always set optLen = 0.
 } mcuxClEcc_PointMult_Param_t;
+/**
+ * @}
+ */ /* mcuxClEcc_Types */
 
+/**********************************************************/
+/* Descriptors of mcuxClEcc APIs                           */
+/**********************************************************/
+/**
+ * @defgroup mcuxClEcc_Descriptors mcuxClEcc_Descriptors
+ * @brief Defines descriptors of @ref mcuxClEcc
+ * @ingroup mcuxClEcc
+ * @{
+ */
 
 /**********************************************************/
 /* Key pair generation descriptors                        */
@@ -222,15 +236,18 @@ extern const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_Generat
 
 
 /**********************************************************/
-/* Signature protocol descriptors                         */
+/* Signature ProtocolDescriptors and ModeDescriptors      */
 /**********************************************************/
 
 /* Ed25519 signature protocol descriptor */
 extern const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor;
 
+
+
+
 /**
  * @}
- */ /* mcuxClEcc_Types */
+ */ /* mcuxClEcc_Descriptors */
 
 #ifdef __cplusplus
 } /* extern "C" */

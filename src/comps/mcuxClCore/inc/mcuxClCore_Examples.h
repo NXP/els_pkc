@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -10,14 +10,12 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLCORE_EXAMPLES_H_
 #define MCUXCLCORE_EXAMPLES_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
+#include <mcuxCsslFlowProtection.h>
 
 /**
  * \def MCUXCLEXAMPLE_FUNCTION
@@ -52,6 +50,7 @@
 /**
  * \brief Assert whether two buffers are equal.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCore_assertEqual)
 static inline bool mcuxClCore_assertEqual(const uint8_t * const x, const uint8_t * const y, uint32_t length)
 {
   for (uint32_t i = 0; i < length; ++i)

@@ -73,7 +73,7 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_Pss_Sha2_512 =
 
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pssVerify)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pssVerify, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -149,7 +149,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   else if (MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK))
   {
     /* Copy pInput to buffer mHash */
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pMHash, pInput, hLen, hLen));
+    MCUXCLMEMORY_FP_MEMORY_COPY(pMHash, pInput, hLen);
   }
   else
   {
@@ -250,7 +250,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   }
 
   /* Step 11: Copy salt to mPrime buffer */
-  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pSalt, pDB + dbLen - sLen, sLen, sLen));
+  MCUXCLMEMORY_FP_MEMORY_COPY(pSalt, pDB + dbLen - sLen, sLen);
 
   /* Step 12 */
   /* mPrime = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 || mHash || DB(BYTE_LENGTH(keyBitLength) - saltlabelLength: BYTE_LENGTH(keyBitLength))] */

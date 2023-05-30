@@ -35,7 +35,7 @@ extern "C" {
 /**
  * Declaration of the point decoding function on Ed25519
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_DecodePoint_Ed25519)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_DecodePoint_Ed25519, mcuxClEcc_EdDSA_DecodePointFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25519(
     mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
     const uint8_t *pEncPoint

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -54,8 +54,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Weier_SetupEnvironment
     const uint32_t byteLenOperandsTable = (sizeof(uint16_t)) * (ECC_NO_OF_VIRTUALS + (uint32_t) noOfBuffers);
     const uint32_t alignedByteLenCpuWa = (sizeof(mcuxClEcc_CpuWa_t)) + MCUXCLECC_ALIGNED_SIZE(byteLenOperandsTable);
     const uint32_t wordNumCpuWa = alignedByteLenCpuWa / (sizeof(uint32_t));
-    /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned")
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, wordNumCpuWa);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     const uint32_t wordNumPkcWa = (bufferSize * noOfBuffers) / (sizeof(uint32_t));
     const uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordNumPkcWa);
 
@@ -73,7 +74,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Weier_SetupEnvironment
     MCUXCLPKC_PS1_SETLENGTH(operandSize, operandSize);
 
     /* Setup uptr table. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
     uint16_t *pOperands = (uint16_t *) pCpuWorkarea->pOperands32;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     MCUXCLPKC_FP_GENERATEUPTRT(& pOperands[ECC_NO_OF_VIRTUALS],
                               pPkcWorkarea,
                               (uint16_t) bufferSize,
@@ -100,8 +103,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Weier_SetupEnvironment
     /* Check p and n are odd (Math functions assume modulus is odd). */
     const volatile uint8_t * ptrP = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_P]);
     const volatile uint8_t * ptrN = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
-    uint32_t p0 = ((const volatile uint32_t *) ptrP)[0];  /* PKC buffer is CPU word aligned. */
-    uint32_t n0 = ((const volatile uint32_t *) ptrN)[0];  /* PKC buffer is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("PKC buffer is CPU word aligned")
+    uint32_t p0 = ((const volatile uint32_t *) ptrP)[0];
+    uint32_t n0 = ((const volatile uint32_t *) ptrN)[0];
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     if (0x01u != (0x01u & p0 & n0))
     {
         MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);

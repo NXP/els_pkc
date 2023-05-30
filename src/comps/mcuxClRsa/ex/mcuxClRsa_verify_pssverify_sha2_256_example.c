@@ -29,7 +29,7 @@
 #include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <mcuxClToolchain.h>             // Memory segment definitions
-#include <stdbool.h>               // bool type for the example's return code
+#include <mcuxClCore_Examples.h>
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxClExample_ELS_Helper.h>
 
@@ -105,9 +105,9 @@ static const uint8_t signature[RSA_KEY_BYTE_LENGTH] __attribute__ ((aligned (4))
 
 
 /** Performs a session set-up; a call to function mcuxClRsa_verify using mode mcuxClRsa_Mode_Verify_Pss_Sha2_256; a session clean-up
- * @retval true  The example code completed successfully
- * @retval false The example code failed */
-bool mcuxClRsa_verify_pssverify_sha2_256_example(void)
+ * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -116,7 +116,7 @@ bool mcuxClRsa_verify_pssverify_sha2_256_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Create session handle to be used by verify function */
@@ -131,7 +131,7 @@ bool mcuxClRsa_verify_pssverify_sha2_256_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -170,7 +170,7 @@ bool mcuxClRsa_verify_pssverify_sha2_256_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token) || (MCUXCLRSA_STATUS_VERIFY_OK != verify_result))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -182,14 +182,14 @@ bool mcuxClRsa_verify_pssverify_sha2_256_example(void)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    return true;
+    return MCUXCLEXAMPLE_OK;
 }

@@ -407,9 +407,13 @@
 #define MCUXCLECC_EDDSA_ED25519_SIZE_PRIMEP            (32u)   ///< Byte length of the underlying prime p used in Ed25519.
 #define MCUXCLECC_EDDSA_ED25519_SIZE_BASEPOINTORDER    (32u)   ///< Byte length of the base point order n used in Ed25519.
 #define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY        (32u)   ///< Byte length of an Ed25519 private key.
-#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA    (128u) // TODO: Change to 96 once copy of public key has been removed  ///< Byte length of an Ed25519 private key handle data buffer.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA    (96u)   ///< Byte length of an Ed25519 private key handle data buffer.
 #define MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY         (32u)   ///< Byte length of an Ed25519 public key.
 #define MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE         (64u)   ///< Byte length of an Ed25519 signature.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_HASH_PREFIX(contextLen) (34u + (contextLen)) ///< Byte length of an Ed25519 prefix.
+#define MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE_PROTOCOL_DESCRIPTOR(contextLen) \
+    (MCUXCLECC_EDDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE + MCUXCLECC_EDDSA_ED25519_SIZE_HASH_PREFIX(contextLen))   ///< Byte length of an Ed25519 signature protocol descriptor.
+
 /** @} */  /* MCUXCLECC_EDDSA_ED25519_SIZE_ */
 
 /** @addtogroup MCUXCLECC_EDDSA_ED448_SIZE_
@@ -418,7 +422,7 @@
 #define MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP              (56u)   ///< Byte length of the underlying prime p used in Ed448.
 #define MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER      (56u)   ///< Byte length of the base point order n used in Ed448.
 #define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY          (57u)   ///< Byte length of an Ed448 private key.
-#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA      (228u) // TODO: Change to 171 once copy of public key has been removed ///< Byte length of an Ed448 private key handle data buffer.
+#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA      (171u)  ///< Byte length of an Ed448 private key handle data buffer.
 #define MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY           (57u)   ///< Byte length of an Ed448 public key.
 #define MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE           (114u)  ///< Byte length of an Ed448 signature.
 /** @} */  /* MCUXCLECC_EDDSA_ED448_SIZE_ */

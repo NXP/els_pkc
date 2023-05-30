@@ -81,11 +81,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
     {
         if (MCUXCLELS_CIPHER_DECRYPT == pAlgo->direction)
         {
-            MCUX_CSSL_FP_FUNCTION_CALL(copyState, mcuxClMemory_copy(tempBlock, (uint8_t const*)(pIn + inLength - MCUXCLAES_BLOCK_SIZE), MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
-            if(0u != copyState)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
-            }
+            MCUXCLMEMORY_FP_MEMORY_COPY(tempBlock, (uint8_t const*)(pIn + inLength - MCUXCLAES_BLOCK_SIZE), MCUXCLAES_BLOCK_SIZE);
             nextState = tempBlock;
         }
         else
@@ -141,11 +137,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
 
     if(MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CBC == elsOptions.bits.cphmde)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(copyState, mcuxClMemory_copy((uint8_t *) pContext->ivState, nextState, MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
-        if(0u != copyState)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t *) pContext->ivState, nextState, MCUXCLAES_BLOCK_SIZE);
     }
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
@@ -212,6 +204,26 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .ivLength = 0u,
     .granularity = 1u
 };
+
+/* MISRA Ex. 20 - Rule 5.1 */
+const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingPKCS7_Els = {
+/* [Design]
+    mcuxClCipherModes_ModeSkeletonAes
+    mcuxClPadding_addPadding_PKCS7
+    granularity = 1
+*/
+    .cryptEngine = mcuxClCipherModes_EngineEls,
+    .addPadding = mcuxClPadding_addPadding_PKCS7,
+    .protection_token_engine = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_EngineEls),
+    .protection_token_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_PKCS7),
+    .mode = MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB,
+    .direction = MCUXCLELS_CIPHER_ENCRYPT,
+    .blockLength = MCUXCLAES_BLOCK_SIZE,
+    .ivLength = 0u,
+    .granularity = 1u
+};
+
+
 
 /* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Dec_Els = {
@@ -284,6 +296,25 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .ivLength = MCUXCLAES_BLOCK_SIZE,
     .granularity = 1u
 };
+
+/* MISRA Ex. 20 - Rule 5.1 */
+const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingPKCS7_Els = {
+/* [Design]
+    mcuxClCipherModes_ModeSkeletonAes
+    mcuxClPadding_addPadding_PKCS7
+    granularity = 1
+*/
+    .cryptEngine = mcuxClCipherModes_EngineEls,
+    .addPadding = mcuxClPadding_addPadding_PKCS7,
+    .protection_token_engine = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_EngineEls),
+    .protection_token_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_PKCS7),
+    .mode = MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CBC,
+    .direction = MCUXCLELS_CIPHER_ENCRYPT,
+    .blockLength = MCUXCLAES_BLOCK_SIZE,
+    .ivLength = 0u,
+    .granularity = 1u
+};
+
 
 /* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Dec_Els = {

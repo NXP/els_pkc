@@ -34,8 +34,8 @@
  * \param[out]      workArea   Pointer to buffer after processing
  * \param[in]       data       Pointer to buffer of message that needs to be processed
  */
-MCUX_CSSL_FP_FUNCTION_DECL(nxmcuxClOsccaSm3_Safo_Hash_Norm)
-MCUX_CSSL_FP_PROTECTED_TYPE(void) nxmcuxClOsccaSm3_Safo_Hash_Norm(uint32_t *workArea, uint32_t *data);
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOsccaSm3_Safo_Hash_Norm)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_Safo_Hash_Norm(uint32_t *workArea, uint32_t *data);
 
 /*
  * \brief Function SM3 Process Message on HW Auto mode

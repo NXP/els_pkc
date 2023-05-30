@@ -28,7 +28,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_Safo_Hash_PreLoad)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_Safo_Hash_PreLoad(uint32_t *workArea)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_Safo_Hash_PreLoad);
-    int32_t i;
+    uint32_t i;
 
     //step1:Setup the SM3 control SFRs for Loading partial HASH into SGI
     //SM3_MODE = 1'b1 (AUTO mode)
@@ -61,13 +61,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_Safo_Hash_PreLoad(uint32_t *wor
     MCUXCLOSCCASM3_SAFO_SGI_SFR_WRITE(CTRL, sgi_ctrl);
 
     //Step3: Load partial Hash
-    for(i=0;i<=7;i++)
+    for(i=0u;i<=7u;i++)
     {
+        /* MISRA Ex. 12 - Rule 11.8 */
         MCUXCLOSCCASM3_SET_FIFO_FIELD(0u);
     }
-    for(i=8;i<=15;i++)
+    for(i=8u;i<=15u;i++)
     {
-        MCUXCLOSCCASM3_SET_FIFO_FIELD(workArea[15 - ((i) & 15)]);
+        /* MISRA Ex. 12 - Rule 11.8 */
+        MCUXCLOSCCASM3_SET_FIFO_FIELD(workArea[15u - ((i) & 15u)]);
     }
 
     //Step4:Configure SGI_SM3_CTRL SFRs to stop AUTO mode
@@ -160,7 +162,6 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_Safo_Hash_Auto)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_Safo_Hash_Auto(uint32_t *workArea, uint32_t *data)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm3_Safo_Hash_Auto);
-    int32_t i;
 
     //step1:Setup the SM3 control SFRs
     //SM3_MODE = 1'b1 (AUTO mode)
@@ -193,9 +194,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_Safo_Hash_Auto(uint32_t *workAr
     MCUXCLOSCCASM3_SAFO_SGI_SFR_WRITE(CTRL, sgi_ctrl);
 
     //Step3:Load message into SGI_SM3_FIFO SFRs
-    for(i=0;i<=15;i++)
+    for(uint32_t i=0u;i<=15u;i++)
     {
-        MCUXCLOSCCASM3_SET_FIFO_FIELD(data[15 - ((i) & 15)]);
+        /* MISRA Ex. 12 - Rule 11.8 */
+        MCUXCLOSCCASM3_SET_FIFO_FIELD(data[15u - ((i) & 15u)]);
     }
 
     //Step4:Configure SGI_SM3_CTRL SFRs to stop AUTO mode

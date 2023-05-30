@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_process_adata)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_process_adata, mcuxClAead_process_aad_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
   mcuxClSession_Handle_t session,
   mcuxClAead_Context_t * const pContext,
@@ -31,7 +31,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
   uint32_t adataLength
 );
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_process)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_process, mcuxClAead_process_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process(
   mcuxClSession_Handle_t session,
   mcuxClAead_Context_t * const pContext,
@@ -41,7 +41,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process(
   uint32_t * const pOutLength
 );
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_finish)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_finish, mcuxClAead_finish_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_finish(
   mcuxClSession_Handle_t session,
   mcuxClAead_Context_t * const pContext,
@@ -50,7 +50,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_finish(
   mcuxCl_Buffer_t pTag
 );
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_verify)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_verify, mcuxClAead_verify_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_verify(
   mcuxClSession_Handle_t session,
   mcuxClAead_Context_t * const pContext,

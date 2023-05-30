@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -98,7 +98,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_DecodeCoordinat
 
     /* If leadingZerosP != 0 (X25519), mask MSByte according to rfc7748, Ch5. */
     uint32_t leadingZerosP;
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(ECC_P, &leadingZerosP));
     if (0u != leadingZerosP)
     {
@@ -178,7 +177,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     uint32_t leadingZeroN;
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(ECC_N, &leadingZeroN));
     uint32_t bitLenN = (operandSize * 8u) - leadingZeroN;
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult0,

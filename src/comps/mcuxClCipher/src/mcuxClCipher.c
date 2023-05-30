@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -10,7 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-
 
 #include <mcuxClSession.h>
 #include <internal/mcuxClSession_Internal.h>
@@ -25,6 +24,7 @@
 #include <internal/mcuxClCipher_Internal.h>
 
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_crypt)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
   mcuxClSession_Handle_t session,
   mcuxClKey_Handle_t key,
@@ -62,6 +62,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
 
 
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
   mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,
@@ -93,6 +94,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
                                        mode->protection_token_crypt);
 }
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_process)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
   mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,
@@ -124,6 +126,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
                                        pContext->pMode->protection_token_crypt);
 }
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_finish)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
   mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,

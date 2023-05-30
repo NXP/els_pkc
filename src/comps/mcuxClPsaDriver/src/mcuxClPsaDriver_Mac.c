@@ -13,6 +13,7 @@
 
 #include "common.h"
 
+#include <mcuxClCore_Analysis.h>
 #include <mcuxClKey.h>
 #include <mcuxClMac.h>
 #include <mcuxClMacModes.h>
@@ -20,6 +21,7 @@
 #include <mcuxClPsaDriver.h>
 #include <mcuxClSession.h>
 #include <mcuxClMacModes_Modes.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
@@ -120,13 +122,15 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
 
     // INIT
     struct psa_mac_operation_s operation = psa_mac_operation_init();
+    MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation.ctx.clns_data;
+    MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     /* Set alg in clns_data for update and finalize */
     pClnsMacData->alg = alg;
 
     /* No support for multipart Hmac */
-    if(PSA_ALG_IS_HMAC(alg) == 1u)
+    if(PSA_ALG_IS_HMAC(alg) == true)
     {
         return PSA_ERROR_NOT_SUPPORTED;
     }
@@ -140,6 +144,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
     status = mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(&operation,
                                                                        keyDesc,
                                                                        alg);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     // UPDATE
     uint32_t cpuWorkarea[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
@@ -218,17 +226,17 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
       return PSA_ERROR_BUFFER_TOO_SMALL;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(macResultCopy,tokenNxpClMemory_copy,mcuxClMemory_copy (
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenNxpClMemory_copy,mcuxClMemory_copy (
                                                                                 mac,
                                                                                 tempMaxMac,
                                                                                 *mac_length,
                                                                                 *mac_length));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy) || (0u != macResultCopy))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-	MCUX_CSSL_FP_FUNCTION_CALL_END();
+	MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     /* Destroy the session */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_destroy(&session));

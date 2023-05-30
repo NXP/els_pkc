@@ -127,6 +127,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     uint8_t *ptrS2 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S2]);
 
     /* Derive the security strength required for the RNG from bitLenN / 2 and check whether it can be provided. */
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, MCUXCLECC_MIN((nByteLength * 8u) / 2u, 256u)));
+    if (MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength) );
+    }
+#endif
 
     const uint32_t keySeedLength = (wordNumN * (sizeof(uint32_t))) + 8u;
     MCUXCLECC_FP_RANDOM_HQRNG_PKCWA(mcuxClEcc_Int_CoreKeyGen, pSession, ptrS2, keySeedLength);
@@ -145,6 +154,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
     }
 
@@ -227,6 +239,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
         /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
         /* Step 2 */
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
         MCUXCLECC_FP_CALLED_RANDOM_HQRNG_PKCWA,
         /* Step 3 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),

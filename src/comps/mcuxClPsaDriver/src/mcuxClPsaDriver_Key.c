@@ -23,19 +23,23 @@
 #include <mcuxClMemory_Copy.h>
 #include <mcuxClPsaDriver.h>
 #include <mcuxClPsaDriver_Oracle.h>
+#include <mcuxCsslFlowProtection.h>
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
 
 
-static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t *output,
-                                                            size_t output_size )
+static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t *output,
+                                                                       size_t output_size )
 {
     mcuxClSession_Descriptor_t session;
 
+    /* Allocate workarea space */
+    uint32_t cpuWorkarea[MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)];
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retSessionInit, tokenSessionInit, mcuxClSession_init(&session,
-                                                                     NULL,
-                                                                     0u,
+                                                                     cpuWorkarea,
+                                                                     MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE,
                                                                      NULL,
                                                                      0u));
 
@@ -50,11 +54,23 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( u
     /* Random init                                                            */
     /**************************************************************************/
 
-    /* Initialize the Random session with ELS mode. */
+    /* Initialize the RNG context, with maximum size */
+    uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
+
+    mcuxClRandom_Mode_t randomMode = NULL;
+    if(output_size <= 16u)  /* 128-bit security strength */
+    {
+      randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+    }
+    else  /* 256-bit security strength */
+    {
+      randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
+    }
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retRandomInit, tokenRandInit, mcuxClRandom_init(
                                                   &session,
-                                                  NULL,
-                                                  mcuxClRandomModes_Mode_ELS_Drbg));
+                                                  (mcuxClRandom_Context_t)rng_ctx,
+                                                  randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != tokenRandInit) || (MCUXCLRANDOM_STATUS_OK != retRandomInit))
     {
         return PSA_ERROR_GENERIC_ERROR;
@@ -155,7 +171,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( u
  * @param attributes The key attributes associated with the key.
  * @param key_buffer The PSA-provided key buffer.
  * @param key_buffer_size The PSA-provided key buffer size.
- * @param session The CLNS session to associate with the key.
  * @param out_key_descriptor The output key handle.
  * @return A status indicating whether key creation was successful or an error occurred.
  */
@@ -250,26 +265,20 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1):
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_K1):
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
-        //case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY):
-        //case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_TWISTED_EDWARDS):
+        case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY):
+        case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_TWISTED_EDWARDS):
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_KEY_PAIR; // not really needed for ECC operation for now
             keyTypeDesc.size = (attributes->core.bits + 7u) / 8u; // not really needed for ECC operation for now
-            if( MCUXCLKEY_LOADSTATUS_COPRO != mcuxClKey_getLoadStatus(out_key_descriptor) ) // not really needed for ELS
-            {
-                keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
-            }
+            keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
             break;
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_R1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_K1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
-        //case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_MONTGOMERY):
-        //case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_TWISTED_EDWARDS):
+        case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_MONTGOMERY):
+        case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_TWISTED_EDWARDS):
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_PUBLIC_KEY; // not really needed for ECC operation for now
             keyTypeDesc.size = (attributes->core.bits + 7u) / 8u; // not really needed for ECC operation for now
-            if( MCUXCLKEY_LOADSTATUS_COPRO != mcuxClKey_getLoadStatus(out_key_descriptor) ) // not really needed for ELS
-            {
-                keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
-            }
+            keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
             break;
 
         case PSA_KEY_TYPE_RSA_PUBLIC_KEY:
@@ -561,23 +570,30 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(const psa_key_attribut
     psa_status_t psa_status = PSA_ERROR_NOT_SUPPORTED;
     mcuxClKey_Descriptor_t key = {0};
 
-    /* check for buffer too small */
-    if( key_buffer_size > data_size )
-        return( PSA_ERROR_BUFFER_TOO_SMALL );
-
     psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
     if(PSA_SUCCESS == psa_status)
     {
-         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, tokenNxpClMemory_copy, mcuxClMemory_copy(
-                                                                                        data,
-                                                                                        key.location.pData,
-                                                                                        key.location.length,
-                                                                                        data_size));
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy) || (0u != result))
+        /* not supported for internal keys */
+        if( MCUXCLKEY_LOADSTATUS_MEMORY != mcuxClKey_getLoadStatus(&key) )
+        {
+            mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+            return PSA_ERROR_NOT_SUPPORTED;
+        }
+
+        /* check for buffer too small */
+        if( key.location.length > data_size ) {
+            mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+            return PSA_ERROR_BUFFER_TOO_SMALL;
+        }
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenNxpClMemory_copy, mcuxClMemory_copy(data,
+                                                                                     key.location.pData,
+                                                                                     key.location.length,
+                                                                                     data_size));
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy)
         {
             return PSA_ERROR_GENERIC_ERROR;
         }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
         *data_length = key.location.length;
 

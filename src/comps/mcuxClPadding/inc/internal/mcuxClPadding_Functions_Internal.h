@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -51,7 +51,7 @@ extern "C" {
  *
  * @return status
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_Decrypt)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_Decrypt, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Decrypt(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -82,7 +82,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Dec
  *
  * @return status
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_None)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_None, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_None(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -114,7 +114,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Non
  *
  * @return status
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_ISO9797_1_Method1)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_ISO9797_1_Method1, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method1(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -145,7 +145,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO
  *
  * @return status
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_ISO9797_1_Method2)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_ISO9797_1_Method2, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method2(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -176,7 +176,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO
  *
  * @return status
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_MAC_ISO9797_1_Method2)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_MAC_ISO9797_1_Method2, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC_ISO9797_1_Method2(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -185,6 +185,37 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC
   uint8_t * const pOut,
   uint32_t * const pOutLength
 );
+/**
+ * @brief PKCS7 padding function.
+ * @api
+ *
+ * This function adds PKCS7 padding according to rfc2315, it adds the remaning
+ * bytes in the block with the value equal to the total number of added bytes.
+ *
+ * @param[in]  blockLength      The block length of the used block cipher.
+ *
+ * @param[in]  pIn              Pointer to the input buffer of the block that will
+ *                              be padded.
+ * @param[in]  lastBlockLength  Number of bytes in the last block, i.e. the number of bytes
+ *                              in @p pIn. Must be smaller than @p blockLength.
+ * @param[in]  totalInputLength Total number of plaintext/ciphertext bytes.
+ *
+ * @param[out] pOut             Pointer to the output buffer where the padded data
+ *                              needs to be written.
+ * @param[out] pOutLength       Length of the data written to @p pOut, including the padding.
+ *
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_PKCS7, mcuxClPadding_addPaddingMode_t)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_PKCS7(
+  uint32_t blockLength,
+  const uint8_t * const pIn,
+  uint32_t lastBlockLength,
+  uint32_t totalInputLength,
+  uint8_t * const pOut,
+  uint32_t * const pOutLength
+);
+
 /**
  * @brief Random-padding function, which pads a block with random bytes in the end.
  * @api
@@ -206,7 +237,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC
  *
  * @return status
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_Random)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_Random, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Random(
   uint32_t blockLength,
   const uint8_t * const pIn,

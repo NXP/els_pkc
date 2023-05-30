@@ -13,12 +13,14 @@
 
 #include "common.h"
 
+#include <mcuxClCore_Analysis.h>
 #include <mcuxClMemory_Clear.h>
 #include <mcuxClAead.h>
 #include <mcuxClAeadModes.h>
 #include <mcuxClAes.h>
 #include <mcuxClPsaDriver.h>
 #include <mcuxClSession.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
@@ -44,17 +46,17 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_abort(
     }
 
     /* Clear the clns data */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultClear, tokenClear, mcuxClMemory_clear(
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenClear, mcuxClMemory_clear(
                                                         (uint8_t *) pClnsAeadData,
                                                         MCUXCLPSADRIVER_CLNSDATA_AEAD_SIZE,
                                                         MCUXCLPSADRIVER_CLNSDATA_AEAD_SIZE));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != tokenClear) || (0u != resultClear))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != tokenClear)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     /* Reset operation */
     *operation = (psa_aead_operation_t) PSA_AEAD_OPERATION_INIT;
@@ -275,7 +277,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
 
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
+        MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey((const psa_key_attributes_t *)pClnsAeadData->keyAttributes, key_buffer, key_buffer_size, pKey);
+        MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
@@ -476,7 +480,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
 
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
+        MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey((const psa_key_attributes_t *)pClnsAeadData->keyAttributes, key_buffer, key_buffer_size, pKey);
+        MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;

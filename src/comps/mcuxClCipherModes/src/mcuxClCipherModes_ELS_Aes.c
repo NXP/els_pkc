@@ -140,12 +140,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         /* If there is an IV, copy it to the ivState buffer. */
         if (0u != pAlgo->ivLength)
         {
-            MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy((uint8_t *) pCtx->ivState, pIv, ivLength, MCUXCLAES_BLOCK_SIZE));
-
-            if (0u != copyResult)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
-            }
+            MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF((uint8_t *) pCtx->ivState, pIv, ivLength, MCUXCLAES_BLOCK_SIZE);
         }
     }
     else
@@ -172,16 +167,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
                                      (MCUXCLAES_BLOCK_SIZE - pCtx->common.blockBufferUsed) : (inLength));
 
             /* Add new data into the partial data buffer and process, if possible. */
-            MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pCtx->blockBuffer + pCtx->common.blockBufferUsed,
+            MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pCtx->blockBuffer + pCtx->common.blockBufferUsed,
                                                                    pInput,
                                                                    bytesToCopy,
-                                                                   MCUXCLAES_BLOCK_SIZE));
-
-            if (0u != copyResult)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
-            }
-
+                                                                   MCUXCLAES_BLOCK_SIZE);
             /* Update the number of bytes in the partial data buffer.*/
             pCtx->common.blockBufferUsed += bytesToCopy;
 
@@ -237,16 +226,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         if (0u != bytesRemaining)
         {
             /* If there are still bytes less than one block in the input, write them into the partial data buffer. */
-            MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pCtx->blockBuffer,
+            MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pCtx->blockBuffer,
                                                                    pInput,
                                                                    bytesRemaining,
-                                                                   MCUXCLAES_BLOCK_SIZE));
-
-            if (0u != copyResult)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
-            }
-
+                                                                   MCUXCLAES_BLOCK_SIZE);
             pCtx->common.blockBufferUsed = bytesRemaining;
         }
         /* Update total number of bytes that were encrypted */
@@ -289,16 +272,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
             }
 
             /* Copy the padding to the output and update pOutLength accordingly. */
-            MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pOutput,
+            MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOutput,
                                                                    pCtx->blockBuffer,
                                                                    padOutLength,
-                                                                   MCUXCLAES_BLOCK_SIZE));
-
-            if (0u != copyResult)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
-            }
-
+                                                                   MCUXCLAES_BLOCK_SIZE);
             *pOutLength += padOutLength;
         }
     }

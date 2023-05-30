@@ -131,12 +131,12 @@ extern "C" {
  * @ingroup mcuxClEls_Ecc_Macros
  * @{
  */
-#define MCUXCLELS_ECC_REVERSEFETCH_ENABLE        ((uint32_t) 1U) ///< Reverse Fetch enabled. For internal use
-#define MCUXCLELS_ECC_REVERSEFETCH_DISABLE       ((uint32_t) 0U) ///< Reverse Fetch disabled. For internal use
+#define MCUXCLELS_ECC_REVERSEFETCH_ENABLE        (0x01U) ///< Reverse Fetch enabled. For internal use
+#define MCUXCLELS_ECC_REVERSEFETCH_DISABLE       (0x00U) ///< Reverse Fetch disabled. For internal use
 
 #ifdef MCUXCL_FEATURE_ELS_PUK_INTERNAL_BIT
-#define MCUXCLELS_ECC_EXTKEY_EXTERNAL        ((uint32_t) 1U) ///< Public key is taken from system memory. For internal use
-#define MCUXCLELS_ECC_EXTKEY_INTERNAL        ((uint32_t) 0U) ///< Public key is taken from internal keystore. For internal use
+#define MCUXCLELS_ECC_EXTKEY_EXTERNAL        (0x01U) ///< Public key is taken from system memory. For internal use
+#define MCUXCLELS_ECC_EXTKEY_INTERNAL        (0x00U) ///< Public key is taken from internal keystore. For internal use
 #endif /* MCUXCL_FEATURE_ELS_PUK_INTERNAL_BIT */
 /**
  * @}

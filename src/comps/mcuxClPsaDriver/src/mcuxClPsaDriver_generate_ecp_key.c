@@ -62,23 +62,25 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-            /* Initialize the RNG context */
-            mcuxClRandom_Context_t rng_ctx = NULL;
-            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                   rng_ctx,
-                                                                   mcuxClRandomModes_Mode_ELS_Drbg));
-            if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
-            {
-                return PSA_ERROR_GENERIC_ERROR;
-            }
-            MCUX_CSSL_FP_FUNCTION_CALL_END();
+            uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
+            mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
 
-            /* Initialize the PRNG */
-            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));
-            if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))
-            {
-                return PSA_ERROR_GENERIC_ERROR;
-            }
+            /* Initialize the RNG context */
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rngInit_result, rngInit_token, mcuxClRandom_init(&session, pRng_ctx, mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3));
+
+            if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != rngInit_token) || (MCUXCLRANDOM_STATUS_OK != rngInit_result))
+            {                                                                   
+                return PSA_ERROR_GENERIC_ERROR;                                                   
+            }                                                                   
+
+            MCUX_CSSL_FP_FUNCTION_CALL_END();                                    
+
+            /* Initialize the PRNG */                                           
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));                        
+            if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))    \
+            {                                                                   
+                return PSA_ERROR_GENERIC_ERROR;                                                   
+            }                                                                   
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             /* Prepare input for key generation */
@@ -137,10 +139,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             /* Initialize the RNG context */
-            mcuxClRandom_Context_t rng_ctx = NULL;
+            uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES128_CONTEXT_SIZE_IN_WORDS] = {0u};
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                       rng_ctx,
+                                                                       (mcuxClRandom_Context_t)rng_ctx,
                                                                        mcuxClRandomModes_Mode_ELS_Drbg));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
             {
@@ -233,24 +235,35 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-        /* Initialize the RNG context */
-        mcuxClRandom_Context_t rng_ctx = NULL;
-
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                   rng_ctx,
-                                                                   mcuxClRandomModes_Mode_ELS_Drbg));
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
+        /* Initialize the RNG context, with maximum size */
+        uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
+        mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
+        
+        mcuxClRandom_Mode_t randomMode = NULL;
+        if(byteLenN <= 32u)  /* 128-bit security strength */
         {
-            return PSA_ERROR_GENERIC_ERROR;
+          randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
         }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-        /* Initialize the PRNG */
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))
+        else  /* 256-bit security strength */
         {
-            return PSA_ERROR_GENERIC_ERROR;
+          randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
         }
+
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rngInit_result, rngInit_token, mcuxClRandom_init(&session, pRng_ctx, randomMode));
+
+        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != rngInit_token) || (MCUXCLRANDOM_STATUS_OK != rngInit_result))
+        {                                                                   
+            return PSA_ERROR_GENERIC_ERROR;                                                   
+        }                                                                   
+
+        MCUX_CSSL_FP_FUNCTION_CALL_END();                                    
+
+        /* Initialize the PRNG */                                           
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));                        
+        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))    \
+        {                                                                   
+            return PSA_ERROR_GENERIC_ERROR;                                                   
+        }                                                                   
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
         uint8_t pubKeyBuffer[2u*MCUXCLECC_WEIERECC_MAX_SIZE_PRIMEP];

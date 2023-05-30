@@ -48,7 +48,7 @@
  * Result:
  *  - Virtual pointers TWED_PP_VX0, TWED_PP_VY0 and TWED_PP_VT0 as well as buffers ECC_T2 and ECC_T3 are prepared as described above.
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainPtrSelectComb)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainPtrSelectComb, mcuxClEcc_TwEd_PtrSelectFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectComb(
     mcuxClSession_Handle_t pSession UNUSED_PARAM,
     uint32_t scalarWord,

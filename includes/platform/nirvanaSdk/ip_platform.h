@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
-/* All rights are reserved. Reproduction in whole or in part is prohibited  */
-/* without the prior written consent of the copy-right owner.               */
-/* This source code and any compilation or derivative thereof is the sole   */
-/* property of NXP N.V. and is provided pursuant to a Software License      */
-/* Agreement. This code is the proprietary information of NXP N.V. and      */
-/* is confidential in nature. Its use and dissemination by any party other  */
-/* than NXP N.V. is strictly limited by the confidential information        */
-/* provisions of the agreement referenced above.                            */
+/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms. If you do not agree to be bound by the applicable license */
+/* terms, then you may not retain, install, activate or otherwise use the   */
+/* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
 /** @file  ip_platform.h
@@ -53,10 +53,10 @@
 #define SAFO_SFR_NAME(sfr)      sfr         ///< full name of SFR
 #define SAFO_SFR_PREFIX         SM3_        ///< sfr field name prefix
 
-// CSS interrupt definitions
-#define CSS_INTERRUPT_ERR_NUMBER   CSS_IRQn
-#define CSS_INTERRUPT_IRQ_NUMBER   CSS_ERR_IRQn
-//#define CSS_INTERRUPT_BUSY_NUMBER  // not supported
+// ELS interrupt definitions
+#define CSS_INTERRUPT_ERR_NUMBER   ELS_ERR_IRQn
+#define CSS_INTERRUPT_IRQ_NUMBER   ELS_IRQn
+#define CSS_INTERRUPT_BUSY_NUMBER  ELS_IRQn
 
 
 #define IP_PUF_BASE      0x5002C000UL
@@ -68,13 +68,13 @@
 #define PUF_DIR          *(volatile uint32_t *) (IP_PUF_BASE + 0xA0)
 #define PUF_DOR          *(volatile uint32_t *) (IP_PUF_BASE + 0xA8)
 
-
-#define NXPCLELS_HW_VERSION_REVISION            0
-#define NXPCLELS_HW_VERSION_MINOR               4
-#define NXPCLELS_HW_VERSION_MAJOR               3
-#define NXPCLELS_HW_VERSION_FW_REVISION         0
-#define NXPCLELS_HW_VERSION_FW_MINOR            4
-#define NXPCLELS_HW_VERSION_FW_MAJOR            2
+// ELS version
+#define ELS_HW_VERSION_REVISION            0
+#define ELS_HW_VERSION_MINOR               4
+#define ELS_HW_VERSION_MAJOR               3
+#define ELS_HW_VERSION_FW_REVISION         0
+#define ELS_HW_VERSION_FW_MINOR            4
+#define ELS_HW_VERSION_FW_MAJOR            2
 
 
 #ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS

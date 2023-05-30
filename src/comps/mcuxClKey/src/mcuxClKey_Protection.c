@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,13 +32,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_none(mcuxC
         // copy key source to destination memory buffer
         uint32_t len = mcuxClKey_getSize(key);
 
-        MCUX_CSSL_FP_FUNCTION_CALL(resultLen, mcuxClMemory_copy(mcuxClKey_getLoadedKeyData(key),
-                                                              mcuxClKey_getKeyData(key),
-                                                              len, len));
-        if (0U != resultLen)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUXCLKEY_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(mcuxClKey_getLoadedKeyData(key), mcuxClKey_getKeyData(key), len);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_protect_fct_none, MCUXCLKEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
     }

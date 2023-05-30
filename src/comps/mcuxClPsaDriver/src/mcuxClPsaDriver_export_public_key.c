@@ -21,75 +21,12 @@
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClEcc_Mont_Internal.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
+#include <internal/mcuxClKey_Internal.h>
 
-static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_s50_public(
-    const psa_key_attributes_t *attributes,
-    const uint8_t *key_buffer, size_t key_buffer_size,
-    uint8_t *data, size_t data_size, size_t *data_length )
-{
-    size_t bitLength = psa_get_key_bits(attributes);
-    size_t bytes = PSA_BITS_TO_BYTES(bitLength);
-    if(bytes != MCUXCLKEY_SIZE_256)
-    {
-        return PSA_ERROR_NOT_SUPPORTED;
-    }
-    if(data_size < MCUXCLELS_ECC_PUBLICKEY_SIZE)
-    {
-        return PSA_ERROR_BUFFER_TOO_SMALL;
-    }
-
-    mcuxClEls_KeyIndex_t keyIdxExp = (mcuxClEls_KeyIndex_t)*key_buffer;
-
-    /*
-        Generate deterministic Key pair:
-        - Private key will be stored in ELS's KeyStore
-        - Public Key will be stored in external RAM
-    */
-    mcuxClEls_KeyProp_t  keyProp;
-    keyProp.word.value       = 0;
-    keyProp.bits.ksize       = MCUXCLELS_KEYPROPERTY_KEY_SIZE_256;
-    keyProp.bits.kactv       = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
-    keyProp.bits.ukgsrc      = MCUXCLELS_KEYPROPERTY_INPUT_FOR_ECC_TRUE;
-    keyProp.bits.upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE;
-    keyProp.bits.upprot_sec  = MCUXCLELS_KEYPROPERTY_SECURE_FALSE;
-    keyProp.bits.wrpok       = MCUXCLELS_KEYPROPERTY_WRAP_TRUE;
-
-    mcuxClEls_EccKeyGenOption_t KeyGenOptions;
-    KeyGenOptions.word.value    = 0u;
-    KeyGenOptions.bits.kgsign   = MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE;
-    KeyGenOptions.bits.kgtypedh = MCUXCLELS_ECC_OUTPUTKEY_SIGN;
-    KeyGenOptions.bits.kgsrc    = MCUXCLELS_ECC_OUTPUTKEY_DETERMINISTIC;
-    KeyGenOptions.bits.skip_pbk = MCUXCLELS_ECC_GEN_PUBLIC_KEY;
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyGen_Async( // Perform key generation.
-            KeyGenOptions,                                  // Set the prepared configuration.
-            (mcuxClEls_KeyIndex_t) 0U,                       // This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.
-            keyIdxExp,                                      // Keystore index at which the generated private key is stored.
-            keyProp,                                        // Set the generated key properties.
-            NULL,                                           // No random data is provided
-            data                                            // Output buffer, which the operation will write the public key to.
-            ));
-    // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
-    {
-        return PSA_ERROR_GENERIC_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_EccKeyGen_Async operation to complete.
-    // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
-    {
-         return PSA_ERROR_GENERIC_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    *data_length = MCUXCLELS_ECC_PUBLICKEY_SIZE;
-    return PSA_SUCCESS;
-}
 
 static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_key_buffer_internal(
                                                     const uint8_t *key_buffer,
@@ -103,29 +40,29 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_key_buffer_
         return PSA_ERROR_BUFFER_TOO_SMALL;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (data,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (data,
                                                                      key_buffer,
                                                                      key_buffer_size,
                                                                      key_buffer_size));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultClear, tokenClear, mcuxClMemory_clear(
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenClear, mcuxClMemory_clear(
                                                         data + key_buffer_size,
                                                         data_size - key_buffer_size,
                                                         data_size - key_buffer_size));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != tokenClear) || (0u != resultClear))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != tokenClear)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     *data_length = key_buffer_size;
     return PSA_SUCCESS;
@@ -143,13 +80,13 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
     mcuxClRsa_KeyEntry_t rsaPrivateE = {0};
             
     /* check and skip the sequence tag */
-    if (PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x10 | 0x20))
+    if (PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x10u | 0x20u))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
     /* check and skip the version tag */
-    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x02))
+    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x02u))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
@@ -174,15 +111,15 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
     data[2] = MBEDTLS_BYTE_1( pubKeyLen );
     data[3] = MBEDTLS_BYTE_0( pubKeyLen );    
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret, token, mcuxClMemory_copy(data + seqAndTagLen,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(data + seqAndTagLen,
                                                                  originKey,
                                                                  pubKeyLen,
                                                                  pubKeyLen));
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != ret))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     *data_length = pubKeyLen + seqAndTagLen;
 
     return PSA_SUCCESS;
@@ -221,10 +158,10 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             /* Initialize the RNG context */
-            mcuxClRandom_Context_t rng_ctx = NULL;
+            uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                   rng_ctx,
-                                                                   mcuxClRandomModes_Mode_ELS_Drbg));
+                                                                   (mcuxClRandom_Context_t)rng_ctx,
+                                                                   mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
             {
                 return PSA_ERROR_GENERIC_ERROR;
@@ -308,10 +245,9 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             /* Initialize the RNG context */
-            mcuxClRandom_Context_t rng_ctx = NULL;
-
+            uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES128_CONTEXT_SIZE_IN_WORDS] = {0u};
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                       rng_ctx,
+                                                                       (mcuxClRandom_Context_t)rng_ctx,
                                                                        mcuxClRandomModes_Mode_ELS_Drbg));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
             {
@@ -451,18 +387,6 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-        /* Initialize the RNG context */
-        mcuxClRandom_Context_t rng_ctx = NULL;
-
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                   rng_ctx,
-                                                                   mcuxClRandomModes_Mode_ELS_Drbg));
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
-        {
-            return PSA_ERROR_GENERIC_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-
         /* Initialize the PRNG */
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))
@@ -514,8 +438,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     psa_key_type_t type = attributes->core.type;
-    psa_key_location_t location = PSA_KEY_LIFETIME_GET_LOCATION(
-                                      psa_get_key_lifetime( attributes ) );
 
     /* Reject a zero-length output buffer now, since this can never be a
      * valid key representation. This way we know that data must be a valid
@@ -525,16 +447,21 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
         return PSA_ERROR_BUFFER_TOO_SMALL;
     }
 
+    psa_status_t psa_status = PSA_ERROR_NOT_SUPPORTED;
     mcuxClKey_Descriptor_t key = {0};
 
-    status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
-    if (status != PSA_SUCCESS) {
-        return status;
+    psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
+
+    if (PSA_SUCCESS != psa_status)
+    {
+        return psa_status;
     }
 
-    if (false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)))
+    if(MCUXCLKEY_LOADSTATUS_COPRO == mcuxClKey_getLoadStatus(&key))
     {
-        status = mcuxClPsaDriver_Oracle_ExportPublicKey (&key, data, data_size, data_length);
+        /* This function keeps the output of the first KeyGen (mcuxClPsaDriver_psa_driver_wrapper_createClKey)
+           in RAM without running KeyGen again as opposed to mcuxClPsaDriver_psa_driver_wrapper_export_s50_public */
+        status = mcuxClPsaDriver_Oracle_ExportPublicKey (&key, data, data_size, data_length, false);
     }
     else
     {
@@ -595,28 +522,3 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
     return status;
 }
 
-psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportPublicKey(
-    const psa_key_attributes_t *attributes,
-    const uint8_t *key_buffer,
-    size_t key_buffer_size,
-    uint8_t *data,
-    size_t data_size,
-    size_t *data_length)
-{
-    psa_status_t psa_status    = PSA_ERROR_NOT_SUPPORTED;
-    mcuxClKey_Descriptor_t key = {0};
-
-    psa_status = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
-
-    if (PSA_ERROR_NOT_SUPPORTED != psa_status)
-    {
-        psa_status = mcuxClPsaDriver_Oracle_ExportPublicKey(&key, data, data_size, data_length);
-
-        if (PSA_ERROR_NOT_SUPPORTED != psa_status)
-        {
-            return mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
-        }
-    }
-
-    return psa_status;
-}

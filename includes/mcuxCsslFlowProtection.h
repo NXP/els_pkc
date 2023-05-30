@@ -612,6 +612,73 @@
   MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL(__VA_ARGS__)
 
 /**
+ * @def MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN
+ * @brief Call a flow protected void function and check the protection token.
+ * @api
+ * @ingroup csslFpFunction
+ *
+ * This function call macro encapsulates the flow protection handling needed
+ * for calling a void function from within a function which does not have local
+ * flow protection, or which uses a different flow protection mechanism than
+ * the one provided by CSSL. In particular it takes care of extracting the
+ * protection token from the return value (which has been inserted
+ * by #MCUX_CSSL_FP_FUNCTION_EXIT or #MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK).
+ * For example:
+ * @code
+ * uint32_t someUnprotectedFunction(void)
+ * {
+ *   // ...
+ *   MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(
+ *     token,
+ *     otherFunction());
+ *   // Check the protection token
+ *   if(MCUX_CSSL_FP_FUNCTION_CALLED(otherFunction) != token)
+ *   {
+ *     return FAULT;
+ *   }
+ *   MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+ * }
+ * @endcode
+ *
+ * @param ...    The following parameters need to be passed (comma separated):
+ *        - token:  Fresh variable name to store the protection token of \p call.
+ *        - call:   The (protected) function call that must be performed.
+ */
+#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(...) \
+  MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL(__VA_ARGS__)
+
+/**
+ * @def MCUX_CSSL_FP_FUNCTION_CALL_VOID_END
+ * @brief End a void function call section started by
+ * #MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN.
+ * @api
+ * @ingroup csslFpFunction
+ *
+ * Example:
+ * @code
+ * uint32_t someUnprotectedFunction(void)
+ * {
+ *   // ...
+ *   MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(
+ *     token,
+ *     otherFunction());
+ *   // Check the protection token
+ *   if(MCUX_CSSL_FP_FUNCTION_CALLED(otherFunction) != token)
+ *   {
+ *     return FAULT;
+ *   }
+ *   MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+ * }
+ * @endcode
+ *
+ * @param ...    The following parameters need to be passed (comma separated):
+ *        - token:  Fresh variable name to store the protection token of \p call.
+ *        - call:   The (protected) function call that must be performed.
+ */
+#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_END(...) \
+  MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL(__VA_ARGS__)
+
+/**
  * @def MCUX_CSSL_FP_FUNCTION_CALLED
  * @brief Expectation of a called function.
  * @api

@@ -28,7 +28,8 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClCore_Examples.h>
-#include <mcuxClCore_Examples.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE MCUXCLEXAMPLE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE, \
@@ -71,7 +72,7 @@ static const uint8_t pMessage[] __attribute__ ((aligned (4))) =
     0x2Au, 0x9Au, 0xC9u, 0x4Fu, 0xA5u, 0x4Cu, 0xA4u, 0x9Fu
 };
 
-bool mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
@@ -90,9 +91,8 @@ bool mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example(void)
 
     /* Initialize the RNG context and Initialize the PRNG */
     // TODO: Use AES-256 DRBG (CLNS-6508)
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg)
-
-
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg);
+                                             
     /* Allocate space for and initialize private key handle for an Ed25519 private key */
     uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;

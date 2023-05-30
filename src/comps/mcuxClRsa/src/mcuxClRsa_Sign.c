@@ -35,7 +35,6 @@
 #include <mcuxClCore_Analysis.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
 
-#define mcuxClRsa_sign mcuxClRsa_sign
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_sign)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
@@ -129,8 +128,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
     /* Clear pkcWa */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-    (void) ret_MemoryClear;
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
@@ -146,8 +144,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
     /* Clear pkcWa */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-    (void) ret_MemoryClear;
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
   }
@@ -156,20 +153,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     if (pkcWaUsedByte > keyByteLength)
     {
       /* Clear PKC workarea after the input */
-      MCUX_CSSL_FP_FUNCTION_CALL(memset_result, mcuxClMemory_set(pPaddedMessage + keyByteLength, 0x00U, pkcWaUsedByte - keyByteLength, pkcWaUsedByte - keyByteLength));
-      if(0u != memset_result)
-      {
-        /* De-initialize PKC */
-        MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-        mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
-        mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
-
-        /* Clear pkcWa */
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-        (void) ret_MemoryClear;
-
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
-      }
+      MCUXCLMEMORY_FP_MEMORY_SET(pPaddedMessage + keyByteLength, 0x00U, pkcWaUsedByte - keyByteLength);
     }
 
     /*****************************************************/
@@ -195,8 +179,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-      (void) ret_MemoryClear;
+      MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
     }
@@ -210,8 +193,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-      (void) ret_MemoryClear;
+      MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
@@ -233,8 +215,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-      (void) ret_MemoryClear;
+      MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_ERROR);
     }
@@ -252,8 +233,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
 
       /* Clear pkcWa */
-      MCUX_CSSL_FP_FUNCTION_CALL(ret_MemoryClear, mcuxClMemory_clear(pPkcWorakarea, pkcWaTotalSize, pkcWaTotalSize));
-      (void) ret_MemoryClear;
+      MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
       MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_sign, MCUXCLRSA_STATUS_SIGN_OK,
                       MCUXCLRSA_STATUS_FAULT_ATTACK,

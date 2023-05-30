@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -47,13 +47,16 @@
 #define MCUXCLECC_STORE_2OFFSETS(pOps, idx0, idx1, ofs1_ofs0)  \
     do{ \
         if ( (0u == ((idx0) & (0x01u))) && ((idx1) == ((idx0) + (0x01u))) )  \
-        { /* MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in ECC component */ \
+        { \
+          MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in ECC component"); \
           ((uint32_t *) (pOps))[(idx0) / 2u] = (ofs1_ofs0); \
+          MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING(); \
         }  \
         else  \
-        { /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */ \
+        { MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table") \
           ((uint16_t *) (pOps))[idx0] = (uint16_t) ((ofs1_ofs0) & 0xFFFFu);  \
           ((uint16_t *) (pOps))[idx1] = (uint16_t) ((ofs1_ofs0) >> 16); \
+          MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() \
         }  \
     } while(false)
 
@@ -72,9 +75,10 @@
             ((uint32_t *) (pOps))[(dIdx0) / 2u] = ((uint32_t *) (pOps))[(sIdx0) / 2u]; \
         }  \
         else  \
-        {   /* MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table */  \
+        {   MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table") \
             ((uint16_t *) (pOps))[dIdx0] = ((uint16_t *) (pOps))[sIdx0];  \
             ((uint16_t *) (pOps))[dIdx1] = ((uint16_t *) (pOps))[sIdx1];  \
+            MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() \
         }  \
     } while (false)
 

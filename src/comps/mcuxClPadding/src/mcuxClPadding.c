@@ -23,7 +23,7 @@
 #define MCUXCLPADDING_ISO_PADDING_BYTE (0x80u)
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_None)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_None, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_None(
   uint32_t blockLength UNUSED_PARAM,
   const uint8_t * const pIn UNUSED_PARAM,
@@ -45,7 +45,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Non
 
 
 MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method1)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method1, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method1(
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   uint32_t blockLength,
@@ -65,24 +65,11 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPadding_addPadding_ISO9797_1_Method1, MCUXCLPADDING_STATUS_OK, MCUXCLPADDING_STATUS_FAULT_ATTACK);
   }
 
-  MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pOut, pIn, lastBlockLength, blockLength));
-
-  if(0u != copyResult)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_ISO9797_1_Method1, MCUXCLPADDING_STATUS_ERROR,
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
-  }
+  MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOut, pIn, lastBlockLength, blockLength);
 
   uint32_t paddingBytes = blockLength - lastBlockLength;
 
-  MCUX_CSSL_FP_FUNCTION_CALL(padResult, mcuxClMemory_set(pOut + lastBlockLength, 0x00u, paddingBytes, paddingBytes));
-
-  if(0u != padResult)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_ISO9797_1_Method1, MCUXCLPADDING_STATUS_ERROR,
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
-  }
+  MCUXCLMEMORY_FP_MEMORY_SET(pOut + lastBlockLength, 0x00u, paddingBytes);
 
   *pOutLength = blockLength;
 
@@ -93,7 +80,7 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method2)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_ISO9797_1_Method2, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_ISO9797_1_Method2 (
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   uint32_t blockLength,
@@ -107,13 +94,8 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
   uint8_t *pOutPtr = (uint8_t *) pOut;
 
-  MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pOutPtr, pIn, lastBlockLength, blockLength));
+  MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOutPtr, pIn, lastBlockLength, blockLength);
 
-  if(0u != copyResult)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_ISO9797_1_Method2, MCUXCLPADDING_STATUS_ERROR,
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
-  }
   pOutPtr += lastBlockLength;
 
   *pOutPtr = MCUXCLPADDING_ISO_PADDING_BYTE;
@@ -121,14 +103,7 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
   uint32_t paddingBytes = blockLength - lastBlockLength - 1u;
 
-  MCUX_CSSL_FP_FUNCTION_CALL(padResult, mcuxClMemory_set((uint8_t *) pOutPtr, 0x00u, paddingBytes, paddingBytes));
-
-  if(0u != padResult)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_ISO9797_1_Method2, MCUXCLPADDING_STATUS_ERROR,
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
-  }
+  MCUXCLMEMORY_FP_MEMORY_SET((uint8_t *) pOutPtr, 0x00u, paddingBytes);
 
   *pOutLength = blockLength;
 
@@ -137,7 +112,7 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
 }
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_MAC_ISO9797_1_Method2)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_MAC_ISO9797_1_Method2, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC_ISO9797_1_Method2(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -166,9 +141,40 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC
 }
 
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_PKCS7, mcuxClPadding_addPaddingMode_t)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t)  mcuxClPadding_addPadding_PKCS7 (
+  uint32_t blockLength,
+  const uint8_t * const pIn,
+  uint32_t lastBlockLength,
+  uint32_t totalInputLength UNUSED_PARAM,
+  uint8_t * const pOut,
+  uint32_t * const pOutLength)
+{
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPadding_addPadding_PKCS7);
+
+  if((blockLength <= 1u ) || (blockLength > 255u))
+  {
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_PKCS7, MCUXCLPADDING_STATUS_ERROR);
+  }
+
+  MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOut, pIn, lastBlockLength, blockLength);
+
+
+  uint32_t paddingBytes = blockLength - lastBlockLength;
+
+  MCUXCLMEMORY_FP_MEMORY_SET(pOut + lastBlockLength, (uint8_t)paddingBytes, paddingBytes);
+
+
+  *pOutLength = blockLength;
+
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPadding_addPadding_PKCS7, MCUXCLPADDING_STATUS_OK, MCUXCLPADDING_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
+}
+
 
 /* TODO CLNS-3507: Replace by actual random padding (is currently a copy of M1) */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_Random)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_Random, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Random(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -186,26 +192,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Ran
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_Random, MCUXCLPADDING_STATUS_OK);
   }
 
-  MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pOut, pIn, lastBlockLength, blockLength));
+  MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOut, pIn, lastBlockLength, blockLength);
 
-  if(0u != copyResult)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_Random, MCUXCLPADDING_STATUS_ERROR,
-       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
-  }
 
   uint32_t paddingBytes = blockLength - lastBlockLength;
 
   if(0u != paddingBytes)
   {
-    MCUX_CSSL_FP_FUNCTION_CALL(padResult, mcuxClMemory_set(pOut + lastBlockLength, 0x00u, paddingBytes, paddingBytes));
-
-    if(0u != padResult)
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_Random, MCUXCLPADDING_STATUS_ERROR,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET(pOut + lastBlockLength, 0x00u, paddingBytes);
   }
 
   *pOutLength = blockLength;

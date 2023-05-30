@@ -21,11 +21,9 @@
 #define MCUXCLMATH_FUNCTIONS_H_
 
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc.h>
 #include <mcuxClSession.h>
@@ -90,8 +88,6 @@ extern "C" {
  *           Caller shall call #mcuxClPkc_WaitForReady before calling this function, if a FUP program has been called.</dd>
  *   </dl></dd>
  * </dl>
- *
- * @return void
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_InitLocalUptrt)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_InitLocalUptrt(
@@ -132,7 +128,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_InitLocalUptrt(
  *       <dd>This function will not use PKC, and assumes PKC will not modify the operand iX simultaneously.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_LeadingZeros)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_LeadingZeros(
@@ -211,7 +206,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClMath_TrailingZeros(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_ShiftModulus)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ShiftModulus(
@@ -222,7 +216,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ShiftModulus(
     mcuxClMath_ShiftModulus(MCUXCLPKC_PACKARGS2(iNShifted, iN))
 /** Helper macro for #mcuxClMath_ShiftModulus with flow protection. */
 #define MCUXCLMATH_FP_SHIFTMODULUS(iNShifted, iN)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_SHIFTMODULUS(iNShifted, iN))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_SHIFTMODULUS(iNShifted, iN))
 
 
 /**
@@ -259,7 +253,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ShiftModulus(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_NDash)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_NDash(
@@ -270,7 +263,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_NDash(
     mcuxClMath_NDash(MCUXCLPKC_PACKARGS2(iN, iT))
 /** Helper macro for #mcuxClMath_NDash with flow protection. */
 #define MCUXCLMATH_FP_NDASH(iN, iT)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_NDASH(iN, iT))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_NDASH(iN, iT))
 
 
 /**
@@ -312,7 +305,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_NDash(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_QDash)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QDash(
@@ -324,7 +316,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QDash(
     mcuxClMath_QDash(MCUXCLPKC_PACKARGS4(iQDash, iNShifted, iN, iT), len)
 /** Helper macro for #mcuxClMath_QDash with flow protection. */
 #define MCUXCLMATH_FP_QDASH(iQDash, iNShifted, iN, iT, len)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_QDASH(iQDash, iNShifted, iN, iT, len))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_QDASH(iQDash, iNShifted, iN, iT, len))
 
 
 /**
@@ -363,7 +355,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QDash(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_QSquared)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QSquared(
@@ -374,7 +365,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QSquared(
     mcuxClMath_QSquared(MCUXCLPKC_PACKARGS4(iQSqr, iNShifted, iN, iT))
 /** Helper macro for #mcuxClMath_QSquared with flow protection. */
 #define MCUXCLMATH_FP_QSQUARED(iQSqr, iNShifted, iN, iT)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_QSQUARED(iQSqr, iNShifted, iN, iT))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_QSQUARED(iQSqr, iNShifted, iN, iT))
 
 
 /**
@@ -416,7 +407,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_QSquared(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_ModInv)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModInv(
@@ -425,10 +415,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModInv(
 /** Helper macro for #mcuxClMath_ModInv. */
 #define MCUXCLMATH_MODINV(iR, iX, iN, iT)  \
     mcuxClMath_ModInv(MCUXCLPKC_PACKARGS4(iR, iX, iN, iT))
-
 /** Helper macro for #mcuxClMath_ModInv with flow protection. */
 #define MCUXCLMATH_FP_MODINV(iR, iX, iN, iT)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_MODINV(iR, iX, iN, iT))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_MODINV(iR, iX, iN, iT))
+
 
 /**
  * @brief Calculates modular reduction with even modulus
@@ -477,12 +467,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModInv(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
- * @return A code-flow protected error code (see @ref mcuxCsslFlowProtection)
- * @retval #MCUXCLMATH_ERRORCODE_OK    function executed successfully
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_ReduceModEven)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ReduceModEven(
     uint32_t iR_iX_iN_iT0,
     uint32_t iT1_iT2_iT3
     );
@@ -491,10 +478,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(
     mcuxClMath_ReduceModEven(MCUXCLPKC_PACKARGS4(iR, iX, iN, iT0), MCUXCLPKC_PACKARGS4(0u, iT1, iT2, iT3))
 /** Helper macro for #mcuxClMath_ReduceModEven with flow protection. */
 #define MCUXCLMATH_FP_REDUCEMODEVEN(iR, iX, iN, iT0, iT1, iT2, iT3)  \
-    do {  \
-        /* mcuxClMath_ReduceModEven always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_REDUCEMODEVEN(iR, iX, iN, iT0, iT1, iT2, iT3));  \
-    } while(false)
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_REDUCEMODEVEN(iR, iX, iN, iT0, iT1, iT2, iT3))
 
 
 /**
@@ -535,7 +519,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_ModExp_SqrMultL2R)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(
@@ -548,7 +531,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(
     mcuxClMath_ModExp_SqrMultL2R(pExp, byteLenExp, MCUXCLPKC_PACKARGS4(iR, iX, iN, iT))
 /** Helper macro for #mcuxClMath_ModExp_SqrMultL2R with flow protection. */
 #define MCUXCLMATH_FP_MODEXP_SQRMULTL2R(pExp, byteLenExp, iR, iX, iN, iT)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_MODEXP_SQRMULTL2R(pExp, byteLenExp, iR, iX, iN, iT))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_MODEXP_SQRMULTL2R(pExp, byteLenExp, iR, iX, iN, iT))
+
 
 /**
  * @brief Securely calculates modular exponentiation.
@@ -642,6 +626,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
 #define MCUXCLMATH_SECMODEXP_WITHOUT_RERANDOMIZATION(session, pExp, pExpTemp, byteLenExp, iR, iX, iN, iTE, iT0, iT1, iT2, iT3)  \
     mcuxClMath_SecModExp(session, pExp, pExpTemp, byteLenExp, MCUXCLPKC_PACKARGS4(iT3, iX, iT2, iT1), MCUXCLPKC_PACKARGS4(iN, iTE, iT0, iR), MCUXCLMATH_SECMODEXP_OPTION_DIS_RERAND)
 
+
 /**
  * @brief Calculates exact division with odd divisor.
  *
@@ -659,6 +644,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
  *     <dt>@p iR_iX_iY_iT</dt>
  *       <dd><code>iT</code> (bits 0~7): index of temp (PKC operand).
  *       <br>Its size shall be at least (3 * MCUXCLPKC_WORDSIZE).
+ *       <br>The offset (UPTRT[iT]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.
  *       <br><code>iY</code> (bits 8~15): index of divisor Y (PKC operand), size = yPkcByteLength.
  *       <br>The most significant PKC word of Y shall be nonzero.
  *       <br><code>iX</code> (bits 16~23): index of dividend X (PKC operand), size = xPkcByteLength.
@@ -690,7 +676,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_ExactDivideOdd)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength);
@@ -699,7 +684,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT
     mcuxClMath_ExactDivideOdd(MCUXCLPKC_PACKARGS4(iR, iX, iN, iT), xPkcByteLen, yPkcByteLen)
 /** Helper macro for #mcuxClMath_ExactDivideOdd with flow protection. */
 #define MCUXCLMATH_FP_EXACTDIVIDEODD(iR, iX, iN, iT, xPkcByteLen, yPkcByteLen)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_EXACTDIVIDEODD(iR, iX, iN, iT, xPkcByteLen, yPkcByteLen))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_EXACTDIVIDEODD(iR, iX, iN, iT, xPkcByteLen, yPkcByteLen))
+
 
 /**
  * @brief Calculates exact division (supporting even divisor).
@@ -759,7 +745,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT
  *           call #mcuxClPkc_WaitForFinish before CPU accesses to the result.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_ExactDivide)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivide(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength);
@@ -769,7 +754,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivide(uint32_t iR_iX_iY_iT, u
 
 /** Helper macro for #mcuxClMath_ExactDivide with flow protection. */
 #define MCUXCLMATH_FP_EXACTDIVIDE(iR, iX, iN, iT, xPkcByteLen, yPkcByteLen)  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_EXACTDIVIDE(iR, iX, iN, iT, xPkcByteLen, yPkcByteLen))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_EXACTDIVIDE(iR, iX, iN, iT, xPkcByteLen, yPkcByteLen))
 
 
 /**

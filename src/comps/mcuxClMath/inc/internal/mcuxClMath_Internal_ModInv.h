@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,9 +20,12 @@
 #ifndef MCUXCLMATH_INTERNAL_MODINV_H_
 #define MCUXCLMATH_INTERNAL_MODINV_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
-#include <internal/mcuxClPkc_FupMacros.h>
+#include <mcuxClCore_Platform.h>
 
+
+/**********************************************************/
+/* Indices of operands in PKC workarea and UPTR table     */
+/**********************************************************/
 #define MODINV_T   0u
 #define MODINV_N   1u
 #define MODINV_X   2u
@@ -31,5 +34,6 @@
 #define MODINV_CONST1  5u
 #define MODINV_CONST0  6u
 #define MODINV_UPTRT_SIZE  7u
+
 
 #endif /* MCUXCLMATH_INTERNAL_MODINV_H_ */

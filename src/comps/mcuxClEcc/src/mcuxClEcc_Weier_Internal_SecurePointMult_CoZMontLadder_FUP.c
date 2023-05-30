@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021,2023 NXP                                             */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -57,9 +57,12 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_M
  *       subtractions resp. additions with the modulus p. Due to the assumptions on the input coordinates, however,
  *       the number of these conditional operations is usually rather small and in no case related to the scalar bits. */
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 /* FUP program to reduce values in X1, Y1 and ZA modulo p */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /* FUP program:
  *   - 1st part: Preparation of ZA in [1,p-1]
@@ -75,3 +78,5 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_SecurePointMult_Reduce_X1_Y1_ZA_M
  *
  * NOTES:
  *   - If the 1st part is skipped, then X0, Y0, X1, Y1 are only in [0,p-1] if ZA is ensured to be in [0,p-1] */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

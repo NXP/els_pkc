@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -26,17 +26,20 @@
 #include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
+#include <mcuxClCore_Examples.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE ((MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WACPU_SIZE >= MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WACPU_SIZE) ? MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WACPU_SIZE : MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WACPU_SIZE)
 #define MAX_PKCWA_SIZE ((MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE >= MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE) ? MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE : MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE)
 
-bool mcuxClEcc_Mont_Curve448_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Setup one session to be used by all functions called */
@@ -45,7 +48,7 @@ bool mcuxClEcc_Mont_Curve448_example(void)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
 
     /* Initialize the RNG and Initialize the PRNG */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg)
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE, mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3);
 
     /* Prepare input for Alice key generation */
     uint8_t alicePrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
@@ -71,7 +74,7 @@ bool mcuxClEcc_Mont_Curve448_example(void)
                                       );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != alice_keygeneration_token) || (MCUXCLECC_STATUS_OK != alice_keygeneration_result))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -98,7 +101,7 @@ bool mcuxClEcc_Mont_Curve448_example(void)
                                       );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != bob_keygeneration_token) || (MCUXCLECC_STATUS_OK != bob_keygeneration_result))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -116,7 +119,7 @@ bool mcuxClEcc_Mont_Curve448_example(void)
                                      );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != alice_keyagreement_token) || (MCUXCLECC_STATUS_OK != alice_keyagreement_result))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -132,7 +135,7 @@ bool mcuxClEcc_Mont_Curve448_example(void)
                                      );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != bob_keyagreement_token) || (MCUXCLECC_STATUS_OK != bob_keyagreement_result))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -141,21 +144,21 @@ bool mcuxClEcc_Mont_Curve448_example(void)
     {
         if(bobSharedSecret[i] != aliceSharedSecret[i])
         {
-            return false;
+            return MCUXCLEXAMPLE_ERROR;
         }
     }
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    return true;
+    return MCUXCLEXAMPLE_OK;
 }

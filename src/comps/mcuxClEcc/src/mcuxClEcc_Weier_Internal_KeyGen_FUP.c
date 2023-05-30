@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -27,8 +27,10 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78[11] MCUX_FUP_A
 
 
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 /* Prerequisites: VT = number of bit(s) to be truncated;                      */
 
 
 
 
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

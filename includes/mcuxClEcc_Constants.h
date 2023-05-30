@@ -133,6 +133,10 @@ extern const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519
 /* Ed448 domain parameters */
 extern const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448;
 
+/* phflag values for EdDSA */
+#define MCUXCLECC_EDDSA_PHFLAG_ZERO    0u
+#define MCUXCLECC_EDDSA_PHFLAG_ONE     1u
+
 /**
  * @}
  */ /* mcuxClEcc_Constants */

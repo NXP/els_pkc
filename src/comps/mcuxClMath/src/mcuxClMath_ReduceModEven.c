@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,9 +17,9 @@
  */
 
 
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc.h>
 #include <mcuxClMath_Functions.h>
@@ -51,7 +51,7 @@
  *   rH = xH mod n'
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ReduceModEven)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(uint32_t iR_iX_iN_iT0, uint32_t iT1_iT2_iT3)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ReduceModEven(uint32_t iR_iX_iN_iT0, uint32_t iT1_iT2_iT3)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ReduceModEven);
 
@@ -243,7 +243,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_ReduceModEven(uint32
     MCUXCLPKC_SETUPTRT(backupPtrUptrt);
     MCUXCLPKC_PS1_SETLENGTH_REG(backupPs1LenReg);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_ReduceModEven, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMath_ReduceModEven,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         /* S01 */ MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_TrailingZeros),
         /* S02 */ MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,

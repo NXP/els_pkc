@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxClEcc_EdDSA_GenerateKeyPair.c
- * @brief implementation of TwEd_EdDsaKeyGen function
+ * @brief Implementation of EdDSA key pair generation functionality
  */
 
 
@@ -40,15 +40,21 @@
 #include <internal/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h>
 
 
-
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateKeyPair)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateKeyPair_Core)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_Core(
+    mcuxClSession_Handle_t pSession,
+    const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
+    mcuxClKey_Handle_t privKey,
+    mcuxClKey_Handle_t pubKey
+);
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateKeyPair_Core)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_Core(
     mcuxClSession_Handle_t pSession,
     const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
     mcuxClKey_Handle_t privKey,
     mcuxClKey_Handle_t pubKey )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateKeyPair);
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateKeyPair_Core);
 
     /*
      * Step 1: Set up the environment
@@ -61,18 +67,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
             || (MCUXCLKEY_ALGO_ID_PRIVATE_KEY != mcuxClKey_getKeyUsage(privKey))
             || (MCUXCLKEY_ALGO_ID_PUBLIC_KEY != mcuxClKey_getKeyUsage(pubKey)) )
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
     mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) (privKey->type.info);
 
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(
+    MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
         mcuxClEcc_EdDSA_SetupEnvironment(pSession,
                                         pDomainParams,
                                         ECC_EDDSA_NO_OF_BUFFERS) );
+    if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
     /* private and public key length = M = 32-byte for Ed25519 (b = 256 = 32*8) */
     /*                                  or 57-byte for Ed448 (b = 456 = 57*8).  */
@@ -89,6 +100,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     if (MCUXCLECC_EDDSA_PRIVKEY_GENERATE == options)
     {
         /* Derive the security strength required for the RNG from (keyLength * 8) / 2 and check whether it can be provided. */
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, (keyLength * 8u) / 2u));
+        if (MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_RNG_ERROR);
+        }
+#endif
         /* Reserve space on CPU workarea for the private key. */
         const uint32_t privKeyWords = MCUXCLECC_ALIGNED_SIZE(keyLength) / (sizeof(uint32_t));
         pPrivKey = (uint8_t *) mcuxClSession_allocateWords_cpuWa(pSession, privKeyWords);
@@ -98,10 +116,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
 
         if (MCUXCLRANDOM_STATUS_OK != retRandom)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_RNG_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_RNG_ERROR);
         }
 
         MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption, 
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+                                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif 
                                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
     }
     else if (MCUXCLECC_EDDSA_PRIVKEY_INPUT == options)
@@ -110,7 +131,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
         if(NULL == pPrivKey)
         {
             /* Invalid mode passed */
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
 
         MCUX_CSSL_FP_BRANCH_NEGATIVE(privKeyOption);
@@ -118,7 +139,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     else
     {
         /* invalid option */
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /*
@@ -176,7 +197,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     MCUX_CSSL_FP_FUNCTION_CALL(ret_BlindedScalarMult, mcuxClEcc_BlindedScalarMult(pSession, (mcuxClEcc_CommonDomainParams_t *) &pDomainParams->common) );
     if (MCUXCLECC_STATUS_RNG_ERROR == ret_BlindedScalarMult)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_RNG_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_RNG_ERROR);
     }
     else if (MCUXCLECC_STATUS_NEUTRAL_POINT == ret_BlindedScalarMult)
     {
@@ -186,7 +207,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     }
     else if (MCUXCLECC_STATUS_OK != ret_BlindedScalarMult)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
     else
     {
@@ -209,25 +230,22 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
      * Step 6: (Securely) copy the key data to the key handles and link the key pair.
      */
     // TODO: Is this copy function secure enough?
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_CopyPrivKey, mcuxClMemory_copy(pPrivData, pPrivKey, keyLength, keyLength));
-    if (0u != ret_CopyPrivKey)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
+    MCUXCLMEMORY_FP_MEMORY_COPY(pPrivData, pPrivKey, keyLength);
+
 
     /* Securely export the scalar s from PKC buffer ECC_S2. */
     const uint32_t scalarSLength = (t + 7u) >> 3u;
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportScalarS, mcuxClPkc_SecureExportLittleEndianFromPkc((uint8_t *) &pPrivData[keyLength], ECC_S2, scalarSLength));
     if (MCUXCLPKC_STATUS_OK != ret_SecExportScalarS)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* Securely export the private key hash (h_b,...,h_{2b-1}) from PKC buffer ECC_S3. */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportHash, mcuxClPkc_SecureExportLittleEndianFromPkc((uint8_t *) &pPrivData[keyLength + scalarSLength], ECC_S3, keyLength));
     if (MCUXCLPKC_STATUS_OK != ret_SecExportHash)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* Export the public key to the public key handle. */
@@ -237,7 +255,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     MCUX_CSSL_FP_FUNCTION_CALL(ret_linkKeyPair, mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
     if (MCUXCLKEY_STATUS_OK != ret_linkKeyPair)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
 
@@ -246,7 +264,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
     mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
         /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),
         /* Step 2 */
@@ -272,4 +290,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
         /* Step 7 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+}
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateKeyPair)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
+    mcuxClSession_Handle_t pSession,
+    const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
+    mcuxClKey_Handle_t privKey,
+    mcuxClKey_Handle_t pubKey )
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateKeyPair);
+
+    /* Call core function to calculate EdDSA signature */
+    MCUX_CSSL_FP_FUNCTION_CALL(keygen_result, mcuxClEcc_EdDSA_GenerateKeyPair_Core(
+    /* mcuxClSession_Handle_t pSession:                          */ pSession,
+    /* const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode   */ mode,
+    /* mcuxClKey_Handle_t privKey                                */ privKey,
+    /* mcuxClKey_Handle_t privKey                                */ pubKey));
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair, keygen_result, MCUXCLECC_STATUS_FAULT_ATTACK,
+                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateKeyPair_Core));
 }

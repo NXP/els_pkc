@@ -194,7 +194,7 @@ extern "C" {
  */
 
 #define MCUXCLRSA_INTERNAL_PSSENCODE_MAX_WAPKC_SIZE_WO_MGF1(keyByteLength)  \
-    (MCUXCLPKC_ROUNDUP_SIZE((keyByteLength - 2U) + MCUXCLRSA_PSS_PADDING1_LEN))
+    (MCUXCLPKC_ROUNDUP_SIZE(((keyByteLength) - 2U) + MCUXCLRSA_PSS_PADDING1_LEN))
     ///< Maximum size for the temp buffer in mcuxClRsa_pssEncode, based on the fact that emLen >= hLen + sLen + 2.
 
 #define MCUXCLRSA_INTERNAL_PSSENCODE_MAX_WACPU_SIZE  \
@@ -229,7 +229,7 @@ extern "C" {
  * Having sLen rounding up to CPU word additionally 3B must be added.
  */
 #define MCUXCLRSA_INTERNAL_PSSVERIFY_MAX_WAPKC_SIZE_WO_MGF1(keyByteLength)  \
-    (MCUXCLPKC_ROUNDUP_SIZE(((keyByteLength - 2U /* hLen + sLen */ + 3U /* round up sLen to CPU word */) + MCUXCLRSA_PSS_PADDING1_LEN) \
+    (MCUXCLPKC_ROUNDUP_SIZE((((keyByteLength) - 2U /* hLen + sLen */ + 3U /* round up sLen to CPU word */) + MCUXCLRSA_PSS_PADDING1_LEN) \
      + ((keyByteLength) - 1U) /* maskedDB  + H' */))
     ///< Definitions of maximum size of PKC workarea for the mcuxClRsa_pssVerify function without workarea size for MGF1 function.
 
@@ -419,10 +419,10 @@ extern "C" {
      MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_PKCS1V15ENCODE_SIGN_WAPKC_SIZE(2u * primeByteLength), MCUXCLRSA_INTERNAL_PRIVATECRT_WAPKC_SIZE(primeByteLength)))
     ///< Definition of PKC workarea size for the mcuxClRsa_sign function with pkcs1v15 encoding and a private CRT key.
 
-#define MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(keyByteLength)  \
-    (MCUXCLRSA_MAX(MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_SIGN_CRT_PKCS1V15ENCODE_WAPKC_SIZE(keyByteLength), \
-                               MCUXCLRSA_INTERNAL_SIGN_CRT_PSSENCODE_WAPKC_SIZE(keyByteLength)), \
-                  MCUXCLRSA_INTERNAL_SIGN_CRT_NOENCODE_WAPKC_SIZE(keyByteLength)))
+#define MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(primeByteLength)  \
+    (MCUXCLRSA_MAX(MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_SIGN_CRT_PKCS1V15ENCODE_WAPKC_SIZE(primeByteLength), \
+                               MCUXCLRSA_INTERNAL_SIGN_CRT_PSSENCODE_WAPKC_SIZE(primeByteLength)), \
+                  MCUXCLRSA_INTERNAL_SIGN_CRT_NOENCODE_WAPKC_SIZE(primeByteLength)))
     ///< Definition of PKC workarea size for the mcuxClRsa_sign function keyByteLength CRT key.
 
 /** @} */

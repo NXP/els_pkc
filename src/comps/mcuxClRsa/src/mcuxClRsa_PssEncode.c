@@ -68,7 +68,7 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_Pss_Sha2_512 =
   .pPaddingFunction = mcuxClRsa_pssEncode
 };
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pssEncode)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pssEncode, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -162,7 +162,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   else if (MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK))
   {
     /* Copy pInput to buffer mHash */
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pMHash, pInput, hLen, hLen));
+    MCUXCLMEMORY_FP_MEMORY_COPY(pMHash, pInput, hLen);
   }
   else
   {

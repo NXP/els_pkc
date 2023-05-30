@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,7 +19,7 @@
 #ifndef MCUXCLMACMODES_FUNCTIONS_H_
 #define MCUXCLMACMODES_FUNCTIONS_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxCsslFlowProtection.h>
 #include <mcuxClSession_Types.h>
 #include <mcuxClKey_Types.h>
 #include <mcuxClMac_Types.h>
@@ -43,6 +43,7 @@ extern "C" {
  * @ingroup mcuxClMacModes_Functions
  * @{
  */
+
 
 
 /**

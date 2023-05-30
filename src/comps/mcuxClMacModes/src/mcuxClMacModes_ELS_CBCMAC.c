@@ -77,11 +77,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_One
 
     size_t noOfFullBlocks = inLength / MCUXCLAES_BLOCK_SIZE;
     size_t remainingBytes = inLength - (noOfFullBlocks * MCUXCLAES_BLOCK_SIZE);
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult, mcuxClMemory_set(pOut, 0x00, MCUXCLELS_CMAC_OUT_SIZE, MCUXCLELS_CMAC_OUT_SIZE));
-    if (0u != setResult)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET(pOut, 0x00, MCUXCLELS_CMAC_OUT_SIZE);
 
     if(0u != noOfFullBlocks)
     {
@@ -199,16 +195,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Ini
 
     pContext->blockBufferUsed = 0;
 
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult1, mcuxClMemory_set((uint8_t*)(pContext->blockBuffer), 0x00, MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult2, mcuxClMemory_set((uint8_t*)(pContext->state), 0x00, MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
+    pContext->totalInput = 0;
 
-    if((0U != setResult1) || (0U != setResult2))
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Init, MCUXCLMAC_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext->blockBuffer), 0x00, MCUXCLAES_BLOCK_SIZE);
+    MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext->state), 0x00, MCUXCLAES_BLOCK_SIZE);
 
     pContext->cmac_options.word.value = 0U;
-
+   
     // Disable initialize/finalize for cbc-mac compitability.
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
     pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_DISABLE;
@@ -251,15 +244,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
         MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 
         // Copy as many bytes from pIn to pContext->blockBuffer in order to create one full block
-        MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed), pIn,
-                        MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed,
-                        MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed));
-        if (0u != copyResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
-        }
-
-
+        MCUXCLMEMORY_FP_MEMORY_COPY(((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed), pIn, MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
         // Process this block
         MCUX_CSSL_FP_FUNCTION_CALL(cmacResult, mcuxClEls_Cmac_Async(
                                 pContext->cmac_options,
@@ -274,6 +259,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
         }
+
+        pContext->totalInput += MCUXCLAES_BLOCK_SIZE;
 
         MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         MCUX_CSSL_FP_FUNCTION_CALL(waitResult, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
@@ -319,6 +306,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
         }
 
+        pContext->totalInput += noOfFullBlocks * MCUXCLAES_BLOCK_SIZE;
+
         MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         MCUX_CSSL_FP_FUNCTION_CALL(waitResult, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
@@ -343,15 +332,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Upd
     if(pInNrProcessedBytes < inLength)
     {
         MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
-        MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed), (pIn + pInNrProcessedBytes),
-                    (inLength - pInNrProcessedBytes),
-                    (inLength - pInNrProcessedBytes)));
-
-        if (0u != copyResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Update, MCUXCLMAC_STATUS_ERROR);
-        }
-
+        MCUXCLMEMORY_FP_MEMORY_COPY(((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed), (pIn + pInNrProcessedBytes), (inLength - pInNrProcessedBytes));
         // Update number of bytes in blockBuffer
         pContext->blockBufferUsed += (inLength - pInNrProcessedBytes);
     }
@@ -385,7 +366,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
     /* uint32_t blockLength */          MCUXCLELS_CIPHER_BLOCK_SIZE_AES,
     /* const uint8_t *const pIn */      (uint8_t*)pContext->blockBuffer,
     /* uint32_t lastBlockLength */      pContext->blockBufferUsed,
-    /* uint32_t totalInputLength */     pContext->blockBufferUsed,
+    /* uint32_t totalInputLength */     pContext->totalInput,
     /* uint8_t *const pOut */           (uint8_t*)pContext->blockBuffer,
     /* uint32_t *const pOutLength */    &paddingOutLength));
 
@@ -437,11 +418,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
     MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 
     // Copy final result from the context to the output
-    MCUX_CSSL_FP_FUNCTION_CALL(copyResult, mcuxClMemory_copy(pOut, (uint8_t*)pContext->state, MCUXCLAES_BLOCK_SIZE, MCUXCLAES_BLOCK_SIZE));
-    if(0u != copyResult)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CBCMAC_Finalize, MCUXCLMAC_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_COPY(pOut, (uint8_t*)pContext->state, MCUXCLAES_BLOCK_SIZE);
 
     *pOutLength = MCUXCLELS_CMAC_OUT_SIZE;
 
@@ -491,5 +468,20 @@ const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CB
   .addPadding = mcuxClPadding_addPadding_ISO9797_1_Method2,
   .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_ISO9797_1_Method2),
 };
+
+const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_Padding_PKCS7 = {
+  .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
+  .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
+  .engineUpdate =  mcuxClMacModes_Engine_CBCMAC_Update,
+  .protectionToken_engineUpdate =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Update),
+  .engineFinalize =  mcuxClMacModes_Engine_CBCMAC_Finalize,
+  .protectionToken_engineFinalize =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Finalize),
+  .engineOneshot = mcuxClMacModes_Engine_CBCMAC_Oneshot,
+  .protectionToken_engineOneshot = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Oneshot),
+  .addPadding = mcuxClPadding_addPadding_PKCS7,
+  .protectionToken_addPadding = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_PKCS7),
+};
+
+
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 

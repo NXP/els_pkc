@@ -278,6 +278,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
  *
  * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.
  */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_KeyGeneration_Crt)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    mcuxClSession_Handle_t pSession,
    mcuxClKey_Type_t type,
@@ -356,6 +357,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
  *
  * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.
  */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_KeyGeneration_Plain)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    mcuxClSession_Handle_t pSession,
    mcuxClKey_Type_t type,

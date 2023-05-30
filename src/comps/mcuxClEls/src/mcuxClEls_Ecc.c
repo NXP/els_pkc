@@ -46,6 +46,14 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccKeyGe
 
     options.bits.revf = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    if(MCUXCLELS_ECC_OUTPUTKEY_RANDOM == options.bits.kgsrc)
+    {
+        /* If the DRBG was used, increment drbg_block_counter. If the counter overflowed, the interrupt handler will
+         * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+        mcuxClEls_rng_drbg_block_counter += MCUXCLELS_RNG_DRBG_ECCKEYGEN_INCREASE;
+    }
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
     mcuxClEls_setKeystoreIndex0(privateKeyIdx);
     mcuxClEls_setKeystoreIndex1(signingKeyIdx);
@@ -148,6 +156,11 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccSign_
 
     options.bits.revf = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
+     * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+    mcuxClEls_rng_drbg_block_counter += MCUXCLELS_RNG_DRBG_ECCSIGN_INCREASE;
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
     mcuxClEls_setKeystoreIndex0(keyIdx);
     mcuxClEls_setInput0((options.bits.echashchl == 0u) ? pInputHash : pInputMessage, inputMessageLength);
@@ -180,6 +193,11 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccVerif
     options.bits.extkey = MCUXCLELS_ECC_EXTKEY_EXTERNAL;
 #endif /* MCUXCL_FEATURE_ELS_PUK_INTERNAL_BIT */
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
+     * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+    mcuxClEls_rng_drbg_block_counter += MCUXCLELS_RNG_DRBG_ECCVERIFY_INCREASE;
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
     mcuxClEls_setInput0((options.bits.echashchl == 0u) ? pInputHash : pInputMessage, inputMessageLength);
     mcuxClEls_setInput1_fixedSize(pSignatureAndPubKey);
@@ -214,6 +232,11 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_EccVerif
     options.bits.revf   = MCUXCLELS_ECC_REVERSEFETCH_ENABLE;
     options.bits.extkey = MCUXCLELS_ECC_EXTKEY_INTERNAL;
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
+     * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+    mcuxClEls_rng_drbg_block_counter += MCUXCLELS_RNG_DRBG_ECCVERIFY_INCREASE;
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
     mcuxClEls_setInput0((options.bits.echashchl == 0u) ? pInputHash : pInputMessage, inputMessageLength);
     mcuxClEls_setInput1_fixedSize(pSignature);

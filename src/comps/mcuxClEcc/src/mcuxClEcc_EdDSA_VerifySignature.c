@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxClEcc_EdDSA_VerifySignature.c
- * @brief implementation of TwEd_EdDsaVerify function
+ * @brief Implementation of the EdDSA signature verification functionality
  */
 
 
@@ -39,9 +39,10 @@
 #include <internal/mcuxClEcc_Internal_PointComparison_FUP.h>
 #include <internal/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h>
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_VerifySignature)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
-    mcuxClSession_Handle_t pSession,
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_VerifySignature_Core)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature_Core(
+    mcuxClSession_Handle_t session,
     mcuxClKey_Handle_t key,
     const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode,
     const uint8_t *pIn,
@@ -49,18 +50,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     const uint8_t *pSignature,
     uint32_t signatureSize )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_VerifySignature);
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_VerifySignature_Core);
 
     /*
      * Step 1: Set up the environment
      */
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
-    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(session, 0u);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) mcuxClKey_getTypeInfo(key);
 
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_EdDSA_SetupEnvironment(pSession, pDomainParams, ECC_EDDSA_NO_OF_BUFFERS) );
+    MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
+        mcuxClEcc_EdDSA_SetupEnvironment(session, pDomainParams, ECC_EDDSA_NO_OF_BUFFERS) );
+    if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
     const uint32_t encodedLen = (uint32_t) pDomainParams->b / 8u;
     const uint32_t sigLength = encodedLen * 2u;
@@ -74,10 +81,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     if (signatureSize != sigLength)
     {
         MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
-        mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-        mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+        mcuxClSession_freeWords_pkcWa(session, pCpuWorkarea->wordNumPkcWa);
+        mcuxClSession_freeWords_cpuWa(session, pCpuWorkarea->wordNumCpuWa);
 
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_INVALID_PARAMS,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_INVALID_PARAMS,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),             /* Clean up */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment) ); /* Step 1 */
     }
@@ -95,10 +102,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     if (MCUXCLPKC_FLAG_NOCARRY == MCUXCLPKC_WAITFORFINISH_GETCARRY())
     {   /* s >= n. */
         MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
-        mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-        mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+        mcuxClSession_freeWords_pkcWa(session, pCpuWorkarea->wordNumPkcWa);
+        mcuxClSession_freeWords_cpuWa(session, pCpuWorkarea->wordNumCpuWa);
 
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_INVALID_SIGNATURE,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_INVALID_SIGNATURE,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),             /* Clean up */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),   /* Step 1 */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportLittleEndianToPkc),  /* Step 3 */
@@ -112,21 +119,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
      */
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     uint32_t leadingZeroN = 0u;
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(ECC_N, &leadingZeroN));
     uint32_t bitLenN = (operandSize * 8u) - leadingZeroN;
 
     /* Calculate P1 = S * G */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_plainFixScalarMult,
         pDomainParams->common.pPlainFixScalarMultFctFP->pScalarMultFct(
-            pSession,
+            session,
             (mcuxClEcc_CommonDomainParams_t *)&pDomainParams->common,
             ECC_S0,
             bitLenN,
             0));
     if(MCUXCLECC_STATUS_OK != ret_plainFixScalarMult)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
 
@@ -144,29 +150,34 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
      * and store it in buffer ECC_S0.
      */
 
-    const uint32_t *pHashPrefix = mode->pHashPrefix;
-    uint32_t hashPrefixLen = mode->hashPrefixLen;
     uint8_t *pPubKey = mcuxClKey_getKeyData(key);
-    const uint8_t *m = pIn;
-    uint32_t mLen = inSize;
+
+    /* Generate digest m' from m in case phflag is set */
+    const uint8_t *m =  NULL;
+    uint32_t mLen = 0u;
+    MCUX_CSSL_FP_FUNCTION_CALL(retPreHash, mcuxClEcc_EdDSA_PreHashMessage(session, pDomainParams, mode->phflag, pIn, inSize, &m, &mLen));
+    if (MCUXCLECC_STATUS_OK != retPreHash)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
     /* Initialize hash context */
-    mcuxClHash_Context_t pCtx = (mcuxClHash_Context_t) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
+    mcuxClHash_Context_t pCtx = (mcuxClHash_Context_t) mcuxClSession_allocateWords_cpuWa(session, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_CalcHashModN,
         mcuxClEcc_EdDSA_CalcHashModN(
-            pSession, pCtx, pDomainParams,
-            pHashPrefix, hashPrefixLen,
+            session, pCtx, pDomainParams,
+            mode->pHashPrefix, mode->hashPrefixLen,
             pSignatureR,
             (const uint8_t*)pPubKey,
             m, mLen) );
     if (MCUXCLECC_STATUS_OK != ret_CalcHashModN)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* Free the hash context */
-    mcuxClSession_freeWords_cpuWa(pSession, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
+    mcuxClSession_freeWords_cpuWa(session, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
 
 
     /*
@@ -181,10 +192,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     if(MCUXCLECC_STATUS_INVALID_PARAMS == ret_decodePoint)
     {
         MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
-        mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-        mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+        mcuxClSession_freeWords_pkcWa(session, pCpuWorkarea->wordNumPkcWa);
+        mcuxClSession_freeWords_cpuWa(session, pCpuWorkarea->wordNumCpuWa);
 
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_INVALID_PARAMS,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_INVALID_PARAMS,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),             /* Clean up */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),   /* Step 1 */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportLittleEndianToPkc),  /* Step 3 */
@@ -192,12 +203,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),            /* Step 4 */
             pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
             3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 5 */
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),       /* Step 6 */
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),     /* Step 6 */
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
             pDomainParams->pDecodePoint_FP_FuncId);                         /* Step 7 */
     }
     else if(MCUXCLECC_STATUS_OK != ret_decodePoint)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
     else
     {
@@ -213,14 +225,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_plainVarScalarMult,
         pDomainParams->common.pPlainVarScalarMultFctFP->pScalarMultFct(
-            pSession,
+            session,
             &pDomainParams->common,
             ECC_S0,
             bitLenN,
             0));
     if(MCUXCLECC_STATUS_OK != ret_plainVarScalarMult)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
 
@@ -241,8 +253,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     MCUXCLPKC_FP_CALC_OP2_CONST(ECC_COORD03, 0u);                          /* Clear encodedLenPkc bytes of buffer ECC_COORD03 */
     MCUXCLPKC_FP_CALC_OP1_OR_CONST(ECC_COORD03, ECC_COORD01, 0u);          /* Copy operandSize < encodedLenPkc bytes of the y-coordinate from ECC_COORD01 to ECC_COORD03 */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    /* MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned */
-    uint32_t *pRX = (uint32_t*)MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD00]);
+    uint32_t *pRX = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_COORD00]);
     uint8_t *pREncLastByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD03])[encodedLen - 1u];
     MCUXCLPKC_WAITFORFINISH();
     uint32_t lsbX = (*pRX) & (uint32_t)0x01u;                             /* Loading a word is usually cheaper than loading a byte */
@@ -281,14 +292,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
         /* Compute h*R' */
         MCUX_CSSL_FP_FUNCTION_CALL(ret2_plainVarScalarMult,
         pDomainParams->common.pPlainVarScalarMultFctFP->pScalarMultFct(
-            pSession,
+            session,
             &pDomainParams->common,
             ECC_S1,
             bitLenH,
             0));
         if(MCUXCLECC_STATUS_OK != ret2_plainVarScalarMult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
 
 
@@ -313,10 +324,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
         if(MCUXCLECC_STATUS_INVALID_PARAMS == ret2_decodePoint)
         {
             MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
-            mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-            mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+            mcuxClSession_freeWords_pkcWa(session, pCpuWorkarea->wordNumPkcWa);
+            mcuxClSession_freeWords_cpuWa(session, pCpuWorkarea->wordNumCpuWa);
 
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_INVALID_PARAMS,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_INVALID_PARAMS,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),             /* Clean up */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),   /* Step 1 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportLittleEndianToPkc),  /* Step 3 */
@@ -324,7 +335,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),            /* Step 4 */
                 pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
                 3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 5 */
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),       /* Step 6 */
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),     /* Step 6 */
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
                 pDomainParams->pDecodePoint_FP_FuncId,                          /* Step 7 */
                 pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId, /* Step 8 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),                  /* Step 9 */
@@ -338,7 +350,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
         }
         else if(MCUXCLECC_STATUS_OK != ret2_decodePoint)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
         else
         {
@@ -353,14 +365,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
 
         MCUX_CSSL_FP_FUNCTION_CALL(ret3_plainVarScalarMult,
         pDomainParams->common.pPlainVarScalarMultFctFP->pScalarMultFct(
-            pSession,
+            session,
             &pDomainParams->common,
             ECC_S1,
             bitLenH,
             0));
         if(MCUXCLECC_STATUS_OK != ret3_plainVarScalarMult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
 
 
@@ -378,10 +390,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
         if (MCUXCLPKC_FLAG_ZERO != MCUXCLPKC_WAITFORFINISH_GETZERO())
         {
             MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
-            mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-            mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+            mcuxClSession_freeWords_pkcWa(session, pCpuWorkarea->wordNumPkcWa);
+            mcuxClSession_freeWords_cpuWa(session, pCpuWorkarea->wordNumCpuWa);
 
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_INVALID_SIGNATURE,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_INVALID_SIGNATURE,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),             /* Clean up */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),   /* Step 1 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportLittleEndianToPkc),  /* Step 3 */
@@ -389,7 +401,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),            /* Step 4 */
                 pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
                 3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 5 */
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),       /* Step 6 */
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),     /* Step 6 */
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
                 pDomainParams->pDecodePoint_FP_FuncId,                          /* Step 7 */
                 pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId, /* Step 8 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),                  /* Step 9 */
@@ -423,10 +436,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
 
     /* Clean up and exit */
     MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
-    mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-    mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+    mcuxClSession_freeWords_pkcWa(session, pCpuWorkarea->wordNumPkcWa);
+    mcuxClSession_freeWords_cpuWa(session, pCpuWorkarea->wordNumCpuWa);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_VerifySignature, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
         /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),
         /* Step 3 */
@@ -438,6 +451,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
         /* Step 5 */
         3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
         /* Step 6 */
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
         /* Step 7 */
         pDomainParams->pDecodePoint_FP_FuncId,
@@ -455,4 +469,30 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
         MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(RencNotEqual, MCUXCLPKC_FLAG_ZERO != zeroFlag_check),
         /* Step 13 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+}
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_VerifySignature)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
+    mcuxClSession_Handle_t session,
+    mcuxClKey_Handle_t key,
+    const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode,
+    const uint8_t *pIn,
+    uint32_t inSize,
+    const uint8_t *pSignature,
+    uint32_t signatureSize )
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_VerifySignature);
+
+    /* Call core function to calculate EdDSA signature */
+    MCUX_CSSL_FP_FUNCTION_CALL(verify_result, mcuxClEcc_EdDSA_VerifySignature_Core(
+    /* mcuxClSession_Handle_t session:                          */ session,
+    /* mcuxClKey_Handle_t key                                    */ key,
+    /* const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode */ mode,
+    /* const uint8_t *pIn                                       */ pIn,
+    /* uint32_t inSize                                          */ inSize,
+    /* const uint8_t *pSignature                                */ pSignature,
+    /* uint32_t pSignatureSize                                  */ signatureSize));
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_VerifySignature, verify_result, MCUXCLECC_STATUS_FAULT_ATTACK,
+                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature_Core));
 }

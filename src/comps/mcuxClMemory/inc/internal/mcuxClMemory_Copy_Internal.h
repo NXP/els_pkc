@@ -28,16 +28,6 @@
  */
 
 
-/**********************************************
- * MACROS
- **********************************************/
-
-/** Helper macro to call #mcuxClMemory_copy with flow protection. */
-#define MCUXCLMEMORY_FP_MEMORY_COPY(pTarget, pSource, byteLen)  \
-    do {  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy((uint8_t *) (pTarget), (const uint8_t *) (pSource), byteLen, byteLen)); \
-    } while(false)
-
 
 /**
  * @}

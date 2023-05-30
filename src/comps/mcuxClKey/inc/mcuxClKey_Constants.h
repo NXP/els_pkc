@@ -35,13 +35,13 @@
  * @brief Return code definitions
  * @{
  */
-#define MCUXCLKEY_STATUS_OK               ((mcuxClKey_Status_t) 0xE2E2E2E2u )  ///< Key operation successful
-#define MCUXCLKEY_STATUS_ERROR            ((mcuxClKey_Status_t) 0xE2E22E2Eu )  ///< Error occured during Key operation
-#define MCUXCLKEY_STATUS_FAILURE          ((mcuxClKey_Status_t) 0xE2E2E22Eu )  ///< Failure during execution
-#define MCUXCLKEY_STATUS_INVALID_INPUT    ((mcuxClKey_Status_t) 0xE2E22EE2u )  ///< Invalid input
-#define MCUXCLKEY_STATUS_FAULT_ATTACK     ((mcuxClKey_Status_t) 0xE2E2F0F0u )  ///< Fault attack detected
-#define MCUXCLKEY_STATUS_CRC_NOT_OK       ((mcuxClKey_Status_t) 0x003E0002u)   ///< CRC verification failed
-#define MCUXCLKEY_STATUS_NOT_SUPPORTED    ((mcuxClKey_Status_t) 0xE2E20000u)   ///< Functionality not supported
+#define MCUXCLKEY_STATUS_OK                   ((mcuxClKey_Status_t) 0xE2E2E2E2u )  ///< Key operation successful
+#define MCUXCLKEY_STATUS_ERROR                ((mcuxClKey_Status_t) 0xE2E22E2Eu )  ///< Error occured during Key operation
+#define MCUXCLKEY_STATUS_FAILURE              ((mcuxClKey_Status_t) 0xE2E2E22Eu )  ///< Failure during execution
+#define MCUXCLKEY_STATUS_INVALID_INPUT        ((mcuxClKey_Status_t) 0xE2E22EE2u )  ///< Invalid input
+#define MCUXCLKEY_STATUS_FAULT_ATTACK         ((mcuxClKey_Status_t) 0xE2E2F0F0u )  ///< Fault attack detected
+#define MCUXCLKEY_STATUS_CRC_NOT_OK           ((mcuxClKey_Status_t) 0x003E0002u)   ///< CRC verification failed
+#define MCUXCLKEY_STATUS_NOT_SUPPORTED        ((mcuxClKey_Status_t) 0xE2E20000u)   ///< Functionality not supported
 /** @} */
 
 /**
@@ -128,10 +128,17 @@
 #define MCUXCLKEY_SIZE_8192_IN_WORDS     (MCUXCLKEY_SIZE_8192 / (sizeof(uint32_t) * 8u))    ///< 8192 bit key, size in words
 /** @} */
 
+
 /**
  * @def MCUXCLKEY_WA_SIZE_MAX
  * @brief Define the max workarea size required for this component
  */
 #define MCUXCLKEY_WA_SIZE_MAX 0U
+
+/**
+ * @def MCUXCLKEY_INVALID_KEYSLOT
+ * @brief Define the value for an invalid key slot.
+ */
+#define MCUXCLKEY_INVALID_KEYSLOT    0xFFu
 
 #endif /* MCUXCLKEY_CONSTANTS_H_ */

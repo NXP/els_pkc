@@ -11,8 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
-#include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClCore_Examples.h> // Defines and assertions for examples
 #include <mcuxClExample_Session_Helper.h>
 
@@ -27,8 +25,8 @@
 
 /** Performs a HMAC computation using functions of the mcuxClKey component.
  * @retval MCUXCLEXAMPLE_OK         The example code completed successfully
- * @retval MCUXCLEXAMPLE_FAILURE    The example code failed */
-bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
+ * @retval MCUXCLEXAMPLE_ERROR      The example code failed */
+MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_hmac_oneshot_external_key_example)
 {
     /* Example (unpadded) key. */
     const uint8_t hmac_key[] = {
@@ -67,7 +65,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
     // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -75,7 +73,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -108,7 +106,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -119,7 +117,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_loadMemory) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -148,7 +146,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token) || (MCUXCLMAC_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -159,7 +157,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
     /* Compare the output size with the expected MAC size */
     if(sizeof(hmac_output_reference) != result_size)
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Compare the result to the reference value. */
@@ -177,7 +175,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
                                                                   key));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -187,7 +185,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
          /* mcuxClSession_Handle_t           pSession: */           session));
     if(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != cleanup_token || MCUXCLSESSION_STATUS_OK != cleanup_result)
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -195,7 +193,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
          /* mcuxClSession_Handle_t           pSession: */           session));
     if(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != destroy_token || MCUXCLSESSION_STATUS_OK != destroy_result)
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -205,7 +203,7 @@ bool mcuxClMacModes_hmac_oneshot_external_key_example(void)
     // mcuxClEls_Disable is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Disable) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 

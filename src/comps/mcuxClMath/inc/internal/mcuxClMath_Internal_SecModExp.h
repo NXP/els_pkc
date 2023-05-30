@@ -20,10 +20,8 @@
 #ifndef MCUXCLMATH_INTERNAL_SECMODEXP_H_
 #define MCUXCLMATH_INTERNAL_SECMODEXP_H_
 
+#include <mcuxClCore_Platform.h>
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
 
 /**********************************************************/
 /* Indices of operands in PKC workarea and UPTR table     */
@@ -75,25 +73,15 @@
  ********************************************************************************
  * It swaps ofsAt and ofsA(1-t) (stored in ofsAs), and outputs ofsYX = ofsA(1-t) || ofsMi.
  */
-#if defined(__RISCV32)
-#define MCUXCLMATH_ROR(x,y) (((x) >> (y)) | ((x) << ((32u - (y)) & 31u)))
-#define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0, expW1, ofsA, ofsYX, rndW, bIdx, oMsH8, oMsL8)  \
-do{                                                                                       \
-        (void) (rndW); /* unused variable, avoid compiler warning */                      \
-        uint32_t expW = (expW0) ^ (expW1);                                                \
-        uint32_t expBits = (expW >> ((bIdx) & 31u)) & 3u;                                 \
-        uint32_t rotateAmount = expBits * 8u + 4u;                                        \
-        uint32_t miH = MCUXCLMATH_ROR((oMsH8), rotateAmount);                              \
-        uint32_t miL = MCUXCLMATH_ROR((oMsL8), rotateAmount);                              \
-        (ofsYX) = ((((ofsA) & 0xFFFFu) << 16u) | ((miH & 0xFFu) << 8u) | (miL & 0xFFu));  \
-        (ofsA) = MCUXCLMATH_ROR((ofsA), 16u);                                              \
-} while (false)
+#if defined(ICCARM_ARMCLANG_GNUC)
 
-#elif defined(ICCARM_ARMCLANG_GNUC)
-
-#define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0_, expW1_, ofsAs_, ofsYX_, rndW_, bIdx_, oMsH8_, oMsL8_)  \
+#define MCUXCLMATH_SECMODEXP_WRITEOFFSET(ofsY_ofsX,maskVal) MCUXCLPKC_PS1_SETXY_REG(ofsY_ofsX)
+#define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0_, expW1_, ofsAs_, ofsYX_, rndW_, bIdx_, oMsH8_, oMsL8_, rnd64_0_, rnd64_1_, mask_)  \
 do{  \
     uint32_t temp0, temp1;  /* local variable */  \
+    (void) (rnd64_0_); /* unused variable, avoid compiler warning */                  \
+    (void) (rnd64_1_); /* unused variable, avoid compiler warning */                  \
+    (void) (mask_);    /* unused variable, avoid compiler warning */                  \
     __asm volatile (  \
         "EORS  %[exp0], %[exp0], %[rnd]   \n"  \
         "SUBS  %[tmp0], %[bIdx], #3       \n"  \
@@ -129,8 +117,23 @@ do{  \
 } while (false)
 
 #else
-#error Unsupported compiler. The above section must be manually adapted to support the inline assembly syntax.
+#warning Unsupported compiler. The above section must be manually adapted to support the inline assembly syntax.
+#define MCUXCLMATH_SECMODEXP_WRITEOFFSET(ofsY_ofsX,maskVal) MCUXCLPKC_PS1_SETXY_REG(ofsY_ofsX)
+#define MCUXCLMATH_ROR(x,y) (((x) >> (y)) | ((x) << ((32u - (y)) & 31u)))
+#define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0, expW1, ofsA, ofsYX, rndW, bIdx, oMsH8, oMsL8,rand64_0,rand64_1,mask)  \
+do{                                                                                       \
+        (void) (rndW);    /* unused variable, avoid compiler warning */                   \
+        (void) (rand64_0); /* unused variable, avoid compiler warning */                  \
+        (void) (rand64_1); /* unused variable, avoid compiler warning */                  \
+        (void) (mask);     /* unused variable, avoid compiler warning */                  \
+        uint32_t expW = (expW0) ^ (expW1);                                                \
+        uint32_t expBits = (expW >> ((bIdx) & 31u)) & 3u;                                 \
+        uint32_t rotateAmount = expBits * 8u + 4u;                                        \
+        uint32_t miH = MCUXCLMATH_ROR((oMsH8), rotateAmount);                              \
+        uint32_t miL = MCUXCLMATH_ROR((oMsL8), rotateAmount);                              \
+        (ofsYX) = ((((ofsA) & 0xFFFFu) << 16u) | ((miH & 0xFFu) << 8u) | (miL & 0xFFu));  \
+        (ofsA) = MCUXCLMATH_ROR((ofsA), 16u);                                              \
+} while (false)
 #endif
-
 
 #endif /* MCUXCLMATH_INTERNAL_SECMODEXP_H_ */

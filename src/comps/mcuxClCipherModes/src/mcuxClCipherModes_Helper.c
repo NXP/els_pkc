@@ -13,6 +13,7 @@
 
 #include <internal/mcuxClCipherModes_Internal.h>
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_MemClear)
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length)
 {
   for (uint32_t i = 0u; i < length; ++i)

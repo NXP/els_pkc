@@ -87,6 +87,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
     uint8_t * ptrS2 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S2]);
 
     /* Derive the security strength required for the RNG from bitLenN/2 and check whether it can be provided. */
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, ((uint32_t) pCommonDomainParameters->byteLenN * 8u) / 2u));
+    if (MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_RNG_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_SetupEnvironment),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength) );
+    }
+#endif
 
     MCUXCLECC_FP_RANDOM_HQRNG_PKCWA(mcuxClEcc_Mont_DhKeyGeneration, pSession, ptrS2, keyLen);
 
@@ -97,6 +106,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_RNG_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_SetupEnvironment),
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_X));
     }
     else if(MCUXCLECC_STATUS_OK != retCode_Mont_Dhx)
@@ -138,6 +150,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
 
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_SetupEnvironment),
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
             MCUXCLECC_FP_CALLED_RANDOM_HQRNG_PKCWA,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_X),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),

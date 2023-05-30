@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -66,7 +66,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_GenerateMultiplicative
 
     /* Generate S0 = phi = a 32-bit non-zero random, with PRNG. */
     MCUXCLPKC_WAITFORFINISH();
-    volatile uint32_t *p32S0 = (volatile uint32_t *) pS0;  /* PKC buffer is CPU word aligned. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("PKC buffer is CPU word aligned.")
+    volatile uint32_t *p32S0 = (volatile uint32_t *) pS0;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL(retGetRandom, mcuxClRandom_ncGenerate(pSession, pS0, MCUXCLECC_SCALARBLINDING_BYTELEN));
     if (MCUXCLRANDOM_STATUS_OK != retGetRandom)

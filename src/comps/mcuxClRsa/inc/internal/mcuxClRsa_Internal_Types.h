@@ -80,6 +80,7 @@ extern "C" {
  *
  * @return Status of the padding operation
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRsa_PadVerModeEngine_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) (* mcuxClRsa_PadVerModeEngine_t)(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -91,7 +92,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) (* mcuxClRsa_PadVerModeE
   const uint32_t              keyBitLength,
   const uint32_t              options,
   mcuxCl_Buffer_t              pOutput,
-  uint32_t * const            pOutLength);
+  uint32_t * const            pOutLength));
 
 
 /**

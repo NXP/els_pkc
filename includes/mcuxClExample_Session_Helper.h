@@ -19,7 +19,7 @@
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <mcuxClPkc.h>
+#include <platform_specific_headers.h>
 
 /**
  * Initialize Session via mcuxClSession_init.
@@ -43,7 +43,7 @@
             /* mcuxClSession_Handle_t session:      */ pSession,                                                       \
             /* uint32_t * const cpuWaBuffer:       */ cpuWaBuffer,                                                    \
             /* uint32_t cpuWaSize:                 */ cpuWaLength,                                                    \
-            /* uint32_t * const pkcWaBuffer:       */ (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS,                        \
+            /* uint32_t * const pkcWaBuffer:       */ (uint32_t *) PKC_RAM_ADDR,                                      \
             /* uint32_t pkcWaSize:                 */ pkcWaLength                                                     \
             ));                                                                                                       \
         /* mcuxClSession_init is a flow-protected function: Check the protection token and the return value */         \
@@ -57,6 +57,7 @@
  * Destroy Session and cleanup Session via mcuxClSession_cleanup and mcuxClSession_destroy
  * [in]  pSession: Pointer to the session handle.
  **/
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClExample_Session_Clean)
 static inline bool mcuxClExample_Session_Clean(mcuxClSession_Handle_t pSession)
 {
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(cleanup_result, cleanup_token, mcuxClSession_cleanup(pSession));

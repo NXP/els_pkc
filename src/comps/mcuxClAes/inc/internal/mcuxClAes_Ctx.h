@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #ifndef MCUXCLAES_CTX_H_
 #define MCUXCLAES_CTX_H_
 

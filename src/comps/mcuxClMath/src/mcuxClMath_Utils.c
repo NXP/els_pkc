@@ -17,9 +17,9 @@
  */
 
 
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClMath.h>
 
@@ -69,10 +69,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_LeadingZeros(uint8_t iX, uint32_t *
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_LeadingZeros);
 
     const uint16_t *pUptrt = MCUXCLPKC_GETUPTRT();
-    uint32_t offsetX = (uint32_t) pUptrt[iX];  /* Assume offsetX is exactly a multiple of MCUXCLPKC_WORDSIZE. */
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
-    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
+    /* Assume pUptrt[iX] is exactly a multiple of MCUXCLPKC_WORDSIZE. */
+    const uint32_t *pX = MCUXCLPKC_OFFSET2PTRWORD(pUptrt[iX]);
 
     uint32_t len = (uint32_t) MCUXCLPKC_PS1_GETOPLEN() / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t numLeadingZeros = 0u;
@@ -101,10 +99,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClMath_TrailingZeros(uint8_t iX)
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_TrailingZeros);
 
     const uint16_t *pUptrt = MCUXCLPKC_GETUPTRT();
-    uint32_t offsetX = (uint32_t) pUptrt[iX];  /* Assume offsetX is exactly a multiple of MCUXCLPKC_WORDSIZE. */
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - PKC buffer is CPU word aligned");
-    const uint32_t *pX = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(offsetX);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES();
+    /* Assume pUptrt[iX] is exactly a multiple of MCUXCLPKC_WORDSIZE. */
+    const uint32_t *pX = MCUXCLPKC_OFFSET2PTRWORD(pUptrt[iX]);
 
     uint32_t opWords = (uint32_t) MCUXCLPKC_PS1_GETOPLEN() / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t index = 0u;
@@ -150,7 +146,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ShiftModulus(uint16_t iNShifted_iN)
     /* Count the number of leading zeros of modulus n. */
     MCUXCLPKC_WAITFORFINISH();
     uint32_t leadingZeroBits;
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros(iN, &leadingZeroBits));
     uint32_t leadingZeroPkcWords_InBytes = leadingZeroBits / (MCUXCLPKC_WORDSIZE * 8u) * MCUXCLPKC_WORDSIZE;
 

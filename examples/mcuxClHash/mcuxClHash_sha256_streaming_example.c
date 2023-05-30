@@ -18,7 +18,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>  // Code flow protection
 #include <mcuxClToolchain.h>              // memory segment definitions
-#include <stdbool.h>                // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
 
@@ -41,7 +40,7 @@ static const uint8_t hashExpected[32] CSS_CONST_SEGMENT = {
     0xc6u, 0xcbu, 0xf2u, 0x5eu, 0x3fu, 0xffu, 0xe8u, 0xc4u
 };
 
-bool mcuxClHash_sha256_streaming_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -57,7 +56,7 @@ bool mcuxClHash_sha256_streaming_example(void)
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
-    //Allocate and initialize session
+    /* Allocate and initialize session */
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
     /* RTF update is set to false by default */
@@ -134,42 +133,44 @@ bool mcuxClHash_sha256_streaming_example(void)
 		return MCUXCLEXAMPLE_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
+	
+  if(sizeof(hash) != hashOutputSize)
+	{
+		return MCUXCLEXAMPLE_ERROR;
+	}
 
-    /**************************************************************************/
-    /* Verification                                                           */
-    /**************************************************************************/
+	/**************************************************************************/
+	/* Verification                                                           */
+	/**************************************************************************/
 
 	uint8_t hashDifferent = 0u;
 	for(size_t i = 0u; i < sizeof(hash); i++)
 	{
-		if(hash[i] != hashExpected[i])
+		if(hashExpected[i] != hash[i])
 		{
 			hashDifferent |= 1u;
 		}
 	}
+	
 	if(hashDifferent)
 	{
 		return MCUXCLEXAMPLE_ERROR;
 	}
-    if(hashOutputSize != sizeof(hash))
+
+	/**************************************************************************/
+	/* Session clean-up                                                       */
+	/**************************************************************************/
+	/** Destroy Session and cleanup Session **/
+	if(!mcuxClExample_Session_Clean(session))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+			return MCUXCLEXAMPLE_ERROR;
 	}
 
-    /**************************************************************************/
-    /* Session clean-up                                                       */
-    /**************************************************************************/
-    /** Destroy Session and cleanup Session **/
-    if(!mcuxClExample_Session_Clean(session))
-    {
-        return MCUXCLEXAMPLE_ERROR;
-    }
-
-    /** Disable the ELS **/
-    if(!mcuxClExample_Els_Disable())
-    {
-        return MCUXCLEXAMPLE_ERROR;
-    }
+	/** Disable the ELS **/
+	if(!mcuxClExample_Els_Disable())
+	{
+			return MCUXCLEXAMPLE_ERROR;
+	}
 
 	return MCUXCLEXAMPLE_OK;
 }

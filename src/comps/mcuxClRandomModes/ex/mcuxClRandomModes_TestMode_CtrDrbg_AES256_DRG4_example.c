@@ -56,7 +56,7 @@ static const uint32_t refOutput[64u] =
 /** Performs an example usage of the mcuxClRandom and mcuxClRandomModes components with test mode.
  * @retval true  The example code completed successfully
  * @retval false The example code failed */
-bool mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -139,8 +139,7 @@ bool mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg1_status, generate1_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer1,
-                                        sizeof(drbg_buffer1)
-                                   ));
+                                        sizeof(drbg_buffer1)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate1_token) || (MCUXCLRANDOM_STATUS_OK != rg1_status))
     {
@@ -152,8 +151,7 @@ bool mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg2_status, generate2_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer2,
-                                        sizeof(drbg_buffer2)
-                                   ));
+                                        sizeof(drbg_buffer2)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate2_token) || (MCUXCLRANDOM_STATUS_OK != rg2_status))
     {

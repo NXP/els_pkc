@@ -26,6 +26,8 @@
 #include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE
@@ -66,12 +68,12 @@ static const uint8_t pPublicKey[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY] __attrib
     0xebu, 0xf8u, 0x19u, 0x68u, 0x34u, 0x67u, 0xe2u, 0xbfu
 };
 
-bool mcuxClEcc_EdDSA_VerifySignature_Ed25519_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_VerifySignature_Ed25519_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Setup one session to be used by all functions called */
@@ -84,47 +86,48 @@ bool mcuxClEcc_EdDSA_VerifySignature_Ed25519_example(void)
     uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
 
-    mcuxClKey_Status_t result_key = mcuxClKey_init(
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyInit_status, keyInit_token, mcuxClKey_init(
         /* mcuxClSession_Handle_t session         */ &session,
         /* mcuxClKey_Handle_t key                 */ pubKeyHandler,
         /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Pub,
         /* mcuxCl_Buffer_t pKeyData               */ (mcuxCl_Buffer_t) pPublicKey,
-        /* uint32_t keyDataLength                */ sizeof(pPublicKey)
+        /* uint32_t keyDataLength                */ sizeof(pPublicKey))
     );
 
-    if (MCUXCLKEY_STATUS_OK != result_key)
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInit_token) || (MCUXCLKEY_STATUS_OK != keyInit_status))
     {
         return MCUXCLEXAMPLE_ERROR;
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Call mcuxClEcc_EdDSA_VerifySignature to verify the signature */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClEcc_EdDSA_VerifySignature(
-    /*  mcuxClSession_Handle_t pSession  */ &session,
-    /*  mcuxClKey_Handle_t pubKey        */ pubKeyHandler,
-    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t * */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
-    /*  const uint8_t *pIn              */ pIn,
-    /*  uint32_t inSize                 */ sizeof(pIn),
-    /*  const uint8_t *pSignature       */ pSignature,
-    /*  uint32_t signatureSize          */ sizeof(pSignature)
-                                    ));
+    /*  mcuxClSession_Handle_t pSession                       */ &session,
+    /*  mcuxClKey_Handle_t pubKey                             */ pubKeyHandler,
+    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t*  */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
+    /*  const uint8_t *pIn                                   */ pIn,
+    /*  uint32_t inSize                                      */ sizeof(pIn),
+    /*  const uint8_t *pSignature                            */ pSignature,
+    /*  uint32_t signatureSize                               */ sizeof(pSignature)
+    ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature) != verify_token) || (MCUXCLECC_STATUS_OK != verify_result))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /** Destroy Session and cleanup Session **/
+    /* Destroy Session and cleanup Session */
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    return true;
+    return MCUXCLEXAMPLE_OK;
 }

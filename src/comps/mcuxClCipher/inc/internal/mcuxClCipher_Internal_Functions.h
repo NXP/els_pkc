@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #ifndef MCUXCLCIPHER_INTERNAL_FUNCTONS_H_
 #define MCUXCLCIPHER_INTERNAL_FUNCTONS_H_
 
@@ -21,10 +20,12 @@
 extern "C" {
 #endif
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_computeContextCrc)
 static inline void mcuxClCipher_computeContextCrc(mcuxClCipher_Context_t * const pCtx, uint32_t contextSize)
 {
 }
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_verifyContextCrc)
 static inline mcuxClCipher_Status_t mcuxClCipher_verifyContextCrc(mcuxClCipher_Context_t * const pCtx, uint32_t contextSize)
 {
     return MCUXCLCIPHER_STATUS_OK;

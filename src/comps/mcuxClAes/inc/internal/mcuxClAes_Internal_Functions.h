@@ -19,8 +19,8 @@
 #ifndef MCUXCLAES_INTERNAL_FUNCTIONS_H_
 #define MCUXCLAES_INTERNAL_FUNCTIONS_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
+#include <mcuxCsslFlowProtection.h>
 #include <mcuxClKey.h>
 #include <internal/mcuxClAes_Wa.h>
 #include <internal/mcuxClAes_Ctx.h>

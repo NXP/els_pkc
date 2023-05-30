@@ -38,7 +38,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInput
 
     (void) pSession;
     mode->options = MCUXCLECC_EDDSA_PRIVKEY_INPUT;
-    mode->pPrivKeyInput = (uint8_t *) pPrivKey;
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
+    mode->pPrivKeyInput = (uint8_t *)pPrivKey;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_InitPrivKeyInputMode, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK);
 }

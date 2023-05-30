@@ -103,17 +103,17 @@ static bool load_key_udf(
 
     if (NULL != pOutKey)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (&pOutKey[0],
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (&pOutKey[0],
                                                                      aes256_key,
                                                                      MCUXCLELS_CIPHER_KEY_SIZE_AES_256,
                                                                      MCUXCLELS_CIPHER_KEY_SIZE_AES_256));
 
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
         {
             return false;
         }
 
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     }
     return true;
 }

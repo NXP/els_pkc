@@ -29,7 +29,7 @@
 #include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <mcuxClToolchain.h>             // Memory segment definitions
-#include <stdbool.h>               // bool type for the example's return code
+#include <mcuxClCore_Examples.h>
  #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
  #include <mcuxClExample_ELS_Helper.h>
 
@@ -132,9 +132,9 @@ static const uint8_t referenceSignature[RSA_KEY_BYTE_LENGTH] __attribute__ ((ali
 
 
 /** Performs a session set-up; a call to function mcuxClRsa_sign using mode mcuxClRsa_Mode_Verify_NoVerify; a session clean-up
- * @retval true  The example code completed successfully
- * @retval false The example code failed */
-bool mcuxClRsa_sign_NoEncode_example(void)
+ * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_NoEncode_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -143,7 +143,7 @@ bool mcuxClRsa_sign_NoEncode_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Create session handle to be used by mcuxClRsa_sign */
@@ -158,7 +158,7 @@ bool mcuxClRsa_sign_NoEncode_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -199,7 +199,7 @@ bool mcuxClRsa_sign_NoEncode_example(void)
 
     if(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_status)
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -211,7 +211,7 @@ bool mcuxClRsa_sign_NoEncode_example(void)
     {
         if(referenceSignature[i] != signature[i])
         {
-            return false;
+            return MCUXCLEXAMPLE_ERROR;
         }
     }
 
@@ -221,14 +221,14 @@ bool mcuxClRsa_sign_NoEncode_example(void)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    return true;
+    return MCUXCLEXAMPLE_OK;
 }

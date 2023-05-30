@@ -82,7 +82,7 @@ extern "C" {
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_public)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_public, mcuxClRsa_PublicExpEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   mcuxClSession_Handle_t      pSession,
   const mcuxClRsa_Key * const pKey,
@@ -243,7 +243,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
  * @return Status of the mcuxClRsa_noEncode operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
  * @retval #MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK    The function executed successfully.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_noEncode)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_noEncode, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -303,7 +303,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
  *
  * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_noVerify)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_noVerify, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -422,7 +422,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
  *
  * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pssEncode)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pssEncode, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -492,7 +492,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
  * @retval #MCUXCLRSA_STATUS_VERIFY_FAILED    The verification failed.
  * @retval #MCUXCLRSA_STATUS_ERROR            An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pssVerify)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pssVerify, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -559,7 +559,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pkcs1v15Encode_sign)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pkcs1v15Encode_sign, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,
@@ -628,7 +628,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
  * @retval #MCUXCLRSA_STATUS_VERIFY_FAILED    The verification failed.
  * @retval #MCUXCLRSA_STATUS_ERROR            An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pkcs1v15Verify)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_pkcs1v15Verify, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,

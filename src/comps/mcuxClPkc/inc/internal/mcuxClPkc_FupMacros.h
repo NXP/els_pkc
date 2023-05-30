@@ -21,8 +21,8 @@
 #define MCUXCLPKC_FUPMACROS_H_
 
 
-#include <stdint.h>
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Analysis.h>
 #include <internal/mcuxClPkc_Operations.h>
 
 
@@ -105,6 +105,7 @@ typedef struct mcuxClPkc_FUPEntry
 /* the constant parameter shall be stored in UPTRT[C].          */
 
 /* L0 operation (OP) with parameter set 1, without repeating. */
+MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all FUP operations are defined.")
 #define FUP_OP1_MUL(R,X,Y)              MCUXCLPKC_FUP_OP1(MUL,           R,X,Y,0, 0)
 #define FUP_OP1_MAC(R,X,Y,Z)            MCUXCLPKC_FUP_OP1(MAC,           R,X,Y,Z, 0)
 #define FUP_OP1_MAC_NEG(R,X,Y,Z)        MCUXCLPKC_FUP_OP1(MAC_NEG,       R,X,Y,Z, 0)
@@ -219,6 +220,7 @@ typedef struct mcuxClPkc_FUPEntry
 #define FUP_MC2_PM_PATCH(R,X,Y)         MCUXCLPKC_FUP_MC2(PM_PATCH,      R,X,Y,0, 0)
 #define FUP_MC2_PM_PATCH_GF2(R,X,Y)     MCUXCLPKC_FUP_MC2(PM_PATCH_GF2,  R,X,Y,0, 0)
 #define FUP_MC2_GCD(Y,Z)                MCUXCLPKC_FUP_MC2(GCD,           Z,Y,Y,Z, 0)  /* X = Y, R = Z (result in-place) */
+MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 #endif /* MCUXCLPKC_FUPMACROS_H_ */

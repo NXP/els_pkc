@@ -104,11 +104,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   /* Setup session. */
   const uint16_t bufferSizeTotal = bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2 + bufferSizeT3 + bufferSizeTE + bufferSizeRand;
   const uint32_t pkcWaSizeWord = (uint32_t) bufferSizeTotal / (sizeof(uint32_t));
-  uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
+  uint32_t *pPkcWorkarea = mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
   if (NULL == pPkcWorkarea)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
+  uint8_t *pPkcWorkarea8 = (uint8_t *)pPkcWorkarea;
 
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_PRIVPLAIN_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
@@ -122,15 +123,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   }
 
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X] = MCUXCLPKC_PTR2OFFSET(pInput);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeR + MCUXCLPKC_WORDSIZE /* for NDash stored in the PKC word in front of the modulus */);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeR + bufferSizeN);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T1] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeR + bufferSizeN + bufferSizeT0);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T2] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T3] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_TE] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2 + bufferSizeT3);
-  uint32_t *pBlind = (uint32_t *) (pPkcWorkarea + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2 + bufferSizeT3 + bufferSizeTE);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_RAND] = MCUXCLPKC_PTR2OFFSET(pBlind);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + MCUXCLPKC_WORDSIZE /* for NDash stored in the PKC word in front of the modulus */);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T1] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN + bufferSizeT0);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T2] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T3] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_TE] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2 + bufferSizeT3);
+  uint32_t *pBlind = (pPkcWorkarea + ((size_t)bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2 + bufferSizeT3 + bufferSizeTE)/sizeof(uint32_t));
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_RAND] = MCUXCLPKC_PTR2OFFSET((uint8_t *) pBlind);
 
   /* Set UPTRT table */
   MCUXCLPKC_SETUPTRT(pOperands);

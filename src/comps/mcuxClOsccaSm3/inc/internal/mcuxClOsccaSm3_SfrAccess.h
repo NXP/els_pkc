@@ -73,20 +73,7 @@
 
 /**** ------------------------------ ****/
 
-
-// Utility code of mcuxClOsccaSm3 implementation
-/** Set a specific field in the given SFR value, according to the given mask and shift value.
-  * The unrelated fields/bits will not be changed */
-static inline void mcuxClOsccaSm3_setSfrField(volatile uint32_t *pSfr, uint32_t value, uint32_t mask, uint32_t shift)
-{
-    /* get the current value of the SFR and clear the bits that will be set */
-    uint32_t sfrValue = *pSfr & (~mask);
-    /* set the bits and re-write the full value to the SFR */
-    *pSfr = sfrValue | (((uint32_t)(value << shift)) & mask);
-}
-
 /** Sets SAFO_SGI_SM3_FIFO input buffer from the input value*/
-#define MCUXCLOSCCASM3_SET_FIFO_FIELD(value)\
-    mcuxClOsccaSm3_setSfrField((uint32_t *)&MCUXCLOSCCASM3_SAFO_SGI_SFR_READ(SM3_FIFO), (value), MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_MASK(SM3_FIFO, FIFO), MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_SHIFT(SM3_FIFO, FIFO))
+#define MCUXCLOSCCASM3_SET_FIFO_FIELD(value) MCUXCLOSCCASM3_SAFO_SGI_SFR_WRITE(SM3_FIFO, (value))
 
 #endif /* MCUXCLOSCCASM3_SFRACCESS_H_ */

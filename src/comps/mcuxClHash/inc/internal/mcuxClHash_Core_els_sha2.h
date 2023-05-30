@@ -39,11 +39,12 @@ extern "C" {
  * This function will process one or more blocks of the Hash algorithm
  *
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClHash_els_AlgoCore_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_els_AlgoCore_t)(
                         uint32_t options,
 						mcuxCl_InputBuffer_t pIn,
                         uint32_t inSize,
-						mcuxCl_Buffer_t pOut);
+						mcuxCl_Buffer_t pOut));
 
 /**********************************************************
  * Function declarations
@@ -63,7 +64,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_els_AlgoCo
  * @retval MCUXCLHASH_STATUS_OK               Hash operation successful
  * @retval MCUXCLHASH_FAILURE                 Error occured during Hash operation
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHash_els_core_sha2)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHash_els_core_sha2, mcuxClHash_els_AlgoCore_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_core_sha2(
                         uint32_t options,
 						mcuxCl_InputBuffer_t pIn,

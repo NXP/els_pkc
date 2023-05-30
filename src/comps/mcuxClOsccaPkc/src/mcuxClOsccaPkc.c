@@ -67,6 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_Init(
     /* clear the error */
     MCUXCLOSCCAPKC_SFR_WRITE(ACCESS_ERR_CLR, 1U);
     /* configure Pkc */
+    /* MISRA Ex. 22, while(0) is allowed */
     MCUXCLOSCCAPKC_SFR_WRITE(CTRL,
         ( (uint32_t)1U << MCUXCLOSCCAPKC_SFR_BITPOS(CTRL, RESET) ) |
         ( (uint32_t)1U << MCUXCLOSCCAPKC_SFR_BITPOS(CTRL, CACHE_EN) ) |
@@ -117,12 +118,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void)   mcuxClOsccaPkc_Reset(
     MCUXCLOSCCAPKC_SFR_WRITE(UPTRT,  0u);
     MCUXCLOSCCAPKC_SFR_WRITE(ULEN,   0u);
 
-    /* clear reset bit, because of possible STOP bit */
-    MCUXCLOSCCAPKC_SFR_BITCLEAR(CTRL, RESET);
-    while( 0U != MCUXCLOSCCAPKC_SFR_BITREAD(CTRL, RESET) )
-    {
-        /* wait */
-    }
     /* restores old CFG and CTRL states (including reset) */
     if(NULL != state)
     {
@@ -130,6 +125,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void)   mcuxClOsccaPkc_Reset(
         MCUXCLOSCCAPKC_SFR_WRITE(CTRL, state->ctrl);
     }
 
+    /* clear reset bit, because of possible STOP bit */
+    MCUXCLOSCCAPKC_SFR_BITCLEAR(CTRL, RESET);
+    while( 0U != MCUXCLOSCCAPKC_SFR_BITREAD(CTRL, RESET) )
+    {
+        /* wait */
+    }
     /* update SC and return */
     MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_Reset);
 }
@@ -141,7 +142,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClOsccaPkc_GetWordSize(void)
     uint32_t redmul;
 
     redmul = MCUXCLOSCCAPKC_GETREDMUL();
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaPkc_GetWordSize, (redmul > 0U ? (uint32_t)2U << redmul : (uint32_t)16U));
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaPkc_GetWordSize, (uint32_t)(redmul > 0U ? (uint32_t)2U << redmul : (uint32_t)16U));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaPkc_SetWordSize) /* No semicolon */
@@ -256,7 +257,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_GeneratePointerTable(uint16_t *
     }
 
     /* update SC and return */
-    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_GeneratePointerTable); 
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_GeneratePointerTable);
 }
 
 /*
@@ -285,9 +286,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_ComputeNDash(uint32_t iNiTiXiX)
     pN = MCUXCLOSCCAPKC_PKCOFFSETTOPTR(pUPTRT[iN]);
     pNDash = pN - NdashWordSizeByte;
     pTmp = MCUXCLOSCCAPKC_PKCOFFSETTOPTR(pUPTRT[iT]);
-    
-    MCUX_CSSL_FP_FUNCTION_CALL(clearResult, mcuxClMemory_clear(pNDash, NdashWordSizeByte, NdashWordSizeByte));
-	(void)clearResult;
+
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(pNDash, NdashWordSizeByte);
 
     *pNDash = 1U;
 
@@ -335,12 +335,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_ComputeNDash(uint32_t iNiTiXiX)
  * Count leading zeros of non-zero value.
  * If the value is 0, the result is undefined.
  */
-static inline uint32_t mcuxClOsccaPkc_CountLeadingZerosWord(uint32_t value)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaPkc_CountLeadingZerosWord)
+static inline MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClOsccaPkc_CountLeadingZerosWord(uint32_t value)
 {
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaPkc_CountLeadingZerosWord);
 #ifdef __CLZ
-	return __CLZ(value);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaPkc_CountLeadingZerosWord, __CLZ(value));
 #else
-    return (uint32_t)__builtin_clz(value);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaPkc_CountLeadingZerosWord, (uint32_t)__builtin_clz(value));
 #endif
 }
 
@@ -353,6 +355,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClOsccaPkc_LeadingZeros(uint8_t *pNum,
     uint32_t numLenByWord = numLen / (sizeof(uint32_t)) ;
     /* MISRA Ex.24 - Rule 11.3 */
     uint32_t *pBigNum = (uint32_t *)pNum;
+    uint32_t loopTimes = 0U;
 
     while(numLenByWord > 0U)
     {
@@ -363,14 +366,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClOsccaPkc_LeadingZeros(uint8_t *pNum,
         }
         else
         {
-            zeros += mcuxClOsccaPkc_CountLeadingZerosWord(temp);
+            loopTimes++;
+            MCUX_CSSL_FP_FUNCTION_CALL(zeroWords, mcuxClOsccaPkc_CountLeadingZerosWord(temp));
+            zeros += zeroWords;
             break;
         }
         numLenByWord--;
     }
 
     /* update SC and return */
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaPkc_LeadingZeros, zeros);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaPkc_LeadingZeros, zeros, loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaPkc_CountLeadingZerosWord));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaPkc_MultipleShiftRotate_Index) /* No semicolon */
@@ -545,14 +550,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaPkc_CalcMontInverse);
     uint32_t iN, iI, iT, iR;
-    uint32_t exp, shiftBits;
+    uint32_t exponent, shiftBits;
     uint32_t len = MCUXCLOSCCAPKC_PS1_GETLEN();
     MCUX_CSSL_FP_FUNCTION_CALL(pkcWordSize, mcuxClOsccaPkc_GetWordSize());
     uint16_t *pOperands = MCUXCLOSCCAPKC_GETUPTRT();
 
-    iI = (iIiRiNiT >> 24U) & 0xFF;
-    iR = (iIiRiNiT >> 16U) & 0xFF;
-    iN = (iIiRiNiT >> 8U) & 0xFF;
+    iI = (iIiRiNiT >> 24U) & 0xFFU;
+    iR = (iIiRiNiT >> 16U) & 0xFFU;
+    iN = (iIiRiNiT >> 8U) & 0xFFU;
     iT = (iIiRiNiT) & 0xFFU;
 
     /* set PS1 Lens to (len + pkcWordSize, len + pkcWordSize) */
@@ -570,7 +575,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
     MCUXCLOSCCAPKC_PS1_SETMCLEN(31);
     MCUXCLOSCCAPKC_PS1_SETOPLEN(len);
 
-    pOperands[iT] = pOperands[iT] + pkcWordSize;
+    pOperands[iT] = pOperands[iT] + (uint16_t)pkcWordSize;
     /* perform almostMontgomeryInverse using MC code */
     /* T (upper part) = almostMontgomeryInverse(X) = - X^(-1) * 2^exp */
     /* T (lower fWord) = exp */
@@ -578,17 +583,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
     /* save the result of almostMontgomeryInverse to iI */
     MCUXCLOSCCAPKC_FXIOP1_OR_YC(iI, iT, 0x00U);
     MCUXCLOSCCAPKC_WAITFORFINISH();
-    exp = *(volatile uint32_t *)MCUXCLOSCCAPKC_PKCOFFSETTOPTR(pOperands[iT] - pkcWordSize);
+    /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
+    exponent = *(volatile uint32_t *)MCUXCLOSCCAPKC_PKCOFFSETTOPTR((uint32_t)pOperands[iT] - pkcWordSize);
 
     /* recover the modulus */
     MCUXCLOSCCAPKC_FXIOP1_OR_YC(iN, iR, 0x00U); /* N = R = n, because N*R = n and N = gcd(i,n) = 1. */
 
-    pOperands[iT] = pOperands[iT] - pkcWordSize;
+    pOperands[iT] = pOperands[iT] - (uint16_t)pkcWordSize;
     MCUXCLOSCCAPKC_FXIOP1_XOR(iT, iT, iT);
     MCUXCLOSCCAPKC_PS1_SETMCLEN(len);
-    if (exp <= len * 8U)
+    if (exponent <= len * 8U)
     {
-        shiftBits = len * 8U - exp;
+        shiftBits = len * 8U - exponent;
         *MCUXCLOSCCAPKC_PKCOFFSETTOPTR(pOperands[iT] + (shiftBits >> 3U)) |= (1U << (shiftBits & 7U));
         MCUXCLOSCCAPKC_FXIMC1_MMUL(iR, iI, iT, iN);
         MCUXCLOSCCAPKC_FXIMC1_MSUB(iI, iN, iR, iN);
@@ -596,7 +602,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
     }
     else
     {
-        shiftBits = 2U * len * 8U - exp;
+        shiftBits = 2U * len * 8U - exponent;
         *MCUXCLOSCCAPKC_PKCOFFSETTOPTR(pOperands[iT] + (shiftBits >> 3U)) |= (1U << (shiftBits & 7U));
         MCUXCLOSCCAPKC_FXIMC1_MMUL(iR, iI, iT, iN);
         MCUXCLOSCCAPKC_FXIMC1_MSUB(iR, iN, iR, iN);

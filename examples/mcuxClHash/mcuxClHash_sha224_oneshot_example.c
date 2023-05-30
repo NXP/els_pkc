@@ -18,7 +18,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClToolchain.h>             // memory segment definitions
-#include <stdbool.h>               // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
 
@@ -34,7 +33,7 @@ static const uint8_t hashExpected[28] CSS_CONST_SEGMENT = {
 };
 
 
-bool mcuxClHash_sha224_oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha224_oneshot_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -51,7 +50,7 @@ bool mcuxClHash_sha224_oneshot_example(void)
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
-    //Allocate and initialize session
+    /* Allocate and initialize session */
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
     /**************************************************************************/
@@ -76,7 +75,7 @@ bool mcuxClHash_sha224_oneshot_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if(hashOutputSize != sizeof(hash))
+    if(sizeof(hash) != hashOutputSize)
 	{
 		return MCUXCLEXAMPLE_ERROR;
 	}
@@ -84,9 +83,9 @@ bool mcuxClHash_sha224_oneshot_example(void)
     /**************************************************************************/
     /* Verification                                                           */
     /**************************************************************************/
-    for (size_t i = 0U; i < sizeof(hash); i++)
+    for(size_t i = 0U; i < sizeof(hash); i++)
     {
-        if (hash[i] != hashExpected[i]) // Expect that the resulting hash matches our expected output
+        if(hashExpected[i] != hash[i])  // Expect that the resulting hash matches our expected output
         {
             return MCUXCLEXAMPLE_ERROR;
         }

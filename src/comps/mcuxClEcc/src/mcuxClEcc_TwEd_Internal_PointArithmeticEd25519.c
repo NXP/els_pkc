@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -30,6 +30,7 @@
 #include <internal/mcuxClEcc_TwEd_Internal_Ed25519_FUP.h>
 
 
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * This function implements a point doubling on Ed25519 in extended homogeneous coordinates.
  * More precisely, given a point P = (X:Y:Z:T) in extended homogeneous coordinates it calculates
@@ -50,7 +51,8 @@
  *
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PointDoubleEd25519)
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PointDoubleEd25519, mcuxClEcc_TwEd_PointDoubleFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PointDoubleEd25519(void)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_TwEd_PointDoubleEd25519);
@@ -62,6 +64,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PointDoubleEd2551
         );
 }
 
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * This function implements a unified mixed extended point addition on Ed25519.
  * More precisely, given a point P1 = (X1:Y1:Z1:T1) in extended homogeneous
@@ -85,7 +88,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PointDoubleEd2551
  *
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_MixedPointAddEd25519)
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_MixedPointAddEd25519, mcuxClEcc_TwEd_MixedPointAddFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_MixedPointAddEd25519(void)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_TwEd_MixedPointAddEd25519);

@@ -50,12 +50,13 @@
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair,  \
                                       MCUXCLECC_STATUS_FAULT_ATTACK);   \
         }                                                              \
-    } while(false)
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \
+    } while(false)                                                          \
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
+
 
 #define MCUXCLECC_FP_CALLED_EDDSA_KEYGEN_HASH_PRIVKEY  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)
-
-#define MCUXCLECC_EDDSA_GENKEYPAIR_HASHOUTPUT_CPUWA(hashOutputLength)    0u
 
 
 /******************************************************************************/
@@ -132,7 +133,9 @@
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature,     \
                                       MCUXCLECC_STATUS_FAULT_ATTACK);        \
         }                                                                   \
-    } while(false)
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \
+    } while(false)                                                          \
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
 #define MCUXCLECC_FP_CALLED_EDDSA_SIGN_CALC_SCALAR   \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init),    \
@@ -141,8 +144,6 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process), \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish)
 
-#define MCUXCLECC_EDDSA_SIGN_CALC_SCALAR_HASHOUTPUT_CPUWA(hashOutputLength)    0u
-
 
 /******************************************************************************/
 /* Macro to compute input hash and store it in PKC workarea.                  */
@@ -150,7 +151,7 @@
 /* byte length of hash (= 2b/8) can be derived from                           */
 /* byte length of encoded public key (= b/8).                                 */
 /******************************************************************************/
-#define MCUXCLECC_FP_EDDSA_SIGN_VERIFY_CALC_HASH(pSession, pCtx, hashAlg, pHashPrefix,hashPrefixLen, pSignatureR, signatureRLen, pPubKey, pubKeyLen, pIn, inSize, pOutput) \
+#define MCUXCLECC_FP_EDDSA_SIGN_VERIFY_CALC_HASH(pSession, pCtx, hashAlg, pHashPrefix, hashPrefixLen, pSignatureR, signatureRLen, pPubKey, pubKeyLen, pIn, inSize, pOutput) \
     do{                                                                     \
         uint32_t outLength = 0u;                                            \
                                                                             \
@@ -234,7 +235,5 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),                     \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),                     \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish)
-
-#define MCUXCLECC_EDDSA_SIGN_VERIFY_CALC_HASH_HASHOUTPUT_CPUWA(hashOutputLength)    0u
 
 #endif /* MCUXCLECC_EDDSA_INTERNAL_HASH_H_ */

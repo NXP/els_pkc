@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 #ifndef MCUXCLCIPHERMODES_INTERNAL_CONSTANTS_H_
 #define MCUXCLCIPHERMODES_INTERNAL_CONSTANTS_H_
 

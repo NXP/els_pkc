@@ -25,6 +25,7 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClSession.h>
+#include <mcuxClEcc_Types.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClCore_Buffer.h>
@@ -55,10 +56,12 @@ extern "C" {
 #define MCUXCLECC_EDDSA_PRIVKEY_INPUT     (0xA5A5A5A5U)  ///< the private key d is passed as input
 #define MCUXCLECC_EDDSA_PRIVKEY_GENERATE  (0X5A5A5A5AU)  ///< the private key is generated internally
 
-
 /**********************************************************/
 /* Declarations for internal EdDSA functions              */
 /**********************************************************/
+
+
+
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_SetupEnvironment)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment(
@@ -72,12 +75,32 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_CalcHashModN(
     mcuxClSession_Handle_t pSession,
     mcuxClHash_Context_t pCtx,
     mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
-    const uint32_t *pHashPrefix,
+    const uint8_t *pHashPrefix,
     uint32_t hashPrefixLen,
     const uint8_t *pSignatureR,
     const uint8_t *pPubKey,
     const uint8_t *pIn,
     uint32_t inSize
+    );
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateHashPrefix)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateHashPrefix(
+    const mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+    uint32_t phflag,
+    mcuxCl_InputBuffer_t pContext,
+    uint32_t contextLen,
+    mcuxCl_Buffer_t pHashPrefix
+    );
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_PreHashMessage)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_PreHashMessage(
+    mcuxClSession_Handle_t pSession,
+    mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+    uint32_t phflag,
+    const uint8_t *pIn,
+    uint32_t inSize,
+    const uint8_t **pMessage,
+    uint32_t *messageSize
     );
 
 
@@ -88,8 +111,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_CalcHashModN(
 /**
  * Decode function pointer structure for EdDsa point decoding.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClEcc_EdDSA_DecodePointFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_EdDSA_DecodePointFunction_t)(mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
-                                                                                              const uint8_t *pEncPoint);
+                                                                                              const uint8_t *pEncPoint));
 
 /**
  * Domain parameter structure for EdDSA functions.
@@ -105,6 +129,8 @@ struct mcuxClEcc_EdDSA_DomainParams
     mcuxClHash_Algo_t algoHash;             ///< Hash algorithm descriptor of the hash function H() to be used for hashing the private key, public data and plaintext messages
     mcuxClEcc_EdDSA_DecodePointFunction_t pDecodePointFct; ///< Function to be used to decode a point
     uint32_t pDecodePoint_FP_FuncId;                      ///< ID of function to be used to decode a point
+    const uint32_t *pDomPrefix;            ///< The prefix string for dom2 or dom4
+    uint32_t domPrefixLen;                 ///< Length of the prefix string for dom2 or dom4 in bytes
 };
 
 /**
@@ -112,8 +138,8 @@ struct mcuxClEcc_EdDSA_DomainParams
  */
 struct mcuxClEcc_EdDSA_GenerateKeyPairDescriptor
 {
-    uint32_t options;       ///< option of GenerateKeyPair, see @ref MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_
-    uint8_t *pPrivKeyInput; ///< Pointer to private key input; set to NULL, if MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_GENERATE is chosen
+    uint32_t options;              ///< option of GenerateKeyPair, see @ref MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_
+    uint8_t *pPrivKeyInput;        ///< Pointer to private key input; set to NULL, if MCUXCLECC_EDDSA_GENERATEKEYPAIR_OPTION_GENERATE is chosen
 };
 
 /**
@@ -123,9 +149,12 @@ struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor
 {
     uint32_t generateOption;      ///< option of signature generation
     uint32_t verifyOption;        ///< option of signature verification
-    const uint32_t *pHashPrefix;  ///< pointer to hash prefix
+    uint32_t phflag;              ///< option of pre-hashing
+    const uint8_t *pHashPrefix;   ///< pointer to hash prefix
     uint32_t hashPrefixLen;       ///< size of hash prefix
 };
+
+
 
 #ifdef __cplusplus
 } /* extern "C" */

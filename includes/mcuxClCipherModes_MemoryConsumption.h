@@ -11,7 +11,6 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-
 /** @file  mcuxClCipher_MemoryConsumption.h
  *  @brief Memory consumption of the mcuxClCipher component
  *         All work area sizes in bytes are a multiple of CPU wordsize.

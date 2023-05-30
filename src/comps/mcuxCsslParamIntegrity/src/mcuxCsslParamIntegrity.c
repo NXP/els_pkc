@@ -21,10 +21,12 @@
 #pragma coverity compliance block deviate MISRA_C_2012_Rule_17_1 "Usage of stdarg.h feature has been analyzed and approved, compiler error has been added for exceptions (when CPU word size > 32 bit)"
 #endif
 
+MCUX_CSSL_FP_FUNCTION_DEF(rotate_right)
 static uint32_t rotate_right(uint32_t val, uint32_t shift_amt) {
     return ((val) >> (shift_amt) % 32u) | ((val) << (32u - (shift_amt)) % 32u);
 }
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslParamIntegrity_InternalProtect)
 static mcuxCsslParamIntegrity_Checksum_t mcuxCsslParamIntegrity_InternalProtect(size_t nargs, va_list args) {
     mcuxCsslParamIntegrity_Checksum_t result = MCUXCSSLPARAMINTEGRITY_BASE_CHECKSUM;
     for(size_t i = 0; i < nargs; i++) {
@@ -43,6 +45,7 @@ static mcuxCsslParamIntegrity_Checksum_t mcuxCsslParamIntegrity_InternalProtect(
     return result;
 }
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslParamIntegrity_Protect)
 mcuxCsslParamIntegrity_Checksum_t mcuxCsslParamIntegrity_Protect
 (
     size_t nargs, 

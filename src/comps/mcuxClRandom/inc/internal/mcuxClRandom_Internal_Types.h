@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,33 +32,37 @@ extern "C" {
 /**
  * @brief Function prototype for init function pointer in OperationMode structure.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandom_initFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (* mcuxClRandom_initFunction_t)(
         mcuxClSession_Handle_t session
-);
+));
 
 /**
  * @brief Function prototype for reseed function pointer in OperationMode structure.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandom_reseedFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (*mcuxClRandom_reseedFunction_t)(
         mcuxClSession_Handle_t session
-);
+));
 
 /**
  * @brief Function prototype for generate function pointer in OperationMode structure.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandom_generateFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (*mcuxClRandom_generateFunction_t)(
         mcuxClSession_Handle_t session,
         uint8_t * pOut,
         uint32_t outLength
-);
+));
 
 /**
  * @brief Function prototype for selftest function pointer in OperationMode structure.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClRandom_selftestFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) (*mcuxClRandom_selftestFunction_t)(
         mcuxClSession_Handle_t session,
         mcuxClRandom_Mode_t mode
-);
+));
 
 /**
  * @brief Random operation mode descriptor structure
@@ -93,7 +97,7 @@ typedef struct
 struct mcuxClRandom_ModeDescriptor
 {
     const mcuxClRandom_OperationModeDescriptor_t *pOperationMode;       ///< pointer to top level information about the DRBG mode operated in (NORMALMODE, TESTMODE, ELSMODE, PATCHMODE)
-    void *pDrbgMode;                                                   ///< pointer to DRBG specific information depending on the chosen mode
+    const void *pDrbgMode;                                             ///< pointer to DRBG specific information depending on the chosen mode
     uint32_t auxParam;                                                 ///< auxiliary parameter depending on the chosen mode
     uint32_t contextSize;                                              ///< size of context
     uint16_t securityStrength;                                         ///< supported security strength of DRBG

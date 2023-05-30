@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -43,17 +43,17 @@ static inline bool mcuxClExample_rfc3394_wrap(
 
     if (extkey == MCUXCLELS_CIPHER_EXTERNAL_KEY)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (pKek,
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (pKek,
                                                                      pKek_in,
                                                                      kekLength,
                                                                      kekLength));
 
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
         {
             return false;
         }
 
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     }
 
     // Intermediate state is stored in pOutput as it is large enough
@@ -165,17 +165,17 @@ static inline bool mcuxClExample_rfc3394_unwrap(
 
     if (extkey == MCUXCLELS_CIPHER_EXTERNAL_KEY)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_copy (pKek,
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (pKek,
                                                                      pKek_in,
                                                                      kekLength,
                                                                      kekLength));
 
-        if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token) || (0u != result))
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
         {
             return false;
         }
 
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
     }
 
     // initialize buffer

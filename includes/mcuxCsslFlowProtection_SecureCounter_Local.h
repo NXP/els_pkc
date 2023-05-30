@@ -28,6 +28,9 @@
 /* Include the C99 standard integer types. */
 #include <stdint.h>
 
+/* Include standard boolean types */
+#include <stdbool.h>
+
 
 /**
  * \def MCUX_CSSL_FP_PROTECTED_TYPE_IMPL
@@ -408,7 +411,32 @@ do                                                                  \
  * \ingroup csslFpCntFunction
  */
 #define MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL() \
-} while (0)
+} while (false)
+
+/**
+ * \def MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL
+ * \brief Implementation of a flow protected void function call meant to be used
+ *        from within an unprotected function, that must be terminated by
+ *        #MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL.
+ * \ingroup csslFpCntFunction
+ *
+ *
+ * \param token  Fresh variable name to store the protection token of \p call.
+ * \param call   The (protected) function call that must be performed.
+ */
+#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL(token, call)   \
+do                                                                  \
+{                                                                   \
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED_IMPL(token, call)
+
+/**
+ * \def MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL
+ * \brief Implementation of the end of a section started by
+ * #MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL.
+ * \ingroup csslFpCntFunction
+ */
+#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL() \
+} while (false)
 
 /**
  * @def MCUX_CSSL_FP_ASSERT_IMPL

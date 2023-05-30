@@ -81,6 +81,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
    *    If the RNG does not provide an appropriate level of entropy (security strength)
    *    for the given key size, this function returns MCUXCLRSA_STATUS_RNG_ERROR error.
    */
+#ifdef MCUXCL_FEATURE_RSA_STRENGTH_CHECK
+  uint32_t securityStrength = MCUXCLRSA_GET_MINIMUM_SECURITY_STRENGTH(bitLenKey);
+  MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, securityStrength));
+  if(MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
+  {
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_RNG_ERROR,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength));
+  }
+#endif
 
   /*
    * 3. Check if E is FIPS compliant, i.e., is odd values in the range 2^16 < e < 2^256,
@@ -92,8 +101,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_VerifyE, mcuxClRsa_VerifyE(pPublicExponent, &byteLenE));
   if(MCUXCLRSA_STATUS_KEYGENERATION_OK != retVal_VerifyE)
   {
+#if defined(MCUXCL_FEATURE_RSA_STRENGTH_CHECK)
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_INVALID_INPUT,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE));
+#else
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt, MCUXCLRSA_STATUS_INVALID_INPUT,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE));
+#endif
   }
 
   /* 4. Initialize PKC. */
@@ -199,6 +214,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
     {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt,
         MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED,
+#ifdef MCUXCL_FEATURE_RSA_STRENGTH_CHECK
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
@@ -235,6 +253,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
     {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Crt,
         MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED,
+#ifdef MCUXCL_FEATURE_RSA_STRENGTH_CHECK
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
@@ -586,6 +607,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Crt(
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_KeyGeneration_Crt,
     MCUXCLRSA_STATUS_KEYGENERATION_OK,
     MCUXCLRSA_STATUS_FAULT_ATTACK,
+#ifdef MCUXCL_FEATURE_RSA_STRENGTH_CHECK
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
+#endif
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),

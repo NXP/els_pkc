@@ -47,14 +47,14 @@
  * @ingroup mcuxClHash_Constants
  * @{
  */
-#define MCUXCLHASH_OUTPUT_SIZE_MD5          (16U) ///< MD5 output size: 120 bit (16 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_1        (20U) ///< SHA-1 output size: 160 bit (20 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_224      (28U) ///< SHA-224 output size: 224 bit (28 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_256      (32U) ///< SHA-256 output size: 256 bit (32 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_384      (48U) ///< SHA-384 output size: 384 bit (48 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_512      (64U) ///< SHA-512 output size: 512 bit (64 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_512_224  (28U) ///< SHA-512/224 output size: 224 bit (28 bytes)
-#define MCUXCLHASH_OUTPUT_SIZE_SHA_512_256  (32U) ///< SHA-512/256 output size: 256 bit (32 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_MD5                  (16U) ///< MD5 output size: 128 bit (16 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_1                (20U) ///< SHA-1 output size: 160 bit (20 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_224              (28U) ///< SHA-224 output size: 224 bit (28 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_256              (32U) ///< SHA-256 output size: 256 bit (32 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_384              (48U) ///< SHA-384 output size: 384 bit (48 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_512              (64U) ///< SHA-512 output size: 512 bit (64 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_512_224          (28U) ///< SHA-512/224 output size: 224 bit (28 bytes)
+#define MCUXCLHASH_OUTPUT_SIZE_SHA_512_256          (32U) ///< SHA-512/256 output size: 256 bit (32 bytes)
 /**@}*/
 
 
@@ -73,6 +73,7 @@
 #define MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_128 (168uL) ///< SHA3-CSHAKE 128 output size: 1344 bit (168 bytes)
 #define MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_256 (136uL) ///< SHA3-CSHAKE 256 output size: 1088 bit (136 bytes)
 /**@}*/
+
 
 
 

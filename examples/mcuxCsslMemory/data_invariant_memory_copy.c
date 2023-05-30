@@ -17,7 +17,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <mcuxCsslMemory.h>
-#include <mcuxCsslExamples.h>
+#include <mcuxCsslMemory_Examples.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
 #include <mcuxCsslParamIntegrity.h>

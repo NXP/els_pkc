@@ -42,7 +42,11 @@ volatile mcuxClRandomModes_Context_CtrDrbg_Aes192_t mcuxClRandomModes_Context_Ae
 volatile mcuxClRandomModes_Context_CtrDrbg_Aes256_t mcuxClRandomModes_Context_Aes256;
 #endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
-uint8_t mcuxClRandomModes_CpuWA_MaxSize[MCUXCLRANDOMMODES_CPUWA_MAXSIZE];
+volatile uint8_t mcuxClRandomModes_CpuWA_MaxSize[MCUXCLRANDOMMODES_CPUWA_MAXSIZE];
+volatile uint8_t mcuxClRandomModes_init_CpuWA_Size[MCUXCLRANDOMMODES_INIT_WACPU_SIZE_MAX];
+volatile uint8_t mcuxClRandomModes_reseed_CpuWA_Size[MCUXCLRANDOMMODES_RESEED_WACPU_SIZE_MAX];
+volatile uint8_t mcuxClRandomModes_generate_CpuWA_Size[MCUXCLRANDOMMODES_GENERATE_WACPU_SIZE_MAX];
+volatile uint8_t mcuxClRandomModes_selftest_CpuWA_Size[MCUXCLRANDOMMODES_SELFTEST_WACPU_SIZE_MAX];
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 
 /* *********************** */

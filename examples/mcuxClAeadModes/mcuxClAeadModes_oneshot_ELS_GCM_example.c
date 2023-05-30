@@ -11,6 +11,11 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+/**
+ * @file:  mcuxClAeadModes_oneshot_ELS_GCM_example.c
+ * @brief: Example Aead application
+ */
+
 #include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_Key_Helper.h>
@@ -23,6 +28,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClToolchain.h> // memory segment definitions
+#include <mcuxClCore_Examples.h>
 #include <stdbool.h>  // bool type for the example's return code
 
 /** Key for the AES encryption. */
@@ -60,7 +66,7 @@ static uint8_t const msg_tag_expected[16u] = {0xB2U, 0xC5U, 0xCFU, 0xC3U,
                                               0xFCU, 0x25U, 0xBCU, 0x10U,
                                               0xC9U, 0xCAU, 0xFFU, 0xD5U};
 
-bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_oneshot_ELS_GCM_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -69,7 +75,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
     /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /* Initialize session */
@@ -99,7 +105,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
                                        &key_properties,
                                        dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /**************************************************************************/
@@ -129,7 +135,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_enc) || (MCUXCLAEAD_STATUS_OK != result_enc))
     {
-         return false;
+         return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -137,7 +143,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
     {
         if (msg_enc[i] != msg_enc_expected[i]) // Expect that the resulting encrypted msg matches our expected output
         {
-            return false;
+            return MCUXCLEXAMPLE_ERROR;
         }
     }
     // TODO: change to MCUXCLELS_AEAD_TAG_SIZE
@@ -145,7 +151,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
     {
         if (msg_tag[i] != msg_tag_expected[i]) // Expect that the resulting authentication tag matches our expected output
         {
-            return false;
+            return MCUXCLEXAMPLE_ERROR;
         }
     }
 
@@ -175,7 +181,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_dec) || (MCUXCLAEAD_STATUS_OK != result_dec))
     {
-         return false;
+         return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -183,7 +189,7 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
     {
         if (msg_dec[i] != msg_plain[i]) // Expect that the resulting decrypted msg matches our initial message
         {
-            return false;
+            return MCUXCLEXAMPLE_ERROR;
         }
     }
 
@@ -196,21 +202,21 @@ bool mcuxClAeadModes_oneshot_ELS_GCM_example(void)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-         return false;
+         return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return false;
+        return MCUXCLEXAMPLE_ERROR;
     }
 
-    return true;
+    return MCUXCLEXAMPLE_OK;
 }

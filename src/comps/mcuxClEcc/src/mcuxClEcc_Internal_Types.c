@@ -16,11 +16,7 @@
  * @brief Instantiation of the type descriptors supported by the mcuxClEcc component.
  */
 
-
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
-#include <internal/mcuxClEcc_Internal.h>
-
-
 
 /**********************************************************/
 /* Key pair generation descriptors                        */
@@ -36,11 +32,11 @@ const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_GeneratePrivKe
 /**********************************************************/
 /* Signature protocol descriptors                         */
 /**********************************************************/
-
 const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor =
 {
-    .generateOption = 0u,    // TODO
-    .verifyOption   = 0u,
-    .pHashPrefix    = NULL,
+    .generateOption     = 0u,
+    .verifyOption       = 0u,
+    .pHashPrefix        = NULL,
     .hashPrefixLen  = 0u
 };
+

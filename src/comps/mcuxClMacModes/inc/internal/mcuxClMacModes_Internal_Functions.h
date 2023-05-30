@@ -18,7 +18,7 @@
 #ifndef MCUXCLMACMODES_INTERNAL_FUNCTIONS_H_
 #define MCUXCLMACMODES_INTERNAL_FUNCTIONS_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxCsslFlowProtection.h>
 #include <mcuxClMac_Types.h>
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClKey_Types.h>
@@ -38,7 +38,7 @@ extern "C" {
  * This function will perform the actual MAC compute operation based on the given mode
  *
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_compute)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_compute, mcuxClMac_ComputeFunc_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(
   mcuxClSession_Handle_t session,
   mcuxClKey_Handle_t key,
@@ -49,13 +49,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(
   uint32_t * const pMacLength
 );
 
+
 /**
  * @brief MacModes Multipart Init function type
  *
  * This function will perform the actual MAC init operation based on the given mode
  *
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_init)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_init, mcuxClMac_InitFunc_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_init(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
@@ -68,7 +69,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_init(
  * This function will perform the actual MAC process operation based on the given mode
  *
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_process)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_process, mcuxClMac_ProcessFunc_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_process(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
@@ -76,19 +77,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_process(
   uint32_t inLength
 );
 
+
 /**
  * @brief MacModes Multipart Finish function type
  *
  * This function will perform the actual MAC finish operation based on the given mode
  *
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_finish)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_finish, mcuxClMac_FinishFunc_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_finish(
   mcuxClSession_Handle_t session,
   mcuxClMac_Context_t * const pContext,
   mcuxCl_Buffer_t pMac,
   uint32_t * const pMacLength
 );
+
 
 
 

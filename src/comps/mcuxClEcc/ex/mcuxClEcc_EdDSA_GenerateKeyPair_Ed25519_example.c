@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -28,6 +28,8 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE
@@ -51,7 +53,7 @@ static const uint8_t pRefPubKey[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY] __attrib
     0xebu, 0xf8u, 0x19u, 0x68u, 0x34u, 0x67u, 0xe2u, 0xbfu
 };
 
-bool mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
@@ -70,9 +72,8 @@ bool mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example(void)
 
     /* Initialize the RNG context and Initialize the PRNG */
     // TODO: Use AES-256 DRBG (CLNS-6508)
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg)
-
-
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0u, mcuxClRandomModes_Mode_ELS_Drbg);
+                                             
     /* Allocate space for and initialize private key handle for an Ed25519 private key */
     uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;

@@ -73,7 +73,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
      * Delete that key in order to force PRNG initialization.
      */
     mcuxClEls_KeyProp_t keyProp = {0};
-    uint8_t keyIdx = 0u;
+    uint32_t keyIdx = 0u;
 
     for(keyIdx = 0u; keyIdx < MCUXCLELS_KEY_SLOTS; keyIdx++)
     {
@@ -94,7 +94,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState),
-                                            (uint16_t)(keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
+                                            (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async));
             }
 

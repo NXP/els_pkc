@@ -61,7 +61,7 @@ extern "C" {
 /**
  * Declaration of function to perform plain (not protected against side-channel attacks) scalar multiplication with variable input point
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainVarScalarMult)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainVarScalarMult, mcuxClEcc_ScalarMultFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainVarScalarMult(
     mcuxClSession_Handle_t pSession,                          ///<  [in]  pSession            Handle for the current CL session
     mcuxClEcc_CommonDomainParams_t *pDomainParams,            ///<  [in]  pDomainParams       Pointer to ECC common domain parameters structure
@@ -74,10 +74,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainVarScalarMul
  * Declaration of the mixed point addition function
  * and structure containing the function pointer and its associated flow protection ID.
  */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_TwEd_MixedPointAddFunction_t)(void);
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClEcc_TwEd_MixedPointAddFunction_t,
+    typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_TwEd_MixedPointAddFunction_t)(void));
 typedef struct
 {
-	mcuxClEcc_TwEd_MixedPointAddFunction_t pMixedPointAddFct;   ///< mixed point addition function
+    mcuxClEcc_TwEd_MixedPointAddFunction_t pMixedPointAddFct;   ///< mixed point addition function
     uint32_t mixedPointAddFct_FP_FuncId;                       ///< FP ID of the function
 } mcuxClEcc_TwEd_MixedPointAddFunction_FP_t;
 
@@ -85,10 +86,11 @@ typedef struct
  * Declaration of the point doubling function
  * and structure containing the function pointer and its associated flow protection ID.
  */
-typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_TwEd_PointDoubleFunction_t)(void);
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClEcc_TwEd_PointDoubleFunction_t,
+    typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_TwEd_PointDoubleFunction_t)(void));
 typedef struct
 {
-	mcuxClEcc_TwEd_PointDoubleFunction_t pPointDoubleFct;   ///< point doubling function
+    mcuxClEcc_TwEd_PointDoubleFunction_t pPointDoubleFct;   ///< point doubling function
     uint32_t pointDoubleFct_FP_FuncId;                     ///< FP ID of the function
 } mcuxClEcc_TwEd_PointDoubleFunction_FP_t;
 
@@ -96,11 +98,12 @@ typedef struct
  * Declaration of the comb method pointer selection function
  * and structure containing the function pointer and its associated flow protection ID.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClEcc_TwEd_PtrSelectFunction_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_TwEd_PtrSelectFunction_t)(
     mcuxClSession_Handle_t pSession, ///<  [in]  pSession            Handle for the current CL session
     uint32_t scalarWord,            ///<  [in]  scalarWord          CPU word containing the scalar bits to be processed
     uint8_t scalarOffset            ///<  [in]  scalarDigitOffset   Offset in scalarWord of scalar bit(s) to be processed
-);
+));
 typedef struct
 {
     mcuxClEcc_TwEd_PtrSelectFunction_t pPtrSelectFct; ///< Pointer selection function
@@ -110,7 +113,7 @@ typedef struct
 /**
  * Declaration of the plain (not protected against side-channel attacks) comb method pointer selection function
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainPtrSelectComb)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainPtrSelectComb, mcuxClEcc_TwEd_PtrSelectFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectComb(
     mcuxClSession_Handle_t pSession, ///<  [in]  pSession            Handle for the current CL session
     uint32_t scalarWord,            ///<  [in]  scalarWord          CPU word containing the digit (i3i2i1i0)_2
@@ -120,7 +123,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectCom
 /**
  * Declaration of the plain (not protected against side-channel attacks) Montgomery ladder pointer selection function
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainPtrSelectML)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainPtrSelectML, mcuxClEcc_TwEd_PtrSelectFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectML(
     mcuxClSession_Handle_t pSession, ///<  [in]  pSession            Handle for the current CL session
     uint32_t scalarWord,            ///<  [in]  scalarWord          CPU word containing the current scalar bit b

@@ -89,6 +89,7 @@ typedef uint32_t mcuxCsslParamIntegrity_Checksum_t;
  * @param ... The parameters that should be protected. Note that parameters bigger than a single machine word are not supported.
  * @return checksum over the input parameters to be protected
  */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxCsslParamIntegrity_Protect)
 mcuxCsslParamIntegrity_Checksum_t mcuxCsslParamIntegrity_Protect(size_t nargs, ...);
 
 /**

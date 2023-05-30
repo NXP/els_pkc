@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -35,6 +35,7 @@
  **/
 #define MCUXCLEXAMPLE_CONST_EXTERNAL_KEY 0U
 #define MCUXCLEXAMPLE_CONST_INTERNAL_KEY 1U
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClExample_Key_Init_And_Load)
 static inline bool mcuxClExample_Key_Init_And_Load(mcuxClSession_Handle_t pSession,
                                                   mcuxClKey_Handle_t pKey,
                                                   mcuxClKey_Type_t type,

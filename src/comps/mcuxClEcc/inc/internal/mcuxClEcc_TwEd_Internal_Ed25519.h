@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -38,25 +38,25 @@
 /**
  * Declaration of the point doubling function on Ed25519
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PointDoubleEd25519)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PointDoubleEd25519, mcuxClEcc_TwEd_PointDoubleFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PointDoubleEd25519(void);
 
 /**
  * Declaration of the mixed point addition function on Ed25519
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_MixedPointAddEd25519)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_MixedPointAddEd25519, mcuxClEcc_TwEd_MixedPointAddFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_MixedPointAddEd25519(void);
 
 /**
  * Declaration of function to perform plain (not protected against side-channel attacks) scalar multiplication with the base point on Ed25519
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainFixScalarMult25519)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainFixScalarMult25519, mcuxClEcc_ScalarMultFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainFixScalarMult25519(
     mcuxClSession_Handle_t pSession,                 ///<  [in]  pSession            Handle for the current CL session
     mcuxClEcc_CommonDomainParams_t *pDomainParams,   ///<  [in]  pDomainParams       Pointer to ECC common domain parameters structure
     uint8_t iScalar,                                ///<  [in]  iScalar             Pointer table index of secret scalar lambda
     uint32_t scalarBitLength,                       ///<  [in]  scalarBitLength     Bit length of the scalar; must be a multiple of 4
-	uint32_t options								///<  [in]  options				Parameter to pass options
+    uint32_t options                                ///<  [in]  options             Parameter to pass options
 );
 
 

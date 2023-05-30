@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
 #include <mcuxClRandom.h>
@@ -52,13 +50,13 @@
  *   - MCUXCLRANDOM_STATUS_OK              if the selftest finished successfully
  *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK    if the selftest failed
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_PrDisabled_selftestAlgorithm)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_PrDisabled_selftestAlgorithm, mcuxClRandomModes_selftestAlgorithm_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_selftestAlgorithm(mcuxClSession_Handle_t pSession, mcuxClRandom_Context_t pTestCtx, mcuxClRandom_ModeDescriptor_t *pTestMode)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_PrDisabled_selftestAlgorithm);
 
     /* Set entropy input pointer in pTestMode */
-    mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (mcuxClRandomModes_DrbgModeDescriptor_t *) pTestMode->pDrbgMode;
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pTestMode->pDrbgMode;
 
     const uint32_t *const * testVectors = pDrbgMode->pDrbgTestVectors;
     MCUX_CSSL_FP_FUNCTION_CALL(ret_updateIn, mcuxClRandomModes_updateEntropyInput(pTestMode,

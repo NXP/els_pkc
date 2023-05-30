@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -31,7 +31,7 @@
 /**
  * Plain pointer selection function
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainPtrSelectML)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_PlainPtrSelectML, mcuxClEcc_TwEd_PtrSelectFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectML(
     mcuxClSession_Handle_t pSession,
     uint32_t scalarWord,
@@ -65,7 +65,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainPtrSelectML(
      *     };
      */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    uint32_t *pOperands32 = (uint32_t *) pOperands;  /* MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in ECC component. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
+    uint32_t *pOperands32 = (uint32_t *) pOperands;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     uint32_t offsets_VY1_VZ1 = pOperands32[(TWED_ML_Y1 / 2u) + b];
     uint32_t offsets_VY2_VZ2 = pOperands32[(TWED_ML_Y2 / 2u) - b];
 

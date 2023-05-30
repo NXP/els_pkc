@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -31,6 +31,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 
 #include <mcuxClMemory_Types.h>
+#include <mcuxClCore_Analysis.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,21 +42,32 @@ extern "C" {
  **********************************************/
 
 /**
- * Overwrites a memory buffer with null bytes.
+ * Overwrites a memory buffer with null bytes. 
+ * 
+ * If the destination buffer is too small, i.e. if bufLength < length, 
+ * (length-bufLength) is added to the Flow Protection token (see @ref mcuxCsslFlowProtection).
  * 
  * @param[out]  pDst        Pointer to the buffer to be cleared.
  * @param[in]   length      size (in bytes) to be cleared.
- * @param[in]   bufLength   buffer size (if bufLength < len, only bufLength bytes are cleared).
+ * @param[in]   bufLength   buffer size (if bufLength < length, only bufLength bytes are cleared).
  *
- * @return A flow-protected value (see @ref mcuxCsslFlowProtection), indicating the number of bytes not cleared (nonzero if the destination buffer is too small)
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMemory_clear)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_clear (uint8_t *pDst, size_t length, size_t bufLength);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_clear (uint8_t *pDst, size_t length, size_t bufLength);
 
 
-/**
- * @}
- */
+/**********************************************
+ * MACROS
+ **********************************************/
+
+/** Helper macro to call #mcuxClMemory_clear with flow protection. */
+#define MCUXCLMEMORY_FP_MEMORY_CLEAR(pTarget, byteLen)  \
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_clear((uint8_t *) (pTarget), byteLen, byteLen))
+
+/** Helper macro to call #mcuxClMemory_clear with flow protection with buffer. */
+#define MCUXCLMEMORY_FP_MEMORY_CLEAR_WITH_BUFF(pTarget, byteLen, buffLen)  \
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_clear((uint8_t *) (pTarget), byteLen, buffLen))
+
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,9 +17,9 @@
  */
 
 
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc.h>
 #include <mcuxClMath_Functions.h>
@@ -82,7 +82,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivide(uint32_t iR_iX_iY_iT, u
     /* If number of leading zero bits after shift exceeds a PKC word, reduce length of Y. */
     MCUXCLPKC_WAITFORFINISH();
     uint32_t leadingZeroBits;
-    /* mcuxClMath_LeadingZeros always returns _OK. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_LeadingZeros((uint8_t)uptrtIndexY, &leadingZeroBits));
 
     if((8u * MCUXCLPKC_WORDSIZE) <= leadingZeroBits)

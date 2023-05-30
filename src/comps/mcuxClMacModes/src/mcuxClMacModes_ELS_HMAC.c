@@ -70,22 +70,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_HMAC_Onesh
     pDataIn += inLength;
 
     //set 0x80 byte
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult1, mcuxClMemory_set(pDataIn, 0x80, 1u, 1u));
-    if(0u != setResult1)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_HMAC_Oneshot, MCUXCLMAC_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET(pDataIn, 0x80, 1u);
 
     //set 0x00 bytes (+3 0x00 bytes because inLength is only 32 bits while length field in padding is 64 bits
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult2, mcuxClMemory_set(pDataIn + 1,
-                                                          0x00,
-                                                          totalPaddingLength - MCUXCLMAC_HMAC_MIN_PADDING_LENGTH + 1u + 3u,
-                                                          totalPaddingLength - 1u));
-    if(0u != setResult2)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_HMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
-    }
+    MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF(pDataIn + 1, 0x00, totalPaddingLength - MCUXCLMAC_HMAC_MIN_PADDING_LENGTH + 1u + 3u, totalPaddingLength - 1u);
     pDataIn += totalPaddingLength - 1u;
 
     //length of the unpadded message in bits

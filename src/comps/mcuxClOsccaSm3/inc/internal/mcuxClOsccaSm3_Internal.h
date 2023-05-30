@@ -48,6 +48,7 @@
 /**********************************************
  * Function declarations
  **********************************************/
-void mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length);
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOsccaSm3_core_sm3_switch_endianness)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length);
 
 #endif /* MCUXCLOSCCASM3_INTERNAL_H_ */

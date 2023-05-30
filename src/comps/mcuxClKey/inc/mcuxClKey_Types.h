@@ -140,31 +140,6 @@ typedef struct mcuxClKey_ProtectionDescriptor mcuxClKey_ProtectionDescriptor_t;
 typedef const mcuxClKey_ProtectionDescriptor_t * mcuxClKey_Protection_t;
 
 
-#ifdef MCUXCL_FEATURE_KEY_SELFTEST
-
-/**
- * @brief Key selftest descriptor structure
- *
- * This structure captures all the information that the Key interfaces need to
- * know about a particular Key selftest algorithm.
- */
-struct mcuxClKey_TestDescriptor;
-
-/**
- * @brief Key selftest descriptor type
- *
- * This type captures all the information that the Key interfaces need to know
- * about a particular Key selftest algorithm.
- */
-typedef struct mcuxClKey_TestDescriptor mcuxClKey_TestDescriptor_t;
-
-/**
- * @brief Key selftest type
- *
- * This type is used to refer to a Key selftest algorithm.
- */
-typedef const mcuxClKey_TestDescriptor_t * const mcuxClKey_Test_t;
-#endif /* MCUXCL_FEATURE_KEY_SELFTEST */
 /**
  * @brief Key generation descriptor structure
  *
@@ -187,6 +162,7 @@ typedef struct mcuxClKey_GenerationDescriptor mcuxClKey_GenerationDescriptor_t;
  * This type is used to refer to a Key generation algorithm.
  */
 typedef const mcuxClKey_GenerationDescriptor_t * const mcuxClKey_Generation_t;
+
 
 
 

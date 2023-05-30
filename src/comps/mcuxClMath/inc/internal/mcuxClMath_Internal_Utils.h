@@ -11,13 +11,15 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMath_Utils_Math.h
-*  @brief platform independent abstraction over math related builtin functions
-*/
+/**
+ * @file  mcuxClMath_Utils_Math.h
+ * @brief platform independent abstraction over math related builtin functions
+ */
+
 #ifndef MCUXCLMATH_INTERNAL_UTILS_H_
 #define MCUXCLMATH_INTERNAL_UTILS_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +29,7 @@ extern "C" {
  * Count leading zeros of non-zero value.
  * If the value is 0, the result is undefined.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_CountLeadingZerosWord)
 static inline uint32_t mcuxClMath_CountLeadingZerosWord(uint32_t value)
 {
 #ifdef __CLZ
@@ -40,18 +43,20 @@ static inline uint32_t mcuxClMath_CountLeadingZerosWord(uint32_t value)
  * Count trailing zeros of non-zero value.
  * If the value is 0, the result is undefined.
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_CountTrailingZeroesWord)
 static inline uint32_t mcuxClMath_CountTrailingZeroesWord(uint32_t value)
 {
 #if defined(__CLZ) && defined(__RBIT)
   return  __CLZ(__RBIT(value));
 #else
   uint32_t zeroes = 0u;
-  uint32_t lsb = value & 0x01u;
+  uint32_t valueShifted = value;
+  uint32_t lsb = valueShifted & 0x01u;
   while((lsb == 0u) && (zeroes < 32u) )
   {
     zeroes++;
-    value >>= 1u;
-    lsb = value & 0x01u;
+    valueShifted >>= 1u;
+    lsb = valueShifted & 0x01u;
   }
   return zeroes;
 #endif

@@ -289,6 +289,7 @@ mcuxCsslMemory_Copy_fault:  \
     (void)datareg;  \
     (void)success;  \
 }while(false)
+
 #else
     #error Unsupported compiler. The above section must be manually adapted to support your compiler inline assembly syntax.
 #endif /* Compiler selection */

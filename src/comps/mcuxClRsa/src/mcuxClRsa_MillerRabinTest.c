@@ -183,11 +183,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
       {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest, MCUXCLRSA_STATUS_RNG_ERROR);
       }
-      MCUX_CSSL_FP_FUNCTION_CALL(memcopy_result, mcuxClMemory_copy(pWitness, pWitnessCpu, byteLenPrime, byteLenPrime));
-      if(0u != memcopy_result)
-      {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest, MCUXCLRSA_STATUS_ERROR);
-      }
+      MCUXCLMEMORY_FP_MEMORY_COPY(pWitness, pWitnessCpu, byteLenPrime);
 
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 #else

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -9,8 +9,6 @@
 /* license terms. If you do not agree to be bound by the applicable license */
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
-/*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
 /*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLRANDOMMODES_FUNCTIONS_PATCHMODE_H_

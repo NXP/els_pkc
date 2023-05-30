@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -55,7 +55,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_SetupEnvironment);
 
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_SetupEnvironment(pSession, &(pDomainParams->common), noOfBuffers));
+    MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
+        mcuxClEcc_SetupEnvironment(pSession, &(pDomainParams->common), noOfBuffers));
+    if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_SetupEnvironment, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
     /* Import curve parameters a and d, convert them to MR modulo p, and store them in buffers ECC_CP0 and ECC_CP1. */
     uint32_t byteLenP = (uint32_t) pDomainParams->common.byteLenP;

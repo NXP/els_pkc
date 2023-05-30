@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -33,7 +33,7 @@
 /** Performs an example usage of the mcuxClRandom and mcuxClRandomModes components with ELS mode.
  * @retval true  The example code completed successfully
  * @retval false The example code failed */
-bool mcuxClRandomModes_CtrDrbg_AES256_ELS_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_ELS_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -93,7 +93,7 @@ bool mcuxClRandomModes_CtrDrbg_AES256_ELS_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult1, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer1,
-                                                  3u));
+                                                  sizeof(drbg_buffer1)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult1))
     {
         return MCUXCLEXAMPLE_ERROR;
@@ -105,7 +105,7 @@ bool mcuxClRandomModes_CtrDrbg_AES256_ELS_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult2, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer2,
-                                                  4u));
+                                                  sizeof(drbg_buffer2)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult2))
     {
         return MCUXCLEXAMPLE_ERROR;
@@ -127,7 +127,7 @@ bool mcuxClRandomModes_CtrDrbg_AES256_ELS_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult3, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer3,
-                                                  5u));
+                                                  sizeof(drbg_buffer3)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult3))
     {
         return MCUXCLEXAMPLE_ERROR;

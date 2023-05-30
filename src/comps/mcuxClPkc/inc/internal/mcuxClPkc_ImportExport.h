@@ -20,12 +20,13 @@
 #ifndef MCUXCLPKC_IMPORTEXPORT_H_
 #define MCUXCLPKC_IMPORTEXPORT_H_
 
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClMemory.h>
-#include <mcuxCsslFlowProtection.h>
+
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
+
 #include <mcuxClSession.h>
+#include <mcuxClMemory.h>
 
 #include <mcuxClPkc_Types.h>
 
@@ -56,7 +57,6 @@ extern "C" {
  *       <br>switch endianness byte-wisely, on platform not supporting unaligned access.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_SwitchEndianness)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint32_t length);
@@ -79,18 +79,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>@p iTarget</dt>
+ *       <dd>index of the PKC operand, size = PKC PS1LEN.
+ *       <br>The offset (UPTRT[iTarget]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.</dd>
  *     <dt>@p length</dt>
  *       <dd>it shall be equal to or smaller than PKC PS1LEN.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_ImportBigEndianToPkc)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length);
 
 /** Helper macro to call #mcuxClPkc_ImportBigEndianToPkc with flow protection. */
 #define MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(indexTarget, ptrSource, length) \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ImportBigEndianToPkc(indexTarget, ptrSource, length))
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ImportBigEndianToPkc(indexTarget, ptrSource, length))
 
 
 /**
@@ -106,23 +108,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>@p iTarget</dt>
+ *       <dd>index of the PKC operand, size = PKC PS1LEN.</dd>
  *     <dt>@p length</dt>
  *       <dd>it shall be equal to or smaller than PKC PS1LEN.</dd>
  *   </dl></dd>
  * </dl>
- *
- * @return Status of the mcuxClPkc_ImportLittleEndianToPkc operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
- * @retval #MCUXCLPKC_STATUS_OK    The function executed successfully
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_ImportLittleEndianToPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportLittleEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ImportLittleEndianToPkc(uint8_t iTarget, const uint8_t * pSource, uint32_t length);
 
 /** Helper macro to call #mcuxClPkc_ImportLittleEndianToPkc with flow protection. */
 #define MCUXCLPKC_FP_IMPORTLITTLEENDIANTOPKC(indexTarget, pSource, length)  \
-    do{ \
-        /* mcuxClPkc_ImportLittleEndianToPkc always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ImportLittleEndianToPkc(indexTarget, pSource, length));  \
-    } while (false)
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ImportLittleEndianToPkc(indexTarget, pSource, length))
 
 
 /**
@@ -139,12 +137,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ImportLittleEndianToPk
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
  *     <dt>@p iSource</dt>
- *       <dd>PKC integer stored in source buffer will be destroyed after calling this function.</dd>
+ *       <dd>index of the PKC operand, size = PKC PS1LEN.
+ *       <br>The offset (UPTRT[iSource]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.
+ *       <br>PKC integer stored in source buffer will be destroyed after calling this function.</dd>
  *     <dt>@p length</dt>
  *       <dd>it shall be equal to or smaller than PKC PS1LEN.</dd>
  *   </dl></dd>
  * </dl>
- *
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_ExportBigEndianFromPkc)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
@@ -167,23 +166,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTa
  * <dl>
  *   <dt>Parameter properties</dt>
  *   <dd><dl>
+ *     <dt>@p iSource</dt>
+ *       <dd>index of the PKC operand, size = PKC PS1LEN.</dd>
  *     <dt>@p length</dt>
  *       <dd>it shall be equal to or smaller than PKC PS1LEN.</dd>
  *   </dl></dd>
  * </dl>
- *
- * @return Status of the mcuxClPkc_ExportLittleEndianFromPkc operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t))
- * @retval #MCUXCLPKC_STATUS_OK    The function executed successfully
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_ExportLittleEndianFromPkc)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportLittleEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ExportLittleEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
 
 /** Helper macro to call #mcuxClPkc_ExportLittleEndianFromPkc with flow protection. */
 #define MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(ptrTarget, indexSource, length)  \
-    do{ \
-        /* mcuxClPkc_ExportLittleEndianFromPkc always returns _OK. */  \
-        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ExportLittleEndianFromPkc(ptrTarget, indexSource, length));  \
-    } while (false)
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_ExportLittleEndianFromPkc(ptrTarget, indexSource, length))
 
 
 /**
@@ -203,9 +198,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ExportLittleEndianFrom
  *      <dt>pSession:</dt>
  *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.</dd>
  *     <dt>@p iTarget_iTemp</dt>
- *       <dd><code>iTemp</code> (bits 0~7): index of temporary buffer (PKC operand).
- *       <br><code>iTarget</code> (bits 8~15): index of Target (PKC operand),
- *           where the imported integer will be stored.</dd>
+ *       <dd><code>iTemp</code> (bits 0~7): index of temporary buffer (PKC operand), size = PKC PS1LEN.
+ *       <br>The offset (UPTRT[iTemp]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.
+ *       <br><code>iTarget</code> (bits 8~15): index of Target (PKC operand), size = PKC PS1LEN,
+ *           where the imported integer will be stored.
+ *       <br>The offset (UPTRT[iTarget]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.</dd>
  *     <dt>@p length</dt>
  *       <dd>it shall be equal to or smaller than PKC PS1LEN.</dd>
  *   </dl></dd>
@@ -264,8 +261,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportLittleEndi
  *     <dt>pSession:</dt>
  *       <dd>The session pointed to by pSession has to be initialized prior to a call to this function.</dd>
  *     <dt>@p iSource_iTemp</dt>
- *       <dd><code>iTemp</code> (bits 0~7): index of temporary buffer (PKC operand).
- *       <br><code>iSource</code> (bits 8~15): index of Source (PKC operand) to be exported.
+ *       <dd><code>iTemp</code> (bits 0~7): index of temporary buffer (PKC operand), size = PKC PS1LEN.
+ *       <br>The offset (UPTRT[iTemp]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.</dd>
+ *       <br><code>iSource</code> (bits 8~15): index of Source (PKC operand) to be exported, size = PKC PS1LEN.
+ *       <br>The offset (UPTRT[iSource]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE.</dd>
  *       <br>PKC integer stored in source buffer will be destroyed after calling this function,
  *           but it is not cleared and is still sensitive.</dd>
  *     <dt>@p length</dt>
@@ -307,6 +306,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportBigEndianF
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPkc_SecureExportLittleEndianFromPkc)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureExportLittleEndianFromPkc(uint8_t * pTarget, uint8_t iSource, uint32_t length);
+
 
 #ifdef __cplusplus
 } /* extern "C" */

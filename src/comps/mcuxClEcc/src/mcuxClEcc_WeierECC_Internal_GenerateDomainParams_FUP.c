@@ -26,7 +26,9 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_GenerateDomainParams_Reduce_R2N_R2P[4] 
 
 
 
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 /* FUP program: prepare R2P and R2N strictly smaller than P and N. */
 
 
 /* FUP program: converts base point G to Jacobian coordinates (X:Y:Z=1) in MR */
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

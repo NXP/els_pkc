@@ -60,7 +60,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   /* Set up hash input */
   uint8_t * pHashInput = pHashOutput + hLen;
 
-  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pHashInput, pInput, inputLength, inputLength));
+  MCUXCLMEMORY_FP_MEMORY_COPY(pHashInput, pInput, inputLength);
 
   /* counter = UPPER_BOUND(outputLength / pHashAlgo->hashSize) */
   const uint32_t mxCounter = ((outputLength + hLen - 1U) / hLen);
@@ -95,7 +95,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
 
     /* Concatenate the hash of the seed pInput and C to the T */
     uint32_t concatenateLen = (tLen + hLen > outputLength) ? (outputLength - tLen) : hLen;
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy((uint8_t *) pOutput + tLen, pHashOutput, concatenateLen, concatenateLen));
+    MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t *) pOutput + tLen, pHashOutput, concatenateLen);
 
     tLen += concatenateLen;
   }

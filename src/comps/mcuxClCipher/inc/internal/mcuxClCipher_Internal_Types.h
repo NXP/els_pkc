@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -33,6 +33,7 @@ extern "C" {
 /**
  * Mode/Skeleton function types
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClCipher_CryptFunc_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) (*mcuxClCipher_CryptFunc_t) (
   mcuxClSession_Handle_t session,
   mcuxClCipher_Context_t * const pContext,
@@ -45,13 +46,14 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) (*mcuxClCipher_CryptF
   mcuxCl_Buffer_t pOut,
   uint32_t * const pOutLength,
   uint32_t steps //!< steps is a bitmask with one bit reserved for each of the steps below
-);
+));
 
 
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClCipher_SelfTestFunc_t,
 typedef mcuxClCipher_Status_t (*mcuxClCipher_SelfTestFunc_t) (
   mcuxClSession_Handle_t session,
   mcuxClCipher_Mode_t pMode
-);
+));
 
 /**
  * @brief Cipher selftest mode/algorithm descriptor structure

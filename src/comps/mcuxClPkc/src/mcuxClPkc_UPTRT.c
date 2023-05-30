@@ -17,9 +17,9 @@
  */
 
 
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClRandom.h>
 #include <mcuxClPkc_Types.h>
@@ -28,10 +28,11 @@
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_GenerateUPTRT)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_GenerateUPTRT(uint16_t *pUPTRT,
-                            const uint8_t *pBaseBuffer,
-                            uint16_t bufferLength,
-                            uint8_t noOfBuffer)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_GenerateUPTRT(
+    uint16_t *pUPTRT,
+    const uint8_t *pBaseBuffer,
+    uint16_t bufferLength,
+    uint8_t noOfBuffer)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_GenerateUPTRT);
 
@@ -43,14 +44,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_GenerateUPTRT(uint16_t
         offset += bufferLength;
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_GenerateUPTRT, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_GenerateUPTRT);
 }
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_RandomizeUPTRT)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(mcuxClSession_Handle_t pSession,
-                                                    uint16_t *pUPTRT,
-                                                    uint8_t noOfBuffer)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(
+    mcuxClSession_Handle_t pSession,
+    uint16_t *pUPTRT,
+    uint8_t noOfBuffer)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_RandomizeUPTRT);
 
@@ -87,10 +89,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(mcuxClS
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_ReRandomizeUPTRT)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(mcuxClSession_Handle_t pSession,
-                                                      uint16_t *pUPTRT,
-                                                      uint16_t bufferLength,
-                                                      uint8_t noOfBuffer)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(
+    mcuxClSession_Handle_t pSession,
+    uint16_t *pUPTRT,
+    uint16_t bufferLength,
+    uint8_t noOfBuffer)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_ReRandomizeUPTRT);
 
@@ -109,9 +112,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(mcuxC
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_ReRandomizeUPTRT, MCUXCLPKC_STATUS_NOK);
         }
-        uint32_t random8 = random32 >> 8;
+        uint32_t random8 = random32 >> 8u;
         random8 *= idx;
-        random8 >>= 24;
+        random8 >>= 24u;
 
         /* Swap. */
         uint16_t offset0 = pUPTRT[idx - 1u];
@@ -119,12 +122,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_ReRandomizeUPTRT(mcuxC
         pUPTRT[random8] = offset0;
         pUPTRT[idx - 1u] = offset1;
 
-        /* MISRA Ex. 9 to Rule 11.3 - PKC buffer is CPU word aligned. */
-        uint32_t *ptr0 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(offset0);
-        uint32_t *ptr1 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(offset1);
+        /* Caller shall provide UPTR table with all offsets being exactly a multiple of MCUXCLPKC_WORDSIZE. */
+        uint32_t *ptr0 = MCUXCLPKC_OFFSET2PTRWORD(offset0);
+        uint32_t *ptr1 = MCUXCLPKC_OFFSET2PTRWORD(offset1);
 
         /* Swap contents of the two buffers, of which the size is a multiple of CPU word. */
-        for (uint32_t i = 0; i < ((uint32_t) bufferLength / 4u); i++)
+        for (uint32_t i = 0u; i < ((uint32_t) bufferLength / 4u); i++)
         {
             uint32_t temp0 = ptr0[i];
             uint32_t temp1 = ptr1[i];

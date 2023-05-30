@@ -147,7 +147,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
         }
 
         /* Copy the remaining bytes from the buffer to output. */
-        for(uint32_t i = 0; i < requestSizeRemainingBytes; i++)
+        for(uint32_t i = 0u; i < requestSizeRemainingBytes; i++)
         {
             pOut[requestSizeFullWordsBytes + i] = requestRemainingBuffer[i];
         }

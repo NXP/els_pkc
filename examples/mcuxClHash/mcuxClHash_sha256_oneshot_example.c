@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020,2022-2023 NXP                                             */
+/* Copyright 2020, 2022-2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,7 +18,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClToolchain.h>             // memory segment definitions
-#include <stdbool.h>               // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
 
@@ -40,7 +39,7 @@ static const uint8_t rtfExpected[32] CSS_CONST_SEGMENT = {
     0xF3u, 0xB5u, 0x7Fu, 0xBEu, 0x08u, 0xFAu, 0xEEu, 0x8Du
 };
 
-bool mcuxClHash_sha256_oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -57,7 +56,7 @@ bool mcuxClHash_sha256_oneshot_example(void)
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
-    //Allocate and initialize session
+    /* Allocate and initialize session */
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
     /**************************************************************************/
@@ -93,27 +92,26 @@ bool mcuxClHash_sha256_oneshot_example(void)
         return MCUXCLEXAMPLE_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-
+    
+    if(sizeof(hash) != hashOutputSize)
+	{
+		return MCUXCLEXAMPLE_ERROR;
+	}
 
     /**************************************************************************/
     /* Verification                                                           */
     /**************************************************************************/
-    for (size_t i = 0U; i < sizeof(hash); i++)
+    for(size_t i = 0U; i < sizeof(hash); i++)
     {
-        if (hash[i] != hashExpected[i]) // Expect that the resulting hash matches our expected output
+        if(hashExpected[i] != hash[i])  // Expect that the resulting hash matches our expected output
         {
             return MCUXCLEXAMPLE_ERROR;
         }
     }
 
-    if(hashOutputSize != sizeof(hash))
-	{
-		return MCUXCLEXAMPLE_ERROR;
-	}
-
-    for (size_t i = 0U; i < sizeof(hash); i++)
+    for(size_t i = 0U; i < sizeof(hash); i++)
     {
-        if (rtf[i] != rtfExpected[i]) // Expect that the resulting rtf matches our expected output
+        if(rtfExpected[i] != rtf[i])  // Expect that the resulting rtf matches our expected output
         {
             return MCUXCLEXAMPLE_ERROR;
         }

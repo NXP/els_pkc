@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -22,11 +22,12 @@
 #include <mcuxClCore_Examples.h>
 #include <mcuxClSession.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClKey.h>
 #include <mcuxClEcc.h>
 #include <mcuxClEcc_WeierECC.h>
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 
 #define BN256_BYTE_LEN_P  (32u)
@@ -90,7 +91,7 @@ static const uint8_t BN_P256_N[BN256_BYTE_LEN_N] =
  * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
  * @retval MCUXCLEXAMPLE_ERROR The example code failed
  */
-bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -125,15 +126,19 @@ bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
 
     uint32_t eccWeierDomainParams[MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE(BN256_BYTE_LEN_P, BN256_BYTE_LEN_N) / (sizeof(uint32_t))];
     mcuxClEcc_Weier_DomainParams_t *pEccWeierDomainParams = (mcuxClEcc_Weier_DomainParams_t *) eccWeierDomainParams;
-    const mcuxClKey_Status_t genOptEccParams_status =
+    
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(genOptEccParams_status, genOptEccParams_token,
         mcuxClEcc_WeierECC_GenerateDomainParams(pSession,
                                                pEccWeierDomainParams,
                                                &EccWeierBasicDomainParams,
-                                               MCUXCLECC_OPTION_GENERATEPRECPOINT_YES );
-    if (MCUXCLECC_STATUS_OK != genOptEccParams_status)
+                                               MCUXCLECC_OPTION_GENERATEPRECPOINT_YES)
+    );
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateDomainParams) != genOptEccParams_token) || (MCUXCLECC_STATUS_OK != genOptEccParams_status))
     {
         return MCUXCLEXAMPLE_ERROR;
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 
     /**************************************************************************/
@@ -143,37 +148,44 @@ bool mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example(void)
     uint32_t customPrivKeyTypeDescriptor[MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS] = {0};
     mcuxClKey_CustomType_t customPrivKeyType = (mcuxClKey_CustomType_t) customPrivKeyTypeDescriptor;
 
-    const mcuxClKey_Status_t genPrivKeyType_status = mcuxClEcc_WeierECC_GenerateCustomKeyType(
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(genPrivKeyType_status, genPrivKeyType_token, mcuxClEcc_WeierECC_GenerateCustomKeyType(
         /* mcuxClKey_CustomType_t customType */ customPrivKeyType,
         /* mcuxClKey_AlgorithmId_t algoId    */ MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM | MCUXCLKEY_ALGO_ID_PRIVATE_KEY,
         /* mcuxClKey_Size_t size             */ MCUXCLKEY_SIZE_256,
-        /* void *pCustomParams              */ (void *) pEccWeierDomainParams
+        /* void *pCustomParams              */ (void *) pEccWeierDomainParams)
     );
-    if (MCUXCLECC_STATUS_OK != genPrivKeyType_status)
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateCustomKeyType) != genPrivKeyType_token) || (MCUXCLECC_STATUS_OK != genPrivKeyType_status))
     {
         return MCUXCLEXAMPLE_ERROR;
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     uint32_t customPubKeyTypeDescriptor[MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS] = {0};
     mcuxClKey_CustomType_t customPubKeyType = (mcuxClKey_CustomType_t) customPubKeyTypeDescriptor;
 
-    const mcuxClKey_Status_t genPubKeyType_status = mcuxClEcc_WeierECC_GenerateCustomKeyType(
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(genPubKeyType_status, genPubKeyType_token, mcuxClEcc_WeierECC_GenerateCustomKeyType(
         /* mcuxClKey_CustomType_t customType */ customPubKeyType,
         /* mcuxClKey_AlgorithmId_t algoId    */ MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM | MCUXCLKEY_ALGO_ID_PUBLIC_KEY,
         /* mcuxClKey_Size_t size             */ MCUXCLKEY_SIZE_512,
-        /* void *pCustomParams              */ (void *) pEccWeierDomainParams
+        /* void *pCustomParams              */ (void *) pEccWeierDomainParams)
     );
-    if (MCUXCLECC_STATUS_OK != genPubKeyType_status)
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateCustomKeyType) != genPubKeyType_token) || (MCUXCLECC_STATUS_OK != genPubKeyType_status))
     {
         return MCUXCLEXAMPLE_ERROR;
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 
     /**************************************************************************/
     /* Clean session                                                          */
     /**************************************************************************/
-    (void) mcuxClSession_cleanup(pSession);
-    (void) mcuxClSession_destroy(pSession);
+    
+    if(!mcuxClExample_Session_Clean(pSession))
+    {
+        return MCUXCLEXAMPLE_ERROR;
+    }
 
     return MCUXCLEXAMPLE_OK;
 }

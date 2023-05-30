@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLRANDOM_PRIVATE_TESTMODE_H_
 #define MCUXCLRANDOM_PRIVATE_TESTMODE_H_
@@ -30,10 +28,10 @@ extern "C" {
 
 
 /* Internal function prototypes */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_TestMode_initFunction)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_TestMode_initFunction, mcuxClRandom_initFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_initFunction(mcuxClSession_Handle_t pSession);
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_TestMode_reseedFunction)
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_TestMode_reseedFunction, mcuxClRandom_reseedFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_reseedFunction(mcuxClSession_Handle_t pSession);
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_TestMode_selftestFunction)

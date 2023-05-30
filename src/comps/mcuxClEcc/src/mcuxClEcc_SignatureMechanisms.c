@@ -16,9 +16,13 @@
  * @brief mcuxClEcc: implementation of ECC related signature mode descriptors
  */
 
-
 #include <mcuxClEcc_ParameterSizes.h>
 #include <mcuxClEcc_Constants.h>
+#include <mcuxClCore_Analysis.h>
+
+#include <internal/mcuxClEcc_EdDSA_Internal.h>
+
+#include <internal/mcuxClEcc_Weier_Internal.h>
 
 
 

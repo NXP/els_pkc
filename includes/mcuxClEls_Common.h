@@ -31,6 +31,7 @@
 #include <mcuxClEls_Types.h> // Common types
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <platform_specific_headers.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,16 +54,27 @@ extern "C" {
  * @def MCUXCLELS_HW_VERSION
  * @brief Compatible ELS hardware IP version for the CLNS release that this header is part of.
  */
+#ifndef MCUXCL_FEATURE_ELS_GET_FW_VERSION
 #define MCUXCLELS_HW_VERSION ((mcuxClEls_HwVersion_t) { \
         .bits = { \
-            .revision = (uint32_t) MCUXCLELS_HW_VERSION_REVISION, \
-            .minor = (uint32_t) MCUXCLELS_HW_VERSION_MINOR, \
-            .major = (uint32_t) MCUXCLELS_HW_VERSION_MAJOR, \
-            .fw_revision = (uint32_t) MCUXCLELS_HW_VERSION_FW_REVISION, \
-            .fw_minor = (uint32_t) MCUXCLELS_HW_VERSION_FW_MINOR, \
-            .fw_major = (uint32_t) MCUXCLELS_HW_VERSION_FW_MAJOR \
+            .revision = (uint32_t) ELS_HW_VERSION_REVISION, \
+            .minor = (uint32_t) ELS_HW_VERSION_MINOR, \
+            .major = (uint32_t) ELS_HW_VERSION_MAJOR, \
+            .level = (uint32_t) ELS_HW_VERSION_LEVEL \
         } \
     })
+#else /* MCUXCL_FEATURE_ELS_GET_FW_VERSION */
+#define MCUXCLELS_HW_VERSION ((mcuxClEls_HwVersion_t) { \
+        .bits = { \
+            .revision = (uint32_t) ELS_HW_VERSION_REVISION, \
+            .minor = (uint32_t) ELS_HW_VERSION_MINOR, \
+            .major = (uint32_t) ELS_HW_VERSION_MAJOR, \
+            .fw_revision = (uint32_t) ELS_HW_VERSION_FW_REVISION, \
+            .fw_minor = (uint32_t) ELS_HW_VERSION_FW_MINOR, \
+            .fw_major = (uint32_t) ELS_HW_VERSION_FW_MAJOR \
+        } \
+    })
+#endif /* MCUXCL_FEATURE_ELS_GET_FW_VERSION */
 
 #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
   #define MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_CompareDmaFinalOutputAddress)
@@ -77,10 +89,12 @@ extern "C" {
  * @ingroup mcuxClEls_Common_Macros
  * @{
  */
-#define MCUXCLELS_ELS_INTERRUPT_ENABLE              ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionEn_t.elsint to allow ELS to trigger an interrupt
-#define MCUXCLELS_ELS_INTERRUPT_DISABLE             ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionEn_t.elsint to prevent ELS from triggering an interrupt
+#define MCUXCLELS_ELS_INTERRUPT_ENABLE              (0x01U) ///< Set this option at #mcuxClEls_InterruptOptionEn_t.elsint to allow ELS to trigger an interrupt
+#define MCUXCLELS_ELS_INTERRUPT_DISABLE             (0x00U) ///< Set this option at #mcuxClEls_InterruptOptionEn_t.elsint to prevent ELS from triggering an interrupt
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
 #define MCUXCLELS_GLITCH_DETECTOR_INTERRUPT_ENABLE  ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionEn_t.gdetint to allow the Glitch Detector to trigger an interrupt
 #define MCUXCLELS_GLITCH_DETECTOR_INTERRUPT_DISABLE ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionEn_t.gdetint to prevent the Glitch Detector from triggering an interrupt
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
 /**@}*/
 
 /**
@@ -89,10 +103,12 @@ extern "C" {
  * @ingroup mcuxClEls_Common_Macros
  * @{
  */
-#define MCUXCLELS_ELS_RESET_CLEAR             ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionRst_t.elsint to reset the ELS interrupt flag
-#define MCUXCLELS_ELS_RESET_KEEP              ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionRst_t.elsint to keep the ELS interrupt flag
+#define MCUXCLELS_ELS_RESET_CLEAR             (0x01U) ///< Set this option at #mcuxClEls_InterruptOptionRst_t.elsint to reset the ELS interrupt flag
+#define MCUXCLELS_ELS_RESET_KEEP              (0x00U) ///< Set this option at #mcuxClEls_InterruptOptionRst_t.elsint to keep the ELS interrupt flag
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
 #define MCUXCLELS_GLITCH_DETECTOR_RESET_CLEAR ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionRst_t.gdetint to reset the Glitch Detector interrupt flag
 #define MCUXCLELS_GLITCH_DETECTOR_RESET_KEEP  ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionRst_t.gdetint to keep the Glitch Detector interrupt flag
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
 /**@}*/
 
 /**
@@ -101,12 +117,14 @@ extern "C" {
  * @ingroup mcuxClEls_Common_Macros
  * @{
  */
-#define MCUXCLELS_ELS_INTERRUPT_SET          ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.elsint to set the ELS interrupt flag
-#define MCUXCLELS_ELS_INTERRUPT_KEEP         ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.elsint to leave the ELS interrupt flag unchanged
-#define MCUXCLELS_GLITCH_DETECTOR_NEG_SET    ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_neg to set the negative Glitch Detector interrupt flag
-#define MCUXCLELS_GLITCH_DETECTOR_NEG_KEEP   ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_neg to leave the negative Glitch Detector interrupt flag unchanged
-#define MCUXCLELS_GLITCH_DETECTOR_POS_SET    ((uint32_t) 1U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_pos to set the positive Glitch Detector interrupt flag
-#define MCUXCLELS_GLITCH_DETECTOR_POS_KEEP   ((uint32_t) 0U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_pos to leave the positive Glitch Detector interrupt flag unchanged
+#define MCUXCLELS_ELS_INTERRUPT_SET          (0x01U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.elsint to set the ELS interrupt flag
+#define MCUXCLELS_ELS_INTERRUPT_KEEP         (0x00U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.elsint to leave the ELS interrupt flag unchanged
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
+#define MCUXCLELS_GLITCH_DETECTOR_NEG_SET    (0x01U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_neg to set the negative Glitch Detector interrupt flag
+#define MCUXCLELS_GLITCH_DETECTOR_NEG_KEEP   (0x00U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_neg to leave the negative Glitch Detector interrupt flag unchanged
+#define MCUXCLELS_GLITCH_DETECTOR_POS_SET    (0x01U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_pos to set the positive Glitch Detector interrupt flag
+#define MCUXCLELS_GLITCH_DETECTOR_POS_KEEP   (0x00U) ///< Set this option at #mcuxClEls_InterruptOptionSet_t.gdetint_pos to leave the positive Glitch Detector interrupt flag unchanged
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
 /**@}*/
 
 /**
@@ -211,9 +229,14 @@ typedef union
         uint32_t revision :4; ///< Revision number
         uint32_t minor :8;    ///< Minor version
         uint32_t major :4;    ///< Major version
+#ifndef MCUXCL_FEATURE_ELS_GET_FW_VERSION
+        uint32_t level :4;    ///< Release level version
+        uint32_t :12;         ///< RFU
+#else /* MCUXCL_FEATURE_ELS_GET_FW_VERSION */
         uint32_t fw_revision :4; ///< Firmware Revision number
         uint32_t fw_minor :8;    ///< Firmware Minor version
         uint32_t fw_major :4;    ///< Firmware Major version
+#endif /* MCUXCL_FEATURE_ELS_GET_FW_VERSION */
     } bits;                   ///< Access #mcuxClEls_HwVersion_t bit-wise
 } mcuxClEls_HwVersion_t;
 
@@ -238,8 +261,12 @@ typedef union
         uint32_t pprot :2;      ///< The privilege/security level of the most recently started ELS command (For possible values of this field, see @ref MCUXCLELS_STATUS_PPROT_)
         uint32_t drbgentlvl :2; ///< Entropy quality of the current DRBG instance (For possible values of this field, see @ref MCUXCLELS_STATUS_DRBGENTLVL_)
         uint32_t dtrng_busy: 1; ///< Indicates the DTRNG is gathering entropy
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
         uint32_t gdet_pos :1;   ///< Glitch detector interrupt activated (positive)
         uint32_t gdet_neg :1;   ///< Glitch detector interrupt activated (negative)
+#else
+        uint32_t :2;            ///< RFU
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
         uint32_t :3;            ///< RFU
 #ifdef MCUXCL_FEATURE_ELS_LOCKING
         uint32_t els_locked :1; ///< ELS is locked
@@ -278,7 +305,11 @@ typedef union
     struct
     {
         uint32_t elsint :1;  ///< Whether ELS interrupt should be used. (For possible values of this field, see @ref mcuxClEls_InterruptOptionEn_t_Macros)
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
         uint32_t gdetint :1; ///< Whether Glitch detector interrupt should be used. (For possible values of this field, see @ref mcuxClEls_InterruptOptionEn_t_Macros)
+#else
+        uint32_t :1;         ///< RFU
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
         uint32_t :30;        ///< RFU
     } bits;                  ///< Access #mcuxClEls_InterruptOptionEn_t bit-wise
 } mcuxClEls_InterruptOptionEn_t;
@@ -295,7 +326,11 @@ typedef union
     struct
     {
         uint32_t elsint :1;  ///< Whether ELS interrupt should be reset. (For possible values of this field, see @ref mcuxClEls_InterruptOptionRst_t_Macros)
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
         uint32_t gdetint :1; ///< Whether Glitch detector interrupt should be reset. (For possible values of this field, see @ref mcuxClEls_InterruptOptionRst_t_Macros)
+#else
+        uint32_t :1;         ///< RFU
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
         uint32_t :30;        ///< RFU
     } bits;                  ///< Access #mcuxClEls_InterruptOptionRst_t bit-wise
 } mcuxClEls_InterruptOptionRst_t;
@@ -312,8 +347,12 @@ typedef union
     struct
     {
         uint32_t elsint :1;     ///< Whether ELS interrupt should be set. (For possible values of this field, see @ref mcuxClEls_InterruptOptionSet_t_Macros)
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
         uint32_t gdetint_neg :1;///< Whether Glitch detector neg interrupt should be set. (For possible values of this field, see @ref mcuxClEls_InterruptOptionSet_t_Macros)
         uint32_t gdetint_pos :1;///< Whether Glitch detector pos interrupt should be set. (For possible values of this field, see @ref mcuxClEls_InterruptOptionSet_t_Macros)
+#else
+        uint32_t :2;            ///< RFU
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */
         uint32_t :29;           ///< RFU
     } bits;                     ///< Access #mcuxClEls_InterruptOptionSet_t bit-wise
 } mcuxClEls_InterruptOptionSet_t;

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -39,6 +39,7 @@ extern "C" {
  * The function will return an error in case the input block does not meet the requirements
  * for the padding mode.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClPadding_addPaddingMode_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) (*mcuxClPadding_addPaddingMode_t)(
   uint32_t blockLength,
   const uint8_t * const pIn,
@@ -46,7 +47,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) (*mcuxClPadding_addP
   uint32_t totalInputLength,
   uint8_t * const pOut,
   uint32_t * const pOutLength
-);
+));
 
 /**
  * @brief Function type for a padding removal function
@@ -56,13 +57,14 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) (*mcuxClPadding_addP
  * The function will return an error in case the input block does not meet the requirements
  * for the padding mode, or NOT_OK if the padding is incorrect.
  */
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClPadding_removePaddingMode_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) (*mcuxClPadding_removePaddingMode_t)(
   uint32_t blockLength,
   const uint8_t * const pIn,
   uint32_t lastBlockLength,
   uint8_t * const pOut,
   uint32_t * const pOutLength
-);
+));
 
 #ifdef __cplusplus
 } /* extern "C" */

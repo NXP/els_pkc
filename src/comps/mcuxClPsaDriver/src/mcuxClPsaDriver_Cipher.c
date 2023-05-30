@@ -19,6 +19,7 @@
 #include <mcuxClCipher.h>
 #include <mcuxClCipherModes.h>
 #include <mcuxClSession.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClCipherModes_Internal_Types.h>
@@ -35,16 +36,16 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(
     }
 
     /* Clear cipher ctx */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMemory_clear ((uint8_t*)pClnsCipherData,
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_clear ((uint8_t*)pClnsCipherData,
                                                                        MCUXCLPSADRIVER_CLNSDATA_CIPHER_SIZE,
                                                                        MCUXCLPSADRIVER_CLNSDATA_CIPHER_SIZE));
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != token) || (0u != result))
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != token)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     return PSA_SUCCESS;
 }

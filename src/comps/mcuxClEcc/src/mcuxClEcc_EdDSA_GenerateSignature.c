@@ -13,7 +13,7 @@
 
 /**
  * @file  mcuxClEcc_EdDSA_GenerateSignature.c
- * @brief implementation of TwEd_EdDsaSign function
+ * @brief Implementation of the EdDSA signature generation functionality
  */
 
 
@@ -27,6 +27,7 @@
 #include <mcuxClMemory_Clear.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Analysis.h>
 #include <mcuxClEcc.h>
 
 #include <internal/mcuxClPkc_Macros.h>
@@ -40,9 +41,10 @@
 #include <internal/mcuxClEcc_EdDSA_Internal_Hash.h>
 #include <internal/mcuxClEcc_EdDSA_GenerateSignature_FUP.h>
 
-
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateSignature)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignature(
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateSignature_Core)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignature_Core(
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Handle_t pSession,
     mcuxClKey_Handle_t key,
     const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode,
@@ -51,7 +53,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     uint8_t *pSignature,
     uint32_t * const pSignatureSize )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateSignature);
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateSignature_Core);
 
     /*
      * Step 1: Set up the environment
@@ -65,17 +67,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
                 || (MCUXCLKEY_ALGO_ID_PRIVATE_KEY != mcuxClKey_getKeyUsage(key))
                 || (MCUXCLKEY_ALGO_ID_PUBLIC_KEY != mcuxClKey_getKeyUsage(pubKey)) )
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);  /* MISRA Ex. 9 to Rule 11.3 - Interaction with hardware */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) mcuxClKey_getTypeInfo(key);
 
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(
+    MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
         mcuxClEcc_EdDSA_SetupEnvironment(pSession,
                                         pDomainParams,
                                         ECC_EDDSA_NO_OF_BUFFERS) );
+    if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
     /*
      * Step 2: Derive the hash prefix from the mode parameter and calculate the secret scalar
@@ -87,6 +95,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
      *           - the hash function algoHash to hash the remaining part of the hash input
      *         and store the hash output in buffers ECC_S3 and ECC_T3.
      */
+
+    /* Generate digest m' from m in case phflag is set */
+    const uint8_t *pMessage = NULL;
+    uint32_t messageSize = 0u;
+    MCUX_CSSL_FP_FUNCTION_CALL(retPreHash, mcuxClEcc_EdDSA_PreHashMessage(pSession, pDomainParams, mode->phflag, pIn, inSize, &pMessage, &messageSize));
+    if (MCUXCLECC_STATUS_OK != retPreHash)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+    }
 
     /* Initialize hash context buffer in CPU workarea (used for all hash operations) */
     mcuxClHash_Context_t pCtx = (mcuxClHash_Context_t) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
@@ -101,13 +118,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     uint8_t *pS3 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S3]);
     const uint32_t bytesToClear = operandSize + bufferSize - (2u * keyLength);
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
-    MCUX_CSSL_FP_FUNCTION_CALL(noOfUnclearedBytes, mcuxClMemory_clear(&pS3[2u * keyLength],
-                                                              bytesToClear,
-                                                              bytesToClear));
-    if(0u != noOfUnclearedBytes)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(&pS3[2u * keyLength],bytesToClear);
 
     /* Calculate 2b-bit hash H(prefix || (h_b,\dots,h_{2b-1}) || m') and store it in the concatenated buffers ECC_S3 and ECC_T3. */
     uint8_t *pPrivData = mcuxClKey_getKeyData(key);
@@ -120,8 +131,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
                                        mode->hashPrefixLen,
                                        &pPrivData[keyLength + scalarSLength],
                                        keyLength,
-                                       pIn,
-                                       inSize,
+                                       pMessage,
+                                       messageSize,
                                        pS3);
 
 
@@ -136,13 +147,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
      *    blind r with rndR (both considered as operands of size (operandSize + bufferSize)) using a plain addition instead
      *    of a modular one in order to avoid a carry to the next PKC word.
      *  - This will also overwrite part of ECC_S1 which lies on top of ECC_T0. */
+
     uint8_t *pT0 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T0]);
-    uint32_t *pT0MSWord =  & ((uint32_t *) pT0)[((operandSize + bufferSize) / sizeof(uint32_t)) - 1u]; /* MISRA Ex. 9 to Rule 11.3 - pOperands is of size 32bit */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("pT0 is PKC operand address and is aligned to 32 bit boundry")
+    uint32_t *pT0MSWord =  & ((uint32_t *) pT0)[((operandSize + bufferSize) / sizeof(uint32_t)) - 1u];
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
     *pT0MSWord = 0u; /* Clear most significant word of ECC_T0 considered as buffer of byte size (bufferSize + operandSize). */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_ncGenerate_rndR, mcuxClRandom_ncGenerate(pSession, pT0, operandSize + bufferSize - 1u));
     if (MCUXCLRANDOM_STATUS_OK != ret_ncGenerate_rndR)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_RNG_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_RNG_ERROR);
     }
 
     /* Additively blind r with rndR (considered of size (operandSize + bufferSize)) */
@@ -157,7 +171,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
      *     - for Ed448:   byteLen(r) = 114 < operandSize + bufferSize.
      *    Thus, in both cases, we can obtain r mod n by a Montgomery multiplication of r (considered as operand of size
      *    (operandSize + bufferSize)) with Q' = 2 ^ (8*(operandSize + bufferSize)) mod n. */
-    const uint8_t *pT1 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T1]);
+    const uint8_t * pT1 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T1]);
     MCUXCLPKC_WAITFORREADY();
     pOperands[ECC_V0] = MCUXCLPKC_PTR2OFFSET(&pT1[MCUXCLPKC_WORDSIZE]);
     MCUXCLPKC_PS2_SETLENGTH(operandSize + bufferSize, operandSize);
@@ -175,7 +189,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     MCUX_CSSL_FP_FUNCTION_CALL(ret_BlindedScalarMult, mcuxClEcc_BlindedScalarMult(pSession, pCommonDomainParams) );
     if (MCUXCLECC_STATUS_RNG_ERROR == ret_BlindedScalarMult)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_RNG_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_RNG_ERROR);
     }
     else if (MCUXCLECC_STATUS_NEUTRAL_POINT == ret_BlindedScalarMult)
     {
@@ -185,7 +199,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     }
     else if (MCUXCLECC_STATUS_OK != ret_BlindedScalarMult)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
     else
     {
@@ -220,11 +234,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
                                                                             mode->hashPrefixLen,
                                                                             pSignatureR,
                                                                             pPubData,
-                                                                            pIn,
-                                                                            inSize));
+                                                                            pMessage,
+                                                                            messageSize));
     if (MCUXCLECC_STATUS_OK != ret_CalcHashModN)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* Free the hash context (it's not needed anymore) */
@@ -253,14 +267,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     MCUX_CSSL_FP_FUNCTION_CALL(ret_ncGenerate_rndS, mcuxClRandom_ncGenerate(pSession, pS1, (2u * operandSize) - 1u));
     if (MCUXCLRANDOM_STATUS_OK != ret_ncGenerate_rndS)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_RNG_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_RNG_ERROR);
     }
 
     /* Securely import the secret scalar s to ECC_S3. */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SecImportScalarS, mcuxClPkc_SecureImportLittleEndianToPkc(ECC_S3, &pPrivData[keyLength], scalarSLength));
     if (MCUXCLPKC_STATUS_OK != ret_SecImportScalarS)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_FAULT_ATTACK);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
     /* Calculate S = r + H(prefix || R^{enc} || Q^{enc} || m') * s mod n in a blinded way. */
@@ -293,10 +307,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
     mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateSignature, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_OK,
         /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_SetupEnvironment),
         /* Step 2 */
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
         MCUXCLECC_FP_CALLED_EDDSA_SIGN_CALC_SCALAR,
         /* Step 3 */
@@ -323,3 +338,30 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
         /* Step 8 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
 }
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateSignature)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignature(
+    mcuxClSession_Handle_t pSession,
+    mcuxClKey_Handle_t key,
+    const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode,
+    const uint8_t *pIn,
+    uint32_t inSize,
+    uint8_t *pSignature,
+    uint32_t * const pSignatureSize )
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_EdDSA_GenerateSignature);
+
+    /* Call core function to calculate EdDSA signature */
+    MCUX_CSSL_FP_FUNCTION_CALL(sign_result, mcuxClEcc_EdDSA_GenerateSignature_Core(
+    /* mcuxClSession_Handle_t pSession:                          */ pSession,
+    /* mcuxClKey_Handle_t key                                    */ key,
+    /* const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode */ mode,
+    /* const uint8_t *pIn                                       */ pIn,
+    /* uint32_t inSize                                          */ inSize,
+    /* uint8_t *pSignature                                      */ pSignature,
+    /* uint32_t * const pSignatureSize                          */ pSignatureSize));
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateSignature, sign_result, MCUXCLECC_STATUS_FAULT_ATTACK,
+                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateSignature_Core));
+}
+

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/*  Copyright 2022 NXP                                                      */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -19,10 +19,13 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClMacModes_Constants.h>
 #include <mcuxClMacModes_Functions.h>
+#include <mcuxClMemory.h>
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <internal/mcuxClMacModes_Internal_Types.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 #include <internal/mcuxClMacModes_Internal_Constants.h>
+#include <internal/mcuxClHash_Internal.h>
+
 
 

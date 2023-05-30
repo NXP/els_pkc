@@ -34,15 +34,15 @@
  * specified in the EdDSA domain parameters.
  *
  * Input:
- *  - pSession      Handle for the current CL session
- *  - pCtx          Pointer to hash context
- *  - pDomainParams Pointer to ECC common domain parameters structure
- *  - pHashPrefix   Pointer to prefix
- *  - hashPrefixLen Byte length of prefix
- *  - pSignatureR   Pointer to Renc
- *  - pPubKey       Pointer to Qenc
- *  - pIn           Pointer to input for hash algorithm
- *  - inSize        Size of pIn
+ *  - pSession          Handle for the current CL session
+ *  - pCtx              Pointer to hash context
+ *  - pDomainParams     Pointer to ECC common domain parameters structure
+ *  - pHashPrefix       Pointer to prefix
+ *  - hashPrefixLen     Byte length of prefix
+ *  - pSignatureR       Pointer to Renc
+ *  - pPubKey           Pointer to Qenc
+ *  - pIn               Pointer to input for hash algorithm
+ *  - inSize            Size of pIn
  *
  * Prerequisites:
  * - ps1Len = (operandSize, operandSize)
@@ -61,7 +61,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_CalcHashModN(
     mcuxClSession_Handle_t pSession,
     mcuxClHash_Context_t pCtx,
     mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
-    const uint32_t *pHashPrefix,
+    const uint8_t *pHashPrefix,
     uint32_t hashPrefixLen,
     const uint8_t *pSignatureR,
     const uint8_t *pPubKey,
@@ -89,7 +89,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_CalcHashModN(
     MCUXCLECC_FP_EDDSA_SIGN_VERIFY_CALC_HASH(pSession,
                                 pCtx,
                                 pDomainParams->algoHash,
-                                (const uint8_t*)pHashPrefix, hashPrefixLen,
+                                pHashPrefix, hashPrefixLen,
                                 pSignatureR, encodedLen,
                                 pPubKey, encodedLen,
                                 pIn, inSize,

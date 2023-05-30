@@ -402,6 +402,28 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Prng_Get
     size_t outputLength
     );
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+/**
+ * @brief This function checks if a DRBG reseeding is needed and if so reseeds the ELS DRBG.
+ *
+ * This function checks if the ELS DRBG needs to be reseeded by the DTRNG, and if so, executes the iterative seeding process.
+ * The function internally disables ELS interrupts before (potentially) running the iterative seeding process and restores
+ * the original ELS interrupt enable flags afterwards, before returning to the caller. This allows to properly use the function
+ * in an ELS interrupt handler to reseed the ELS DRBG when needed.
+ * 
+ * @param[in]  pDtrngConfig  Pointer to the beginning of the memory area which contains the ELS DTRNG config
+ *
+ * @if (MCUXCL_FEATURE_CSSL_FP_USE_SECURE_COUNTER && MCUXCL_FEATURE_CSSL_SC_USE_SW_LOCAL)
+ *  @return A code-flow protected error code (see @ref mcuxCsslFlowProtection). The error code can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
+ * @else
+ *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
+ * @endif
+ * @retval #MCUXCLELS_STATUS_OK  on successful request
+ * @retval #MCUXCLELS_STATUS_SW_FAULT in case the iterative seeding failed
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed(const uint8_t *pDtrngConfig);
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
 /**
  * @}

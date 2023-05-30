@@ -21,7 +21,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClToolchain.h> // memory segment definitions
-#include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClAes.h> // Interface to AES-related definitions and types
 #include <mcuxClCipher.h> // Interface to the entire mcuxClCipher component
 #include <mcuxClCipherModes.h> // Interface to the entire mcuxClCipherModes component
@@ -62,7 +61,7 @@ static uint8_t const msg_enc_expected[3u * MCUXCLAES_BLOCK_SIZE] = {
     0x27u, 0xB7u, 0x12u, 0x37u, 0xF8u, 0x8Cu, 0xE1u, 0x2Au
 };
 
-bool mcuxClCipherModes_CBC_Oneshot_ELS_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_CBC_Oneshot_ELS_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */

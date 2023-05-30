@@ -78,26 +78,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_cleanup(
                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
 
     //TODO: Replace the functional memory clear function with a secure one
-    MCUX_CSSL_FP_FUNCTION_CALL(retCode,
-        mcuxClMemory_clear((uint8_t *) pSession->cpuWa.buffer,
-                          (sizeof(uint32_t)) * pSession->cpuWa.dirty,
-                          (sizeof(uint32_t)) * pSession->cpuWa.dirty) );
-    if(0U != retCode)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_cleanup, MCUXCLSESSION_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *) pSession->cpuWa.buffer,(sizeof(uint32_t)) * pSession->cpuWa.dirty);
 
     /* Reset dirty to used, in case not all memory has been freed (and gets used again). */
     pSession->cpuWa.dirty = pSession->cpuWa.used;
 
-    MCUX_CSSL_FP_FUNCTION_CALL(retCode1,
-        mcuxClMemory_clear((uint8_t *) pSession->pkcWa.buffer,
-                          (sizeof(uint32_t)) * pSession->pkcWa.dirty,
-                          (sizeof(uint32_t)) * pSession->pkcWa.dirty) );
-    if(0U != retCode1)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_cleanup, MCUXCLSESSION_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *) pSession->pkcWa.buffer,(sizeof(uint32_t)) * pSession->pkcWa.dirty);
 
     /* Reset dirty to used, in case not all memory has been freed (and gets used again). */
     pSession->pkcWa.dirty = pSession->pkcWa.used;
@@ -120,12 +106,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_destroy(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_destroy, MCUXCLSESSION_STATUS_ERROR);
     }
 
-    MCUX_CSSL_FP_FUNCTION_CALL(clearStatus, mcuxClMemory_clear((uint8_t *) pSession,
-        sizeof(mcuxClSession_Descriptor_t), sizeof(mcuxClSession_Descriptor_t)));
-    if (0U != clearStatus)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_destroy, MCUXCLSESSION_STATUS_ERROR);
-    }
+    MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *) pSession,sizeof(mcuxClSession_Descriptor_t));
+
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_destroy, MCUXCLSESSION_STATUS_OK);
 }

@@ -10,8 +10,6 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLRANDOM_FUNCTIONS_TESTMODE_H_
 #define MCUXCLRANDOM_FUNCTIONS_TESTMODE_H_

@@ -39,6 +39,7 @@ extern "C" {
  *
  * @return Key data pointer of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getKeyData)
 static inline uint8_t * mcuxClKey_getKeyData(mcuxClKey_Handle_t key)
 {
   return key->container.pData;
@@ -47,6 +48,7 @@ static inline uint8_t * mcuxClKey_getKeyData(mcuxClKey_Handle_t key)
 /**
  * Sets the key data pointer of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setKeyData)
 static inline void mcuxClKey_setKeyData(mcuxClKey_Handle_t key, uint8_t * pKeyData)
 {
   key->container.pData = pKeyData;
@@ -58,6 +60,7 @@ static inline void mcuxClKey_setKeyData(mcuxClKey_Handle_t key, uint8_t * pKeyDa
  *
  * @return Aux data pointer of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getAuxData)
 static inline uint8_t * mcuxClKey_getAuxData(mcuxClKey_Handle_t key)
 {
   return key->container.pAuxData;
@@ -66,6 +69,7 @@ static inline uint8_t * mcuxClKey_getAuxData(mcuxClKey_Handle_t key)
 /**
  * Sets the aux data pointer of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setAuxData)
 static inline void mcuxClKey_setAuxData(mcuxClKey_Handle_t key, uint8_t * pAuxData)
 {
   key->container.pAuxData = pAuxData;
@@ -75,6 +79,7 @@ static inline void mcuxClKey_setAuxData(mcuxClKey_Handle_t key, uint8_t * pAuxDa
 /**
  * Sets the protection descriptor pointer of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setProtectionType)
 static inline void mcuxClKey_setProtectionType(mcuxClKey_Handle_t key, const mcuxClKey_ProtectionDescriptor_t * pProtection)
 {
   key->protection = pProtection;
@@ -85,6 +90,7 @@ static inline void mcuxClKey_setProtectionType(mcuxClKey_Handle_t key, const mcu
  *
  * @return linked data pointer of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getLinkedData)
 static inline void * mcuxClKey_getLinkedData(mcuxClKey_Handle_t key)
 {
   return key->pLinkedData;
@@ -93,6 +99,7 @@ static inline void * mcuxClKey_getLinkedData(mcuxClKey_Handle_t key)
 /**
  * Sets the linked data pointer of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setLinkedData)
 static inline void mcuxClKey_setLinkedData(mcuxClKey_Handle_t key, void * pLinkedData)
 {
   key->pLinkedData = pLinkedData;
@@ -103,6 +110,7 @@ static inline void mcuxClKey_setLinkedData(mcuxClKey_Handle_t key, void * pLinke
  *
  * @return Type structure of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getTypeDescriptor)
 static inline mcuxClKey_TypeDescriptor_t mcuxClKey_getTypeDescriptor(mcuxClKey_Handle_t key)
 {
   return key->type;
@@ -111,6 +119,7 @@ static inline mcuxClKey_TypeDescriptor_t mcuxClKey_getTypeDescriptor(mcuxClKey_H
 /**
  * Sets the type structure of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setTypeDescriptor)
 static inline void mcuxClKey_setTypeDescriptor(mcuxClKey_Handle_t key, mcuxClKey_TypeDescriptor_t pType)
 {
   key->type = pType;
@@ -122,6 +131,7 @@ static inline void mcuxClKey_setTypeDescriptor(mcuxClKey_Handle_t key, mcuxClKey
  *
  * @return Type info of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getTypeInfo)
 static inline void * mcuxClKey_getTypeInfo(mcuxClKey_Handle_t key)
 {
   return key->type.info;
@@ -133,6 +143,7 @@ static inline void * mcuxClKey_getTypeInfo(mcuxClKey_Handle_t key)
  *
  * @return Key size in bytes of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getSize)
 static inline mcuxClKey_Size_t mcuxClKey_getSize(mcuxClKey_Handle_t key)
 {
   return key->type.size;
@@ -144,6 +155,7 @@ static inline mcuxClKey_Size_t mcuxClKey_getSize(mcuxClKey_Handle_t key)
  *
  * @return Algorithm identifier of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getAlgoId)
 static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgoId(mcuxClKey_Handle_t key)
 {
   return key->type.algoId;
@@ -154,6 +166,7 @@ static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgoId(mcuxClKey_Handle_t key
  *
  * @return Algorithm identifier of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getAlgorithm)
 static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgorithm(mcuxClKey_Handle_t key)
 {
   return key->type.algoId & MCUXCLKEY_ALGO_ID_ALGO_MASK;
@@ -164,6 +177,7 @@ static inline mcuxClKey_AlgorithmId_t mcuxClKey_getAlgorithm(mcuxClKey_Handle_t 
  *
  * @return Algorithm identifier of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getKeyUsage)
 static inline mcuxClKey_AlgorithmId_t mcuxClKey_getKeyUsage(mcuxClKey_Handle_t key)
 {
   return key->type.algoId & MCUXCLKEY_ALGO_ID_USAGE_MASK;
@@ -175,6 +189,7 @@ static inline mcuxClKey_AlgorithmId_t mcuxClKey_getKeyUsage(mcuxClKey_Handle_t k
  *
  * @return Pointer to the loaded key data
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getLoadedKeyData)
 static inline uint8_t * mcuxClKey_getLoadedKeyData(mcuxClKey_Handle_t key)
 {
   return key->location.pData;
@@ -183,6 +198,7 @@ static inline uint8_t * mcuxClKey_getLoadedKeyData(mcuxClKey_Handle_t key)
 /**
  * Sets the pointer of the (to be) loaded key data
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setLoadedKeyData)
 static inline void mcuxClKey_setLoadedKeyData(mcuxClKey_Handle_t key, uint32_t * pKeyDataLoadLocation)
 {
   key->location.pData = (uint8_t *) pKeyDataLoadLocation;
@@ -194,6 +210,7 @@ static inline void mcuxClKey_setLoadedKeyData(mcuxClKey_Handle_t key, uint32_t *
  *
  * @return Length of to the loaded key data of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getLoadedKeyLength)
 static inline uint32_t mcuxClKey_getLoadedKeyLength(mcuxClKey_Handle_t key)
 {
   return key->location.length;
@@ -202,6 +219,7 @@ static inline uint32_t mcuxClKey_getLoadedKeyLength(mcuxClKey_Handle_t key)
 /**
  * Sets the length of the loaded key data
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setLoadedKeyLength)
 static inline void mcuxClKey_setLoadedKeyLength(mcuxClKey_Handle_t key, uint32_t keyLength)
 {
   key->location.length = keyLength;
@@ -213,6 +231,7 @@ static inline void mcuxClKey_setLoadedKeyLength(mcuxClKey_Handle_t key, uint32_t
  *
  * @return Hardware slot of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getLoadedKeySlot)
 static inline uint32_t mcuxClKey_getLoadedKeySlot(mcuxClKey_Handle_t key)
 {
   return key->location.slot;
@@ -221,6 +240,7 @@ static inline uint32_t mcuxClKey_getLoadedKeySlot(mcuxClKey_Handle_t key)
 /**
  * Sets the pointer of the (to be) loaded data of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setLoadedKeySlot)
 static inline void mcuxClKey_setLoadedKeySlot(mcuxClKey_Handle_t key, uint32_t keySlot)
 {
   key->location.slot = keySlot;
@@ -232,6 +252,7 @@ static inline void mcuxClKey_setLoadedKeySlot(mcuxClKey_Handle_t key, uint32_t k
  *
  * @return Load status of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getLoadStatus)
 static inline mcuxClKey_LoadStatus_t mcuxClKey_getLoadStatus(mcuxClKey_Handle_t key)
 {
   return key->location.status;
@@ -240,6 +261,7 @@ static inline mcuxClKey_LoadStatus_t mcuxClKey_getLoadStatus(mcuxClKey_Handle_t 
 /**
  * Sets the load status of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setLoadStatus)
 static inline void mcuxClKey_setLoadStatus(mcuxClKey_Handle_t key, mcuxClKey_LoadStatus_t loadStatus)
 {
   key->location.status = loadStatus;
@@ -251,6 +273,7 @@ static inline void mcuxClKey_setLoadStatus(mcuxClKey_Handle_t key, mcuxClKey_Loa
  *
  * @return Pointer to the parent key of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getParentKey)
 static inline mcuxClKey_Descriptor_t * mcuxClKey_getParentKey(mcuxClKey_Handle_t key)
 {
   return key->container.parentKey;
@@ -259,6 +282,7 @@ static inline mcuxClKey_Descriptor_t * mcuxClKey_getParentKey(mcuxClKey_Handle_t
 /**
  * Sets the pointer to the parent key of the key handle
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setParentKey)
 static inline void mcuxClKey_setParentKey(mcuxClKey_Handle_t key, mcuxClKey_Descriptor_t * pParentKey)
 {
   key->container.parentKey = pParentKey;
@@ -270,6 +294,7 @@ static inline void mcuxClKey_setParentKey(mcuxClKey_Handle_t key, mcuxClKey_Desc
  *
  * @return Size of the key data container of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getKeyContainerSize)
 static inline uint32_t mcuxClKey_getKeyContainerSize(mcuxClKey_Handle_t key)
 {
   return key->container.length;
@@ -278,6 +303,7 @@ static inline uint32_t mcuxClKey_getKeyContainerSize(mcuxClKey_Handle_t key)
 /**
  * Sets the size of the key data container of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setKeyContainerSize)
 static inline void mcuxClKey_setKeyContainerSize(mcuxClKey_Handle_t key, uint32_t keyContainerSize)
 {
   key->container.length = keyContainerSize;
@@ -289,6 +315,7 @@ static inline void mcuxClKey_setKeyContainerSize(mcuxClKey_Handle_t key, uint32_
  *
  * @return Used size of the key data container of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_getKeyContainerUsedSize)
 static inline uint32_t mcuxClKey_getKeyContainerUsedSize(mcuxClKey_Handle_t key)
 {
   return key->container.used;
@@ -297,6 +324,7 @@ static inline uint32_t mcuxClKey_getKeyContainerUsedSize(mcuxClKey_Handle_t key)
 /**
  * Sets the used size of the key data container of the given key
  */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setKeyContainerUsedSize)
 static inline void mcuxClKey_setKeyContainerUsedSize(mcuxClKey_Handle_t key, uint32_t keyContainerUsedSize)
 {
   key->container.used = keyContainerUsedSize;

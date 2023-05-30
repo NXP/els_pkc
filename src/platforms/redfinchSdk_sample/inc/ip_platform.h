@@ -35,7 +35,6 @@
 
 // Define base address of CSS
 #define ELS_SFR_BASE            ELS         ///< base of CSS SFRs
-
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          ELS_        ///< sfr field name prefix
 
@@ -58,15 +57,20 @@
 #define TRNG_SFR_SUFFIX_MSK     _MASK        ///< sfr field name suffix for mask
 #define TRNG_SFR_SUFFIX_POS     _SHIFT       ///< sfr field name suffix for bit position
 
-// Define base address of RO-PUF
+// ELS version
+#define ELS_HW_VERSION_REVISION            1
+#define ELS_HW_VERSION_MINOR               22
+#define ELS_HW_VERSION_MAJOR               2
+#define ELS_HW_VERSION_FW_REVISION         1
+#define ELS_HW_VERSION_FW_MINOR            2
+#define ELS_HW_VERSION_FW_MAJOR            1
 
-
-// CSS interrupt definitions (TODO: check)
-#define CSS_INTERRUPT_BUSY_NUMBER  102
-#define CSS_INTERRUPT_ERR_NUMBER   102
-#define CSS_INTERRUPT_IRQ_NUMBER   102
-#define GDET_INTERRUPT_IRQ_NUMBER   103
-#define GDET_INTERRUPT_ERR_NUMBER   104
+// Interrupt definitions
+#define CSS_INTERRUPT_BUSY_NUMBER          ELS_IRQn
+#define CSS_INTERRUPT_ERR_NUMBER           ELS_IRQn
+#define CSS_INTERRUPT_IRQ_NUMBER           ELS_IRQn
+#define GDET_INTERRUPT_IRQ_NUMBER          ELS_GDET_IRQ_IRQn
+#define GDET_INTERRUPT_ERR_NUMBER          ELS_GDET_ERR_IRQn
 
 
 #ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS

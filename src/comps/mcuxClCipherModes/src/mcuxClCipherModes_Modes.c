@@ -30,7 +30,7 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Enc_NoPa
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_NoPadding_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */
@@ -39,7 +39,7 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Enc_Padd
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method1_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */
@@ -48,7 +48,7 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Enc_Padd
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingISO9797_1_Method2_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */
@@ -57,8 +57,20 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Dec = {
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Dec_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
+
+
+const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Enc_PaddingPKCS7 =
+{
+    .crypt = mcuxClCipherModes_SkeletonAes,
+    .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
+    .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_ECB_Enc_PaddingPKCS7_Els
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+};
+
+
 
 /* MISRA Ex. 20 - Rule 5.1 */
 const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Enc_NoPadding = {
@@ -66,7 +78,7 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Enc_NoPa
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_NoPadding_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */
@@ -75,7 +87,7 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Enc_Padd
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method1_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */
@@ -84,15 +96,26 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Enc_Padd
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method2_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
+
+
+const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Enc_PaddingPKCS7 =
+{
+    .crypt = mcuxClCipherModes_SkeletonAes,
+    .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
+    .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Enc_PaddingPKCS7_Els
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+};
+
 
 const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Dec = {
     .crypt = mcuxClCipherModes_SkeletonAes,
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_CBC_Dec_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 /* MISRA Ex. 20 - Rule 5.1 */
@@ -101,7 +124,7 @@ const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CTR = {
     .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes),
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the algorithm.")
     .pAlgorithm = (void *) &mcuxClCipherModes_AlgorithmDescriptor_AES_CTR_Els
-    MCUXCLCORE_ANALYSIS_STOP_SUPRESS_DISCARD_CONST_QUALIFIER()
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 };
 
 MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

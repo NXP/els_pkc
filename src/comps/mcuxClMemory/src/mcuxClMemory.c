@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021,2023 NXP                                             */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -15,17 +15,17 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClToolchain.h>
+#include <mcuxClCore_Analysis.h>
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_copy)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_copy (uint8_t *pDst, uint8_t const *pSrc, size_t length, size_t bufLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_copy (uint8_t *pDst, uint8_t const *pSrc, size_t length, size_t bufLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMemory_copy);
 
     size_t i;
     uint32_t unalignedBytes = ((sizeof(uint32_t)) - (uint32_t)pDst) & ((sizeof(uint32_t)) - 1u);
     MCUX_CSSL_FP_LOOP_DECL(mcuxClMemory_copy_loop);
-    uint32_t crtWordVal = 0u;
 
     // Loop on unaligned bytes if any.
     // Loop on words
@@ -53,20 +53,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_copy (uint8_t *p
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
     }
 
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("The pointer is CPU word aligned. So, it's safe to cast it to uint32_t*")
+    uint32_t* p32Dst = (uint32_t *) pDst;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    
     //loop on words
     for (; ((i + sizeof(uint32_t)) <= length) && ((i + sizeof(uint32_t)) <= bufLength); i += sizeof(uint32_t))
     {   
-        crtWordVal = ((uint32_t)*(pSrc + 3) << 24) | ((uint32_t)*(pSrc + 2) << 16) | ((uint32_t)*(pSrc + 1) << 8) | (uint32_t)*pSrc;
+        uint32_t crtWordVal = ((uint32_t)*(pSrc + 3) << 24) | ((uint32_t)*(pSrc + 2) << 16) | ((uint32_t)*(pSrc + 1) << 8) | (uint32_t)*pSrc;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
-        /* MISRA Ex. 9 - Rule 11.3 - Use of UNALIGNED keyword. */
-        *(uint32_t*)pDst = crtWordVal;
+        *p32Dst = crtWordVal;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
-        pDst += sizeof(uint32_t);
+        p32Dst++;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
         pSrc += sizeof(uint32_t);
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
-    }
+    }   
 
+    pDst = (uint8_t *) p32Dst;
     //loop on remaining bytes
     for (; (i < length) && (i < bufLength); i++)
     {
@@ -75,16 +79,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_copy (uint8_t *p
         pSrc++;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
     }
-    
-    size_t lenExceeded = length - i;
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMemory_copy,
-                              lenExceeded,
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMemory_copy,
+                              length - i,
                               MCUX_CSSL_FP_LOOP_ITERATIONS(mcuxClMemory_copy_loop,
                                                           ((length <= bufLength) ? length : bufLength)));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_set)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_set (uint8_t *pDst, uint8_t val, size_t length, size_t bufLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_set (uint8_t *pDst, uint8_t val, size_t length, size_t bufLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMemory_set);
 
@@ -101,19 +104,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_set (uint8_t *pD
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_set_loop);
     }
 
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("The pointer is CPU word aligned. So, it's safe to cast it to uint32_t*")
+    uint32_t* p32Dst = (uint32_t *) pDst;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+
     //loop on words. See mcuxClMemory_copy for an explanation of the condition
     while(((i + sizeof(uint32_t)) <= length) && ((i + sizeof(uint32_t)) <= bufLength))
     {
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_set_loop);
-        /* MISRA Ex. 9 - Rule 11.3 - Use of UNALIGNED keyword. */
-        *(uint32_t*)pDst = wordVal;
+        *p32Dst = wordVal;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_set_loop);
-        pDst += sizeof(uint32_t);
+        p32Dst++;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_set_loop);
         i += sizeof(uint32_t);
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_set_loop);
     }
 
+
+    pDst = (uint8_t *) p32Dst;
     //loop on remaining bytes
     for(; (i < length) && (i < bufLength); i++)
     {
@@ -122,20 +130,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_set (uint8_t *pD
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_set_loop);
     }
 
-    size_t lenExceeded = length - i;
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMemory_set,
-                              lenExceeded,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMemory_set,
+                              length - i,
                               MCUX_CSSL_FP_LOOP_ITERATIONS(mcuxClMemory_set_loop,
                                                           ((length <= bufLength) ? length : bufLength)));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_clear)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMemory_Status_t) mcuxClMemory_clear (uint8_t *pDst, size_t length, size_t bufLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_clear (uint8_t *pDst, size_t length, size_t bufLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMemory_clear, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
 
-    MCUX_CSSL_FP_FUNCTION_CALL(setResult, mcuxClMemory_set(pDst, 0U, length, bufLength));
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_set(pDst, 0U, length, bufLength));
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMemory_clear,
-                              setResult);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClMemory_clear);
 }

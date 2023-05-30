@@ -18,9 +18,9 @@
 
 
 #include <platform_specific_headers.h>
-#include <stdint.h>
-#include <mcuxCsslFlowProtection.h>
+#include <mcuxClCore_Platform.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc_Types.h>
 #include <mcuxClPkc_Functions.h>
@@ -98,7 +98,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcConst(uint16_t param_mode, uint3
 
     MCUXCLPKC_WAITFORREADY();
 
-    if (0u == ((uint32_t) param_mode & ((uint32_t) MCUXCLPKC_PARAM_PS2 << 8)))
+    if (0u == ((uint32_t) param_mode & ((uint32_t) MCUXCLPKC_PARAM_PS2 << 8u)))
     {
         pkc_ctrl |= MCUXCLPKC_SFR_BITMSK(CTRL, GOD1);
         MCUXCLPKC_PS1_SETMODE(param_mode);  /* Only mode in least significant 8 bits */
@@ -140,22 +140,22 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcFup(mcuxClPkc_PtrFUPEntry_t pUPT
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_WaitForFinish)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_WaitForFinish(void)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_WaitForFinish(void)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_WaitForFinish);
 
     MCUXCLPKC_WAITFORFINISH();
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_WaitForFinish, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_WaitForFinish);
 }
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_WaitForReady)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_WaitForReady(void)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_WaitForReady(void)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPkc_WaitForReady);
 
     MCUXCLPKC_WAITFORREADY();
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPkc_WaitForReady, MCUXCLPKC_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_WaitForReady);
 }

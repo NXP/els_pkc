@@ -46,7 +46,7 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Sign_NoEncode =
 };
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_noEncode)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_noEncode, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
   mcuxClSession_Handle_t       pSession,
   mcuxCl_InputBuffer_t         pInput,

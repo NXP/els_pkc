@@ -28,11 +28,12 @@
  *  Constant top-level mode descriptors and common mode descriptors for custom modes
  */
 
-/* MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER() */
 
 /**
  *  Top-level mode structure for CMAC
  */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CMAC = {
   .common = {
     .compute = mcuxClMacModes_compute,
@@ -48,12 +49,15 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CMAC = {
   },
   .pCustom = NULL
 };
-
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 /**
  *  Top-level mode structure for CBCMAC without padding
  */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_NoPadding = {
     .common = {
     .compute = mcuxClMacModes_compute,
@@ -69,11 +73,14 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_NoPadding = {
   },
   .pCustom = NULL
 };
-
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 /**
  *  Top-level mode structure for CBCMAC using ISO9797-1 Method 1 Padding
  */
 /* MISRA Ex. 20 - Rule 5.1 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1 = {
   .common = {
     .compute = mcuxClMacModes_compute,
@@ -89,11 +96,15 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_
   },
   .pCustom = NULL
 };
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /**
  *  Top-level mode structure forCBCMAC using ISO9797-1 Method 2 Padding
  */
 /* MISRA Ex. 20 - Rule 5.1 */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2 = {
   .common = {
     .compute = mcuxClMacModes_compute,
@@ -109,11 +120,37 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_
   },
   .pCustom = NULL
 };
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
+/**
+ *  Top-level mode structure for CBCMAC using PKCS7 Padding
+ */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
+const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_CBCMAC_Padding_PKCS7 = {
+  .common = {
+    .compute = mcuxClMacModes_compute,
+    .protectionToken_compute = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_compute),
+    .init = mcuxClMacModes_init,
+    .protectionToken_init = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_init),
+    .process = mcuxClMacModes_process,
+    .protectionToken_process = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_process),
+    .finish = mcuxClMacModes_finish,
+    .protectionToken_finish = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_finish),
+    .macByteSize = MCUXCLMAC_CBCMAC_OUTPUT_SIZE,
+    .pAlgorithm = (void *) &mcuxClMacModes_AlgorithmDescriptor_CBCMAC_Padding_PKCS7
+  },
+  .pCustom = NULL
+};
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /**
  *  Top-level mode structure for HMAC using ELS
  */
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
 const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_HMAC_SHA2_256_ELS = {
   .common = {
     .compute = mcuxClMacModes_compute,
@@ -129,5 +166,6 @@ const mcuxClMac_ModeDescriptor_t mcuxClMac_ModeDescriptor_HMAC_SHA2_256_ELS = {
   },
   .pCustom = NULL
 };
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
-/* MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER() */

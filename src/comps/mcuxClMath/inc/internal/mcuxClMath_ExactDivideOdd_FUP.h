@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021,2023 NXP                                                  */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,13 +11,15 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMath_ExactDivideOdd_FUP.h
-*  @brief defines FUP program byte arrays for mcuxClMath_ExactDivideOdd
-*/
+/**
+ * @file  mcuxClMath_ExactDivideOdd_FUP.h
+ * @brief defines FUP program byte arrays for mcuxClMath_ExactDivideOdd
+ */
+
 #ifndef MCUXCLMATH_EXACTDIVIDEODD_FUP_H_
 #define MCUXCLMATH_EXACTDIVIDEODD_FUP_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <internal/mcuxClPkc_FupMacros.h>
 
 #ifdef __cplusplus

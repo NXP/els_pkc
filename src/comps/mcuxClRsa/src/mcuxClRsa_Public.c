@@ -36,7 +36,7 @@
 #include <internal/mcuxClRsa_Public_FUP.h>
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_public)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_public, mcuxClRsa_PublicExpEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   mcuxClSession_Handle_t      pSession,
   const mcuxClRsa_Key * const pKey,
@@ -124,11 +124,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   MCUXCLPKC_SETUPTRT(pOperands);
 
   /* Clear PKC workarea after the input, which is located at the beginning of the workarea and has a size of byteLenN */
-  MCUX_CSSL_FP_FUNCTION_CALL(memset_result, mcuxClMemory_set(pPkcWorkarea + byteLenN, 0x00U, bufferSizeTotal - byteLenN, bufferSizeTotal - byteLenN));
-  if(0u != memset_result)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_ERROR);
-  }
+  MCUXCLMEMORY_FP_MEMORY_SET(pPkcWorkarea + byteLenN, 0x00U, bufferSizeTotal - byteLenN);
 
   /************************************************************************************************/
   /* Copy (with reverse order) input and key material to respective buffers in PKC workarea      */

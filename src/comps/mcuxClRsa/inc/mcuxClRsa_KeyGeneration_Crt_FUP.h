@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021,2023 NXP                                                  */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -14,6 +14,8 @@
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_KeyGeneration_Crt_FUP.h>
+
+#include <mcuxClCore_Analysis.h>
 
 MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_KeyGeneration_Crt_Steps10_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,

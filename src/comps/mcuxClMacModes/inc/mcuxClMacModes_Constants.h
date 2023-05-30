@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -20,7 +20,6 @@
 #define MCUXCLMACMODES_CONSTANTS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClMacModes_MemoryConsumption.h>
 
 /**
  * @defgroup mcuxClMacModes_Constants mcuxClMacModes_Constants
@@ -36,6 +35,7 @@
 #define MCUXCLMAC_CMAC_OUTPUT_SIZE_IN_WORDS            (MCUXCLMAC_CMAC_OUTPUT_SIZE / sizeof(uint32_t))   ///< Size of CMAC output in bytes:         128 bits (16 bytes)
 #define MCUXCLMAC_HMAC_SHA_256_OUTPUT_SIZE             (32u)                                                    ///< Size of HMAC SHA-256 output in bytes: 256 bits (32 bytes)
 #define MCUXCLMAC_HMAC_SHA_256_OUTPUT_SIZE_IN_WORDS    (MCUXCLMAC_HMAC_SHA_256_OUTPUT_SIZE / sizeof(uint32_t)) ///< Size of HMAC SHA-256 output in bytes: 256 bits (32 bytes)
+
 #define MCUXCLMAC_MAX_OUTPUT_SIZE                      (32u)
 #define MCUXCLMAC_MAX_OUTPUT_SIZE_IN_WORDS             (MCUXCLMAC_MAX_OUTPUT_SIZE / sizeof(uint32_t))
 

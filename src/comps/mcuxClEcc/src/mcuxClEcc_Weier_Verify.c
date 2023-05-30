@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -51,8 +51,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Initialization                                         */
     /**********************************************************/
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    /* MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - mcuxClEcc_CpuWa_t is 32 bit aligned")
     mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SetupEnvironment,
         mcuxClEcc_Weier_SetupEnvironment(pSession,
                                         & pParam->curveParam,
@@ -70,7 +72,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     }
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
     uint32_t *pOperands32 = (uint32_t *) pOperands;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     const uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
 
     const uint32_t byteLenP = (pParam->curveParam.misc & mcuxClEcc_DomainParam_misc_byteLenP_mask) >> mcuxClEcc_DomainParam_misc_byteLenP_offset;
@@ -307,7 +311,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         /* Output: P1 in (XA,YA, ZA) relative-z, w.r.t. Z. */
 //      MCUXCLPKC_WAITFORREADY();  <==unnecessary, because VT is not used in the FUP program before.
         pOperands[WEIER_VT] = pOperands[ECC_S2];  /* Use S2 as 5th temp. */
-        /* mcuxClEcc_Int_PointMult always returns _OK. */
+
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_Int_PointMult(ECC_S0, byteLenN * 8u));
 
         /* Update z = z * z', so P1: (XA,YA, ZA) relative-z -> (XA,YA, Z) Jacobian. */
@@ -366,7 +370,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_X0, WEIER_Y0);  /* input: Q */
     pOperands[WEIER_VZ2] = pOperands[WEIER_ZA];
     pOperands[WEIER_VT] = pOperands[ECC_S2];  /* Use S2 as 5th temp. */
-    /* mcuxClEcc_RepeatPointDouble always returns _OK. */
+
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_RepeatPointDouble((byteLenN * 8u) / 2u));
 
     /* Prepare 3 pre-computed points for Q, with the same z coordinate. */
@@ -392,7 +396,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Input: 3 Prec_i, in (Xi,Yi, Z) Jacobian.        */
     /* Output: P2 in (XA,YA, ZA) relative-z, w.r.t. Z. */
 //  pOperands[WEIER_VT] = pOperands[ECC_S2];  <== the 5th temp WEIER_VT has been set before calling _RepeatPointDouble.
-    /* mcuxClEcc_RepeatPointDouble always returns _OK. */
+
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_Int_PointMult(ECC_S1, byteLenN * 8u));
 
     /**********************************************************/
@@ -515,3 +519,5 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Results of checking R are inconsistent, or p or n got modified. */
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
 }
+
+

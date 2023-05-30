@@ -79,7 +79,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
     mcuxClSession_Handle_t pSession,
     mcuxClKey_Handle_t key,
     mcuxClKey_Type_t type,
-    mcuxCl_Buffer_t pKeyData,
+    mcuxCl_InputBuffer_t pKeyData,
     uint32_t keyDataLength
 );
 

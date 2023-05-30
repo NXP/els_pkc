@@ -26,6 +26,7 @@
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Analysis.h>
 
 #include <mcuxClEcc_Types.h>
 
@@ -213,6 +214,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInput
     );
 
 
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * @brief This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032
  *  (see Sections 5.1.5 and 5.2.5 of https://datatracker.ietf.org/doc/html/rfc8032).
@@ -237,6 +239,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInput
  * @retval #MCUXCLECC_STATUS_RNG_ERROR    random number generation (DRBG / PRNG) error (unexpected behavior)
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK fault attack (unexpected behavior) is detected
  */
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateKeyPair)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     mcuxClSession_Handle_t pSession,
@@ -245,6 +248,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     mcuxClKey_Handle_t pubKey
     );
 
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * @brief This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of https://datatracker.ietf.org/doc/html/rfc8032).
  *  For given hash prefix prefix (either dom2(x, y) or dom4(x, y) according to the chosen EdDSA variant; see Sections 5.1 and 5.2 of https://datatracker.ietf.org/doc/html/rfc8032),
@@ -275,6 +279,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
  * @retval #MCUXCLECC_STATUS_RNG_ERROR     random number generation (DRBG / PRNG) error (unexpected behavior)
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK  fault attack (unexpected behavior) is detected
  */
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateSignature)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignature(
     mcuxClSession_Handle_t pSession,
@@ -286,6 +291,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     uint32_t * const pSignatureSize
     );
 
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * @brief This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of https://datatracker.ietf.org/doc/html/rfc8032).
  *  For given hash prefix prefix (either dom2(x, y) or dom4(x, y) according to the chosen EdDSA variant; see Sections 5.1 and 5.2 of https://datatracker.ietf.org/doc/html/rfc8032),
@@ -315,6 +321,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
  * @retval #MCUXCLECC_STATUS_INVALID_PARAMS    input parameters are invalid
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK      fault attack (unexpected behavior) is detected
  */
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_VerifySignature)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     mcuxClSession_Handle_t pSession,
@@ -325,6 +332,30 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     const uint8_t *pSignature,
     uint32_t signatureSize
     );
+
+/**
+ * @brief This function implements the protocol descriptor generation for Ed25519ctx, Ed25519ph, Ed448 and Ed448ph
+ *
+ * @param[in]  pSession             pointer to #mcuxClSession_Descriptor
+ * @param[in]  pDomainParams        Pointer to domain parameters of the used curve
+ * @param[in]  pProtocolDescriptor  Protocol descriptor specifying the EdDSA variant
+ * @param[in]  phflag               Option whether pre-hashing is enabled
+ * @param[in]  pContext             User input context for the hash prefix
+ * @param[in]  contextLen           Length of the context
+ *
+ * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
+ * @retval #MCUXCLECC_STATUS_OK                signature verification passed
+ * @retval #MCUXCLECC_STATUS_FAULT_ATTACK      fault attack (unexpected behavior) is detected
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateProtocolDescriptor)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateProtocolDescriptor(
+                                                    mcuxClSession_Handle_t pSession,
+                                                    const mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+                                                    mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *pProtocolDescriptor,
+                                                    uint32_t phflag,
+                                                    mcuxCl_InputBuffer_t pContext,
+                                                    uint32_t contextLen);
+
 
 
 

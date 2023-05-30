@@ -30,6 +30,9 @@
 
 #define RANDOM_BIT_ARRAY_SIZE 4U
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+uint32_t mcuxClEls_rng_drbg_block_counter = 0u;
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
 // Command name change -- should move to top level platform header
 #ifndef ID_CFG_ELS_CMD_RND_REQ
@@ -66,6 +69,12 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Rng_DrbgRequest_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+    /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
+     * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+    uint32_t counter_increase = MCUXCLELS_RNG_DRBG_DRBGREQUEST_INCREASE(outputLength);
+    mcuxClEls_rng_drbg_block_counter += counter_increase;
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
 
     mcuxClEls_setOutput(pOutput, outputLength);
@@ -326,3 +335,181 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Prng_Get
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Prng_GetRandom, MCUXCLELS_STATUS_OK);
 }
 
+#ifdef MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING
+MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_Dtrng_IterativeReseeding_Reseed)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Dtrng_IterativeReseeding_Reseed(const uint8_t *pDtrngConfig)
+MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Dtrng_IterativeReseeding_Reseed,
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_Dtrng_ConfigLoad_Async),
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
+                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)
+                               );
+
+    /* Reset the counter */
+    mcuxClEls_rng_drbg_block_counter = 0u;
+
+    uint8_t keyBuffer[MCUXCLELS_HMAC_PADDED_KEY_SIZE] = {0};
+    uint8_t unusedData[MCUXCLELS_HMAC_OUTPUT_SIZE] = {0};
+    uint8_t emptyMsg[32U] = {0};
+
+    /* Prepare the options for the HMAC command which is called further down */
+    mcuxClEls_HmacOption_t hmac_options = {
+        .bits = {
+            .extkey = MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE
+        }
+    };
+
+    /* Wait for Operation (to avoid crashing a running operation). */
+    MCUX_CSSL_FP_FUNCTION_CALL(status_wait1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if(MCUXCLELS_STATUS_OK != status_wait1)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+    }
+
+    /* Run DTRNG_CFG_LOAD procedure */
+    MCUX_CSSL_FP_FUNCTION_CALL(status_dtrng_configLoad1, mcuxClEls_Rng_Dtrng_ConfigLoad_Async(pDtrngConfig));
+    if(MCUXCLELS_STATUS_OK_WAIT != status_dtrng_configLoad1)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL(status_wait2, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if(MCUXCLELS_STATUS_OK != status_wait2)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+    }
+
+    /* Request DRBG data for the HMAC Key */
+    MCUX_CSSL_FP_FUNCTION_CALL(status_drbgRequest1, mcuxClEls_Rng_DrbgRequest_Async(keyBuffer, MCUXCLELS_HMAC_PADDED_KEY_SIZE));
+    if(MCUXCLELS_STATUS_OK_WAIT != status_drbgRequest1)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL(status_wait3, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if(MCUXCLELS_STATUS_OK != status_wait3)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+    }
+
+    for(uint32_t j = 0; j < (MCUXCLELS_RNG_DRBG_ITERATIVE_SEEDING_ITERATIONS - 1u); j++) {
+        /* Run DTRNG_CFG_LOAD procedure */
+        MCUX_CSSL_FP_FUNCTION_CALL(status_dtrng_configLoad2, mcuxClEls_Rng_Dtrng_ConfigLoad_Async(pDtrngConfig));
+        if(MCUXCLELS_STATUS_OK_WAIT != status_dtrng_configLoad2)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+
+        MCUX_CSSL_FP_FUNCTION_CALL(status_wait4, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+        if(MCUXCLELS_STATUS_OK != status_wait4)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+
+        /* Run HMAC command with external key:
+            key = keyBuffer (the DRBG output)
+            message = 32 bytes of 0
+            output goes into unusedData (array on stack)
+        */
+        MCUX_CSSL_FP_FUNCTION_CALL(status_hmac, mcuxClEls_Hmac_Async(
+                              hmac_options,
+                              0U,
+                              keyBuffer,
+                              emptyMsg,
+                              32U,
+                              unusedData));
+        if (MCUXCLELS_STATUS_OK_WAIT != status_hmac)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+
+        MCUX_CSSL_FP_FUNCTION_CALL(status_wait5, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+        if(MCUXCLELS_STATUS_OK != status_wait5)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+
+        /* Run DRBG_REQ procedure */
+        MCUX_CSSL_FP_FUNCTION_CALL(status_drbgRequest2, mcuxClEls_Rng_DrbgRequest_Async(keyBuffer, MCUXCLELS_HMAC_PADDED_KEY_SIZE));
+        if(MCUXCLELS_STATUS_OK_WAIT != status_drbgRequest2)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+
+        MCUX_CSSL_FP_FUNCTION_CALL(status_wait6, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+        if(MCUXCLELS_STATUS_OK != status_wait6)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+        MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_Dtrng_ConfigLoad_Async),
+                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hmac_Async),
+                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
+                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)
+                           );
+    }
+
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(keyBuffer,MCUXCLELS_HMAC_PADDED_KEY_SIZE);
+
+
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(unusedData,MCUXCLELS_HMAC_OUTPUT_SIZE);
+
+
+    /* No errors if we have reached this point */
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_Reseed, MCUXCLELS_STATUS_OK);
+}
+
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed)
+MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed(const uint8_t *pDtrngConfig)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed);
+
+    /* Check if the block counter has overflowed, and if so, call iterative reseeding procedure. */
+    if(MCUXCLELS_RNG_DRBG_BLOCK_COUNTER_THRESHOLD <= mcuxClEls_rng_drbg_block_counter)
+    {
+        /* Back up interrupt enable flags */
+        mcuxClEls_InterruptOptionEn_t interrupt_getter;
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEls_GetIntEnableFlags(&interrupt_getter));
+
+        /* Set interrupt enable flags to DISABLE */
+        mcuxClEls_InterruptOptionEn_t interrupt_setter = {0};
+        interrupt_setter.bits.elsint = MCUXCLELS_ELS_INTERRUPT_DISABLE;
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEls_SetIntEnableFlags(interrupt_setter));
+
+        /* Call function for iterative seeding of the DTRNG */
+        MCUX_CSSL_FP_FUNCTION_CALL(status_itReseeding, mcuxClEls_Dtrng_IterativeReseeding_Reseed(pDtrngConfig));
+
+        /* Clear interrupt status for the current interrupt before restoring interrupt enable flags to
+         * mark this interrupt as handled and ensure that it is not handled again. */
+        mcuxClEls_InterruptOptionRst_t interrupt_clear = {0};
+        interrupt_clear.bits.elsint = MCUXCLELS_ELS_RESET_CLEAR;
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEls_ResetIntFlags(interrupt_clear));
+
+        /* Restore interrupt enable flags */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEls_SetIntEnableFlags(interrupt_getter));
+
+        /* Check error code of iterative seeding function */
+        if(MCUXCLELS_STATUS_OK != status_itReseeding)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed, MCUXCLELS_STATUS_SW_FAULT);
+        }
+        MCUX_CSSL_FP_EXPECT(
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetIntEnableFlags),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_SetIntEnableFlags),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Dtrng_IterativeReseeding_Reseed),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_ResetIntFlags),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_SetIntEnableFlags));
+    }
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Dtrng_IterativeReseeding_CheckAndReseed, MCUXCLELS_STATUS_OK);
+}
+
+#endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */

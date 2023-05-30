@@ -29,7 +29,7 @@
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClEcc_TwEd_Internal.h>
 
-
+MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * This function implements a scalar multiplication lambda*G for a given secret scalar lambda in {1,...,n-1}
  * and the base point G on a twisted Edwards curves. The result will be returned in homogeneous coordinates (Xres:Yres:Zres).
@@ -67,6 +67,7 @@
  *
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
+MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_FixScalarMult)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
     mcuxClSession_Handle_t pSession,
@@ -154,7 +155,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
     uint32_t currentScalarWord = 0u;
     MCUX_CSSL_FP_LOOP_DECL(whileLoop);
     MCUX_CSSL_FP_BRANCH_DECL(ifInWhile);
-    while(currentDigitBitIndex > 0)
+    while(currentDigitBitIndex > 0u)
     {
         /* Update loop counter, deviation from the design to let iterate over unsigned value */
         currentDigitBitIndex -= MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE;

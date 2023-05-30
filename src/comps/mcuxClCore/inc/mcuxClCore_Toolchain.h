@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -10,20 +10,20 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
-/*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLCORE_TOOLCHAIN_H_
 #define MCUXCLCORE_TOOLCHAIN_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
+#include <mcuxCsslFlowProtection.h>
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxCl_Core_Swap64)
 static inline uint64_t mcuxCl_Core_Swap64(uint64_t value)
 {
     return __builtin_bswap64(value);
 }
 
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxCl_Core_Swap32)
 static inline uint32_t mcuxCl_Core_Swap32(uint32_t value)
 {
     return __builtin_bswap32(value);

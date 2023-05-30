@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,7 +32,7 @@
 /** Performs an example usage of the mcuxClRandom and mcuxClRandomModes components
  * @retval true  The example code completed successfully
  * @retval false The example code failed */
-bool mcuxClRandomModes_CtrDrbg_AES256_DRG3_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG3_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -96,8 +96,7 @@ bool mcuxClRandomModes_CtrDrbg_AES256_DRG3_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg1_status, generate1_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer1,
-                                        3u
-                                   ));
+                                        sizeof(drbg_buffer1)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate1_token) || (MCUXCLRANDOM_STATUS_OK != rg1_status))
     {
@@ -109,8 +108,7 @@ bool mcuxClRandomModes_CtrDrbg_AES256_DRG3_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg2_status, generate2_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer2,
-                                        16u
-                                   ));
+                                        sizeof(drbg_buffer2)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate2_token) || (MCUXCLRANDOM_STATUS_OK != rg2_status))
     {
@@ -131,8 +129,7 @@ bool mcuxClRandomModes_CtrDrbg_AES256_DRG3_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg3_status, generate3_token, mcuxClRandom_generate(
                                         session,
                                         drbg_buffer3,
-                                        31u
-                                   ));
+                                        sizeof(drbg_buffer3)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate3_token) || (MCUXCLRANDOM_STATUS_OK != rg3_status))
     {

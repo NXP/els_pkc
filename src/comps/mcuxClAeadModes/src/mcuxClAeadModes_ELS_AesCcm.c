@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -133,27 +133,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
     if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_INIT))
     {
         /* Init tag. For CCM, the state store the tag value */
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_memset_tag, mcuxClMemory_set(pContext->state,
-                                                                  0u,
-                                                                  MCUXCLAES_BLOCK_SIZE,
-                                                                  MCUXCLAES_BLOCK_SIZE));
-        if (ret_memset_tag != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_SET(pContext->state, 0u, MCUXCLAES_BLOCK_SIZE);
 
         pContext->partialDataLength = 0u;
 
         /* Generate the plain tag -> CBC-MAC with zero IV */
         // Clear first blocks to guarantee zero padding
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_memset_block, mcuxClMemory_set(pContext->partialData,
-                                                                  0u,
-                                                                  MCUXCLAES_BLOCK_SIZE,
-                                                                  MCUXCLAES_BLOCK_SIZE));
-        if (ret_memset_block != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_SET(pContext->partialData, 0u, MCUXCLAES_BLOCK_SIZE);
+
 
         //Determine whether the nonceLength is less than MCUXCLAES_BLOCK_SIZE -1 to prevent memory overflow later
         if(nonceLength > MCUXCLAES_BLOCK_SIZE - 1u)
@@ -180,15 +167,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         // ----------------------------------
 
         // Copy nonce N
-        MCUX_CSSL_FP_FUNCTION_CALL(copyNonceResult, mcuxClMemory_copy(&pContext->partialData[1u],
-                                                                   pNonce,
-                                                                   nonceLength,
-                                                                   nonceLength));
-
-        if (copyNonceResult != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[1u], pNonce,nonceLength);
 
         // Create Q
         uint32_t inMask = 0x000000FFu;
@@ -249,14 +228,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         // &pContext->state[32] won't be used in CCM mode, so write it to store the counter0Data.
         // Use &pContext->state[48] to store the counterData
         // Clear counter first
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_memset_counter, mcuxClMemory_set(&pContext->state[32],
-                                                                  0u,
-                                                                  MCUXCLAES_BLOCK_SIZE,
-                                                                  MCUXCLAES_BLOCK_SIZE));
-        if (ret_memset_counter != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_SET(&pContext->state[32], 0u, MCUXCLAES_BLOCK_SIZE);
+
 
         // Assemble the flags byte
         // ------------------------------------------
@@ -272,25 +245,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         // ----------------------------------
 
         // Copy nonce into counter block
-        MCUX_CSSL_FP_FUNCTION_CALL(copyNonceRet, mcuxClMemory_copy(&pContext->state[33],
-                                                                   pNonce,
-                                                                   nonceLength,
-                                                                   nonceLength));
+        MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->state[33],pNonce,nonceLength);
 
-        if (copyNonceRet != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
-
-        MCUX_CSSL_FP_FUNCTION_CALL(ctrCpyRet, mcuxClMemory_copy(&pContext->state[48],
-                                                              &pContext->state[32],
-                                                              MCUXCLAES_BLOCK_SIZE,
-                                                              MCUXCLAES_BLOCK_SIZE));
-
-        if (ctrCpyRet != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->state[48],&pContext->state[32],MCUXCLAES_BLOCK_SIZE);
         // Last X bytes of counterData are always equal zero, set last byte to one for the next computation
         pContext->state[63] = 0x1u;
     }
@@ -322,14 +279,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
                 {
                     secondAadFpFlag = 1u;
                     uint8_t const* pAad = (uint8_t const*)pAdata;
-                    MCUX_CSSL_FP_FUNCTION_CALL(cpyAadRet, mcuxClMemory_copy(&pContext->partialData[pContext->partialDataLength],
-                                                                   pAad,
-                                                                   MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength,
-                                                                   MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength));
-                    if (0u != cpyAadRet)
-                    {
-                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                    }
+                    MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[pContext->partialDataLength],pAad,MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
                     pAad += MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength;
 
                     lenToCopy -= (MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
@@ -372,14 +322,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
                     {
                         forthAadFpFlag = 1u;
                         //copy remaining data into partialData
-                        MCUX_CSSL_FP_FUNCTION_CALL(cpyAadReRet, mcuxClMemory_copy(pContext->partialData,
-                                                                   pAad,
-                                                                   lenToCopy,
-                                                                   lenToCopy));
-                        if (0u != cpyAadReRet)
-                        {
-                            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                        }
+                        MCUXCLMEMORY_FP_MEMORY_COPY(pContext->partialData,pAad,lenToCopy);
                         pContext->partialDataLength = lenToCopy;
                     }
                 }
@@ -387,14 +330,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
                 {
                     mainAadFpFlag = 1u;
                     //bytes in buffer and new adata is less then blockSize - save data into partialData
-                    MCUX_CSSL_FP_FUNCTION_CALL(cpyAadReResult, mcuxClMemory_copy(&pContext->partialData[pContext->partialDataLength],
-                                                                   pAdata,
-                                                                   lenToCopy,
-                                                                   lenToCopy));
-                    if (cpyAadReResult != 0u)
-                    {
-                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                    }
+                    MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[pContext->partialDataLength],pAdata,lenToCopy);
                     pContext->partialDataLength += lenToCopy;
                 }
             }
@@ -408,15 +344,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
             {
                 fifthAadFpFlag = 1u;
                 /* Apply the padding function specified in the mode on the partial data. */
-                MCUX_CSSL_FP_FUNCTION_CALL(aadPaddResult, mcuxClMemory_set(&pContext->partialData[pContext->partialDataLength],
-                                                                 0x00u,
-                                                                 MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength,
-                                                                 MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength));
+                MCUXCLMEMORY_FP_MEMORY_SET(&pContext->partialData[pContext->partialDataLength], 0x00u, MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
 
-                if (0u != aadPaddResult)
-                {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                }
                 //Process remaining adata and create pretag
                 MCUX_CSSL_FP_FUNCTION_CALL(aadPadAuthRet, pAlgo->pEngine(session, pContext,
                                                                        pContext->partialData,
@@ -460,15 +389,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
             if((pContext->partialDataLength + inLength) >= MCUXCLAES_BLOCK_SIZE)
             {
                  mainProFpFlag = 1u;
-                 MCUX_CSSL_FP_FUNCTION_CALL(inCpyRet, mcuxClMemory_copy(&pContext->partialData[pContext->partialDataLength],
-                                                                   pInput,
-                                                                   MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength,
-                                                                   MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength));
-
-                if (inCpyRet != 0u)
-                {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                }
+                 MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[pContext->partialDataLength],pInput,MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
                 pInput += MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength;
                 inLength -= (MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
                 //update processed input data length to processedDataLength
@@ -519,15 +440,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
                 {
                     thirdProFpFlag = 1u;
                     //copy remaining data into blockBuffer
-                    MCUX_CSSL_FP_FUNCTION_CALL(inRmCpyRet, mcuxClMemory_copy(pContext->partialData,
-                                                                   pInput,
-                                                                   inLength,
-                                                                   inLength));
-
-                    if (inRmCpyRet != 0u)
-                    {
-                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                    }
+                    MCUXCLMEMORY_FP_MEMORY_COPY(pContext->partialData,pInput,inLength);
                     pContext->partialDataLength = inLength;
                     //update processed input data length to processedDataLength
                     pContext->processedDataLength += inLength;
@@ -537,15 +450,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
             {
                 forthProFpFlag = 1u;
                 //bytes in buffer and new adata is less then blockSize - save data into partialData
-                MCUX_CSSL_FP_FUNCTION_CALL(inCpyRet, mcuxClMemory_copy(&pContext->partialData[pContext->partialDataLength],
-                                                                   pIn,
-                                                                   inLength,
-                                                                   inLength));
-
-                if (inCpyRet != 0u)
-                {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                }
+                MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[pContext->partialDataLength],pIn,inLength);
                 pContext->partialDataLength += inLength;
                 //update processed input data length to processedDataLength
                 pContext->processedDataLength += inLength;
@@ -557,15 +462,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         if((pContext->processedDataLength == pContext->dataLength + pContext->aadLength) && (0u != pContext->partialDataLength))
         {
             mainFinFpFlag = 1u;
-            MCUX_CSSL_FP_FUNCTION_CALL(inPaddRet, mcuxClMemory_set(&pContext->partialData[pContext->partialDataLength],
-                                                                 0x00u,
-                                                                 MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength,
-                                                                 MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength));
+            MCUXCLMEMORY_FP_MEMORY_SET(&pContext->partialData[pContext->partialDataLength], 0x00u, MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
 
-            if (0u != inPaddRet)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-            }
             //This last block length less then MCUXCLAES_BLOCK_SIZE, so can't directly write result to pOut
             //&pContext->state[16] have not been used, so can re-write it to store the CTR result
             MCUX_CSSL_FP_FUNCTION_CALL(inPaddEncRet, pAlgo->pEngine(session, pContext,
@@ -581,15 +479,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
             }
 
             /* Copy the padding to the output and update pOutLength accordingly. */
-            MCUX_CSSL_FP_FUNCTION_CALL(outCpyRet, mcuxClMemory_copy(pOutput,
+            MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOutput,
                                                                &pContext->state[16],
                                                                pContext->partialDataLength,
-                                                               MCUXCLAES_BLOCK_SIZE));
+                                                               MCUXCLAES_BLOCK_SIZE);
 
-            if (outCpyRet != 0u)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-            }
 
             *pOutLength += pContext->partialDataLength;
 
@@ -611,15 +505,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
             else
             {
                 //Process remaining data and create pretag
-                MCUX_CSSL_FP_FUNCTION_CALL(outPaddRet, mcuxClMemory_set(&pContext->state[16u + pContext->partialDataLength],
-                                                                 0x00u,
-                                                                 MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength,
-                                                                 MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength));
+                MCUXCLMEMORY_FP_MEMORY_SET(&pContext->state[16u + pContext->partialDataLength], 0x00u, MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
 
-                if (0u != outPaddRet)
-                {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-                }
                 MCUX_CSSL_FP_FUNCTION_CALL(inPaddAuthRet, pAlgo->pEngine(session, pContext,
                                                                                &pContext->state[16],
                                                                                MCUXCLAES_BLOCK_SIZE,
@@ -654,15 +541,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         }
 
         //reset counter value to 'zero' (leaving the other fields intact)
-        MCUX_CSSL_FP_FUNCTION_CALL(ctrCpyRet, mcuxClMemory_copy(&pContext->state[48],
-                                                              &pContext->state[32],
-                                                              MCUXCLAES_BLOCK_SIZE,
-                                                              MCUXCLAES_BLOCK_SIZE));
-
-        if (ctrCpyRet != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->state[48],&pContext->state[32],MCUXCLAES_BLOCK_SIZE);
 
         //Encrypt pretag with counter0 to get final tag
         MCUX_CSSL_FP_FUNCTION_CALL(finalTagEncRet, pAlgo->pEngine(session, pContext,
@@ -685,27 +564,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
 */
     if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_FINISH))
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(tagFinalRet, mcuxClMemory_copy(pTag,
-                                                               pContext->partialData,
-                                                               pContext->tagLength,
-                                                               pContext->tagLength));
-
-        if (tagFinalRet != 0u)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        MCUXCLMEMORY_FP_MEMORY_COPY(pTag,pContext->partialData,pContext->tagLength);
 
         //Clear Ctx content
         //it will still be used, so can't clear in this step
-        // MCUX_CSSL_FP_FUNCTION_CALL(ctxClearRet, mcuxClMemory_set((uint8_t *)pContext,
-                                                             // 0x00u,
-                                                             // sizeof(mcuxClAead_Context_t),
-                                                             // sizeof(mcuxClAead_Context_t)));
+        // MCUXCLMEMORY_FP_MEMORY_SET((uint8_t *)pContext, // 0x00u, // sizeof(mcuxClAead_Context_t));
 
-        // if (0u != ctxClearRet)
-        // {
-            // MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        // }
+
 
     }
 
@@ -730,15 +595,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
 
         //Clear Ctx content
         //it will still be used, so can't clear in this step
-        // MCUX_CSSL_FP_FUNCTION_CALL(ctxClearRet, mcuxClMemory_set((uint8_t *)pContext,
-                                                             // 0x00u,
-                                                             // sizeof(mcuxClAead_Context_t),
-                                                             // sizeof(mcuxClAead_Context_t)));
+        // MCUXCLMEMORY_FP_MEMORY_SET((uint8_t *)pContext, // 0x00u, // sizeof(mcuxClAead_Context_t));
 
-        // if (0u != ctxClearRet)
-        // {
-            // MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
-        // }
+
     }
 
     /* Exit and balance the flow protection. */

@@ -58,12 +58,14 @@
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_Int_PointMult)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_PointMult(uint8_t iScalar, uint32_t scalarBitLength)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_Int_PointMult(uint8_t iScalar, uint32_t scalarBitLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_Int_PointMult);
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    uint32_t *pOperands32 = (uint32_t *) pOperands;  /* UPTR table is 32-bit aligned in ECC component. */
+    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
+    uint32_t *pOperands32 = (uint32_t *) pOperands;
+    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
     const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
     MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
@@ -185,7 +187,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_PointMult(uint8_t 
         }
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_PointMult, MCUXCLECC_STATUS_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClEcc_Int_PointMult,
         MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,
         MCUX_CSSL_FP_LOOP_ITERATIONS(PointMult_Double, scalarBitLength / 2u),
         MCUX_CSSL_FP_LOOP_ITERATIONS(PointMult_Add, NoOfAdd) );

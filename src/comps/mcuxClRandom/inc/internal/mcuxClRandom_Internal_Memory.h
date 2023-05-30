@@ -32,15 +32,7 @@ extern "C" {
 
 #define MCUXCLRANDOM_SECURECLEAR(callerID, errorReturn, pTarget, length)                        \
     do{                                                                                        \
-        MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClMemory_clear(                                   \
-            pTarget,                                                                           \
-            length,                                                                            \
-            length                                                                             \
-        ));                                                                                    \
-        if(0u != result)                                                                       \
-        {                                                                                      \
-            MCUX_CSSL_FP_FUNCTION_EXIT(callerID, errorReturn);                                  \
-        }                                                                                      \
+        MCUXCLMEMORY_FP_MEMORY_CLEAR(pTarget, length);                                          \
     } while(false)
 
 #define MCUXCLRANDOM_FP_CALLED_SECURECOPY  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)

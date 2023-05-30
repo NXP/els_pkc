@@ -21,20 +21,24 @@
 MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 /* Hash Cpu Workarea size generation */
+volatile uint8_t mcuxClHash_compute_WaCpuMiyaguchiPreneel [MCUXCLHASH_INTERNAL_WACPU_SIZE_MIYAGUCHI_PRENEEL];
 volatile uint8_t mcuxClHash_compute_WaCpuMd5 [MCUXCLHASH_INTERNAL_WACPU_SIZE_MD5];
 volatile uint8_t mcuxClHash_compute_WaCpuSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA1];
 volatile uint8_t mcuxClHash_compute_WaCpuSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_224];
 volatile uint8_t mcuxClHash_compute_WaCpuSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_256];
 volatile uint8_t mcuxClHash_compute_WaCpuSha2_384 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_384];
 volatile uint8_t mcuxClHash_compute_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
+volatile uint8_t mcuxClHash_compute_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3];
 volatile uint8_t mcuxClHash_compute_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
 
+volatile uint8_t mcuxClHash_finish_WaCpuMiyaguchiPreneel [MCUXCLHASH_INTERNAL_WACPU_SIZE_MIYAGUCHI_PRENEEL];
 volatile uint8_t mcuxClHash_finish_WaCpuMd5 [MCUXCLHASH_INTERNAL_WACPU_SIZE_MD5];
 volatile uint8_t mcuxClHash_finish_WaCpuSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA1];
 volatile uint8_t mcuxClHash_finish_WaCpuSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_224];
 volatile uint8_t mcuxClHash_finish_WaCpuSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_256];
 volatile uint8_t mcuxClHash_finish_WaCpuSha2_384 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_384];
 volatile uint8_t mcuxClHash_finish_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
+volatile uint8_t mcuxClHash_finish_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3];
 volatile uint8_t mcuxClHash_finish_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
 
 /* Hash multi-part context size generation */

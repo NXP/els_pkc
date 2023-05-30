@@ -71,6 +71,20 @@ static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_ECB_Enc_PaddingISO9797_1_Method
 
 
 /**
+ * @brief AES ECB Encryption mode descriptor with PKCS7 padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Enc_PaddingPKCS7;
+
+
+/**
+ * @brief AES ECB Encryption mode with PKCS7 padding
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_ECB_Enc_PaddingPKCS7 =
+  &mcuxClCipher_ModeDescriptor_AES_ECB_Enc_PaddingPKCS7;
+
+
+
+/**
  * @brief AES ECB Decryption mode descriptor
  */
 extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_ECB_Dec;
@@ -115,6 +129,22 @@ extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_E
  */
 static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_CBC_Enc_PaddingISO9797_1_Method2 =
   &mcuxClCipher_ModeDescriptor_AES_CBC_Enc_PaddingISO9797_1_Method2;
+
+
+
+/**
+ * @brief AES CBC Encryption mode descriptor with PKCS7 padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CBC_Enc_PaddingPKCS7;
+
+
+/**
+ * @brief AES CBC Encryption mode with PKCS7 padding
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_CBC_Enc_PKCS7 =
+  &mcuxClCipher_ModeDescriptor_AES_CBC_Enc_PaddingPKCS7;
+
+
 
 /**
  * @brief AES CBC Decryption mode descriptor
