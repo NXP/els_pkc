@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2022 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* All rights are reserved. Reproduction in whole or in part is prohibited  */
+/* without the prior written consent of the copy-right owner.               */
+/* This source code and any compilation or derivative thereof is the sole   */
+/* property of NXP N.V. and is provided pursuant to a Software License      */
+/* Agreement. This code is the proprietary information of NXP N.V. and      */
+/* is confidential in nature. Its use and dissemination by any party other  */
+/* than NXP N.V. is strictly limited by the confidential information        */
+/* provisions of the agreement referenced above.                            */
 /*--------------------------------------------------------------------------*/
 
 /** @file  ip_platform.h
@@ -19,11 +19,13 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include <LPC55S36.h>
+#include "fsl_device_registers.h"
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
+
+#define MCUXCL_FEATURE_TRNG_RNG4_256
 
 // Define base address of ELS
 #define ELS_SFR_BASE            ELS         ///< base of ELS SFRs
@@ -41,6 +43,7 @@
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x20002000UL)
 #define PKC_WORD_SIZE  8u
+#define PKC_RAM_SIZE  ((uint32_t)0x1000u) /* TODO Check that value if its correct*/
 
 #define CSS_INTERRUPT_BUSY_NUMBER  54
 #define CSS_INTERRUPT_ERR_NUMBER   112

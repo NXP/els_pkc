@@ -19,8 +19,6 @@
  #include "mcuxClCore_Analysis.h"
  
  MCUXCLCORE_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
- #include "LPC55S36.h" 
- #include "system_LPC55S36.h" 
  #include "ip_platform.h" 
  #include "ip_css_constants.h" 
  #include "ip_css_design_configuration.h" 

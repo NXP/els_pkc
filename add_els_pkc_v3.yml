@@ -66,8 +66,10 @@ component.els_pkc.static_lib.mcxn:
   dependency:
     allOf:
     - device:
+      - MCXN546
+      - MCXN547
+      - MCXN946
       - MCXN947
-      - MCXN548
 component.els_pkc.static_lib.rw61x:
   section-type: component
   contents:
@@ -108,6 +110,41 @@ component.els_pkc.static_lib.rw61x:
     - device:
       - RW610
       - RW612
+component.els_pkc.static_lib.lpc:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    files:
+    - source: static_library/niobe4aSdk_2020/libclns.a
+      hidden: true
+      exclude: true
+    - source: static_library/niobe4aSdk_2020/libclns.a.libsize
+      hidden: true
+      exclude: true
+    - source: static_library/niobe4aSdk_2020/libclns.a.objsize
+      hidden: true
+      exclude: true
+    - source: static_library/niobe4aSdk_2020/libclns.stripped.a
+      hidden: true
+      exclude: true
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc static_lib for LPC
+    description: Component els_pkc static_lib LPC
+    user_visible: always
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: static_lib_lpc
+    display_name: els_pkc static_lib LPC
+  dependency:
+    allOf:
+    - device:
+      - LPC55S36
 component.els_pkc.common:
   section-type: component
   contents:
@@ -351,18 +388,31 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignature.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignature_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignatureMode.c
+
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_InitPrivKeyInputMode.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_CalcHashModN.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_Ed25519.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_SetupEnvironment.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_SignatureMechanisms.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_VerifySignature.c
+
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_BlindedScalarMult.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_Convert_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_GenerateMultiplicativeBlinding.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_InterleaveTwoScalars.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_Interleave_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_InterleaveScalar.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_InterleaveTwoScalars.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_PointComparison_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_RecodeAndReorderScalar.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_SetupEnvironment.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_SetupEnvironment_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_Types.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_Types.c	
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_KeyTypes.c
+
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Mont_DhKeyAgreement.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Mont_DhKeyGeneration.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Mont_Internal_DhSetupEnvironment.c
@@ -371,6 +421,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_SignatureMechanisms.c
+
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_FixScalarMult.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainFixScalarMult25519.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainPtrSelectComb.c
@@ -378,15 +429,15 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainVarScalarMult.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointValidation_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PrecPointImportAndValidate.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_VarScalarMult.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_VarScalarMult_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateCustomKeyType.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_SetupEnvironment.c
+
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_ConvertPoint_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_KeyGen.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_KeyGen.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_KeyGen_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_PointArithmetic.c
@@ -404,43 +455,37 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Sign_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Verify.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Verify_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignature_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_InitPrivKeyInputMode.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_CalcHashModN.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_Ed25519.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_PointComparison_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignatureMode.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_SignatureMechanisms.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_Internal_InterleaveScalar.c
-    
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateCustomKeyType.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_SetupEnvironment.c
+
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Constants.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Functions.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_Convert_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_GenerateSignature_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_Internal_DecodePoint_FUP.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_PointComparison_FUP.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Functions.h
+
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_Convert_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_Interleave_FUP.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_PointComparison_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_SetupEnvironment_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_KeyMechanisms.h
+
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_MemoryConsumption.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_MontDhX_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_ParameterSizes.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointValidation_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_VarScalarMult_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Types.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_WeierECC.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h
+
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_ConvertPoint_FUP.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_KeyGen_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_PointArithmetic_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_PointCheck_FUP.h
@@ -448,40 +493,43 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_PointMult_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Sign_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Verify_FUP.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Weier_Internal_FUP.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_WeierECC.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h
 
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_GenerateSignature_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_DecodePoint_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_Ed25519.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_PointComparison_FUP.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_Hash.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_PkcWaLayout.h
+
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_Convert_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_Interleave_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_PointComparison_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_Random.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_SecurePointSelect.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_SetupEnvironment_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_UPTRT_access.h
+
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Mont_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Mont_Internal_MontDhX_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Mont_Internal_PkcWaLayout.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.h
+
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal_Ed25519.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal_Ed25519_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal_PointValidation_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_TwEd_Internal_VarScalarMult_FUP.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_DecodePoint_FUP.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h
+
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_ConvertPoint_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_KeyGen_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_PointArithmetic_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_PointCheck_FUP.h
@@ -489,7 +537,9 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_PointMult_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Sign_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Verify_FUP.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_DecodePoint_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -523,6 +573,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cipher.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cmac.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
+    - source: src/comps/mcuxClEls/src/mcuxClEls_Crc.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Ecc.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hash.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hmac.c
@@ -534,6 +585,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cmac.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Crc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Ecc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hash.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hmac.h
@@ -1543,8 +1595,10 @@ component.els_pkc.platform.mcxn:
   dependency:
     allOf:
     - device:
+      - MCXN546
+      - MCXN547
+      - MCXN946
       - MCXN947
-      - MCXN548
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
 component.els_pkc.platform.rw61x:
@@ -1585,6 +1639,42 @@ component.els_pkc.platform.rw61x:
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
     - component.els_pkc.glitchdetector
+component.els_pkc.platform.lpc:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/niobe4aSdk_2020
+    - repo_relative_path: src/platforms/niobe4aSdk_2020/inc
+    files:
+    - source: src/platforms/niobe4aSdk_2020/platform_specific_headers.h
+    - source: src/platforms/niobe4aSdk_2020/mcuxClConfig.h
+    - source: src/platforms/niobe4aSdk_2020/inc/ip_css_constants.h
+    - source: src/platforms/niobe4aSdk_2020/inc/ip_css_design_configuration.h
+    - source: src/platforms/niobe4aSdk_2020/inc/ip_platform.h
+    - source: src/platforms/niobe4aSdk_2020/mcux_els.c
+    - source: src/platforms/niobe4aSdk_2020/mcux_els.h
+    - source: src/platforms/niobe4aSdk_2020/mcux_pkc.c
+    - source: src/platforms/niobe4aSdk_2020/mcux_pkc.h
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_lpc
+    description: Component els_pkc_lpc
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_platform
+    display_name: els_pkc_lpc
+  dependency:
+    allOf:
+    - device:
+      - LPC55S36
+    - component.els_pkc
+    - component.els_pkc.glitchdetector
+    # - component.els_pkc.trng.type_els
 component.els_pkc.examples:
   section-type: component
   contents:
@@ -1593,7 +1683,7 @@ component.els_pkc.examples:
     cc-include:
     - repo_relative_path: "./"
     - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
-    - repo_relative_path: examples/mcuxCsslMemory/inc
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
     - repo_relative_path: src/comps/mcuxClExample/inc/
     files:
     - source: examples/mcuxClAeadModes/mcuxClAeadModes_multiPart_ELS_CCM_example.c
@@ -1691,6 +1781,7 @@ component.els_pkc.psa_driver_examples:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc
     files:
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_aead_ccm_multipart_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_aead_ccm_oneshot_example.c
@@ -1778,7 +1869,9 @@ set.component.els_pkc:
     anyOf:
     - device:
       - LPC55S36
+      - MCXN546
+      - MCXN547
+      - MCXN946
       - MCXN947
-      - MCXN548
       - RW610
       - RW612
