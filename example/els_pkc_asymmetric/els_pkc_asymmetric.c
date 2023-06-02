@@ -39,7 +39,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("PKC ECC keygen sign verify:");
-    if (ecc_keygen_sign_verify() == true)
+    if (mcuxClEls_Ecc_Keygen_Sign_Verify_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -111,7 +111,7 @@ int main(void)
     }
 
     PRINTF("TLS Master session keys:");
-    if (tls_master_key_session_keys() == true)
+    if (mcuxClEls_Tls_Master_Key_Session_Keys_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");

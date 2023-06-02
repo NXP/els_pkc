@@ -18,7 +18,6 @@
  * @example mcuxClEls_Hash_HW_Security_Counter_example.c
  * @brief   Example of SHA2-256 hashing using the ELS (CLNS component mcuxClEls)
  */
-#include <niobe4a.h>
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection

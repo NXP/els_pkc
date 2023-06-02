@@ -16,8 +16,8 @@
 /*******************************************************************************
  * API
  ******************************************************************************/
-extern bool cipher_aes128_cbc_encrypt(void);
-extern bool cipher_aes128_ecb_encrypt(void);
+extern bool mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example(void);
+extern bool mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example(void);
 extern bool mcuxClMacModes_cmac_oneshot_example(void);
 
 #endif /* _ELS_PKC_SYMMETRIC_H_ */

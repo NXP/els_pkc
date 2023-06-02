@@ -16,8 +16,8 @@
 /*******************************************************************************
  * API
  ******************************************************************************/
-extern bool rng_prng_get_random(void);
-extern bool common_get_info(void);
+extern bool mcuxClEls_Rng_Prng_Get_Random_example(void);
+extern bool mcuxClEls_Common_Get_Info_example(void);
 extern bool mcuxCsslFlowProtection_example(void);
 extern uint32_t data_invariant_memory_compare(void);
 extern uint32_t data_invariant_memory_copy(void);

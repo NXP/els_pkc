@@ -39,7 +39,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("AES128-CBC encryption:");
-    if (cipher_aes128_cbc_encrypt() == true)
+    if (mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -51,7 +51,7 @@ int main(void)
     }
 
     PRINTF("AES128-ECB encryption:");
-    if (cipher_aes128_ecb_encrypt() == true)
+    if (mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");

@@ -43,7 +43,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("ELS get info:");
-    if (common_get_info() == true)
+    if (mcuxClEls_Common_Get_Info_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -55,7 +55,7 @@ int main(void)
     }
 
     PRINTF("RNG PRNG random:");
-    if (rng_prng_get_random() == true)
+    if (mcuxClEls_Rng_Prng_Get_Random_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
