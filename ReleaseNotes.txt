@@ -1,14 +1,12 @@
 CLNS SDK (1.5.0) Release Notes
 
-- Release: RedfinchSDK_EAR7
+- Release: RW61x_EAR7
 - Version: CLNS_SDK_1.5.0
 - Date:    2023-05-26
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: tags/sdk_v1.5.0_nirvanasdk_prc_redfinchsdk_ear7_niobe_prc
 - Compiler: ARMCLANG keilmdk 533
 --- Test Target:   
    - RW610 A0 Sample
---- CLNS memory consumption: static_library/redfinchSdk_sample/libclns.a
+--- CLNS memory consumption: static_library/RW61x/libclns.a
     TEXT  RO    RW ZI TOTAL_CONSUMPTION
     78558 23909 0  0  102467 
 
@@ -32,15 +30,13 @@ CLNS SDK (1.5.0) Release Notes
    - 13 "high" + 153 "medium" impact Cert-C / Coverity static analysis violations
    - When MCUXCLECC_STATUS_RNG_ERROR or MCUXCLRSA_STATUS_RNG_ERROR is returned the security counter is not guaranteed to be balanced
 
-- Release: NirvanaSDK_PRC
+- Release: MCXN_PRC
 - Version: CLNS_SDK_1.5.0
 - Date:    2023-05-26
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: tags/sdk_v1.5.0_nirvanasdk_prc_redfinchsdk_ear7_niobe_prc
 - Compiler: IAR Compiler v.8.40.1
 --- Test Target:   
-   - Nirvana sample
---- CLNS memory consumption: static_library/nirvanaSdk/libclns.a
+   - MCXN sample
+--- CLNS memory consumption: static_library/mcxn/libclns.a
     TEXT  RO    RW ZI TOTAL_CONSUMPTION
     68176 19684 0  0  87860
 
@@ -60,15 +56,13 @@ CLNS SDK (1.5.0) Release Notes
    - 10 "high" + 155 "medium" impact Cert-C / Coverity static analysis violations
    - When MCUXCLECC_STATUS_RNG_ERROR or MCUXCLRSA_STATUS_RNG_ERROR is returned the security counter is not guaranteed to be balanced
 
-- Release: Niobe4aSDK_2020_PRC
+- Release: LPC_PRC
 - Version: CLNS_SDK_1.5.0
 - Date:    2023-05-26
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: tags/sdk_v1.5.0_nirvanasdk_prc_redfinchsdk_ear7_niobe_prc
 - Compiler: IAR Compiler v.8.40.1
 --- Test Target:   
-   - niobe4_analog_sample
---- CLNS memory consumption: static_library/niobe4aSdk_2020/libclns.a
+   - LPC55S36_sample
+--- CLNS memory consumption: static_library/lpc/libclns.a
     TEXT  RO    RW ZI TOTAL_CONSUMPTION
     58168 19016 0  4  77188
 

@@ -40,16 +40,16 @@ component.els_pkc.static_lib.mcxn:
     cc-include:
     - repo_relative_path: "./"
     files:
-    - source: static_library/nirvanaSdk/libclns.a
+    - source: static_library/mcxn/libclns.a
       hidden: true
       exclude: true
-    - source: static_library/nirvanaSdk/libclns.a.libsize
+    - source: static_library/mcxn/libclns.a.libsize
       hidden: true
       exclude: true
-    - source: static_library/nirvanaSdk/libclns.a.objsize
+    - source: static_library/mcxn/libclns.a.objsize
       hidden: true
       exclude: true
-    - source: static_library/nirvanaSdk/libclns.stripped.a
+    - source: static_library/mcxn/libclns.stripped.a
       hidden: true
       exclude: true
   belong_to: set.component.els_pkc
@@ -118,16 +118,16 @@ component.els_pkc.static_lib.lpc:
     cc-include:
     - repo_relative_path: "./"
     files:
-    - source: static_library/niobe4aSdk_2020/libclns.a
+    - source: static_library/lpc/libclns.a
       hidden: true
       exclude: true
-    - source: static_library/niobe4aSdk_2020/libclns.a.libsize
+    - source: static_library/lpc/libclns.a.libsize
       hidden: true
       exclude: true
-    - source: static_library/niobe4aSdk_2020/libclns.a.objsize
+    - source: static_library/lpc/libclns.a.objsize
       hidden: true
       exclude: true
-    - source: static_library/niobe4aSdk_2020/libclns.stripped.a
+    - source: static_library/lpc/libclns.stripped.a
       hidden: true
       exclude: true
   belong_to: set.component.els_pkc
@@ -1570,18 +1570,18 @@ component.els_pkc.platform.mcxn:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/nirvanaSdk
-    - repo_relative_path: src/platforms/nirvanaSdk/inc
+    - repo_relative_path: src/platforms/mcxn
+    - repo_relative_path: src/platforms/mcxn/inc
     files:
-    - source: src/platforms/nirvanaSdk/platform_specific_headers.h
-    - source: src/platforms/nirvanaSdk/mcuxClConfig.h
-    - source: src/platforms/nirvanaSdk/inc/ip_css_constants.h
-    - source: src/platforms/nirvanaSdk/inc/ip_css_design_configuration.h
-    - source: src/platforms/nirvanaSdk/inc/ip_platform.h
-    - source: src/platforms/nirvanaSdk/mcux_els.c
-    - source: src/platforms/nirvanaSdk/mcux_els.h
-    - source: src/platforms/nirvanaSdk/mcux_pkc.c
-    - source: src/platforms/nirvanaSdk/mcux_pkc.h
+    - source: src/platforms/mcxn/platform_specific_headers.h
+    - source: src/platforms/mcxn/mcuxClConfig.h
+    - source: src/platforms/mcxn/inc/ip_css_constants.h
+    - source: src/platforms/mcxn/inc/ip_css_design_configuration.h
+    - source: src/platforms/mcxn/inc/ip_platform.h
+    - source: src/platforms/mcxn/mcux_els.c
+    - source: src/platforms/mcxn/mcux_els.h
+    - source: src/platforms/mcxn/mcux_pkc.c
+    - source: src/platforms/mcxn/mcux_pkc.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1646,18 +1646,18 @@ component.els_pkc.platform.lpc:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/niobe4aSdk_2020
-    - repo_relative_path: src/platforms/niobe4aSdk_2020/inc
+    - repo_relative_path: src/platforms/lpc
+    - repo_relative_path: src/platforms/lpc/inc
     files:
-    - source: src/platforms/niobe4aSdk_2020/platform_specific_headers.h
-    - source: src/platforms/niobe4aSdk_2020/mcuxClConfig.h
-    - source: src/platforms/niobe4aSdk_2020/inc/ip_css_constants.h
-    - source: src/platforms/niobe4aSdk_2020/inc/ip_css_design_configuration.h
-    - source: src/platforms/niobe4aSdk_2020/inc/ip_platform.h
-    - source: src/platforms/niobe4aSdk_2020/mcux_els.c
-    - source: src/platforms/niobe4aSdk_2020/mcux_els.h
-    - source: src/platforms/niobe4aSdk_2020/mcux_pkc.c
-    - source: src/platforms/niobe4aSdk_2020/mcux_pkc.h
+    - source: src/platforms/lpc/platform_specific_headers.h
+    - source: src/platforms/lpc/mcuxClConfig.h
+    - source: src/platforms/lpc/inc/ip_css_constants.h
+    - source: src/platforms/lpc/inc/ip_css_design_configuration.h
+    - source: src/platforms/lpc/inc/ip_platform.h
+    - source: src/platforms/lpc/mcux_els.c
+    - source: src/platforms/lpc/mcux_els.h
+    - source: src/platforms/lpc/mcux_pkc.c
+    - source: src/platforms/lpc/mcux_pkc.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
