@@ -41,6 +41,9 @@ status_t ELS_PowerDownWakeupInit(ELS_Type *base)
     /* Enable ELS clock */
     CLOCK_EnableClock(kCLOCK_Els);
 
+    /* Enable ElsApB clock */
+    CLOCK_EnableClock(kCLOCK_ElsApb);
+
     /* Enable ELS and related clocks */
     /* Initialize ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
