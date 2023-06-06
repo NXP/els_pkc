@@ -1,12 +1,12 @@
 /*
- *     Copyright 2021 NXP
+ *     Copyright 2021 - 2023 NXP
  *     All rights reserved.
  *
  *     SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _FSL_PKC_H_
-#define _FSL_PKC_H_
+#ifndef _MCUX_PKC_H_
+#define _MCUX_PKC_H_
 
 #include <stdint.h>
 #include <stddef.h>
@@ -61,4 +61,4 @@ status_t PKC_InitNoZeroize(PKC_Type *base);
  *@}
  */
 
-#endif /* _FSL_ELS_PKC_H_ */
+#endif /* _MCUX_PKC_H_ */

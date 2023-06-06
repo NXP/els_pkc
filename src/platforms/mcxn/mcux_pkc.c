@@ -1,5 +1,5 @@
 /*
- *     Copyright 2022 NXP
+ *     Copyright 2021 - 2023 NXP
  *     All rights reserved.
  *
  *     SPDX-License-Identifier: BSD-3-Clause
@@ -57,8 +57,6 @@ status_t PKC_PowerDownWakeupInit(PKC_Type *base)
  */
 status_t PKC_InitNoZeroize(PKC_Type *base)
 {
-    /*Not applicable for RW610, should be in a pre-processor TODO*/
-    /* set PKC RAM to interleave mode */
     SYSCON->RAM_INTERLEAVE = SYSCON_RAM_INTERLEAVE_INTERLEAVE_MASK;
 
     /* Reset PKC */

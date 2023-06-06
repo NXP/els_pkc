@@ -1,12 +1,12 @@
 /*
- *     Copyright 2021 NXP
+ *     Copyright 2021 - 2023 NXP
  *     All rights reserved.
  *
  *     SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _FSL_ELS_H_
-#define _FSL_ELS_H_
+#ifndef _MCUX_ELS_H_
+#define _MCUX_ELS_H_
 
 #include <stdint.h>
 #include <stddef.h>
@@ -58,4 +58,4 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base);
  *@}
  */
 
-#endif /* _FSL_ELS_PKC_H_ */
+#endif /* _MCUX_ELS_H_ */

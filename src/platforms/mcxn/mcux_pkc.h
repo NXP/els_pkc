@@ -5,8 +5,8 @@
  *     SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _FSL_PKC_H_
-#define _FSL_PKC_H_
+#ifndef _MCUX_PKC_H_
+#define _MCUX_PKC_H_
 
 #include <stdint.h>
 #include <stddef.h>
@@ -15,7 +15,7 @@
 #include <ip_platform.h>
 
 /*!
- * @addtogroup css_pkc
+ * @addtogroup els_pkc
  * @{
  */
 
@@ -61,4 +61,4 @@ status_t PKC_InitNoZeroize(PKC_Type *base);
  *@}
  */
 
-#endif /* _FSL_CSS_PKC_H_ */
+#endif /* _MCUX_PKC_H_ */
