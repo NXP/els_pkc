@@ -13,7 +13,7 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-//static status_t ELS_PRNG_KickOff(void);
+static status_t ELS_PRNG_KickOff(void);
 static status_t ELS_check_key(uint8_t keyIdx, mcuxClCss_KeyProp_t *pKeyProp);
 /*******************************************************************************
  * Code
@@ -40,34 +40,47 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
     /* Enable ELS clock */
     CLOCK_EnableClock(kCLOCK_Css);
 
-    /* Enable ELS and related clocks */
-    /* Initialize ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCss_Enable_Async()); // Enable the ELS.
-    // mcuxClCss_Enable_Async is a flow-protected function: Check the protection token and the return value
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Enable_Async) != token) || (MCUXCLCSS_STATUS_OK_WAIT != result))
+    /* Enable ELS */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
+    // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        status = kStatus_Fail;
+        return kStatus_Fail ;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-        result, token,
-        mcuxClCss_WaitForOperation(
-            MCUXCLCSS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClCss_Enable_Async operation to complete.
-    // mcuxClCss_WaitForOperation is a flow-protected function: Check the protection token and the return value
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_WaitForOperation) != token) || (MCUXCLCSS_STATUS_OK != result))
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
+    // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        status = kStatus_Fail;
+        return kStatus_Fail;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    /* Reset ELS */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Reset_Async(MCUXCLELS_RESET_DO_NOT_CANCEL));
+    // mcuxClEls_Reset_Async is a flow-protected function: Check the protection token and the return value
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Reset_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    {
+        return kStatus_Fail;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Reset_Async operation to complete.
+    // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+    {
+        return kStatus_Fail;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    
     /* Kick-off ELS PRNG */
-//    status = ELS_PRNG_KickOff();
+    status = ELS_PRNG_KickOff();
     if (status != kStatus_Success)
     {
         return status;
     }
-
+        
     return kStatus_Success;
 }
 
@@ -84,25 +97,55 @@ static status_t ELS_check_key(uint8_t keyIdx, mcuxClCss_KeyProp_t *pKeyProp)
     return kStatus_Success;
 }
 
-//static status_t ELS_PRNG_KickOff(void)
-//{
-//
-//    /* Check if PRNG already ready */
-//    if ((ELS->ELS_STATUS & S50_ELS_STATUS_PRNG_RDY_MASK) == 0u)
-//    {
-//        MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(result0, token0, mcuxClEls_Prng_Init_Async());
-//        if ((token0 != MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_Init_Async)) ||
-//            (result0 != MCUXCLCSS_STATUS_OK_WAIT))
-//        {
-//            return kStatus_Fail;
-//        }
-//
-//        MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(result1, token1, mcuxClCss_WaitForOperation(MCUXCLCSS_ERROR_FLAGS_CLEAR));
-//        if ((token1 != MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_WaitForOperation)) || (result1 != MCUXCLCSS_STATUS_OK))
-//        {
-//            return kStatus_Fail;
-//        }
-//    }
-//
-//    return kStatus_Success;
-//}
+static status_t ELS_PRNG_KickOff(void)
+{
+    mcuxClEls_KeyProp_t key_properties;
+    status_t status = kStatus_Fail;
+    mcuxClEls_KeyIndex_t keyIdx = 0;
+
+    /* Check if PRNG already ready */
+    if ((ELS->ELS_STATUS & S50_ELS_STATUS_PRNG_RDY_MASK) == 0u)
+    {
+        /* Get free ELS key slot */
+        for(keyIdx = 0; keyIdx < MCUXCLELS_KEY_SLOTS; keyIdx++)
+        {
+            /* find a free key slot in ELS keystore */
+            status = ELS_check_key(keyIdx, &key_properties);
+            if (status != kStatus_Success)
+            {
+                return kStatus_SlotUnavailable;
+            }   
+            
+            /* Found free key slot */
+            if(key_properties.bits.kactv == 0)
+            {
+                break; 
+            }
+        }
+
+        /* Free key slot found */
+        if(keyIdx < MCUXCLELS_KEY_SLOTS) 
+        {        
+            /* delete empty temp keyslot; */
+            /* Even if KDELETE is requested to delete an inactive key, the els entropy level will be raised to low and the
+             * PRNG will go ready, */
+            MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(result0, token0, mcuxClEls_KeyDelete_Async(keyIdx));
+            if ((token0 != MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async)) ||
+                (result0 != MCUXCLELS_STATUS_OK_WAIT))
+            {
+                return kStatus_Fail;
+            }
+            /* mcuxClCss_WaitForOperation is a flow-protected function: Check the protection token and the return value */
+            MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(result1, token1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+            if ((token1 != MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)) || (result1 != MCUXCLELS_STATUS_OK))
+            {
+                return kStatus_Fail;
+            }
+        }
+        else
+        {
+          return kStatus_SlotUnavailable;
+        }
+    }
+    return kStatus_Success;
+}
