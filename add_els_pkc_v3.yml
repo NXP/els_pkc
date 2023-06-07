@@ -1661,7 +1661,7 @@ component.els_pkc.platform.rw61x:
     user_visible: always
     taxonomy:
       belong_to: els_pkc_main
-      cgroup:
+      cgroup: els_pkc_platform
     display_name: els_pkc_rw61x
   dependency:
     allOf:
@@ -1788,7 +1788,7 @@ component.els_pkc.examples:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup:
+      cgroup: els_pkc_examples
     display_name: els_pkc_test
   dependency:
     allOf:
@@ -1827,7 +1827,7 @@ component.els_pkc.examples_rw:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup:
+      cgroup: els_pkc_examples
     display_name: els_pkc_test_rw
   dependency:
     allOf:
@@ -1891,7 +1891,7 @@ component.els_pkc.psa_driver_examples:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup:
+      cgroup: els_pkc_examples
     display_name: els_pkc psa_driver examples
   dependency:
     allOf:
