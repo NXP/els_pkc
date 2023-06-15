@@ -1549,6 +1549,26 @@ component.els_pkc:
     - component.els_pkc.els
     - component.els_pkc.pkc
     - component.els_pkc.trng
+    - anyOf:
+        - allOf:
+          - component.els_pkc.platform.lpc
+          - component.els_pkc.static_lib.lpc
+          - device:
+             - LPC55S36
+        - allOf:
+          - component.els_pkc.platform.mcxn
+          - component.els_pkc.static_lib.mcxn
+          - device:
+             - MCXN546
+             - MCXN547
+             - MCXN946
+             - MCXN947
+        - allOf:
+          - component.els_pkc.platform.rw61x
+          - component.els_pkc.static_lib.rw61x
+          - device:
+             - RW610
+             - RW612
 component.els_pkc.glitchdetector:
   section-type: component
   contents:
