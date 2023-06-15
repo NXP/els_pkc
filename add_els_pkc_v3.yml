@@ -1931,6 +1931,7 @@ set.component.els_pkc:
         pack_root:
           pack_type: SWP
           pack_name: NXP_ELE_PKC
+          pack_version: 1.0.0
   dependency:
     anyOf:
     - device:
