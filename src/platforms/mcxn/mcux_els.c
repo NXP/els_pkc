@@ -14,7 +14,7 @@
  * Prototypes
  ******************************************************************************/
 static status_t ELS_PRNG_KickOff(void);
-static status_t ELS_check_key(uint8_t keyIdx, mcuxClCss_KeyProp_t *pKeyProp);
+static status_t ELS_check_key(uint8_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -42,9 +42,9 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
 
     /* Enable ELS and related clocks */
     /* Initialize ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCss_Enable_Async()); // Enable the ELS.
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
     // mcuxClCss_Enable_Async is a flow-protected function: Check the protection token and the return value
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_Enable_Async) != token) || (MCUXCLCSS_STATUS_OK_WAIT != result))
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
         status = kStatus_Fail;
     }
@@ -52,10 +52,10 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
-        mcuxClCss_WaitForOperation(
-            MCUXCLCSS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClCss_Enable_Async operation to complete.
+        mcuxClEls_WaitForOperation(
+            MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClCss_Enable_Async operation to complete.
     // mcuxClCss_WaitForOperation is a flow-protected function: Check the protection token and the return value
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_WaitForOperation) != token) || (MCUXCLCSS_STATUS_OK != result))
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
         status = kStatus_Fail;
     }
@@ -71,13 +71,13 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
     return kStatus_Success;
 }
 
-static status_t ELS_check_key(uint8_t keyIdx, mcuxClCss_KeyProp_t *pKeyProp)
+static status_t ELS_check_key(uint8_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp)
 {
     /* Check if ELS required keys are available in ELS keystore */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
-                                     mcuxClCss_GetKeyProperties(keyIdx, pKeyProp)); // Get key propertis from the ELS.
+                                     mcuxClEls_GetKeyProperties(keyIdx, pKeyProp)); // Get key propertis from the ELS.
     // mcuxClCss_GetKeyProperties is a flow-protected function: Check the protection token and the return value
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCss_GetKeyProperties) != token) || (MCUXCLCSS_STATUS_OK != result))
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties) != token) || (MCUXCLELS_STATUS_OK != result))
         return kStatus_Fail;
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
