@@ -559,6 +559,44 @@ component.els_pkc.ecc:
     - component.els_pkc.pre_processor
     - component.els_pkc.key
     - component.els_pkc.els
+component.els_pkc.els_header_only:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClEls/inc
+    - repo_relative_path: src/comps/mcuxClEls/inc/internal
+    files:
+    - source: src/comps/mcuxClEls/inc/mcuxClEls.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Cmac.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Crc.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Ecc.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Hash.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Hmac.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Kdf.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
+    - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
+    - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
+    - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_SfrAccess.h
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_header_only
+    description: Component els_header_only
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_els_header_only
+    display_name: els_header_only
 component.els_pkc.els:
   section-type: component
   contents:
@@ -580,6 +618,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Rng.c
+    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
@@ -593,6 +632,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
@@ -1569,7 +1609,7 @@ component.els_pkc:
           - device:
              - RW610
              - RW612
-component.els_pkc.glitchdetector:
+component.els_pkc.standalone_dget:
   section-type: component
   contents:
     repo_base_path: components/els_pkc
@@ -1578,22 +1618,31 @@ component.els_pkc.glitchdetector:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxClEls/inc/
     files:
+    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
+    - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
+    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
     type: software_component
-    full_name: Component els_pkc glithdetector
-    description: Component els_pkc glithdetector
+    full_name: Component els_pkc standalone_dget
+    description: Component els_pkc standalone_dget
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_glithdetector
-    display_name: els_pkc.glitchdetector
+      cgroup: els_pkc_standalone_dgetr
+    display_name: els_pkc.standalone_dget
   dependency:
     allOf:
-    - component.els_pkc.els
+    - component.els_pkc.ui_control
+    - component.els_pkc.els_header_only
+    - component.els_pkc.flow_protection
+    - component.els_pkc.secure_counter
+    - component.els_pkc.pre_processor
+    - component.els_pkc.memory
 component.els_pkc.toolchain:
   section-type: component
   contents:
@@ -1653,6 +1702,42 @@ component.els_pkc.platform.mcxn:
       - MCXN947
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
+component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/redfinchSdk_sample
+    - repo_relative_path: src/platforms/redfinchSdk_sample/inc
+    files:
+    - source: src/platforms/redfinchSdk_sample/platform_specific_headers.h
+    - source: src/platforms/redfinchSdk_sample/mcuxClConfig.h
+    - source: src/platforms/redfinchSdk_sample/inc/ip_css_constants.h
+    - source: src/platforms/redfinchSdk_sample/inc/ip_css_design_configuration.h
+    - source: src/platforms/redfinchSdk_sample/inc/ip_platform.h
+    - source: src/platforms/redfinchSdk_sample/mcux_els.c
+    - source: src/platforms/redfinchSdk_sample/mcux_els.h
+    - source: src/platforms/redfinchSdk_sample/mcux_pkc.c
+    - source: src/platforms/redfinchSdk_sample/mcux_pkc.h
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: els_pkc_rw61x_standalone_clib_gdet_sensor
+    description: Component els_pkc for standalone clib-interface of Gdet sensor
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_platform
+    display_name: els_pkc_rw61x_standalone_clib_gdet_sensor
+  dependency:
+    allOf:
+    - device:
+      - RW610
+      - RW612
+    - component.els_pkc.standalone_dget
 component.els_pkc.platform.rw61x:
   section-type: component
   contents:
@@ -1690,7 +1775,6 @@ component.els_pkc.platform.rw61x:
       - RW612
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
-    - component.els_pkc.glitchdetector
     - component.els_pkc.random_modes_ctr
 component.els_pkc.platform.lpc:
   section-type: component
@@ -1726,7 +1810,7 @@ component.els_pkc.platform.lpc:
     - device:
       - LPC55S36
     - component.els_pkc
-    # - component.els_pkc.glitchdetector
+    # - component.els_pkc.standalone_dget
     # - component.els_pkc.trng.type_els
 component.els_pkc.examples:
   section-type: component
