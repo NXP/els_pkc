@@ -1749,12 +1749,10 @@ component.els_pkc.platform.rw61x.devices:
     - device.RW610
     - device.RW612
 
-component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
+component.els_pkc.platform.rw61x_interface_files:
   __requires__:
   - component.els_pkc.ui_control
     component.els_pkc.platform.rw61x.devices
-    component.els_pkc.standalone_dget
-
   section-type: component
   contents:
     repo_base_path: components/els_pkc
@@ -1774,7 +1772,28 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     - source: src/platforms/redfinchSdk_sample/mcux_els.h
     - source: src/platforms/redfinchSdk_sample/mcux_pkc.c
     - source: src/platforms/redfinchSdk_sample/mcux_pkc.h
-
+  component_info:
+    common:
+      version: "${els_pkc_version}"
+      component_bundle: bundle.drivers
+      type: software_component
+      full_name: els_pkc_rw61x_interface_files
+      description: Component els_pkc for RW61x interface files
+      manifest_name: els_pkc_rw61x_interface_files
+      user_visible: false
+    cmsis_pack:
+      sub: "els_pkc_platform_rw61x_interface_files"
+      
+component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
+  __requires__:
+  - component.els_pkc.ui_control
+    component.els_pkc.platform.rw61x.devices
+    component.els_pkc.standalone_dget
+    component.els_pkc.platform.rw61x_interface_files
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -1792,27 +1811,12 @@ component.els_pkc.platform.rw61x:
   - component.els_pkc.ui_control
     component.els_pkc.platform.rw61x.devices
     component.els_pkc
+    component.els_pkc.platform.rw61x_interface_files
     component.els_pkc.trng.type_rng4
-
   section-type: component
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
-    cc-include:
-    - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/redfinchSdk_sample
-    - repo_relative_path: src/platforms/redfinchSdk_sample/inc
-    files:
-    - source: src/platforms/redfinchSdk_sample/platform_specific_headers.h
-    - source: src/platforms/redfinchSdk_sample/mcuxClConfig.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_css_constants.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_css_design_configuration.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_platform.h
-
-    - source: src/platforms/redfinchSdk_sample/mcux_els.c
-    - source: src/platforms/redfinchSdk_sample/mcux_els.h
-    - source: src/platforms/redfinchSdk_sample/mcux_pkc.c
-    - source: src/platforms/redfinchSdk_sample/mcux_pkc.h
   component_info:
     common:
       version: "${els_pkc_version}"

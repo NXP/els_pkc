@@ -1702,7 +1702,7 @@ component.els_pkc.platform.mcxn:
       - MCXN947
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
-component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
+component.els_pkc.platform.rw61x_interface_files:
   section-type: component
   contents:
     repo_base_path: components/els_pkc
@@ -1721,6 +1721,27 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     - source: src/platforms/redfinchSdk_sample/mcux_els.h
     - source: src/platforms/redfinchSdk_sample/mcux_pkc.c
     - source: src/platforms/redfinchSdk_sample/mcux_pkc.h
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: els_pkc_rw61x_interface_files
+    description: Component els_pkc for RW61x interface files
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_platform
+    display_name: els_pkc_rw61x_interface_files
+  dependency:
+    allOf:
+    - device:
+      - RW610
+      - RW612
+component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1737,26 +1758,13 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     - device:
       - RW610
       - RW612
+    - component.els_pkc.rw61x_interface_files
     - component.els_pkc.standalone_dget
 component.els_pkc.platform.rw61x:
   section-type: component
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
-    cc-include:
-    - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/redfinchSdk_sample
-    - repo_relative_path: src/platforms/redfinchSdk_sample/inc
-    files:
-    - source: src/platforms/redfinchSdk_sample/platform_specific_headers.h
-    - source: src/platforms/redfinchSdk_sample/mcuxClConfig.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_css_constants.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_css_design_configuration.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_platform.h
-    - source: src/platforms/redfinchSdk_sample/mcux_els.c
-    - source: src/platforms/redfinchSdk_sample/mcux_els.h
-    - source: src/platforms/redfinchSdk_sample/mcux_pkc.c
-    - source: src/platforms/redfinchSdk_sample/mcux_pkc.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1773,6 +1781,7 @@ component.els_pkc.platform.rw61x:
     - device:
       - RW610
       - RW612
+    - component.els_pkc.rw61x_interface_files
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
     - component.els_pkc.random_modes_ctr
