@@ -578,13 +578,11 @@ component.els_pkc.els_header_only:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cmac.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Crc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Ecc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hash.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hmac.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Kdf.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
@@ -604,6 +602,84 @@ component.els_pkc.els_header_only:
     cmsis_pack:
       sub: "els_pkc_comp_els_header_only"
 
+component.els_pkc.els_common:
+  __requires__:
+  -  component.els_pkc.core
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClEls/inc
+    - repo_relative_path: src/comps/mcuxClEls/inc/internal
+    files:
+    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
+  component_info:
+    common:
+      version: "${els_pkc_version}"
+      component_bundle: bundle.drivers
+      type: software_component
+      full_name: Component els_pkc els_common
+      description: Component els common source files
+      manifest_name: els_pkc els_common
+      user_visible: false
+    cmsis_pack:
+      sub: "els_pkc_comp_els_common"
+component.els_pkc.standalone_keyManagement:
+  __requires__:
+  - component.els_pkc.memory    
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClEls/inc/
+    files:
+    - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
+  component_info:
+    common:
+      version: "${els_pkc_version}"
+      component_bundle: bundle.drivers
+      type: software_component
+      full_name: Component els_pkc standalone_keyManagement
+      description: Component els_pkc standalone_keyManagement
+      manifest_name: els_pkc.standalone_keyManagement
+      user_visible: false
+    cmsis_pack:
+      sub: "els_pkc_standalone_keyManagement"
+component.els_pkc.standalone_gdet:
+  __requires__:
+  - component.els_pkc.ui_control
+    component.els_pkc.els_header_only
+    component.els_pkc.flow_protection
+    component.els_pkc.secure_counter
+    component.els_pkc.pre_processor
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClEls/inc/
+    files:
+    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
+  component_info:
+    common:
+      version: "${els_pkc_version}"
+      component_bundle: bundle.drivers
+      type: software_component
+      full_name: Component els_pkc standalone_gdet
+      description: Component els_pkc standalone_gdet
+      manifest_name: els_pkc.standalone_gdet
+      user_visible: false
+    cmsis_pack:
+      sub: "els_pkc_standalone_gdet"
+      
 component.els_pkc.els:
   __requires__:
   - component.els_pkc.hash
@@ -613,6 +689,10 @@ component.els_pkc.els:
     component.els_pkc.mac_modes
     component.els_pkc.aead_modes
     component.els_pkc.cipher_modes
+    component.els_pkc.els_header_only
+    component.els_pkc.els_common
+    component.els_pkc.standalone_keyManagement
+    component.els_pkc.standalone_gdet
   section-type: component
   contents:
     repo_base_path: components/els_pkc
@@ -625,35 +705,12 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Aead.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cipher.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cmac.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Crc.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Ecc.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hash.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hmac.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Rng.c
-
-    - source: src/comps/mcuxClEls/inc/mcuxClEls.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Cmac.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Crc.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Ecc.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Hash.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Hmac.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Kdf.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
-
-    - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
-    - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
-    - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_SfrAccess.h
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -1584,39 +1641,6 @@ component.els_pkc.secure_counter:
     cmsis_pack:
       sub: "els_pkc_secure_counter"
 
-component.els_pkc.standalone_dget:
-  __requires__:
-  - component.els_pkc.ui_control
-    component.els_pkc.els_header_only
-    component.els_pkc.flow_protection
-    component.els_pkc.secure_counter
-    component.els_pkc.pre_processor
-    component.els_pkc.memory
-  section-type: component
-  contents:
-    repo_base_path: components/els_pkc
-    project_base_path: component/els_pkc
-    cc-include:
-    - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEls/inc/
-    files:
-    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
-  component_info:
-    common:
-      version: "${els_pkc_version}"
-      component_bundle: bundle.drivers
-      type: software_component
-      full_name: Component els_pkc standalone_dget
-      description: Component els_pkc standalone_dget
-      manifest_name: els_pkc.standalone_dget
-      user_visible: false
-    cmsis_pack:
-      sub: "els_pkc_standalone_dget"
 # --------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------
 #                ELS-PKC main component that can be used by platforms
@@ -1788,7 +1812,10 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
   __requires__:
   - component.els_pkc.ui_control
     component.els_pkc.platform.rw61x.devices
-    component.els_pkc.standalone_dget
+    component.els_pkc.els_header_only
+    component.els_pkc.els_common
+    component.els_pkc.standalone_keyManagement
+    component.els_pkc.standalone_gdet
     component.els_pkc.platform.rw61x_interface_files
   section-type: component
   contents:
