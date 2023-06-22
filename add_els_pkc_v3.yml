@@ -669,7 +669,6 @@ component.els_pkc.standalone_gdet:
     display_name: els_pkc.standalone_gdet
   dependency:
     allOf:
-    - component.els_pkc.ui_control
     - component.els_pkc.els_header_only
     - component.els_pkc.flow_protection
     - component.els_pkc.secure_counter
@@ -1861,7 +1860,7 @@ component.els_pkc.platform.lpc:
     - device:
       - LPC55S36
     - component.els_pkc
-    # - component.els_pkc.standalone_gdet
+    - component.els_pkc.standalone_gdet
     # - component.els_pkc.trng.type_els
 component.els_pkc.examples:
   section-type: component
