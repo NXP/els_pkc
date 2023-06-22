@@ -612,7 +612,6 @@ component.els_pkc.els_common:
     cc-include:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxClEls/inc
-    - repo_relative_path: src/comps/mcuxClEls/inc/internal
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
@@ -626,7 +625,7 @@ component.els_pkc.els_common:
       manifest_name: els_pkc els_common
       user_visible: false
     cmsis_pack:
-      sub: "els_pkc_comp_els_common"
+      sub: "els_pkc_els_common"
 component.els_pkc.standalone_keyManagement:
   __requires__:
   - component.els_pkc.memory    
@@ -650,7 +649,7 @@ component.els_pkc.standalone_keyManagement:
       manifest_name: els_pkc.standalone_keyManagement
       user_visible: false
     cmsis_pack:
-      sub: "els_pkc_standalone_keyManagement"
+      sub: "els_pkc_standalone_keyMgmt"
 component.els_pkc.standalone_gdet:
   __requires__:
   - component.els_pkc.ui_control
@@ -699,8 +698,6 @@ component.els_pkc.els:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEls/inc
-    - repo_relative_path: src/comps/mcuxClEls/inc/internal
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Aead.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cipher.c
@@ -1806,7 +1803,7 @@ component.els_pkc.platform.rw61x_interface_files:
       manifest_name: els_pkc_rw61x_interface_files
       user_visible: false
     cmsis_pack:
-      sub: "els_pkc_platform_rw61x_interface_files"
+      sub: "els_pkc_rw61x_interface_files"
       
 component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
   __requires__:
@@ -1821,6 +1818,13 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/redfinchSdk_sample
+    files:
+    - source: src/platforms/redfinchSdk_sample/readme.txt
+      hidden: true
+      exclude: true
   component_info:
     common:
       version: "${els_pkc_version}"
@@ -1831,7 +1835,7 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
       manifest_name: els_pkc_rw61x_standalone_clib_gdet_sensor
       user_visible: false
     cmsis_pack:
-      sub: "els_pkc_platform_rw61x_standalone_clib_gdet_sensor"
+      sub: "els_pkc_rw61x_minimal_interface"
 
 component.els_pkc.platform.rw61x:
   __requires__:
@@ -1844,6 +1848,13 @@ component.els_pkc.platform.rw61x:
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/redfinchSdk_sample
+    files:
+    - source: src/platforms/redfinchSdk_sample/readme.txt
+      hidden: true
+      exclude: true
   component_info:
     common:
       version: "${els_pkc_version}"

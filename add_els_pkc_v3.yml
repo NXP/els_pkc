@@ -641,7 +641,7 @@ component.els_pkc.standalone_keyManagement:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_standalone_keyManagement
-    display_name: els_pkc.standalone_keyManagement
+    display_name: els_pkc.standalone_keyMgmt
   dependency:
     allOf:
     - component.els_pkc.memory
@@ -681,8 +681,6 @@ component.els_pkc.els:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEls/inc
-    - repo_relative_path: src/comps/mcuxClEls/inc/internal
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Aead.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cipher.c
@@ -1768,6 +1766,13 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/redfinchSdk_sample
+    files:
+    - source: src/platforms/redfinchSdk_sample/readme.txt
+      hidden: true
+      exclude: true
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1778,7 +1783,7 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_platform
-    display_name: els_pkc_rw61x_standalone_clib_gdet_sensor
+    display_name: els_pkc_rw61x_minimal_interface
   dependency:
     allOf:
     - device:
@@ -1795,6 +1800,13 @@ component.els_pkc.platform.rw61x:
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/redfinchSdk_sample
+    files:
+    - source: src/platforms/redfinchSdk_sample/readme.txt
+      hidden: true
+      exclude: true
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
