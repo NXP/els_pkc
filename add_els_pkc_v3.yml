@@ -605,7 +605,7 @@ component.els_pkc.els_common:
     - repo_relative_path: src/comps/mcuxClEls/inc/
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_Common.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
