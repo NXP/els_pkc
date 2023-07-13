@@ -24,7 +24,6 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClKey_Types.h>
-#include <mcuxClKey_KeyTypes.h>
 
 
 #include <mcuxClSession.h>

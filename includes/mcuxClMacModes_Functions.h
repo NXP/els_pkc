@@ -45,7 +45,6 @@ extern "C" {
  */
 
 
-
 /**
  * @}
  */ /* mcuxClMacModes_Constructors */

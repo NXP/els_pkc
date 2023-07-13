@@ -41,14 +41,14 @@ static uint8_t key_expansion_string[] = "key expansion";
 
 
 /** Performs key derivation for TLS protocol.
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Generate client key pair */
@@ -73,7 +73,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -81,7 +81,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -99,7 +99,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -107,7 +107,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -128,7 +128,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_EccKeyExchange_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyExchange_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyExchange_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyExchange_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -136,7 +136,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -148,7 +148,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_Prng_GetRandom is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandom operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandom operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -157,7 +157,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_Prng_GetRandom is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandom operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandom operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -174,7 +174,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -187,7 +187,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -200,7 +200,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_set is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -213,7 +213,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -226,7 +226,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_set is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -244,7 +244,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -252,7 +252,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -269,7 +269,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -282,7 +282,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -295,7 +295,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_set is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -308,7 +308,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -321,7 +321,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClMemory_set is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -337,7 +337,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_TlsGenerateSessionKeysFromMasterKey_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_TlsGenerateSessionKeysFromMasterKey_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -345,7 +345,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -353,13 +353,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     /** deleted keyIdxPrivClient keySlot **/
     if(!mcuxClExample_Els_KeyDelete(keyIdxPrivClient))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** deleted keyIdxPrivServer keySlot **/
     if(!mcuxClExample_Els_KeyDelete(keyIdxPrivServer))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     for(uint8_t i = sharedSecretIdx;i<sharedSecretIdx + 6;i++)
@@ -367,7 +367,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
         /** deleted i keySlot **/
         if(!mcuxClExample_Els_KeyDelete(i))
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -377,5 +377,5 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     //Client Encryption Key : sharedSecretIdx+4 (6)
     //Server Encryption Key : sharedSecretIdx+6 (7)
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

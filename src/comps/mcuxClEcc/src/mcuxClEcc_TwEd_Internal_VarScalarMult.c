@@ -60,9 +60,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
     /* Determine pointer table pointer */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy - TODO CLNS-6410: check if this is necessary
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
     const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
 
     /* Step 1: Initialize the accumulated points in YZ-coordinates */
     MCUXCLPKC_FP_CALC_OP1_OR_CONST(TWED_ML_Y1, TWED_Z, 0u);
@@ -76,11 +76,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
     MCUXCLPKC_FP_IMPORTLITTLEENDIANTOPKC(ECC_T0, pDomainParams->pLadderConst, byteLenP);
     MCUXCLPKC_FP_CALC_MC1_MM(ECC_CP0, ECC_T0, ECC_PQSQR, ECC_P);
 
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
     /* Step 3: Perform ladder loop to calculate YZ-coordinates for the resulting point according to Algorithms 4 and 5 in https://ieeexplore.ieee.org/document/6550581
      * For the pointer selection, the function specified by pPtrSelectFctFP is used.
      */
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
     uint32_t i = scalarBitLength;
     uint32_t currentScalarWord = 0u;
     MCUX_CSSL_FP_LOOP_DECL(whileLoop);

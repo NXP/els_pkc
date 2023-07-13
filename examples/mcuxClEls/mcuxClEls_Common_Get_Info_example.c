@@ -31,7 +31,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     // Read the ELS hardware version.
@@ -41,7 +41,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     // mcuxClEls_GetHwVersion is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwVersion) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -54,7 +54,6 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     (void) major;
 #if MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0
     uint32_t level = hw_version.bits.level;                                              // Release level version
-    (void) level;
 #else /* MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0 */
     uint32_t fw_revision = hw_version.bits.fw_revision;                                  // Firmware Extended revision version
     uint32_t fw_minor = hw_version.bits.fw_minor;                                        // Firmware Minor version
@@ -72,7 +71,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     // mcuxClEls_GetHwConfig is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwConfig) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -101,9 +100,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 #endif
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }
 

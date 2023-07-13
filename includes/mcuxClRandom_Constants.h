@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -40,11 +40,11 @@ extern "C" {
 /** @addtogroup MCUXCLRANDOM_STATUS_
  * mcuxClRandom return code definitions
  * @{ */
-#define MCUXCLRANDOM_STATUS_ERROR                  0xC3AAA53Cu  ///< Random function returned error
-#define MCUXCLRANDOM_STATUS_LOW_SECURITY_STRENGTH  0x3CC3AAA5u  ///< Security strength of given RNG lower than requested
-#define MCUXCLRANDOM_STATUS_INVALID_PARAM          0xA53CC3AAu  ///< Random function parameter invalid
-#define MCUXCLRANDOM_STATUS_OK                     0xAAA53CC3u  ///< Random function returned successfully
-#define MCUXCLRANDOM_STATUS_FAULT_ATTACK           0xAAA5F0F0u  ///< Random function returned fault attack
+#define MCUXCLRANDOM_STATUS_ERROR                  0x0BBB5330u  ///< Random function returned error
+#define MCUXCLRANDOM_STATUS_LOW_SECURITY_STRENGTH  0x0BBB5334u  ///< Security strength of given RNG lower than requested
+#define MCUXCLRANDOM_STATUS_INVALID_PARAM          0x0BBB53F8u  ///< Random function parameter invalid
+#define MCUXCLRANDOM_STATUS_OK                     0x0BBB2E03u  ///< Random function returned successfully
+#define MCUXCLRANDOM_STATUS_FAULT_ATTACK           0x0BBBF0F0u  ///< Random function returned fault attack
 /** @} */
 
 /**

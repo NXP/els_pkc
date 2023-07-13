@@ -41,8 +41,8 @@
  * \defgroup mcuxClSessionStatusValues  Session Status values
  * @{
  */
-#define MCUXCLSESSION_STATUS_OK          ((mcuxClSession_Status_t) 0xE8E8E8E8u )  ///< Session operation successful
-#define MCUXCLSESSION_STATUS_ERROR       ((mcuxClSession_Status_t) 0xE8E88E8Eu )  ///< Error occurred during Session operation
+#define MCUXCLSESSION_STATUS_OK          ((mcuxClSession_Status_t) 0x0EEE2E03u )  ///< Session operation successful
+#define MCUXCLSESSION_STATUS_ERROR       ((mcuxClSession_Status_t) 0x0EEE5330u )  ///< Error occurred during Session operation
 /**@}*/
 
 /**
@@ -54,10 +54,12 @@
 /**@}*/
 
 
+
+
 /**
  * @}
- */ /* mcuxClSession_Constants */
-
+ */
+/* mcuxClSession_Constants */
 
 /**********************************************
  * TYPEDEFS
@@ -102,6 +104,12 @@ typedef struct mcuxClSession_SecurityContext
 {
   uint32_t securityCounter;     ///< Security counter
 } mcuxClSession_SecurityContext_t;
+
+/**
+ * @brief Type for Session security options
+ */
+typedef uint32_t mcuxClSession_SecurityOptions_t;
+
 
 
 /**

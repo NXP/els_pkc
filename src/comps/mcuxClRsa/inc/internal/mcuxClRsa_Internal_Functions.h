@@ -23,7 +23,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClHash.h>
-#include <mcuxClPkc_Types.h>
 #include <mcuxClPkc_Functions.h>
 #include <mcuxClRsa_Types.h>
 #include <mcuxClKey.h>
@@ -38,7 +37,6 @@ extern "C" {
  * @ingroup mcuxClRsa
  * @{
  */
-
 
 /**
  * \brief RSA public operation
@@ -78,7 +76,7 @@ extern "C" {
  * </dl>
  *
  * @return Status of the mcuxClRsa_public operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
@@ -89,6 +87,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   mcuxCl_InputBuffer_t        pInput,
   mcuxCl_Buffer_t             pOutput
 );
+
 
 
 /**
@@ -132,7 +131,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
  * </dl>
  *
  * @return Status of the mcuxClRsa_privatePlain operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  *
@@ -187,7 +186,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
  * </dl>
  *
  * @return Status of the mcuxClRsa_privateCRT operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK    The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  *
@@ -241,7 +240,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
  * </dl>
  *
  * @return Status of the mcuxClRsa_noEncode operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK    The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK    The function executed successfully.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_noEncode, mcuxClRsa_PadVerModeEngine_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
@@ -320,7 +319,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
 
 
 /**
- * @brief RSA PSS mask generation function
+ * @brief RSA mask generation function
  *
  * This function is used to implement the mask generation function MGF1 of PKCS #1 v2.2.
  *
@@ -353,7 +352,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noVerify(
  * </dl>
  *
  * @return Status of the mcuxClRsa_mgf1 operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_MGF_OK      The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_MGF_OK      The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_mgf1)
@@ -416,7 +415,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
  * </dl>
  *
  * @return Status of the mcuxClRsa_pssEncode operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK   The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK   The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  *
@@ -555,7 +554,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
  * </dl>
  *
  * @return Status of the mcuxClRsa_pkcs1v15Encode_sign operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK   The function executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK   The function executed successfully.
  * @retval #MCUXCLRSA_STATUS_INVALID_INPUT        The input parameters are not valid.
  * @retval #MCUXCLRSA_STATUS_ERROR                An error occurred during the execution. In that case, expectations for the flow protection are not balanced.
  */
@@ -697,12 +696,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
  * </dl>
  *
  */
-
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_RemoveBlinding)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClRsa_RemoveBlinding(uint32_t iR_iX_iNb_iB,
      uint16_t iT2_iT1,
      uint32_t nbPkcByteLength,
      uint32_t bPkcByteLength);
+
+
+
+
+
 
 
 
@@ -820,10 +823,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
  * </dl>
  *
  * @return Status of the mcuxClRsa_TestPrimeCandidate operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
- * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_CMP_FAILED       prime candidate < sqrt(2)(2^((nlen/2)-1)), only 64 most significant bits are compared.
- * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDA0_FAILED     prime candidate is not coprime to A0 - product of the first 9 prime numbers.
- * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDE_FAILED      prime candidate - 1 is not coprime to the public exponent e.
- * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED       The prime candidate did not pass the Miller-Rabin test.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_CMP_FAILED       prime candidate < sqrt(2)(2^((nlen/2)-1)), only 64 most significant bits are compared.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_GCDA0_FAILED     prime candidate is not coprime to A0 - product of the first 9 prime numbers.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_GCDE_FAILED      prime candidate - 1 is not coprime to the public exponent e.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_MRT_FAILED       The prime candidate did not pass the Miller-Rabin test.
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_OK                    The prime candidate is probably prime.
  * @retval #MCUXCLRSA_STATUS_RNG_ERROR                           Random number (DRBG / PRNG) error (unexpected behavior).
  *
@@ -875,7 +878,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
  *
  * @return Status of the mcuxClRsa_MillerRabinTest operation (see @ref MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t))
  * @retval #MCUXCLRSA_STATUS_KEYGENERATION_OK               The prime candidate is probably prime.
- * @retval #MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED  The prime candidate did not pass the Miller-Rabin test.
+ * @retval #MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_MRT_FAILED  The prime candidate did not pass the Miller-Rabin test.
  * @retval #MCUXCLRSA_STATUS_RNG_ERROR                      Random number (DRBG / PRNG) error (unexpected behavior)
  *
  * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.

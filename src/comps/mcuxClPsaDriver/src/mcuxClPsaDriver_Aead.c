@@ -13,7 +13,7 @@
 
 #include "common.h"
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClMemory_Clear.h>
 #include <mcuxClAead.h>
 #include <mcuxClAeadModes.h>
@@ -35,10 +35,51 @@ static inline bool mcuxClPsaDriver_psa_driver_wrapper_aead_algNeedsLengthsSet(co
                 || (PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg) == PSA_ALG_CCM_STAR_NO_TAG));
 }
 
+
+static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(const psa_algorithm_t alg)
+{
+    uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
+
+    /* Recover default algorithm (could be CCM with changed tag size) */
+    const psa_algorithm_t algDefault = PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg);
+
+    psa_status_t status = PSA_SUCCESS;
+
+    switch(algDefault)
+    {
+        case PSA_ALG_CCM:
+            /* Add checks for valid CCM tag length, otherwise return error*/
+            if( (tag_length < 4u) || (tag_length > 16u) || (tag_length % 2u != 0u) )
+            {
+                status = ( PSA_ERROR_INVALID_ARGUMENT );
+            }
+            break;
+
+        case PSA_ALG_GCM:
+            /* Add checks for valid GCM tag length, otherwise return error*/
+            if( (4u != tag_length) && (8u != tag_length) && ((tag_length < 12u) || (tag_length > 16u)) )
+            {
+                status = ( PSA_ERROR_INVALID_ARGUMENT );
+            }
+            break;
+
+        default:
+            status = ( PSA_ERROR_INVALID_ARGUMENT );
+            break;
+    }
+
+    return( status );
+}
+
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_abort(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
    psa_aead_operation_t *operation)
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&pClnsAeadData->keydesc))
     {
@@ -70,14 +111,15 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_abort(
  */
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_compare_tags(const unsigned char *tag1, const unsigned char *tag2, size_t tag_len)
 {
-    unsigned char i;
-    int diff;
+    unsigned char diff = 0u;
 
     /* Check tag in "constant-time" */
-    for( diff = 0, i = 0; i < tag_len; i++ )
+    for(size_t i = 0u; i < tag_len; i++ )
+    {
         diff |= tag1[i] ^ tag2[i];
+    }
 
-    if( diff != 0 )
+    if( diff != 0u )
     {
         return( PSA_ERROR_INVALID_SIGNATURE );
     }
@@ -92,7 +134,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
     const uint8_t *ciphertext, size_t ciphertext_length,
     uint8_t *plaintext, size_t plaintext_size, size_t *plaintext_length )
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     /* For algorithms supported by CLNS, add implementation. */
     if(mcuxClPsaDriver_psa_driver_wrapper_aead_isAlgSupported(attributes))
     {
@@ -117,12 +161,10 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
             return PSA_ERROR_CORRUPTION_DETECTED;
         }
 
-        /* Get the correct tag length based on the given algorithm. */
-        uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
-
-        /* Add checks for valid tag length, otherwise return error*/
-        if( tag_length < 4 || tag_length > 16 || tag_length % 2 != 0 )
+        if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(alg))
+        {
             return( PSA_ERROR_INVALID_ARGUMENT );
+        }
 
         /* Key buffer for the CPU workarea in memory. */
         uint32_t cpuWorkarea[MCUXCLAEAD_WA_SIZE_IN_WORDS_MAX];
@@ -146,8 +188,11 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
         unsigned char tag_for_comparison[16];
         psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
 
+        /* Get the correct tag length based on the given algorithm. */
+        uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
+
         *plaintext_length = 0u;
-        
+
         /* Do the decryption */
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultCrypt, tokenCrypt,
                                         mcuxClAead_crypt(&session,
@@ -175,6 +220,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
 
         /* perform validation of correct ciphered text */
         status = mcuxClPsaDriver_psa_driver_wrapper_aead_compare_tags( (uint8_t *)&ciphertext[ciphertext_length - tag_length], tag_for_comparison, tag_length );
+
         if( status != PSA_SUCCESS )
         {
             //todo by CL: also clear output buffer contents, just to be on safe side
@@ -189,7 +235,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
     return PSA_ERROR_NOT_SUPPORTED;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER() 
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer, size_t key_buffer_size,
     psa_algorithm_t alg,
@@ -200,7 +248,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt(
 {
 
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    
+
     // The driver handles multiple storage locations, call it first then default to builtin driver
     /* Create the key */
     mcuxClKey_Descriptor_t key = {0};
@@ -226,7 +274,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt(
     return status;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
    psa_aead_operation_t *operation,
    const psa_key_attributes_t *attributes,
    const uint8_t *key_buffer,
@@ -257,6 +307,26 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
         operation->ad_remaining = 0u;
         operation->body_remaining = 0u;
 
+        if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(alg))
+        {
+            return( PSA_ERROR_INVALID_ARGUMENT );
+        }
+
+        /* Create the key */
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+        mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+        mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
+
+        /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenNxpClMemory_copy, mcuxClMemory_copy(pClnsAeadData->keyAttributes, (const uint8_t *)attributes, MCUXCLPSADRIVER_AEAD_KEYATT_SIZE, sizeof(psa_key_attributes_t)));
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy)
+        {
+            return PSA_ERROR_GENERIC_ERROR;
+        }
+
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+
         /* Get the correct tag length based on the given algorithm. */
         /*We should update the tag length here, as later in call, operation->alg is restored to psa_base_algo value by psa_crypto.c, hence by the time,
         we reach to function naunce set, where CL is setting tag length based upon operation->alg, it determines incorrect tag length as
@@ -264,22 +334,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
         function instead of determining it in psa_driver_wrapper_aead_set_nonce.*/
         uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(operation->alg);
 
-        /* Add checks for valid tag length, otherwise return error*/
-        if( tag_length < 4 || tag_length > 16 || tag_length % 2 != 0 )
-            return( PSA_ERROR_INVALID_ARGUMENT );
-
-        /* Create the key */
-        mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
-        mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
-
-        /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
-        mcuxClMemory_copy(pClnsAeadData->keyAttributes, (uint8_t *)attributes, MCUXCLPSADRIVER_AEAD_KEYATT_SIZE, sizeof(psa_key_attributes_t));
-
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
-        MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey((const psa_key_attributes_t *)pClnsAeadData->keyAttributes, key_buffer, key_buffer_size, pKey);
-        MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
@@ -308,7 +367,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_internal(
     const uint8_t *plaintext, size_t plaintext_length,
     uint8_t *ciphertext, size_t ciphertext_size, size_t *ciphertext_length)
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     /* For algorithms supported by CLNS, add implementation. */
     if(mcuxClPsaDriver_psa_driver_wrapper_aead_isAlgSupported(attributes))
     {
@@ -333,12 +394,10 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_internal(
             return PSA_ERROR_CORRUPTION_DETECTED;
         }
 
-        /* Get the correct tag length based on the given algorithm. */
-        uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
-
-        /* Add checks for valid tag length, otherwise return error*/
-        if( tag_length < 4 || tag_length > 16 || tag_length % 2 != 0 )
+        if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(alg))
+        {
             return( PSA_ERROR_INVALID_ARGUMENT );
+        }
 
         /* Key buffer for the CPU workarea in memory. */
         uint32_t cpuWorkarea[MCUXCLAEAD_WA_SIZE_IN_WORDS_MAX];
@@ -357,6 +416,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_internal(
             return PSA_ERROR_GENERIC_ERROR;
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+        /* Get the correct tag length based on the given algorithm. */
+        uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
 
         *ciphertext_length = 0u;
         /* Do the encryption */
@@ -394,7 +456,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_internal(
     return PSA_ERROR_NOT_SUPPORTED;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer, size_t key_buffer_size,
     psa_algorithm_t alg,
@@ -429,7 +493,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt(
     return status;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
    psa_aead_operation_t *operation,
    const psa_key_attributes_t *attributes,
    const uint8_t *key_buffer,
@@ -460,6 +526,25 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
         operation->ad_remaining = 0u;
         operation->body_remaining = 0u;
 
+        if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(alg))
+        {
+            return( PSA_ERROR_INVALID_ARGUMENT );
+        }
+
+        /* Create the key */
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+        mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+        mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
+
+        /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenNxpClMemory_copy, mcuxClMemory_copy(pClnsAeadData->keyAttributes, (const uint8_t *)attributes, MCUXCLPSADRIVER_AEAD_KEYATT_SIZE, sizeof(psa_key_attributes_t)));
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenNxpClMemory_copy)
+        {
+            return PSA_ERROR_GENERIC_ERROR;
+        }
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+
         /* Get the correct tag length based on the given algorithm. */
         /*We should update the tag length here, as later in call, operation->alg is restored to psa_base_algo value by psa_crypto.c, hence by the time,
         we reach to function naunce set, where CL is setting tag length based upon operation->alg, it determines incorrect tag length as
@@ -467,22 +552,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
         function instead of determining it in psa_driver_wrapper_aead_set_nonce.*/
         uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(operation->alg);
 
-        /* Add checks for valid tag length, otherwise return error*/
-        if( tag_length < 4 || tag_length > 16 || tag_length % 2 != 0 )
-            return( PSA_ERROR_INVALID_ARGUMENT );
-
-        /* Create the key */
-        mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
-        mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
-
-        /* Copy attributes, for AEAD domain_parameters should be NULL/0, but we will still copy pointer and size */
-        mcuxClMemory_copy(pClnsAeadData->keyAttributes, (uint8_t *)attributes, MCUXCLPSADRIVER_AEAD_KEYATT_SIZE, sizeof(psa_key_attributes_t));
-
         /* Only update a valid tag length in clns_ctx*/
         pClnsAeadData->ctx.tagLength = tag_length;
-        MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         psa_status_t createKeyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey((const psa_key_attributes_t *)pClnsAeadData->keyAttributes, key_buffer, key_buffer_size, pKey);
-        MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
         if(PSA_SUCCESS != createKeyStatus)
         {
             return createKeyStatus;
@@ -502,6 +576,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
     return PSA_ERROR_NOT_SUPPORTED;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
    psa_aead_operation_t *operation,
    uint8_t *ciphertext,
@@ -510,6 +585,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
    uint8_t *tag,
    size_t tag_size,
    size_t *tag_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Validate state
      *   - must be active encryption operation
@@ -527,7 +603,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
         return PSA_ERROR_INVALID_ARGUMENT;
     }
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     /* Validate the given buffer sizes */
     /* operation->alg is already restored to base values. So, we cannot determine tag-Length here with its value.
@@ -572,7 +650,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultFinish, tokenFinish,
                                     mcuxClAead_finish(&session,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                                                      (mcuxClAead_Context_t *) &pClnsAeadData->ctx,
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
                                                      ciphertext,
                                                      (uint32_t *)ciphertext_length,
                                                      tag
@@ -609,25 +689,29 @@ psa_status_t mcuxClPsaDriver_psa_driver_get_tag_len(
     uint8_t *tag_len )
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    
+
     if(operation != NULL)
     {
         /* Create the key */
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
-        
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
         /* Only update a valid tag length in clns_ctx*/
-        *tag_len = pClnsAeadData->ctx.tagLength;
-        
+        *tag_len = (uint8_t)pClnsAeadData->ctx.tagLength;
+
         status = PSA_SUCCESS;
     }
     /* Return psa status */
-    return status;        
-}  
+    return status;
+}
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_lengths(
    psa_aead_operation_t *operation,
    size_t ad_length,
    size_t plaintext_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Validate state
      *   - operation must be active
@@ -647,10 +731,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_lengths(
     return PSA_SUCCESS;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
    psa_aead_operation_t *operation,
    const uint8_t *nonce,
    size_t nonce_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Validate state
      *   - operation must be active
@@ -678,15 +764,20 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
         return PSA_ERROR_CORRUPTION_DETECTED;
     }
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     /* operation->alg is already restored to base values. So, we cannot determine tag-Length here with its value. Its already determined
     during setup and can be used from operation->ctx.clns_ctx.context.tagLength*/
     uint32_t tag_length = pClnsAeadData->ctx.tagLength;
 
     /* Add checks for valid tag length, otherwise return error*/
-    if( tag_length < 4 || tag_length > 16 || tag_length % 2 != 0 )
-        return( PSA_ERROR_INVALID_ARGUMENT );
+    psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(operation->alg);
+    if(PSA_SUCCESS != status)
+    {
+        return( status );
+    }
 
     /* Key buffer for the CPU workarea in memory. */
     uint32_t cpuWorkarea[MCUXCLAEAD_WA_SIZE_IN_WORDS_MAX];
@@ -716,7 +807,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultInit, tokenInit,
                                     mcuxClAead_init(&session,
+                                                    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                                                    (mcuxClAead_Context_t *) &pClnsAeadData->ctx,
+                                                    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
                                                    pKey,
                                                    mode,
                                                    nonce,
@@ -752,10 +845,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
     return PSA_SUCCESS;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
    psa_aead_operation_t *operation,
    const uint8_t *input,
    size_t input_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Validate state
      *   - operation must be active
@@ -789,7 +884,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Call process additional data AEAD */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
 
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(pKey))
@@ -799,7 +896,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultProcessAad, tokenProcessAad,
                                     mcuxClAead_process_adata(&session,
+                                                            MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                                                             (mcuxClAead_Context_t *) &pClnsAeadData->ctx,
+                                                            MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
                                                             input,
                                                             input_length
                                                             ));
@@ -832,6 +931,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
     return PSA_SUCCESS;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
    psa_aead_operation_t *operation,
    const uint8_t *input,
@@ -839,6 +939,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
    uint8_t *output,
    size_t output_size,
    size_t *output_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Validate state
      *   - operation must be active
@@ -876,7 +977,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Call Process AEAD */
+
+
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
     mcuxClKey_Descriptor_t * pKey = &pClnsAeadData->keydesc;
 
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(pKey))
@@ -889,7 +995,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultProcess, tokenProcess,
                                     mcuxClAead_process(&session,
+                                                      MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                                                       (mcuxClAead_Context_t *) &pClnsAeadData->ctx,
+                                                      MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
                                                       input,
                                                       input_length,
                                                       output,
@@ -923,7 +1031,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
     return PSA_SUCCESS;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
    psa_aead_operation_t *operation,
    uint8_t *plaintext,
    size_t plaintext_size,
@@ -987,7 +1097,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultVerify, tokenVerify,
                                     mcuxClAead_verify(&session,
+                                                     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                                                      (mcuxClAead_Context_t *) &pClnsAeadData->ctx,
+                                                     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
                                                      tag,
                                                      plaintext,
                                                      (uint32_t *)plaintext_length

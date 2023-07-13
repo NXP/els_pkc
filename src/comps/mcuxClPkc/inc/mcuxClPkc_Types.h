@@ -59,8 +59,8 @@ typedef uint32_t mcuxClPkc_Status_t;
  */
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_Status_Protected_t;
 
-#define MCUXCLPKC_STATUS_OK  ((mcuxClPkc_Status_t) 0xF0F0F0F0U)  ///< PKC operation successful
-#define MCUXCLPKC_STATUS_NOK ((mcuxClPkc_Status_t) 0xF0F00F0FU)  ///< PKC operation not successful
+#define MCUXCLPKC_STATUS_OK  ((mcuxClPkc_Status_t) 0x0AAA2E03u)  ///< PKC operation successful
+#define MCUXCLPKC_STATUS_NOK ((mcuxClPkc_Status_t) 0x0AAA53FCu)  ///< PKC operation not successful
 /**
  * @}
  */ /* MCUXCLPKC_STATUS_ */

@@ -35,6 +35,7 @@ extern "C" {
 
 
 
+
 /**
  * @brief Sha-224 algorithm descriptor
  *        Sha-224 hash calculation using the Hash functionality of ELS, it does not support RTF.
@@ -92,6 +93,8 @@ extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_Sha
  *        SHA-direct mode has to be disabled prior to using this algorithm
  */
 static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha512 = &mcuxClHash_AlgorithmDescriptor_Sha512;
+
+
 
 
 

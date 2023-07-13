@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMacModes_ELS_CBCMAC.c
+/** @file  mcuxClMacModes_Els_Cbcmac.c
  *  @brief implementation of CBC-MAC part of mcuxClMac component */
 
 #include <mcuxClKey.h>
@@ -31,10 +31,10 @@
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 #include <internal/mcuxClMacModes_Wa.h>
-#include <internal/mcuxClMacModes_ELS_Types.h>
-#include <internal/mcuxClMacModes_ELS_CBCMAC.h>
+#include <internal/mcuxClMacModes_Els_Types.h>
+#include <internal/mcuxClMacModes_Els_Cbcmac.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CBCMAC_Oneshot)
@@ -429,7 +429,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Fin
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async)));
 }
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_NoPadding = {
   .engineInit = mcuxClMacModes_Engine_CBCMAC_Init,
   .protectionToken_engineInit =  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CBCMAC_Init),
@@ -483,5 +483,5 @@ const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CB
 };
 
 
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 

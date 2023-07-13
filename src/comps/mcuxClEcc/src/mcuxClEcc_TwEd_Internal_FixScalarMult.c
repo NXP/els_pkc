@@ -29,7 +29,7 @@
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClEcc_TwEd_Internal.h>
 
-MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * This function implements a scalar multiplication lambda*G for a given secret scalar lambda in {1,...,n-1}
  * and the base point G on a twisted Edwards curves. The result will be returned in homogeneous coordinates (Xres:Yres:Zres).
@@ -67,7 +67,7 @@ MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in commen
  *
  * @attention The PKC calculation might be still on-going, call #mcuxClPkc_WaitForFinish before CPU accesses to the result.
  */
-MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_TwEd_FixScalarMult)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
     mcuxClSession_Handle_t pSession,
@@ -95,9 +95,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
      *       Hence, scalarBitLength is also an appropriate scalar length for the negative scalar.
      */
     // TODO: hardening
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned");
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - pOperands is 32-bit aligned");
     uint32_t *pScalar = (uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
     MCUXCLPKC_WAITFORFINISH();
     const uint32_t scalarLsb = pScalar[0u] & 0x1u;
     if(0u == scalarLsb)

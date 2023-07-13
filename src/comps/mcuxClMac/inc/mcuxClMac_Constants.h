@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -27,12 +27,13 @@
  * @ingroup mcuxClMac
  * @{
  */
-#define MCUXCLMAC_STATUS_ERROR           ((mcuxClMac_Status_t) 0xE0AC0001u)
-#define MCUXCLMAC_STATUS_FAILURE         ((mcuxClMac_Status_t) 0xE0AC0020u)
-#define MCUXCLMAC_STATUS_INVALID_PARAM   ((mcuxClMac_Status_t) 0xE0AC001Au)
-#define MCUXCLMAC_STATUS_FAULT_ATTACK    ((mcuxClMac_Status_t) 0xE0ACF0F0u)
-#define MCUXCLMAC_STATUS_OK              ((mcuxClMac_Status_t) 0x00AC0000u)
-#define MCUXCLMAC_STATUS_COMPARE_NOK     ((mcuxClMac_Status_t) 0x00AC0001u)
+/* TODO CLNS-8684: Unionize and describe return codes */
+#define MCUXCLMAC_STATUS_ERROR           ((mcuxClMac_Status_t) 0x08885330u)
+#define MCUXCLMAC_STATUS_FAILURE         ((mcuxClMac_Status_t) 0x08885334u)
+#define MCUXCLMAC_STATUS_INVALID_PARAM   ((mcuxClMac_Status_t) 0x088853F8u)
+#define MCUXCLMAC_STATUS_FAULT_ATTACK    ((mcuxClMac_Status_t) 0x0888F0F0u)
+#define MCUXCLMAC_STATUS_OK              ((mcuxClMac_Status_t) 0x08882E03u)
+#define MCUXCLMAC_STATUS_COMPARE_NOK     ((mcuxClMac_Status_t) 0x088853FCu)
 /** @}*/
 
 #endif /* MCUXCLMAC_CONSTANTS_H_ */

@@ -17,6 +17,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClCore_Platform.h>
 #include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
@@ -42,15 +43,24 @@
                                                                                           mode));                            \
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))  \
     {                                                                                                                        \
-        return MCUXCLEXAMPLE_ERROR;                                                                                           \
+        return MCUXCLEXAMPLE_STATUS_ERROR;                                                                                    \
     }                                                                                                                        \
     MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                                         \
     /* Initialize the PRNG */                                                                                                \
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(pSession));                          \
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))    \
     {                                                                                                                        \
-        return MCUXCLEXAMPLE_ERROR;                                                                                           \
+        return MCUXCLEXAMPLE_STATUS_ERROR;                                                                                    \
     }                                                                                                                        \
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+#define MCUXCLEXAMPLE_INITIALIZE_PRNG(session)                                                                               \
+    /* Initialize the PRNG */                                                                                               \
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));                          \
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result))   \
+    {                                                                                                                       \
+        return MCUXCLEXAMPLE_STATUS_ERROR;                                                                                   \
+    }                                                                                                                       \
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 #endif /* MCUXCLEXAMPLE_RNG_HELPER_H_ */

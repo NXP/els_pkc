@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMacModes_ELS_Aes.c
+/** @file  mcuxClMacModes_Els_Functions.c
  *  @brief Implementation of mcuxClMacModes functions for ELS-based modes
  */
 
@@ -23,8 +23,8 @@
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <internal/mcuxClMacModes_Internal_Functions.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
-#include <internal/mcuxClMacModes_ELS_Types.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Types.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_compute)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(
@@ -36,9 +36,9 @@ uint32_t inLength,
 mcuxCl_Buffer_t pMac,
 uint32_t * const pMacLength)
 {
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret structure for different MacModes Algorithm types")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret structure for different MacModes Algorithm types")
   mcuxClMacModes_Algorithm_t pAlgo = (mcuxClMacModes_Algorithm_t) mode->common.pAlgorithm;
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_compute, pAlgo->protectionToken_engineOneshot);
   mcuxClMacModes_Context_t context = {0u};
   context.common.pMode = mode;

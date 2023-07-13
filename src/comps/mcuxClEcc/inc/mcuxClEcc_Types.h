@@ -25,7 +25,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClEcc_ParameterSizes.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 
 #ifdef __cplusplus
@@ -57,20 +57,20 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Status_Protect
  * @addtogroup MCUXCLECC_STATUS_
  * mcuxClEcc return code definitions
  * @{ */
-#define MCUXCLECC_STATUS_OK                        ((mcuxClEcc_Status_t) 0x55555555u)  ///< Operation was successful.
-#define MCUXCLECC_STATUS_INVALID_PARAMS            ((mcuxClEcc_Status_t) 0x55551DE2u)  ///< Parameters are invalid.
-#define MCUXCLECC_STATUS_RNG_ERROR                 ((mcuxClEcc_Status_t) 0x555527D8u)  ///< Random number (DRBG / PRNG) error (unexpected behavior).
-#define MCUXCLECC_STATUS_INVALID_SIGNATURE         ((mcuxClEcc_Status_t) 0x555517E8u)  ///< ECDSA Signature is invalid.
-#define MCUXCLECC_STATUS_NEUTRAL_POINT             ((mcuxClEcc_Status_t) 0x55558778u)  ///< The result of the point operation is the neutral point.
-#define MCUXCLECC_STATUS_FAULT_ATTACK              ((mcuxClEcc_Status_t) 0x5555F00Fu)  ///< Fault attack (unexpected behavior) is detected.
-#define MCUXCLECC_STATUS_NOT_SUPPORTED             ((mcuxClEcc_Status_t) 0x55550000u)  ///< Functionality is not supported.
+#define MCUXCLECC_STATUS_OK                        ((mcuxClEcc_Status_t) 0x04442E03u)  ///< Operation was successful.
+#define MCUXCLECC_STATUS_INVALID_PARAMS            ((mcuxClEcc_Status_t) 0x044453F8u)  ///< Parameters are invalid.
+#define MCUXCLECC_STATUS_RNG_ERROR                 ((mcuxClEcc_Status_t) 0x04445334u)  ///< Random number (DRBG / PRNG) error (unexpected behavior).
+#define MCUXCLECC_STATUS_INVALID_SIGNATURE         ((mcuxClEcc_Status_t) 0x04448930u)  ///< ECDSA Signature is invalid.
+#define MCUXCLECC_STATUS_NEUTRAL_POINT             ((mcuxClEcc_Status_t) 0x04448934u)  ///< The result of the point operation is the neutral point.
+#define MCUXCLECC_STATUS_FAULT_ATTACK              ((mcuxClEcc_Status_t) 0x0444F0F0u)  ///< Fault attack (unexpected behavior) is detected.
+#define MCUXCLECC_STATUS_NOT_SUPPORTED             ((mcuxClEcc_Status_t) 0x04445370u)  ///< Functionality is not supported.
 /** @} */
 
 /**
  * @addtogroup MCUXCLECC_MONTDH_STATUS_
  * mcuxClEcc_Mont return code definitions
  * @{ */
-#define MCUXCLECC_STATUS_ERROR_SMALL_SUBGROUP      ((mcuxClEcc_Status_t) 0x55554DB2u)  ///< MONTDH public key lies in small subgroup.
+#define MCUXCLECC_STATUS_ERROR_SMALL_SUBGROUP      ((mcuxClEcc_Status_t) 0x04445374u)  ///< MONTDH public key lies in small subgroup.
 /** @} */  /* MCUXCLECC_MONTDH_STATUS_ */
 /**
  * @}
@@ -239,7 +239,15 @@ extern const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t mcuxClEcc_EdDsa_Generat
 /* Signature ProtocolDescriptors and ModeDescriptors      */
 /**********************************************************/
 
-/* Ed25519 signature protocol descriptor */
+/** 
+ * \brief Ed25519 signature protocol descriptor
+ * 
+ * NOTE: To be able to perform an Ed25519 signature generation using this mode, the private key handle must be properly linked to a key handle
+ *       for the associated public key using the function mcuxClKey_linkKeyPair. This is necessary to make the public key accessible during an
+ *       Ed25519 signature generation. If this is not satisfied the Ed25519 signature generation will fail.
+ *       If the key pair has been generated using the mcuxClKey_generate_keypair function, this linking step is already
+ *       performed by mcuxClKey_generate_keypair.
+ */
 extern const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor;
 
 

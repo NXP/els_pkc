@@ -21,10 +21,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 
-#include <mcuxClHash.h>
 #include <mcuxClPkc.h>
-#include <mcuxClMath.h>
-#include <mcuxClMemory.h>
 #include <mcuxClRsa.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
@@ -89,7 +86,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_public),
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
   }
-  else if(MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK != retVal_RsaPublic)
+  else if(MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retVal_RsaPublic)
   {
 
     /* De-initialize PKC */

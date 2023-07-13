@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_TestPrimeCandidate_FUP.h>
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 const mcuxClPkc_FUPEntry_t mcuxClRsa_TestPrimeCandidate_Steps2_FUP[6] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0xd1u,0x20u,0xd8u,0x0bu},{0x00u,0x1eu,0x00u,0x01u,0x07u,0x05u},{0x00u,0x3eu,0x00u,0x00u,0x07u,0x06u},{0x40u,0x1eu,0x00u,0x04u,0x07u,0x06u},{0x80u,0xa7u,0x05u,0x05u,0x06u,0x06u},{0x00u,0x1bu,0x00u,0x06u,0x09u,0x05u}};
 const mcuxClPkc_FUPEntry_t mcuxClRsa_TestPrimeCandidate_Steps3_FUP[5] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0x5fu,0x25u,0x45u,0x45u},{0x00u,0x1bu,0x00u,0x01u,0x08u,0x05u},{0x00u,0x1eu,0x00u,0x00u,0x07u,0x06u},{0x80u,0xa7u,0x05u,0x05u,0x06u,0x06u},{0x00u,0x1bu,0x00u,0x06u,0x09u,0x05u}};
@@ -25,11 +25,11 @@ const mcuxClPkc_FUPEntry_t mcuxClRsa_TestPrimeCandidate_Steps3_FUP[5] MCUX_FUP_A
  * FUP to check the candidate is coprime with the product of first 9
  * prime.
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /*
  * FUP to check the candidate is coprime with the public E
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

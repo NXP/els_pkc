@@ -11,14 +11,14 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClCore_Platform.h>
 
 #include <internal/mcuxClHash_Internal_Memory.h>
 #include <internal/mcuxClHash_Internal.h>
 
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 /* Hash Cpu Workarea size generation */
 volatile uint8_t mcuxClHash_compute_WaCpuMiyaguchiPreneel [MCUXCLHASH_INTERNAL_WACPU_SIZE_MIYAGUCHI_PRENEEL];
@@ -44,4 +44,4 @@ volatile uint8_t mcuxClHash_finish_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
 /* Hash multi-part context size generation */
 volatile mcuxClHash_ContextDescriptor_t mcuxClHash_Ctx_size;
 
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

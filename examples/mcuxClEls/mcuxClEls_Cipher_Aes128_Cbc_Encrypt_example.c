@@ -51,14 +51,14 @@ static uint8_t aes128_output[MCUXCLELS_CIPHER_BLOCK_SIZE_AES];
 
 
 /** Performs AES-128 CBC encryption using mcuxClEls functions.
- * @retval MCUXCLEXAMPLE_OK     The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR  The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK     The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR  The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
         
     mcuxClEls_CipherOption_t cipher_options = {0U};                        // Initialize a new configuration for the planned mcuxClEls_Cipher_Async operation.
@@ -77,7 +77,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example)
     // mcuxClEls_Cipher_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;// Expect that no error occurred, meaning that the mcuxClEls_Cipher_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR;// Expect that no error occurred, meaning that the mcuxClEls_Cipher_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     
@@ -85,7 +85,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
         
@@ -93,15 +93,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example)
     {
         if (aes128_output[i] != aes128_expected_output[i]) 
         {
-            return MCUXCLEXAMPLE_ERROR;// Expect that the resulting ciphertext matches our expected output
+            return MCUXCLEXAMPLE_STATUS_ERROR;// Expect that the resulting ciphertext matches our expected output
         }
     }
     
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

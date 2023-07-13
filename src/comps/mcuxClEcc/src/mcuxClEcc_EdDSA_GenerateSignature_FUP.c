@@ -36,7 +36,7 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_GenerateSignature_ReduceScalarMod
  *  - ECC_T0 contains the blinding rndR (of size (operandSize + bufferSize)
  *  - PS2 lengths set to (operandSize + bufferSize, operandSize)
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /**
  * FUP program to securely compute the EdDSA signature value S
@@ -48,4 +48,4 @@ MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
  *  - ECC_S2 contains the secret scalar r
  *  - PS2 lengths set to (2u * operandSize, operandSize)
  */
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

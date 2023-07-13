@@ -200,7 +200,7 @@
 #endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
 /*
- * Description of how much cpuWa mcuxClRandomModes_TestMode_selftestFunction_PrDisabled uses at most
+ * Description of how much cpuWa mcuxClRandomModes_TestMode_selftestFunction uses at most
  */
 #if defined(MCUXCL_FEATURE_RANDOMMODES_CTRDRBG)
 #define MCUXCLRANDOMMODES_TESTMODE_SELFTEST_CPUWA_MAXSIZE 0u
@@ -267,7 +267,7 @@
 #endif
 
 /*
- * Description of how much cpuWa mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled/PTG3 uses at most
+ * Description of how much cpuWa mcuxClRandomModes_NormalMode_selftestFunction uses at most
  *
  * cpuWa          | Call(s) to initFunc | Call(s) to reseedFunc | Call(s) to generateFunc |
  * size in byte   |    cpuWaInitFunc    |    cpuWaReseedFunc    |    cpuWaGenerateFunc    |

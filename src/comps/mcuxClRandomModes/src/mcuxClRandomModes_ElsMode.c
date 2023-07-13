@@ -23,6 +23,7 @@
 #include <mcuxClRandomModes.h>
 #include <internal/mcuxClRandom_Internal_Types.h>
 #include <internal/mcuxClRandomModes_Private_Drbg.h>
+#include <internal/mcuxClEls_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_ElsMode_init)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_init(
@@ -54,7 +55,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_init);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_init, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_init, MCUXCLRANDOM_STATUS_OK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_reseed)
@@ -64,7 +65,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_reseed);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_reseed, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_reseed, MCUXCLRANDOM_STATUS_OK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_selftest)
@@ -75,7 +76,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_selftest);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_selftest, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_selftest, MCUXCLRANDOM_STATUS_OK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_generate)
@@ -109,18 +110,34 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
     if (requestSizeFullWordsBytes > 0u)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_GetRandom1, mcuxClEls_Rng_DrbgRequest_Async(pOut, requestSizeFullWordsBytes));
-        if (MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom1)
+        if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_DRBG_GetRandom1)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async));
         }
+        else if(MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom1)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
+        }
 
         MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_Wait1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-        if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait1)
+        if(MCUXCLELS_LEVEL1_ERROR(ret_DRBG_Wait1))
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+        }
+        else if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait1)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
         }
     }
 
@@ -131,19 +148,35 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 
         MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_GetRandom2, mcuxClEls_Rng_DrbgRequest_Async(requestRemainingBuffer,
                                                                                      requestSizeMin));
-        if (MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom2)
+        if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_DRBG_GetRandom2)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
                 2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         }
+        else if (MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom2)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
+        }
 
         MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_Wait2, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-        if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait2)
+        if(MCUXCLELS_LEVEL1_ERROR(ret_DRBG_Wait2))
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
                 2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
                 2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+        }
+        else if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait2)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
         }
 
         /* Copy the remaining bytes from the buffer to output. */
@@ -154,7 +187,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_OK,
             MCUX_CSSL_FP_CONDITIONAL((requestSizeFullWordsBytes > 0u),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),

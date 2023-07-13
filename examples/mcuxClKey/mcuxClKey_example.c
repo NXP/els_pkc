@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -39,8 +39,8 @@ static uint32_t aes128_key[MCUXCLAES_AES128_KEY_SIZE_IN_WORDS] =
 
 
 /** Performs an example initialization and cleanup of the mcuxClKey component.
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClKey_example)
 {
     /**************************************************************************/
@@ -76,7 +76,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_example)
                                        &key_properties,
                                        key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -95,15 +95,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != tokenFlush) || (MCUXCLKEY_STATUS_OK != resultFlush))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

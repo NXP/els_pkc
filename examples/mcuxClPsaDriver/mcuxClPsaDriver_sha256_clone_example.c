@@ -63,7 +63,7 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Variable for the output length of the encryption operation */
@@ -78,7 +78,7 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
 
     /* Check the return value */
     if(setup_result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the hashing update operation */
@@ -89,7 +89,7 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
 
     /* Check the return value */
     if(update1_result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     psa_hash_operation_t clonedHashOperation;
@@ -100,7 +100,7 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
 
     /* Check the return value */
     if(clone_result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the hashing update operation again */
@@ -111,7 +111,7 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
 
     /* Check the return value */
     if(update2_result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the hashing finish operation */
@@ -123,12 +123,12 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
 
     /* Check the return value */
     if(finish_result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(hashOutput_length != MCUXCLHASH_OUTPUT_SIZE_SHA_256) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content */
@@ -136,10 +136,15 @@ bool mcuxClPsaDriver_sha256_clone_example(void)
     {
         if (hashOutput[i] != hashExpected[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_sha256_clone_example(void)
+{
+    bool result = mcuxClPsaDriver_sha256_clone_example();
+    return result;
 }

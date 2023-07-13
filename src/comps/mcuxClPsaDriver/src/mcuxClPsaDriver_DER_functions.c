@@ -17,6 +17,8 @@
 #include <mcuxClPsaDriver.h>
 #include <mcuxClRsa.h>
 #include <mcuxCsslFlowProtection.h>
+#include <internal/mcuxClPsaDriver_Functions.h>
+
 /**
  * \brief       Updates the pointer to immediately behind the full tag.
  *
@@ -28,43 +30,47 @@
  * \return      PSA_SUCCESS if successful.
  * \return      An PSA_ERROR_INVALID_ARGUMENT error code if the parsed input is incorrect
  */
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(uint8_t **p,
                           uint8_t tag)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    uint32_t length = 0;
+    uint32_t length = 0u;
 
     if((NULL == p) || (NULL == *p) || (**p != tag))
     {
       return PSA_ERROR_INVALID_ARGUMENT;
     }
-    (*p)++;
+    uint32_t ptrLen = 1u;
 
     //check length
-    if((**p & 0x80u) == 0) //short from
+    if((*(*p + 1u) & 0x80u) == 0u) //short from
     {
-     length = **p;
-     (*p)++;
+     length = *(*p + 1u);
+     ptrLen = 2u;
     }
     else //long form
     {
-      unsigned int numberBytes = **p & 0x7Fu;
-      (*p)++;
+      uint8_t numberBytes = *(*p + 1u) & 0x7Fu;
+      ptrLen = 2u;
 
       /* If length is less than 128bytes it should be short form */
-      if ((numberBytes == 1u) && (**p < 128u))
+      if ((numberBytes == 1u) && (*(*p + ptrLen) < 128u))
       {
         return PSA_ERROR_INVALID_ARGUMENT;
       }
 
-      for(unsigned int i = 0; i < numberBytes; ++i)
+      for(uint8_t i = 0u; i < numberBytes; ++i)
       {
        length = length << 8u;
-       length |= **p;
-       (*p)++;
+       length |= *(*p + ptrLen);
+       ptrLen++;
       }
     }
 
-    if((tag & 0x20) != 0x20)
+    *p += ptrLen;
+    if((tag & 0x20u) != 0x20u)
     {
       // not constructed tag, skip the content
       *p += length;
@@ -84,26 +90,29 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(uint8_t **p
  * \return      PSA_SUCCESS if successful.
  * \return      An PSA_ERROR_INVALID_ARGUMENT error code if the parsed input is incorrect
  */
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(uint8_t **p,
                           mcuxClRsa_KeyEntry_t  * key)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     //check tag
-    if(**p != 0x02)
+    if(**p != 0x02u)
     {
       return PSA_ERROR_INVALID_ARGUMENT;
     }
-    (*p)++;
+    uint32_t ptrLen = 1u;
 
     //check length
-    if((**p & 0x80u) == 0) //short from
+    if((*(*p + 1u) & 0x80u) == 0u) //short from
     {
-      key->keyEntryLength = **p;
-      (*p)++;
+      key->keyEntryLength = *(*p + 1u);
+      ptrLen = 2u;
     }
     else //long form
     {
-      uint8_t numberBytes = **p & 0x7Fu;
-      (*p)++;
+      uint8_t numberBytes = *(*p + 1u) & 0x7Fu;
+      ptrLen = 2u;
 
       if(numberBytes > 4u) // too big to fit into uint32
       {
@@ -111,39 +120,40 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(uint8_t **p,
       }
 
       // if length is less than 128 bytes it should be short form
-      if ((numberBytes == 1u) && (**p < 128u))
+      if ((numberBytes == 1u) && (*(*p + ptrLen) < 128u))
       {
         return PSA_ERROR_INVALID_ARGUMENT;
       }
 
-      key->keyEntryLength = 0;
+      key->keyEntryLength = 0u;
 
-      for(uint32_t i = 0; i < numberBytes; ++i)
+      for(uint32_t i = 0u; i < numberBytes; ++i)
       {
         key->keyEntryLength = key->keyEntryLength << 8;
-        key->keyEntryLength |= **p;
-       (*p)++;
+        key->keyEntryLength |= *(*p + ptrLen);
+        ptrLen++;
       }
     }
 
     //check first and second octet of integers
-    uint8_t first_octet = **p;
-    uint8_t second_octet = *(*p + 1u);
-    if((first_octet == 0) && ((second_octet & 0x80) == 0))
+    uint8_t first_octet = *(*p + ptrLen);
+    uint8_t second_octet = *(*p + ptrLen + 1u);
+    if((first_octet == 0u) && ((second_octet & 0x80u) == 0u))
     {
       return PSA_ERROR_INVALID_ARGUMENT;
     }
-    if((first_octet == 0xFF) && ((second_octet & 0x80) == 0x80))
+    if((first_octet == 0xFFu) && ((second_octet & 0x80u) == 0x80u))
     {
       return PSA_ERROR_INVALID_ARGUMENT;
     }
 
-    if(first_octet == 0)
+    if(first_octet == 0u)
     {
       //take next non-zero octet, the key date is unsigned
-      (*p)++;
+      ptrLen++;
       key->keyEntryLength -= 1u;
     }
+    *p += ptrLen;
     key->pKeyEntryData = *p;
 
     *p += key->keyEntryLength;
@@ -165,13 +175,17 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(uint8_t **p,
  * \return      PSA_SUCCESS if successful.
  * \return      An PSA_ERROR_INVALID_ARGUMENT error code if the parsed input is incorrect
  */
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_integer(uint8_t **p,
                           mcuxClRsa_KeyEntry_t  * key)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     uint8_t *ptr = *p;
+    uint32_t ptrLen = 1u;
+
     //check tag
     *ptr = 0x02u;
-    ptr++;
     if(key->keyEntryLength > 0x7Fu) //long form
     {
         uint8_t h3_byte = ((key->keyEntryLength) & 0xFF000000u) >> 24u;
@@ -180,52 +194,42 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_integer(uint8_t **p,
         uint8_t h0_byte = (key->keyEntryLength) & 0xFFu;
         if(h3_byte != 0u)
         {
-            *ptr = 0x84u;
-            ptr++;
-            *ptr = h3_byte;
-            ptr++;
-            *ptr = h2_byte;
-            ptr++;
-            *ptr = h1_byte;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[1u] = 0x84u;
+            ptr[2u] = h3_byte;
+            ptr[3u] = h2_byte;
+            ptr[4u] = h1_byte;
+            ptr[5u] = h0_byte;
+            ptrLen = 6u;
         }
         else if(h2_byte != 0u)
         {
-            *ptr = 0x83u;
-            ptr++;
-            *ptr = h2_byte;
-            ptr++;
-            *ptr = h1_byte;
-            (*p)++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[1u] = 0x83u;
+            ptr[2u] = h2_byte;
+            ptr[3u] = h1_byte;
+            ptr[4u] = h0_byte;
+            ptrLen = 5u;
         }
         else if(h1_byte != 0u)
         {
-            *ptr = 0x82u;
-            ptr++;
-            *ptr = h1_byte;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[1u] = 0x82u;
+            ptr[2u] = h1_byte;
+            ptr[3u] = h0_byte;
+            ptrLen = 4u;
         }
         else
         {
-            *ptr = 0x81u;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[1u] = 0x81u;
+            ptr[2u] = h0_byte;
+            ptrLen = 3u;
         }
     }
     else                           //short from
     {
-        *ptr = key->keyEntryLength;
-        ptr++;
+        ptr[1] = key->keyEntryLength;
+        ptrLen = 2u;
     }
 
-    *p = ptr;
+    *p = ptr + ptrLen;
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
                                                   *p,
                                                   key->pKeyEntryData,

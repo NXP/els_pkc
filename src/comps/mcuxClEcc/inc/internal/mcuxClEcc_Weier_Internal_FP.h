@@ -42,7 +42,8 @@
 /* Generate private key */
 #define MCUXCLECC_FP_KEYGEN_GENERATE_PRIKEY  \
     MCUXCLECC_FP_KEYGEN_BASE_POINT,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Int_CoreKeyGen)
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Int_CoreKeyGen),  \
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)
 
 /* Calculate public key */
 #define MCUXCLECC_FP_KEYGEN_CALC_PUBKEY  \
@@ -51,6 +52,7 @@
     MCUXCLPKC_FP_CALLED_CALC_MC1_MM,  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult),  \
+    MCUXCLPKC_FP_CALLED_CALC_OP1_LSB0s,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult)
 
 /* Convert/check public key */
@@ -103,6 +105,7 @@
     MCUXCLPKC_FP_CALLED_CALC_MC1_MM,  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult),  \
+    MCUXCLPKC_FP_CALLED_CALC_OP1_LSB0s,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),  \
@@ -149,11 +152,13 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR)
 
 /* Import scalar */
+// TODO (CLNS-979) Avoid multiplication with 2 if CLNS-979 is reseolved
 #define MCUXCLECC_FP_POINTMULT_SCALAR  \
     MCUXCLECC_FP_POINTMULT_BASE_POINT,  \
-    MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,  \
-    MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,  \
+    (2u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),  \
+    MCUXCLPKC_FP_CALLED_CALC_OP1_OR,  \
+    MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),  \
@@ -165,6 +170,7 @@
 #define MCUXCLECC_FP_POINTMULT_SCALAR_MULTIPLICATION  \
     MCUXCLECC_FP_POINTMULT_SCALAR,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult),  \
+    MCUXCLPKC_FP_CALLED_CALC_OP1_LSB0s,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult)
 
 /* Convert/check result of scalar multiplication */
@@ -175,14 +181,13 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR)
 
 /* Check n/p and export */
+// TODO (CLNS-979) Avoid multiplication with 2 if CLNS-979 is reseolved
 #define MCUXCLECC_FP_POINTMULT_FINAL  \
     MCUXCLECC_FP_POINTMULT_CONVERT_POINT,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),  \
+    (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc)),  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportBigEndianFromPkc),  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportBigEndianFromPkc),  \
+    (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportBigEndianFromPkc)),  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
 

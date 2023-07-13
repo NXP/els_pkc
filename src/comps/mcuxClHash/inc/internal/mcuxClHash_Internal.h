@@ -56,6 +56,9 @@ extern "C" {
 #define MCUXCLHASH_BLOCK_SIZE_SHA3_384          (104U) ///< SHA3-384 block size: 832 bit (104 bytes)
 #define MCUXCLHASH_BLOCK_SIZE_SHA3_512           (72U) ///< SHA3-512 block size: 576 bit (72 bytes)
 #define MCUXCLHASH_BLOCK_SIZE_SM3                (64U) ///< SM3 block size: 512 bit (64 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_128    (168u) ///< SHAKE-128 block size: 1344 bit (168 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_256    (136u) ///< SHAKE-256 block size: 1088 bit (136 bytes)
+#define MCUXCLHASH_BLOCK_SIZE_MAX               (MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_128) ///< Maximum block size
 
 #define MCUXCLHASH_STATE_SIZE_SHA_1         (20U) ///< SHA-1 state size: 160 bit (20 bytes)
 #define MCUXCLHASH_STATE_SIZE_SHA_224       (32U) ///< SHA-224 state size: 256 bit (32 bytes)
@@ -77,6 +80,10 @@ extern "C" {
 
 #define MCUXCLHASH_NO_OF_ROUNDS_SHA_1       (80U) ///< Number of rounds for SHA-1 algorithm
 #define MCUXCLHASH_NO_OF_ROUNDS_MD5         (64u) ///< Number of rounds for MD5 algorithm
+
+#define MCUXCLHASH_SHAKE_PHASE_INIT       (0UL) ///< Initialization phase of Shake: buffer will be cleared
+#define MCUXCLHASH_SHAKE_PHASE_ABSORB     (1UL) ///< Absorb phase of Shake: don't clear any more, but also don't add padding yet
+#define MCUXCLHASH_SHAKE_PHASE_SQUEEZE    (2UL) ///< Squeeze phase of Shake: padding has been added, from now on only permute on the state
 
 /**@}*/
 
@@ -110,7 +117,6 @@ typedef struct mcuxClHash_ContextBuffer
 /**
  * @brief support bigger input length up to 2^128 bits
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_processedLength_add)
 static inline void mcuxClHash_processedLength_add(uint64_t *pLen128, uint32_t addLen)
 {
     if (pLen128[0] > (0xffffffffffffffffu - addLen))
@@ -123,7 +129,6 @@ static inline void mcuxClHash_processedLength_add(uint64_t *pLen128, uint32_t ad
 /**
  * @brief support 128bit number compare
  */
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_processedLength_cmp)
 static inline int mcuxClHash_processedLength_cmp(uint64_t *pLen128, uint64_t cmpLenHigh64, uint64_t cmpLenLow64)
 {
   return pLen128[1] > cmpLenHigh64 ? 1 : (cmpLenHigh64 > pLen128[1] ? -1 : ((pLen128[0] > cmpLenLow64 ? 1 : (pLen128[0] == cmpLenLow64 ? 0 : -1))));
@@ -232,6 +237,7 @@ struct mcuxClHash_AlgorithmDescriptor
 /**********************************************
  * Function declarations
  **********************************************/
+
 
 #ifdef __cplusplus
 } /* extern "C" */

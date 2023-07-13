@@ -17,6 +17,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 
 #include <mcuxClRandom_Types.h>
+#include <internal/mcuxClRandomModes_Private_Drbg.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +27,10 @@ extern "C" {
 #define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_ENTROPY_RESEED_PRDISABLED ( 1u)
 #define MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RANDOMDATA_PRDISABLED     ( 2u)
 #define MCUXCLRANDOMMODES_NO_OF_TESTVECTORS_PRDISABLED (MCUXCLRANDOMMODES_TESTVECTORS_INDEX_RANDOMDATA_PRDISABLED + 1u)
+
+#ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
+extern const mcuxClRandomModes_DrbgAlgorithmsDescriptor_t mcuxClRandomModes_DrbgAlgorithmsDescriptor_CtrDrbg_PrDisabled;
+#endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
 /* Internal function prototypes */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_PrDisabled_selftestAlgorithm, mcuxClRandomModes_selftestAlgorithm_t)

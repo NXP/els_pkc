@@ -179,6 +179,7 @@ typedef union
  * @endif
  * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
+ * @retval #MCUXCLELS_STATUS_SW_FAULT            if a failure occurred
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_KeyDelete_Async)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelete_Async(

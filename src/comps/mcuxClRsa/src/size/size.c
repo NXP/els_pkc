@@ -12,7 +12,7 @@
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
@@ -20,7 +20,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 
 
@@ -67,6 +67,7 @@ volatile uint8_t mcuxClRsa_Sign_CRT_1024_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC
 volatile uint8_t mcuxClRsa_Sign_CRT_2048_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(2048/8/2)];
 volatile uint8_t mcuxClRsa_Sign_CRT_3072_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(3072/8/2)];
 volatile uint8_t mcuxClRsa_Sign_CRT_4096_WaPKC[MCUXCLRSA_INTERNAL_SIGN_CRT_WAPKC_SIZE(4096/8/2)];
+
 
 /****************************************************************************/
 /* Computation of workarea sizes for the Rsa_verify function.               */
@@ -132,4 +133,4 @@ volatile uint8_t mcuxClRsa_KeyGeneration_Crt_4096_WaCPU[MCUXCLRSA_INTERNAL_KEYGE
 #endif
 
 
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

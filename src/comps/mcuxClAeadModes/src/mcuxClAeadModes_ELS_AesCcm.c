@@ -227,7 +227,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         /*  Generate the counter for CTR mode encryption */
         // &pContext->state[32] won't be used in CCM mode, so write it to store the counter0Data.
         // Use &pContext->state[48] to store the counterData
-        // Clear counter first
+        // Set counter to zero first
         MCUXCLMEMORY_FP_MEMORY_SET(&pContext->state[32], 0u, MCUXCLAES_BLOCK_SIZE);
 
 
@@ -461,9 +461,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
         //the last input data block processing, add zero padding and calc final tag
         if((pContext->processedDataLength == pContext->dataLength + pContext->aadLength) && (0u != pContext->partialDataLength))
         {
-            mainFinFpFlag = 1u;
-            MCUXCLMEMORY_FP_MEMORY_SET(&pContext->partialData[pContext->partialDataLength], 0x00u, MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
-
+            if(pContext->partialDataLength < MCUXCLAES_BLOCK_SIZE)
+            {
+                mainFinFpFlag = 1u;
+                MCUXCLMEMORY_FP_MEMORY_SET(&pContext->partialData[pContext->partialDataLength], 0x00u, MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
+            }
+            else
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+            }
             //This last block length less then MCUXCLAES_BLOCK_SIZE, so can't directly write result to pOut
             //&pContext->state[16] have not been used, so can re-write it to store the CTR result
             MCUX_CSSL_FP_FUNCTION_CALL(inPaddEncRet, pAlgo->pEngine(session, pContext,
@@ -568,7 +574,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
 
         //Clear Ctx content
         //it will still be used, so can't clear in this step
-        // MCUXCLMEMORY_FP_MEMORY_SET((uint8_t *)pContext, // 0x00u, // sizeof(mcuxClAead_Context_t));
+        // MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pContext, // sizeof(mcuxClAead_Context_t));
 
 
 
@@ -595,7 +601,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
 
         //Clear Ctx content
         //it will still be used, so can't clear in this step
-        // MCUXCLMEMORY_FP_MEMORY_SET((uint8_t *)pContext, // 0x00u, // sizeof(mcuxClAead_Context_t));
+        // MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pContext, // sizeof(mcuxClAead_Context_t));
 
 
     }
@@ -639,11 +645,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
             pAlgo->protection_token_engine
         ),
         MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_FINISH))),
-            //MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+            //MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
         ),
         MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEAD_OPTION_VERIFY)),
-            //MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+            //MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare)
         )
     );

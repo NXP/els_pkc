@@ -21,7 +21,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClMac_Types.h>
 #include <internal/mcuxClMac_Internal_Types.h>
-#include <internal/mcuxClMacModes_ELS_Types.h>
+#include <internal/mcuxClMacModes_Els_Types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,8 +35,6 @@ extern const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescri
 extern const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_PaddingISO9797_1_Method1;
 extern const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_PaddingISO9797_1_Method2;
 extern const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_CBCMAC_Padding_PKCS7;
-/* MISRA Ex. 20 - Rule 5.1 */
-extern const mcuxClMacModes_AlgorithmDescriptor_t mcuxClMacModes_AlgorithmDescriptor_HMAC_Els;
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -20,9 +20,6 @@
 #define MCUXCLRSA_MEMORYCONSUMPTION_H_
 
 
-
-/** @} */
-
 /****************************************************************************/
 /* Definitions of workarea sizes for the mcuxClRsa Sign                      */
 /****************************************************************************/
@@ -95,7 +92,6 @@
     ((1024u < (keyBitLength)) ? MCUXCLRSA_SIGN_CRT_PSSENCODE_2048_WACPU_SIZE : \
                                  MCUXCLRSA_SIGN_CRT_PSSENCODE_1024_WACPU_SIZE)))  ///< Macro to extract CPU workarea size to be used with a non-standard key length, with a key of type MCUXCLRSA_KEY_PRIVATECRT or MCUXCLRSA_KEY_PRIVATECRT_DFA.
 
-
 #define MCUXCLRSA_SIGN_CRT_PKCS1V15ENCODE_1024_WACPU_SIZE    (196u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*, for 1024-bit private CRT keys.
 #define MCUXCLRSA_SIGN_CRT_PKCS1V15ENCODE_2048_WACPU_SIZE    (196u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*, for 2048-bit private CRT keys.
 #define MCUXCLRSA_SIGN_CRT_PKCS1V15ENCODE_3072_WACPU_SIZE    (232u) ///< Definition of CPU workarea size for the mcuxClRsa_sign function using mode mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_*, for 3072-bit private CRT keys.
@@ -105,7 +101,6 @@
     ((2048u < (keyBitLength)) ? MCUXCLRSA_SIGN_CRT_PKCS1V15ENCODE_3072_WACPU_SIZE : \
     ((1024u < (keyBitLength)) ? MCUXCLRSA_SIGN_CRT_PKCS1V15ENCODE_2048_WACPU_SIZE : \
                                  MCUXCLRSA_SIGN_CRT_PKCS1V15ENCODE_1024_WACPU_SIZE)))  ///< Macro to extract CPU workarea size to be used with a non-standard key length, with a key of type MCUXCLRSA_KEY_PRIVATECRT or MCUXCLRSA_KEY_PRIVATECRT_DFA.
-
 
 #define MCUXCLRSA_SIGN_CRT_1024_WAPKC_SIZE     (968u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 1024-bit private CRT keys.
 #define MCUXCLRSA_SIGN_CRT_2048_WAPKC_SIZE     (1864u) ///< Definition of PKC workarea size for the mcuxClRsa_sign function for 2048-bit private CRT keys.
@@ -119,7 +114,6 @@
 
 /** @} */
 
-
 /****************************************************************************/
 /* Definitions of workarea sizes for the mcuxClRsa Verify                    */
 /****************************************************************************/
@@ -129,6 +123,8 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
+
+
 #define MCUXCLRSA_VERIFY_NOVERIFY_WACPU_SIZE          (16u) ///< Definition of CPU workarea size for the mcuxClRsa_verify function using mode mcuxClRsa_Mode_Verify_NoVerify.
 #define MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE         (196u) ///< Definition of CPU workarea size for the mcuxClRsa_verify function using mode mcuxClRsa_Mode_Verify_PssVerify.
 #define MCUXCLRSA_VERIFY_PKCS1V15VERIFY_WACPU_SIZE    (196u) ///< Definition of CPU workarea size for the mcuxClRsa_verify function using mode mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_*.

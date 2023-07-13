@@ -18,7 +18,7 @@
  *
  */
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClKey_Types_Internal.h>
 
@@ -26,7 +26,7 @@
 /* *** Structure sizes *** */
 /* *********************** */
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
-volatile mcuxClKey_Descriptor_t mcuxClKey_Descriptor;
-volatile mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor;
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
+volatile uint8_t mcuxClKey_DescriptorSize[sizeof(mcuxClKey_Descriptor_t)];
+volatile uint8_t mcuxClKey_TypeDescriptorSize[sizeof(mcuxClKey_TypeDescriptor_t)];
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

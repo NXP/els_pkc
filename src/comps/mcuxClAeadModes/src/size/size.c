@@ -19,7 +19,7 @@
  */
 
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <internal/mcuxClAeadModes_Internal.h>
 /* *********************************************************** */
 /* Work area and ctx sizes.                                    */
@@ -31,12 +31,12 @@
 
 #include <internal/mcuxClAeadModes_ELS_Types.h>
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile uint8_t mcuxClAead_WorkArea[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(1)];
 volatile uint8_t mcuxClAead_OneShot[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClAeadModes_Context_t))];
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile struct mcuxClAeadModes_Context mcuxClAeadModes_Context;
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

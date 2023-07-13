@@ -15,17 +15,17 @@
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClRandom_Internal_Types.h>
 #include <internal/mcuxClRandomModes_Private_Drbg.h>
 #include <internal/mcuxClRandomModes_Private_PatchMode.h>
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 static const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_PatchMode = {
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     .initFunction                    = mcuxClRandomModes_PatchMode_initFunction,
     .reseedFunction                  = mcuxClRandomModes_PatchMode_reseedFunction,
     .generateFunction                = mcuxClRandomModes_PatchMode_generateFunction,
@@ -102,9 +102,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PatchMode_g
 
     mcuxClRandom_Mode_t mode = (mcuxClRandom_Mode_t) session->randomCfg.mode;
     mcuxClRandom_Context_t pCustomCtx = (mcuxClRandom_Context_t) mode->auxParam;
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Type is a function pointer. const qualifier is meaningless on cast type")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Type is a function pointer. const qualifier is meaningless on cast type")
     mcuxClRandomModes_CustomGenerateAlgorithm_t pCustomAlg = (mcuxClRandomModes_CustomGenerateAlgorithm_t) mode->pDrbgMode;
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
     mcuxClRandom_Status_t result_customAlg = pCustomAlg(session, pCustomCtx, pOut, outLength);
     if(MCUXCLRANDOM_STATUS_OK != result_customAlg)

@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMacModes_ELS_Ctx.h
+/** @file  mcuxClMacModes_Els_Ctx.h
  *  @brief Internal header for the MAC context for modes using the ELS
  */
 
@@ -43,7 +43,6 @@ typedef struct mcuxClMacModes_Context
   uint32_t blockBuffer[MCUXCLAES_BLOCK_SIZE_IN_WORDS];  ///< Not yet processed input data from the input stream
   uint32_t blockBufferUsed;                              ///< Used bytes in blockBuffer
   uint32_t state[MCUXCLAES_BLOCK_SIZE_IN_WORDS];        ///< state/intermediate result of the mac operation
-  uint32_t preparedHmacKey[MCUXCLELS_HMAC_PADDED_KEY_SIZE / sizeof(uint32_t)];   ///< Padded/Hashed HMAC key, buffer for external HMAC keys
   mcuxClEls_CmacOption_t cmac_options;                    ///< Cmac ELS options to be used
   uint32_t totalInput;                                  ///< Total input length
 } mcuxClMacModes_Context_t;

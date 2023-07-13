@@ -50,8 +50,10 @@ typedef uint32_t mcuxClMath_Status_t;
  */
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_Status_Protected_t;
 
-#define MCUXCLMATH_ERRORCODE_OK    ((mcuxClMath_Status_t) 0x17171717u) ///< Math operation successful
-#define MCUXCLMATH_ERRORCODE_ERROR ((mcuxClMath_Status_t) 0x17177171u) ///< Error occurred during Math operation
+#define MCUXCLMATH_STATUS_OK        ((mcuxClMath_Status_t) 0x0FF32E03u)  ///< Math operation successful
+#define MCUXCLMATH_ERRORCODE_OK     MCUXCLMATH_STATUS_OK                 ///< \deprecated Replaced by MCUXCLMATH_STATUS_OK
+#define MCUXCLMATH_STATUS_ERROR     ((mcuxClMath_Status_t) 0x0FF35330u)  ///< Error occurred during Math operation
+#define MCUXCLMATH_ERRORCODE_ERROR  MCUXCLMATH_STATUS_ERROR              ///< \deprecated Replaced by MCUXCLMATH_STATUS_ERROR
 
 /**
  * @brief Option to disable the operand re-randomization in the secure modular exponentiation.

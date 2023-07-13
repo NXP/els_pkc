@@ -60,7 +60,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) (*mcuxClPadding_addP
 MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClPadding_removePaddingMode_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) (*mcuxClPadding_removePaddingMode_t)(
   uint32_t blockLength,
-  const uint8_t * const pIn,
+  uint8_t * const pIn,
   uint32_t lastBlockLength,
   uint8_t * const pOut,
   uint32_t * const pOutLength

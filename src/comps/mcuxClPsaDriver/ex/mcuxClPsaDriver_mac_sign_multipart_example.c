@@ -72,7 +72,7 @@ bool mcuxClPsaDriver_mac_sign_multipart_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     struct psa_mac_operation_s operation = psa_mac_operation_init();
@@ -96,7 +96,7 @@ bool mcuxClPsaDriver_mac_sign_multipart_example(void)
 
 	/* Check the return value */
 	if(result != PSA_SUCCESS) {
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
     result = psa_driver_wrapper_mac_update(
@@ -106,7 +106,7 @@ bool mcuxClPsaDriver_mac_sign_multipart_example(void)
     );
 
     if(result != PSA_SUCCESS) {
-	    return MCUXCLEXAMPLE_ERROR;
+	    return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
     result = psa_driver_wrapper_mac_update(
@@ -116,7 +116,7 @@ bool mcuxClPsaDriver_mac_sign_multipart_example(void)
     );
 
     if(result != PSA_SUCCESS) {
-	    return MCUXCLEXAMPLE_ERROR;
+	    return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
     result = psa_driver_wrapper_mac_sign_finish(
@@ -127,12 +127,12 @@ bool mcuxClPsaDriver_mac_sign_multipart_example(void)
     );
 
     if(result != PSA_SUCCESS) {
-	    return MCUXCLEXAMPLE_ERROR;
+	    return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/* Check the output length */
 	if(output_length != sizeof(cmac_output_reference16)) {
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/* Check the content */
@@ -140,10 +140,10 @@ bool mcuxClPsaDriver_mac_sign_multipart_example(void)
     {
         if (cmac_input16_out[i] != cmac_output_reference16[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
 	/* Return */
-	return MCUXCLEXAMPLE_OK;
+	return MCUXCLEXAMPLE_STATUS_OK;
 }

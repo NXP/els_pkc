@@ -16,6 +16,8 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
+/* TODO CLNS-5054: Move these macros to a central location */
+
 /* Macro used to align the size to the CPU wordsize */
 #define MCUXCLMACMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size)  \
     (((uint32_t) (((uint32_t) (size)) + ((sizeof(uint32_t)) - 1U))) & ((uint32_t) (~((sizeof(uint32_t)) - 1U))))

@@ -20,6 +20,7 @@
 #include <mcuxClSession.h>
 #include <mcuxClMemory.h>
 #include <mcuxCsslFlowProtection.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClHash.h>
 #include <mcuxClEcc.h>
@@ -45,25 +46,34 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateHashPref
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateHashPrefix, MCUXCLECC_STATUS_INVALID_PARAMS);
     }
 
+    /* Check whether the pDomPrefix is not NULL if the domPrefixLen is set */
+    /* pHashPrefixTmp is not NULL and allocate the buffer pHashPrefix with sufficient size */
+    if ((MCUXCLECC_EDDSA_ED25519_DOMPREFIXLEN < pDomainParams->domPrefixLen) || (NULL == pDomainParams->pDomPrefix)
+        || (NULL == pHashPrefixTmp))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateHashPrefix, MCUXCLECC_STATUS_INVALID_PARAMS);
+    }
+
     /* Write the fixed prefix string for dom2/dom4 to the output buffer */
     MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pHashPrefixTmp,
                                         (const uint8_t*)pDomainParams->pDomPrefix,
                                         pDomainParams->domPrefixLen,
                                         MCUXCLECC_EDDSA_ED25519_SIZE_HASH_PREFIX(contextLen));
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "pHashPrefixTmp will be in the valid range pHashPrefix[0 ~ pDomainParams->domPrefixLen+contextLen+1u].")
     pHashPrefixTmp += pDomainParams->domPrefixLen;
 
     /* Write phflag to the output buffer */
-    *pHashPrefixTmp++ = (uint8_t)phflag;
-
+    *pHashPrefixTmp = (uint8_t)phflag;
+    pHashPrefixTmp++;
     /* Write contextLen to the output buffer */
-    *pHashPrefixTmp++ = (uint8_t)contextLen;
-
+    *pHashPrefixTmp = (uint8_t)contextLen;
+    pHashPrefixTmp++;
     /* Write pContext to the output buffer */
     MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pHashPrefixTmp,
                                         pContext,
                                         contextLen,
                                         MCUXCLECC_EDDSA_ED25519_SIZE_HASH_PREFIX(contextLen));
-
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateHashPrefix, MCUXCLECC_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) );

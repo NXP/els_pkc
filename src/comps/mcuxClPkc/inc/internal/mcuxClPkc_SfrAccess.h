@@ -21,7 +21,7 @@
 #define MCUXCLPKC_SFRACCESS_H_
 
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <platform_specific_headers.h>
 
 
@@ -61,70 +61,70 @@
 
 /** Read from PKC SFR */
 #define MCUXCLPKC_SFR_READ(sfr)  \
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")  \
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")  \
     (PKC_SFR_BASE->PKC_SFR_NAME(sfr))                                                 \
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Write to PKC SFR */
 #define MCUXCLPKC_SFR_WRITE(sfr, value)  \
     do{  \
         uint32_t tmp_ = (value);                                                          \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")  \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")  \
         PKC_SFR_BASE->PKC_SFR_NAME(sfr) = tmp_;                                           \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                    \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                    \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
     } while(false)  \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
 
 /** Read from PKC SFR bit field */
 #define MCUXCLPKC_SFR_BITREAD(sfr, bit)  \
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
     ((PKC_SFR_BASE->PKC_SFR_NAME(sfr) & MCUXCLPKC_SFR_BITMSK(sfr, bit)) >> MCUXCLPKC_SFR_BITPOS(sfr, bit))                    \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Set bit field of PKC SFR (read-modify-write) */
 #define MCUXCLPKC_SFR_BITSET(sfr, bit)  \
     do{  \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
-        MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
+        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
         PKC_SFR_BASE->PKC_SFR_NAME(sfr) |= MCUXCLPKC_SFR_BITMSK(sfr, bit);                                                       \
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
     } while(false)  \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
 
 /** Clear bit field of PKC SFR (read-modify-write) */
 #define MCUXCLPKC_SFR_BITCLEAR(sfr, bit)  \
     do{  \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
-        MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
+        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
         PKC_SFR_BASE->PKC_SFR_NAME(sfr) &= (~ (uint32_t) MCUXCLPKC_SFR_BITMSK(sfr, bit));                                        \
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
     } while(false)  \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
 
 /** Set value of multi-bit field of PKC SFR (read-modify-write) */
 #define MCUXCLPKC_SFR_BITVALSET(sfr, bit, val)  \
     do{  \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
-        MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
+        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
         uint32_t tmp_ = PKC_SFR_BASE->PKC_SFR_NAME(sfr) & (~ (uint32_t) MCUXCLPKC_SFR_BITMSK(sfr, bit));                         \
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
-        MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
+        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT13_C, "External header outside our control: signed shifting amount")  \
         tmp_ |= (((val) << MCUXCLPKC_SFR_BITPOS(sfr, bit)) & MCUXCLPKC_SFR_BITMSK(sfr, bit));                                     \
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT13_C)                                                                  \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("PKC SFR address")                                        \
         PKC_SFR_BASE->PKC_SFR_NAME(sfr) =  tmp_;                                                                                \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                                          \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4, "`false` does have the Boolean type.")  \
     } while(false)  \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_14_4)
 
 
 /**** ------------------------------ ****/

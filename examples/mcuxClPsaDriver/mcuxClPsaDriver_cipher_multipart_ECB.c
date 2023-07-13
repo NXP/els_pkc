@@ -60,7 +60,7 @@ bool mcuxClPsaDriver_cipher_multipart_ECB(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Set up PSA key attributes. */
@@ -94,7 +94,7 @@ bool mcuxClPsaDriver_cipher_multipart_ECB(void)
 
     /* Check the return value */
     if(result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     result = psa_driver_wrapper_cipher_update(
@@ -107,12 +107,12 @@ bool mcuxClPsaDriver_cipher_multipart_ECB(void)
 
     /* Check the return value */
     if(result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(output_length != sizeof(aes128_output)) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     result = psa_driver_wrapper_cipher_finish(
@@ -125,12 +125,12 @@ bool mcuxClPsaDriver_cipher_multipart_ECB(void)
     /* Check the output length - no output was return */
     if(0u != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the return value */
     if(result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content */
@@ -138,10 +138,15 @@ bool mcuxClPsaDriver_cipher_multipart_ECB(void)
     {
         if (aes128_output[i] != aes128_result[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_cipher_multipart_ECB(void)
+{
+    bool result = mcuxClPsaDriver_cipher_multipart_ECB();
+    return result;
 }

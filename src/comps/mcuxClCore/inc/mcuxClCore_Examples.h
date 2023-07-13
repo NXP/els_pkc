@@ -25,27 +25,54 @@
 #define MCUXCLEXAMPLE_FUNCTION(_name) bool _name(void)
 
 /**
- * \def MCUXCLEXAMPLE_OK
+ * \def MCUXCLEXAMPLE_STATUS_OK
  * \brief Example execution completed successfully.
  */
-#define MCUXCLEXAMPLE_OK      true // TODO CLNS-3599: 0xC001C0DEu
+#define MCUXCLEXAMPLE_STATUS_OK      true // TODO CLNS-3599: 0xC001C0DEu
+
+/**
+ * \def MCUXCLEXAMPLE_OK
+ * \brief Example execution completed successfully.
+ * \deprecated{Replaced by MCUXCLEXAMPLE_STATUS_OK}
+ */
+#define MCUXCLEXAMPLE_OK      MCUXCLEXAMPLE_STATUS_OK
+
+/**
+ * \def MCUXCLEXAMPLE_STATUS_ERROR
+ * \brief Example execution resulted in an unexpected error.
+ */
+#define MCUXCLEXAMPLE_STATUS_ERROR   false // TODO CLNS-3599: 0xEEEEEEEEu
 
 /**
  * \def MCUXCLEXAMPLE_ERROR
  * \brief Example execution resulted in an unexpected error.
+ * \deprecated{Replaced by MCUXCLEXAMPLE_STATUS_ERROR}
  */
-#define MCUXCLEXAMPLE_ERROR   false // TODO CLNS-3599: 0xEEEEEEEEu
+#define MCUXCLEXAMPLE_ERROR   MCUXCLEXAMPLE_STATUS_ERROR
+
+
+/**
+ * \def MCUXCLEXAMPLE_STATUS_FAILURE
+ * \brief Example execution resulted in an expected failure.
+ */
+#define MCUXCLEXAMPLE_STATUS_FAILURE  false // TODO CLNS-3599: 0xFFFFFFFFu
 
 /**
  * \def MCUXCLEXAMPLE_FAILURE
  * \brief Example execution resulted in an expected failure.
+ * \deprecated{Replaced by MCUXCLEXAMPLE_STATUS_FAILURE}
  */
-#define MCUXCLEXAMPLE_FAILURE  false // TODO CLNS-3599: 0xFFFFFFFFu
+#define MCUXCLEXAMPLE_FAILURE  MCUXCLEXAMPLE_STATUS_FAILURE
 
 /**
  * \brief Macro to calculate the maximum of two values.
  */
 #define MCUXCLEXAMPLE_MAX( x, y ) ( ( x ) > ( y ) ? ( x ) : ( y ) )
+
+/**
+ * \brief Macro to calculate the ceiling of x/y.
+ */
+#define MCUXCLEXAMPLE_CEILING(x,y)  (((x) + (y) - 1U) / (y))
 
 /**
  * \brief Assert whether two buffers are equal.

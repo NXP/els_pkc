@@ -80,7 +80,7 @@ bool mcuxClPsaDriver_aead_gcm_oneshot_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /****************/
@@ -131,26 +131,26 @@ bool mcuxClPsaDriver_aead_gcm_oneshot_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(output_length != expected_output_length_enc)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content of the encrypted output data */
     if(!mcuxClCore_assertEqual(output_enc, msg_enc_expected, sizeof(msg_plain)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
     /* Check the content of the tag */
     if(!mcuxClCore_assertEqual(output_enc + sizeof(msg_enc_expected), msg_tag_expected, sizeof(msg_tag_expected)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /****************/
@@ -187,21 +187,26 @@ bool mcuxClPsaDriver_aead_gcm_oneshot_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(output_length != expected_output_length_dec)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content of the plain output data */
     if(!mcuxClCore_assertEqual(output_dec, msg_plain, sizeof(msg_plain)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Success */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_aead_gcm_oneshot_example(void)
+{
+    bool result = mcuxClPsaDriver_aead_gcm_oneshot_example();
+    return result;
 }

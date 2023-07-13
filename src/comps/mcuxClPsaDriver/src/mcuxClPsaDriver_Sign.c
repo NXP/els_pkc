@@ -41,7 +41,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
                                                size_t *signature_length,
                                                bool isHash) //isHash = true
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     if(signature_size < MCUXCLELS_ECC_SIGNATURE_SIZE)
     {
@@ -136,6 +138,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
     return PSA_SUCCESS;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_message(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
@@ -146,6 +149,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_message(
     uint8_t *signature,
     size_t signature_size,
     size_t *signature_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
 
@@ -160,7 +164,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_message(
              * Check if really ECDSA is requested, in any form. PSA_ALG_IS_SIGN_MESSAGE more generic, not needed there.
              * Additional checks performed to make sure we are in proper case
              */
-            if((PSA_ALG_IS_ECDSA(alg) != 1u)
+            if((PSA_ALG_IS_ECDSA(alg) != true)
                 || (PSA_KEY_TYPE_ECC_GET_FAMILY(attributes->core.type) != PSA_ECC_FAMILY_SECP_R1)
                 || (PSA_ALG_SIGN_GET_HASH(alg) != PSA_ALG_SHA_256))
             {
@@ -214,6 +218,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_message(
     return status;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_hash(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
@@ -224,6 +229,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_hash(
     uint8_t *signature,
     size_t signature_size,
     size_t *signature_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
 
@@ -238,7 +244,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_hash(
              * Check if really ECDSA is requested, in any form. PSA_ALG_IS_SIGN_MESSAGE more generic, not needed there.
              * Additional checks performed to make sure we are in proper case
              */
-            if((PSA_ALG_IS_ECDSA(alg) != 1u)
+            if((PSA_ALG_IS_ECDSA(alg) != true)
                 || (PSA_KEY_TYPE_ECC_GET_FAMILY(attributes->core.type) != PSA_ECC_FAMILY_SECP_R1)
                 || attributes->core.bits != 256u)
             {
@@ -292,6 +298,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_hash(
     return status;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
     mcuxClKey_Descriptor_t *pKey,
     psa_algorithm_t alg,
@@ -302,19 +309,22 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
     size_t *signature_length,
     bool isHash
 )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     /* WCBRD-1105: Also fallback to sw for determinisitc ecdsa case*/
-    if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) != 1u
-        && PSA_ALG_IS_RSA_PSS(alg) != 1u
-        && (PSA_ALG_IS_ECDSA(alg) != 1u || PSA_ALG_IS_DETERMINISTIC_ECDSA(alg) == 1u))
+    if( (!PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg))
+        && PSA_ALG_IS_RSA_PSS(alg) != true
+        && (PSA_ALG_IS_ECDSA(alg) != true || PSA_ALG_IS_DETERMINISTIC_ECDSA(alg) == true))
     {
       return PSA_ERROR_NOT_SUPPORTED;
     }
 
     //for signature it must be a key pair
-    if(PSA_KEY_TYPE_IS_KEY_PAIR(attributes->core.type) != 1u)
+    if(PSA_KEY_TYPE_IS_KEY_PAIR(attributes->core.type) != true)
     {
       return PSA_ERROR_INVALID_ARGUMENT;
     }
@@ -380,8 +390,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
       mcuxClRsa_KeyEntry_t mod1 = {0};
       mcuxClRsa_KeyEntry_t mod2 = {0};
       mcuxClRsa_KeyEntry_t qInv = {0};
-      mcuxClRsa_KeyEntry_t exp1 = {0};
-      mcuxClRsa_KeyEntry_t exp2 = {0};
+      mcuxClRsa_KeyEntry_t rsaExp1 = {0};
+      mcuxClRsa_KeyEntry_t rsaExp2 = {0};
       uint32_t keytype = 0;
 
       if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &mod1))
@@ -396,7 +406,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
       }
 
       /* Check the length of modulus */
-       if(mod1.keyEntryLength == 0)
+       if(mod1.keyEntryLength == 0u)
        {
          /* The key is in CRT form */
 
@@ -416,12 +426,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
            return PSA_ERROR_GENERIC_ERROR;
          }
          /* get exponent dp */
-         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &exp1))
+         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &rsaExp1))
          {
            return PSA_ERROR_GENERIC_ERROR;
          }
          /* get exponent dq */
-         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &exp2))
+         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &rsaExp2))
          {
            return PSA_ERROR_GENERIC_ERROR;
          }
@@ -439,7 +449,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
        else
        {
          /* Key in plain form, get private exponent d */
-         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &exp1))
+         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&pDerData, &rsaExp1))
          {
            return PSA_ERROR_GENERIC_ERROR;
          }
@@ -453,8 +463,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
         .pMod1 = &mod1,
         .pMod2 = &mod2,
         .pQInv = &qInv,
-        .pExp1 = &exp1,
-        .pExp2 = &exp2,
+        .pExp1 = &rsaExp1,
+        .pExp2 = &rsaExp2,
         .pExp3 = NULL
       };
 

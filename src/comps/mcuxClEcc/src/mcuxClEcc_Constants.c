@@ -26,10 +26,10 @@
 #include <mcuxClHash_Algorithms.h>
 #include <mcuxClEcc_Constants.h>
 #include <mcuxClEcc_ParameterSizes.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 /**********************************************************/
@@ -2947,7 +2947,7 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 __attr
   .pDecodePointFct = mcuxClEcc_EdDSA_DecodePoint_Ed25519,
   .pDecodePoint_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_DecodePoint_Ed25519),
   .pDomPrefix = pEd25519_dom2Prefix,
-  .domPrefixLen = 32u
+  .domPrefixLen = MCUXCLECC_EDDSA_ED25519_DOMPREFIXLEN
 };
 
 const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed448"))) =
@@ -2977,7 +2977,7 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed448 __attrib
   .pDecodePointFct = NULL,
   .pDecodePoint_FP_FuncId = 0u,
   .pDomPrefix = pEd448_dom4Prefix,
-  .domPrefixLen = 8u
+  .domPrefixLen = MCUXCLECC_EDDSA_ED448_DOMPREFIXLEN
 };
 
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

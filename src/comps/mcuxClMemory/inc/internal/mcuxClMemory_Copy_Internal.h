@@ -20,7 +20,7 @@
 #define MCUXCLMEMORY_COPY_INTERNAL_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 /**
  * @ingroup mcuxClMemory_Copy

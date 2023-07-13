@@ -34,12 +34,19 @@
 #include <internal/mcuxClEcc_Weier_Internal_KeyGen_FUP.h>
 
 
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+#define MCUXCLECC_FP_WEIER_KEYGEN_SECSTRENGTH  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength)
+#else
+#define MCUXCLECC_FP_WEIER_KEYGEN_SECSTRENGTH  (0u)
+#endif
+
+
 /**
  * This function implements secure ECDSA private key / ephemeral key generation,
  * according to FIPS 186-4. It outputs multiplicative split d0 and d1 as well as d,
  * satisfying d0*d1 mod n = d = (c mod (n-1)) + 1, in which d is the private key
  * derived from a (bitLen(n)+64)-bit true (DRBG) random number c and d0 is a 64-bit
- * odd random number (with bits 0 and 63 set).
+ * random number (with bit 63 set).
  *
  * Inputs:
  *   nByteLength: byte length of n (base point order).
@@ -54,7 +61,7 @@
  *
  * Result in PKC workarea:
  *   buffers S0 and S1 contain multiplicative split private key d0 and d1 (operandSize);
- *   buffer S2 contains private key d2 (operandSize).
+ *   buffer S3 contains a random value usable for blinding operations of size opLen.
  *
  * Other modifications:
  *   buffers T0, XA, YA, ZA and Z are modified (as temp, buffer size);
@@ -69,7 +76,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_Int_CoreKeyGen,
         MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
-        MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
         MCUXCLPKC_FP_CALLED_CALC_OP2_CONST );
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
@@ -77,9 +83,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     const uint32_t opLen = MCUXCLPKC_PS1_UNPACK_OPLEN(mcLen_opLen);
 
     /* Count leading zeros in most significant word of n. */
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
     const uint32_t *ptr32N = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
     const uint32_t wordNumN = (nByteLength + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t nMSWord = ptr32N[wordNumN - 1u];
@@ -87,35 +93,38 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     uint32_t bitLenN65 = (wordNumN * (sizeof(uint32_t)) * 8u) - nMSWord_LeadZeros + 65u;
     uint32_t pkcByteLenN65 = (bitLenN65 + (MCUXCLPKC_WORDSIZE * 8u) - 1u) / (MCUXCLPKC_WORDSIZE * 8u) * MCUXCLPKC_WORDSIZE;
 
-    /* Clear buffer S1. */
+    /* Clear buffer S0. */
     MCUXCLPKC_FP_CALC_OP1_CONST(ECC_S0, 0u);
 
-    /* Clear buffers S2 and S3, with OPLEN = pkcByteLenN65. */
+    /* Clear buffer S3, with OPLEN = pkcByteLenN65. */
 //  MCUXCLPKC_WAITFORREADY();  <== not necessary when setting PS2 after submitting a PS1 computation via mcuxClPkc_Calc(...)
     MCUXCLPKC_PS2_SETLENGTH(0u, pkcByteLenN65);
-    MCUXCLPKC_FP_CALC_OP2_CONST(ECC_S2, 0u);
     MCUXCLPKC_FP_CALC_OP2_CONST(ECC_S3, 0u);
 
 
     /**********************************************************/
-    /* Step 1: generate 64-bit odd random d0, (MSb/LSb set);  */
+    /* Step 1: generate 64-bit random d0, (MSb set);          */
     /*         compute v = ModInv(d0) = d0^(-1) mod n.        */
     /**********************************************************/
 
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.");
-    uint32_t *ptr32S0 = (uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S0]);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
-
     /* Generate S0 = 64-bit random d0, with PRNG. */
+    uint8_t *ptrS0 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S0]);
     MCUXCLPKC_WAITFORFINISH();
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng1, mcuxClRandom_ncGenerate(pSession, (uint8_t*)&ptr32S0[0], (2U * sizeof(uint32_t))));
-    if (MCUXCLRANDOM_STATUS_OK != ret_Prng1)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom_d0, mcuxClRandom_ncGenerate(pSession, ptrS0, 8u));
+    if (MCUXCLRANDOM_STATUS_OK != ret_PRNG_GetRandom_d0)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
     }
-    ptr32S0[0] |= 0x00000001u;  /* Set LSbit. */
-    ptr32S0[1] |= 0x80000000u;  /* Set MSbit. */
+
+    /* Set MSBit of d0 (to ensure d0 != 0) using the PKC.
+     *
+     * NOTES:
+     *   - PKC PS1 can be used, because operandSize >= 64.
+     *   - The LSWord of S3 has already been cleared above */
+    uint32_t *ptr32S3 = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_S3]);
+    ptr32S3[1] = 0x80000000u;
+    MCUXCLPKC_FP_CALC_OP1_OR(ECC_S0, ECC_S0, ECC_S3);
 
 
     /**********************************************************/
@@ -123,8 +132,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     /* a. c is in a buffer of size, pkcSize(bitLenN+65).      */
     /**********************************************************/
 
-    /* S2 = (wordNumN * 4 + 8)-byte random c, with DRBG. */
+    /* Prepare buffer S2 for key seed: Initialize it with PRNG data and clear garbage bytes */
     uint8_t *ptrS2 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S2]);
+    const uint32_t keySeedLength = (wordNumN * (sizeof(uint32_t))) + 8u;
+    MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();
+    MCUXCLMEMORY_FP_MEMORY_CLEAR(&ptrS2[keySeedLength], pkcByteLenN65 - keySeedLength);
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom_InitKeySeed, mcuxClRandom_ncGenerate(pSession, ptrS2, keySeedLength));
+    if (MCUXCLRANDOM_STATUS_OK != ret_PRNG_GetRandom_InitKeySeed)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+            MCUXCLPKC_FP_CALLED_CALC_OP1_OR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate));
+    }
 
     /* Derive the security strength required for the RNG from bitLenN / 2 and check whether it can be provided. */
 #ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
@@ -133,11 +154,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+            MCUXCLPKC_FP_CALLED_CALC_OP1_OR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength) );
     }
 #endif
 
-    const uint32_t keySeedLength = (wordNumN * (sizeof(uint32_t))) + 8u;
+    /* Generate (wordNumN * 4 + 8)-byte random c with DRBG in buffer S2. */
     MCUXCLECC_FP_RANDOM_HQRNG_PKCWA(mcuxClEcc_Int_CoreKeyGen, pSession, ptrS2, keySeedLength);
 
 
@@ -149,14 +173,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
 
     /* S3 = (wordNumN * 4 + 8)-byte random r, with PRNG. */
     uint8_t *ptrS3 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S3]);
+    MCUXCLPKC_WAITFORFINISH();
     MCUX_CSSL_FP_FUNCTION_CALL(ret_PRNG_GetRandom_r, mcuxClRandom_ncGenerate(pSession, ptrS3, (wordNumN * (sizeof(uint32_t))) + 8u));
     if (MCUXCLRANDOM_STATUS_OK != ret_PRNG_GetRandom_r)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_RNG_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
-#endif
+            MCUXCLPKC_FP_CALLED_CALC_OP1_OR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+            MCUXCLECC_FP_WEIER_KEYGEN_SECSTRENGTH,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
     }
 
@@ -222,26 +248,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
     /* a. length of d" is (2 * opLen).                        */
     /**********************************************************/
 
-    /**********************************************************/
-    /* Step 8: compute d = d0 * d1 mod n < n.                 */
-    /**********************************************************/
-
     MCUXCLPKC_WAITFORREADY();
     MCUXCLPKC_PS2_SETLENGTH(opLen * 2u, opLen);
 
     /* Step 7: S1 = d1 = (d" mod n) < n. */
-    /* Step 8: S2 = d0 * d1, SecureModMult with random S3 = v*s (only lower opLen). */
-    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78,
-                        mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78_LEN);
-
+    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_CoreKeyGen_Step7,
+                        mcuxClEcc_FUP_Weier_CoreKeyGen_Step7_LEN);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Int_CoreKeyGen, MCUXCLECC_STATUS_OK,
         /* Step 1 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+        MCUXCLPKC_FP_CALLED_CALC_OP1_OR,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
         /* Step 2 */
-#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
-#endif
+        MCUXCLECC_FP_WEIER_KEYGEN_SECSTRENGTH,
         MCUXCLECC_FP_CALLED_RANDOM_HQRNG_PKCWA,
         /* Step 3 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
@@ -252,6 +273,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Int_CoreKeyGen(mcuxClS
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ReduceModEven),
         /* Steps 5/6 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
-        /* Steps 7/8 */
+        /* Steps 7 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) );
 }

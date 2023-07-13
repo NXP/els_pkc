@@ -311,7 +311,7 @@ const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t mcuxClCipherModes_Algorith
     .mode = MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CBC,
     .direction = MCUXCLELS_CIPHER_ENCRYPT,
     .blockLength = MCUXCLAES_BLOCK_SIZE,
-    .ivLength = 0u,
+    .ivLength = MCUXCLAES_BLOCK_SIZE,
     .granularity = 1u
 };
 

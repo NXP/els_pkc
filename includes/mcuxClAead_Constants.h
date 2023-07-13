@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2021, 2023 NXP                                                 */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -34,10 +34,11 @@
 #include <mcuxClConfig.h> // Exported features flags header
 
 /* Error codes */
-#define MCUXCLAEAD_STATUS_ERROR              ((mcuxClAead_Status_t) 0xE0AE0001u) // TODO: VALUE TBD
-#define MCUXCLAEAD_STATUS_FAULT_ATTACK       ((mcuxClAead_Status_t) 0xE0AEF0F0u) // TODO: VALUE TBD
-#define MCUXCLAEAD_STATUS_OK                 ((mcuxClAead_Status_t) 0x00AE0000u) // TODO: VALUE TBD
-#define MCUXCLAEAD_STATUS_NOT_OK             ((mcuxClAead_Status_t) 0x00AE0001u) // TODO: VALUE TBD
+/* TODO CLNS-8684: Unionize and describe return codes */
+#define MCUXCLAEAD_STATUS_ERROR              ((mcuxClAead_Status_t) 0x01115330u)
+#define MCUXCLAEAD_STATUS_FAULT_ATTACK       ((mcuxClAead_Status_t) 0x0111F0F0u)
+#define MCUXCLAEAD_STATUS_OK                 ((mcuxClAead_Status_t) 0x01112E03u)
+#define MCUXCLAEAD_STATUS_NOT_OK             ((mcuxClAead_Status_t) 0x011153FCu)
 
 
 /**@}*/

@@ -18,7 +18,7 @@
  *
  */
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClRandomModes_Internal_SizeDefinitions.h>
 
@@ -31,15 +31,15 @@
 /* *********************** */
 /* *** Work area sizes *** */
 /* *********************** */
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile uint8_t mcuxClRandom_Mode_Descriptor_size[sizeof(mcuxClRandom_ModeDescriptor_t)];
 
 #ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
-volatile mcuxClRandomModes_Context_CtrDrbg_Aes128_t mcuxClRandomModes_Context_Aes128;
 
-volatile mcuxClRandomModes_Context_CtrDrbg_Aes192_t mcuxClRandomModes_Context_Aes192;
 
+#ifdef MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256
 volatile mcuxClRandomModes_Context_CtrDrbg_Aes256_t mcuxClRandomModes_Context_Aes256;
+#endif
 #endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
 
 volatile uint8_t mcuxClRandomModes_CpuWA_MaxSize[MCUXCLRANDOMMODES_CPUWA_MAXSIZE];
@@ -47,17 +47,19 @@ volatile uint8_t mcuxClRandomModes_init_CpuWA_Size[MCUXCLRANDOMMODES_INIT_WACPU_
 volatile uint8_t mcuxClRandomModes_reseed_CpuWA_Size[MCUXCLRANDOMMODES_RESEED_WACPU_SIZE_MAX];
 volatile uint8_t mcuxClRandomModes_generate_CpuWA_Size[MCUXCLRANDOMMODES_GENERATE_WACPU_SIZE_MAX];
 volatile uint8_t mcuxClRandomModes_selftest_CpuWA_Size[MCUXCLRANDOMMODES_SELFTEST_WACPU_SIZE_MAX];
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 
 /* *********************** */
 /* *** Entropy sizes   *** */
 /* *********************** */
 #ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
-volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes128_Entropy_Input_Init_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES128];
-volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes192_Entropy_Input_Init_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES192];
-volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes256_Entropy_Input_Init_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256];
 
-volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes128_Entropy_Input_Reseed_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES128];
-volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes192_Entropy_Input_Reseed_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES192];
+
+#ifdef MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256
+volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes256_Entropy_Input_Init_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_INIT_CTR_DRBG_AES256];
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 volatile uint8_t mcuxClRandomModes_TestMode_CtrDrbg_Aes256_Entropy_Input_Reseed_size[MCUXCLRANDOMMODES_ENTROPYINPUT_SIZE_RESEED_CTR_DRBG_AES256];
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+#endif
+
 #endif /* MCUXCL_FEATURE_RANDOMMODES_CTRDRBG */
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

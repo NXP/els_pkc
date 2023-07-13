@@ -24,10 +24,11 @@
 #include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Key_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
+#include <mcuxClExample_RNG_Helper.h>
 
 /** Performs a CMAC computation using functions of the mcuxClKey component.
- * @retval MCUXCLEXAMPLE_OK         The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR      The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK         The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR      The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 {
     static uint8_t key256[] = {
@@ -58,7 +59,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
@@ -70,9 +71,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-    //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE, 0u);
 
+    /* Allocate and initialize session */
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
+
+    /* Initialize the PRNG */
+    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
+    
 
     /**************************************************************************/
     /* Key setup                                                              */
@@ -98,7 +103,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
                                        &cmac_key_properties,
                                        key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -120,7 +125,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_init) != initToken) || (MCUXCLMAC_STATUS_OK != initResult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -134,7 +139,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_process) != processToken) || (MCUXCLMAC_STATUS_OK != processResult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -149,7 +154,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_finish) != finishToken) || (MCUXCLMAC_STATUS_OK != finishResult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -160,13 +165,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
     /* Compare the output size with the expected MAC size */
     if(sizeof(resZeroPadd) != result_size)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Compare the result to the reference value. */
     if(!mcuxClCore_assertEqual(resZeroPadd, result_buffer, sizeof(resZeroPadd)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -179,21 +184,21 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_cbc_mac_multipart_zero_padding_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }
