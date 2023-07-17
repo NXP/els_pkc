@@ -275,10 +275,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       const uint32_t pLen = domainParams->common.byteLenP;
       const uint32_t nLen = domainParams->common.byteLenN;
       uint8_t * pKeyData = mcuxClKey_getLoadedKeyData(pKey);
-      if(pKeyData == NULL)
-      {
-        return PSA_ERROR_GENERIC_ERROR;
-      }
+
       uint8_t pOutputR[MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER];
 
       /* buffer for hash */
@@ -342,6 +339,11 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
          Octet String to Elliptic Curve Point Conversion */
       if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) == true)
       {
+        if(pKeyData == NULL)
+        {
+          return PSA_ERROR_GENERIC_ERROR;
+        }
+
         /* Currently only uncompressed format is supported */
         if(MCUXCLPSADRIVER_PREFIX_ANSI_X9_62_UNCOMPRESSED_POINT != *pKeyData)
         {
@@ -372,7 +374,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
           }
         }
         else
-        {
+        {		  
+          if(pKeyData == NULL)
+          {
+            return PSA_ERROR_GENERIC_ERROR;
+          }
+		  
           /* TODO: CLNS-8546 Check if this can be replaced by direct loading of public key (since it is keypair) */
           /* Calculate public point */
           mcuxClEcc_PointMult_Param_t params = {
