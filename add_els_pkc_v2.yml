@@ -363,7 +363,6 @@ component.els_pkc.core:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxClCore/inc/
     files:
-    - source: src/comps/mcuxClCore/inc/mcuxClCore_Analysis.h
     - source: src/comps/mcuxClCore/inc/mcuxClCore_Buffer.h
     - source: src/comps/mcuxClCore/inc/mcuxClCore_Examples.h
     - source: src/comps/mcuxClCore/inc/mcuxClCore_FunctionIdentifiers.h
@@ -830,7 +829,6 @@ component.els_pkc.key:
     - repo_relative_path: src/comps/mcuxClKey/inc/
     files:
     - source: src/comps/mcuxClKey/src/mcuxClKey.c
-    - source: src/comps/mcuxClKey/src/mcuxClKey_KeyTypes.c
     - source: src/comps/mcuxClKey/src/mcuxClKey_Protection.c
 
     - source: src/comps/mcuxClKey/inc/mcuxClKey.h
@@ -839,7 +837,6 @@ component.els_pkc.key:
     - source: src/comps/mcuxClKey/inc/mcuxClKey_KeyTypes.h
     - source: src/comps/mcuxClKey/inc/mcuxClKey_MemoryConsumption.h
     - source: src/comps/mcuxClKey/inc/mcuxClKey_ProtectionMechanisms.h
-    - source: src/comps/mcuxClKey/inc/mcuxClKey_Types.h
 
     - source: src/comps/mcuxClKey/inc/internal/mcuxClKey_Functions_Internal.h
     - source: src/comps/mcuxClKey/inc/internal/mcuxClKey_Internal.h
@@ -909,8 +906,6 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_CBCMAC.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_CMAC.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_Functions.c
-    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_HMAC.c
-    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Helper.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Modes.c
 
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes.h
@@ -923,7 +918,6 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_CBCMAC.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_CMAC.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_Ctx.h
-    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_HMAC.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_Types.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Constants.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Functions.h
@@ -1107,7 +1101,6 @@ component.els_pkc.oscca_sm3:
     - repo_relative_path: src/comps/mcuxClOsccaSm3/inc
     - repo_relative_path: src/comps/mcuxClOsccaSm3/inc/internal
     files:
-    - source: src/comps/mcuxClOsccaSm3/src/mcuxClOsccaSm3_common.c
     - source: src/comps/mcuxClOsccaSm3/src/mcuxClOsccaSm3_core_sm3.c
     - source: src/comps/mcuxClOsccaSm3/src/mcuxClOsccaSm3_internal_sm3.c
 
@@ -1985,7 +1978,6 @@ component.els_pkc.examples:
     - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example.c
     - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Oneshot_ZeroPadding_ELS_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_GenerateKeyPair_Ed25519_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_Mont_Curve25519_example.c
@@ -2015,7 +2007,6 @@ component.els_pkc.examples:
     - source: examples/mcuxClMacModes/mcuxClMacModes_cbc_mac_multipart_zero_padding_example.c
     - source: examples/mcuxClMacModes/mcuxClMacModes_cbc_mac_oneshot_example.c
     - source: examples/mcuxClMacModes/mcuxClMacModes_cmac_oneshot_example.c
-    - source: examples/mcuxClMacModes/mcuxClMacModes_hmac_oneshot_external_key_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c
