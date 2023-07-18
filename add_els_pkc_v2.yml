@@ -903,7 +903,7 @@ component.els_pkc.mac_modes:
     - repo_relative_path: src/comps/mcuxClMacModes/inc/internal
     files:
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes.c
-    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cbcbmac.c
+    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cbcmac.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cmac.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Functions.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Modes.c
