@@ -21,7 +21,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClMac_Types.h>
 #include <internal/mcuxClMac_Internal_Types.h>
-#include <internal/mcuxClMacModes_ELS_Types.h>
+#include <internal/mcuxClMacModes_Els_Types.h>
 
 #ifdef __cplusplus
 extern "C" {

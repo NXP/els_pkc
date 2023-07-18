@@ -28,10 +28,10 @@
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 #include <internal/mcuxClMacModes_Wa.h>
-#include <internal/mcuxClMacModes_ELS_Types.h>
-#include <internal/mcuxClMacModes_ELS_CMAC.h>
+#include <internal/mcuxClMacModes_Els_Types.h>
+#include <internal/mcuxClMacModes_Els_Cmac.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 #include <internal/mcuxClMacModes_Internal_Macros.h>
 
