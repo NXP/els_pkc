@@ -23,8 +23,8 @@
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <internal/mcuxClMacModes_Internal_Functions.h>
-#include <internal/mcuxClMacModes_Els_Ctx.h>
-#include <internal/mcuxClMacModes_Els_Types.h>
+#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_ELS_Types.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_compute)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(

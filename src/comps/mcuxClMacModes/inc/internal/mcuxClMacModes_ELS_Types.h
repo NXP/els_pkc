@@ -26,7 +26,7 @@
 #include <mcuxClMac_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
 #include <internal/mcuxClMacModes_Internal_Constants.h>
-#include <internal/mcuxClMacModes_Els_Ctx.h>
+#include <internal/mcuxClMacModes_ELS_Ctx.h>
 #include <internal/mcuxClMacModes_Wa.h>
 
 #ifdef __cplusplus

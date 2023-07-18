@@ -31,10 +31,10 @@
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
-#include <internal/mcuxClMacModes_Els_Ctx.h>
+#include <internal/mcuxClMacModes_ELS_Ctx.h>
 #include <internal/mcuxClMacModes_Wa.h>
-#include <internal/mcuxClMacModes_Els_Types.h>
-#include <internal/mcuxClMacModes_Els_Cbcmac.h>
+#include <internal/mcuxClMacModes_ELS_Types.h>
+#include <internal/mcuxClMacModes_ELS_CBCMAC.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CBCMAC_Oneshot)
@@ -201,7 +201,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CBCMAC_Ini
     MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext->state), 0x00, MCUXCLAES_BLOCK_SIZE);
 
     pContext->cmac_options.word.value = 0U;
-   
+
     // Disable initialize/finalize for cbc-mac compitability.
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
     pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_DISABLE;
