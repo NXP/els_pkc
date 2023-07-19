@@ -82,6 +82,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_setRtf(
 );
 
 
+
+
+
+
+
 /**
  * \brief Clean up a Crypto Library session.
  *
@@ -90,6 +95,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_setRtf(
  * \param  pSession Session to be cleaned.
  *
  * \return status
+ * @retval #MCUXCLSESSION_STATUS_OK  Session operation successful
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClSession_cleanup)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_cleanup(
@@ -110,6 +116,24 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClSession_destroy)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_destroy(
   mcuxClSession_Handle_t pSession
 );
+
+#ifdef MCUXCL_FEATURE_SESSION_HAS_RANDOM
+/**
+ * \brief Function to switch to another random configuration.
+ *
+ * \param  session     Session to set the new random configuration.
+ * \param  randomMode  Random data generation mode/algorithm. It should be the same mode used to initialize randomCtx.
+ * \param  randomCtx   Random context.
+ *
+ * \return status
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClSession_setRandom)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_setRandom(
+    mcuxClSession_Handle_t session,
+    mcuxClRandom_Mode_t randomMode,
+    mcuxClRandom_Context_t randomCtx
+);
+#endif // MCUXCL_FEATURE_SESSION_HAS_RANDOM
 
 /**
  * @}

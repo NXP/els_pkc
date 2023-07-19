@@ -111,8 +111,8 @@ extern "C" {
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
+ * @retval #MCUXCLELS_STATUS_SW_FAULT            in case of an internal error
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_Rng_DrbgRequest_Async)
@@ -136,7 +136,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
@@ -161,7 +160,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
@@ -197,7 +195,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
  * @else
  *  @return An error code (see @ref MCUXCLELS_STATUS_)
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
@@ -224,7 +221,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
@@ -253,7 +249,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */
@@ -326,7 +321,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Dtrn
  * @else
  *  @return An error code that can be any error code in @ref MCUXCLELS_STATUS_, see individual documentation for more information
  * @endif
- * @retval #MCUXCLELS_STATUS_SW_INVALID_PARAM    if invalid parameters were specified
  * @retval #MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT if a running operation prevented the request
  * @retval #MCUXCLELS_STATUS_OK_WAIT             on successful request
  */

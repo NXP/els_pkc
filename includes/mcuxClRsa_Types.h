@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -48,16 +48,16 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-#define MCUXCLRSA_STATUS_SIGN_OK                            ((mcuxClRsa_Status_t) 0xB2B26A6Au )  ///< RSA sign operation successful
-#define MCUXCLRSA_STATUS_VERIFY_OK                          ((mcuxClRsa_Status_t) 0xB2B23A3Au )  ///< RSA verify operation successful
-#define MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK                 ((mcuxClRsa_Status_t) 0xB2B2CACAu )  ///< RSA verify primitive operation (RSAVP1) successful
-#define MCUXCLRSA_STATUS_ERROR                              ((mcuxClRsa_Status_t) 0xB2B2A3A3u )  ///< Error occurred during RSA operation
-#define MCUXCLRSA_STATUS_INVALID_INPUT                      ((mcuxClRsa_Status_t) 0xB2B2A5A5u )  ///< Input data cannot be processed
-#define MCUXCLRSA_STATUS_VERIFY_FAILED                      ((mcuxClRsa_Status_t) 0xB2B2ACACu )  ///< Signature verification failed
-#define MCUXCLRSA_STATUS_FAULT_ATTACK                       ((mcuxClRsa_Status_t) 0xB2B2F0F0u )  ///< Fault attack detected
-#define MCUXCLRSA_STATUS_KEYGENERATION_OK                   ((mcuxClRsa_Status_t) 0xB2B25A5Au )  ///< RSA key generation operation executed successfully
-#define MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED   ((mcuxClRsa_Status_t) 0xB2B2A6A6u )  ///< RSA key generation exceeds the limit of iterations to generate a prime
-#define MCUXCLRSA_STATUS_RNG_ERROR                          ((mcuxClRsa_Status_t) 0xB2B2A7A7u )  ///< Random number (DRBG / PRNG) error (unexpected behavior)
+#define MCUXCLRSA_STATUS_SIGN_OK                            ((mcuxClRsa_Status_t) 0x0FF62E03u )  ///< RSA sign operation successful
+#define MCUXCLRSA_STATUS_VERIFY_OK                          ((mcuxClRsa_Status_t) 0x0FF62E07u )  ///< RSA verify operation successful
+#define MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK                 ((mcuxClRsa_Status_t) 0x0FF62E0Bu )  ///< RSA verify primitive operation (RSAVP1) successful
+#define MCUXCLRSA_STATUS_ERROR                              ((mcuxClRsa_Status_t) 0x0FF65330u )  ///< Error occurred during RSA operation
+#define MCUXCLRSA_STATUS_INVALID_INPUT                      ((mcuxClRsa_Status_t) 0x0FF653F8u )  ///< Input data cannot be processed
+#define MCUXCLRSA_STATUS_VERIFY_FAILED                      ((mcuxClRsa_Status_t) 0x0FF68930u )  ///< Signature verification failed
+#define MCUXCLRSA_STATUS_FAULT_ATTACK                       ((mcuxClRsa_Status_t) 0x0FF6F0F0u )  ///< Fault attack detected
+#define MCUXCLRSA_STATUS_KEYGENERATION_OK                   ((mcuxClRsa_Status_t) 0x0FF62E0Fu )  ///< RSA key generation operation executed successfully
+#define MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED   ((mcuxClRsa_Status_t) 0x0FF68934u )  ///< RSA key generation exceeds the limit of iterations to generate a prime
+#define MCUXCLRSA_STATUS_RNG_ERROR                          ((mcuxClRsa_Status_t) 0x0FF65338u )  ///< Random number (DRBG / PRNG) error (unexpected behavior)
 
 /** @} */
 

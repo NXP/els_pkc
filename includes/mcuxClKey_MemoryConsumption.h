@@ -17,6 +17,7 @@
 #include <mcuxClCore_Platform.h>
 
 
+
 /** Round up a size (in bytes) to a multiple of the CPU wordsize (4 bytes). */
 #define MCUXCLKEY_ROUND_UP_TO_CPU_WORDSIZE(size) \
     ((((size) + sizeof(uint32_t) - 1U ) / (sizeof(uint32_t))) * (sizeof(uint32_t)))

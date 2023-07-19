@@ -67,7 +67,7 @@ bool mcuxClPsaDriver_mac_oneshot_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Set up PSA key attributes. */
@@ -92,12 +92,12 @@ bool mcuxClPsaDriver_mac_oneshot_example(void)
 
     /* Check the return value */
     if(result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(output_length != sizeof(cmac_output_reference16)) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content */
@@ -105,10 +105,15 @@ bool mcuxClPsaDriver_mac_oneshot_example(void)
     {
         if (cmac_input16_out[i] != cmac_output_reference16[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_mac_oneshot_example(void)
+{
+    bool result = mcuxClPsaDriver_mac_oneshot_example();
+    return result;
 }

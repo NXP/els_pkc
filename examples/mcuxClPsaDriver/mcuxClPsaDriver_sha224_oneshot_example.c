@@ -43,7 +43,7 @@ bool mcuxClPsaDriver_sha224_oneshot_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 	/* Variable for the output length of the encryption operation */
@@ -60,12 +60,12 @@ bool mcuxClPsaDriver_sha224_oneshot_example(void)
 
 	/* Check the return value */
 	if(result != PSA_SUCCESS) {
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/* Check the output length */
 	if(hashOutput_length != MCUXCLHASH_OUTPUT_SIZE_SHA_224) {
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/* Check the content */
@@ -73,10 +73,15 @@ bool mcuxClPsaDriver_sha224_oneshot_example(void)
     {
         if (hashOutput[i] != hashExpected[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
 	/* Return */
-	return MCUXCLEXAMPLE_OK;
+	return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_sha224_oneshot_example(void)
+{
+    bool result = mcuxClPsaDriver_sha224_oneshot_example();
+    return result;
 }

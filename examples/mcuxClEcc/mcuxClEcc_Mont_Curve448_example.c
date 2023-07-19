@@ -39,7 +39,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Setup one session to be used by all functions called */
@@ -74,7 +74,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
                                       );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != alice_keygeneration_token) || (MCUXCLECC_STATUS_OK != alice_keygeneration_result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -101,7 +101,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
                                       );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyGeneration) != bob_keygeneration_token) || (MCUXCLECC_STATUS_OK != bob_keygeneration_result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -119,7 +119,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
                                      );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != alice_keyagreement_token) || (MCUXCLECC_STATUS_OK != alice_keyagreement_result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -135,7 +135,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
                                      );
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Mont_DhKeyAgreement) != bob_keyagreement_token) || (MCUXCLECC_STATUS_OK != bob_keyagreement_result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -144,21 +144,21 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_Mont_Curve448_example)
     {
         if(bobSharedSecret[i] != aliceSharedSecret[i])
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2016, 2021 NXP                                                 */
+/* Copyright 2016, 2021, 2023 NXP                                           */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -23,9 +23,15 @@
 #ifndef MCUXCLOSCCA_MEMORY_H_
 #define MCUXCLOSCCA_MEMORY_H_
 
+#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxClOscca_FunctionIdentifiers.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define MCUXCLOSCCA_SIZE_ALIGN_OFFSET  (sizeof(size_t) - 1U)
 
 #define mcuxClOscca_alignAddress(address) \
   ((void*)( (((size_t)(address)) + (sizeof(size_t) - 1U)) \
@@ -42,6 +48,15 @@ extern "C" {
 #define mcuxClOscca_alignAddressToBoundary(address, boundary) \
   ((void*)( (((size_t)(address)) + (boundary - 1U)) \
       & ((size_t)(~(boundary - 1U))) ))
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOscca_FastSecureXor)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_FastSecureXor(void *pTgt,
+        void *pSrc1,
+        void *pSrc2,
+        uint32_t length);
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOscca_switch_endianness)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, uint32_t length);
 
 #ifdef __cplusplus
 } /* extern "C" */

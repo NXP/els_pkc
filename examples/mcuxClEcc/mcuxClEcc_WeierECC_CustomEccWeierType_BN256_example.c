@@ -88,8 +88,8 @@ static const uint8_t BN_P256_N[BN256_BYTE_LEN_N] =
 
 /**
  * Performs an example key derivation using the mcuxClKey component.
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed
  */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
 {
@@ -136,7 +136,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateDomainParams) != genOptEccParams_token) || (MCUXCLECC_STATUS_OK != genOptEccParams_status))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -157,7 +157,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateCustomKeyType) != genPrivKeyType_token) || (MCUXCLECC_STATUS_OK != genPrivKeyType_status))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -173,7 +173,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateCustomKeyType) != genPubKeyType_token) || (MCUXCLECC_STATUS_OK != genPubKeyType_status))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -184,8 +184,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
     
     if(!mcuxClExample_Session_Clean(pSession))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

@@ -62,7 +62,7 @@ bool mcuxClPsaDriver_ecdsa_sign_verify_hash_example(void)
   /** Initialize ELS, Enable the ELS **/
   if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /*
@@ -101,13 +101,13 @@ bool mcuxClPsaDriver_ecdsa_sign_verify_hash_example(void)
   /* Check the return value */
   if(sign_status != PSA_SUCCESS)
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Check the signature length */
   if(signature_length != PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, 256u, PSA_ALG_ECDSA_ANY))
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /*
@@ -143,10 +143,15 @@ bool mcuxClPsaDriver_ecdsa_sign_verify_hash_example(void)
   /* Check the return value */
   if(verify_status != PSA_SUCCESS)
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Return */
-  return MCUXCLEXAMPLE_OK;
+  return MCUXCLEXAMPLE_STATUS_OK;
 }
 
+bool nxpClPsaDriver_ecdsa_sign_verify_hash_example(void)
+{
+    bool result = mcuxClPsaDriver_ecdsa_sign_verify_hash_example();
+    return result;
+}

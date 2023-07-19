@@ -80,7 +80,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /****************/
@@ -122,7 +122,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD operation to set the lengths */
@@ -135,7 +135,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD operation to set the nonce */
@@ -148,7 +148,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD update operation for the aad - part 1 */
@@ -164,7 +164,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD update operation for the aad - part 2 */
@@ -180,7 +180,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Variable for the output length of the update/finish operations */
@@ -205,13 +205,13 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the output length - no output was return */
     if(0u != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD update operation for the input - part 2 */
@@ -230,13 +230,13 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if((input_size_part_1 + input_size_part_2) != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     size_t tag_length = 0u;
@@ -258,31 +258,31 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length - no output was return */
     if(0u != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output lengths */
     if((sizeof(msg_tag_expected) != tag_length))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content of the encrypted output data */
     if(!mcuxClCore_assertEqual(output_enc, msg_enc_expected, sizeof(msg_plain)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content of the tag */
     if(!mcuxClCore_assertEqual(tag, msg_tag_expected, sizeof(msg_tag_expected)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /****************/
@@ -310,7 +310,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD operation to set the lengths */
@@ -323,7 +323,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD operation to set the nonce */
@@ -336,7 +336,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD update operation for the aad - part 1 */
@@ -352,7 +352,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD update operation for the aad - part 2 */
@@ -368,7 +368,7 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Output buffer for the AEAD update/verify operations */
@@ -390,13 +390,13 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(0 != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD update operation for the input - part 2 */
@@ -415,13 +415,13 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if((input_size_part_1 + input_size_part_2) != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Call the AEAD verify operation */
@@ -438,21 +438,26 @@ bool mcuxClPsaDriver_aead_ccm_multipart_example(void)
     /* Check the output length - no output was return */
     if(0u != output_length)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content of the encrypted output data */
     if(!mcuxClCore_assertEqual(output_dec, msg_plain, sizeof(msg_plain)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Success */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_aead_ccm_multipart_example(void)
+{
+    bool result = mcuxClPsaDriver_aead_ccm_multipart_example();
+    return result;
 }

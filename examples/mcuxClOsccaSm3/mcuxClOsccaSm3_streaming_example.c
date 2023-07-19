@@ -63,7 +63,7 @@ bool mcuxClOsccaSm3_streaming_example(void)
 	// mcuxClHash_init is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != token1) || (MCUXCLHASH_STATUS_OK != result1))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -76,7 +76,7 @@ bool mcuxClOsccaSm3_streaming_example(void)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token2) || (MCUXCLHASH_STATUS_OK != result2))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -89,7 +89,7 @@ bool mcuxClOsccaSm3_streaming_example(void)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token3) || (MCUXCLHASH_STATUS_OK != result3))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -103,7 +103,7 @@ bool mcuxClOsccaSm3_streaming_example(void)
 	// mcuxClHash_finish is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish) != token4) || (MCUXCLHASH_STATUS_OK != result4))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -112,13 +112,13 @@ bool mcuxClOsccaSm3_streaming_example(void)
     /**************************************************************************/
     if(pOutSize != sizeof(hash))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     for (size_t i = 0U; i < sizeof(hash); i++)
     {
         if (hash[i] != hashExpected[i]) // Expect that the resulting hash matches our expected output
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -128,9 +128,9 @@ bool mcuxClOsccaSm3_streaming_example(void)
 
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }
 bool nxpClOsccaSm3_streaming_example(void)
 {

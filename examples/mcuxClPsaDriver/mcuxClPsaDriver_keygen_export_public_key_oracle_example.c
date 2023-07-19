@@ -229,7 +229,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -237,7 +237,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -248,14 +248,14 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Reset_Async(MCUXCLELS_RESET_CANCEL));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Reset_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -288,13 +288,13 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     /* Check the return value */
     if(status != PSA_SUCCESS)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(key_buffer_length != 32u)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**********************************************************************************************/
@@ -317,7 +317,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     bool keyProv_result = load_key_udf(keyIdxKwk, keyProp, NULL);
     if (!keyProv_result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     keyProp.word.value = 0u;
@@ -330,7 +330,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     bool keyProv_result2 = load_key_udf(aesHelperKeyIdx, keyProp, NULL);
     if (!keyProv_result2)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Step 2:
@@ -353,7 +353,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
 
     if (!wrap_result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     mcuxClEls_KeyImportOption_t import_options;
@@ -363,14 +363,14 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_KeyImport, token_KeyImport, mcuxClEls_KeyImport_Async(import_options, key_rfc3394, MCUXCLELS_RFC3394_CONTAINER_SIZE_256, keyIdxKwk, keyIdxExp));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyImport_Async) != token_KeyImport) || (MCUXCLELS_STATUS_OK_WAIT != ret_KeyImport))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -389,13 +389,13 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     /* Check the return value */
     if(status != PSA_SUCCESS)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(data_length != MCUXCLELS_ECC_PUBLICKEY_SIZE)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     /**************************************************************************/
     /* Verification of the result                                             */
@@ -404,7 +404,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     {
         if (data[i] != expectKeyRet[i])
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -412,7 +412,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -422,39 +422,39 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_KeyDelete_Async(keyIdxKwk));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_KeyDelete_Async(aesHelperKeyIdx));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_KeyDelete_Async(keyIdxExp));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-         return MCUXCLEXAMPLE_ERROR;
+         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     /* Disable ELS */
@@ -462,10 +462,15 @@ bool mcuxClPsaDriver_keygen_export_public_key_oracle_example(void)
     // mcuxClEls_Disable is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Disable) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_keygen_export_public_key_oracle_example(void)
+{
+    bool result = mcuxClPsaDriver_keygen_export_public_key_oracle_example();
+    return result;
 }
