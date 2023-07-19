@@ -3,14 +3,12 @@ CLNS SDK (1.6.0) Release Notes
 - Release: RW61x_EAR8
 - Version: CLNS_SDK_1.6.0
 - Date:    2023-07-10
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: <tbd>
 - Compiler: ARMCLANG keilmdk 533
 --- Test Target:   
    - RW610 A0 Sample
 --- CLNS memory consumption: static_library/RW61x/libclns.a
     TEXT  RO    RW ZI TOTAL_CONSUMPTION
-    78558 23909 0  0  102467
+    78558 23909 0  0  102467 
 
 --- New Features 
    - Doxygen documentation switched to use short file names to avoid issues with long paths
@@ -36,8 +34,6 @@ CLNS SDK (1.6.0) Release Notes
 - Release: MCXN_PRC
 - Version: CLNS_SDK_1.6.0
 - Date:    2023-07-10
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: <tbd>
 - Compiler: IAR Compiler v.8.40.1
 --- Test Target:   
    - MCXN sample
@@ -66,8 +62,6 @@ CLNS SDK (1.6.0) Release Notes
 - Release: LPC_PRC
 - Version: CLNS_SDK_1.6.0
 - Date:    2023-07-10
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Link to Bitbucket: <tbd>
 - Compiler: IAR Compiler v.8.40.1
 --- Test Target:   
    - LPC55S36_sample
