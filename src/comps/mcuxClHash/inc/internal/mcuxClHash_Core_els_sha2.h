@@ -62,7 +62,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) (*mcuxClHash_els_AlgoCo
  *
  * @return A code-flow protected error code (see @ref mcuxCsslFlowProtection)
  * @retval MCUXCLHASH_STATUS_OK               Hash operation successful
- * @retval MCUXCLHASH_FAILURE                 Error occured during Hash operation
+ * @retval MCUXCLHASH_STATUS_FAILURE          Error occured during Hash operation
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHash_els_core_sha2, mcuxClHash_els_AlgoCore_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_core_sha2(

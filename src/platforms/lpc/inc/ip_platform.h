@@ -19,21 +19,11 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include "fsl_device_registers.h"
+#include <LPC55S36.h>
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
-
-#define MCUXCL_FEATURE_TRNG_RNG4_256
-
-#define GDET_EVTCNT             ELS_GDET_EVTCNT
-#define GDET_EVTCNT_CLR_DONE    ELS_GDET_EVTCNT_CLR
-
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_MASK             S50_ELS_GDET_EVTCNT_GDET_EVTCNT_MASK
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_SHIFT            S50_ELS_GDET_EVTCNT_GDET_EVTCNT_SHIFT
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_CLR_MASK     S50_ELS_GDET_EVTCNT_CLR_GDET_EVTCNT_CLR_MASK
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_CLR_SHIFT    S50_ELS_GDET_EVTCNT_CLR_GDET_EVTCNT_CLR_SHIFT
 
 // Define base address of ELS
 #define ELS_SFR_BASE            ELS         ///< base of ELS SFRs
@@ -51,7 +41,6 @@
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x20002000UL)
 #define PKC_WORD_SIZE  8u
-#define PKC_RAM_SIZE  ((uint32_t)0x1000u) /* TODO Check that value if its correct*/
 
 #define CSS_INTERRUPT_BUSY_NUMBER  54
 #define CSS_INTERRUPT_ERR_NUMBER   112
