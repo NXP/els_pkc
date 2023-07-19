@@ -43,7 +43,7 @@ extern "C" {
 
 extern unsigned int psa_driver_wrapper_get_clns_operation_id(void);
 
-static inline int key_type_is_raw_bytes( psa_key_type_t type )
+static inline bool key_type_is_raw_bytes( psa_key_type_t type )
 {
     return( PSA_KEY_TYPE_IS_UNSTRUCTURED( type ) );
 }
@@ -64,16 +64,20 @@ static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectMo
     /* Recover default algorithm (could be CCM with changed tag size) */
     const psa_algorithm_t algDefault = PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg);
 
+    const mcuxClAead_ModeDescriptor_t * mode = NULL;
     switch(algDefault)
     {
         case PSA_ALG_CCM:
         case PSA_ALG_CCM_STAR_NO_TAG:
-            return mcuxClAead_Mode_AES_CCM_ENC;
+            mode = mcuxClAead_Mode_AES_CCM_ENC;
+            break;
         case PSA_ALG_GCM:
-            return mcuxClAead_Mode_AES_GCM_ENC;
+            mode = mcuxClAead_Mode_AES_GCM_ENC;
+            break;
         default:
-            return NULL;
+            break;
     }
+    return (mcuxClAead_Mode_t) mode;
 }
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(const psa_key_attributes_t *attributes)
@@ -94,10 +98,10 @@ static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_doesKeyPolicySuppor
     return (attributes->core.policy.alg == alg);
 }
 
-static inline uint32_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectEnc(const psa_algorithm_t alg,
+static inline uint8_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectEnc(const psa_algorithm_t alg,
                                                    const mcuxClCipher_ModeDescriptor_t **mode)
 {
-    uint32_t iv_required = 1u;
+    uint8_t iv_required = 1u;
     switch (alg)
     {
     case PSA_ALG_ECB_NO_PADDING:
@@ -113,6 +117,7 @@ static inline uint32_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectEnc(c
     default:
         *mode = NULL;
         iv_required = 0u;
+        break;
     }
 
     return iv_required;
@@ -123,16 +128,20 @@ static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectMo
     /* Recover default algorithm (could be CCM with changed tag size) */
     const psa_algorithm_t algDefault = PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg);
 
-    switch(algDefault)
+    const mcuxClAead_ModeDescriptor_t *mode = NULL;
+    switch (algDefault)
     {
-        case PSA_ALG_CCM:
-        case PSA_ALG_CCM_STAR_NO_TAG:
-            return mcuxClAead_Mode_AES_CCM_DEC;
-        case PSA_ALG_GCM:
-            return mcuxClAead_Mode_AES_GCM_DEC;
-        default:
-            return NULL;
+    case PSA_ALG_CCM:
+    case PSA_ALG_CCM_STAR_NO_TAG:
+        mode = &mcuxClAead_ModeDescriptor_AES_CCM_DEC;
+        break;
+    case PSA_ALG_GCM:
+        mode = &mcuxClAead_ModeDescriptor_AES_GCM_DEC;
+        break;
+    default:
+        break;
     }
+    return (mcuxClAead_Mode_t)mode;
 }
 
 static inline uint32_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectDec(const psa_algorithm_t alg,
@@ -154,6 +163,7 @@ static inline uint32_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectDec(c
     default:
         *mode = NULL;
         iv_required = 0u;
+        break;
     }
 
     return iv_required;
@@ -479,14 +489,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify(
     bool isHash);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(
-    const psa_key_attributes_t *attributes,
-    const uint8_t *key_buffer,
-    size_t key_buffer_size,
-    uint8_t *data,
-    size_t data_size,
-    size_t *data_length);
-
-psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportPublicKey(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
     size_t key_buffer_size,

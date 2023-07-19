@@ -20,6 +20,7 @@
 #define MCUXCLSESSION_INERNAL_H_
 
 #include <stddef.h>
+#include <mcuxClToolchain.h>
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClSession_Types.h>
 #include <mcuxCsslFlowProtection.h>
@@ -164,7 +165,14 @@ static inline void mcuxClSession_freeWords_cpuWa(
     mcuxClSession_Handle_t pSession,
     uint32_t wordsToFree)
 {
-    pSession->cpuWa.used -= wordsToFree;
+    if(wordsToFree > pSession->cpuWa.used)
+    {
+        pSession->cpuWa.used = 0u;
+    }
+    else
+    {
+        pSession->cpuWa.used -= wordsToFree;
+    }
 }
 
 /**
@@ -181,7 +189,14 @@ static inline void mcuxClSession_freeWords_pkcWa(
     mcuxClSession_Handle_t pSession,
     uint32_t wordsToFree)
 {
-    pSession->pkcWa.used -= wordsToFree;
+    if(wordsToFree > pSession->pkcWa.used)
+    {
+        pSession->pkcWa.used = 0u;
+    }
+    else
+    {
+        pSession->pkcWa.used -= wordsToFree;
+    }
 }
 
 /**
@@ -231,7 +246,14 @@ static inline void mcuxClSession_setUsage_cpuWa(
     mcuxClSession_Handle_t pSession,
     uint32_t backupUsedCpuWa)
 {
-    pSession->cpuWa.used = backupUsedCpuWa;
+    if(backupUsedCpuWa > pSession->cpuWa.size)
+    {
+        pSession->cpuWa.used = pSession->cpuWa.size;
+    }
+    else
+    {
+        pSession->cpuWa.used = backupUsedCpuWa;
+    }
 }
 
 /**
@@ -249,7 +271,51 @@ static inline void mcuxClSession_setUsage_pkcWa(
     mcuxClSession_Handle_t pSession,
     uint32_t backupUsedPkcWa)
 {
-    pSession->pkcWa.used = backupUsedPkcWa;
+    if(backupUsedPkcWa > pSession->pkcWa.size)
+    {
+        pSession->pkcWa.used = pSession->pkcWa.size;
+    }
+    else
+    {
+        pSession->pkcWa.used = backupUsedPkcWa;
+    }
+}
+
+
+/**
+ * \brief Set the Security options in a Crypto Library session.
+ *
+ * \param  session          Handle for the current CL session.
+ * \param  securityOptions  Security options that will be set
+ *
+ * \return void
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_setSecurityOptions_Internal)
+static inline void mcuxClSession_setSecurityOptions_Internal(
+  mcuxClSession_Handle_t session,
+  mcuxClSession_SecurityOptions_t securityOptions
+)
+{
+/* Unused params*/
+    (void) session;
+    (void) securityOptions;
+}
+
+/**
+ * \brief Get the Security options from a Crypto Library session.
+ *
+ * \param  session          Handle for the current CL session.
+ *
+ * \return securityOptions  Security options that will be returned
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_getSecurityOptions_Internal)
+static inline mcuxClSession_SecurityOptions_t mcuxClSession_getSecurityOptions_Internal(
+  mcuxClSession_Handle_t session
+)
+{
+/* Unused param*/
+    (void) session;
+    return 0u;
 }
 
 

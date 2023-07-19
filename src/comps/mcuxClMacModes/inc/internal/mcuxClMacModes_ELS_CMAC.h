@@ -21,7 +21,7 @@
 #include <mcuxClSession_Types.h>
 
 #include <mcuxClMac_Types.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 
 #ifdef __cplusplus
 extern "C" {

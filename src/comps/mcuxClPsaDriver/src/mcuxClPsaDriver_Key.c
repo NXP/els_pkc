@@ -14,6 +14,7 @@
 #include "common.h"
 
 #include <mcuxClAes_KeyTypes.h>
+#include <mcuxClHmac_KeyTypes.h>
 #include <mcuxClEls.h>
 #include <mcuxClEcc.h>
 #include <mcuxClKey.h>
@@ -174,12 +175,15 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
  * @param out_key_descriptor The output key handle.
  * @return A status indicating whether key creation was successful or an error occurred.
  */
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
     size_t key_buffer_size,
     mcuxClKey_Descriptor_t *out_key_descriptor
 )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
@@ -235,18 +239,20 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
                     break;
                 default:
                     return PSA_ERROR_NOT_SUPPORTED;
+                    break;
             }
             break;
         case PSA_KEY_TYPE_HMAC:
             if( MCUXCLKEY_LOADSTATUS_COPRO == mcuxClKey_getLoadStatus(out_key_descriptor) )
             {
-                switch(mcuxClKey_getLoadedKeyLength(out_key_descriptor)) {
-                    case 32u:
-                        // the internal key store only supports 256 bit HMAC keys
-                        keyTypeDesc = mcuxClKey_TypeDescriptor_HmacSha256;
-                        break;
-                    default:
-                        return PSA_ERROR_NOT_SUPPORTED;
+                if(32u == mcuxClKey_getLoadedKeyLength(out_key_descriptor))
+                {
+                    // the internal key store only supports 256 bit HMAC keys
+                    keyTypeDesc = mcuxClKey_TypeDescriptor_HmacSha256;
+                }
+                else
+                {
+                    return PSA_ERROR_NOT_SUPPORTED;
                 }
             }
             else if( MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(out_key_descriptor) )
@@ -268,7 +274,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY):
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_TWISTED_EDWARDS):
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_KEY_PAIR; // not really needed for ECC operation for now
-            keyTypeDesc.size = (attributes->core.bits + 7u) / 8u; // not really needed for ECC operation for now
+            keyTypeDesc.size = ((mcuxClKey_Size_t) attributes->core.bits + 7u) / 8u; // not really needed for ECC operation for now
             keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
             break;
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_R1):
@@ -276,8 +282,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_MONTGOMERY):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_TWISTED_EDWARDS):
-            keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_PUBLIC_KEY; // not really needed for ECC operation for now
-            keyTypeDesc.size = (attributes->core.bits + 7u) / 8u; // not really needed for ECC operation for now
+            keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_PUBLIC_KEY;
+            keyTypeDesc.size = ((mcuxClKey_Size_t) attributes->core.bits + 7u) / 8u;
             keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
             break;
 
@@ -285,7 +291,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
         case PSA_KEY_TYPE_RSA_KEY_PAIR:
             // for now only keys in LOCAL_STORAGE are supported
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_RSA;
-            keyTypeDesc.size = (attributes->core.bits + 7u) / 8u;
+            keyTypeDesc.size = ((mcuxClKey_Size_t) attributes->core.bits + 7u) / 8u;
 
             if( MCUXCLKEY_LOADSTATUS_MEMORY != mcuxClKey_getLoadStatus(out_key_descriptor) )
             {
@@ -311,6 +317,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
 
         default:
             return PSA_ERROR_NOT_SUPPORTED;
+            break;
     }
 
     mcuxClKey_setTypeDescriptor(out_key_descriptor, keyTypeDesc);
@@ -324,7 +331,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     uint8_t * public_key_buffer, uint32_t public_key_buffer_size)
 {
     size_t bitLength = psa_get_key_bits(attributes);
-    size_t bytes = PSA_BITS_TO_BYTES(bitLength);
+    size_t bytes = (size_t)PSA_BITS_TO_BYTES(bitLength);
     if(public_key_buffer_size < (2u * bytes))
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
@@ -381,9 +388,12 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     return PSA_SUCCESS;
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
     const psa_key_attributes_t *attributes,
     uint8_t *key_buffer, size_t key_buffer_size, size_t *key_buffer_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     psa_key_type_t type = attributes->core.type;
@@ -391,7 +401,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
         PSA_KEY_LIFETIME_GET_LOCATION(attributes->core.lifetime);
 
     if((attributes->domain_parameters == NULL) &&
-        (attributes->domain_parameters_size != 0))
+        (attributes->domain_parameters_size != 0u))
     {
         return PSA_ERROR_INVALID_ARGUMENT;
     }
@@ -501,8 +511,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
     return PSA_SUCCESS;
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClEcc_Weier_DomainParams_t* mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(
      const psa_key_attributes_t *attributes)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     switch(attributes->core.type)
     {
@@ -511,61 +524,82 @@ const mcuxClEcc_Weier_DomainParams_t* mcuxClPsaDriver_psa_driver_wrapper_getEccD
             switch(PSA_BITS_TO_BYTES(attributes->core.bits)) {
                 case MCUXCLKEY_SIZE_192:
                     return &mcuxClEcc_Weier_DomainParams_secp192r1;
+                    break;
                 case MCUXCLKEY_SIZE_224:
                     return &mcuxClEcc_Weier_DomainParams_secp224r1;
+                    break;
                 case MCUXCLKEY_SIZE_256:
                     return &mcuxClEcc_Weier_DomainParams_secp256r1;
+                    break;
                 case MCUXCLKEY_SIZE_384:
                     return &mcuxClEcc_Weier_DomainParams_secp384r1;
+                    break;
                 case MCUXCLKEY_SIZE_521:
                     return &mcuxClEcc_Weier_DomainParams_secp521r1;
+                    break;
                 default:
                     return NULL;
+                    break;
             }
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_K1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_K1):
             switch(PSA_BITS_TO_BYTES(attributes->core.bits)) {
                 case MCUXCLKEY_SIZE_192:
                     return &mcuxClEcc_Weier_DomainParams_secp192k1;
+                    break;
                 case MCUXCLKEY_SIZE_224:
                     return &mcuxClEcc_Weier_DomainParams_secp224k1;
+                    break;
                 case MCUXCLKEY_SIZE_256:
                     return &mcuxClEcc_Weier_DomainParams_secp256k1;
+                    break;
                 default:
                     return NULL;
+                    break;
             }
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
             switch(PSA_BITS_TO_BYTES(attributes->core.bits)) {
                 case MCUXCLKEY_SIZE_160:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP160r1;
+                    break;
                 case MCUXCLKEY_SIZE_192:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP192r1;
+                    break;
                 case MCUXCLKEY_SIZE_224:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP224r1;
+                    break;
                 case MCUXCLKEY_SIZE_256:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP256r1;
+                    break;
                 case MCUXCLKEY_SIZE_320:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP320r1;
+                    break;
                 case MCUXCLKEY_SIZE_384:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP384r1;
+                    break;
                 case MCUXCLKEY_SIZE_512:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP512r1;
+                    break;
                 default:
                     return NULL;
+                    break;
             }
         default:
             return NULL;
+            break;
     }
 }
 
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(const psa_key_attributes_t *attributes,
                                                          const uint8_t *key_buffer,
                                                          size_t key_buffer_size,
                                                          uint8_t *data,
                                                          size_t data_size,
                                                          size_t *data_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t psa_status = PSA_ERROR_NOT_SUPPORTED;
     mcuxClKey_Descriptor_t key = {0};
@@ -576,13 +610,13 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(const psa_key_attribut
         /* not supported for internal keys */
         if( MCUXCLKEY_LOADSTATUS_MEMORY != mcuxClKey_getLoadStatus(&key) )
         {
-            mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+            (void)mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
             return PSA_ERROR_NOT_SUPPORTED;
         }
 
         /* check for buffer too small */
         if( key.location.length > data_size ) {
-            mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
+            (void)mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
             return PSA_ERROR_BUFFER_TOO_SMALL;
         }
         MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenNxpClMemory_copy, mcuxClMemory_copy(data,
@@ -598,13 +632,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(const psa_key_attribut
         *data_length = key.location.length;
 
         /* unload key */
-        psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
-
-        /* Overwrite status only when status has no error code */
-        if(PSA_SUCCESS == psa_status)
-        {
-            psa_status = keyStatus;
-        }
+        psa_status = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key);
     }
     return psa_status;
 }

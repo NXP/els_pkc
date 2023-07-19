@@ -30,6 +30,7 @@
 #include <mcuxClToolchain.h> // memory segment definitions
 #include <mcuxClCore_Examples.h>
 #include <stdbool.h>  // bool type for the example's return code
+#include <mcuxClExample_RNG_Helper.h>
 
 static const uint8_t msg_plain[24] = {
   0x20u, 0x21u, 0x22u, 0x23u, 0x24u, 0x25u, 0x26u, 0x27u,
@@ -72,15 +73,18 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
     /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
-    //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLAEAD_WA_SIZE_MAX, 0u);
+    /* Allocate and initialize session */
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLAEAD_WA_SIZE_MAX + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
+
+    /* Initialize the PRNG */
+    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
@@ -101,7 +105,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
                                        &key_properties,
                                        dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -130,7 +134,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_init) != token_init) || (MCUXCLAEAD_STATUS_OK != result_init))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -148,7 +152,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process_adata) != token_aad) || (MCUXCLAEAD_STATUS_OK != result_aad))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -163,7 +167,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process) != token_indata) || (MCUXCLAEAD_STATUS_OK != result_indata))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -177,7 +181,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_finish) != token_final) || (MCUXCLAEAD_STATUS_OK != result_final))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -185,7 +189,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
     {
         if (msg_enc[i] != msg_enc_expected[i]) // Expect that the resulting encrypted msg matches our expected output
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
     // TODO: change to MCUXCLELS_AEAD_TAG_SIZE
@@ -193,7 +197,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
     {
         if (msg_tag[i] != msg_tag_expected[i]) // Expect that the resulting authentication tag matches our expected output
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -219,7 +223,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_init) != token_init) || (MCUXCLAEAD_STATUS_OK != result_init))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -237,7 +241,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process_adata) != token_aad) || (MCUXCLAEAD_STATUS_OK != result_aad))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -252,7 +256,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process) != token_indata) || (MCUXCLAEAD_STATUS_OK != result_indata))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -265,7 +269,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
     ));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_verify) != token_verify) || (MCUXCLAEAD_STATUS_OK != result_verify))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -278,21 +282,21 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

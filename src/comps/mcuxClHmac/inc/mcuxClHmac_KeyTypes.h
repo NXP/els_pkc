@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2023 NXP                                                       */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -12,17 +12,15 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file  mcuxClKey_KeyTypes.h
- * @brief Definition of supported key types in mcuxClKey component
+ * @file  mcuxClHmac_KeyTypes.h
+ * @brief Definition of supported key types in mcuxClHmac component, see also @ref mcuxClKey component
  */
 
-#ifndef MCUXCLKEY_KEYTYPES_H_
-#define MCUXCLKEY_KEYTYPES_H_
-
-#include <stdint.h>
-#include <stdbool.h>
+#ifndef MCUXCLHMAC_KEYTYPES_H_
+#define MCUXCLHMAC_KEYTYPES_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+
 #include <mcuxClKey_Types.h>
 
 #ifdef __cplusplus
@@ -30,22 +28,16 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClKey_KeyTypes mcuxClKey_KeyTypes
- * @brief Defines of supported key types of @ref mcuxClKey
- * @ingroup mcuxClKey
+ * @defgroup mcuxClHmac_KeyTypes mcuxClHmac_KeyTypes
+ * @brief Defines of supported key types of @ref mcuxClHmac, see @ref mcuxClKey
+ * @ingroup mcuxClHmac
  * @{
  */
-
-/**********************************************
- * TYPEDEFS
- **********************************************/
-
 
 /**
  * \brief Key type structure for HMAC-SHA256 based keys with variable length.
  *
  */
-/* MISRA Ex. 20 - Rule 5.1 */
 extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256_variableLength;
 
 /**
@@ -64,12 +56,23 @@ extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256;
  */
 static const mcuxClKey_Type_t mcuxClKey_Type_HmacSha256 = &mcuxClKey_TypeDescriptor_HmacSha256;
 
+/**
+ * \brief Key type structure for Sw-HMAC based keys with variable length.
+ *
+ */
+extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSw_variableLength;
+
+/**
+ * \brief Key type pointer for HMAC-SHA256 based keys with variable length.
+ */
+static const mcuxClKey_Type_t mcuxClKey_Type_HmacSw_variableLength = &mcuxClKey_TypeDescriptor_HmacSw_variableLength;
+
+/**
+ * @}
+ */ /* mcuxClHmac_KeyTypes */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-/**
- * @}
- */ /* mcuxClKey_KeyTypes */
-
-#endif /* MCUXCLKEY_KEYTYPES_H_ */
+#endif /* MCUXCLHMAC_KEYTYPES_H_ */

@@ -23,11 +23,12 @@
 #include <mcuxClEcc.h>
 #include <mcuxClKey.h>
 #include <mcuxClPkc_Types.h>
-#include <mcuxClExample_ELS_Helper.h>
-#include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_Session_Helper.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
+
+#include <mcuxClExample_ELS_Helper.h>
 
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE
@@ -70,10 +71,14 @@ static const uint8_t pPublicKey[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY] __attrib
 
 MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_VerifySignature_Ed25519_example)
 {
-    /** Initialize ELS, Enable the ELS **/
+    /******************************************/
+    /* Set up the environment                 */
+    /******************************************/
+
+    /* Initialize ELS, Enable the ELS */
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Setup one session to be used by all functions called */
@@ -81,6 +86,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_VerifySignature_Ed25519_example)
 
     /* Allocate and initialize PKC workarea */
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
+
+    /******************************************/
+    /* Initialize the public key              */
+    /******************************************/
 
     /* Initialize public key */
     uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
@@ -96,38 +105,43 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_VerifySignature_Ed25519_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInit_token) || (MCUXCLKEY_STATUS_OK != keyInit_status))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+
+    /**************************************************************************/
+    /* Ed25519 signature verification                                         */
+    /**************************************************************************/
+
     /* Call mcuxClEcc_EdDSA_VerifySignature to verify the signature */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClEcc_EdDSA_VerifySignature(
-    /*  mcuxClSession_Handle_t pSession                       */ &session,
-    /*  mcuxClKey_Handle_t pubKey                             */ pubKeyHandler,
-    /*  const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t*  */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
-    /*  const uint8_t *pIn                                   */ pIn,
-    /*  uint32_t inSize                                      */ sizeof(pIn),
-    /*  const uint8_t *pSignature                            */ pSignature,
-    /*  uint32_t signatureSize                               */ sizeof(pSignature)
+    /* mcuxClSession_Handle_t pSession                        */ &session,
+    /* mcuxClKey_Handle_t pubKey                              */ pubKeyHandler,
+    /* const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t*   */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
+    /* const uint8_t *pIn                                    */ pIn,
+    /* uint32_t inSize                                       */ sizeof(pIn),
+    /* const uint8_t *pSignature                             */ pSignature,
+    /* uint32_t signatureSize                                */ sizeof(pSignature)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature) != verify_token) || (MCUXCLECC_STATUS_OK != verify_result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Destroy Session and cleanup Session */
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /** Disable the ELS **/
+    /* Disable the ELS */
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

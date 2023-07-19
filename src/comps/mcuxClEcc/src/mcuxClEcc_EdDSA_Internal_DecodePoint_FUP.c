@@ -47,7 +47,7 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_C
  *  - ECC_T1 contains v in MR
  *  - ECC_T3 contains v^3 in MR
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /**
  * FUP program to compute in Decode Point: x~ and x~^2 * v + u and square root of -1 mod p in MR, with
@@ -67,4 +67,4 @@ MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
  *  - ECC_T2 contains x~^2 * v + u in MR
  *  - ECC_T3 contains x~ in MR
  */
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

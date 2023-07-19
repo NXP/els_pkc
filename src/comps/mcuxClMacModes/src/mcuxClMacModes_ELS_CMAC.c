@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMacModes_ELS_CMAC.c
+/** @file  mcuxClMacModes_Els_Cmac.c
  *  @brief implementation of CMAC part of mcuxClMac component */
 
 #include <mcuxClEls.h>
@@ -28,10 +28,10 @@
 
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <mcuxClMacModes_MemoryConsumption.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 #include <internal/mcuxClMacModes_Wa.h>
-#include <internal/mcuxClMacModes_ELS_Types.h>
-#include <internal/mcuxClMacModes_ELS_CMAC.h>
+#include <internal/mcuxClMacModes_Els_Types.h>
+#include <internal/mcuxClMacModes_Els_Cmac.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 #include <internal/mcuxClMacModes_Internal_Macros.h>
 
@@ -59,9 +59,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
     /* Create workarea */
     /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
     uint32_t cpuWaSizeInWords = MCUXCLMACMODES_INTERNAL_COMPUTE_CPUWORDS(sizeof(mcuxClMacModes_WorkArea_t));
-    MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMacModes_WorkArea_t *workArea = (mcuxClMacModes_WorkArea_t *) mcuxClSession_allocateWords_cpuWa(session, cpuWaSizeInWords);
-    MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if(NULL == workArea)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_FAILURE);
@@ -452,14 +452,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
   *pOutLength = MCUXCLELS_CMAC_OUT_SIZE;
 
   //context isn't needed any longer; destroy it
-  MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)(pContext), 0x00, sizeof(mcuxClMacModes_Context_t));
+  MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t*)(pContext), sizeof(mcuxClMacModes_Context_t));
 
 
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClMacModes_Engine_CMAC_Finalize, MCUXCLMAC_STATUS_OK, MCUXCLMAC_STATUS_FAULT_ATTACK,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
         MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
 }
 

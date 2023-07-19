@@ -39,7 +39,7 @@
 /**********************************************************/
 /* Mnemonic of PKC L0 operations (OP)                     */
 /**********************************************************/
-MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
 #define MCUXCLPKC_OP_MUL            0x00u  ///< Pure multiplication of a PKC word X0 by a MPI Y
 #define MCUXCLPKC_OP_MAC            0x02u  ///< Multiply-Accumulate of a PKC word X0 with a MPI Y and a MPI Z
 #define MCUXCLPKC_OP_MAC_NEG        0x03u  ///< Multiply-Subtract   of a PKC word X0 with a MPI Y and a MPI Z
@@ -77,13 +77,13 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_OP_MACCR_GF2      0x66u  ///< Multiply-Accumulate of the internal register Reg_i with a MPI Y and a MPI Z over GF(2)
 #define MCUXCLPKC_OP_ADD_Z0         0x6Au  ///< Addition of a MPI Y with a single PKC word Z0
 #define MCUXCLPKC_OP_XOR_Z0         0x6Fu  ///< XOR      of a MPI Y with a single PKC word Z0
-MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 /**********************************************************/
 /* Mnemonic of PKC L1 microcodes (MC)                     */
 /**********************************************************/
-MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
 #define MCUXCLPKC_MC_MM             0x00u  ///< Modular Multiplication of a MPI X with a MPI Y modulo a MPI Z (Montgomery Reduction)
 #define MCUXCLPKC_MC_MM_GF2         0x00u  ///< Modular Multiplication of a MPI X with a MPI Y modulo a MPI Z (Montgomery Reduction) over GF(2)
 #define MCUXCLPKC_MC_PM             0x13u  ///< Plain Multiplication of a MPI X with a MPI Y
@@ -102,7 +102,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_MC_PM_PATCH       0x9Du  ///< Plain Multiplication of a MPI X with a MPI Y (patched version)
 #define MCUXCLPKC_MC_PM_PATCH_GF2   0x9Du  ///< Plain Multiplication of a MPI X with a MPI Y over GF(2) (patched version)
 #define MCUXCLPKC_MC_GCD            0xA7u  ///< Greatest common divider (GCD) of MPI Y and MPI Z
-MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 /**********************************************************/
@@ -159,7 +159,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 /* Or if Z is not used, call mcuxClPkc_CalcConst(...).          */
 
 /* L0 operation (OP) with parameter set 1. */
-MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
 #define MCUXCLPKC_CALC_OP1_MUL(R,X,Y)              MCUXCLPKC_CALC_OP1C(MUL,           R,X,Y,0)  /* Z not used, use CalcConst */
 #define MCUXCLPKC_CALC_OP1_MAC(R,X,Y,Z)            MCUXCLPKC_CALC_OP1Z(MAC,           R,X,Y,Z)
 #define MCUXCLPKC_CALC_OP1_MAC_NEG(R,X,Y,Z)        MCUXCLPKC_CALC_OP1Z(MAC_NEG,       R,X,Y,Z)
@@ -189,8 +189,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_CALC_OP1_MACC_GF2(R,X,Y,Z)       MCUXCLPKC_CALC_OP1Z(MACC_GF2,      R,X,Y,Z)
 #define MCUXCLPKC_CALC_OP1_ADDC(R,Y,Z)             MCUXCLPKC_CALC_OP1Z(ADDC,          R,R,Y,Z)  /* X not used */
 #define MCUXCLPKC_CALC_OP1_SUBC(R,Y,Z)             MCUXCLPKC_CALC_OP1Z(SUBC,          R,R,Y,Z)  /* X not used */
-#define MCUXCLPKC_CALC_OP1_LSB0(Z)                 MCUXCLPKC_CALC_OP1Z(LSB0,          Z,Z,Z,Z)  /* R, X and Y not used */
-#define MCUXCLPKC_CALC_OP1_MSB0(Z)                 MCUXCLPKC_CALC_OP1Z(MSB0,          Z,Z,Z,Z)  /* R, X and Y not used */
+#define MCUXCLPKC_CALC_OP1_LSB0s(Z)                MCUXCLPKC_CALC_OP1Z(LSB0s,         Z,Z,Z,Z)  /* R, X and Y not used */
+#define MCUXCLPKC_CALC_OP1_MSB0s(Z)                MCUXCLPKC_CALC_OP1Z(MSB0s,         Z,Z,Z,Z)  /* R, X and Y not used */
 #define MCUXCLPKC_CALC_OP1_CONST(R,C)              MCUXCLPKC_CALC_OP1C(CONST,         R,R,R,C)  /* X and Y not used */
 #define MCUXCLPKC_CALC_OP1_CMP(Y,Z)                MCUXCLPKC_CALC_OP1Z(CMP,           Y,Z,Y,Z)  /* R and X not used */
 #define MCUXCLPKC_CALC_OP1_MACCR(R,Y,Z)            MCUXCLPKC_CALC_OP1Z(MACCR,         R,R,Y,Z)  /* X not used */
@@ -247,8 +247,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_CALC_OP2_MACC_GF2(R,X,Y,Z)       MCUXCLPKC_CALC_OP2Z(MACC_GF2,      R,X,Y,Z)
 #define MCUXCLPKC_CALC_OP2_ADDC(R,Y,Z)             MCUXCLPKC_CALC_OP2Z(ADDC,          R,R,Y,Z)  /* X not used */
 #define MCUXCLPKC_CALC_OP2_SUBC(R,Y,Z)             MCUXCLPKC_CALC_OP2Z(SUBC,          R,R,Y,Z)  /* X not used */
-#define MCUXCLPKC_CALC_OP2_LSB0(Z)                 MCUXCLPKC_CALC_OP2Z(LSB0,          Z,Z,Z,Z)  /* R, X and Y not used */
-#define MCUXCLPKC_CALC_OP2_MSB0(Z)                 MCUXCLPKC_CALC_OP2Z(MSB0,          Z,Z,Z,Z)  /* R, X and Y not used */
+#define MCUXCLPKC_CALC_OP2_LSB0s(Z)                MCUXCLPKC_CALC_OP2Z(LSB0s,         Z,Z,Z,Z)  /* R, X and Y not used */
+#define MCUXCLPKC_CALC_OP2_MSB0s(Z)                MCUXCLPKC_CALC_OP2Z(MSB0s,         Z,Z,Z,Z)  /* R, X and Y not used */
 #define MCUXCLPKC_CALC_OP2_CONST(R,C)              MCUXCLPKC_CALC_OP2C(CONST,         R,R,R,C)  /* X and Y not used */
 #define MCUXCLPKC_CALC_OP2_CMP(Y,Z)                MCUXCLPKC_CALC_OP2Z(CMP,           Y,Z,Y,Z)  /* R and X not used */
 #define MCUXCLPKC_CALC_OP2_MACCR(R,Y,Z)            MCUXCLPKC_CALC_OP2Z(MACCR,         R,R,Y,Z)  /* X not used */
@@ -274,7 +274,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_CALC_MC2_PM_PATCH(R,X,Y)         MCUXCLPKC_CALC_MC2Z(PM_PATCH,      R,X,Y,R)  /* Z not used */
 #define MCUXCLPKC_CALC_MC2_PM_PATCH_GF2(R,X,Y)     MCUXCLPKC_CALC_MC2Z(PM_PATCH_GF2,  R,X,Y,R)  /* Z not used */
 #define MCUXCLPKC_CALC_MC2_GCD(Y,Z)                MCUXCLPKC_CALC_MC2Z(GCD,           Z,Y,Y,Z)  /* X = Y, R = Z (result in-place) */
-MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 /**********************************************************/
@@ -285,7 +285,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 /* Or if Z is not used, call mcuxClPkc_CalcConst(...).          */
 
 /* L0 operation (OP) with parameter set 1, supporting flow protection. */
-MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
 #define MCUXCLPKC_FP_CALC_OP1_MUL(R,X,Y)           MCUXCLPKC_FP_CALC_OP1C(MUL,        R,X,Y,0)
 #define MCUXCLPKC_FP_CALC_OP1_MAC(R,X,Y,Z)         MCUXCLPKC_FP_CALC_OP1Z(MAC,        R,X,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP1_MAC_NEG(R,X,Y,Z)     MCUXCLPKC_FP_CALC_OP1Z(MAC_NEG,    R,X,Y,Z)
@@ -315,8 +315,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_FP_CALC_OP1_MACC_GF2(R,X,Y,Z)    MCUXCLPKC_FP_CALC_OP1Z(MACC_GF2,   R,X,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP1_ADDC(R,Y,Z)          MCUXCLPKC_FP_CALC_OP1Z(ADDC,       R,R,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP1_SUBC(R,Y,Z)          MCUXCLPKC_FP_CALC_OP1Z(SUBC,       R,R,Y,Z)
-#define MCUXCLPKC_FP_CALC_OP1_LSB0(Z)              MCUXCLPKC_FP_CALC_OP1Z(LSB0,       Z,Z,Z,Z)
-#define MCUXCLPKC_FP_CALC_OP1_MSB0(Z)              MCUXCLPKC_FP_CALC_OP1Z(MSB0,       Z,Z,Z,Z)
+#define MCUXCLPKC_FP_CALC_OP1_LSB0s(Z)             MCUXCLPKC_FP_CALC_OP1Z(LSB0s,      Z,Z,Z,Z)
+#define MCUXCLPKC_FP_CALC_OP1_MSB0s(Z)             MCUXCLPKC_FP_CALC_OP1Z(MSB0s,      Z,Z,Z,Z)
 #define MCUXCLPKC_FP_CALC_OP1_CONST(R,C)           MCUXCLPKC_FP_CALC_OP1C(CONST,      R,R,R,C)
 #define MCUXCLPKC_FP_CALC_OP1_CMP(Y,Z)             MCUXCLPKC_FP_CALC_OP1Z(CMP,        Y,Z,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP1_MACCR(R,Y,Z)         MCUXCLPKC_FP_CALC_OP1Z(MACCR,      R,R,Y,Z)
@@ -373,8 +373,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_FP_CALC_OP2_MACC_GF2(R,X,Y,Z)    MCUXCLPKC_FP_CALC_OP2Z(MACC_GF2,   R,X,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP2_ADDC(R,Y,Z)          MCUXCLPKC_FP_CALC_OP2Z(ADDC,       R,R,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP2_SUBC(R,Y,Z)          MCUXCLPKC_FP_CALC_OP2Z(SUBC,       R,R,Y,Z)
-#define MCUXCLPKC_FP_CALC_OP2_LSB0(Z)              MCUXCLPKC_FP_CALC_OP2Z(LSB0,       Z,Z,Z,Z)
-#define MCUXCLPKC_FP_CALC_OP2_MSB0(Z)              MCUXCLPKC_FP_CALC_OP2Z(MSB0,       Z,Z,Z,Z)
+#define MCUXCLPKC_FP_CALC_OP2_LSB0s(Z)             MCUXCLPKC_FP_CALC_OP2Z(LSB0s,      Z,Z,Z,Z)
+#define MCUXCLPKC_FP_CALC_OP2_MSB0s(Z)             MCUXCLPKC_FP_CALC_OP2Z(MSB0s,      Z,Z,Z,Z)
 #define MCUXCLPKC_FP_CALC_OP2_CONST(R,C)           MCUXCLPKC_FP_CALC_OP2C(CONST,      R,R,R,C)
 #define MCUXCLPKC_FP_CALC_OP2_CMP(Y,Z)             MCUXCLPKC_FP_CALC_OP2Z(CMP,        Y,Z,Y,Z)
 #define MCUXCLPKC_FP_CALC_OP2_MACCR(R,Y,Z)         MCUXCLPKC_FP_CALC_OP2Z(MACCR,      R,R,Y,Z)
@@ -400,7 +400,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_FP_CALC_MC2_PM_PATCH(R,X,Y)      MCUXCLPKC_FP_CALC_MC2Z(PM_PATCH,   R,X,Y,R)
 #define MCUXCLPKC_FP_CALC_MC2_PM_PATCH_GF2(R,X,Y)  MCUXCLPKC_FP_CALC_MC2Z(PM_PATCH_GF2,  R,X,Y,R)
 #define MCUXCLPKC_FP_CALC_MC2_GCD(Y,Z)             MCUXCLPKC_FP_CALC_MC2Z(GCD,        Z,Y,Y,Z)
-MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 /**********************************************************/
@@ -409,7 +409,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 /**********************************************************/
 
 /* Function identifier of L0 operation (OP) with parameter set 1. */
-MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all PKC operations are defined.")
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_MUL            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcConst)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_MAC            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_MAC_NEG        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
@@ -439,8 +439,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_MACC_GF2       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_ADDC           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_SUBC           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
-#define MCUXCLPKC_FP_CALLED_CALC_OP1_LSB0           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
-#define MCUXCLPKC_FP_CALLED_CALC_OP1_MSB0           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
+#define MCUXCLPKC_FP_CALLED_CALC_OP1_LSB0s          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
+#define MCUXCLPKC_FP_CALLED_CALC_OP1_MSB0s          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_CONST          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcConst)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_CMP            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP1_MACCR          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
@@ -497,8 +497,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_FP_CALLED_CALC_OP2_MACC_GF2       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP2_ADDC           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP2_SUBC           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
-#define MCUXCLPKC_FP_CALLED_CALC_OP2_LSB0           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
-#define MCUXCLPKC_FP_CALLED_CALC_OP2_MSB0           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
+#define MCUXCLPKC_FP_CALLED_CALC_OP2_LSB0s          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
+#define MCUXCLPKC_FP_CALLED_CALC_OP2_MSB0s          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP2_CONST          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcConst)
 #define MCUXCLPKC_FP_CALLED_CALC_OP2_CMP            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_OP2_MACCR          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
@@ -524,7 +524,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define MCUXCLPKC_FP_CALLED_CALC_MC2_PM_PATCH       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_MC2_PM_PATCH_GF2   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
 #define MCUXCLPKC_FP_CALLED_CALC_MC2_GCD            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Calc)
-MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 #endif /* MCUXCLPKC_OPERATIONS_H_ */

@@ -103,7 +103,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_mgf1(
   mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
 /* Check define outside of macro so the MISRA rule 20.6 does not get violated */
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_INTERNAL_STATUS_MGF_OK,
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_mgf1, MCUXCLRSA_STATUS_INTERNAL_MGF_OK,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) * mxCounter,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) * mxCounter);

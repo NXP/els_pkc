@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_TestPrimeCandidate_FUP.h>
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_TestPrimeCandidate_Steps2_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,

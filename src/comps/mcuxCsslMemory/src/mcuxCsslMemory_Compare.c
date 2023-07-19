@@ -12,6 +12,7 @@
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxCsslMemory.h>
+#include <mcuxCsslSecureCounter.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
 #include <internal/mcuxCsslMemory_Internal_Compare_asm.h>
@@ -39,8 +40,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Compare
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_Compare, MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER);
     }
 
-    uint32_t nwords;
-    uint32_t retval;
+    uint32_t nwords = 0u;
+    uint32_t retval = 0u;
     uint8_t const * cur_lhs = pLhs;
     uint8_t const * cur_rhs = pRhs;
     uint32_t const notValid = ~(MCUXCSSLPARAMINTEGRITY_CHECK_VALID);

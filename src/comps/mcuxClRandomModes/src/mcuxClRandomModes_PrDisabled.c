@@ -104,7 +104,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_
             mcuxClRandom_generate(pSession, (uint8_t*)randomBytes, MCUXCLRANDOMMODES_SELFTEST_RANDOMDATALENGTH));
     if(MCUXCLRANDOM_STATUS_OK != ret_generate)
     {
-        return MCUXCLRANDOM_STATUS_FAULT_ATTACK;
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_PrDisabled_selftestAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
 
 

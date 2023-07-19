@@ -139,3 +139,22 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_freeAllCpuBuff
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_freeAllCpuBuffers, MCUXCLSESSION_STATUS_OK);
 }
+
+
+
+
+#ifdef MCUXCL_FEATURE_SESSION_HAS_RANDOM
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_setRandom)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_setRandom(
+    mcuxClSession_Handle_t session,
+    mcuxClRandom_Mode_t randomMode,
+    mcuxClRandom_Context_t randomCtx
+)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClSession_setRandom);
+    session->randomCfg.ctx = randomCtx;
+    session->randomCfg.mode = randomMode;
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_setRandom, MCUXCLSESSION_STATUS_OK);
+}
+
+#endif /* MCUXCL_FEATURE_SESSION_HAS_RANDOM */

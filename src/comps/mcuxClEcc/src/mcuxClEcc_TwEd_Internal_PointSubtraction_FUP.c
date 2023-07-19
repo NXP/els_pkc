@@ -25,7 +25,7 @@ const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointSubtraction[22] MCUX_FUP_ATTR
 
 
 
-MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * FUP program to do point subtraction P1 - P2.
  * The source for algorithm used for addition is:
@@ -43,4 +43,4 @@ MCUXCLCORE_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in commen
  * Result:
  *  - Buffers TWED_X, TWED_Y, TWED_Z contain the result (X:Y:Z) in MR
  */
-MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()

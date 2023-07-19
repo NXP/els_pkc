@@ -21,7 +21,6 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClRsa_Types.h>
-#include <mcuxClPkc_Types.h>
 #include <mcuxClPkc_Functions.h>
 #include <mcuxClHash_Types.h>
 #include <mcuxClCore_Buffer.h>
@@ -39,18 +38,18 @@ extern "C" {
  */
 
 /**
- * @defgroup MCUXCLRSA_INTERNAL_STATUS_ MCUXCLRSA_INTERNAL_STATUS_
+ * @defgroup MCUXCLRSA_STATUS_INTERNAL_ MCUXCLRSA_STATUS_INTERNAL_
  * @brief Internal return code definitions
  * @ingroup mcuxClRsa_Internal_Macros
  * @{
  */
-#define MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK    ((mcuxClRsa_Status_t) 0xB2B25A5Au )  ///< RSA key operation successful
-#define MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK   ((mcuxClRsa_Status_t) 0xB2B29A9Au )  ///< RSA encoding operation successful
-#define MCUXCLRSA_INTERNAL_STATUS_MGF_OK      ((mcuxClRsa_Status_t) 0xB2B2AAAAu )  ///< RSA mask generation function operation successful
-#define MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_CMP_FAILED      ((mcuxClRsa_Status_t) 0xB2B2ABABu )  ///< RSA key generation test failed at comparison stage
-#define MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDA0_FAILED    ((mcuxClRsa_Status_t) 0xB2B2ADADu )  ///< RSA key generation test failed at the stage of GCD with A0
-#define MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDE_FAILED     ((mcuxClRsa_Status_t) 0xB2B2AEAEu )  ///< RSA key generation test failed at the stage of GCD with E
-#define MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED      ((mcuxClRsa_Status_t) 0xB2B2AFAFu )  ///< RSA key generation test failed at the stage of Miller Rabin Test
+#define MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK    ((mcuxClRsa_Status_t) 0xB2B25A5Au )  ///< RSA key operation successful
+#define MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK   ((mcuxClRsa_Status_t) 0xB2B29A9Au )  ///< RSA encoding operation successful
+#define MCUXCLRSA_STATUS_INTERNAL_MGF_OK      ((mcuxClRsa_Status_t) 0xB2B2AAAAu )  ///< RSA mask generation function operation successful
+#define MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_CMP_FAILED      ((mcuxClRsa_Status_t) 0xB2B2ABABu )  ///< RSA key generation test failed at comparison stage
+#define MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_GCDA0_FAILED    ((mcuxClRsa_Status_t) 0xB2B2ADADu )  ///< RSA key generation test failed at the stage of GCD with A0
+#define MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_GCDE_FAILED     ((mcuxClRsa_Status_t) 0xB2B2AEAEu )  ///< RSA key generation test failed at the stage of GCD with E
+#define MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_MRT_FAILED      ((mcuxClRsa_Status_t) 0xB2B2AFAFu )  ///< RSA key generation test failed at the stage of Miller Rabin Test
 /** @} */
 
 /**

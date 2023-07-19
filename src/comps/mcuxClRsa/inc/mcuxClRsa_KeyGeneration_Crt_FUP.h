@@ -15,7 +15,7 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_KeyGeneration_Crt_FUP.h>
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 MCUXCLPKC_FUP_EXT_ROM(mcuxClRsa_KeyGeneration_Crt_Steps10_FUP,
     PH_CLNS_UTILS_FAME_CRC_ENTRY,

@@ -136,7 +136,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     //For Montgomery curves
     if(curve == PSA_ECC_FAMILY_MONTGOMERY)
     {
-        if(attributes->domain_parameters_size != 0)
+        if(attributes->domain_parameters_size != 0u)
         {
             return PSA_ERROR_INVALID_ARGUMENT;
         }
@@ -244,10 +244,9 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-            /* Initialize the RNG context */
-            uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES128_CONTEXT_SIZE_IN_WORDS] = {0u};
+            /* Initialize the RNG */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                       (mcuxClRandom_Context_t)rng_ctx,
+                                                                       NULL,
                                                                        mcuxClRandomModes_Mode_ELS_Drbg));
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
             {
@@ -321,7 +320,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     //For Weierstrass curves, curve_parameters have defined in mcuxClEcc_Constants.h
     else if((curve == PSA_ECC_FAMILY_SECP_R1) || (curve == PSA_ECC_FAMILY_SECP_K1) || (curve == PSA_ECC_FAMILY_BRAINPOOL_P_R1))
     {
-        if(attributes->domain_parameters_size != 0)
+        if(attributes->domain_parameters_size != 0u)
         {
             return PSA_ERROR_INVALID_ARGUMENT;
         }
@@ -428,6 +427,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     }
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
@@ -435,6 +435,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
     uint8_t *data,
     size_t data_size,
     size_t *data_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     psa_key_type_t type = attributes->core.type;

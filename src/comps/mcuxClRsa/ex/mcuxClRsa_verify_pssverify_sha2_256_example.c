@@ -105,8 +105,8 @@ static const uint8_t signature[RSA_KEY_BYTE_LENGTH] __attribute__ ((aligned (4))
 
 
 /** Performs a session set-up; a call to function mcuxClRsa_verify using mode mcuxClRsa_Mode_Verify_Pss_Sha2_256; a session clean-up
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
 {
     /**************************************************************************/
@@ -116,7 +116,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Create session handle to be used by verify function */
@@ -131,7 +131,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -170,7 +170,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token) || (MCUXCLRSA_STATUS_VERIFY_OK != verify_result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -182,14 +182,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

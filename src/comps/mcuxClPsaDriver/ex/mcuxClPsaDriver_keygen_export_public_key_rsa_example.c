@@ -49,7 +49,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
     // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -57,7 +57,7 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     /*****************************   Generate RSA key   *******************************************/
@@ -90,13 +90,13 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
     /* Check the return value */
     if(status != PSA_SUCCESS)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(key_buffer_length > PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE(2048u))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /******************   Export RSA public key   *************************************************/
@@ -115,12 +115,12 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
     /* Check the return value */
     if(status != PSA_SUCCESS)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     if(data_length > data_size)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Disable ELS */
@@ -128,9 +128,9 @@ bool mcuxClPsaDriver_keygen_export_public_key_rsa_example(void)
     // mcuxClEls_Disable is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Disable) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

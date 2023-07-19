@@ -23,6 +23,8 @@
 
 #include <internal/mcuxClCipher_Internal.h>
 
+#include <mcuxCsslDataIntegrity.h>
+
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_crypt)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
@@ -55,6 +57,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_crypt, status, mode->protection_token_crypt);
   }
+
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_crypt, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
                                        mode->protection_token_crypt);
 

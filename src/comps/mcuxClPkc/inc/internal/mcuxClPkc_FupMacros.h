@@ -22,7 +22,7 @@
 
 
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <internal/mcuxClPkc_Operations.h>
 
 
@@ -54,9 +54,9 @@ typedef struct mcuxClPkc_FUPEntry
  * MCUXCLPKC_FUP_EXT_ROM(FupProgram1, FUP_OP1_MUL(0,1,1), FUP_OP1_MUL(1,0,0));
  */
 #define MCUXCLPKC_FUP_EXT_ROM(name, ...)  \
-    MCUXCLCORE_ANALYSIS_START_PATTERN_FUP() \
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FUP() \
     const mcuxClPkc_FUPEntry_t name[] __attribute__((aligned(4),section("PH_CL_FUP_PROGRAMS_MAGIC_AREA"))) = { __VA_ARGS__ } \
-    MCUXCLCORE_ANALYSIS_STOP_PATTERN_FUP()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FUP()
 
 #define MCUXCLPKC_FUP_LEN(pFupProgram)  ((uint8_t) ((sizeof(pFupProgram)) / 6u))
 
@@ -105,7 +105,7 @@ typedef struct mcuxClPkc_FUPEntry
 /* the constant parameter shall be stored in UPTRT[C].          */
 
 /* L0 operation (OP) with parameter set 1, without repeating. */
-MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all FUP operations are defined.")
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completeness, all FUP operations are defined.")
 #define FUP_OP1_MUL(R,X,Y)              MCUXCLPKC_FUP_OP1(MUL,           R,X,Y,0, 0)
 #define FUP_OP1_MAC(R,X,Y,Z)            MCUXCLPKC_FUP_OP1(MAC,           R,X,Y,Z, 0)
 #define FUP_OP1_MAC_NEG(R,X,Y,Z)        MCUXCLPKC_FUP_OP1(MAC_NEG,       R,X,Y,Z, 0)
@@ -135,8 +135,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define FUP_OP1_MACC_GF2(R,X,Y,Z)       MCUXCLPKC_FUP_OP1(MACC_GF2,      R,X,Y,Z, 0)
 #define FUP_OP1_ADDC(R,Y,Z)             MCUXCLPKC_FUP_OP1(ADDC,          R,0,Y,Z, 0)
 #define FUP_OP1_SUBC(R,Y,Z)             MCUXCLPKC_FUP_OP1(SUBC,          R,0,Y,Z, 0)
-#define FUP_OP1_LSB0(Z)                 MCUXCLPKC_FUP_OP1(LSB0,          0,0,0,Z, 0)
-#define FUP_OP1_MSB0(Z)                 MCUXCLPKC_FUP_OP1(MSB0,          0,0,0,Z, 0)
+#define FUP_OP1_LSB0s(Z)                MCUXCLPKC_FUP_OP1(LSB0s,         0,0,0,Z, 0)
+#define FUP_OP1_MSB0s(Z)                MCUXCLPKC_FUP_OP1(MSB0s,         0,0,0,Z, 0)
 #define FUP_OP1_CONST(R,C)              MCUXCLPKC_FUP_OP1(CONST,         R,0,0,C, 0)
 #define FUP_OP1_CMP(Y,Z)                MCUXCLPKC_FUP_OP1(CMP,           0,0,Y,Z, 0)
 #define FUP_OP1_MACCR(R,Y,Z)            MCUXCLPKC_FUP_OP1(MACCR,         R,0,Y,Z, 0)
@@ -193,8 +193,8 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define FUP_OP2_MACC_GF2(R,X,Y,Z)       MCUXCLPKC_FUP_OP2(MACC_GF2,      R,X,Y,Z, 0)
 #define FUP_OP2_ADDC(R,Y,Z)             MCUXCLPKC_FUP_OP2(ADDC,          R,0,Y,Z, 0)
 #define FUP_OP2_SUBC(R,Y,Z)             MCUXCLPKC_FUP_OP2(SUBC,          R,0,Y,Z, 0)
-#define FUP_OP2_LSB0(Z)                 MCUXCLPKC_FUP_OP2(LSB0,          0,0,0,Z, 0)
-#define FUP_OP2_MSB0(Z)                 MCUXCLPKC_FUP_OP2(MSB0,          0,0,0,Z, 0)
+#define FUP_OP2_LSB0s(Z)                MCUXCLPKC_FUP_OP2(LSB0s,         0,0,0,Z, 0)
+#define FUP_OP2_MSB0s(Z)                MCUXCLPKC_FUP_OP2(MSB0s,         0,0,0,Z, 0)
 #define FUP_OP2_CONST(R,C)              MCUXCLPKC_FUP_OP2(CONST,         R,0,0,C, 0)
 #define FUP_OP2_CMP(Y,Z)                MCUXCLPKC_FUP_OP2(CMP,           0,0,Y,Z, 0)
 #define FUP_OP2_MACCR(R,Y,Z)            MCUXCLPKC_FUP_OP2(MACCR,         R,0,Y,Z, 0)
@@ -220,7 +220,7 @@ MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "For completen
 #define FUP_MC2_PM_PATCH(R,X,Y)         MCUXCLPKC_FUP_MC2(PM_PATCH,      R,X,Y,0, 0)
 #define FUP_MC2_PM_PATCH_GF2(R,X,Y)     MCUXCLPKC_FUP_MC2(PM_PATCH_GF2,  R,X,Y,0, 0)
 #define FUP_MC2_GCD(Y,Z)                MCUXCLPKC_FUP_MC2(GCD,           Z,Y,Y,Z, 0)  /* X = Y, R = Z (result in-place) */
-MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 
 #endif /* MCUXCLPKC_FUPMACROS_H_ */

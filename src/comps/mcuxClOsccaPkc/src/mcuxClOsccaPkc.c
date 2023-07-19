@@ -17,6 +17,7 @@
  */
 
 #include <platform_specific_headers.h>
+#include <stdint.h>
 #include <mcuxClOsccaPkc.h>
 #include <mcuxClMemory.h>
 #include <internal/mcuxClOsccaPkc_Macros.h>
@@ -292,7 +293,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_ComputeNDash(uint32_t iNiTiXiX)
     *pNDash = 1U;
 
     MCUXCLOSCCAPKC_WAITFORFINISH();
-    MCUXCLOSCCAPKC_PS2_SETOPLEN(NdashWordSizeByte);
+    MCUXCLOSCCAPKC_PS2_SETLENGTH(0u, NdashWordSizeByte);
 
     /* R = (-X)^(-1)  (mod 2^i)  ==>  R*X + 1 = 0 (mod 2^i) */
     /* (RX + 1)^2 = 0 (mod 2^(2i))                          */
@@ -434,7 +435,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_ComputeQSquared(uint32_t iQiMiT
     iT = (iQiMiTiX >> 8U) & 0xffU;
     iX = (iQiMiTiX) & 0xffU;
 
-    opByteLen = MCUXCLOSCCAPKC_PS1_GETLEN();
+    opByteLen = MCUXCLOSCCAPKC_PS1_GETOPLEN();
 
     /* 1 in MR */
     MCUXCLOSCCAPKC_FXIOP1_NEG(iT, iM);
@@ -490,7 +491,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_ComputeModInv(uint32_t iRiIiNiT
     uint32_t iR, iI, iN, iT;
     uint16_t *pOperands;
     uint16_t *pExp;
-    uint32_t operandSize = MCUXCLOSCCAPKC_PS1_GETLEN();
+    uint32_t operandSize = MCUXCLOSCCAPKC_PS1_GETOPLEN();
 
 
     iR = (iRiIiNiT >> 24U) & 0xffU;
@@ -551,7 +552,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaPkc_CalcMontInverse);
     uint32_t iN, iI, iT, iR;
     uint32_t exponent, shiftBits;
-    uint32_t len = MCUXCLOSCCAPKC_PS1_GETLEN();
+    uint32_t len = MCUXCLOSCCAPKC_PS1_GETOPLEN();
     MCUX_CSSL_FP_FUNCTION_CALL(pkcWordSize, mcuxClOsccaPkc_GetWordSize());
     uint16_t *pOperands = MCUXCLOSCCAPKC_GETUPTRT();
 
@@ -562,8 +563,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
 
     /* set PS1 Lens to (len + pkcWordSize, len + pkcWordSize) */
     MCUXCLOSCCAPKC_WAITFORGOANY();
-    MCUXCLOSCCAPKC_PS1_SETMCLEN(len + pkcWordSize);
-    MCUXCLOSCCAPKC_PS1_SETOPLEN(len + pkcWordSize);
+    MCUXCLOSCCAPKC_PS1_SETLENGTH(len + pkcWordSize, len + pkcWordSize);
     /* set T := 0, with extra pkcWordSize (len + pkcWordSize) */
     MCUXCLOSCCAPKC_FXIOP1_AND_YC(iT, iT, 0x00U);
 
@@ -572,9 +572,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
 
     /* set the loop counter LC = 31, for almostMontgomeryInverse */
     MCUXCLOSCCAPKC_WAITFORGOANY();
-    MCUXCLOSCCAPKC_PS1_SETMCLEN(31);
-    MCUXCLOSCCAPKC_PS1_SETOPLEN(len);
+    MCUXCLOSCCAPKC_PS1_SETLENGTH(31, len);
 
+    if(pkcWordSize > 16u)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_CalcMontInverse);
+    }
+    if((pOperands[iT] + pkcWordSize) > ((uint16_t) - 1))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_CalcMontInverse);
+    }
     pOperands[iT] = pOperands[iT] + (uint16_t)pkcWordSize;
     /* perform almostMontgomeryInverse using MC code */
     /* T (upper part) = almostMontgomeryInverse(X) = - X^(-1) * 2^exp */
@@ -591,7 +598,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
 
     pOperands[iT] = pOperands[iT] - (uint16_t)pkcWordSize;
     MCUXCLOSCCAPKC_FXIOP1_XOR(iT, iT, iT);
-    MCUXCLOSCCAPKC_PS1_SETMCLEN(len);
+    MCUXCLOSCCAPKC_PS1_SETLENGTH(len, len);
     if (exponent <= len * 8U)
     {
         shiftBits = len * 8U - exponent;
@@ -602,6 +609,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_CalcMontInverse(uint32_t iIiRiN
     }
     else
     {
+        if(2U * len * 8U < exponent)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_CalcMontInverse);
+        }
         shiftBits = 2U * len * 8U - exponent;
         *MCUXCLOSCCAPKC_PKCOFFSETTOPTR(pOperands[iT] + (shiftBits >> 3U)) |= (1U << (shiftBits & 7U));
         MCUXCLOSCCAPKC_FXIMC1_MMUL(iR, iI, iT, iN);
@@ -620,11 +631,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaPkc_StartFupProgram(mcuxClOsccaPkc_
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaPkc_StartFupProgram);
     MCUXCLOSCCAPKC_WAITFORFINISH();
-    MCUXCLOSCCAPKC_SFR_BITSET(CTRL, CLRCACHE);
+    uint32_t pkc_ctrl = MCUXCLOSCCAPKC_SFR_READ(CTRL) | MCUXCLOSCCAPKC_SFR_BITMSK(CTRL, GOU) | MCUXCLOSCCAPKC_SFR_BITMSK(CTRL, CLRCACHE);
     MCUXCLOSCCAPKC_SFR_WRITE(ULEN, fupProgramSize);
     /* MISRA Ex.2 - Rule 11.6 */
     MCUXCLOSCCAPKC_SFR_WRITE(UPTR, (uint32_t)fupProgram);
-    MCUXCLOSCCAPKC_START_FUP();
+    /* Clear PKC UPTRT cache and start calculation of the FUP program. */
+    MCUXCLOSCCAPKC_SFR_WRITE(CTRL, pkc_ctrl);
 
     /* update SC and return */
     MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaPkc_StartFupProgram);

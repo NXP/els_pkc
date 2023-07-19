@@ -49,7 +49,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_compute(
   uint32_t * const pMacLength
 );
 
-
 /**
  * @brief MacModes Multipart Init function type
  *
@@ -77,7 +76,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_process(
   uint32_t inLength
 );
 
-
 /**
  * @brief MacModes Multipart Finish function type
  *
@@ -90,24 +88,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_finish(
   mcuxClMac_Context_t * const pContext,
   mcuxCl_Buffer_t pMac,
   uint32_t * const pMacLength
-);
-
-
-
-
-/**
- * @brief Internal helper functions for the MAC component
- */
-
-/**
- * Prepares the given HMAC key by hashing and/or padding it to a length of MCUXCLELS_HMAC_PADDED_KEY_SIZE bytes.
- * Both the input key and the output padded key are taken from/written to the context.
- */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMacModes_prepareHMACKey)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_prepareHMACKey(
-  mcuxClSession_Handle_t session,
-  mcuxClKey_Handle_t key,
-  uint32_t * preparedHmacKey
 );
 
 

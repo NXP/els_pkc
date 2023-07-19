@@ -24,7 +24,7 @@
 #include <platform_specific_headers.h>
 #include <mcuxClToolchain.h>
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <mcuxClPkc_Types.h>
 #include <internal/mcuxClPkc_SfrAccess.h>
@@ -146,15 +146,15 @@
 #define MCUXCLPKC_SETSFRMASK(sfrMask)  MCUXCLPKC_SFR_WRITE(SFR_MASK, (uint32_t) (sfrMask))
 /** Wait until PKC finishes both on-going and pending calculations (if there is any). */
 #define MCUXCLPKC_WAITFORFINISH()  \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_2, "this function checks PKC SFR.")  \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_2, "this function checks PKC SFR.")  \
     mcuxClPkc_inline_waitForFinish()  \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_2)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_2)
 
 /** Wait until PKC is ready to accept next calculation (i.e., no pending calculation). */
 #define MCUXCLPKC_WAITFORREADY()  \
-    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_2, "this function checks PKC SFR.")  \
+    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_2, "this function checks PKC SFR.")  \
     mcuxClPkc_inline_waitForReady()  \
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_2)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_2)
 
 /** Wait PKC calculation and then get PKC status. */
 #define MCUXCLPKC_WAITFORFINISH_GETSTATUS()  mcuxClPkc_inline_waitForFinishGetStatus()

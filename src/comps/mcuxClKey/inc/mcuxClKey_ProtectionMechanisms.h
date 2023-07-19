@@ -21,6 +21,7 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClKey_Types.h>
+#include <mcuxCsslAnalysis.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,6 +75,7 @@ extern const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_Xor
  */
 static const mcuxClKey_Protection_t mcuxClKey_Protection_XorMasked =
   &mcuxClKey_ProtectionDescriptor_XorMasked;
+
 
 /** @} */
 

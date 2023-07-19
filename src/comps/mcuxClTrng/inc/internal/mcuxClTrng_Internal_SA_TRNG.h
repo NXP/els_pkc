@@ -11,36 +11,36 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClTrng_Internal_RNG4.h
+/** @file  mcuxClTrng_Internal_SA_TRNG.h
  *  @brief Provide macros for mcuxClTrng internal use.
  * This header declares internal macros to deduplicate code and support for internal use only. */
 
-#ifndef MCUXCLTRNG_INTERNAL_RNG4_H_
-#define MCUXCLTRNG_INTERNAL_RNG4_H_
+#ifndef MCUXCLTRNG_INTERNAL_SA_TRNG_H_
+#define MCUXCLTRNG_INTERNAL_SA_TRNG_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <platform_specific_headers.h>
 #include <internal/mcuxClTrng_SfrAccess.h>
 #include <internal/mcuxClTrng_Internal_Constants.h>
 
-#define MCUXCLTRNG_ERROR_LIMIT                         (4u)
-#define MCUXCLTRNG_RNG4_HW_DUAL_OSCILLATOR_MODE        (1u)
+#define MCUXCLTRNG_ERROR_LIMIT                          (4u)
+#define MCUXCLTRNG_SA_TRNG_HW_DUAL_OSCILLATOR_MODE      (1u)
 
-#ifdef MCUXCL_FEATURE_TRNG_RNG4_256
-#define MCUXCLTRNG_RNG4_NUMBEROFENTREGISTERS           (8u)
+#ifdef MCUXCL_FEATURE_TRNG_SA_TRNG_256
+#define MCUXCLTRNG_SA_TRNG_NUMBEROFENTREGISTERS         (8u)
 #else
-#error "Build configuration issue: TRNG component included but neither DTRNG_256 nor DTRNG_512 are defined"
+#error "Build configuration issue: SA_TRNG component included but neither DTRNG_256 nor DTRNG_512 are defined"
 #endif
 
-#define  MCUXCLTRNG_RNG4_WAITFORREADY(noOfTrngErrors)                                                  \
+#define  MCUXCLTRNG_SA_TRNG_WAITFORREADY(noOfTrngErrors)                                                 \
     do                                                                                                  \
     {                                                                                                   \
-        /* Check whether a TRNG error occurred */                                                        \
+        /* Check whether a TRNG error occurred */                                                       \
         if (0u != (MCUXCLTRNG_SFR_BITREAD(MCTL, ERR)))                                                   \
         {                                                                                               \
             /* TRNG hardware error detected (ERR bit == 1): */                                          \
-            /* Check how many errors occurred so far */                                                  \
-            if (MCUXCLTRNG_ERROR_LIMIT >= (noOfTrngErrors))                                            \
+            /* Check how many errors occurred so far */                                                 \
+            if (MCUXCLTRNG_ERROR_LIMIT >= (noOfTrngErrors))                                              \
             {                                                                                           \
                 /* Increase TRNG error counter */                                                       \
                 (noOfTrngErrors) += 1u;                                                                 \
@@ -57,4 +57,4 @@
         }                                                                                               \
     } while(0u == (MCUXCLTRNG_SFR_BITREAD(MCTL, ENT_VAL)))                                               \
 
-#endif /* MCUXCLTRNG_INTERNAL_RNG4_H_ */
+#endif /* MCUXCLTRNG_INTERNAL_SA_TRNG_H_ */

@@ -20,6 +20,7 @@
 #include <mcuxClToolchain.h>              // memory segment definitions
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_RNG_Helper.h>
 
 static const uint8_t data1[7] CSS_CONST_SEGMENT = {
     0x65u, 0x78u, 0x61u, 0x6du, 0x70u, 0x6cu, 0x65u //example
@@ -49,7 +50,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
     /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Initialize session */
@@ -57,7 +58,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
     mcuxClSession_Handle_t session = &sessionDesc;
 
     /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
+
+    /* Initialize the PRNG */
+    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
 
     /* RTF update is set to false by default */
 
@@ -75,7 +79,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	// mcuxClHash_init is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != token2) || (MCUXCLHASH_STATUS_OK != result2))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -88,7 +92,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token3) || (MCUXCLHASH_STATUS_OK != result3))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -101,7 +105,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token4) || (MCUXCLHASH_STATUS_OK != result4))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -114,7 +118,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	// mcuxClHash_process is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token5) || (MCUXCLHASH_STATUS_OK != result5))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -130,13 +134,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	// mcuxClHash_finish is a flow-protected function: Check the protection token and the return value
 	if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish) != token6) || (MCUXCLHASH_STATUS_OK != result6))
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 	MCUX_CSSL_FP_FUNCTION_CALL_END();
 	
   if(sizeof(hash) != hashOutputSize)
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/**************************************************************************/
@@ -154,7 +158,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	
 	if(hashDifferent)
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/**************************************************************************/
@@ -163,14 +167,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_streaming_example)
 	/** Destroy Session and cleanup Session **/
 	if(!mcuxClExample_Session_Clean(session))
 	{
-			return MCUXCLEXAMPLE_ERROR;
+			return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
 	/** Disable the ELS **/
 	if(!mcuxClExample_Els_Disable())
 	{
-			return MCUXCLEXAMPLE_ERROR;
+			return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
-	return MCUXCLEXAMPLE_OK;
+	return MCUXCLEXAMPLE_STATUS_OK;
 }

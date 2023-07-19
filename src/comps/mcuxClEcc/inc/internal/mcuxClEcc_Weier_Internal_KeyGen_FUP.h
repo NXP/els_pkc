@@ -40,10 +40,11 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps34[mcuxClE
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps56[mcuxClEcc_FUP_Weier_CoreKeyGen_Steps56_LEN];
 
 /**
- * FUP program declaration mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78
+ * FUP program declaration mcuxClEcc_FUP_Weier_CoreKeyGen_Step7
  */
-#define mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78_LEN  11u
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78[mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78_LEN];
+#define mcuxClEcc_FUP_Weier_CoreKeyGen_Step7_LEN  5u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Step7[mcuxClEcc_FUP_Weier_CoreKeyGen_Step7_LEN];
+
 
 #ifdef __cplusplus
 } /* extern "C" */

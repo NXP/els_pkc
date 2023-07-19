@@ -167,24 +167,24 @@ extern "C" {
  * @ingroup mcuxClEls_Types_Macros
  * @{
  */
-#define MCUXCLELS_STATUS_OK                   ((mcuxClEls_Status_t) 0xF0F0F0F0U) ///< No error occurred
-#define MCUXCLELS_STATUS_OK_WAIT              ((mcuxClEls_Status_t) 0xF0F0F0E1U) ///< An <tt>_Async</tt> function successfully started an ELS command. Call #mcuxClEls_WaitForOperation to complete it
-#define MCUXCLELS_STATUS_HW_FAULT             ((mcuxClEls_Status_t) 0xF0F0E1E1U) ///< ELS hardware detected a fault
-#define MCUXCLELS_STATUS_HW_ALGORITHM         ((mcuxClEls_Status_t) 0xF0F0E1E2U) ///< An algorithm failed in hardware
-#define MCUXCLELS_STATUS_HW_OPERATIONAL       ((mcuxClEls_Status_t) 0xF0F0E1E4U) ///< ELS was operated incorrectly
-#define MCUXCLELS_STATUS_HW_BUS               ((mcuxClEls_Status_t) 0xF0F0E1E8U) ///< A bus access failed
-#define MCUXCLELS_STATUS_HW_INTEGRITY         ((mcuxClEls_Status_t) 0xF0F0E1D1U) ///< An integrity check failed in hardware
-#define MCUXCLELS_STATUS_HW_PRNG              ((mcuxClEls_Status_t) 0xF0F0E1D2U) ///< Read access to PRNG output while PRNG is not in ready state
-#define MCUXCLELS_STATUS_HW_DTRNG             ((mcuxClEls_Status_t) 0xF0F0E1D4U) ///< Unable to get entropy from dTRNG with current configuration
-#define MCUXCLELS_STATUS_SW_FAULT             ((mcuxClEls_Status_t) 0xF0F0F0E2U) ///< Software detected a fault
-#define MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT  ((mcuxClEls_Status_t) 0xF0F0F0E4U) ///< an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while the SHA kernel was still busy
-#define MCUXCLELS_STATUS_SW_INVALID_PARAM     ((mcuxClEls_Status_t) 0xF0F0F0E8U) ///< Incorrect parameters were supplied
-#define MCUXCLELS_STATUS_SW_INVALID_STATE     ((mcuxClEls_Status_t) 0xF0F0F0D1U) ///< This can happen when ELS is in a wrong state for the requested ELS command
-#define MCUXCLELS_STATUS_SW_COUNTER_EXPIRED   ((mcuxClEls_Status_t) 0xF0F0F0D2U) ///< A software counter expired while waiting for an ELS operation to finish
-#define MCUXCLELS_STATUS_SW_COMPARISON_FAILED ((mcuxClEls_Status_t) 0xF0F0F0D4U) ///< A comparison between an ELS flag and its expected value failed
+#define MCUXCLELS_STATUS_OK                   ((mcuxClEls_Status_t) 0x05552E03u) ///< No error occurred
+#define MCUXCLELS_STATUS_OK_WAIT              ((mcuxClEls_Status_t) 0x05552E07u) ///< An <tt>_Async</tt> function successfully started an ELS command. Call #mcuxClEls_WaitForOperation to complete it
+#define MCUXCLELS_STATUS_HW_FAULT             ((mcuxClEls_Status_t) 0x05555330u) ///< ELS hardware detected a fault
+#define MCUXCLELS_STATUS_HW_ALGORITHM         ((mcuxClEls_Status_t) 0x05555334u) ///< An algorithm failed in hardware
+#define MCUXCLELS_STATUS_HW_OPERATIONAL       ((mcuxClEls_Status_t) 0x05555338u) ///< ELS was operated incorrectly
+#define MCUXCLELS_STATUS_HW_BUS               ((mcuxClEls_Status_t) 0x0555533Cu) ///< A bus access failed
+#define MCUXCLELS_STATUS_HW_INTEGRITY         ((mcuxClEls_Status_t) 0x05555370u) ///< An integrity check failed in hardware
+#define MCUXCLELS_STATUS_HW_PRNG              ((mcuxClEls_Status_t) 0x05555374u) ///< Read access to PRNG output while PRNG is not in ready state
+#define MCUXCLELS_STATUS_HW_DTRNG             ((mcuxClEls_Status_t) 0x05555378u) ///< Unable to get entropy from dTRNG with current configuration
+#define MCUXCLELS_STATUS_SW_FAULT             ((mcuxClEls_Status_t) 0x0555F0F0u) ///< Software detected a fault
+#define MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT  ((mcuxClEls_Status_t) 0x055553B0u) ///< an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while the SHA kernel was still busy
+#define MCUXCLELS_STATUS_SW_INVALID_PARAM     ((mcuxClEls_Status_t) 0x055553F8u) ///< Incorrect parameters were supplied
+#define MCUXCLELS_STATUS_SW_INVALID_STATE     ((mcuxClEls_Status_t) 0x055553B8u) ///< This can happen when ELS is in a wrong state for the requested ELS command
+#define MCUXCLELS_STATUS_SW_COUNTER_EXPIRED   ((mcuxClEls_Status_t) 0x055553BCu) ///< A software counter expired while waiting for an ELS operation to finish
+#define MCUXCLELS_STATUS_SW_COMPARISON_FAILED ((mcuxClEls_Status_t) 0x05558930u) ///< A comparison between an ELS flag and its expected value failed
 #ifdef MCUXCL_FEATURE_ELS_LOCKING
-#define MCUXCLELS_STATUS_SW_LOCKING_FAILED   ((mcuxClEls_Status_t) 0xF0F00FE1U) ///< Unable to obtain ELS lock
-#define MCUXCLELS_STATUS_SW_STATUS_LOCKED    ((mcuxClEls_Status_t) 0xF0F00FE2U) ///< ELS status is locked
+#define MCUXCLELS_STATUS_SW_LOCKING_FAILED    ((mcuxClEls_Status_t) 0x055553F4u) ///< Unable to obtain ELS lock
+#define MCUXCLELS_STATUS_SW_STATUS_LOCKED     ((mcuxClEls_Status_t) 0x05552E0Bu) ///< ELS status is locked
 #endif /* MCUXCL_FEATURE_ELS_LOCKING */
 /** @} */
 

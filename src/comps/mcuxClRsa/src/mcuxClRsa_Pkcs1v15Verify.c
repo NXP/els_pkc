@@ -105,7 +105,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
                                                                    options,
                                                                    pPkcWorkarea,
                                                                    NULL));
-  if(MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK != encode_result)
+  if(MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK != encode_result)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Verify, MCUXCLRSA_STATUS_ERROR);
   }

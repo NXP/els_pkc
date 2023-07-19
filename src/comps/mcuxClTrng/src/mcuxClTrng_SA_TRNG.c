@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClTrng_RNG4.c
+/** @file  mcuxClTrng_SA_TRNG.c
  *  @brief Implementation of the Trng component which provides APIs for
  *  handling of Trng random number. This file implements the functions
  *  declared in mcuxClTrng_Internal_Functions.h. */
@@ -21,16 +21,16 @@
 #include <mcuxClMemory.h>
 #include <internal/mcuxClTrng_SfrAccess.h>
 #include <internal/mcuxClTrng_Internal.h>
-#include <internal/mcuxClTrng_Internal_RNG4.h>
+#include <internal/mcuxClTrng_Internal_SA_TRNG.h>
 
 /**
- *  @brief Initialization function for the ROTRNG
+ *  @brief Initialization function for the SA_TRNG
  *
- *  This function performs all required steps to be done before ROTRNG data can be requested via the function
+ *  This function performs all required steps to be done before SA_TRNG data can be requested via the function
  *  mcuxClTrng_getEntropyInput.
  *
  *  NOTES:
- *   - Enabling and configuration of the ROTRNG shall be done before calling the Crypto Library.
+ *   - Enabling and configuration of the SA_TRNG shall be done before calling the Crypto Library.
  *     The Crypto Library requires the TRNG to be configured in dual oscillator mode. Therefore,
  *     this function simply verifies that the TRNG is configured in dual oscillator mode.
  *   - For performance it is recommended to put the TRNG in running mode immediately after configuration.
@@ -42,7 +42,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_Init(void)
 
     MCUX_CSSL_FP_FUNCTION_CALL(retVal_checkConfig, mcuxClTrng_checkConfig());
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_Init, retVal_checkConfig, MCUXCLTRNG_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_Init, retVal_checkConfig,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
 }
 
@@ -52,7 +52,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_checkConfig(void)
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClTrng_checkConfig);
 
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_checkConfig, MCUXCLTRNG_STATUS_OK, MCUXCLTRNG_STATUS_FAULT_ATTACK);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_checkConfig, MCUXCLTRNG_STATUS_OK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClTrng_getEntropyInput)
@@ -68,13 +68,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
     MCUX_CSSL_FP_FUNCTION_CALL(result_trngCheckConfig, mcuxClTrng_checkConfig());
     if(MCUXCLTRNG_STATUS_OK != result_trngCheckConfig)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_getEntropyInput, result_trngCheckConfig, MCUXCLTRNG_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, result_trngCheckConfig,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
     }
 
     if ((NULL == pEntropyInput) || ((entropyInputLength % sizeof(uint32_t)) != 0u))
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_ERROR, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_ERROR,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
     }
 
     /* Write 1 to clear ERR flag. */
@@ -101,28 +102,28 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClTrng_Status_t) mcuxClTrng_getEntropyInput(
     *  is the last word in the TRNG entropy register. This will trigger another TRNG entropy generation and reduces the time to wait
     *  for the TRNG to be ready when this function is called the next time.
     */
-    uint32_t offset = MCUXCLTRNG_RNG4_NUMBEROFENTREGISTERS - (entropyInputWordLength % MCUXCLTRNG_RNG4_NUMBEROFENTREGISTERS);
+    uint32_t offset = MCUXCLTRNG_SA_TRNG_NUMBEROFENTREGISTERS - (entropyInputWordLength % MCUXCLTRNG_SA_TRNG_NUMBEROFENTREGISTERS);
 
     /* Wait until TRNG entropy generation is ready.
      * If TRNG hardware error detected return with MCUXCLTRNG_STATUS_FAULT_ATTACK.
      */
-    MCUXCLTRNG_RNG4_WAITFORREADY(noOfTrngErrors);
+    MCUXCLTRNG_SA_TRNG_WAITFORREADY(noOfTrngErrors);
 
     for(uint32_t i = offset; i < (entropyInputWordLength + offset); i++)
     {
-        /* When i is a multiple of the TRNG output buffer size (MCUXCLTRNG_RNG4_NUMBEROFENTREGISTERS) wait until new entropy words have been generated. */
-        if((i % MCUXCLTRNG_RNG4_NUMBEROFENTREGISTERS) == 0u)
+        /* When i is a multiple of the TRNG output buffer size (MCUXCLTRNG_SA_TRNG_NUMBEROFENTREGISTERS) wait until new entropy words have been generated. */
+        if((i % MCUXCLTRNG_SA_TRNG_NUMBEROFENTREGISTERS) == 0u)
         {
             /* Wait until TRNG entropy generation is ready, If TRNG hardware error detected return with MCUXCLTRNG_STATUS_FAULT_ATTACK. */
-            MCUXCLTRNG_RNG4_WAITFORREADY(noOfTrngErrors);
+            MCUXCLTRNG_SA_TRNG_WAITFORREADY(noOfTrngErrors);
         }
         /* Copy word of entropy into destination buffer. */
-        *pDest = MCUXCLTRNG_SFR_READ(ENT)[i % MCUXCLTRNG_RNG4_NUMBEROFENTREGISTERS];
+        *pDest = MCUXCLTRNG_SFR_READ(ENT)[i % MCUXCLTRNG_SA_TRNG_NUMBEROFENTREGISTERS];
         /* Increment pDest to point to the next word. */
         ++pDest;
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_OK, MCUXCLTRNG_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClTrng_getEntropyInput, MCUXCLTRNG_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClTrng_checkConfig));
 }
 

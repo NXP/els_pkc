@@ -39,6 +39,12 @@
 #include <internal/mcuxClEcc_Mont_Internal.h>
 
 
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+#define MCUXCLECC_FP_MONT_DHKEYGEN_SECSTRENGTH  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength)
+#else
+#define MCUXCLECC_FP_MONT_DHKEYGEN_SECSTRENGTH  (0u)
+#endif
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_Mont_DhKeyGeneration)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
                         mcuxClSession_Handle_t pSession,
@@ -106,9 +112,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_RNG_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_SetupEnvironment),
-#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
-#endif
+            MCUXCLECC_FP_MONT_DHKEYGEN_SECSTRENGTH,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_X));
     }
     else if(MCUXCLECC_STATUS_OK != retCode_Mont_Dhx)
@@ -143,6 +147,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
         *(pPrivDataLength) = keyLen;
         *(pPubDataLength) = keyLen;
 
+        /* Create link between private and public key handles */
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_linkKeyPair, mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
+        if (MCUXCLKEY_STATUS_OK != ret_linkKeyPair)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_FAULT_ATTACK);
+        }
+
         /* Return OK and exit */
         MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
@@ -150,15 +161,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
 
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_SetupEnvironment),
-#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
-#endif
+            MCUXCLECC_FP_MONT_DHKEYGEN_SECSTRENGTH,
             MCUXCLECC_FP_CALLED_RANDOM_HQRNG_PKCWA,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_X),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
             );
-
     }
 }

@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
 #if defined(__ghs__) || defined( __ICCARM__ ) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || defined(__GNUC__)
 
 
@@ -66,7 +67,7 @@ do{  \
           [_cur_lhs] "+r" (cur_lhs_),  \
           [_cur_rhs] "+r" (cur_rhs_),  \
           [_cnt] "+r" (cnt_),          \
-          [_nwords] "=r" (nwords_),    \
+          [_nwords] "+r" (nwords_),    \
           [_dat_lhs] "=r" (dat_lhs),   \
           [_dat_rhs] "=r" (dat_rhs)    \
         : [_notValid] "r" (notValid_), \
@@ -74,7 +75,7 @@ do{  \
     );  \
     (void)dat_lhs;  \
     (void)dat_rhs;  \
-    (void)nwords_;  \
+    (void)cnt_;     \
     (void)notValid_;  \
 }while(false)
 
@@ -119,7 +120,7 @@ mcuxCsslMemory_Compare_fault:  \
     }  \
     (void)dat_lhs;  \
     (void)dat_rhs;  \
-    (void)nwords_;  \
+    (void)cnt_;  \
     (void)notValid_;  \
 }while(false)
 

@@ -41,7 +41,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Buffers to store the generated random values in. */
@@ -70,7 +70,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
                                                   mcuxClRandomModes_Mode_ELS_Drbg));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != token) || (MCUXCLRANDOM_STATUS_OK != randomInitresult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -86,7 +86,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
                                                   sizeof(drbg_buffer1)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult1))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -98,7 +98,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
                                                   sizeof(drbg_buffer2)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult2))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -110,7 +110,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
                                                   sizeof(drbg_buffer3)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult3))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -123,7 +123,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomNcInitresult, token, mcuxClRandom_ncInit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != token) || (MCUXCLRANDOM_STATUS_OK != randomNcInitresult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -135,7 +135,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
                                                   sizeof(prng_buffer)));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) != token) || (MCUXCLRANDOM_STATUS_OK != randomNcGenerateresult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -148,7 +148,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomUninitresult, token, mcuxClRandom_uninit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_uninit) != token) || (MCUXCLRANDOM_STATUS_OK != randomUninitresult))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -156,14 +156,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

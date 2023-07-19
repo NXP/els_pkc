@@ -56,6 +56,12 @@ extern "C" {
 #define MCUXCLECC_EDDSA_PRIVKEY_INPUT     (0xA5A5A5A5U)  ///< the private key d is passed as input
 #define MCUXCLECC_EDDSA_PRIVKEY_GENERATE  (0X5A5A5A5AU)  ///< the private key is generated internally
 
+/**
+ * Length for EdDSA Domain prefix
+ */
+#define MCUXCLECC_EDDSA_ED25519_DOMPREFIXLEN     (32u)  ///< the length of ED25519 domain prefix
+#define MCUXCLECC_EDDSA_ED448_DOMPREFIXLEN       (8u)  ///< the length of ED448 domain prefix
+
 /**********************************************************/
 /* Declarations for internal EdDSA functions              */
 /**********************************************************/

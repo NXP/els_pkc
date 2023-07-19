@@ -46,7 +46,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_TestPrimeCandidate,
         MCUXCLPKC_FP_CALLED_CALC_OP2_CMP);
 
-    mcuxClRsa_Status_t status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_CMP_FAILED;
+    mcuxClRsa_Status_t status = MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_CMP_FAILED;
 
     const uint32_t primeByteLength = keyBitLength/8u/2u;
     const uint32_t pkcOperandSize = MCUXCLPKC_ROUNDUP_SIZE(primeByteLength);
@@ -73,9 +73,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
 
     /* Setup UPTR table */
     const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_TESTPRIMECANDIDATE_WACPU_SIZE_WO_MILLERRABIN / sizeof(uint32_t);
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
     uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     if (NULL == pOperands)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_TestPrimeCandidate, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -112,7 +112,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
         MCUXCLPKC_FP_CALC_OP2_CMP(MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_CANDIDATE_64MOST, MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_NUMTOCOMPARE);
         if (MCUXCLPKC_FLAG_CARRY == MCUXCLPKC_WAITFORFINISH_GETCARRY())
         {
-            status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_CMP_FAILED;
+            status = MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_CMP_FAILED;
             MCUX_CSSL_FP_EXPECT(0u - (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)) - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
             break;
         }
@@ -125,7 +125,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
                     mcuxClRsa_TestPrimeCandidate_Steps2_FUP_LEN);
         if (MCUXCLPKC_FLAG_CARRY != MCUXCLPKC_WAITFORFINISH_GETCARRY())
         {
-            status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDA0_FAILED;
+            status = MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_GCDA0_FAILED;
             MCUX_CSSL_FP_EXPECT(0u - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
             break;
         }
@@ -138,7 +138,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
                     mcuxClRsa_TestPrimeCandidate_Steps3_FUP_LEN);
         if (MCUXCLPKC_FLAG_CARRY != MCUXCLPKC_WAITFORFINISH_GETCARRY())
         {
-            status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_GCDE_FAILED;
+            status = MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_GCDE_FAILED;
             MCUX_CSSL_FP_EXPECT(0u - MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_MillerRabinTest));
             break;
         }

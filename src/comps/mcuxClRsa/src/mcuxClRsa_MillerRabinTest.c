@@ -47,7 +47,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_MillerRabinTest);
 
   /* Set init status to FAILED */
-  mcuxClRsa_Status_t status = MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED;
+  mcuxClRsa_Status_t status = MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_MRT_FAILED;
 
   /*
    * Initialization
@@ -59,9 +59,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   /* Create and set local Uptrt table. */
   uint32_t pOperands32[(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_UPTRT_SIZE + 1u) / 2u];
 
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t *pOperands = (uint16_t *) pOperands32;
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /* Get iP and iT indices */
   uint32_t uptrtIndexTmp = (iP_iT) & 0xFFu;
@@ -130,9 +130,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   uint8_t * pExp = MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE]) + bufferSizeTE; //allocate space for it in the FXRAM, if there is not enough memory it can be in CPU
   MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(pExp, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X, byteLenPrime);
   /* Allocate space for the temporary buffer for exponent (aligned to CPU word, ength shall be a multiple of CPU word and greater than @p byteLenExp) */
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("Cast to CPU word aligned")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("Cast to CPU word aligned")
   uint32_t * pExpTemp = (uint32_t *) pExp + MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(byteLenPrime) / sizeof(uint32_t);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() 
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() 
 
   /* Calculate Ndash of w (primeCandidate) */
   MCUXCLMATH_FP_NDASH(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0);
@@ -142,10 +142,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
    * Due to fact that the most significant bit of prime candidate is 1 (this is because for FIPS) do not need computed shifted modulus,
    * can directly use the prime candidate as a shifted modulus.
    */
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
   MCUXCLMATH_FP_QSQUARED(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED /* QSquared */, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE,
     MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
   /*
    * 3. Set iteration counter, and start loop
@@ -242,7 +242,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
                             MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T1,
                             MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T2,
                             MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T3) );
-    if (MCUXCLMATH_ERRORCODE_OK != secModExpResult)
+    if (MCUXCLMATH_STATUS_OK != secModExpResult)
     {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_MillerRabinTest, MCUXCLRSA_STATUS_ERROR);
     }
@@ -269,7 +269,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
       /* Need to check the second condition */
       /*
        * 8. If ((z = PrimeCandidate-1), test passed, then continue. Otherwise, it means
-       *    that PrimeCandidate is composite, function returns MCUXCLRSA_INTERNAL_STATUS_TESTPRIME_MRT_FAILED error code
+       *    that PrimeCandidate is composite, function returns MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_MRT_FAILED error code
        */
 
       /* Comput PrimeCandidate-1 */

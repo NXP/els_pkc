@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,9 +17,6 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClMac_Constants.h>
 #include <mcuxClAes_Constants.h>
-#include <mcuxClHash_Constants.h>
-
-#define MCUXCLMAC_HMAC_PADDED_KEY_SIZE        ((mcuxClKey_Size_t) 64u)
 
 #define MCUXCLMACMODES_XCBCMAC_SUBKEY_KEY_2_INDEX  (0u)
 #define MCUXCLMACMODES_XCBCMAC_SUBKEY_KEY_3_INDEX  (1u)

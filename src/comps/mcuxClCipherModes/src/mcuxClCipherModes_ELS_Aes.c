@@ -99,9 +99,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
             /* Create context for Oneshot, needed by ELS */
             /* MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory */
             cpuWaSizeInWords = MCUXCLCIPHERMODES_INTERNAL_COMPUTE_CPUWORDS(sizeof(mcuxClCipherModes_Context_Aes_Els_t));
-            MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+            MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
             pCtx = (mcuxClCipherModes_Context_Aes_Els_t *) mcuxClSession_allocateWords_cpuWa(session, cpuWaSizeInWords);
-            MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
             if(NULL == pCtx)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_FAILURE);

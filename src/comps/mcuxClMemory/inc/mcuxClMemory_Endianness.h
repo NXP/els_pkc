@@ -50,7 +50,7 @@ do                                                                  \
     (destination)[1] = (uint8_t) (((value) & 0x0000FF00U) >>  8u);  \
     (destination)[2] = (uint8_t) (((value) & 0x00FF0000U) >> 16u);  \
     (destination)[3] = (uint8_t) (((value) & 0xFF000000U) >> 24u);  \
-} while (0)
+} while (false)
 
 /**
  * @brief Converts a 32-bit unsigned integer to a big-endian order @c uint8_t array.
@@ -67,7 +67,7 @@ do                                                                  \
     (destination)[1] = (uint8_t) (((value) & 0x00FF0000U) >> 16u);  \
     (destination)[2] = (uint8_t) (((value) & 0x0000FF00U) >>  8u);  \
     (destination)[3] = (uint8_t) (((value) & 0x000000FFU) >>  0u);  \
-} while (0)
+} while (false)
 
 /**
  * @brief Converts a little-endian order @c uint8_t array to a 32-bit unsigned integer.

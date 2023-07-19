@@ -20,9 +20,9 @@
 #define MCUXCLOSCCAPKC_FUPMACROS_H_
 
 
-#include <stdint.h>
-#include <mcuxClConfig.h> // Exported features flags header
 #include <internal/mcuxClOsccaPkc_Operations.h>
+#include <mcuxClCore_Platform.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 
@@ -44,10 +44,13 @@ typedef struct mcuxClOsccaPkc_FUPEntry
 
 /**
  * Macro to create FUP program, e.g., a FUP program with 2 entries:
- * MCUXCLPKC_FUP_EXT_ROM(FupProgram1, FUP_MMUL(0,1,1), FUP_MMUL(1,0,0));
+ * MCUXCLPKC_FUP_EXT_ROM(FupProgram1, FUP_MC1_MMUL(0,1,1), FUP_MC1_MMUL(1,0,0));
  */
 #define MCUXCLOSCCAPKC_FUP_EXT_ROM(name, ...)  \
-    const mcuxClOsccaPkc_FUPEntry_t name[] __attribute__((aligned(4),section("PH_CL_FUP_PROGRAMS_MAGIC_AREA"))) = { __VA_ARGS__ }
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FUP() \
+    const mcuxClOsccaPkc_FUPEntry_t name[] __attribute__((aligned(4),section("PH_CL_FUP_PROGRAMS_MAGIC_AREA"))) = { __VA_ARGS__ } \
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FUP()
+
 #define MCUXCLOSCCAPKC_FUP_LEN(pFupProgram)  ((uint8_t) ((sizeof(pFupProgram)) / sizeof(mcuxClOsccaPkc_FUPEntry_t)))
 
 /**********************************************************/
@@ -67,19 +70,42 @@ typedef struct mcuxClOsccaPkc_FUPEntry
 /**********************************************************/
 /* Helper macros for FUP program composing                */
 /**********************************************************/
-#define FUP_AND(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_AND, 0, Y, Z, R}
-#define FUP_OR(R, Y, Z)                                 {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_OR, 0, Y, Z, R}
-#define FUP_XOR(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_XOR, 0, Y, Z, R}
-#define FUP_SUB(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_SUB, 0, Y, Z, R}
-#define FUP_MMUL(R, X, Y, Z)                            {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MMUL, X, Y, Z, R}
-#define FUP_MADD(R, Y, Z, X)                            {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MADD, X, Y, Z, R}
-#define FUP_MSUB(R, Y, Z, X)                            {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MSUB, X, Y, Z, R}
-#define FUP_MRED(R, X, Z)                               {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MRED, X, 0, Z, R}
-#define FUP_SBX0(R, Z)                                  {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_SBX0, 0, 0, Z, R}
-#define FUP_ROTL(R, Y, Z)                               {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_ROTL, 0, Y, Z, R}
-#define FUP_SHL(R, Y, C)                                {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_SHL, 0, Y, C, R}
-#define FUP_ADD(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_ADD, 0, Y, Z, R}
-#define FUP_ADD_CONST(R, Y, C)                          {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_ADD_YC, 0, Y, C, R}
-#define FUP_NEG(R, Z)                                   {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_NEG, 0, 0, Z, R}
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "FUP operations are defined.")
+/* L0 operation (OP) with parameter set 1, without repeating. */
+#define FUP_OP1_AND(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_AND, Y /* unused */, Y, Z, R}
+#define FUP_OP1_OR(R, Y, Z)                                 {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_OR, Y /* unused */, Y, Z, R}
+#define FUP_OP1_XOR(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_XOR, Y /* unused */, Y, Z, R}
+#define FUP_OP1_SUB(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_SUB, Y /* unused */, Y, Z, R}
+#define FUP_OP1_SBX0(R, Z)                                  {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_SBX0, Z /* unused */, Z /* unused */, Z, R}
+#define FUP_OP1_ROTL(R, Y, Z)                               {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_ROTL, Y /* unused */, Y, Z, R}
+#define FUP_OP1_SHL(R, Y, C)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_SHL, Y /* unused */, Y, C, R}
+#define FUP_OP1_ADD(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_ADD, Y /* unused */, Y, Z, R}
+#define FUP_OP1_ADD_CONST(R, Y, C)                          {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_ADD_YC, Y /* unused */, Y, C, R}
+#define FUP_OP1_NEG(R, Z)                                   {MCUXCLOSCCAPKC_FUP_OP1, MCUXCLOSCCAPKC_FOP_NEG, Z /* unused */, Z /* unused */, Z, R}
+
+/* L1 microcode (MC) with parameter set 1, without repeating. */
+#define FUP_MC1_MMUL(R, X, Y, Z)                            {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MMUL, X, Y, Z, R}
+#define FUP_MC1_MADD(R, Y, Z, X)                            {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MADD, X, Y, Z, R}
+#define FUP_MC1_MSUB(R, Y, Z, X)                            {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MSUB, X, Y, Z, R}
+#define FUP_MC1_MRED(R, X, Z)                               {MCUXCLOSCCAPKC_FUP_MC1, MCUXCLOSCCAPKC_FMC_MRED, X, X /* unused */, Z, R}
+
+/* L0 operation (OP) with parameter set 2, without repeating. */
+#define FUP_OP2_AND(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_AND, Y /* unused */, Y, Z, R}
+#define FUP_OP2_OR(R, Y, Z)                                 {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_OR, Y /* unused */, Y, Z, R}
+#define FUP_OP2_XOR(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_XOR, Y /* unused */, Y, Z, R}
+#define FUP_OP2_SUB(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_SUB, Y /* unused */, Y, Z, R}
+#define FUP_OP2_SBX0(R, Z)                                  {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_SBX0, Z /* unused */, Z /* unused */, Z, R}
+#define FUP_OP2_ROTL(R, Y, Z)                               {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_ROTL, Y /* unused */, Y, Z, R}
+#define FUP_OP2_SHL(R, Y, C)                                {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_SHL, Y /* unused */, Y, C, R}
+#define FUP_OP2_ADD(R, Y, Z)                                {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_ADD, Y /* unused */, Y, Z, R}
+#define FUP_OP2_ADD_CONST(R, Y, C)                          {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_ADD_YC, Y /* unused */, Y, C, R}
+#define FUP_OP2_NEG(R, Z)                                   {MCUXCLOSCCAPKC_FUP_OP2, MCUXCLOSCCAPKC_FOP_NEG, Z /* unused */, Z /* unused */, Z, R}
+
+/* L1 microcode (MC) with parameter set 2, without repeating. */
+#define FUP_MC2_MMUL(R, X, Y, Z)                            {MCUXCLOSCCAPKC_FUP_MC2, MCUXCLOSCCAPKC_FMC_MMUL, X, Y, Z, R}
+#define FUP_MC2_MADD(R, Y, Z, X)                            {MCUXCLOSCCAPKC_FUP_MC2, MCUXCLOSCCAPKC_FMC_MADD, X, Y, Z, R}
+#define FUP_MC2_MSUB(R, Y, Z, X)                            {MCUXCLOSCCAPKC_FUP_MC2, MCUXCLOSCCAPKC_FMC_MSUB, X, Y, Z, R}
+#define FUP_MC2_MRED(R, X, Z)                               {MCUXCLOSCCAPKC_FUP_MC2, MCUXCLOSCCAPKC_FMC_MRED, X, X /* unused */, Z, R}
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 #endif /*MCUXCLOSCCAPKC_FUPMACROS_H_*/

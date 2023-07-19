@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 MCUX                                                  */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* MCUX Confidential. This software is owned or controlled by MCUX and may    */
+/* NXP Confidential. This software is owned or controlled by MCUX and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
@@ -47,6 +47,7 @@
 #include <mcuxCsslMemory.h>
 
 #include <internal/mcuxClPsaDriver_Functions.h>
+#include <internal/mcuxClMac_Internal_Constants.h>
 
 #if defined(MBEDTLS_PSA_CRYPTO_C)
 

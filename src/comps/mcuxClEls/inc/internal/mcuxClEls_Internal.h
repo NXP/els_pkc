@@ -26,7 +26,8 @@
 
 #include <internal/mcuxClEls_Internal_mapping.h>
 #include <internal/mcuxClEls_SfrAccess.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
+#include <mcuxClEls_Types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -149,12 +150,12 @@ static inline uint32_t mcuxClEls_getSfrField(uint32_t sfrValue, uint32_t mask, u
   * The unrelated fields/bits will not be changed */
 static inline void mcuxClEls_setSfrField(volatile uint32_t *pSfr, uint32_t value, uint32_t mask, uint32_t shift)
 {
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")
 	/* get the current value of the SFR and clear the bits that will be set */
   uint32_t sfrValue = *pSfr & (~mask);
 	/* set the bits and re-write the full value to the SFR */
   *pSfr = sfrValue | (((uint32_t)(value << shift)) & mask);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()
 }
 
 /** Tests if the ELS is in BUSY state.
@@ -326,11 +327,20 @@ extern uint32_t mcuxClEls_rng_drbg_block_counter;
  * @retval #MCUXCLELS_STATUS_SW_FAULT            if a failure occurred
  * @retval #MCUXCLELS_STATUS_OK                  on successful operation
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEls_Dtrng_IterativeReseeding_Reseed)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Dtrng_IterativeReseeding_Reseed(const uint8_t *pDtrngConfig);
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 #endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
+
+/* Functional macro to check for ELS Level 1 errors */
+#define MCUXCLELS_LEVEL1_ERROR(returnCode) (MCUXCLELS_STATUS_HW_OPERATIONAL == (returnCode)) || (MCUXCLELS_STATUS_HW_ALGORITHM == (returnCode)) || (MCUXCLELS_STATUS_HW_BUS == (returnCode))
+
+/** read from ELS PRNG SFR. */
+static inline uint32_t mcuxClEls_readPrngOut(void)
+{
+    return MCUXCLELS_SFR_READ(ELS_PRNG_DATOUT); 
+}
 
 #ifdef __cplusplus
 } /* extern "C" */

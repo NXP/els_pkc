@@ -18,7 +18,7 @@
  *
  */
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClPsaDriver_Internal.h>
 
@@ -26,9 +26,9 @@
 /* *** Internal structure sizes *** */
 /* ******************************** */
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile mcuxClPsaDriver_ClnsData_Cipher_t mcuxClPsaDriver_ClnsData_Cipher;
 volatile mcuxClPsaDriver_ClnsData_Aead_t mcuxClPsaDriver_ClnsData_Aead;
 volatile mcuxClPsaDriver_ClnsData_Mac_t mcuxClPsaDriver_ClnsData_Mac;
 volatile mcuxClPsaDriver_ClnsData_Hash_t mcuxClPsaDriver_ClnsData_Hash;
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

@@ -72,12 +72,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   /************************************************************************************************/
   const uint32_t byteLenN = pKey->pMod1->keyEntryLength;
 
-  if(0U == (pKey->pMod1->pKeyEntryData[byteLenN - 1U] & 0x01U))
+  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
 
-  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
+  if(0U == (pKey->pMod1->pKeyEntryData[byteLenN - 1U] & 0x01U))
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
@@ -105,9 +105,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
 
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_PUBLIC_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t *pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -176,7 +176,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
     mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
@@ -228,7 +228,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
   mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK,
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),

@@ -56,15 +56,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pE
     MCUX_CSSL_FP_COUNTER_STMT(uint32_t hwExp = 0u);
     uint32_t byteIndex_MSNZByte = 0u;
 
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT31_C, "expByteLength is bounded by memory size (and smaller than 2^16).")
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT02_C, "expByteLength is bounded by memory size (and smaller than 2^16).")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT31_C, "expByteLength is bounded by memory size (and smaller than 2^16).")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT02_C, "expByteLength is bounded by memory size (and smaller than 2^16).")
     for (int32_t idx = (int32_t) expByteLength - 1; idx >= 0; idx--)
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT02_C)
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT31_C)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT02_C)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT31_C)
     {
-        MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "idx < expByteLength, which is bounded by memory size (and smaller than 2^16).")
+        MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "idx < expByteLength, which is bounded by memory size (and smaller than 2^16).")
         uint32_t expByte = (uint32_t) pExp[idx];
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
 
         /* Find the most significant nonzero byte (= the last nonzero byte when scanning from LSByte to MSByte). */
         if (0u != expByte)
@@ -79,9 +79,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pE
         MCUX_CSSL_FP_COUNTER_STMT(hwExp += expByte);
     }
 
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "byteIndex_MSNZByte < expByteLength, which is bounded by memory size (and smaller than 2^16).")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "byteIndex_MSNZByte < expByteLength, which is bounded by memory size (and smaller than 2^16).")
     uint32_t byteExp = (uint32_t) pExp[byteIndex_MSNZByte];
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
 
     /* Calculate bit index of starting bit (skip the most significant nonzero bit). */
     const uint32_t bitIndex_MSBitNext = (8u * (expByteLength - byteIndex_MSNZByte)) - (mcuxClMath_CountLeadingZerosWord(byteExp) - 24u) - 2u;
@@ -120,11 +120,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pE
         MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
 
         /* Calculate byte index of exponent in BE. */
-        MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT30_C, "expByteLength > 0, and bitIndex in range [0, 8*expByteLength - 2].")
-        MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "expByteLength > 0, and bitIndex in range [0, 8*expByteLength - 2].")
+        MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT30_C, "expByteLength > 0, and bitIndex in range [0, 8*expByteLength - 2].")
+        MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "expByteLength > 0, and bitIndex in range [0, 8*expByteLength - 2].")
         uint32_t expBit = ((uint32_t) pExp[expByteLength - 1u - ((uint32_t) bitIndex / 8u)] >> ((uint32_t) bitIndex & 7u)) & 1u;
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
-        MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT30_C)
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT30_C)
 
         /* If expBit = 1, the while-loop will stay in this bit for one more iteration. */
         shift ^= expBit;

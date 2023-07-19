@@ -35,8 +35,10 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     mcuxClSession_Handle_t pSession, uint8_t *key_CrtBuf,
     uint8_t *key_PublicBuf, mcuxClRsa_KeyEntry_t dKey)
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) key_CrtBuf;
     mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) key_PublicBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if((pRsaCrtKey->keytype != MCUXCLRSA_KEY_PRIVATECRT)
         || (pRsaPubKey->keytype != MCUXCLRSA_KEY_PUBLIC))
     {
@@ -52,7 +54,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     uint32_t backup_pkcWaUsed = pSession->pkcWa.used;
     uint32_t backup_cpuWaUsed = pSession->cpuWa.used;
     // Initialize PKC.
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPkc_State_t * pPkcStateBackup = (mcuxClPkc_State_t *) &pSession->cpuWa.buffer[pSession->cpuWa.used];
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     pSession->cpuWa.used += (sizeof(mcuxClPkc_State_t) / (sizeof(uint32_t)));
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED(pkcInitialize_token, mcuxClPkc_Initialize(pPkcStateBackup));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize) != pkcInitialize_token))
@@ -167,8 +171,10 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
     mcuxClSession_Handle_t pSession, uint8_t *key_CrtBuf,
     uint8_t *key_PublicBuf, mcuxClRsa_KeyEntry dKey, uint8_t *encoded_key, size_t *key_buffer_length)
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) key_CrtBuf;
     mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) key_PublicBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if((pRsaCrtKey->keytype != MCUXCLRSA_KEY_PRIVATECRT)
         || (pRsaPubKey->keytype != MCUXCLRSA_KEY_PUBLIC))
     {
@@ -202,49 +208,80 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
     encoded_key[8] = 0x00u;
 
     uint8_t *pDerOtherData = &encoded_key[9];
-
     /*
      * Get parameter N
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaPubKey->pMod1);
+    psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaPubKey->pMod1);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     /*
      * Get parameter E
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaPubKey->pExp1);
-
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaPubKey->pExp1);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
+    
     /*
      * Get parameter D
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, dKey);
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, dKey);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     /*
      * Get parameter P
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pMod1);
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pMod1);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     /*
      * Get parameter Q
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pMod2);
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pMod2);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     /*
      * Get parameter d mod (p-1)
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pExp1);
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pExp1);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     /*
      * Get parameter d mod (q-1)
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pExp2);
-
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pExp2);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
     /*
      * Get parameter: (inverse of q) mod p
      */
-    mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pQInv);
+    status = mcuxClPsaDriver_psa_driver_wrapper_der_integer(&pDerOtherData, pRsaCrtKey->pQInv);
+    if(PSA_SUCCESS != status)
+    {
+        return status;
+    }
 
     uint32_t constructed_fields_length = pDerOtherData - &encoded_key[6];
     uint8_t *ptr = &encoded_key[1];
+    uint32_t ptrPluslen = 0u;
 
     if(constructed_fields_length > 0x7Fu) //long form
     {
@@ -254,72 +291,64 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
         uint8_t h0_byte =  constructed_fields_length & 0xFFu;
         if(h3_byte != 0u)
         {
-            *ptr = 0x84u;
-            ptr++;
-            *ptr = h3_byte;
-            ptr++;
-            *ptr = h2_byte;
-            ptr++;
-            *ptr = h1_byte;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[0u] = 0x84u;
+            ptr[1u] = h3_byte;
+            ptr[2u] = h2_byte;
+            ptr[3u] = h1_byte;
+            ptr[4u] = h0_byte;
+            ptrPluslen = 5u;
         }
         else if(h2_byte != 0u)
         {
-            *ptr = 0x83u;
-            ptr++;
-            *ptr = h2_byte;
-            ptr++;
-            *ptr = h1_byte;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[0u] = 0x83u;
+            ptr[1u] = h2_byte;
+            ptr[2u] = h1_byte;
+            ptr[3u] = h0_byte;
+            ptrPluslen = 4u;
         }
         else if(h1_byte != 0u)
         {
-            *ptr = 0x82u;
-            ptr++;
-            *ptr = h1_byte;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[0u] = 0x82u;
+            ptr[1u] = h1_byte;
+            ptr[2u] = h0_byte;
+            ptrPluslen = 3u;
         }
         else
         {
-            *ptr = 0x81u;
-            ptr++;
-            *ptr = h0_byte;
-            ptr++;
+            ptr[0u] = 0x81u;
+            ptr[1u] = h0_byte;
+            ptrPluslen = 2u;
         }
     }
     else  //short from
     {
-        *ptr = constructed_fields_length;
-        ptr++;
+        ptr[0u] = constructed_fields_length;
+        ptrPluslen = 1u;
     }
 
     int i = 0;
     for(i = 0; i < constructed_fields_length; ++i)
     {
-        *ptr++ = encoded_key[6 + i];
+        ptr[ptrPluslen++] = encoded_key[6 + i];
     }
 
-    *key_buffer_length = ptr - &encoded_key[0];
+    *key_buffer_length = ptr + ptrPluslen - &encoded_key[0];
 
-    while(ptr != &encoded_key[6 + i + 1])
+    while((ptr + ptrPluslen) != &encoded_key[6 + i + 1])
     {
-        *ptr++ = 0u;
+        ptr[ptrPluslen++] = 0u;
     }
 
     return PSA_SUCCESS;
 }
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key(
     const psa_key_attributes_t *attributes,
     uint8_t *key_buffer,
     size_t key_buffer_size,
     size_t *key_buffer_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     size_t bitLength = psa_get_key_bits(attributes);
     size_t bytes = PSA_BITS_TO_BYTES(bitLength);
@@ -417,7 +446,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key(
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Calculate d and n through CRT key */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) priCrtKeyBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     uint32_t pD[MCUXCLKEY_SIZE_4096_IN_WORDS];
     mcuxClRsa_KeyEntry_t dKey =
     {

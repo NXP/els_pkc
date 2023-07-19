@@ -277,6 +277,83 @@ extern "C" {
     ///< Definition of PKC workarea size for the mcuxClRsa_pkcs1v15Verify function.
 /** @} */
 
+/****************************************************************************/
+/* Definitions of workarea sizes for the mcuxClRsa_oaepEncode function.      */
+/****************************************************************************/
+/**
+ * @defgroup MCUXCLRSA_INTERNAL_OAEPENCODE_WA MCUXCLRSA_INTERNAL_OAEPENCODE_WA
+ * @brief Workarea size macros of mcuxClRsa_oaepEncode.
+ * @ingroup mcuxClRsa_Internal_Macros
+ * @{
+ */
+#define MCUXCLRSA_INTERNAL_OAEPENCODE_WACPU_SIZE  \
+    MCUXCLRSA_MAX(MCUXCLHASH_INTERNAL_WACPU_MAX, MCUXCLRSA_INTERNAL_MGF1_WACPU_SIZE)
+    ///< Definition of CPU workarea size for the mcuxClRsa_oaepEncode function.
+
+#define MCUXCLRSA_INTERNAL_OAEPENCODE_WAPKC_SIZE_WO_MGF1(keyByteLength)  \
+    (2u * MCUXCLPKC_ROUNDUP_SIZE((keyByteLength)-1u))
+    ///< Definition of PKC workarea size for the mcuxClRsa_oaepEncode function, without taking into account the PKC WA usage of the MGF1
+
+#define MCUXCLRSA_INTERNAL_OAEPENCODE_WAPKC_SIZE(keyByteLength)  \
+    (MCUXCLRSA_INTERNAL_OAEPENCODE_WAPKC_SIZE_WO_MGF1(keyByteLength) \
+     + MCUXCLRSA_INTERNAL_OAEP_MGF1_MAX_WAPKC_SIZE(keyByteLength))
+    ///< Definition of PKC workarea size for the mcuxClRsa_oaepEncode function.
+/** @} */
+
+/****************************************************************************/
+/* Definitions of workarea sizes for the mcuxClRsa_oaepDecode function.      */
+/****************************************************************************/
+/**
+ * @defgroup MCUXCLRSA_INTERNAL_OAEPDECODE_WA MCUXCLRSA_INTERNAL_OAEPDECODE_WA
+ * @brief Workarea size macros of mcuxClRsa_oaepDecode.
+ * @ingroup mcuxClRsa_Internal_Macros
+ * @{
+ */
+#define MCUXCLRSA_INTERNAL_OAEPDECODE_WACPU_SIZE  \
+    MCUXCLRSA_MAX(MCUXCLHASH_INTERNAL_WACPU_MAX, MCUXCLRSA_INTERNAL_MGF1_WACPU_SIZE)
+    ///< Definition of CPU workarea size for the mcuxClRsa_oaepDecode function.
+
+#define MCUXCLRSA_INTERNAL_OAEPDECODE_WAPKC_SIZE_WO_MGF1(keyByteLength)  \
+    (MCUXCLPKC_ROUNDUP_SIZE(keyByteLength))
+    ///< Definition of PKC workarea size for the mcuxClRsa_oaepDecode function, without taking into account the PKC WA usage of the MGF1
+
+#define MCUXCLRSA_INTERNAL_OAEPDECODE_WAPKC_SIZE(keyByteLength)  \
+    (MCUXCLRSA_INTERNAL_OAEPDECODE_WAPKC_SIZE_WO_MGF1(keyByteLength) \
+     + MCUXCLRSA_INTERNAL_OAEP_MGF1_MAX_WAPKC_SIZE(keyByteLength))
+    ///< Definition of PKC workarea size for the mcuxClRsa_oaepDecode function.
+/** @} */
+
+/****************************************************************************************/
+/* Definitions of workarea sizes for the mcuxClRsa_pkcs1v15Encode_encrypt function.      */
+/****************************************************************************************/
+/**
+ * @defgroup MCUXCLRSA_INTERNAL_PKCS1V15ENCODE_ENCRYPT_WA MCUXCLRSA_INTERNAL_PKCS1V15ENCODE_ENCRYPT_WA
+ * @brief Workarea size macros of mcuxClRsa_pkcs1v15Encode_encrypt.
+ * @ingroup mcuxClRsa_Internal_Macros
+ * @{
+ */
+#define MCUXCLRSA_INTERNAL_PKCS1V15ENCODE_ENCRYPT_WACPU_SIZE (0u)
+    ///< Definition of CPU workarea size for the mcuxClRsa_pkcs1v15Encode_encrypt function.
+
+#define MCUXCLRSA_INTERNAL_PKCS1V15ENCODE_ENCRYPT_WAPKC_SIZE (0u)
+    ///< Definition of PKC workarea size for the mcuxClRsa_pkcs1v15Encode_encrypt function.
+/** @} */
+
+/****************************************************************************************/
+/* Definitions of workarea sizes for the mcuxClRsa_pkcs1v15Decode_decrypt function.      */
+/****************************************************************************************/
+/**
+ * @defgroup MCUXCLRSA_INTERNAL_PKCS1V15DECODE_DECRYPT_WA MCUXCLRSA_INTERNAL_PKCS1V15DECODE_DECRYPT_WA
+ * @brief Workarea size macros of mcuxClRsa_pkcs1v15Decode_decrypt.
+ * @ingroup mcuxClRsa_Internal_Macros
+ * @{
+ */
+#define MCUXCLRSA_INTERNAL_PKCS1V15DECODE_DECRYPT_WACPU_SIZE (0u)
+    ///< Definition of CPU workarea size for the mcuxClRsa_pkcs1v15Decode_decrypt function.
+
+#define MCUXCLRSA_INTERNAL_PKCS1V15DECODE_DECRYPT_WAPKC_SIZE (0u)
+    ///< Definition of PKC workarea size for the mcuxClRsa_pkcs1v15Decode_decrypt function.
+/** @} */
 
 
 /****************************************************************************/
@@ -289,21 +366,23 @@ extern "C" {
  * @{
  */
 
+#define MCUXCLRSA_SIZEOF_PKCSTATEBACKUP (sizeof(mcuxClPkc_State_t))
+
 #define MCUXCLRSA_INTERNAL_VERIFY_NOVERIFY_WACPU_SIZE  \
-    (sizeof(mcuxClPkc_State_t)  \
+    (MCUXCLRSA_SIZEOF_PKCSTATEBACKUP  \
      + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_NOVERIFY_WACPU_SIZE,  \
                     MCUXCLRSA_INTERNAL_PUBLIC_WACPU_SIZE))
     ///< Definition of CPU workarea size for the mcuxClRsa_verify function using NOVERIFY option.
 
 #define MCUXCLRSA_INTERNAL_VERIFY_PKCS1V15VERIFY_WACPU_SIZE  \
-    (sizeof(mcuxClPkc_State_t)  \
+    (MCUXCLRSA_SIZEOF_PKCSTATEBACKUP  \
      + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_PKCS1V15VERIFY_WACPU_SIZE,  \
                     MCUXCLRSA_INTERNAL_PUBLIC_WACPU_SIZE))
     ///< Definition of CPU workarea size for the mcuxClRsa_verify function using PKCS1V15VERIFY option.
 
 
 #define MCUXCLRSA_INTERNAL_VERIFY_PSSVERIFY_WACPU_SIZE  \
-    (sizeof(mcuxClPkc_State_t)  \
+    (MCUXCLRSA_SIZEOF_PKCSTATEBACKUP  \
    + MCUXCLRSA_MAX(MCUXCLRSA_INTERNAL_PSSVERIFY_MAX_WACPU_SIZE,  \
                   MCUXCLRSA_INTERNAL_PUBLIC_WACPU_SIZE))
     ///< Definition of CPU workarea size for the mcuxClRsa_verify function using PSSVERIFY option.
@@ -334,6 +413,7 @@ extern "C" {
 
 
 /** @} */
+
 
 /****************************************************************************/
 /* Definitions of workarea sizes for the mcuxClRsa_sign function.            */
@@ -426,6 +506,7 @@ extern "C" {
     ///< Definition of PKC workarea size for the mcuxClRsa_sign function keyByteLength CRT key.
 
 /** @} */
+
 
 
 /*****************************************************************************************/
