@@ -912,9 +912,9 @@ component.els_pkc.mac_modes:
     - repo_relative_path: src/comps/mcuxClMacModes/inc/internal
     files:
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes.c
-    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_Functions.c
-    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_CBCMAC.c
-    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_ELS_CMAC.c
+    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cbcmac.c
+    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cmac.c
+    - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Functions.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Modes.c
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes.h
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_Constants.h
@@ -922,15 +922,15 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_MemoryConsumption.h
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_Modes.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Algorithms.h
-    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_CBCMAC.h
-    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_CMAC.h
-    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_Ctx.h
-    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_ELS_Types.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Cbcmac.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Cmac.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Ctx.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Types.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Constants.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Functions.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Macros.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Types.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Wa.h
-    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Macros.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
