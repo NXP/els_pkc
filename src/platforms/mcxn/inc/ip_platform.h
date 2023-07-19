@@ -19,11 +19,14 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include <MCXN947_cm33_core0.h>
+#include "fsl_device_registers.h"
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
+
+
+#define MCUXCL_FEATURE_TRNG_RNG4_256
 
 // Define base address of ELS
 #define ELS_SFR_BASE            ELS         ///< base of ELS SFRs
@@ -40,6 +43,7 @@
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x400B3000u)
 #define PKC_WORD_SIZE  8u
+#define PKC_RAM_SIZE  ((uint32_t)0x1000u)
 
 // Define base address of TRNG
 #define TRNG_SFR_BASE           TRNG0       ///< base of TRNG SFRs
