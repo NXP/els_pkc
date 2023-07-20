@@ -72,15 +72,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   const uint32_t byteLenN = pKey->pMod1->keyEntryLength;
   const uint32_t byteLenD = pKey->pExp1->keyEntryLength;
 
+  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
+  {
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
+  }
+
   if(0U == (pKey->pMod1->pKeyEntryData[byteLenN - 1U] & 0x01U))
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
 
-  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
 
   /************************************************************************************************/
   /* Initialization                                                                               */
@@ -114,9 +115,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_PRIVPLAIN_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
   uint32_t * pOperands32 = mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) pOperands32;
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -186,7 +187,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   {
     MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(pOutput, MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X, byteLenN);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
         MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
@@ -244,7 +245,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
                           MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T1,
                           MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X,
                           MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T3) );
-  if (MCUXCLMATH_ERRORCODE_OK != ret_SecModExp)
+  if (MCUXCLMATH_STATUS_OK != ret_SecModExp)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_ERROR);
   }
@@ -271,7 +272,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   /* Function exit                                                                                */
   /************************************************************************************************/
 
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK,
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
       MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),

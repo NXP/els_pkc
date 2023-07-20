@@ -54,11 +54,11 @@ mcuxClMath_SecModExp_SqrMultAws(mcuxClSession_Handle_t session, const uint32_t *
                         mcuxClMath_Fup_Aws_Init_LEN);
 
     const uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in SecModExp")
-    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(CERT_EXP36_C, "UPTR table is 32-bit aligned in SecModExp")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in SecModExp")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_EXP36_C, "UPTR table is 32-bit aligned in SecModExp")
     const uint32_t *pOperands32 = (const uint32_t *) pOperands;
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_EXP36_C)
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_EXP36_C)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
     /* A0 and A1 will be the intermediate result A(t) and temp buffer A(1-t). */
     /* In the beginning, A0 is the intermediate result, i.e., t = 0. */
@@ -124,14 +124,14 @@ mcuxClMath_SecModExp_SqrMultAws(mcuxClSession_Handle_t session, const uint32_t *
             MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate1, mcuxClRandom_ncGenerate(session, (uint8_t *) &randomWordStack, sizeof(uint32_t)));
             if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate1)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_ERRORCODE_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_STATUS_ERROR);
             }
             expWord1 = randomWordStack;  /* avoid compiler writing randomWord back to stack */
             MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
 
-            MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "bitIndex < 8*expByteLength, and expByteLength is bounded by memory size (and smaller than 2^16).")
+            MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "bitIndex < 8*expByteLength, and expByteLength is bounded by memory size (and smaller than 2^16).")
             expWord0 = pExp[(uint32_t) bitIndex / 32u] ^ expWord1;
-            MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+            MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
         }
 
         /* Re-randomize base operands, for the first 64 bits of exponent processed */
@@ -150,7 +150,7 @@ mcuxClMath_SecModExp_SqrMultAws(mcuxClSession_Handle_t session, const uint32_t *
           MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate2, mcuxClRandom_ncGenerate(session, (uint8_t *) p32R0, 16u));
           if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate2)
           {
-              MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_ERRORCODE_ERROR);
+              MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_STATUS_ERROR);
           }
 
           p32R0[4u] = p32R0[1u] >> 6u;  /* Copy random from R0[63:32] to R2, and keep only 26 bits */
@@ -189,7 +189,7 @@ mcuxClMath_SecModExp_SqrMultAws(mcuxClSession_Handle_t session, const uint32_t *
         MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate3, mcuxClRandom_ncGenerate(session, (uint8_t *) &rndWordStack, sizeof(uint32_t)));
         if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate3)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_ERRORCODE_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_STATUS_ERROR);
         }
         uint32_t rndWord = rndWordStack;                    /* avoid compiler writing rndWord back to stack */
 
@@ -209,7 +209,7 @@ mcuxClMath_SecModExp_SqrMultAws(mcuxClSession_Handle_t session, const uint32_t *
         bitIndex -= 2;
     } while (0 <= bitIndex);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp_SqrMultAws, MCUXCLMATH_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) );
 }
 
@@ -222,9 +222,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
 
     /* Create local UPTR table. */
     uint32_t pOperands32[(SECMODEXP_UPTRT_SIZE + 1u) / 2u];
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table")
     uint16_t *pOperands = (uint16_t *) pOperands32;
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     const uint16_t *backupPtrUptrt;
     /* Mapping to internal indices:                         M3  M1 M2  M0   N  TE  A1  A0 */
     /* mcuxClMath_InitLocalUptrt always returns _OK. */
@@ -233,15 +233,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
     uint32_t ps1LenBackup = MCUXCLPKC_PS1_GETLENGTH_REG();
 
     /* Import exponent (big-endian to little-endian). */
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT30_C, "pkcLenExpPlus in range [expByteLength+1, expByteLength+MCUXCLPKC_WORDSIZE].")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT30_C, "pkcLenExpPlus in range [expByteLength+1, expByteLength+MCUXCLPKC_WORDSIZE].")
     uint32_t pkcLenExpPlus = MCUXCLPKC_ROUNDUP_SIZE(expByteLength + 1u);
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT30_C)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT30_C)
     MCUXCLPKC_PS1_SETLENGTH_REG(pkcLenExpPlus);  /* MCLEN on higher 16 bits is not used. */
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_SecImport, mcuxClPkc_SecureImportBigEndianToPkc(session, MCUXCLPKC_PACKARGS2(SECMODEXP_A0, SECMODEXP_A1), pExp, expByteLength));
     if (MCUXCLPKC_STATUS_OK != ret_SecImport)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
     }
 
     /******************************************************/
@@ -252,14 +252,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
     /* Generate random expB and blind exponent, expA = exp + expB. */
     uint8_t *pA1 = MCUXCLPKC_OFFSET2PTR(pOperands[SECMODEXP_A1]);
     /* A1 = expB < (256^pkcLenExpPlus)/2. */
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "pkcLenExpPlus in range [expByteLength+1, expByteLength+MCUXCLPKC_WORDSIZE].")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "pkcLenExpPlus in range [expByteLength+1, expByteLength+MCUXCLPKC_WORDSIZE].")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate1, mcuxClRandom_ncGenerate(session, pA1, pkcLenExpPlus));
     if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate1)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
     }
     pA1[pkcLenExpPlus - 1u] &= 0x7Fu;
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
 
     /* A0 = expA = exp + expB < 256^pkcLenExpPlus. */
     MCUXCLPKC_FP_CALC_OP1_ADD(SECMODEXP_A0, SECMODEXP_A0, SECMODEXP_A1);
@@ -282,7 +282,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate2, mcuxClRandom_ncGenerate(session, (uint8_t *) p32R0, 8u));
     if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate2)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
     }
     p32R0[0] |= 0x00000001u;
     p32R0[1] |= 0x80000000u;
@@ -363,7 +363,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate3, mcuxClRandom_ncGenerate(session, pR1, 4u));
     if (MCUXCLRANDOM_STATUS_OK != ret_Random_ncGenerate3)
     {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
     }
     /* Clear upper word and process lower word of R1 */
     p32R0[3u] = 0x00000000u;
@@ -390,18 +390,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
 
     /* Calculate 2-bit window exponentiation, A0 = m0 = m^q. */
     MCUX_CSSL_FP_FUNCTION_CALL(retSecModExp0, mcuxClMath_SecModExp_SqrMultAws(session, pExpTemp, wordLenExp, 2u, secOption));
-    if (MCUXCLMATH_ERRORCODE_OK != retSecModExp0)
+    if (MCUXCLMATH_STATUS_OK != retSecModExp0)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
     }
 
     /* Calculate double exponentiation, A0 = result = m^r * m0^b, with interleaved r and b. */
     MCUXCLPKC_FP_CALC_OP1_OR_CONST(SECMODEXP_M2, SECMODEXP_A0, 0u);
     const uint32_t *p32TE = MCUXCLPKC_OFFSET2PTRWORD(pOperands[SECMODEXP_TE]);  /* operand TE shall be PKC word aligned. */
     MCUX_CSSL_FP_FUNCTION_CALL(retSecModExp1, mcuxClMath_SecModExp_SqrMultAws(session, p32TE, 16u, 1u, secOption));
-    if (MCUXCLMATH_ERRORCODE_OK != retSecModExp1)
+    if (MCUXCLMATH_STATUS_OK != retSecModExp1)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_ERROR);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
     }
 
     /* Restore pUptrt. */
@@ -414,7 +414,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
         pOperands32[i] = 0u;
     }
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_ERRORCODE_OK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_InitLocalUptrt),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
         /* Euclidean exponent splitting */

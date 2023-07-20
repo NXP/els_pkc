@@ -60,7 +60,7 @@ bool mcuxClPsaDriver_aes_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Set up PSA key attributes. */
@@ -97,12 +97,12 @@ bool mcuxClPsaDriver_aes_example(void)
 
     /* Check the return value */
     if(result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(output_length != MCUXCLAES_BLOCK_SIZE) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the content */
@@ -110,10 +110,15 @@ bool mcuxClPsaDriver_aes_example(void)
     {
         if (aes128_output[i] != aes128_result[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_aes_example(void)
+{
+    bool result = mcuxClPsaDriver_aes_example();
+    return result;
 }

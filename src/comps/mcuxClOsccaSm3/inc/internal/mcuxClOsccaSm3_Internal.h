@@ -45,10 +45,4 @@
 #define MCUXCLOSCCASM3_COUNTER_SIZE_SM3     (8U)  ///< Counter size for SM3 padding
 /**@}*/
 
-/**********************************************
- * Function declarations
- **********************************************/
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOsccaSm3_core_sm3_switch_endianness)
-MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_core_sm3_switch_endianness(uint32_t *ptr, uint32_t length);
-
 #endif /* MCUXCLOSCCASM3_INTERNAL_H_ */

@@ -51,6 +51,7 @@
 #define MCUXCLOSCCAPKC_FUP_MC1                        (0x80U)
 #define MCUXCLOSCCAPKC_FUP_MC2                        (0xc0U)
 
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "PKC operations are defined.")
 /**********************************************************/
 /* Mnemonic of PKC L0 operations (OP)                     */
 /**********************************************************/
@@ -81,12 +82,13 @@
 #define MCUXCLOSCCAPKC_FMC_MRED                       (0x33U)
 #define MCUXCLOSCCAPKC_FMC_TMUL                       (0x13U)
 #define MCUXCLOSCCAPKC_FMC_MONTINV                    (0x5DU)
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 /**********************************************************/
 /* Helper macros to start specified PKC calculation,      */
 /* with flow protection                                   */
 /**********************************************************/
-
+MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_2_5, "PKC operations are defined.")
 /* L0 operation (OP) with parameter set 1. */
 #define MCUXCLOSCCAPKC_PKCPACKARGS(R, X, Y, Z)       (((uint32_t)(R) << 24) | ((uint32_t)(X) << 16) | ((uint32_t)(Y) << 8) | ((uint32_t)(Z)))
 #define MCUXCLOSCCAPKC_FXIOP1_SBX0(R, Z)              MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaPkc_Op(((uint16_t)MCUXCLOSCCAPKC_FUP_OP1 << 8) | (MCUXCLOSCCAPKC_FOP_SBX0), MCUXCLOSCCAPKC_PKCPACKARGS(R, 0, 0, Z)))
@@ -138,5 +140,6 @@
 #define MCUXCLOSCCAPKC_FXIMC2_MSUB(R, Y, Z, X)        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaPkc_Op(((uint16_t)MCUXCLOSCCAPKC_FUP_MC2 << 8) | (MCUXCLOSCCAPKC_FMC_MSUB), MCUXCLOSCCAPKC_PKCPACKARGS(R, X, Y, Z)))
 #define MCUXCLOSCCAPKC_FXIMC2_MRED(R, X, Z)           MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaPkc_Op(((uint16_t)MCUXCLOSCCAPKC_FUP_MC2 << 8) | (MCUXCLOSCCAPKC_FMC_MRED), MCUXCLOSCCAPKC_PKCPACKARGS(R, X, 0, Z)))
 #define MCUXCLOSCCAPKC_FXIMC2_MONTINV(R, X, Y, Z)     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaPkc_Op(((uint16_t)MCUXCLOSCCAPKC_FUP_MC2 << 8) | (MCUXCLOSCCAPKC_FMC_MONTINV), MCUXCLOSCCAPKC_PKCPACKARGS(R, X, Y, Z)))
+MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_2_5)
 
 #endif /*MCUXCLOSCCAPKC_OPERATIONS_H_*/

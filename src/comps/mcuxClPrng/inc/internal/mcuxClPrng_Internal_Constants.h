@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -39,9 +39,9 @@ extern "C" {
 /** @addtogroup MCUXCLPRNG_STATUS_
  * mcuxClPrng return code definitions
  * @{ */
-#define MCUXCLPRNG_STATUS_ERROR                  ((mcuxClPrng_Status_t) 0x8B87E1E1u)  ///< An error occurred during the PRNG operation
-#define MCUXCLPRNG_STATUS_OK                     ((mcuxClPrng_Status_t) 0x78740F0Fu)  ///< PRNG operation returned successfully
-#define MCUXCLPRNG_STATUS_FAULT_ATTACK           ((mcuxClPrng_Status_t) 0x8B87F0F0u)  ///< A fault attack is detected
+#define MCUXCLPRNG_STATUS_ERROR                  ((mcuxClPrng_Status_t) 0x0FF55330u)  ///< An error occurred during the PRNG operation
+#define MCUXCLPRNG_STATUS_OK                     ((mcuxClPrng_Status_t) 0x0FF52E03u)  ///< PRNG operation returned successfully
+#define MCUXCLPRNG_STATUS_FAULT_ATTACK           ((mcuxClPrng_Status_t) 0x0FF5F0F0u)  ///< A fault attack is detected
 /** @} */
 
 

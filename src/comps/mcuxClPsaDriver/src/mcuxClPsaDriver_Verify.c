@@ -13,7 +13,7 @@
 
 #include "common.h"
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClEls.h>
 #include <mcuxClEcc.h>
 #include <mcuxClHash.h>
@@ -42,9 +42,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     bool isHash
 )
 {
-    MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
-    MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) != true
         && PSA_ALG_IS_RSA_PSS(alg) != true
@@ -268,9 +268,14 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     {
       // Perform signature verificaton
       mcuxClEcc_Weier_DomainParams_t * domainParams = (mcuxClEcc_Weier_DomainParams_t *) mcuxClKey_getTypeInfo(pKey);
+      if(domainParams == NULL)
+      {
+        return PSA_ERROR_GENERIC_ERROR;
+      }
       const uint32_t pLen = domainParams->common.byteLenP;
       const uint32_t nLen = domainParams->common.byteLenN;
       uint8_t * pKeyData = mcuxClKey_getLoadedKeyData(pKey);
+
       uint8_t pOutputR[MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER];
 
       /* buffer for hash */
@@ -334,16 +339,20 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
          Octet String to Elliptic Curve Point Conversion */
       if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) == true)
       {
+        if(pKeyData == NULL)
+        {
+          return PSA_ERROR_GENERIC_ERROR;
+        }
+
         /* Currently only uncompressed format is supported */
         if(MCUXCLPSADRIVER_PREFIX_ANSI_X9_62_UNCOMPRESSED_POINT != *pKeyData)
         {
           return(PSA_ERROR_NOT_SUPPORTED);
         }
-        ++pKeyData;
 
         for(uint32_t i = 0u; i < 2u * pLen; ++i)
         {
-          publicKey[i] = pKeyData[i];
+          publicKey[i] = pKeyData[i + 1u];
         }
       }
       else
@@ -365,7 +374,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
           }
         }
         else
-        {
+        {		  
+          if(pKeyData == NULL)
+          {
+            return PSA_ERROR_GENERIC_ERROR;
+          }
+		  
           /* TODO: CLNS-8546 Check if this can be replaced by direct loading of public key (since it is keypair) */
           /* Calculate public point */
           mcuxClEcc_PointMult_Param_t params = {
@@ -430,7 +444,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     return PSA_SUCCESS;
 }
 
-
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify(const psa_key_attributes_t *attributes,
                                                       const uint8_t *key_buffer,
                                                       size_t key_buffer_size,
@@ -441,6 +455,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify(const psa_key_attributes_
                                                       size_t signature_length,
                                                       bool isHash
 )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
         /* Create the key */
@@ -470,6 +485,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify(const psa_key_attributes_
     {
         return keyStatus;
     }
-
-    return status;
+    else
+    {
+      return status;
+    }
 }

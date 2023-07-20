@@ -24,7 +24,7 @@
 #include <platform_specific_headers.h>
 
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc_Types.h>
@@ -38,9 +38,9 @@
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_setUptrt)
 static inline void mcuxClPkc_inline_setUptrt(const uint16_t * pUptrt)
 {
-    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_11_4, "Convert pointer to address.")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_11_4, "Convert pointer to address.")
     uint32_t uptrtAddr = (uint32_t) pUptrt;
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_11_4)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_11_4)
 
     MCUXCLPKC_SFR_WRITE(UPTRT, uptrtAddr);
 }
@@ -51,22 +51,22 @@ static inline uint16_t * mcuxClPkc_inline_getUptrt(void)
 {
     uint32_t uptrtAddr = MCUXCLPKC_SFR_READ(UPTRT);
 
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("Convert UPTRT address to pointer.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("Convert UPTRT address to pointer.")
     return (uint16_t *) uptrtAddr;
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 }
 
 /** Inline function to convert CPU pointer to PKC offset. */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_ptr2Offset)
 static inline uint16_t mcuxClPkc_inline_ptr2Offset(const uint8_t * cpuPointer)
 {
-    MCUXCLCORE_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_11_4, "calculate PKC operand offset.")
-    MCUXCLCORE_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_STR30_C, "it's a pointer to PKC operand, but not string literal.")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_11_4, "calculate PKC operand offset.")
+    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_STR30_C, "it's a pointer to PKC operand, but not string literal.")
 
     uint32_t maskedAddress = (uint32_t) cpuPointer & MCUXCLPKC_RAM_OFFSET_MASK;
 
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_STR30_C)
-    MCUXCLCORE_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_11_4)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_STR30_C)
+    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_11_4)
 
     return (uint16_t) maskedAddress;
 }
@@ -75,12 +75,12 @@ static inline uint16_t mcuxClPkc_inline_ptr2Offset(const uint8_t * cpuPointer)
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_offset2Ptr)
 static inline uint8_t * mcuxClPkc_inline_offset2Ptr(uint16_t pkcOffset)
 {
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("convert PKC operand offset to pointer.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("convert PKC operand offset to pointer.")
 
     uint32_t address = (uint32_t) pkcOffset | (uint32_t) MCUXCLPKC_RAM_START_ADDRESS;
     uint8_t * ptr = (uint8_t *) address;
 
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
     return ptr;
 }
@@ -89,12 +89,12 @@ static inline uint8_t * mcuxClPkc_inline_offset2Ptr(uint16_t pkcOffset)
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_offset2PtrWord)
 static inline uint32_t * mcuxClPkc_inline_offset2PtrWord(uint16_t pkcOffset)
 {
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("convert PKC operand offset (PKC-word aligned) to pointer.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("convert PKC operand offset (PKC-word aligned) to pointer.")
 
     uint32_t address = (uint32_t) pkcOffset | (uint32_t) MCUXCLPKC_RAM_START_ADDRESS;
     uint32_t * ptrWord = (uint32_t *) address;
 
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
     return ptrWord;
 }

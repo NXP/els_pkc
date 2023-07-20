@@ -32,7 +32,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClKey_Internal.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
 
 
@@ -56,9 +56,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
 
   /* Initialize PKC */
   uint32_t cpuWaUsedBackup = mcuxClSession_getUsage_cpuWa(pSession);
-  MCUXCLCORE_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClPkc_State_t * pkcStateBackup = (mcuxClPkc_State_t *) mcuxClSession_allocateWords_cpuWa(pSession, (sizeof(mcuxClPkc_State_t)) / (sizeof(uint32_t)));
-  MCUXCLCORE_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
   if (NULL == pkcStateBackup)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -136,7 +136,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
   }
-  else if(MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK != retVal_PaddingOperation)
+  else if(MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK != retVal_PaddingOperation)
   {
     /* De-initialize PKC */
     MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
@@ -153,7 +153,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     if (pkcWaUsedByte > keyByteLength)
     {
       /* Clear PKC workarea after the input */
-      MCUXCLMEMORY_FP_MEMORY_SET(pPaddedMessage + keyByteLength, 0x00U, pkcWaUsedByte - keyByteLength);
+      MCUXCLMEMORY_FP_MEMORY_CLEAR(pPaddedMessage + keyByteLength, pkcWaUsedByte - keyByteLength);
     }
 
     /*****************************************************/
@@ -199,7 +199,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
                                 pPaddingMode->EncodeVerify_FunId,
                                 MCUX_CSSL_FP_CONDITIONAL((pkcWaUsedByte > keyByteLength),
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set)),
+                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)),
                                 MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_KEY_PRIVATEPLAIN == pKey->keytype),
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privatePlain)),
                                 MCUX_CSSL_FP_CONDITIONAL(((MCUXCLRSA_KEY_PRIVATECRT == pKey->keytype) || (MCUXCLRSA_KEY_PRIVATECRT_DFA == pKey->keytype)),
@@ -207,7 +207,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
     }
-    else if(MCUXCLRSA_INTERNAL_STATUS_KEYOP_OK != retVal_RsaPrivate)
+    else if(MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retVal_RsaPrivate)
     {
       /* De-initialize PKC */
       MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
@@ -240,7 +240,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
                       pPaddingMode->EncodeVerify_FunId,
                       MCUX_CSSL_FP_CONDITIONAL((pkcWaUsedByte > keyByteLength),
-                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set)),
+                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)),
                       MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_KEY_PRIVATEPLAIN == pKey->keytype),
                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privatePlain)),
                       MCUX_CSSL_FP_CONDITIONAL(((MCUXCLRSA_KEY_PRIVATECRT == pKey->keytype) || (MCUXCLRSA_KEY_PRIVATECRT_DFA == pKey->keytype)),

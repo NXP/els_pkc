@@ -53,7 +53,7 @@ bool mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example(void)
   /** Initialize ELS, Enable the ELS **/
   if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /*
@@ -87,13 +87,13 @@ bool mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example(void)
   /* Check the return value */
   if(status != PSA_SUCCESS)
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Check the output length */
   if(private_key_buffer_length != PSA_BITS_TO_BYTES(256u))
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
 
@@ -134,13 +134,13 @@ bool mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example(void)
   /* Check the return value */
   if(status != PSA_SUCCESS)
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Check the signature length */
   if(signature_length != PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, 256u, PSA_ALG_ECDSA_ANY))
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
 
@@ -177,13 +177,13 @@ bool mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example(void)
   /* Check the return value */
   if(status != PSA_SUCCESS)
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Check the output length */
   if(public_key_buffer_length != public_key_buffer_size)
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /*
@@ -220,10 +220,10 @@ bool mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example(void)
   /* Check the return value */
   if(status != PSA_SUCCESS)
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Return */
-  return MCUXCLEXAMPLE_OK;
+  return MCUXCLEXAMPLE_STATUS_OK;
 }
 

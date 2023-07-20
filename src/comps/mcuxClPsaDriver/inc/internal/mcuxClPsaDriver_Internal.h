@@ -23,7 +23,7 @@
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClCipherModes_Internal_Types.h>
 #include <internal/mcuxClAeadModes_ELS_Types.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 #include <internal/mcuxClHash_Internal.h>
 
 /* Definition for mcuxClPsaDriver_Sign and mcuxClPsaDriver_Verify */

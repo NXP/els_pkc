@@ -27,14 +27,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncInit(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_ncInit);
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_Init, mcuxClPrng_init());
-    if (MCUXCLPRNG_STATUS_OK != ret_Prng_Init)
+    if(MCUXCLPRNG_STATUS_ERROR == ret_Prng_Init)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandom_ncInit, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
-                                  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_init));
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_ncInit, MCUXCLRANDOM_STATUS_ERROR, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_init));
     }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_ncInit, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
-                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_init));
+    else if(MCUXCLPRNG_STATUS_OK != ret_Prng_Init)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandom_ncInit, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_ncInit, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_init));
+    }
 }
 
 
@@ -48,12 +54,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncGenerate(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_ncGenerate);
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_GetRandom, mcuxClPrng_generate(pOut, outLength));
-    if (MCUXCLPRNG_STATUS_OK != ret_Prng_GetRandom)
+    if(MCUXCLPRNG_STATUS_ERROR == ret_Prng_GetRandom)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandom_ncGenerate, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
-                                  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_generate));
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_ncGenerate, MCUXCLRANDOM_STATUS_ERROR, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_generate));
     }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_ncGenerate, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
-                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_generate));
+    else if(MCUXCLPRNG_STATUS_OK != ret_Prng_GetRandom)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandom_ncGenerate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_ncGenerate, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_generate));
+    }
 }

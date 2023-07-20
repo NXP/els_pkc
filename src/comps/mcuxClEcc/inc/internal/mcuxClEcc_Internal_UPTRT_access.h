@@ -48,15 +48,15 @@
     do{ \
         if ( (0u == ((idx0) & (0x01u))) && ((idx1) == ((idx0) + (0x01u))) )  \
         { \
-          MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in ECC component"); \
+          MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 - Rule 11.3 - UPTR table is 32-bit aligned in ECC component"); \
           ((uint32_t *) (pOps))[(idx0) / 2u] = (ofs1_ofs0); \
-          MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING(); \
+          MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING(); \
         }  \
         else  \
-        { MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table") \
+        { MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table") \
           ((uint16_t *) (pOps))[idx0] = (uint16_t) ((ofs1_ofs0) & 0xFFFFu);  \
           ((uint16_t *) (pOps))[idx1] = (uint16_t) ((ofs1_ofs0) >> 16); \
-          MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() \
+          MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() \
         }  \
     } while(false)
 
@@ -75,10 +75,10 @@
             ((uint32_t *) (pOps))[(dIdx0) / 2u] = ((uint32_t *) (pOps))[(sIdx0) / 2u]; \
         }  \
         else  \
-        {   MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table") \
+        {   MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 - Rule 11.3 - Cast to 16-bit pointer table") \
             ((uint16_t *) (pOps))[dIdx0] = ((uint16_t *) (pOps))[sIdx0];  \
             ((uint16_t *) (pOps))[dIdx1] = ((uint16_t *) (pOps))[sIdx1];  \
-            MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() \
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES() \
         }  \
     } while (false)
 

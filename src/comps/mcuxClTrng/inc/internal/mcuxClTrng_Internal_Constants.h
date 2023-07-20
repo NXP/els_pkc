@@ -41,9 +41,9 @@ extern "C" {
 /** @addtogroup MCUXCLTRNG_STATUS_
  * mcuxClTrng return code definitions
  * @{ */
-#define MCUXCLTRNG_STATUS_ERROR                  ((mcuxClTrng_Status_t) 0xC3ABB12Du)  ///< An error occurred during the TRNG operation
-#define MCUXCLTRNG_STATUS_OK                     ((mcuxClTrng_Status_t) 0xAAA5D39Eu)  ///< TRNG operation returned successfully
-#define MCUXCLTRNG_STATUS_FAULT_ATTACK           ((mcuxClTrng_Status_t) 0xAAA5F0F0u)  ///< A fault attack is detected
+#define MCUXCLTRNG_STATUS_ERROR                  ((mcuxClTrng_Status_t) 0x0FF15330u)  ///< An error occurred during the TRNG operation
+#define MCUXCLTRNG_STATUS_OK                     ((mcuxClTrng_Status_t) 0x0FF12E03u)  ///< TRNG operation returned successfully
+#define MCUXCLTRNG_STATUS_FAULT_ATTACK           ((mcuxClTrng_Status_t) 0x0FF1F0F0u)  ///< A fault attack is detected
 /** @} */
 
 #ifdef MCUXCL_FEATURE_TRNG_ELS

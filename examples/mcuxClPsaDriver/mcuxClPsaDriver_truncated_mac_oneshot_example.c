@@ -61,7 +61,7 @@ bool mcuxClPsaDriver_truncated_mac_oneshot_example(void)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Set up PSA key attributes. */
@@ -96,19 +96,19 @@ bool mcuxClPsaDriver_truncated_mac_oneshot_example(void)
 
     /* Check the return value */
     if(result != PSA_SUCCESS) {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(output_length != PSA_MAC_LENGTH(PSA_KEY_TYPE_AES, 8u * MCUXCLELS_CIPHER_KEY_SIZE_AES_128, PSA_ALG_TRUNCATED_MAC(PSA_ALG_CMAC, 4u)))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the output length */
     if(sizeof(cmac_output_reference) != output_length)
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_STATUS_FAILURE;
     }
 
     /* Check the content */
@@ -116,10 +116,15 @@ bool mcuxClPsaDriver_truncated_mac_oneshot_example(void)
     {
         if (cmac_output[i] != cmac_output_reference[i]) // Expect that the resulting encrypted msg matches our initial message
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /* Return */
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
+}
+bool nxpClPsaDriver_truncated_mac_oneshot_example(void)
+{
+    bool result = mcuxClPsaDriver_truncated_mac_oneshot_example();
+    return result;
 }

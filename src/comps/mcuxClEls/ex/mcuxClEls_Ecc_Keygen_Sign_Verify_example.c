@@ -54,14 +54,14 @@ static mcuxClEls_EccByte_t ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_
 
 /**
  * Performs SHA2-256 hashing using mcuxClEls functions.
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Generate signing key */
@@ -87,7 +87,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -95,7 +95,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -111,7 +111,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_EccSign_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccSign_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccSign_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -119,7 +119,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -143,7 +143,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_EccVerify_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccVerify_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccVerify_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -151,7 +151,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -160,27 +160,27 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     // mcuxClEls_GetHwState is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     if (MCUXCLELS_STATUS_ECDSAVFY_OK != state.bits.ecdsavfy)
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that mcuxClEls_EccVerify_Async operation successfully performed the signature verification.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that mcuxClEls_EccVerify_Async operation successfully performed the signature verification.
     }
 
     /** deleted keyIdx keySlot **/
     if(!mcuxClExample_Els_KeyDelete(keyIdx))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

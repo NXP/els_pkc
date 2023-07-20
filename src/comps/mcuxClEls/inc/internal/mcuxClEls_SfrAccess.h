@@ -57,9 +57,9 @@ extern "C" {
 /** Write to ELS SFR */
 #define MCUXCLELS_SFR_WRITE(sfr, value)                                                  \
     do{                                                                                 \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")    \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")    \
         ELS_SFR_BASE->ELS_SFR_NAME(sfr) = (value);                                      \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()                              \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()                              \
     } while(false)
 
 /** Read from ELS SFR bit field */
@@ -78,9 +78,9 @@ extern "C" {
 #define MCUXCLELS_SFR_BITVALSET(sfr, bit, val)  \
     do{                                                                                                                             \
         uint32_t temp = ELS_SFR_BASE->ELS_SFR_NAME(sfr) & (~ (uint32_t) MCUXCLELS_SFR_FIELD_MASK(sfr, bit));                         \
-        MCUXCLCORE_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")                                                \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")                                                \
         ELS_SFR_BASE->ELS_SFR_NAME(sfr) = temp | ((val) << MCUXCLELS_SFR_FIELD_SHIFT(sfr, bit)) & MCUXCLELS_SFR_FIELD_MASK(sfr, bit); \
-        MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()                                                                          \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()                                                                          \
     } while(false)
 
 /**** ------------------------------ ****/

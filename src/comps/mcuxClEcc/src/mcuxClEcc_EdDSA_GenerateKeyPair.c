@@ -40,6 +40,13 @@
 #include <internal/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h>
 
 
+#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+#define MCUXCLECC_FP_GENKEYPAIR_SECSTRENGTH  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength)
+#else
+#define MCUXCLECC_FP_GENKEYPAIR_SECSTRENGTH  (0u)
+#endif
+
+
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateKeyPair_Core)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_Core(
     mcuxClSession_Handle_t pSession,
@@ -71,9 +78,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
     mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) (privKey->type.info);
 
     MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
@@ -120,9 +127,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
         }
 
         MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption, 
-#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
-                                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
-#endif 
+                                                   MCUXCLECC_FP_GENKEYPAIR_SECSTRENGTH,
                                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
     }
     else if (MCUXCLECC_EDDSA_PRIVKEY_INPUT == options)

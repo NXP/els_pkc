@@ -32,13 +32,17 @@
  * @ingroup mcuxClHash_Constants
  * @{
  */
-#define MCUXCLHASH_STATUS_OK                             ((mcuxClHash_Status_t) 0xE1E1E1E1u )  ///< Hash operation successful
-#define MCUXCLHASH_COMPARE_EQUAL                         ((mcuxClHash_Status_t) 0xE1E1E4E4u)   ///< Hash operation and comparison of result successful
-#define MCUXCLHASH_FAILURE                               ((mcuxClHash_Status_t) 0xE1E11E1Eu )  ///< Hash operation failed
-#define MCUXCLHASH_STATUS_INVALID_PARAMS                 ((mcuxClHash_Status_t) 0xE1E12E2Eu )  ///< Hash function called with invalid parameters
-#define MCUXCLHASH_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK    ((mcuxClHash_Status_t) 0xE1E14E4Eu)   ///< Export on state, for which a NON-multiple of the blocksize has been hashed
-#define MCUXCLHASH_COMPARE_NOT_EQUAL                     ((mcuxClHash_Status_t) 0xE1E18E8Eu)   ///< Hash operation succeeded, but comparison of result failed
-#define MCUXCLHASH_STATUS_FAULT_ATTACK                   ((mcuxClHash_Status_t) 0xE1E10F0Fu )  ///< Fault attack (unexpected behavior) detected
+#define MCUXCLHASH_STATUS_OK                                  ((mcuxClHash_Status_t) 0x06662E03u )                  ///< Hash operation successful
+#define MCUXCLHASH_STATUS_COMPARE_EQUAL                       ((mcuxClHash_Status_t) 0x06662E07u)                   ///< Hash operation and comparison of result successful
+#define MCUXCLHASH_COMPARE_EQUAL                              MCUXCLHASH_STATUS_COMPARE_EQUAL                       ///< \deprecated Replaced by MCUXCLHASH_STATUS_COMPARE_EQUAL
+#define MCUXCLHASH_STATUS_FAILURE                             ((mcuxClHash_Status_t) 0x06665330u )                  ///< Hash operation failed
+#define MCUXCLHASH_FAILURE                                    MCUXCLHASH_STATUS_FAILURE                             ///< \deprecated Replaced by MCUXCLHASH_STATUS_FAILURE
+#define MCUXCLHASH_STATUS_INVALID_PARAMS                      ((mcuxClHash_Status_t) 0x066653F8u )                  ///< Hash function called with invalid parameters
+#define MCUXCLHASH_STATUS_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK  ((mcuxClHash_Status_t) 0x06665338u)                   ///< Export on state, for which a NON-multiple of the blocksize has been hashed
+#define MCUXCLHASH_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK         MCUXCLHASH_STATUS_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK  ///< \deprecated Replaced by MCUXCLHASH_STATUS_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK
+#define MCUXCLHASH_STATUS_COMPARE_NOT_EQUAL                   ((mcuxClHash_Status_t) 0x06668930u)                   ///< Hash operation succeeded, but comparison of result failed
+#define MCUXCLHASH_COMPARE_NOT_EQUAL                          ((mcuxClHash_Status_t) 0x06668930u)                   ///< \deprecated Replaced by MCUXCLHASH_STATUS_COMPARE_NOT_EQUAL
+#define MCUXCLHASH_STATUS_FAULT_ATTACK                        ((mcuxClHash_Status_t) 0x0666F0F0u )                  ///< Fault attack (unexpected behavior) detected
 /**@}*/
 
 /**
@@ -72,6 +76,7 @@
 #define MCUXCLHASH_OUTPUT_SIZE_SHA3_SHAKE_256  (136uL) ///< SHA3-SHAKE 256  output size: 1088 bit (136 bytes)
 #define MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_128 (168uL) ///< SHA3-CSHAKE 128 output size: 1344 bit (168 bytes)
 #define MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_256 (136uL) ///< SHA3-CSHAKE 256 output size: 1088 bit (136 bytes)
+#define MCUXCLHASH_MAX_OUTPUT_SIZE             (MCUXCLHASH_OUTPUT_SIZE_SHA3_SHAKE_128) ///< Maximum output size
 /**@}*/
 
 

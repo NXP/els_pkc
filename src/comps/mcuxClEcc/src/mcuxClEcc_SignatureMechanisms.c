@@ -18,7 +18,7 @@
 
 #include <mcuxClEcc_ParameterSizes.h>
 #include <mcuxClEcc_Constants.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
 

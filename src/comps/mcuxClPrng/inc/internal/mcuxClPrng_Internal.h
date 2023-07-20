@@ -25,5 +25,6 @@
 #include <internal/mcuxClPrng_Internal_Types.h>
 #include <internal/mcuxClPrng_Internal_Functions.h>
 #include <internal/mcuxClPrng_Internal_Constants.h>
+#include <internal/mcuxClPrng_Internal_ELS.h>
 
 #endif /* MCUXCLPRNG_INTERNAL_H_ */

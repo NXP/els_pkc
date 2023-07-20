@@ -50,6 +50,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
         key->type.size = keyDataLength;
     }
 
+    /* key data size validation */
+    if(key->type.size != keyDataLength)
+    {   
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_init, MCUXCLKEY_STATUS_FAILURE); 
+    }
+
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_init, MCUXCLKEY_STATUS_OK);
 }
 
@@ -156,10 +162,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_flush(
     {
         uint32_t len = mcuxClKey_getSize(key);
         //TODO may need to be replaced by a secure set function
-        MCUXCLMEMORY_FP_MEMORY_SET(mcuxClKey_getLoadedKeyData(key), 0u, len);
+        MCUXCLMEMORY_FP_MEMORY_CLEAR(mcuxClKey_getLoadedKeyData(key), len);
         mcuxClKey_setLoadedKeySlot(key, MCUXCLKEY_INVALID_KEYSLOT);
         mcuxClKey_setLoadStatus(key, MCUXCLKEY_LOADSTATUS_NOTLOADED);
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_flush, MCUXCLKEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_flush, MCUXCLKEY_STATUS_OK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
     }
     else if(MCUXCLKEY_LOADSTATUS_COPRO == location)
     {

@@ -223,14 +223,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
 
   mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pOutput PKC buffer is CPU word aligned.")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pOutput PKC buffer is CPU word aligned.")
   MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pOutput, emLen);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /************************************************************************************************/
   /* Function exit                                                                                */
   /************************************************************************************************/
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Encode_sign, MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK,
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Encode_sign, MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
     MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_PLAIN == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),

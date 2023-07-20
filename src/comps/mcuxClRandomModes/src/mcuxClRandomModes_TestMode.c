@@ -16,7 +16,7 @@
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
 #include <mcuxClMemory.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <mcuxClRandomModes_Functions_TestMode.h>
 
@@ -28,18 +28,18 @@
 #include <internal/mcuxClSession_Internal.h>
 
 #ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationModeDescriptor_TestMode_PrDisabled =
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     .initFunction                    = mcuxClRandomModes_TestMode_initFunction,
     .reseedFunction                  = mcuxClRandomModes_TestMode_reseedFunction,
     .generateFunction                = mcuxClRandomModes_NormalMode_generateFunction_PrDisabled,
-    .selftestFunction                = mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled,
+    .selftestFunction                = mcuxClRandomModes_TestMode_selftestFunction,
     .protectionTokenInitFunction     = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_TestMode_initFunction,
     .protectionTokenReseedFunction   = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_TestMode_reseedFunction,
     .protectionTokenGenerateFunction = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_NormalMode_generateFunction_PrDisabled,
-    .protectionTokenSelftestFunction = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_NormalMode_selftestFunction_PrDisabled,
+    .protectionTokenSelftestFunction = MCUX_CSSL_FP_FUNCID_mcuxClRandomModes_TestMode_selftestFunction,
     .operationMode                   = MCUXCLRANDOMMODES_TESTMODE,
 };
 #endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
@@ -51,15 +51,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createTestF
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_createTestFromNormalMode);
 
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("For a normal mode, auxParam contains a pointer to mcuxClRandom_OperationModeDescriptor_t")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("For a normal mode, auxParam contains a pointer to mcuxClRandom_OperationModeDescriptor_t")
     pTestMode->pOperationMode   = (mcuxClRandom_OperationModeDescriptor_t *) normalMode->auxParam;
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
     pTestMode->pDrbgMode        = normalMode->pDrbgMode;
     pTestMode->auxParam         = (uint32_t) pEntropyInput;
     pTestMode->contextSize      = normalMode->contextSize;
     pTestMode->securityStrength = normalMode->securityStrength;
-    
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_createTestFromNormalMode, MCUXCLRANDOM_STATUS_OK);
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_createTestFromNormalMode, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_updateEntropyInput)
@@ -68,8 +68,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_updateEntro
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_updateEntropyInput);
 
     pTestMode->auxParam         = (uint32_t) pEntropyInput;
-    
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_updateEntropyInput, MCUXCLRANDOM_STATUS_OK);
+
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandomModes_updateEntropyInput, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
 }
 
 
@@ -90,12 +90,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_in
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_TestMode_initFunction);
 
-    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    mcuxClRandom_Mode_t mode = pSession->randomCfg.mode;
     mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
-    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
 
     /* Derive the initial DRBG state from the generated entropy input */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_instantiate, pDrbgMode->pDrbgAlgorithms->instantiateAlgorithm(pSession, (uint8_t *) pMode->auxParam));
+    MCUX_CSSL_FP_FUNCTION_CALL(result_instantiate, pDrbgMode->pDrbgAlgorithms->instantiateAlgorithm(pSession, (uint8_t *) mode->auxParam));
     if (MCUXCLRANDOM_STATUS_OK != result_instantiate)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_TestMode_initFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
@@ -126,12 +126,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_re
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_TestMode_reseedFunction);
 
-    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    mcuxClRandom_Mode_t mode = pSession->randomCfg.mode;
     const mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
-    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
 
-    /* Derive the initial DRBG state from the generated entropy input */
-    MCUX_CSSL_FP_FUNCTION_CALL(result_reseed, pDrbgMode->pDrbgAlgorithms->reseedAlgorithm(pSession, (((uint8_t *) pMode->auxParam) + pRngCtxGeneric->reseedSeedOffset)));
+    /* Derive the initial DRBG state from the user-defined entropy input */
+    MCUX_CSSL_FP_FUNCTION_CALL(result_reseed, pDrbgMode->pDrbgAlgorithms->reseedAlgorithm(pSession, (((uint8_t *) mode->auxParam) + pRngCtxGeneric->reseedSeedOffset)));
     if (MCUXCLRANDOM_STATUS_OK != result_reseed)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_TestMode_reseedFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
@@ -142,7 +142,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_re
 }
 
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_TestMode_selftestFunction)
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_TestMode_selftestFunction, mcuxClRandom_selftestFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_selftestFunction(mcuxClSession_Handle_t pSession UNUSED_PARAM, mcuxClRandom_Mode_t mode UNUSED_PARAM)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_TestMode_selftestFunction);

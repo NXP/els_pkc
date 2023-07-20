@@ -20,6 +20,7 @@
 #include <mcuxClToolchain.h>             // memory segment definitions
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_RNG_Helper.h>
 
 static const uint8_t data[3] CSS_CONST_SEGMENT = {
     0x61u, 0x62u, 0x63u
@@ -49,7 +50,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
     /** Initialize ELS,  MCUXCLELS_RESET_DO_NOT_CANCEL **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Initialize session */
@@ -57,7 +58,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
     mcuxClSession_Handle_t session = &sessionDesc;
 
     /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
+
+    /* Initialize the PRNG */
+    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
 
     /**************************************************************************/
     /* Hash computation                                                       */
@@ -73,7 +77,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
     // mcuxClSession_setRtf is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_setRtf) != token) || (MCUXCLSESSION_STATUS_OK != sr_status))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -89,13 +93,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) != token2) || (MCUXCLHASH_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     
     if(sizeof(hash) != hashOutputSize)
 	{
-		return MCUXCLEXAMPLE_ERROR;
+		return MCUXCLEXAMPLE_STATUS_ERROR;
 	}
 
     /**************************************************************************/
@@ -105,7 +109,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
     {
         if(hashExpected[i] != hash[i])  // Expect that the resulting hash matches our expected output
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -113,14 +117,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
     {
         if(rtfExpected[i] != rtf[i])  // Expect that the resulting rtf matches our expected output
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -129,8 +133,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHash_sha256_oneshot_example)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

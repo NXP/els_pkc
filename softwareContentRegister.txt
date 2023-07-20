@@ -1,7 +1,7 @@
 --------------------------------------------
 NXP Software Content Register
 
-Package:                   clns-SDK_v1.5.0.zip
+Package:                   clns-SDK_v1.6.0.zip
 Outgoing License:          LA_OPT_NXP_Software_License - No distribution permitted, license in Section 2.2 applies.
 License Files:             LICENSE.htm
 Type of content:           Static library, headers, sources

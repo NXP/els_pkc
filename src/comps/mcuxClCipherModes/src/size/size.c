@@ -17,7 +17,7 @@
  *
  */
 
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClCipherModes_Wa.h>
 #include <internal/mcuxClCipherModes_Internal_Types.h>
@@ -27,11 +27,11 @@
 /* *** Work area sizes *** */
 /* *********************** */
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 volatile uint8_t mcuxClCipherModes_WorkArea_Aes_Els_Oneshot[MCUXCLCIPHERMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClCipherModes_Context_Aes_Els_t))];  // ELS Oneshot Context needs to be in WA
 
-volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_Context_Aes_Els;
+volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_Context_Aes_ELS;
 
 
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

@@ -16,13 +16,13 @@
  #pragma once
  
  #include "mcuxClConfig.h"
- #include "mcuxClCore_Analysis.h"
+ #include "mcuxCsslAnalysis.h"
  
- MCUXCLCORE_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
+ MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
  #include "fsl_device_registers.h" 
  #include "ip_platform.h" 
  #include "ip_css_constants.h" 
  #include "ip_css_design_configuration.h" 
- MCUXCLCORE_ANALYSIS_STOP_PATTERN_EXTERNAL_HEADER()
+ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_HEADER()
  
  #endif /*PLATFORM_SPECIFIC_HEADERS_H_*/ 

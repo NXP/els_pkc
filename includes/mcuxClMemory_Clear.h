@@ -31,7 +31,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 
 #include <mcuxClMemory_Types.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #ifdef __cplusplus
 extern "C" {

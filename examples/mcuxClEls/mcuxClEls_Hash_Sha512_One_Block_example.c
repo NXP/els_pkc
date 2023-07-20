@@ -82,14 +82,14 @@ static uint8_t sha2_512_digest[MCUXCLELS_HASH_STATE_SIZE_SHA_512]; // MCUXCLELS_
 
 
 /** Performs SHA2-512 hashing using mcuxClEls functions.
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha512_One_Block_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     
     mcuxClEls_HashOption_t hash_options = {0U};              // Initialize a new configuration for the planned mcuxClEls_Hash_Async operation.
@@ -105,7 +105,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha512_One_Block_example)
     // mcuxClEls_Hash_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hash_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Hash_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Hash_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     
@@ -113,7 +113,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha512_One_Block_example)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     
@@ -121,15 +121,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha512_One_Block_example)
     {
         if (sha2_512_digest[i] != sha512_reference_digest[i])
         {
-           return MCUXCLEXAMPLE_ERROR; // Expect that the resulting hash digest matches our expected output
+           return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that the resulting hash digest matches our expected output
         }
     }
     
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

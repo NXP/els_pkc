@@ -24,6 +24,7 @@
 #include <internal/mcuxClRandomModes_Private_NormalMode.h>
 #include <internal/mcuxClTrng_Internal.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
+#include <internal/mcuxClEls_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_DRBG_AES_Internal_blockcipher)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_DRBG_AES_Internal_blockcipher(
@@ -50,18 +51,34 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_DRBG_AES_In
                 MCUXCLAES_BLOCK_SIZE,
                 NULL,
                 elsOut));
-    if (MCUXCLELS_STATUS_OK_WAIT != result_cipher)
+    if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == result_cipher)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_DRBG_AES_Internal_blockcipher, MCUXCLRANDOM_STATUS_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async));
     }
+    else if (MCUXCLELS_STATUS_OK_WAIT != result_cipher)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_DRBG_AES_Internal_blockcipher, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        /* Intentionally left empty */
+    }
 
     MCUX_CSSL_FP_FUNCTION_CALL(result_wait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-    if (MCUXCLELS_STATUS_OK != result_wait)
+    if(MCUXCLELS_LEVEL1_ERROR(result_wait))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_DRBG_AES_Internal_blockcipher, MCUXCLRANDOM_STATUS_ERROR,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async));
+    }
+    else if (MCUXCLELS_STATUS_OK != result_wait)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_DRBG_AES_Internal_blockcipher, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        /* Intentionally left empty */
     }
 
     /* Copy the bytes from the buffer to output. */

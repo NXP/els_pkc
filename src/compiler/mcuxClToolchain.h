@@ -50,7 +50,7 @@
     #define CSS_CONST_SEGMENT __attribute__((section("CSS_CONST_SEGMENT")))
     #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section("MCUX_OBFUSCATED_FUP_SEGMENT")))
     #define UNUSED_PARAM __attribute__((unused))
-    #define UNALIGNED __attribute__((packed))
+    #define UNALIGNED __packed
 
 /* for ghs compiler */
 #elif defined ( __ghs__ )
@@ -103,6 +103,27 @@
 #if defined (__ARMCC_VERSION) && (__ARMCC_VERSION < 6010050)
     #define ARMCC_LT_10_5 //6.01 build 0050
 #endif
+
+
+#if defined ( __CC_ARM )
+/* Arm Compiler 4/5 */
+#define MCUX_CL_COMPILER_ARMCC
+#define MCUX_CL_COMPILER_ARM_COMPILER
+
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050) && (__ARMCC_VERSION < 6100100)
+/* Arm Compiler 6.6 LTM (armclang) */
+#define MCUX_CL_COMPILER_ARMCLANG_LTM
+#define MCUX_CL_COMPILER_ARM_COMPILER
+
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6100100)
+/* Arm Compiler above 6.10.1 (armclang) */
+#define MCUX_CL_COMPILER_ARMCLANG
+#define MCUX_CL_COMPILER_ARM_COMPILER
+
+#elif defined (_clang_)
+#define MCUX_CL_COMPILER_ARM_COMPILER /* i.e. Version 6.01 build 0019  */
+#endif
+
 
 #if ( defined(__ARMCC_VERSION) || defined(_MSC_VER) ) && !defined(inline) && !defined(__cplusplus)
     #define ARMCC_MSC_VER_NOT_INLINE_NOT_CPP

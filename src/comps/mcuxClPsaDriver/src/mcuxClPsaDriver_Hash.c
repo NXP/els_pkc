@@ -25,8 +25,11 @@
 #include <internal/mcuxClPsaDriver_Internal.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClHash_AlgorithmDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_hash_set_algorithmDescriptor(
     psa_algorithm_t alg)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     switch(alg)
     {
@@ -48,9 +51,12 @@ const mcuxClHash_AlgorithmDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_hash
     }
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_setup(
     psa_hash_operation_t *operation,
     psa_algorithm_t alg)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Select algorithm descriptor */
     const mcuxClHash_AlgorithmDescriptor_t *hashAlgo = mcuxClPsaDriver_psa_driver_wrapper_hash_set_algorithmDescriptor(alg);
@@ -61,7 +67,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_setup(
     }
 
     /* Initialize the hash operation */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Hash_t * pClnsHashData = (mcuxClPsaDriver_ClnsData_Hash_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClHash_init(
                     /* mcuxCLSession_Handle_t session: */ NULL,
                     /* mcuxClHash_Context_t context:   */ &pClnsHashData->ctx,
@@ -79,15 +87,19 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_setup(
     return PSA_SUCCESS;
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
  psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_update(
     psa_hash_operation_t *operation,
     const uint8_t *input,
     size_t input_length )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Allocate workarea space */
     uint32_t cpuWorkarea[MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX / sizeof(uint32_t)];
-
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Hash_t * pClnsHashData = (mcuxClPsaDriver_ClnsData_Hash_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if(pClnsHashData->ctx.algo == NULL)
     {
         return PSA_ERROR_BAD_STATE;
@@ -138,6 +150,8 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_setup(
 /*
  * Hashing functions
  */
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_compute(
     psa_algorithm_t alg,
     const uint8_t *input,
@@ -145,6 +159,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_compute(
     uint8_t *hash,
     size_t hash_size,
     size_t *hash_length)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Select algorithm descriptor */
     const mcuxClHash_AlgorithmDescriptor_t *hashAlgo = mcuxClPsaDriver_psa_driver_wrapper_hash_set_algorithmDescriptor(alg);
@@ -213,11 +228,14 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_compute(
     return PSA_SUCCESS;
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_finish(
     psa_hash_operation_t *operation,
     uint8_t *hash,
     size_t hash_size,
     size_t *hash_length )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Allocate workarea space */
     uint32_t cpuWorkarea[MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX / sizeof(uint32_t)];
@@ -230,7 +248,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_finish(
     *hash_length = hash_size;
     
     /* Set hash_length correctly and check consistency with hash_size */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Hash_t * pClnsHashData = (mcuxClPsaDriver_ClnsData_Hash_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if(pClnsHashData->ctx.algo->hashSize > hash_size)
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
@@ -278,9 +298,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_finish(
     return PSA_SUCCESS;
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_clone(
     const psa_hash_operation_t *source_operation,
     psa_hash_operation_t *target_operation )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
 
     /* Copy hash context to target hash operation handle */
@@ -302,8 +325,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_clone(
     return PSA_SUCCESS;
 }
 
+
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_abort(
     psa_hash_operation_t *operation )
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* Clear hash clns data (context) */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_clear (

@@ -27,21 +27,21 @@
 #include <mcuxClExample_ELS_Key_Helper.h>
 
 /** Uses random number from PRNG of ELS.
- * @retval MCUXCLEXAMPLE_OK  The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK  The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Rng_Prng_Get_Random_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     // PRNG needs to be initialized; this can be done by calling mcuxClEls_KeyDelete_Async (delete any key slot, can be empty)
     /** deleted 18 keySlot **/
     if(!mcuxClExample_Els_KeyDelete(18))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     uint32_t dummy;
@@ -50,7 +50,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Rng_Prng_Get_Random_example)
     // mcuxClEls_Prng_GetRandomWord is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandomWord) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandomWord operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandomWord operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -61,15 +61,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Rng_Prng_Get_Random_example)
     // mcuxClEls_Prng_GetRandom is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandom operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Prng_GetRandom operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021 NXP                                                  */
+/* Copyright 2020-2021, 2023 NXP                                            */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -49,7 +49,7 @@
  * @{
  */
 
-#define MCUXCLMEMORY_STATUS_OK ((mcuxClMemory_Status_t) 0x9C9C9C9Cu) ///< Memory operation successful
+#define MCUXCLMEMORY_STATUS_OK ((mcuxClMemory_Status_t) 0x09992E03u) ///< Memory operation successful
 
 /**
  * @}

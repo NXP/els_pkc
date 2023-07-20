@@ -117,8 +117,8 @@ static const uint8_t referenceSignature[RSA_KEY_BYTE_LENGTH] __attribute__ ((ali
 
 
 /** Performs a session set-up; a call to function mcuxClRsa_sign using mode mcuxClRsa_Mode_Sign_Pss_Sha2_256; a session clean-up
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
 {
     /**************************************************************************/
@@ -128,7 +128,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Create session handle to be used by mcuxClRsa_sign */
@@ -143,7 +143,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) || (MCUXCLRANDOM_STATUS_OK != prngInit_result)) 
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -185,7 +185,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
 
     if(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -197,7 +197,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
     {
         if(referenceSignature[i] != signature[i])
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -207,13 +207,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

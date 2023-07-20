@@ -19,23 +19,23 @@
  */
 
 #include <mcuxClCore_Platform.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClMacModes_Wa.h>
 #include <internal/mcuxClMacModes_Internal_Types.h>
 #include <internal/mcuxClMacModes_Internal_Macros.h>
-#include <internal/mcuxClMacModes_ELS_Ctx.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 
 /*************************/
 /**** Work area sizes ****/
 /*************************/
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 /* Context and WA for MAC computation */
-volatile mcuxClMacModes_Context_t mcuxClMacModes_Context;
-volatile uint8_t mcuxClMacModes_WorkArea[MCUXCLMACMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClMacModes_WorkArea_t))];
+volatile mcuxClMacModes_Context_t mcuxClMacModes_Ctx;
+volatile uint8_t mcuxClMacModes_WA[MCUXCLMACMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClMacModes_WorkArea_t))];
 
 /* Mode-specific structures */
 
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

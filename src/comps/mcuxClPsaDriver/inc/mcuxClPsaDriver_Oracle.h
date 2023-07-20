@@ -200,12 +200,12 @@ psa_status_t mcuxClPsaDriver_Oracle_ImportKey(mcuxClKey_Descriptor_t  *pKey,
  * executed by Oracle
  * @retval PSA_ERROR_INSUFFICIENT_MEMORY        The key_buffer size is not enough to include data to be stored
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData(const psa_key_attributes_t *attributes,
                                                                const uint8_t *data,
                                                                size_t data_length,
                                                                size_t *key_buffer_length);
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /**
  * @brief Oracle function for making keys that are installed upon boot in S50 and keys derived
@@ -217,9 +217,9 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
  * @param[in] key_id the PSA key id of a built-in key
  * @param[out] key_buffer_size the required size of the buffer to store a built-in key
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize(mbedtls_svc_key_id_t key_id, size_t *key_buffer_size);
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 /**
  * @brief Oracle function for making keys that are installed upon boot in S50 and keys derived
@@ -233,12 +233,12 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
  * @param[in] key_buffer_size is the size of the allocated
  * @param[out] key_buffer_length is the effective number of data filled in the key_buffer by the function
  */
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer(psa_key_attributes_t *attributes,
                                                        uint8_t *key_buffer,
                                                        size_t key_buffer_size,
                                                        size_t *key_buffer_length);
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 #ifdef __cplusplus
 } /* extern "C" */

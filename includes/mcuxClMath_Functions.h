@@ -603,8 +603,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(
  * </dl>
  *
  * @return A code-flow protected error code (see @ref mcuxCsslFlowProtection)
- * @retval #MCUXCLMATH_ERRORCODE_OK     function executed successfully
- * @retval #MCUXCLMATH_ERRORCODE_ERROR  error occurred during operation
+ * @retval #MCUXCLMATH_STATUS_OK     function executed successfully
+ * @retval #MCUXCLMATH_STATUS_ERROR  error occurred during operation
  *
  * @attention This function uses PRNG which has to be initialized prior to calling the function.
  */

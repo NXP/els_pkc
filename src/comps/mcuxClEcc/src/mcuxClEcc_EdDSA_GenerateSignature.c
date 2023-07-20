@@ -27,7 +27,7 @@
 #include <mcuxClMemory_Clear.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
-#include <mcuxClCore_Analysis.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClEcc.h>
 
 #include <internal/mcuxClPkc_Macros.h>
@@ -41,10 +41,10 @@
 #include <internal/mcuxClEcc_EdDSA_Internal_Hash.h>
 #include <internal/mcuxClEcc_EdDSA_GenerateSignature_FUP.h>
 
-MCUXCLCORE_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateSignature_Core)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignature_Core(
-MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Handle_t pSession,
     mcuxClKey_Handle_t key,
     const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *mode,
@@ -71,9 +71,9 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
     mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) mcuxClKey_getTypeInfo(key);
 
     MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
@@ -149,9 +149,9 @@ MCUXCLCORE_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
      *  - This will also overwrite part of ECC_S1 which lies on top of ECC_T0. */
 
     uint8_t *pT0 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T0]);
-    MCUXCLCORE_ANALYSIS_START_SUPPRESS_POINTER_CASTING("pT0 is PKC operand address and is aligned to 32 bit boundry")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("pT0 is PKC operand address and is aligned to 32 bit boundry")
     uint32_t *pT0MSWord =  & ((uint32_t *) pT0)[((operandSize + bufferSize) / sizeof(uint32_t)) - 1u];
-    MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
     *pT0MSWord = 0u; /* Clear most significant word of ECC_T0 considered as buffer of byte size (bufferSize + operandSize). */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_ncGenerate_rndR, mcuxClRandom_ncGenerate(pSession, pT0, operandSize + bufferSize - 1u));
     if (MCUXCLRANDOM_STATUS_OK != ret_ncGenerate_rndR)

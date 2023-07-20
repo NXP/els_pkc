@@ -82,6 +82,7 @@
 #define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    548u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
 #define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
 
+
 #else
 
 #ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
@@ -130,7 +131,6 @@
 #define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
 
 #endif
-
 /**
  * @}
  */  /* MCUXCLECC_EDDSA_WACPU_ */
@@ -189,7 +189,6 @@
 /**
  * PKC workarea size (in bytes) for #mcuxClEcc_WeierECC_GenerateDomainParams for arbitrary lengths of p and n.
  */
- 
 #ifdef MCUXCL_FEATURE_PROJECT_REDFINCH
 
 #define MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WAPKC_SIZE(pByteLen,nByteLen)  \

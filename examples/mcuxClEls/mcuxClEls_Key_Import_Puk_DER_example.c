@@ -114,14 +114,14 @@ static mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE] __att
 
 /**
  * Example for PuK import from DER-encoded certificate using mcuxClEls functions.
- * @retval MCUXCLEXAMPLE_OK    The example code completed successfully
- * @retval MCUXCLEXAMPLE_ERROR The example code failed */
+ * @retval MCUXCLEXAMPLE_STATUS_OK    The example code completed successfully
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
 {
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Key indices in internal keystore. */
@@ -144,7 +144,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClMemory_set is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -157,7 +157,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
@@ -201,7 +201,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccKeyGen_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -209,7 +209,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -228,7 +228,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_EccSign_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccSign_Async operation was started.
+        return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_EccSign_Async operation was started.
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -236,7 +236,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_LimitedWaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_LimitedWaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -268,7 +268,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -305,7 +305,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
 
     if (!wrap_result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Import root public key. */
@@ -321,7 +321,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     )); // Wait for the mcuxClEls_KeyImportPuk_Async operation to complete.
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyImport_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -329,7 +329,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -356,7 +356,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
                                                 ecc_signature_r)); // Wait for the mcuxClEls_KeyImportPuk_Async operation to complete.
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyImportPuk_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -364,7 +364,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -377,7 +377,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     {
         if ((uint8_t) ecc_signature[i] != (uint8_t) ecc_signature_r[i])
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
 
@@ -387,21 +387,21 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_GetKeyProperties(key_idx_ecc_import_public_key, &key_properties_imported));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     if (key_properties.bits.ksize != key_properties_imported.bits.ksize)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     if (key_properties.bits.kactv != key_properties_imported.bits.kactv)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     if (key_properties.bits.upuk != key_properties_imported.bits.upuk)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**
@@ -411,33 +411,33 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Key_Import_Puk_DER_example)
     /** deleted key_idx_helper_key keySlot **/
     if(!mcuxClExample_Els_KeyDelete(key_idx_helper_key))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** deleted key_idx_ecc_root_private_key keySlot **/
     if(!mcuxClExample_Els_KeyDelete(key_idx_ecc_root_private_key))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** deleted key_idx_ecc_root_public_key keySlot **/
     if(!mcuxClExample_Els_KeyDelete(key_idx_ecc_root_public_key))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** deleted key_idx_ecc_import_public_key keySlot **/
     if(!mcuxClExample_Els_KeyDelete(key_idx_ecc_import_public_key))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

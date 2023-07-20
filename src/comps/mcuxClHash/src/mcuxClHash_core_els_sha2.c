@@ -41,14 +41,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_els_core_sha2(
 
     if (MCUXCLELS_STATUS_OK_WAIT != result_hash)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_core_sha2, MCUXCLHASH_FAILURE);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_core_sha2, MCUXCLHASH_STATUS_FAILURE);
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
     if (MCUXCLELS_STATUS_OK != result)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_core_sha2, MCUXCLHASH_FAILURE);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_core_sha2, MCUXCLHASH_STATUS_FAILURE);
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_els_core_sha2, MCUXCLHASH_STATUS_OK);

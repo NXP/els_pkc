@@ -41,7 +41,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     mcuxClSession_Descriptor_t sessionDesc;
@@ -59,7 +59,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_selftest) != selftest_token) || (MCUXCLRANDOM_STATUS_OK != rs_status))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -78,7 +78,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != init_token) || (MCUXCLRANDOM_STATUS_OK != ri_status))
     {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -101,7 +101,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate1_token) || (MCUXCLRANDOM_STATUS_OK != rg1_status))
     {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -113,7 +113,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate2_token) || (MCUXCLRANDOM_STATUS_OK != rg2_status))
     {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -124,7 +124,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_reseed) != reseed_token) || (MCUXCLRANDOM_STATUS_OK != rr_status))
     {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -136,7 +136,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate3_token) || (MCUXCLRANDOM_STATUS_OK != rg3_status))
     {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -149,21 +149,21 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_DRG4_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_uninit) != uninit_token) || (MCUXCLRANDOM_STATUS_OK != ru_status))
     {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

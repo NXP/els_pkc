@@ -71,6 +71,13 @@ const mcuxClRsa_SignVerifyMode_t mcuxClRsa_Mode_Verify_Pss_Sha2_512 =
   .pPaddingFunction = mcuxClRsa_pssVerify
 };
 
+/* Define to avoid preprocessor directives inside the function exit macro,
+   as this would violate the MISRA rule 20.6 otherwise. */
+#define FP_RSA_PSSVERIFY_SWITCHENDIANNESS \
+  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness)
+
+/* Macros to switch endianness */
+#define MCUXCLRSA_INTERNAL_SWITCHENDIANNESS(ptr, length)  MCUXCLPKC_FP_SWITCHENDIANNESS(ptr, length)
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_pssVerify, mcuxClRsa_PadVerModeEngine_t)
@@ -174,9 +181,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   }
 
   /* Switch endianess of EM buffer to big-endian byte order in place */
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pEm PKC buffer is CPU word aligned.")
-  MCUXCLPKC_FP_SWITCHENDIANNESS((uint32_t *) pEm, emLen);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("the pEm PKC buffer is CPU word aligned.")
+  MCUXCLRSA_INTERNAL_SWITCHENDIANNESS((uint32_t *) pEm, emLen);
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
   /* Step 5: Let maskedDB be the leftmost emLen-hLen-1 octets of EM and let H be the next hLen octets. */
   mcuxCl_Buffer_t maskedDB = pEm;
@@ -192,14 +199,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)),
       MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness));
+          FP_RSA_PSSVERIFY_SWITCHENDIANNESS);
   }
 
   /* Step 7: dbMask = MGF(H, BYTE_LENGTH(keyBitLength) - pHashAlgo->hashSize - 1) */
 
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_mcuxClRsa_mgf1, mcuxClRsa_mgf1(pSession, pHashAlgo, pH, hLen, dbLen, pDbMask));
 
-  if(MCUXCLRSA_INTERNAL_STATUS_MGF_OK != retVal_mcuxClRsa_mgf1)
+  if(MCUXCLRSA_STATUS_INTERNAL_MGF_OK != retVal_mcuxClRsa_mgf1)
   {
     mcuxClSession_freeWords_pkcWa(pSession, wordSizePkcWa);
 
@@ -243,7 +250,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)),
       MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
+          FP_RSA_PSSVERIFY_SWITCHENDIANNESS,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_mgf1),
           MCUX_CSSL_FP_LOOP_ITERATIONS(loop1, dbLen),
           MCUX_CSSL_FP_LOOP_ITERATIONS(loop2, padding2Length));
@@ -343,7 +350,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute)),
     MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_OPTION_MESSAGE_DIGEST == (options & MCUXCLRSA_OPTION_MESSAGE_MASK)),
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SwitchEndianness),
+    FP_RSA_PSSVERIFY_SWITCHENDIANNESS,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_mgf1),
     MCUX_CSSL_FP_LOOP_ITERATIONS(loop1, dbLen),
     MCUX_CSSL_FP_LOOP_ITERATIONS(loop2, padding2Length),

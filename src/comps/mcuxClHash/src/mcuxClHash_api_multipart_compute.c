@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -30,7 +30,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_finish);
 
     if((NULL == pContext->algo) || (NULL == pContext->algo->finishSkeleton)
-#if(defined(MCUX_CSSL_SC_USE_SW_LOCAL) && 1 == MCUX_CSSL_SC_USE_SW_LOCAL)
+#if(1 == MCUX_CSSL_SC_USE_SW_LOCAL)
             || (0u == pContext->algo->protection_token_finishSkeleton)
 #endif /* (1 == MCUX_CSSL_SC_USE_SW_LOCAL) */
             )
@@ -38,7 +38,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_finish, MCUXCLHASH_STATUS_INVALID_PARAMS);
     }
 
-    uint32_t token = pContext->algo->protection_token_finishSkeleton;
+    /* Save protection token before context is cleared */
+    MCUX_CSSL_FP_COUNTER_STMT(uint32_t token_finish = pContext->algo->protection_token_finishSkeleton);
 
     MCUX_CSSL_FP_FUNCTION_CALL(result, pContext->algo->finishSkeleton(session,
                                                                      pContext,
@@ -49,5 +50,5 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClHash_finish,
                                          result,
                                          MCUXCLHASH_STATUS_FAULT_ATTACK,
-                                         token);
+                                         token_finish);
 }

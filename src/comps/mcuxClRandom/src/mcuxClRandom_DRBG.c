@@ -84,13 +84,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_init(
     /* Store mode in session. */
     pSession->randomCfg.mode = mode;
 
-	mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
-
     /* Call internal init function */
-    MCUX_CSSL_FP_FUNCTION_CALL(retCode_initFunction, sessionMode->pOperationMode->initFunction(pSession));
+    MCUX_CSSL_FP_FUNCTION_CALL(retCode_initFunction, mode->pOperationMode->initFunction(pSession));
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_init, retCode_initFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
-                               sessionMode->pOperationMode->protectionTokenInitFunction);
+                               mode->pOperationMode->protectionTokenInitFunction);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_reseed)

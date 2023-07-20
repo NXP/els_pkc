@@ -71,7 +71,7 @@ extern "C" {
  *
  * @return status
  * @retval MCUXCLHASH_STATUS_OK               Hash operation successful
- * @retval MCUXCLHASH_FAILURE                 Error occured during Hash operation
+ * @retval MCUXCLHASH_STATUS_FAILURE          Error occured during Hash operation
  * @retval MCUXCLHASH_STATUS_INVALID_PARAMS   The provided function parameters do not fulfill requirements
  * @retval MCUXCLHASH_STATUS_FAULT_ATTACK     A fault attack was detected
  *
@@ -104,8 +104,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_compute(
  *                             computation operation.
  *
  * @return status
- * @retval MCUXCLHASH_STATUS_OK      Initialization successful
- * @retval MCUXCLHASH_FAILURE        Error occurred during initialization function
+ * @retval MCUXCLHASH_STATUS_OK        Initialization successful
+ * @retval MCUXCLHASH_STATUS_FAILURE   Error occurred during initialization function
  *
  * @implements{REQ_2207116}
  */
@@ -132,7 +132,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_init(
  *
  * @return status
  * @retval MCUXCLHASH_STATUS_OK               Hash operation successful
- * @retval MCUXCLHASH_FAILURE                 Error occurred during Hash operation
+ * @retval MCUXCLHASH_STATUS_FAILURE          Error occurred during Hash operation
  * @retval MCUXCLHASH_STATUS_INVALID_PARAMS   The provided function parameters do not fulfill requirements
  * @retval MCUXCLHASH_STATUS_FAULT_ATTACK     A fault attack was detected
  *
@@ -162,8 +162,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_process(
  *                             that have been written to the \p pOut buffer.
  *
  * @return status
- * @retval MCUXCLHASH_STATUS_OK      Hash operation successful
- * @retval MCUXCLHASH_FAILURE        Error occurred during Hash operation
+ * @retval MCUXCLHASH_STATUS_OK        Hash operation successful
+ * @retval MCUXCLHASH_STATUS_FAILURE   Error occurred during Hash operation
  *
  * @implements{REQ_2207116}
  */

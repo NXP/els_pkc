@@ -64,9 +64,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
 
   /* Setup UPTR table. */
   const uint32_t cpuWaSizeWord = (((sizeof(uint16_t)) * MCUXCLRSA_INTERNAL_NOENCODE_UPTRT_SIZE) + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
-  MCUXCLCORE_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-  MCUXCLCORE_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_noEncode, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -87,7 +87,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
 
   mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
-  /* Return error code MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK. */
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_noEncode, MCUXCLRSA_INTERNAL_STATUS_ENCODE_OK,
+  /* Return error code MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK. */
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_noEncode, MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc));
 }

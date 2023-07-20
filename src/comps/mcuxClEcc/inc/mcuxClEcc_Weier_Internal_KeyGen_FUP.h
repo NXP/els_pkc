@@ -18,8 +18,8 @@
 #define MCUXCLECC_WEIER_INTERNAL_KEYGEN_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Step7[5];
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps34[6];
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps56[8];
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_CoreKeyGen_Steps78[11];
 
 #endif /* MCUXCLECC_WEIER_INTERNAL_KEYGEN_FUP*/ 

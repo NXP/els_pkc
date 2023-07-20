@@ -78,7 +78,7 @@ bool mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example(void)
   // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
   if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
   MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -86,7 +86,7 @@ bool mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example(void)
   // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
   if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
   {
-      return MCUXCLEXAMPLE_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
   MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -128,13 +128,13 @@ bool mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example(void)
   /* Check the return value */
   if(sign_status != PSA_SUCCESS)
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Check the signature length */
   if(signature_length != PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, BITLEN_N, PSA_ALG_ECDSA_ANY))
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /*
@@ -172,9 +172,9 @@ bool mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example(void)
   /* Check the return value */
   if(verify_status != PSA_SUCCESS)
   {
-    return MCUXCLEXAMPLE_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
   /* Return */
-  return MCUXCLEXAMPLE_OK;
+  return MCUXCLEXAMPLE_STATUS_OK;
 }

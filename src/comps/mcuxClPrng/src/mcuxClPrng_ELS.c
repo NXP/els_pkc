@@ -16,6 +16,7 @@
 
 #include <internal/mcuxClPrng_Internal.h>
 #include <mcuxClEls.h>
+#include <internal/mcuxClEls_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPrng_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
@@ -27,25 +28,37 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
 #ifdef MCUXCL_FEATURE_ELS_PRND_INIT
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_Init, mcuxClEls_Prng_Init_Async());
-
-    if(MCUXCLELS_STATUS_OK_WAIT != ret_Prng_Init)
+    if(MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_Prng_Init)
     {
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
                                  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_Init_Async));
+    }
+    else if(MCUXCLELS_STATUS_OK_WAIT != ret_Prng_Init)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        /* Intentionally left empty */
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Wait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-
-    if (MCUXCLELS_STATUS_OK != ret_Wait)
+    if(MCUXCLELS_LEVEL1_ERROR(ret_Wait))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_Init_Async),
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
     }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK, MCUXCLPRNG_STATUS_FAULT_ATTACK,
-                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_Init_Async),
-                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+    else if (MCUXCLELS_STATUS_OK != ret_Wait)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK,
+                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_Init_Async),
+                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+    }
 
 #else /* MCUXCL_FEATURE_ELS_PRND_INIT */
 
@@ -53,17 +66,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
     mcuxClEls_HwState_t hwState = {0};
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_GetHwState, mcuxClEls_GetHwState(&hwState));
-
     if(MCUXCLELS_STATUS_OK != ret_GetHwState)
     {
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
-                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState));
+       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_FAULT_ATTACK);
     }
 
     /* If the security strength is already sufficient, finish here. */
     if((uint8_t)MCUXCLELS_STATUS_DRBGENTLVL_NONE != hwState.bits.drbgentlvl)
     {
-       MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK, MCUXCLPRNG_STATUS_FAULT_ATTACK,
+       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState));
     }
 
@@ -78,32 +89,57 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_init(
     for(keyIdx = 0u; keyIdx < MCUXCLELS_KEY_SLOTS; keyIdx++)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(ret_GetKeyProperties, mcuxClEls_GetKeyProperties(keyIdx, &keyProp));
-
-        if(MCUXCLELS_STATUS_OK != ret_GetKeyProperties)
+        if(MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_GetKeyProperties)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState),
                                         (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties));
         }
+        else if(MCUXCLELS_STATUS_OK != ret_GetKeyProperties)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
+        }
 
         if ((uint8_t)MCUXCLELS_KEYPROPERTY_ACTIVE_FALSE == keyProp.bits.kactv)
         {
             MCUX_CSSL_FP_FUNCTION_CALL(ret_KeyDelete_Async, mcuxClEls_KeyDelete_Async(keyIdx));
-
-            if(MCUXCLELS_STATUS_OK_WAIT != ret_KeyDelete_Async)
+            if(MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_KeyDelete_Async)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState),
                                             (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async));
             }
+            else if(MCUXCLELS_STATUS_OK_WAIT != ret_KeyDelete_Async)
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_FAULT_ATTACK);
+            }
+            else
+            {
+                /* Intentionally left empty */
+            }
 
             MCUX_CSSL_FP_FUNCTION_CALL(ret_Wait2, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-
-            if(MCUXCLELS_STATUS_OK == ret_Wait2)
+            if(MCUXCLELS_LEVEL1_ERROR(ret_Wait2))
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_ERROR,
+                                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState),
+                                                     (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
+                                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async),
+                                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+            }
+            else if(MCUXCLELS_STATUS_OK != ret_Wait2)
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_FAULT_ATTACK);
+            }
+            else
             {
                 /* Assume PRNG is properly initialized. */
-                MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK, MCUXCLPRNG_STATUS_FAULT_ATTACK,
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_init, MCUXCLPRNG_STATUS_OK,
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState),
                                                      (keyIdx + 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties),
                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_KeyDelete_Async),
@@ -129,12 +165,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPrng_Status_t) mcuxClPrng_generate(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClPrng_generate);
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_GetRandom, mcuxClEls_Prng_GetRandom(pOut, outLength));
-    if (MCUXCLELS_STATUS_OK != ret_Prng_GetRandom)
+    if(MCUXCLELS_STATUS_HW_PRNG == ret_Prng_GetRandom)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_generate, MCUXCLPRNG_STATUS_ERROR,
+                                  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom));        
+    }
+    else if (MCUXCLELS_STATUS_OK != ret_Prng_GetRandom)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_generate, MCUXCLPRNG_STATUS_FAULT_ATTACK);
+    }
+    else
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPrng_generate, MCUXCLPRNG_STATUS_OK,
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom));
     }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPrng_generate, MCUXCLPRNG_STATUS_OK, MCUXCLPRNG_STATUS_FAULT_ATTACK,
-                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Prng_GetRandom));
 }

@@ -24,6 +24,7 @@
 #include <mcuxClAes.h> // Interface to AES-related definitions and types
 #include <mcuxClCipher.h> // Interface to the entire mcuxClCipher component
 #include <mcuxClCipherModes.h> // Interface to the entire mcuxClCipherModes component
+#include <mcuxClExample_RNG_Helper.h>
 
 static const uint8_t msg_plain[62] = {
     0x61u, 0x62u, 0x63u, 0x64u, 0x65u, 0x66u, 0x67u, 0x68u,
@@ -73,15 +74,19 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example)
     /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-    //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLCIPHER_MAX_AES_CPU_WA_BUFFER_SIZE, 0u);
+
+    /* Allocate and initialize session */
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLCIPHER_MAX_AES_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
+
+    /* Initialize the PRNG */
+    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
@@ -105,7 +110,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example)
                                        &key_properties,
                                        dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -129,19 +134,19 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) || (MCUXCLCIPHER_STATUS_OK != result_enc))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     if(msg_enc_size != sizeof(msg_enc_expected))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the result of the encryption, compare it against the reference */
     if(!mcuxClCore_assertEqual(msg_enc, msg_enc_expected, msg_enc_size))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
@@ -166,19 +171,19 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_dec) || (MCUXCLCIPHER_STATUS_OK != result_dec))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     if(msg_dec_size != sizeof(msg_dec_expected))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /* Check the result of the decryption, compare it against the reference */
     if(!mcuxClCore_assertEqual(msg_dec, msg_dec_expected, msg_dec_size))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
 
@@ -191,21 +196,21 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example)
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_FAILURE;
+        return MCUXCLEXAMPLE_STATUS_FAILURE;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

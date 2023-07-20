@@ -122,32 +122,24 @@
         MCUXCLOSCCAPKC_SFR_BITVALSET(ZRPTR2, RPTR, (uint32_t)offset_r);                                             \
     } while(0)
 /**
- * @def MCUXCLOSCCAPKC_OPLEN
- * @brief set PKC operand length of selected parameter set
+ * @def MCUXCLOSCCAPKC_PS1_LEN
+ * @brief Sets MCLEN and (OP)LEN of parameter set 1.
  */
-#define MCUXCLOSCCAPKC_PS1_SETOPLEN(opLen)                                                                          \
-    do{                                                                                                            \
-        MCUXCLOSCCAPKC_SFR_BITVALSET(LEN1, LEN, (uint32_t)opLen);                                                   \
-    } while(0)
+#define MCUXCLOSCCAPKC_PS1_SETLENGTH(mclen, oplen)                                                                           \
+    do{                                                                                                                     \
+        MCUXCLOSCCAPKC_SFR_WRITE(LEN1, ((uint32_t) (mclen) << MCUXCLOSCCAPKC_SFR_BITPOS(LEN1, MCLEN)) | (uint32_t) (oplen) ); \
+    } while(false)
 
-#define MCUXCLOSCCAPKC_PS2_SETOPLEN(opLen)                                                                          \
-    do{                                                                                                            \
-        MCUXCLOSCCAPKC_SFR_BITVALSET(LEN2, LEN, (uint32_t)opLen);                                                   \
-    } while(0)
 
 /**
- * @def MCUXCLOSCCAPKC_MCLEN
- * @brief set PKC MC length
+ * @def MCUXCLOSCCAPKC_PS2_LEN
+ * @brief Sets MCLEN and (OP)LEN of parameter set 2.
  */
-#define MCUXCLOSCCAPKC_PS1_SETMCLEN(mcLen)                                                                          \
-    do{                                                                                                            \
-        MCUXCLOSCCAPKC_SFR_BITVALSET(LEN1, MCLEN, (uint32_t)mcLen);                                                 \
-    } while(0)
+#define MCUXCLOSCCAPKC_PS2_SETLENGTH(mclen, oplen)                                                                           \
+    do{                                                                                                                     \
+        MCUXCLOSCCAPKC_SFR_WRITE(LEN2, ((uint32_t) (mclen) << MCUXCLOSCCAPKC_SFR_BITPOS(LEN2, MCLEN)) | (uint32_t) (oplen) ); \
+    } while(false)
 
-#define MCUXCLOSCCAPKC_PS2_SETMCLEN(mcLen)                                                                          \
-    do{                                                                                                            \
-        MCUXCLOSCCAPKC_SFR_BITVALSET(LEN2, MCLEN, (uint32_t)mcLen);                                                 \
-    } while(0)
 
 /**
  * @def MCUXCLOSCCAPKC_MODE
@@ -231,7 +223,9 @@
  */
 #define MCUXCLOSCCAPKC_GETZERO()                 (MCUXCLOSCCAPKC_SFR_BITREAD(STATUS, ZERO) == 1U)
 
-#define MCUXCLOSCCAPKC_PS1_GETLEN()              (MCUXCLOSCCAPKC_SFR_BITREAD(LEN1, LEN))
-#define MCUXCLOSCCAPKC_PS2_GETLEN()              (MCUXCLOSCCAPKC_SFR_BITREAD(LEN2, LEN))
+#define MCUXCLOSCCAPKC_PS1_GETOPLEN()              (MCUXCLOSCCAPKC_SFR_BITREAD(LEN1, LEN))
+#define MCUXCLOSCCAPKC_PS1_GETMCLEN()              (MCUXCLOSCCAPKC_SFR_BITREAD(LEN1, MCLEN))
+#define MCUXCLOSCCAPKC_PS2_GETOPLEN()              (MCUXCLOSCCAPKC_SFR_BITREAD(LEN2, LEN))
+#define MCUXCLOSCCAPKC_PS2_GETMCLEN()              (MCUXCLOSCCAPKC_SFR_BITREAD(LEN2, MCLEN))
 
 #endif /*MCUXCLOSCCAPKC_MACROS_H_*/

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -27,13 +27,13 @@
  */
 
 /* Error codes */
-/* TODO  CLNS-5679: discuss values */
-#define MCUXCLCIPHER_STATUS_ERROR                        ((mcuxClCipher_Status_t) 0xE0AE0001u)
-#define MCUXCLCIPHER_STATUS_FAILURE                      ((mcuxClCipher_Status_t) 0xE0AE0020u)
-#define MCUXCLCIPHER_STATUS_INVALID_INPUT                ((mcuxClCipher_Status_t) 0xE0AE0030u)
-#define MCUXCLCIPHER_STATUS_ERROR_MEMORY_ALLOCATION      ((mcuxClCipher_Status_t) 0xE0AE0040u) // memory allocation error
-#define MCUXCLCIPHER_STATUS_FAULT_ATTACK                 ((mcuxClCipher_Status_t) 0xE0AEF0F0u)
-#define MCUXCLCIPHER_STATUS_OK                           ((mcuxClCipher_Status_t) 0x00AE0000u)
+/* TODO CLNS-8684: Unionize and describe return codes */
+#define MCUXCLCIPHER_STATUS_ERROR                        ((mcuxClCipher_Status_t) 0x02225330u)
+#define MCUXCLCIPHER_STATUS_FAILURE                      ((mcuxClCipher_Status_t) 0x02225334u)
+#define MCUXCLCIPHER_STATUS_INVALID_INPUT                ((mcuxClCipher_Status_t) 0x022253F8u)
+#define MCUXCLCIPHER_STATUS_ERROR_MEMORY_ALLOCATION      ((mcuxClCipher_Status_t) 0x0222533Cu) // memory allocation error
+#define MCUXCLCIPHER_STATUS_FAULT_ATTACK                 ((mcuxClCipher_Status_t) 0x0222F0F0u)
+#define MCUXCLCIPHER_STATUS_OK                           ((mcuxClCipher_Status_t) 0x02222E03u)
 
 /** @}*/
 #endif /* MCUXCLCIPHER_CONSTANTS_H_ */

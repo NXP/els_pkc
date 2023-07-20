@@ -58,7 +58,7 @@ bool mcuxClOsccaSm3_oneshot_example(void)
 
     if(MCUXCLHASH_STATUS_OK != result)
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -67,13 +67,13 @@ bool mcuxClOsccaSm3_oneshot_example(void)
 
     if(hashOutputSize != sizeof(hash))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     for (size_t i = 0U; i < sizeof(hash); i++)
     {
         if (hash[i] != hashExpected[i]) // Expect that the resulting hash matches our expected output
         {
-            return MCUXCLEXAMPLE_ERROR;
+            return MCUXCLEXAMPLE_STATUS_ERROR;
         }
     }
     /**************************************************************************/
@@ -82,9 +82,9 @@ bool mcuxClOsccaSm3_oneshot_example(void)
 
     if(!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    return MCUXCLEXAMPLE_OK;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }
 bool nxpClOsccaSm3_oneshot_example(void)
 {

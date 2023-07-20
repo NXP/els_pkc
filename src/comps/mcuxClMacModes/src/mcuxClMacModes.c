@@ -25,7 +25,4 @@
 #include <internal/mcuxClMacModes_Internal_Types.h>
 #include <internal/mcuxClMacModes_Algorithms.h>
 #include <internal/mcuxClMacModes_Internal_Constants.h>
-#include <internal/mcuxClHash_Internal.h>
-
-
 
