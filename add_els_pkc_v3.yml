@@ -733,7 +733,6 @@ component.els_pkc.els:
     - component.els_pkc.els_header_only
     - component.els_pkc.els_common
     - component.els_pkc.standalone_keyManagement
-    - component.els_pkc.standalone_gdet
     - component.els_pkc.hash
     - component.els_pkc.core
     - component.els_pkc.session
@@ -1312,22 +1311,28 @@ component.els_pkc.random_modes:
     - repo_relative_path: src/comps/mcuxClRandomModes/inc
     - repo_relative_path: src/comps/mcuxClRandomModes/inc/internal
     files:
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_Els.c
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_ElsMode.c
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PatchMode.c
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_TestMode.c
+
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Constants.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Functions_PatchMode.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Functions_TestMode.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_MemoryConsumption.h
+
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Internal_SizeDefinitions.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_CtrDrbg.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_CtrDrbg_BlockCipher.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_Drbg.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_NormalMode.h
-    - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PrDisabled.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PatchMode.h
+    - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PrDisabled.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_TestMode.h
   belong_to: set.component.els_pkc
   section_info:
@@ -1796,7 +1801,7 @@ component.els_pkc.platform.mcxn:
       - MCXN946
       - MCXN947
     - component.els_pkc
-    - component.els_pkc.trng.type_rng4
+    - component.els_pkc.trng.type_els	
 component.els_pkc.platform.rw61x_interface_files:
   section-type: component
   contents:
@@ -1897,6 +1902,7 @@ component.els_pkc.platform.rw61x:
     - component.els_pkc.rw61x_interface_files
     - component.els_pkc
     - component.els_pkc.trng.type_rng4
+    - component.els_pkc.standalone_gdet
     - component.els_pkc.random_modes_ctr
 component.els_pkc.platform.lpc:
   section-type: component
