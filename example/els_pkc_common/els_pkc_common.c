@@ -114,17 +114,17 @@ int main(void)
         PRINTF("fail \r\n");
     }
 
-//    PRINTF("ELS power down wake-up init:");
-//    if (ELS_PowerDownWakeupInit(ELS) == kStatus_Success)
-//    {
-//        pass++;
-//        PRINTF("pass \r\n");
-//    }
-//    else
-//    {
-//        fail++;
-//        PRINTF("fail \r\n");
-//    }
+    PRINTF("ELS power down wake-up init:");
+    if (ELS_PowerDownWakeupInit(ELS) == kStatus_Success)
+    {
+        pass++;
+        PRINTF("pass \r\n");
+    }
+    else
+    {
+        fail++;
+        PRINTF("fail \r\n");
+    }
 
     PRINTF("PKC power down wake-up init:");
     if (PKC_PowerDownWakeupInit(PKC) == kStatus_Success)

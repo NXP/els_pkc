@@ -84,23 +84,23 @@ static status_t ELS_PRNG_KickOff(void)
 {
     mcuxClEls_KeyProp_t key_properties;
     status_t status = kStatus_Fail;
-    mcuxClEls_KeyIndex_t keyIdx = 0;
+    mcuxClEls_KeyIndex_t keyIdx = 0U;
 
     /* Check if PRNG already ready */
     if ((ELS->ELS_STATUS & S50_ELS_STATUS_PRNG_RDY_MASK) == 0u)
     {
         /* Get free ELS key slot */
-        for(keyIdx = 0; keyIdx < MCUXCLELS_KEY_SLOTS; keyIdx++)
+        for(keyIdx = 0U; keyIdx < MCUXCLELS_KEY_SLOTS; keyIdx++)
         {
             /* find a free key slot in ELS keystore */
             status = ELS_check_key(keyIdx, &key_properties);
             if (status != kStatus_Success)
             {
                 return kStatus_SlotUnavailable;
-            }   
+            } 
             
             /* Found free key slot */
-            if(key_properties.bits.kactv == 0)
+            if(key_properties.bits.kactv == 0U)
             {
                 break; 
             }
