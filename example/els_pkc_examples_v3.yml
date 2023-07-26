@@ -77,6 +77,13 @@ els_pkc_common:
   - component.els_pkc
   - component.els_pkc.examples
   contents:
+    configuration:
+      tools:
+        mdk:
+          config:
+            __common__:
+              cc-flags:
+              - "-Wno-tautological-constant-compare"
     document:
       name: els_pkc_common
       readme:
@@ -156,6 +163,13 @@ els_symmetric:
   - component.els_pkc
   - component.els_pkc.examples
   contents:
+    configuration:
+      tools:
+        mdk:
+          config:
+            __common__:
+              cc-flags:
+              - "-Wno-tautological-constant-compare"
     document:
       name: els_symmetric
       readme:
@@ -206,6 +220,22 @@ els_hash:
   - component.els_pkc
   - component.els_pkc.examples
   contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+        mdk:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - --predefine="-D__stack_size__=0x1000"
+              cc-flags:
+              - "-Wno-tautological-constant-compare"
     document:
       name: els_hash
       readme:
@@ -256,6 +286,19 @@ els_pkc_asymmetric:
   - component.els_pkc
   - component.els_pkc.examples
   contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+        mdk:
+          config:
+            __common__:
+              cc-flags:
+              - "-Wno-tautological-constant-compare"
     document:
       name: els_pkc_asymmetric
       readme:
