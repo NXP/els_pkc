@@ -17,7 +17,18 @@
 #include <mcuxClToolchain.h>
 #include <mcuxCsslAnalysis.h>
 
+#if defined(__GNUC__)
+/* Enforce O1 optimize level, specifically to remove strict-aliasing option.
+  (-fno-strict-aliasing is required for this function). */
+#pragma GCC push_options
+#pragma GCC optimize("-O1")
+#endif
 
+#if (defined(__CC_ARM) || defined(__ARMCC_VERSION))
+/* Enforce optimization off for clang, specifically to remove strict-aliasing option.
+(-fno-strict-aliasing is required for this function). */
+#pragma clang optimize off
+#endif
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_copy)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_copy (uint8_t *pDst, uint8_t const *pSrc, size_t length, size_t bufLength)
 {
@@ -93,6 +104,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_copy (uint8_t *pDst, uint8_t cons
                               MCUX_CSSL_FP_LOOP_ITERATIONS(mcuxClMemory_copy_loop,
                                                           ((length <= bufLength) ? length : bufLength)));
 }
+#if defined(__GNUC__)
+/* End of enforcing O1 optimize level for gcc*/
+#pragma GCC pop_options
+#endif
+
+#if (defined(__CC_ARM) || defined(__ARMCC_VERSION))
+// End of enforcing optimize off for clang
+#pragma clang optimize on
+#endif
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMemory_set)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_set (uint8_t *pDst, uint8_t val, size_t length, size_t bufLength)
