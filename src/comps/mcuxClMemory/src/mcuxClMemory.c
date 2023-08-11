@@ -76,7 +76,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMemory_copy (uint8_t *pDst, uint8_t cons
     for (; ((i + sizeof(uint32_t)) <= length) && ((i + sizeof(uint32_t)) <= bufLength); i += sizeof(uint32_t))
     {
         MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "p32Dst will be in the valid range pDst[0 ~ bufLength] and pSrc will be in the valid range pSrc[0 ~ length].")
-        uint32_t crtWordVal = ((uint32_t)*(pSrc + 3) << 24) | ((uint32_t)*(pSrc + 2) << 16) | ((uint32_t)*(pSrc + 1) << 8) | (uint32_t)*pSrc;
+        uint32_t crtWordVal = ((uint32_t)*(pSrc + 3) << 24) | ((uint32_t)*(pSrc + 2) << 16);
+        crtWordVal = crtWordVal | ((uint32_t)*(pSrc + 1) << 8) | (uint32_t)*pSrc;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
         *p32Dst = crtWordVal;
         MCUX_CSSL_FP_LOOP_ITERATION(mcuxClMemory_copy_loop);
