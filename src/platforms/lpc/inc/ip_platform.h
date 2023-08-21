@@ -25,7 +25,7 @@
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
 
-#define MCUXCL_FEATURE_TRNG_RNG4_256
+#define MCUXCL_FEATURE_TRNG_SA_TRNG_256
 
 #define GDET_EVTCNT             ELS_GDET_EVTCNT
 #define GDET_EVTCNT_CLR_DONE    ELS_GDET_EVTCNT_CLR

@@ -277,7 +277,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 
-
+#ifdef MCUXCL_FEATURE_RANDOMMODES_TESTMODE
 /**
  * \brief This function performs a selftest of a DRBG in NORMAL_MODE
  *
@@ -344,7 +344,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
         pDrbgMode->pDrbgAlgorithms->protectionTokenSelftestAlgorithm);
 }
-
+#endif /* MCUXCL_FEATURE_RANDOMMODES_TESTMODE */
 
 /**
  * \brief This function performs a comparison of two arrays
