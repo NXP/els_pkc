@@ -297,6 +297,9 @@ els_pkc_asymmetric:
         mdk:
           config:
             __common__:
+              __replace__:
+                ad-flags:
+                - --predefine="-D__stack_size__=0x1000"
               cc-flags:
               - "-Wno-tautological-constant-compare"
     document:
