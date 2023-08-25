@@ -1313,11 +1313,10 @@ component.els_pkc.random_modes:
     files:
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_Els.c
-    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
+    # - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_ElsMode.c
-    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PatchMode.c
-    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
+    # - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_TestMode.c
 
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes.h
@@ -1518,11 +1517,14 @@ component.els_pkc.trng:
     - repo_relative_path: src/comps/mcuxClTrng/inc
     - repo_relative_path: src/comps/mcuxClTrng/inc/internal
     files:
+    # - source: src/comps/mcuxClTrng/src/mcuxClTrng_ELS.c
+    # - source: src/comps/mcuxClTrng/src/mcuxClTrng_Internal_SA_TRNG.c
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Constants.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Functions.h
-    - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Types.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
+    - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Types.h
+    - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1549,6 +1551,7 @@ component.els_pkc.trng.type_els:
     cc-include:
     - repo_relative_path: "./"
     files:
+    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
     - source: src/comps/mcuxClTrng/src/mcuxClTrng_ELS.c
   belong_to: set.component.els_pkc
   section_info:
