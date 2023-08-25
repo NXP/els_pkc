@@ -1311,7 +1311,7 @@ component.els_pkc.random_modes:
     - repo_relative_path: src/comps/mcuxClRandomModes/inc
     - repo_relative_path: src/comps/mcuxClRandomModes/inc/internal
     files:
-    - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg.c
+    # - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_Els.c
     # - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_ElsMode.c
@@ -1379,9 +1379,6 @@ component.els_pkc.random_modes_ctr:
     display_name: els_pkc.random_modes_ctr
   dependency:
     allOf:
-    - device:
-      - RW610
-      - RW612
     - component.els_pkc.flow_protection
     - component.els_pkc.secure_counter
     - component.els_pkc.pre_processor
@@ -1804,6 +1801,7 @@ component.els_pkc.platform.mcxn:
       - MCXN946
       - MCXN947
     - component.els_pkc
+    - component.els_pkc.random_modes_ctr
     - component.els_pkc.trng.type_els	
 component.els_pkc.platform.rw61x_interface_files:
   section-type: component
