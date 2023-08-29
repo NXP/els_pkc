@@ -26,7 +26,7 @@ void run_tests_hashing(void);
  * @param hash Output array for the hash of size of respective mode.
  * @param data_from String "RAM" or "FLASH".
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
- * @param a_result Struct for the algorithm result. Setting the cycles/byte and kb/s.
+ * @param a_result Struct for the algorithm result.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
  * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
  * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.

@@ -28,7 +28,7 @@ void run_tests_mac(void);
  *
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param data_from String "RAM" or "FLASH".
- * @param a_result Struct for the algorithm result. Setting the cycles/byte and kb/s.
+ * @param a_result Struct for the algorithm result.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
  * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
@@ -45,7 +45,7 @@ bool exec_cmac(uint32_t block_amount,
  *
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param data_from String "RAM" or "FLASH".
- * @param a_result Struct for the algorithm result. Setting the cycles/byte and kb/s.
+ * @param a_result Struct for the algorithm result.
  * @param sha_type Specifies if SHA-256 or SHA-512.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
  * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.

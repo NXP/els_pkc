@@ -29,7 +29,7 @@ void run_tests_symmetric(void);
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param data_from String "RAM" or "Flash" to determine, if data should be
  * taken from RAM or Flash.
- * @param a_result Struct for the algorithm result. Setting the cycles/byte and kb/s.
+ * @param a_result Struct for the algorithm result.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
  * @retval MCUXCLEXAMPLE_ERROR If error in algorithm happens.
@@ -49,7 +49,7 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param data_from String "RAM" or "Flash" to determine, if data should be
  * taken from RAM or Flash.
- * @param a_result Struct for the algorithm result. Setting the cycles/byte and kb/s.
+ * @param a_result Struct for the algorithm result.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
  * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.

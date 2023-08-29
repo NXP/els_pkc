@@ -118,7 +118,7 @@ bool exec_ctr_drbg(char *data_from,
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(CTR_DRBG(session, block_amount, data_from_ram), block_amount * 16U, iteration_amount);
     a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
-    a_result->kbPerS        = KB_S(CTR_DRBG(session, block_amount, data_from_ram), block_amount, 16U);
+    a_result->kbPerS        = KB_S(CTR_DRBG(session, block_amount, data_from_ram), block_amount * 16U);
     /**************************************************************************/
     /* Cleanup                                                                */
     /**************************************************************************/

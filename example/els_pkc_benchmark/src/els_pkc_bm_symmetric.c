@@ -339,13 +339,6 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
 {
     /**************************************************************************/
     /* Preparation                                                            */
-    /**************************************************************************/
-    /* Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL */
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Initialize session */
@@ -414,7 +407,7 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, iteration_amount);
     a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
-    a_result->kbPerS        = KB_S(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, 16U);
+    a_result->kbPerS        = KB_S(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount * 16U);
 
     /**************************************************************************/
     /* Cleanup                                                                */
@@ -436,12 +429,6 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
         return MCUXCLEXAMPLE_ERROR;
     }
 
-    /* Disable the ELS */
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
-        return MCUXCLEXAMPLE_ERROR;
-    }
     return MCUXCLEXAMPLE_OK;
 }
 
@@ -455,13 +442,6 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /* Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL */
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Initialize session */
@@ -539,14 +519,14 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
         a_result->cyclesPerBlock =
             COMPUTE_CYCLES(AES_CCM_192(data_from_ram, key, session, block_amount), block_amount, iteration_amount);
         a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
-        a_result->kbPerS        = KB_S(AES_CCM_192(data_from_ram, key, session, block_amount), block_amount, 16U);
+        a_result->kbPerS        = KB_S(AES_CCM_192(data_from_ram, key, session, block_amount), block_amount * 16U);
     }
     else
     {
         a_result->cyclesPerBlock = COMPUTE_CYCLES(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount),
                                                   block_amount, iteration_amount);
         a_result->cyclesPerByte  = a_result->cyclesPerBlock / 16U;
-        a_result->kbPerS = KB_S(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, 16U);
+        a_result->kbPerS = KB_S(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount * 16U);
     }
 
     /**************************************************************************/
@@ -566,13 +546,6 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
     if (!mcuxClExample_Session_Clean(session))
     {
         PRINTF("[Error] Session cleaning failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
-    /* Disable the ELS */
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 

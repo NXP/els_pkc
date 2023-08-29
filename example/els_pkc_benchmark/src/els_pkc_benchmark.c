@@ -11,6 +11,7 @@
 #include "els_pkc_bm_mac.h"
 #include "els_pkc_bm_key_gen.h"
 #include "els_pkc_bm_drbg.h"
+#include "els_pkc_bm_kdf.h"
 #include "mcux_els.h" // Power Down Wake-up Init
 #include "mcux_pkc.h" // Power Down Wake-up Init
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
@@ -70,6 +71,7 @@ int main(void)
     CRYPTO_InitHardware();
 
     SysTick_Config(CLOCK_GetCoreSysClkFreq() / 1000U);
+
     /* Print BM information */
     PRINTF("#################################\r\n");
     PRINTF("#\r");
@@ -81,7 +83,7 @@ int main(void)
     PRINTF("#################################\r\n");
     PRINTF("SYSTEM FREQUENCY: %d MHZ\r\n", CLOCK_GetCoreSysClkFreq() / 1000000U);
     PRINTF("BM INFORMATION:\r\n");
-    PRINTF("   -EXPERIMENTAL CACHING (AES, AEAD, SHA, MAC) WITH MULTIPLE BLOCKS\r\n");
+    PRINTF("   -EXPERIMENTAL CACHING: EFFECT VISIBLE ON CYCLES/BYTE\r\n");
     PRINTF("   -SINGLE BLOCK: 1 * BLOCK_SIZE BLOCK\r\n");
     PRINTF("   -MULTIPLE BLOCKS: 1024 * BLOCK_SIZE BLOCKS\r\n");
     PRINTF("   -SMALL MESSAGE: 64 BYTE\r\n");
@@ -90,8 +92,28 @@ int main(void)
     PRINTF("   -SHA-256 BLOCK SIZE: 64 BYTE\r\n");
     PRINTF("   -SHA-384 BLOCK SIZE: 128 BYTE\r\n");
     PRINTF("   -SHA-512 BLOCK SIZE: 128 BYTE\r\n");
-    PRINTF("   -FOR AES-CCM-192 DOING FIRST CBC AND THEN CTR, BECAUSE NO AES-CCM-192 SUPPORTED BY ELS_PKC\r\n");
+    PRINTF("   -FOR AES-CCM-192 DOING FIRST CBC AND THEN CTR, BECAUSE NO AES-CCM-192 SUPPORTED BY ELS PKC\r\n");
     PRINTF("\r\n\n");
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
+    // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    {
+        PRINTF("[Error] Els enable async failed\r\n");
+        return MCUXCLEXAMPLE_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultWait, tokenWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != tokenWait)
+    {
+        PRINTF("[Error] Els init wait token mismatch\r\n");
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+    if (MCUXCLELS_STATUS_OK != resultWait)
+    {
+        PRINTF("[Error] Els init wait failed\r\n");
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Run tests for DRBG algorithms */
     run_tests_drbg();
@@ -110,6 +132,9 @@ int main(void)
 
     /* Run tests for MAC algorithms */
     run_tests_mac();
+
+    /* Run tests for KDF algorithms */
+    run_tests_kdf();
 
     /* Disable the ELS */
     if (!mcuxClExample_Els_Disable())

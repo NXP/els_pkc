@@ -82,13 +82,6 @@ bool exec_sha(mcuxClHash_Algo_t mode,
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Initialize session */
@@ -109,7 +102,7 @@ bool exec_sha(mcuxClHash_Algo_t mode,
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(HASH(session, mode, block_amount, hash, data_from_ram), block_amount, iteration_amount);
     a_result->cyclesPerByte = a_result->cyclesPerBlock / 128U;
-    a_result->kbPerS        = KB_S(HASH(session, mode, block_amount, hash, data_from_ram), block_amount, 128U);
+    a_result->kbPerS        = KB_S(HASH(session, mode, block_amount, hash, data_from_ram), block_amount * 128U);
 
     /**************************************************************************/
     /* Session clean-up                                                       */
@@ -118,13 +111,6 @@ bool exec_sha(mcuxClHash_Algo_t mode,
     if (!mcuxClExample_Session_Clean(session))
     {
         PRINTF("[Error] Session cleaning failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
-    /** Disable the ELS **/
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 

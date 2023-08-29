@@ -21,6 +21,8 @@
 #include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Key_Helper.h>
 #include <mcuxClAes_Constants.h>
+#include <mcuxClMemory.h>
+#include <mcuxCsslExamples.h>
 
 /*******************************************************************************
  * Definitions
@@ -42,20 +44,20 @@
     })
 
 /** Macro function adapted from existing mbedtls benchmark */
-#define KB_S(CODE, BLOCK_AMOUNT, BLOCK_SIZE)                                                                        \
-    ({                                                                                                              \
-        uint64_t ii;                                                                                                \
-        uint64_t tsc1;                                                                                              \
-        uint64_t tsc2;                                                                                              \
-        benchmark_set_alarm(0x1U);                                                                                  \
-        tsc1 = benchmark_timing_hardclock();                                                                        \
-        for (ii = 1U; !g_BenchmarkTimingAlarmed; ++ii)                                                              \
-        {                                                                                                           \
-            CODE;                                                                                                   \
-            benchmark_poll_alarm();                                                                                 \
-        }                                                                                                           \
-        tsc2 = benchmark_timing_hardclock();                                                                        \
-        (double)((ii * BLOCK_SIZE * BLOCK_AMOUNT / 1024U) / (((double)(tsc2 - tsc1)) / CLOCK_GetCoreSysClkFreq())); \
+#define KB_S(CODE, AMOUNT)                                                                         \
+    ({                                                                                             \
+        uint64_t ii;                                                                               \
+        uint64_t tsc1;                                                                             \
+        uint64_t tsc2;                                                                             \
+        benchmark_set_alarm(0x1U);                                                                 \
+        tsc1 = benchmark_timing_hardclock();                                                       \
+        for (ii = 1U; !g_BenchmarkTimingAlarmed; ++ii)                                             \
+        {                                                                                          \
+            CODE;                                                                                  \
+            benchmark_poll_alarm();                                                                \
+        }                                                                                          \
+        tsc2 = benchmark_timing_hardclock();                                                       \
+        (double)(((ii * AMOUNT) / 1024U) / (((double)(tsc2 - tsc1)) / CLOCK_GetCoreSysClkFreq())); \
     })
 
 /** Macro function adapted from existing mbedtls benchmark */
@@ -105,6 +107,18 @@
         PRINTF("\tKEY-GEN/S: %6.2f", result.signPerS); \
         PRINTF("\r\n");                                \
     } while (0)
+    
+#define PRINT_KDF_RESULT(result)                              \
+    do                                                        \
+    {                                                         \
+        PRINTF("\tCODE: %s", result.code);                    \
+        PRINTF("\tDATA: %s", result.data);                    \
+        PRINTF("\tKB/S: %6.2f", result.kbPerS);               \
+        PRINTF("\tCYCLES/BYTE: %6.2f", result.cyclesPerByte); \
+        PRINTF("\tCYCLES/KEY: %6.2f", result.cyclesPerBlock); \
+        PRINTF("\tEXECUTION: %s", result.execution);          \
+        PRINTF("\r\n");                                       \
+    } while (0);
 
 /*!
  * @brief Value for poll alarm, either 0 or 1.

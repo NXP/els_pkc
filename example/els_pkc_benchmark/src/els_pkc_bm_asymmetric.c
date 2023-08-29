@@ -636,14 +636,6 @@ bool exec_rsa_sign_pss_sha(char *data_from, uint32_t m_length, signature_algorit
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /** Initialize ELS, Enable the ELS **/
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Create session handle to be used by mcuxClRsa_sign */
@@ -695,12 +687,6 @@ bool exec_rsa_sign_pss_sha(char *data_from, uint32_t m_length, signature_algorit
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /** Disable the ELS **/
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
@@ -709,14 +695,6 @@ bool exec_rsa_verify_pss_sha(char *data_from, uint32_t m_length, signature_algor
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /** Initialize ELS, Enable the ELS **/
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Create session handle to be used by verify function */
@@ -769,13 +747,6 @@ bool exec_rsa_verify_pss_sha(char *data_from, uint32_t m_length, signature_algor
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /** Disable the ELS **/
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
@@ -784,13 +755,6 @@ bool exec_EdDSA_generate_signature_Ed25519(char *data_from, uint32_t m_length, s
     /******************************************/
     /* Set Up the environment                 */
     /******************************************/
-
-    /* Initialize ELS, Enable the ELS */
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Setup one session to be used by all functions called */
@@ -903,13 +867,6 @@ bool exec_EdDSA_generate_signature_Ed25519(char *data_from, uint32_t m_length, s
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
@@ -918,13 +875,6 @@ bool exec_EdDSA_verify_signature_Ed25519(char *data_from, uint32_t m_length, sig
     /******************************************/
     /* Set up the environment                 */
     /******************************************/
-
-    /* Initialize ELS, Enable the ELS */
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Setup one session to be used by all functions called */
@@ -966,13 +916,6 @@ bool exec_EdDSA_verify_signature_Ed25519(char *data_from, uint32_t m_length, sig
     if (!mcuxClExample_Session_Clean(&session))
     {
         PRINTF("[Error] Session cleaning failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
-    /* Disable the ELS */
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 

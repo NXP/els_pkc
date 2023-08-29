@@ -170,12 +170,6 @@ bool exec_cmac(uint32_t block_amount,
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-    /** Initialize ELS, Enable the ELS **/
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Key buffer for the key in memory. */
@@ -242,7 +236,7 @@ bool exec_cmac(uint32_t block_amount,
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(COMPUTE_CMAC(session, key, block_amount, data_from_ram), block_amount, iteration_amount);
     a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
-    a_result->kbPerS        = KB_S(COMPUTE_CMAC(session, key, block_amount, data_from_ram), block_amount, 16U);
+    a_result->kbPerS        = KB_S(COMPUTE_CMAC(session, key, block_amount, data_from_ram), block_amount * 16U);
 
     /**************************************************************************/
     /* Cleanup                                                                */
@@ -261,13 +255,6 @@ bool exec_cmac(uint32_t block_amount,
     if (!mcuxClExample_Session_Clean(session))
     {
         PRINTF("[Error] Session cleaning failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
-    /** Disable the ELS **/
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
@@ -303,14 +290,6 @@ bool exec_hmac(uint32_t block_amount,
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /* Initialize ELS (needed for Hash computation) */
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Key buffer for the key in memory. */
@@ -406,7 +385,7 @@ bool exec_hmac(uint32_t block_amount,
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount, iteration_amount);
     a_result->cyclesPerByte = a_result->cyclesPerBlock / 128U;
-    a_result->kbPerS        = KB_S(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount, 128U);
+    a_result->kbPerS        = KB_S(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount * 128U);
 
     /**************************************************************************/
     /* Cleanup                                                                */
@@ -443,12 +422,6 @@ bool exec_hmac(uint32_t block_amount,
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /** Disable the ELS **/
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Disabling ELS failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
