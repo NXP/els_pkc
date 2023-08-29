@@ -32,8 +32,8 @@ void run_tests_symmetric(void);
  * @param a_result Struct for the algorithm result.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
- * @retval MCUXCLEXAMPLE_ERROR If error in algorithm happens.
- * @retval MCUXCLEXAMPLE_OK If error in algorithm happens.
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
+ * @retval MCUXCLEXAMPLE_STATUS_OK If error in algorithm happens.
  */
 bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
                          uint32_t block_amount,
@@ -70,8 +70,6 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
- * @retval MCUXCLEXAMPLE_ERROR If error in algorithm happens.
- * @retval MCUXCLEXAMPLE_OK If error in algorithm happens.
  */
 void test_aes_cbc(
     char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
@@ -84,8 +82,6 @@ void test_aes_cbc(
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
- * @retval MCUXCLEXAMPLE_ERROR If error in algorithm happens.
- * @retval MCUXCLEXAMPLE_OK If error in algorithm happens.
  */
 void test_aes_ecb(
     char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
@@ -98,8 +94,6 @@ void test_aes_ecb(
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
- * @retval MCUXCLEXAMPLE_ERROR If error in algorithm happens.
- * @retval MCUXCLEXAMPLE_OK If error in algorithm happens.
  */
 void test_aes_ctr(
     char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
@@ -112,8 +106,6 @@ void test_aes_ctr(
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
- * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
- * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.
  */
 void test_aes_ccm(
     char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
@@ -126,8 +118,6 @@ void test_aes_ccm(
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
  * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
- * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
- * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.
  */
 void test_aes_gcm(
     char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);

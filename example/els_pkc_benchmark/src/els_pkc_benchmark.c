@@ -13,6 +13,8 @@
 #include "els_pkc_bm_drbg.h"
 #include "els_pkc_bm_kdf.h"
 #include "els_pkc_bm_dh.h"
+#include "els_pkc_bm_kdf.h"
+#include "els_pkc_bm_kwa.h"
 #include "mcux_els.h" // Power Down Wake-up Init
 #include "mcux_pkc.h" // Power Down Wake-up Init
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
@@ -95,6 +97,7 @@ int main(void)
     PRINTF("   -SHA-512 BLOCK SIZE: 128 BYTE\r\n");
     PRINTF("   -FOR AES-CCM-192 DOING FIRST CBC AND THEN CTR, BECAUSE NO AES-CCM-192 SUPPORTED BY ELS PKC\r\n");
     PRINTF("\r\n\n");
+    
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
     // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
@@ -139,6 +142,9 @@ int main(void)
 
     /* Run tests for KDF algorithms */
     run_tests_kdf();
+
+    /* Run tests for KW algorithms */
+    run_tests_kwa();
 
     /* Disable the ELS */
     if (!mcuxClExample_Els_Disable())

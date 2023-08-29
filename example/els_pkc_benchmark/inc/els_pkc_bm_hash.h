@@ -8,6 +8,7 @@
 #ifndef _ELS_PKC_BM_HASH_H_
 #define _ELS_PKC_BM_HASH_H_
 #include <mcuxClHash.h> /* Interface to the entire mcuxClHash component */
+#include <mcuxClHashModes.h>
 #include "els_pkc_benchmark_utils.h"
 #include <mcuxClHashModes.h>
 

@@ -363,6 +363,14 @@ els_pkc_benchmark:
         merge-to-main: main
         package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
         project_path: source
+      - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_kwa.c
+        merge-to-main: main
+        package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
+        project_path: source
+      - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_kwa.h
+        merge-to-main: main
+        package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
+        project_path: source
       - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_benchmark_utils.c
         merge-to-main: main
         package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
