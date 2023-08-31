@@ -158,7 +158,7 @@ bool exec_cmac(uint32_t block_amount,
     static const uint8_t s_Key128Flash[MCUXCLAES_AES128_KEY_SIZE] = {
         0x7CU, 0x0BU, 0x7DU, 0xB9U, 0x81U, 0x1FU, 0x10U, 0xD0U, 0x0EU, 0x47U, 0x6CU, 0x7AU, 0x0DU, 0x92U, 0xF6U, 0xE0U};
     /* Example AES-256 key stored in flash */
-    static uint8_t s_Key256Flash[MCUXCLAES_AES256_KEY_SIZE] = {
+    static const uint8_t s_Key256Flash[MCUXCLAES_AES256_KEY_SIZE] = {
         0x7CU, 0x0BU, 0x7DU, 0xB9U, 0x81U, 0x1FU, 0x10U, 0xD0U, 0x0EU, 0x47U, 0x6CU, 0x7AU, 0x0DU, 0x92U, 0xF6U, 0xE0U,
         0x7CU, 0x0BU, 0x7DU, 0xB9U, 0x81U, 0x1FU, 0x10U, 0xD0U, 0x0EU, 0x47U, 0x6CU, 0x7AU, 0x0DU, 0x92U, 0xF6U, 0xE0U};
     /* Example single block input to the CMAC function stored in flash */
@@ -176,11 +176,10 @@ bool exec_cmac(uint32_t block_amount,
         PRINTF("[Error] ELS initialization failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     /* Key buffer for the key in memory. */
-    uint32_t key_buffer[MCUXCLAES_AES128_KEY_SIZE_IN_WORDS];
+    uint32_t key_buffer[32U];
 
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
@@ -199,9 +198,7 @@ bool exec_cmac(uint32_t block_amount,
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t)&keyDesc;
 
-    /* Set key properties. */
     mcuxClEls_KeyProp_t cmac_key_properties;
-
     cmac_key_properties.word.value = 0U;
     cmac_key_properties.bits.ucmac = MCUXCLELS_KEYPROPERTY_CMAC_TRUE;
     cmac_key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
@@ -244,9 +241,8 @@ bool exec_cmac(uint32_t block_amount,
     const uint32_t iteration_amount = cache_enable ? 1024U : 1U;
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(COMPUTE_CMAC(session, key, block_amount, data_from_ram), block_amount, iteration_amount);
-    a_result->cyclesPerByte = COMPUTE_CYCLES(COMPUTE_CMAC(session, key, block_amount, data_from_ram),
-                                             block_amount * MCUXCLAES_BLOCK_SIZE, iteration_amount);
-    a_result->kbPerS        = KB_S(COMPUTE_CMAC(session, key, block_amount, data_from_ram), block_amount);
+    a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
+    a_result->kbPerS        = KB_S(COMPUTE_CMAC(session, key, block_amount, data_from_ram), block_amount, 16U);
 
     /**************************************************************************/
     /* Cleanup                                                                */
@@ -409,9 +405,8 @@ bool exec_hmac(uint32_t block_amount,
     const uint32_t iteration_amount = cache_enable ? 1024U : 1U;
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount, iteration_amount);
-    a_result->cyclesPerByte =
-        COMPUTE_CYCLES(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount * 128U, iteration_amount);
-    a_result->kbPerS = KB_S(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount);
+    a_result->cyclesPerByte = a_result->cyclesPerBlock / 128U;
+    a_result->kbPerS        = KB_S(COMPUTE_HMAC(session, key, block_amount, data_from_ram), block_amount, 128U);
 
     /**************************************************************************/
     /* Cleanup                                                                */

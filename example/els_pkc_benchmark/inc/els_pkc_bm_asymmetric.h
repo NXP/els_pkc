@@ -12,6 +12,7 @@
 #include <mcuxClPkc_Types.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
+#include <mcuxClEcc_WeierECC.h>
 
 /*******************************************************************************
  * Definitions
@@ -61,7 +62,7 @@ bool exec_rsa_verify_pss_sha(char *data_from, uint32_t m_length, signature_algor
  * @param data_from String "RAM" or "FLASH".
  * @param m_length Constant defining if large or small input message.
  */
-void test_ecc_signature(char *code_from, char *data_from, uint32_t m_length);
+void test_ecc_ed25519_signature(char *code_from, char *data_from, uint32_t m_length);
 
 /*!
  * @brief Function executing EdDSA sign on Ed25519.
@@ -87,4 +88,36 @@ bool exec_EdDSA_generate_signature_Ed25519(char *data_from, uint32_t m_length, s
  */
 bool exec_EdDSA_verify_signature_Ed25519(char *data_from, uint32_t m_length, signature_algorithm_result *a_result);
 
+/*!
+ * @brief Function executing ECC sign on Weier p-256/384/521.
+ *
+ * @param data_from String "RAM" or "Flash" to determine, if data should be
+ * taken from RAM or Flash.
+ * @param m_length Constant defining if large or small input message.
+ * @param bit_length Bit length of algorithm (P and N).
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
+ * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.
+ */
+bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint32_t bit_length);
+/*!
+ * @brief Function executing ECC sign on Weier p-256/384/521.
+ *
+ * @param data_from String "RAM" or "Flash" to determine, if data should be
+ * taken from RAM or Flash.
+ * @param m_length Constant defining if large or small input message.
+ * @param bit_length Bit length of algorithm (P and N).
+ * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
+ * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.
+ */
+bool exec_weier_ecc_verify_signature(char *data_from, uint32_t m_length, uint32_t bit_length);
+
+/*!
+ * @brief Performance test for Weier signature.
+ *
+ * @param code_from String "RAM" or "FLASH".
+ * @param data_from String "RAM" or "FLASH".
+ * @param m_length Constant defining if large or small input message.
+ * @param bit_length Bit length of algorithm (P and N).
+ */
+void test_weier_signature(char *code_from, char *data_from, uint32_t m_length, uint32_t bit_length);
 #endif /* _ELS_PKC_BM_ASYMMETRIC_H_ */

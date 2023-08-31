@@ -29,34 +29,33 @@
 #define MULTIPLE_BLOCKS 1024U
 
 /** Macro function adapted from existing mbedtls benchmark */
-#define COMPUTE_CYCLES(CODE, AMOUNT, ITERATION_AMOUNT)                                         \
-    ({                                                                                         \
-        uint32_t jj;                                                                           \
-        uint64_t tsc1;                                                                         \
-        tsc1 = benchmark_timing_hardclock();                                                   \
-        for (jj = 0U; jj < ITERATION_AMOUNT; ++jj)                                             \
-        {                                                                                      \
-            CODE;                                                                              \
-        }                                                                                      \
-        (double)((double)(benchmark_timing_hardclock() - tsc1) / (ITERATION_AMOUNT * AMOUNT)); \
+#define COMPUTE_CYCLES(CODE, AMOUNT, ITERATION_AMOUNT)                                           \
+    ({                                                                                           \
+        uint32_t jj;                                                                             \
+        uint64_t tsc1;                                                                           \
+        tsc1 = benchmark_timing_hardclock();                                                     \
+        for (jj = 0U; jj < ITERATION_AMOUNT; ++jj)                                               \
+        {                                                                                        \
+            CODE;                                                                                \
+        }                                                                                        \
+        (double)(((double)(benchmark_timing_hardclock() - tsc1)) / (ITERATION_AMOUNT * AMOUNT)); \
     })
 
 /** Macro function adapted from existing mbedtls benchmark */
-#define KB_S(CODE, BLOCK_AMOUNT)                                         \
-    ({                                                                   \
-        uint64_t ii;                                                     \
-        uint64_t tsc1;                                                   \
-        uint64_t tsc2;                                                   \
-        benchmark_set_alarm(0x1U); /* Measure only 1 second  (KB/s) */   \
-        tsc1 = benchmark_timing_hardclock();                             \
-        for (ii = 1U; !g_BenchmarkTimingAlarmed; ++ii)                   \
-        {                                                                \
-            CODE;                                                        \
-            benchmark_poll_alarm();                                      \
-        }                                                                \
-        tsc2 = benchmark_timing_hardclock();                             \
-        (double)((ii * MCUXCLAES_BLOCK_SIZE * BLOCK_AMOUNT / 1024U) /    \
-                 (((double)(tsc2 - tsc1)) / CLOCK_GetCoreSysClkFreq())); \
+#define KB_S(CODE, BLOCK_AMOUNT, BLOCK_SIZE)                                                                        \
+    ({                                                                                                              \
+        uint64_t ii;                                                                                                \
+        uint64_t tsc1;                                                                                              \
+        uint64_t tsc2;                                                                                              \
+        benchmark_set_alarm(0x1U);                                                                                  \
+        tsc1 = benchmark_timing_hardclock();                                                                        \
+        for (ii = 1U; !g_BenchmarkTimingAlarmed; ++ii)                                                              \
+        {                                                                                                           \
+            CODE;                                                                                                   \
+            benchmark_poll_alarm();                                                                                 \
+        }                                                                                                           \
+        tsc2 = benchmark_timing_hardclock();                                                                        \
+        (double)((ii * BLOCK_SIZE * BLOCK_AMOUNT / 1024U) / (((double)(tsc2 - tsc1)) / CLOCK_GetCoreSysClkFreq())); \
     })
 
 /** Macro function adapted from existing mbedtls benchmark */
@@ -64,7 +63,7 @@
     ({                                                                                               \
         uint64_t ii;                                                                                 \
         uint64_t tsc;                                                                                \
-        benchmark_set_alarm(4U);                                                                     \
+        benchmark_set_alarm(2U);                                                                     \
         tsc = benchmark_timing_hardclock();                                                          \
         for (ii = 1U; !g_BenchmarkTimingAlarmed; ii++)                                               \
         {                                                                                            \

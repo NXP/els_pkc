@@ -108,9 +108,8 @@ bool exec_sha(mcuxClHash_Algo_t mode,
     const uint32_t iteration_amount = cache_enable ? 1024U : 1U;
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(HASH(session, mode, block_amount, hash, data_from_ram), block_amount, iteration_amount);
-    a_result->cyclesPerByte =
-        COMPUTE_CYCLES(HASH(session, mode, block_amount, hash, data_from_ram), block_amount * 128U, iteration_amount);
-    a_result->kbPerS = KB_S(HASH(session, mode, block_amount, hash, data_from_ram), block_amount);
+    a_result->cyclesPerByte = a_result->cyclesPerBlock / 128U;
+    a_result->kbPerS        = KB_S(HASH(session, mode, block_amount, hash, data_from_ram), block_amount, 128U);
 
     /**************************************************************************/
     /* Session clean-up                                                       */

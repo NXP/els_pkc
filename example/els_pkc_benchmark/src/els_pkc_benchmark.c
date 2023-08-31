@@ -9,6 +9,11 @@
 #include "els_pkc_bm_asymmetric.h"
 #include "els_pkc_bm_hash.h"
 #include "els_pkc_bm_mac.h"
+#include "mcux_els.h" // Power Down Wake-up Init
+#include "mcux_pkc.h" // Power Down Wake-up Init
+#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
+#include "fsl_trng.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -25,16 +30,44 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
+static void CRYPTO_InitHardware(void)
+{
+    status_t status;
+
+    status = ELS_PowerDownWakeupInit(ELS);
+    if (status != kStatus_Success)
+    {
+        PRINTF("ELS_PowerDownWakeupInit(ELS) failed\r\n");
+    }
+    /* Enable PKC related clocks and RAM zeroize */
+    status = PKC_PowerDownWakeupInit(PKC);
+    if (status != kStatus_Success)
+    {
+        PRINTF("ELS_PowerDownWakeupInit(PKC) failed\r\n");
+    }
+#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
+    /* Initilize the TRNG driver */
+    {
+        trng_config_t trngConfig;
+        /* Get default TRNG configs*/
+        TRNG_GetDefaultConfig(&trngConfig);
+        /* Set sample mode of the TRNG ring oscillator to Von Neumann, for better random data.*/
+        /* Initialize TRNG */
+        TRNG_Init(TRNG, &trngConfig);
+    }
+#endif
+}
+
 /*!
  * @brief Main function
  */
 int main(void)
 {
-    SysTick_Config(CLOCK_GetCoreSysClkFreq() / 1000U);
-
     /* Init hardware */
     BOARD_InitHardware();
+    CRYPTO_InitHardware();
 
+    SysTick_Config(CLOCK_GetCoreSysClkFreq() / 1000U);
     /* Print BM information */
     PRINTF("#################################\r\n");
     PRINTF("#\r");
@@ -55,13 +88,14 @@ int main(void)
     PRINTF("   -SHA-256 BLOCK SIZE: 64 BYTE\r\n");
     PRINTF("   -SHA-384 BLOCK SIZE: 128 BYTE\r\n");
     PRINTF("   -SHA-512 BLOCK SIZE: 128 BYTE\r\n");
+    PRINTF("   -FOR AES-CCM-192 DOING FIRST CBC AND THEN CTR, BECAUSE NO AES-CCM-192 SUPPORTED BY ELS_PKC\r\n");
     PRINTF("\r\n\n");
-
-    /* Run tests for AES symmetric-key cryptographic algorithms */
-    run_tests_symmetric();
 
     /* Run tests for DSA asymmetric-key cryptographic algorithms */
     run_tests_asymmetric();
+
+    /* Run tests for AES symmetric-key cryptographic algorithms */
+    run_tests_symmetric();
 
     /* Run tests for SHA hash algorithms */
     run_tests_hashing();

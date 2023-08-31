@@ -11,6 +11,7 @@
  * Definitions
  ******************************************************************************/
 #define AES_128_KEY 16U
+#define AES_192_KEY 24U
 #define AES_256_KEY 32U
 
 #define AES_ENCRYPT(mode, data_from_ram, key, session, block_amount)                                                  \
@@ -19,7 +20,6 @@
         uint32_t msg_enc_size = 0U;                                                                                   \
         if (data_from_ram)                                                                                            \
         {                                                                                                             \
-            /* Start measuring */                                                                                     \
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                         \
                 result_enc, token_enc,                                                                                \
                 mcuxClCipher_crypt(                                                                                   \
@@ -48,8 +48,8 @@
             }                                                                                                         \
             MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                         \
         }                                                                                                             \
-        else /* Data from flash memory */                                                                             \
-        {    /* Start measuring */                                                                                    \
+        else                                                                                                          \
+        { /* Data from flash memory */                                                                                \
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                         \
                 result_enc, token_enc,                                                                                \
                 mcuxClCipher_crypt(                                                                                   \
@@ -139,7 +139,110 @@
             }                                                                                                          \
             MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                          \
         }                                                                                                              \
-    } while (0)
+    } while (0);
+
+#define AES_CCM_192(data_from_ram, key, session, block_amount)                                                        \
+    do                                                                                                                \
+    {                                                                                                                 \
+        if (data_from_ram)                                                                                            \
+        {                                                                                                             \
+            uint32_t msg_enc_size = 0U;                                                                               \
+            uint8_t result_buffer[16U];                                                                               \
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                         \
+                result_enc, token_enc,                                                                                \
+                mcuxClCipher_crypt(                                                                                   \
+                    /* mcuxClSession_Handle_t session: */ session, /* mcuxClKey_Handle_t key:         */ key,         \
+                    /* mcuxClCipher_Mode_t mode:       */ mcuxClCipher_Mode_AES_CBC_Enc_NoPadding,                    \
+                    /* mcuxCl_InputBuffer_t pIv:       */ s_Aes128Iv,                                                 \
+                    /* uint32_t ivLength:              */ sizeof(s_Aes128Iv),                                         \
+                    /* mcuxCl_InputBuffer_t pIn:       */ block_amount == SINGLE_BLOCK ? s_MsgPlainSingleBlock :      \
+                                                                                         s_MsgPlain,                  \
+                    /* uint32_t inLength:              */ block_amount == SINGLE_BLOCK ?                              \
+                        sizeof(s_MsgPlainSingleBlock) :                                                               \
+                        sizeof(s_MsgPlain),                                                                           \
+                    /* mcuxCl_Buffer_t pOut:           */ block_amount == SINGLE_BLOCK ? s_MsgEncSingleBlock :        \
+                                                                                         s_MsgEnc,                    \
+                    /* uint32_t * const pOutLength:    */ &msg_enc_size));                                            \
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) ||                                    \
+                (MCUXCLCIPHER_STATUS_OK != result_enc))                                                               \
+            {                                                                                                         \
+                PRINTF("[Error] Encryption failed\r\n");                                                              \
+                return MCUXCLEXAMPLE_ERROR;                                                                           \
+            }                                                                                                         \
+            MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                         \
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                         \
+                result_enc, token_enc,                                                                                \
+                mcuxClCipher_crypt(                                                                                   \
+                    /* mcuxClSession_Handle_t session: */ session, /* mcuxClKey_Handle_t key:         */ key,         \
+                    /* mcuxClCipher_Mode_t mode:       */ mcuxClCipher_Mode_AES_CTR,                                  \
+                    /* mcuxCl_InputBuffer_t pIv:       */ s_Aes128Iv,                                                 \
+                    /* uint32_t ivLength:              */ sizeof(s_Aes128Iv),                                         \
+                    /* mcuxCl_InputBuffer_t pIn:       */ block_amount == SINGLE_BLOCK ? s_MsgPlainSingleBlock :      \
+                                                                                         s_MsgPlain,                  \
+                    /* uint32_t inLength:              */ block_amount == SINGLE_BLOCK ?                              \
+                        sizeof(s_MsgPlainSingleBlock) :                                                               \
+                        sizeof(s_MsgPlain),                                                                           \
+                    /* mcuxCl_Buffer_t pOut:           */ block_amount == SINGLE_BLOCK ? s_MsgEncSingleBlock :        \
+                                                                                         s_MsgEnc,                    \
+                    /* uint32_t * const pOutLength:    */ &msg_enc_size));                                            \
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) ||                                    \
+                (MCUXCLCIPHER_STATUS_OK != result_enc))                                                               \
+            {                                                                                                         \
+                PRINTF("[Error] Encryption failed\r\n");                                                              \
+                return MCUXCLEXAMPLE_ERROR;                                                                           \
+            }                                                                                                         \
+            MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                         \
+        }                                                                                                             \
+        else /* Data from flash memory */                                                                             \
+        {                                                                                                             \
+            uint32_t msg_enc_size = 0U;                                                                               \
+            uint8_t result_buffer[16U];                                                                               \
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                         \
+                result_enc, token_enc,                                                                                \
+                mcuxClCipher_crypt(                                                                                   \
+                    /* mcuxClSession_Handle_t session: */ session, /* mcuxClKey_Handle_t key:         */ key,         \
+                    /* mcuxClCipher_Mode_t mode:       */ mcuxClCipher_Mode_AES_CBC_Enc_NoPadding,                    \
+                    /* mcuxCl_InputBuffer_t pIv:       */ s_Aes128Iv,                                                 \
+                    /* uint32_t ivLength:              */ sizeof(s_Aes128IvFlash),                                    \
+                    /* mcuxCl_InputBuffer_t pIn:       */ block_amount == SINGLE_BLOCK ? s_MsgPlainSingleBlockFlash : \
+                                                                                         s_MsgPlainFlash,             \
+                    /* uint32_t inLength:              */ block_amount == SINGLE_BLOCK ?                              \
+                        sizeof(s_MsgPlainSingleBlockFlash) :                                                          \
+                        sizeof(s_MsgPlainFlash),                                                                      \
+                    /* mcuxCl_Buffer_t pOut:           */ block_amount == SINGLE_BLOCK ? s_MsgEncSingleBlock :        \
+                                                                                         s_MsgEnc,                    \
+                    /* uint32_t * const pOutLength:    */ &msg_enc_size));                                            \
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) ||                                    \
+                (MCUXCLCIPHER_STATUS_OK != result_enc))                                                               \
+            {                                                                                                         \
+                PRINTF("[Error] Encryption failed\r\n");                                                              \
+                return MCUXCLEXAMPLE_ERROR;                                                                           \
+            }                                                                                                         \
+            MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                         \
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                         \
+                result_enc, token_enc,                                                                                \
+                mcuxClCipher_crypt(                                                                                   \
+                    /* mcuxClSession_Handle_t session: */ session, /* mcuxClKey_Handle_t key:         */ key,         \
+                    /* mcuxClCipher_Mode_t mode:       */ mcuxClCipher_Mode_AES_CTR,                                  \
+                    /* mcuxCl_InputBuffer_t pIv:       */ s_Aes128IvFlash,                                            \
+                    /* uint32_t ivLength:              */ sizeof(s_Aes128IvFlash),                                    \
+                    /* mcuxCl_InputBuffer_t pIn:       */ block_amount == SINGLE_BLOCK ? s_MsgPlainSingleBlockFlash : \
+                                                                                         s_MsgPlainFlash,             \
+                    /* uint32_t inLength:              */ block_amount == SINGLE_BLOCK ?                              \
+                        sizeof(s_MsgPlainSingleBlockFlash) :                                                          \
+                        sizeof(s_MsgPlainFlash),                                                                      \
+                    /* mcuxCl_Buffer_t pOut:           */ block_amount == SINGLE_BLOCK ? s_MsgEncSingleBlock :        \
+                                                                                         s_MsgEnc,                    \
+                    /* uint32_t * const pOutLength:    */ &msg_enc_size));                                            \
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) ||                                    \
+                (MCUXCLCIPHER_STATUS_OK != result_enc))                                                               \
+            {                                                                                                         \
+                PRINTF("[Error] Encryption failed\r\n");                                                              \
+                return MCUXCLEXAMPLE_ERROR;                                                                           \
+            }                                                                                                         \
+            MCUX_CSSL_FP_FUNCTION_CALL_END();                                                                         \
+        }                                                                                                             \
+    } while (0);
 
 /*******************************************************************************
  * Prototypes
@@ -155,8 +258,8 @@ static uint8_t s_Aes128Key[16U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD
                                    0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
 
 /** 192 bit key for the AES encryption */
-static uint8_t s_Aes192Key[24U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U, 0x2BU, 0x7EU, 0x15U, 0x16U,
-                                   0x28U, 0xAEU, 0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
+static uint8_t s_Aes192Key[24U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U, 0x88U,
+                                   0x09U, 0xCFU, 0x4FU, 0x3CU, 0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
 
 /** 256 bit key for the AES encryption */
 static uint8_t s_Aes256Key[32U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U,
@@ -193,15 +296,15 @@ static uint8_t s_Nonce64[8U] = {0x10U, 0x21U, 0x32U, 0x43U, 0x54U, 0x65U, 0x76U,
 static const uint8_t s_Aes128KeyFlash[16U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U,
                                               0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
 
-/** 192 bit key for the AES encryption stored in flash */
-static uint8_t s_Aes192KeyFlash[24U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U,
-                                        0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U,
-                                        0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
+/** 192 bit key for the AES encryption stroed in flash */
+static const uint8_t s_Aes192KeyFlash[24U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U,
+                                              0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU,
+                                              0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
 
 /** 256 bit key for the AES encryption stored in flash */
-static uint8_t s_Aes256KeyFlash[32U] = {0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U,
-                                        0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU, 0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU,
-                                        0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
+static const uint8_t s_Aes256KeyFlash[32U] = {
+    0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU,
+    0x2BU, 0x7EU, 0x15U, 0x16U, 0x28U, 0xAEU, 0xD2U, 0xA6U, 0xABU, 0xF7U, 0x15U, 0x88U, 0x09U, 0xCFU, 0x4FU, 0x3CU};
 
 /** IV of the AES encryption stored in flash */
 static const uint8_t s_Aes128IvFlash[MCUXCLAES_BLOCK_SIZE] = {0xF8U, 0xD2U, 0x68U, 0x76U, 0x81U, 0x6FU, 0x0FU, 0xBAU,
@@ -277,6 +380,18 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
             }
             break;
         }
+        case AES_192_KEY:
+        {
+            if (!mcuxClExample_Key_Init_And_Load(
+                    session, key, mcuxClKey_Type_Aes192,
+                    data_from_ram ? (mcuxCl_Buffer_t)s_Aes192Key : (mcuxCl_Buffer_t)s_Aes192KeyFlash, key_size,
+                    &key_properties, dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
+            {
+                PRINTF("[Error] Key initialization failed\r\n");
+                return MCUXCLEXAMPLE_ERROR;
+            }
+            break;
+        }
         case AES_256_KEY:
         {
             key_properties.bits.ksize = MCUXCLELS_KEYPROPERTY_KEY_SIZE_256;
@@ -298,9 +413,8 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
     const uint32_t iteration_amount = cache_enable ? 1024U : 1U;
     a_result->cyclesPerBlock =
         COMPUTE_CYCLES(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, iteration_amount);
-    a_result->cyclesPerByte = COMPUTE_CYCLES(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount),
-                                             block_amount * MCUXCLAES_BLOCK_SIZE, iteration_amount);
-    a_result->kbPerS        = KB_S(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount);
+    a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
+    a_result->kbPerS        = KB_S(AES_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, 16U);
 
     /**************************************************************************/
     /* Cleanup                                                                */
@@ -371,7 +485,8 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
     key_properties.word.value = 0U;
     key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
 
-    uint32_t dstData[8U];
+    uint32_t dstData[32U];
+
     /* Initializes a key handle, Set key properties and Load key */
     switch (key_size)
     {
@@ -381,6 +496,18 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
             if (!mcuxClExample_Key_Init_And_Load(
                     session, key, mcuxClKey_Type_Aes128,
                     data_from_ram ? (mcuxCl_Buffer_t)s_Aes128Key : (mcuxCl_Buffer_t)s_Aes128KeyFlash, key_size,
+                    &key_properties, dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
+            {
+                PRINTF("[Error] Key initialization failed\r\n");
+                return MCUXCLEXAMPLE_ERROR;
+            }
+            break;
+        }
+        case AES_192_KEY:
+        {
+            if (!mcuxClExample_Key_Init_And_Load(
+                    session, key, mcuxClKey_Type_Aes192,
+                    data_from_ram ? (mcuxCl_Buffer_t)s_Aes192Key : (mcuxCl_Buffer_t)s_Aes192KeyFlash, key_size,
                     &key_properties, dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
             {
                 PRINTF("[Error] Key initialization failed\r\n");
@@ -407,16 +534,24 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
     /* Encryption                                                             */
     /**************************************************************************/
     const uint32_t iteration_amount = cache_enable ? 1024U : 1U;
-    a_result->cyclesPerBlock =
-        COMPUTE_CYCLES(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, iteration_amount);
-    a_result->cyclesPerByte = COMPUTE_CYCLES(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount),
-                                             block_amount * MCUXCLAES_BLOCK_SIZE, iteration_amount);
-    a_result->kbPerS        = KB_S(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount);
+    if (key_size == AES_192_KEY)
+    {
+        a_result->cyclesPerBlock =
+            COMPUTE_CYCLES(AES_CCM_192(data_from_ram, key, session, block_amount), block_amount, iteration_amount);
+        a_result->cyclesPerByte = a_result->cyclesPerBlock / 16U;
+        a_result->kbPerS        = KB_S(AES_CCM_192(data_from_ram, key, session, block_amount), block_amount, 16U);
+    }
+    else
+    {
+        a_result->cyclesPerBlock = COMPUTE_CYCLES(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount),
+                                                  block_amount, iteration_amount);
+        a_result->cyclesPerByte  = a_result->cyclesPerBlock / 16U;
+        a_result->kbPerS = KB_S(AEAD_ENCRYPT(mode, data_from_ram, key, session, block_amount), block_amount, 16U);
+    }
 
     /**************************************************************************/
     /* Cleanup                                                                */
     /**************************************************************************/
-
     /* Flush the key */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClKey_flush(session, key));
 
@@ -535,6 +670,15 @@ void run_tests_symmetric(void)
     test_aes_cbc(code_from, "RAM", SINGLE_BLOCK, AES_128_KEY, true);
     PRINTF("\r\n");
 
+    PRINTF("AES-CBC-192:\r\n");
+    test_aes_cbc(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_cbc(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_cbc(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_cbc(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_cbc(code_from, "FLASH", SINGLE_BLOCK, AES_192_KEY, true);
+    test_aes_cbc(code_from, "RAM", SINGLE_BLOCK, AES_192_KEY, true);
+    PRINTF("\r\n");
+
     PRINTF("AES-CBC-256:\r\n");
     test_aes_cbc(code_from, "FLASH", MULTIPLE_BLOCKS, AES_256_KEY, false);
     test_aes_cbc(code_from, "FLASH", MULTIPLE_BLOCKS, AES_256_KEY, true);
@@ -551,6 +695,15 @@ void run_tests_symmetric(void)
     test_aes_ecb(code_from, "RAM", MULTIPLE_BLOCKS, AES_128_KEY, true);
     test_aes_ecb(code_from, "FLASH", SINGLE_BLOCK, AES_128_KEY, true);
     test_aes_ecb(code_from, "RAM", SINGLE_BLOCK, AES_128_KEY, true);
+    PRINTF("\r\n");
+
+    PRINTF("AES-ECB-192:\r\n");
+    test_aes_ecb(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_ecb(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_ecb(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_ecb(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_ecb(code_from, "FLASH", SINGLE_BLOCK, AES_192_KEY, true);
+    test_aes_ecb(code_from, "RAM", SINGLE_BLOCK, AES_192_KEY, true);
     PRINTF("\r\n");
 
     PRINTF("AES-ECB-256:\r\n");
@@ -571,6 +724,15 @@ void run_tests_symmetric(void)
     test_aes_ctr(code_from, "RAM", SINGLE_BLOCK, AES_128_KEY, true);
     PRINTF("\r\n");
 
+    PRINTF("AES-CTR-192:\r\n");
+    test_aes_ctr(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_ctr(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_ctr(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_ctr(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_ctr(code_from, "FLASH", SINGLE_BLOCK, AES_192_KEY, true);
+    test_aes_ctr(code_from, "RAM", SINGLE_BLOCK, AES_192_KEY, true);
+    PRINTF("\r\n");
+
     PRINTF("AES-CTR-256:\r\n");
     test_aes_ctr(code_from, "FLASH", MULTIPLE_BLOCKS, AES_256_KEY, false);
     test_aes_ctr(code_from, "FLASH", MULTIPLE_BLOCKS, AES_256_KEY, true);
@@ -580,7 +742,7 @@ void run_tests_symmetric(void)
     test_aes_ctr(code_from, "RAM", SINGLE_BLOCK, AES_256_KEY, true);
     PRINTF("\r\n");
 
-    PRINTF("AES-CCM-128:\r\n");
+    PRINTF("AES-CCM-128(WITH CMAC):\r\n");
     test_aes_ccm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_128_KEY, false);
     test_aes_ccm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_128_KEY, true);
     test_aes_ccm(code_from, "RAM", MULTIPLE_BLOCKS, AES_128_KEY, false);
@@ -589,7 +751,16 @@ void run_tests_symmetric(void)
     test_aes_ccm(code_from, "RAM", SINGLE_BLOCK, AES_128_KEY, true);
     PRINTF("\r\n");
 
-    PRINTF("AES-CCM-256:\r\n");
+    PRINTF("AES-CCM-192(1.CBC 2.CTR):\r\n");
+    test_aes_ccm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_ccm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_ccm(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_ccm(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_ccm(code_from, "FLASH", SINGLE_BLOCK, AES_192_KEY, true);
+    test_aes_ccm(code_from, "RAM", SINGLE_BLOCK, AES_192_KEY, true);
+    PRINTF("\r\n");
+
+    PRINTF("AES-CCM-256(WITH CMAC):\r\n");
     test_aes_ccm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_256_KEY, false);
     test_aes_ccm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_256_KEY, true);
     test_aes_ccm(code_from, "RAM", MULTIPLE_BLOCKS, AES_256_KEY, false);
@@ -605,6 +776,15 @@ void run_tests_symmetric(void)
     test_aes_gcm(code_from, "RAM", MULTIPLE_BLOCKS, AES_128_KEY, true);
     test_aes_gcm(code_from, "FLASH", SINGLE_BLOCK, AES_128_KEY, true);
     test_aes_gcm(code_from, "RAM", SINGLE_BLOCK, AES_128_KEY, true);
+    PRINTF("\r\n");
+
+    PRINTF("AES-GCM-192:\r\n");
+    test_aes_gcm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_gcm(code_from, "FLASH", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_gcm(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, false);
+    test_aes_gcm(code_from, "RAM", MULTIPLE_BLOCKS, AES_192_KEY, true);
+    test_aes_gcm(code_from, "FLASH", SINGLE_BLOCK, AES_192_KEY, true);
+    test_aes_gcm(code_from, "RAM", SINGLE_BLOCK, AES_192_KEY, true);
     PRINTF("\r\n");
 
     PRINTF("AES-GCM-256:\r\n");
