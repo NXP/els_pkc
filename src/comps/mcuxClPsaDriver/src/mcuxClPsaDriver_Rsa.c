@@ -430,9 +430,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
     /* Key handle for RSA key type private CRT */
     mcuxClKey_Descriptor_t privKey, pubKey;
-    uint8_t pubKeyBuf[MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_4096_SIZE] = {0U};
+    __attribute__((aligned)) uint8_t pubKeyBuf[MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_4096_SIZE] = {0U};
     uint32_t pubKeySize = 0u;
-    uint8_t priCrtKeyBuf[MCUXCLRSA_KEYGENERATION_CRT_KEY_DATA_4096_SIZE] = {0U};
+    __attribute__((aligned)) uint8_t priCrtKeyBuf[MCUXCLRSA_KEYGENERATION_CRT_KEY_DATA_4096_SIZE] = {0U};
     uint32_t priCrtKeySize = 0u;
 
     /* Call key generation and check FP and return code */
@@ -449,7 +449,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) priCrtKeyBuf;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
-    uint32_t pD[MCUXCLKEY_SIZE_4096_IN_WORDS];
+    __attribute__((aligned)) uint32_t pD[MCUXCLKEY_SIZE_4096_IN_WORDS];
     mcuxClRsa_KeyEntry_t dKey =
     {
         .pKeyEntryData = (uint8_t*) pD,
