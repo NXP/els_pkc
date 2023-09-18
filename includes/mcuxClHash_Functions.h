@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -66,7 +66,7 @@ extern "C" {
  * @param[in]       inSize     Number of bytes of data in the \p pIn buffer.
  * @param[out]      pOut       Pointer to the output buffer where the computed hash
  *                             value is written.
- * @param[in/out]   pOutSize   Will be incremented by the number of bytes of data
+ * @param[out]      pOutSize   Will be incremented by the number of bytes of data
  *                             that have been written to the \p pOut buffer.
  *
  * @return status
@@ -86,6 +86,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_compute(
     mcuxCl_Buffer_t pOut,
     uint32_t *const pOutSize
 ); /* oneshot compute */
+
 
 
 /**********************************************************************/
@@ -162,8 +163,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_process(
  *                             that have been written to the \p pOut buffer.
  *
  * @return status
- * @retval MCUXCLHASH_STATUS_OK        Hash operation successful
- * @retval MCUXCLHASH_STATUS_FAILURE   Error occurred during Hash operation
+ * @retval MCUXCLHASH_STATUS_OK               Hash operation successful
+ * @retval MCUXCLHASH_STATUS_FAILURE          Error occurred during Hash operation
+ * @retval MCUXCLHASH_STATUS_INVALID_PARAMS   The provided function parameters do not fulfill requirements
+ * @retval MCUXCLHASH_STATUS_FAULT_ATTACK     A fault attack was detected
  *
  * @implements{REQ_2207116}
  */

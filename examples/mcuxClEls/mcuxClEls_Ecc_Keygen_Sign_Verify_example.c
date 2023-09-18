@@ -41,15 +41,15 @@ static uint32_t const ecc_digest[MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256 / sizeof(uin
 static uint32_t ecc_public_key[MCUXCLELS_ECC_PUBLICKEY_SIZE / sizeof(uint32_t)];
 
 /** Destination buffer to receive the signature of the mcuxClEls_EccSign_Async operation. */
-static mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE];
+static uint32_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE / sizeof(uint32_t)];
 
 
 /** Destination buffer to receive the signature part r of the VerifyOptions operation. */
-static mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE];
+static uint32_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE / sizeof(uint32_t)];
 
 
 /** Concatenation of the ECC signature and public key, needed for the mcuxClEls_EccVerify_Async operation. */
-static mcuxClEls_EccByte_t ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE + MCUXCLELS_ECC_PUBLICKEY_SIZE];
+static uint32_t ecc_signature_and_public_key[(MCUXCLELS_ECC_SIGNATURE_SIZE + MCUXCLELS_ECC_PUBLICKEY_SIZE) / sizeof(uint32_t)];
 
 
 /**
@@ -106,7 +106,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
             SignOptions,                                                  // Set the prepared configuration.
             keyIdx,                                                       // Set index of private key in keystore.
             (const uint8_t *) ecc_digest, NULL, (size_t) 0U,              // Pre-hashed data to sign. Note that inputLength parameter is ignored since pre-hashed data has a fixed length.
-            ecc_signature                                                 // Output buffer, which the operation will write the signature to.
+            (uint8_t *)ecc_signature                                                 // Output buffer, which the operation will write the signature to.
             ));
     // mcuxClEls_EccSign_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
@@ -126,10 +126,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     /* Verify signature */
     /* Concatenate signature and public key to prepare input for EccVerify_Async */
     for(size_t i = 0u; i < MCUXCLELS_ECC_SIGNATURE_SIZE; i++) {
-        ecc_signature_and_public_key[i] = ecc_signature[i];
+        ((uint8_t *)ecc_signature_and_public_key)[i] = ((uint8_t *)ecc_signature)[i];
     }
     for(size_t i = 0u; i < MCUXCLELS_ECC_PUBLICKEY_SIZE; i++) {
-        ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE + i] = *((uint8_t *) ecc_public_key + i);
+        ((uint8_t *)ecc_signature_and_public_key)[MCUXCLELS_ECC_SIGNATURE_SIZE + i] = *((uint8_t *) ecc_public_key + i);
     }
 
     mcuxClEls_EccVerifyOption_t VerifyOptions = {0}; // Initialize a new configuration for the planned mcuxClEls_EccVerify_Async operation.
@@ -137,8 +137,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccVerify_Async(// Perform signature verification.
             VerifyOptions,                                                  // Set the prepared configuration.
             (const uint8_t *) ecc_digest, NULL, (size_t) 0U,                // Pre-hashed data to verify. Note that inputLength parameter is ignored since pre-hashed data has a fixed length.
-            ecc_signature_and_public_key,                                   // Concatenation of signature of the pre-hashed data and public key used
-            ecc_signature_r                                                 // Output buffer, which the operation will write the signature part r to, to allow external comparison of between given and recalculated r.
+            (const uint8_t *)ecc_signature_and_public_key,                  // Concatenation of signature of the pre-hashed data and public key used
+            (uint8_t *)ecc_signature_r                                      // Output buffer, which the operation will write the signature part r to, to allow external comparison of between given and recalculated r.
             ));
     // mcuxClEls_EccVerify_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))

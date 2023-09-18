@@ -34,6 +34,9 @@
 #define MCUXCLCIPHER_STATUS_ERROR_MEMORY_ALLOCATION      ((mcuxClCipher_Status_t) 0x0222533Cu) // memory allocation error
 #define MCUXCLCIPHER_STATUS_FAULT_ATTACK                 ((mcuxClCipher_Status_t) 0x0222F0F0u)
 #define MCUXCLCIPHER_STATUS_OK                           ((mcuxClCipher_Status_t) 0x02222E03u)
+#define MCUXCLCIPHER_STATUS_JOB_STARTED                  ((mcuxClCipher_Status_t) 0x02222E47u)
+#define MCUXCLCIPHER_STATUS_JOB_COMPLETED                ((mcuxClCipher_Status_t) 0x02222E8Bu)
+#define MCUXCLCIPHER_STATUS_JOB_UNAVAILABLE              ((mcuxClCipher_Status_t) 0x022289BCu)
 
 /** @}*/
 #endif /* MCUXCLCIPHER_CONSTANTS_H_ */

@@ -153,14 +153,14 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
- 
+
 #ifdef MCUXCL_FEATURE_PROJECT_NIOBE4ANALOG
 
 #define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
 #define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
 #define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
 
-#else
+#else 
 
 #define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (632u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
 #define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (760u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
@@ -192,7 +192,7 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
- 
+
 #ifdef MCUXCL_FEATURE_PROJECT_NIOBE4ANALOG
 
 #define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys

@@ -25,7 +25,6 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClSession.h>
-
 #include <mcuxClPkc_Types.h>
 
 #ifdef __cplusplus
@@ -313,7 +312,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_CalcFup(
 /** Helper macro to call #mcuxClPkc_CalcFup with flow protection. */
 #define MCUXCLPKC_FP_CALCFUP(pUPTR, ulen)  \
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcFup(pUPTR, ulen))
-        
+
 /** Helper macro to call #mcuxClPkc_CalcFup (skipping first skipLen calculation(s)) with flow protection. */
 #define MCUXCLPKC_FP_CALCFUP_OFFSET(pUPTR, skipLen, ulen)  \
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClPkc_CalcFup(&((mcuxClPkc_PtrFUPEntry_t) (pUPTR))[(skipLen)], ulen))

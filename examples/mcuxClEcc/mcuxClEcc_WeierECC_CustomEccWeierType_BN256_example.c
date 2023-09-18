@@ -28,7 +28,8 @@
 #include <mcuxClEcc_WeierECC.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-
+#include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 
 #define BN256_BYTE_LEN_P  (32u)
 #define BN256_BYTE_LEN_N  (32u)
@@ -83,8 +84,10 @@ static const uint8_t BN_P256_N[BN256_BYTE_LEN_N] =
     0xF6u, 0x2Du, 0x53u, 0x6Cu, 0xD1u, 0x0Bu, 0x50u, 0x0Du
 };
 
-#define MAX_CPUWA_SIZE  MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WACPU_SIZE
+
+#define MAX_CPUWA_SIZE MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WACPU_SIZE
 #define MAX_PKCWA_SIZE  MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WAPKC_SIZE(BN256_BYTE_LEN_P, BN256_BYTE_LEN_N)
+
 
 /**
  * Performs an example key derivation using the mcuxClKey component.
@@ -172,6 +175,44 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example)
     );
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_GenerateCustomKeyType) != genPubKeyType_token) || (MCUXCLECC_STATUS_OK != genPubKeyType_status))
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /* Allocate space for and initialize private key handle for an BN_P256 private key */
+    uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
+    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
+    uint8_t pPrivKeyData[MCUXCLKEY_SIZE_256];
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_priv_status, ki_priv_token, mcuxClKey_init(
+    /* mcuxClSession_Handle_t session         */ pSession,
+    /* mcuxClKey_Handle_t key                 */ privKey,
+    /* mcuxClKey_Type_t type                  */ customPrivKeyType,
+    /* mcuxCl_Buffer_t pKeyData               */ (mcuxCl_Buffer_t) pPrivKeyData,
+    /* uint32_t keyDataLength                */ MCUXCLKEY_SIZE_256)
+    );
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != ki_priv_token) || (MCUXCLKEY_STATUS_OK != ki_priv_status))
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /* Allocate space for and initialize public key handle for an BN_P256 public key */
+    uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
+    uint8_t pPubKeyData[MCUXCLECC_WEIERECC_NIST_P256_SIZE_PUBLICKEY];
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_pub_status, ki_pub_token, mcuxClKey_init(
+    /* mcuxClSession_Handle_t session         */ pSession,
+    /* mcuxClKey_Handle_t key                 */ pubKey,
+    /* mcuxClKey_Type_t type                  */ customPubKeyType,
+    /* mcuxCl_Buffer_t pKeyData               */ (mcuxCl_Buffer_t) pPubKeyData,
+    /* uint32_t keyDataLength                */ MCUXCLKEY_SIZE_512)
+    );
+
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != ki_pub_token) || (MCUXCLKEY_STATUS_OK != ki_pub_status))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }

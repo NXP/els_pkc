@@ -16,7 +16,6 @@
  * @brief Defines the memory consumption for the mcuxClEcc component
  */
 
-
 #ifndef MCUXCLECC_MEMORYCONSUMPTION_H_
 #define MCUXCLECC_MEMORYCONSUMPTION_H_
 
@@ -76,12 +75,11 @@
 #define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE    360u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed25519.
 #define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WACPU_SIZE      196u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed448.
 
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE  548u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE    356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE  540u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE    132u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
 
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    548u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
-
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    540u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      132u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
 
 #else
 
@@ -124,11 +122,11 @@
 #define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE    680u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed25519.
 #define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WACPU_SIZE      516u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateKeyPair for Ed448.
 
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE  548u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
-#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE    356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE  540u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed25519.
+#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE    132u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_GenerateSignature for Ed448.
 
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    548u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
-#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      356u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE    540u  ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed25519.
+#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE      132u    ///< CPU workarea size (in bytes) for #mcuxClEcc_EdDSA_VerifySignature for Ed448.
 
 #endif
 /**

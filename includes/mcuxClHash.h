@@ -46,7 +46,6 @@
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClHash_Types.h>
 #include <mcuxClHash_Functions.h>
-#include <mcuxClHash_Algorithms.h>
 #include <mcuxClHash_MemoryConsumption.h>
 #include <mcuxClHash_Constants.h>
 

@@ -57,7 +57,7 @@
     #define CSS_IDATA_SEGMENT
     #define CSS_CONST_SEGMENT
     #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4)))
-    // #define UNUSED_PARAM
+    #define UNUSED_PARAM __attribute__((unused))
     #define UNALIGNED
 
 /* for iar compiler */

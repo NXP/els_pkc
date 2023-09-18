@@ -12,7 +12,7 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file:  mcuxClAeadModes_oneshot_ELS_CCM_example.c
+ * @file:  mcuxClAeadModes_Oneshot_Els_Ccm_Example.c
  * @brief: Example Aead application
  */
 
@@ -61,7 +61,7 @@ static const uint8_t msg_enc_expected[16] = {
   0x08u, 0x1au, 0x77u, 0x92u, 0x07u, 0x3du, 0x59u, 0x3du
 };
 
-MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_oneshot_ELS_CCM_example)
+MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Oneshot_Els_Ccm_Example)
 {
     /**************************************************************************/
     /* Preparation                                                            */

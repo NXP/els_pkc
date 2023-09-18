@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxCsslAnalysis.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClCore_Buffer.h>

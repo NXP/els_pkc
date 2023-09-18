@@ -105,7 +105,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Els_Oneshot_External_Key_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClKey_init(
         /* mcuxClSession_Handle_t pSession:                */  session,
         /* mcuxClKey_Handle_t key:                         */  key,
-        /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_HmacSha256_variableLength,
+        /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
         /* mcuxCl_Buffer_t pKeyData:                       */  (uint8_t *) hmac_key,
         /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
 

@@ -53,7 +53,7 @@ extern "C" {
  * This function must be called before any SW-HMAC operation is performed.
  *
  * @param mode[out]             Pointer to HMAC custom mode to be initialized.
- * @param mcuxClHash_Algo_t[in]  Pointer to the Hash algorithm descriptor to be used.
+ * @param mcuxClHash_Algo_t[in]  Pointer to the Hash algorithm descriptor to be used. SecSha algorithm descriptors are not supported.
  *
  * @return status
  */

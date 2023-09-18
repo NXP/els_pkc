@@ -22,6 +22,7 @@
 #include <mcuxClMac.h> // Interface to the entire mcuxClMac component
 #include <mcuxClHmac.h> // Interface to the entire mcuxClHmac component
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <mcuxClExample_RNG_Helper.h>
 
 /** Performs a HMAC computation using functions of the mcuxClKey component.
@@ -94,7 +95,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Oneshot_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyInit_result, keyInit_token, mcuxClKey_init(
         /* mcuxClSession_Handle_t pSession:                */  session,
         /* mcuxClKey_Handle_t key:                         */  key,
-        /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_HmacSw_variableLength,
+        /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
         /* mcuxCl_Buffer_t pKeyData:                       */  (uint8_t *) hmac_key,
         /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
 

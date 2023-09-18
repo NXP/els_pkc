@@ -18,13 +18,8 @@
 #ifndef MCUXCLHASH_TYPES_H_
 #define MCUXCLHASH_TYPES_H_
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
 #include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClSession_Types.h>
-#include <mcuxCsslFlowProtection.h>
-#include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Platform.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,6 +50,7 @@ typedef struct mcuxClHash_AlgorithmDescriptor mcuxClHash_AlgorithmDescriptor_t;
 typedef const mcuxClHash_AlgorithmDescriptor_t * const mcuxClHash_Algo_t;
 
 
+
 /**
  * @brief Hash Context buffer type
  *
@@ -68,6 +64,7 @@ typedef struct mcuxClHash_ContextDescriptor mcuxClHash_ContextDescriptor_t;
  * @brief Hash Context type
  *
  * This type is used to refer to the Hash context.
+ * It needs to be placed at a 64 Bit-aligned address.
  *
  */
 typedef mcuxClHash_ContextDescriptor_t * const mcuxClHash_Context_t;

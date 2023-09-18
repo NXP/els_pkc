@@ -77,13 +77,11 @@
 #define ELS_HW_VERSION_FW_MAJOR            2
 
 
-#ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS
 /* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from the platform header file
  * Redefine IP_CSS as an extern pointer.
  */
 #undef ELS_SFR_BASE
 extern void * ip_css_base;
 #define ELS_SFR_BASE           ((S50_Type *) ip_css_base)
-#endif /* NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS */
 
 #endif

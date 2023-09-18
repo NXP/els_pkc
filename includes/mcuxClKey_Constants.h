@@ -19,6 +19,7 @@
 #ifndef MCUXCLKEY_CONSTANTS_H_
 #define MCUXCLKEY_CONSTANTS_H_
 
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClConfig.h> // Exported features flags header
 
 /**********************************************

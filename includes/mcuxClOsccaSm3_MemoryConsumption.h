@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,6 +32,7 @@
 #define MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_SM3          (160u)   ///< Defines the workarea size required for mcuxClOsccaSm3_compute on SM3
 #define MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_MAX          (160u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_compute
 
+
 #define MCUXCLOSCCASM3_INIT_CPU_WA_BUFFER_SIZE                 (0u)  ///< Defines the max workarea size required for mcuxClOsccaSm3_init
 
 #define MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_SM3          (32u)  ///< Defines the workarea size required for mcuxClOsccaSm3_process on SM3
@@ -55,7 +56,14 @@
 /* Definitions of context sizes for the mcuxClOsccaSm3 multi-part functions. */
 /****************************************************************************/
 
-#define MCUXCLOSCCASM3_CONTEXT_SIZE (224u) ///< Defines the context size for streaming hashing interfaces
+#define MCUXCLOSCCASM3_CONTEXT_SIZE (120u)
+#define MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS (120u / sizeof(uint32_t)) ///< Defines the context size for streaming hashing interfaces
+
+/********************************************************************************************/
+/* Definitions of state buffer sizes for mcuxClHash_export_state and mcuxClHash_import_state  */
+/********************************************************************************************/
+
+#define MCUXCLOSCCASM3_EXPORT_IMPORT_CPU_WA_BUFFER_SIZE                  (40u)      ///< Defines the state size required for SM3
 
 /**
  * @}

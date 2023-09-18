@@ -52,7 +52,7 @@ bool mcuxClOsccaSm3_streaming_example(void)
 
     uint8_t hash[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3];
 
-    uint32_t context[MCUXCLOSCCASM3_CONTEXT_SIZE/sizeof(uint32_t)];
+    uint32_t context[MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS];
 	mcuxClHash_Context_t pContext = (mcuxClHash_Context_t) context;
 
 	MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result1, token1, mcuxClHash_init(

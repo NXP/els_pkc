@@ -27,6 +27,8 @@
 extern "C" {
 #endif
 
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED("Consumed by user / customer. Hence, it is declared but never referenced. ")
+
 /**
  * @addtogroup mcuxClAPI MCUX CL -- API
  *
@@ -65,19 +67,12 @@ extern const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_Ckd
 static const mcuxClKey_Protection_t mcuxClKey_Protection_Ckdf =
   &mcuxClKey_ProtectionDescriptor_Ckdf;
 
-/**
- * @brief Key protection descriptor for using XOR masking
- */
-extern const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_XorMasked;
 
-/**
- * @brief Key protection using XOR masking
- */
-static const mcuxClKey_Protection_t mcuxClKey_Protection_XorMasked =
-  &mcuxClKey_ProtectionDescriptor_XorMasked;
 
 
 /** @} */
+
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED()
 
 #ifdef __cplusplus
 } /* extern "C" */

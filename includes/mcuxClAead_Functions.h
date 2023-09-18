@@ -18,7 +18,6 @@
 #define MCUXCLAEAD_FUNCTIONS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-
 #include <mcuxClSession_Types.h>
 #include <mcuxClKey.h>
 #include <mcuxClAead_Types.h>
@@ -29,13 +28,11 @@ extern "C" {
 #endif
 
 /**
- * @defgroup clAeadOneShot One-shot AEAD interfaces
+ * @defgroup mcuxClAeadOneShot One-shot AEAD interfaces
  * @brief Interfaces to perform AEAD operations in one shot.
  * @ingroup mcuxClAead
  * @{
  */
-
-
 /**
  * @brief One-shot authenticated encryption/decryption function
  * @api
@@ -95,17 +92,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_crypt(
   uint32_t tagLength
 );
 
-
-
-
-
 /**
- * @defgroup clAeadMultiPart Multi-part AEAD interfaces
+ * @defgroup mcuxClAeadMultiPart Multi-part AEAD interfaces
  * @brief Interfaces to perform AEAD operations in multiple parts.
  * @ingroup mcuxClAead
  * @{
  */
-
 /**
  * @brief Multi-part authenticated encryption/decryption initialization function
  * @api
@@ -141,9 +133,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_init(
   uint32_t adataLength,
   uint32_t tagLength
 ); /* init encrypt */
-
-
-
 
 /**
  * @brief Multi-part authenticated encryption/decryption processing function

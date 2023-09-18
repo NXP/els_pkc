@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAead_MemoryConsumption.h
- *  @brief Defines the memory consumption for the mcuxClAead component */
+/** @file  mcuxClAeadModes_MemoryConsumption.h
+ *  @brief Defines the memory consumption for the clAeadModes component */
 
 #ifndef MCUXCLAEADMODES_MEMORYCONSUMPTION_H_
 #define MCUXCLAEADMODES_MEMORYCONSUMPTION_H_

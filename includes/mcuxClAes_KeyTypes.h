@@ -30,6 +30,8 @@
 extern "C" {
 #endif
 
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED("Consumed by user / customer. Hence, it is declared but never referenced. ")
+
 /**
  * @defgroup mcuxClAes_KeyTypes mcuxClAes_KeyTypes
  * @brief Defines of supported key types of @ref mcuxClAes, see @ref mcuxClKey
@@ -72,6 +74,8 @@ static const mcuxClKey_Type_t mcuxClKey_Type_Aes256 = &mcuxClKey_TypeDescriptor_
 /**
  * @}
  */ /* mcuxClAes_KeyTypes */
+
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED()
 
 #ifdef __cplusplus
 } /* extern "C" */
