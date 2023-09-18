@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClMemory_Types.h File Reference</title>
+<title>MCUX CLNS: mcuxClMemory_Clear.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -104,52 +104,44 @@ $(document).ready(function(){initNavTree('a00554.html','');});
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClMemory_Types.h File Reference</div>  </div>
+<div class="title">mcuxClMemory_Clear.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Memory type header.  
+<p>Memory header for clear functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &lt;stddef.h&gt;</code><br />
-<code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00656_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00356_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00569_source.html">mcuxClMemory_Types.h</a>&gt;</code><br />
+<code>#include &lt;mcuxCsslAnalysis.h&gt;</code><br />
 </div>
 <p><a href="a00554_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga2469abde1e59b6b478ba8c393dc3e95a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00867.html#ga2469abde1e59b6b478ba8c393dc3e95a">MCUXCLMEMORY_API</a></td></tr>
-<tr class="memdesc:ga2469abde1e59b6b478ba8c393dc3e95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks a function as a public API function of the mcuxClMemory component.  <a href="a00867.html#ga2469abde1e59b6b478ba8c393dc3e95a">More...</a><br /></td></tr>
-<tr class="separator:ga2469abde1e59b6b478ba8c393dc3e95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0a6eff5e1bb27d6c237a16f7d60b9eb9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#ga0a6eff5e1bb27d6c237a16f7d60b9eb9">MCUXCLMEMORY_STATUS_OK</a></td></tr>
-<tr class="memdesc:ga0a6eff5e1bb27d6c237a16f7d60b9eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memory operation successful.  <a href="a00868.html#ga0a6eff5e1bb27d6c237a16f7d60b9eb9">More...</a><br /></td></tr>
-<tr class="separator:ga0a6eff5e1bb27d6c237a16f7d60b9eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e92b528eed7533fedddfc3172c60fa8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00867.html#ga0e92b528eed7533fedddfc3172c60fa8">MCUXCLMEMORY_ERRORCODE_OK</a></td></tr>
-<tr class="memdesc:ga0e92b528eed7533fedddfc3172c60fa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memory operation successful.  <a href="a00867.html#ga0e92b528eed7533fedddfc3172c60fa8">More...</a><br /></td></tr>
-<tr class="separator:ga0e92b528eed7533fedddfc3172c60fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2dc0fdbb602c3777fffb8515f944d736"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00880.html#ga2dc0fdbb602c3777fffb8515f944d736">MCUXCLMEMORY_FP_MEMORY_CLEAR</a>(pTarget,  byteLen)</td></tr>
+<tr class="memdesc:ga2dc0fdbb602c3777fffb8515f944d736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00880.html#ga1ac6e8a4335f620d41360c090ee5ce73" title="Overwrites a memory buffer with null bytes.">mcuxClMemory_clear</a> with flow protection.  <a href="a00880.html#ga2dc0fdbb602c3777fffb8515f944d736">More...</a><br /></td></tr>
+<tr class="separator:ga2dc0fdbb602c3777fffb8515f944d736"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga76dcce466859684502b4725d51d5de4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00880.html#ga76dcce466859684502b4725d51d5de4f">MCUXCLMEMORY_FP_MEMORY_CLEAR_WITH_BUFF</a>(pTarget,  byteLen,  buffLen)</td></tr>
+<tr class="memdesc:ga76dcce466859684502b4725d51d5de4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00880.html#ga1ac6e8a4335f620d41360c090ee5ce73" title="Overwrites a memory buffer with null bytes.">mcuxClMemory_clear</a> with flow protection with buffer.  <a href="a00880.html#ga76dcce466859684502b4725d51d5de4f">More...</a><br /></td></tr>
+<tr class="separator:ga76dcce466859684502b4725d51d5de4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gad25887c99517f13c547e1d2bf027ccd1"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00866.html#gad25887c99517f13c547e1d2bf027ccd1">mcuxClMemory_Status_t</a></td></tr>
-<tr class="memdesc:gad25887c99517f13c547e1d2bf027ccd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for error codes of mcuxClMemory component functions.  <a href="a00866.html#gad25887c99517f13c547e1d2bf027ccd1">More...</a><br /></td></tr>
-<tr class="separator:gad25887c99517f13c547e1d2bf027ccd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga57c9ba76c62b4ad9bd565df4a98c19ba"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00866.html#gad25887c99517f13c547e1d2bf027ccd1">mcuxClMemory_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00866.html#ga57c9ba76c62b4ad9bd565df4a98c19ba">mcuxClMemory_Status_Protected_t</a></td></tr>
-<tr class="memdesc:ga57c9ba76c62b4ad9bd565df4a98c19ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deprecated type for error codes used by code-flow protected mcuxClMemory component functions.  <a href="a00866.html#ga57c9ba76c62b4ad9bd565df4a98c19ba">More...</a><br /></td></tr>
-<tr class="separator:ga57c9ba76c62b4ad9bd565df4a98c19ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga1ac6e8a4335f620d41360c090ee5ce73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00880.html#ga1ac6e8a4335f620d41360c090ee5ce73">mcuxClMemory_clear</a> (uint8_t *pDst, size_t length, size_t bufLength)</td></tr>
+<tr class="memdesc:ga1ac6e8a4335f620d41360c090ee5ce73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites a memory buffer with null bytes.  <a href="a00880.html#ga1ac6e8a4335f620d41360c090ee5ce73">More...</a><br /></td></tr>
+<tr class="separator:ga1ac6e8a4335f620d41360c090ee5ce73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Memory type header. </p>
-<p>This header exposes types used by the <a class="el" href="a00861.html">mcuxClMemory</a> functions. </p>
+<div class="textblock"><p>Memory header for clear functions. </p>
+<p>This header exposes functions that enable using memory clear function. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00554.html">mcuxClMemory_Types.h</a></li>
+    <li class="navelem"><a class="el" href="a00554.html">mcuxClMemory_Clear.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

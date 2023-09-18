@@ -1,11 +1,6 @@
 var a00593 =
 [
-    [ "mcuxClRandom_init", "a00877.html#ga989cf9033b30c383d1548037f2ec8bc9", null ],
-    [ "mcuxClRandom_reseed", "a00877.html#ga89fe90a4ca175d03b4a821cf2fa2004f", null ],
-    [ "mcuxClRandom_generate", "a00877.html#gadb7d7b6ff820450be3533014cb47f279", null ],
-    [ "mcuxClRandom_uninit", "a00877.html#ga92889d1e06ba33656278bd2a4110be99", null ],
-    [ "mcuxClRandom_selftest", "a00877.html#ga4c882c0d6b1e1bba418934c44acc873c", null ],
-    [ "mcuxClRandom_checkSecurityStrength", "a00877.html#ga6e48c6007ea1d6cfa2ec329152072fc0", null ],
-    [ "mcuxClRandom_ncInit", "a00877.html#ga4522b9cfa28cb224b653003d481d7100", null ],
-    [ "mcuxClRandom_ncGenerate", "a00877.html#ga942c035e4c1971f3e4da8cf252b6cdf6", null ]
+    [ "MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX", "a00893.html#gaee9868f9c5df1539bbd0d13100cd1905", null ],
+    [ "MCUXCLPSADRIVER_ECC_N_SIZE_MAX", "a00893.html#ga41d883eeccc7f5a70e0aed9b54188a4b", null ],
+    [ "MCUXCLPSADRIVER_ECC_P_SIZE_MAX", "a00893.html#ga819f21afe7de22fba137e1fd66721e48", null ]
 ];

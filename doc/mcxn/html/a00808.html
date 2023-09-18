@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClPkc_Functions</title>
+<title>MCUX CLNS: mcuxClMemory</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,30 +105,37 @@ $(document).ready(function(){initNavTree('a00808.html','');});
   <div class="summary">
 <a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClPkc_Functions<div class="ingroups"><a class="el" href="a00807.html">mcuxClPkc</a></div></div>  </div>
+<div class="title">mcuxClMemory</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all functions of <a class="el" href="a00807.html">mcuxClPkc</a>.  
+<p>Basic memory operations.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:a00944"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00944.html">McuxClPkc_Functions_Init</a></td></tr>
-<tr class="memdesc:a00944"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxClPkc functions of PKC initialization and deinitialization <br /></td></tr>
+<tr class="memitem:a00809"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html">mcuxClMemory_Clear</a></td></tr>
+<tr class="memdesc:a00809"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function clears a memory region. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00945"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00945.html">McuxClPkc_Functions_UPTRT</a></td></tr>
-<tr class="memdesc:a00945"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxClPkc functions of PKC UPTR table setup <br /></td></tr>
+<tr class="memitem:a00810"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00810.html">mcuxClMemory_Copy</a></td></tr>
+<tr class="memdesc:a00810"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function copies a memory region from <code>src</code> to <code>dst</code>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00946"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html">McuxClPkc_Functions_Calculation</a></td></tr>
-<tr class="memdesc:a00946"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxClPkc functions of PKC calculation <br /></td></tr>
+<tr class="memitem:a00811"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00811.html">mcuxClMemory_Copy_Reversed</a></td></tr>
+<tr class="memdesc:a00811"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function copies a memory region from <code>src</code> to <code>dst</code> reversely. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00947"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00947.html">McuxClPkc_Functions_Wait</a></td></tr>
-<tr class="memdesc:a00947"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxClPkc functions for waiting PKC computation <br /></td></tr>
+<tr class="memitem:a00812"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html">mcuxClMemory_Endianness</a></td></tr>
+<tr class="memdesc:a00812"><td class="mdescLeft">&#160;</td><td class="mdescRight">These macros implement endianess management on integers. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00813"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00813.html">mcuxClMemory_Set</a></td></tr>
+<tr class="memdesc:a00813"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function sets all bytes in a memory region to a specified value. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00814"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00814.html">mcuxClMemory_Types</a></td></tr>
+<tr class="memdesc:a00814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all types used by the <a class="el" href="a00808.html">mcuxClMemory</a> functions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all functions of <a class="el" href="a00807.html">mcuxClPkc</a>. </p>
+<p>Basic memory operations. </p>
+<p>This component provides memory functions similar to the ones found in the C standard library. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

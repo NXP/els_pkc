@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClPkc.h File Reference</title>
+<title>MCUX CLNS: mcuxClMemory_Set.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -102,26 +102,46 @@ $(document).ready(function(){initNavTree('a00440.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClPkc.h File Reference</div>  </div>
+<div class="title">mcuxClMemory_Set.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Top level header of mcuxClPkc component (PKC hardware driver)  
+<p>Memory header for set function.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;mcuxClCore_Platform.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00446_source.html">mcuxClPkc_Types.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00443_source.html">mcuxClPkc_Functions.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00443_source.html">mcuxClMemory_Types.h</a>&gt;</code><br />
+<code>#include &lt;mcuxCsslAnalysis.h&gt;</code><br />
 </div>
 <p><a href="a00440_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga039e0b482faab4d1aabe2dd5c79d3eb5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00740.html#ga039e0b482faab4d1aabe2dd5c79d3eb5">MCUXCLMEMORY_FP_MEMORY_SET</a>(pTarget,  val,  byteLen)</td></tr>
+<tr class="memdesc:ga039e0b482faab4d1aabe2dd5c79d3eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00740.html#ga5d86af41c30044c28809914e2901884d" title="Sets all bytes of a memory buffer to a specified value.">mcuxClMemory_set</a> with flow protection.  <a href="a00740.html#ga039e0b482faab4d1aabe2dd5c79d3eb5">More...</a><br /></td></tr>
+<tr class="separator:ga039e0b482faab4d1aabe2dd5c79d3eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad65a5023a0b0263462b6cfcd6761b904"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00740.html#gad65a5023a0b0263462b6cfcd6761b904">MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF</a>(pTarget,  val,  byteLen,  buffLen)</td></tr>
+<tr class="memdesc:gad65a5023a0b0263462b6cfcd6761b904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00740.html#ga5d86af41c30044c28809914e2901884d" title="Sets all bytes of a memory buffer to a specified value.">mcuxClMemory_set</a> with flow protection with buffer.  <a href="a00740.html#gad65a5023a0b0263462b6cfcd6761b904">More...</a><br /></td></tr>
+<tr class="separator:gad65a5023a0b0263462b6cfcd6761b904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga5d86af41c30044c28809914e2901884d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00740.html#ga5d86af41c30044c28809914e2901884d">mcuxClMemory_set</a> (uint8_t *pDst, uint8_t val, size_t length, size_t bufLength)</td></tr>
+<tr class="memdesc:ga5d86af41c30044c28809914e2901884d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all bytes of a memory buffer to a specified value.  <a href="a00740.html#ga5d86af41c30044c28809914e2901884d">More...</a><br /></td></tr>
+<tr class="separator:ga5d86af41c30044c28809914e2901884d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Top level header of mcuxClPkc component (PKC hardware driver) </p>
+<div class="textblock"><p>Memory header for set function. </p>
+<p>This header exposes functions that enable using memory set functions. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00440.html">mcuxClPkc.h</a></li>
+    <li class="navelem"><a class="el" href="a00440.html">mcuxClMemory_Set.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

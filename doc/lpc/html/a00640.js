@@ -1,5 +1,6 @@
 var a00640 =
 [
-    [ "MCUXCLELS_ECC_REVERSEFETCH_ENABLE", "a00640.html#ga0536723a417500b946e92b6432d0a4fd", null ],
-    [ "MCUXCLELS_ECC_REVERSEFETCH_DISABLE", "a00640.html#ga92e6bbdd8cdd2d0ed90e6073e94924df", null ]
+    [ "mcuxClEls_Common_Macros", "a00641.html", "a00641" ],
+    [ "mcuxClEls_Common_Types", "a00650.html", "a00650" ],
+    [ "mcuxClEls_Common_Functions", "a00651.html", "a00651" ]
 ];

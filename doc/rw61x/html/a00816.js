@@ -1,5 +1,5 @@
 var a00816 =
 [
-    [ "mcuxClEls_Types_Macros", "a00817.html", "a00817" ],
-    [ "mcuxClEls_Types_Types", "a00821.html", "a00821" ]
+    [ "MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE", "a00816.html#ga19feebc17331ebe966c67a9bfed79e33", null ],
+    [ "MCUXCLELS_HMAC_EXTERNAL_KEY_DISABLE", "a00816.html#ga876370de65e0c65b54c39b34921a4444", null ]
 ];

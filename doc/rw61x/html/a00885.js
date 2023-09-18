@@ -1,7 +1,6 @@
 var a00885 =
 [
-    [ "mcuxClRsa_Constants", "a00886.html", "a00886" ],
-    [ "mcuxClRsa_Functions", "a00889.html", "a00889" ],
-    [ "mcuxClRsa_Macros", "a00895.html", "a00895" ],
-    [ "mcuxClRsa_Types", "a00899.html", "a00899" ]
+    [ "mcuxClMemory_Types_Macros", "a00886.html", "a00886" ],
+    [ "mcuxClMemory_Status_t", "a00885.html#gad25887c99517f13c547e1d2bf027ccd1", null ],
+    [ "mcuxClMemory_Status_Protected_t", "a00885.html#ga57c9ba76c62b4ad9bd565df4a98c19ba", null ]
 ];

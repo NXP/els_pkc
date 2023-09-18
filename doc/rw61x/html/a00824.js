@@ -1,9 +1,6 @@
 var a00824 =
 [
-    [ "mcuxClHash_Modes", "a00823.html", "a00823" ],
-    [ "MCUXCLHASH_STATUS_", "a00825.html", "a00825" ],
-    [ "MCUXCLHASH_OUTPUT_SIZE_", "a00826.html", "a00826" ],
-    [ "MCUXCLHASH_WA", "a00828.html", "a00828" ],
-    [ "MCUXCLHASH_STATE", "a00829.html", "a00829" ],
-    [ "MCUXCLHASH_CONTEXT", "a00830.html", "a00830" ]
+    [ "mcuxClEls_KeyManagement_Macros", "a00825.html", "a00825" ],
+    [ "mcuxClEls_KeyManagement_Types", "a00829.html", "a00829" ],
+    [ "mcuxClEls_KeyManagement_Functions", "a00830.html", "a00830" ]
 ];

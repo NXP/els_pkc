@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLECC_WEIERECC_SECP192K1_SIZE_</title>
+<title>MCUX CLNS: Secure counter decrement</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,36 +105,118 @@ $(document).ready(function(){initNavTree('a00910.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLECC_WEIERECC_SECP192K1_SIZE_<div class="ingroups"><a class="el" href="a00661.html">mcuxClEcc</a> &raquo; <a class="el" href="a00666.html">mcuxClEcc_ParameterSizes</a></div></div>  </div>
+<div class="title">Secure counter decrement<div class="ingroups"><a class="el" href="a00866.html">MCUX CSSL &amp;ndash; Implementations</a> &raquo; <a class="el" href="a00907.html">Secure Counter: Disabled</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>WeierECC parameter size definitions for secp192k1.  
+<p>Support for decrementing the secure counter.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga402412a5c54ea3909218981dea204890"><td class="memItemLeft" align="right" valign="top"><a id="ga402412a5c54ea3909218981dea204890"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIMEP</b></td></tr>
-<tr class="separator:ga402412a5c54ea3909218981dea204890"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadfabfd04272186731b11dd8f56aa4827"><td class="memItemLeft" align="right" valign="top"><a id="gadfabfd04272186731b11dd8f56aa4827"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_SECP192K1_SIZE_BASEPOINTORDER</b></td></tr>
-<tr class="separator:gadfabfd04272186731b11dd8f56aa4827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68f50564fa822462e325b477541685dc"><td class="memItemLeft" align="right" valign="top"><a id="ga68f50564fa822462e325b477541685dc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_SECP192K1_SIZE_PRIVATEKEY</b></td></tr>
-<tr class="separator:ga68f50564fa822462e325b477541685dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa295fdca6bab37a60352516922dbb6fc"><td class="memItemLeft" align="right" valign="top"><a id="gaa295fdca6bab37a60352516922dbb6fc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_SECP192K1_SIZE_PUBLICKEY</b></td></tr>
-<tr class="separator:gaa295fdca6bab37a60352516922dbb6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0f5ae1ebd15a5b8bf3c9e6b4e69808e8"><td class="memItemLeft" align="right" valign="top"><a id="ga0f5ae1ebd15a5b8bf3c9e6b4e69808e8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_SECP192K1_SIZE_SHAREDSECRET</b></td></tr>
-<tr class="separator:ga0f5ae1ebd15a5b8bf3c9e6b4e69808e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga657ddaf1d1ce192fa042762dfbedfb50"><td class="memItemLeft" align="right" valign="top"><a id="ga657ddaf1d1ce192fa042762dfbedfb50"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_SECP192K1_SIZE_SIGNATURE</b></td></tr>
-<tr class="separator:ga657ddaf1d1ce192fa042762dfbedfb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca0635e01e8eef97f9a06a50b24d0941"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#gaca0635e01e8eef97f9a06a50b24d0941">MCUX_CSSL_SC_SUB_IMPL</a>(value)</td></tr>
+<tr class="memdesc:gaca0635e01e8eef97f9a06a50b24d0941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with <code>value</code>.  <a href="#gaca0635e01e8eef97f9a06a50b24d0941">More...</a><br /></td></tr>
+<tr class="separator:gaca0635e01e8eef97f9a06a50b24d0941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">MCUX_CSSL_SC_SUB_0X1_IMPL</a>()</td></tr>
+<tr class="memdesc:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x1.  <a href="#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">More...</a><br /></td></tr>
+<tr class="separator:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa9701e3c0f7e757573c4bfcdae22959"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#gafa9701e3c0f7e757573c4bfcdae22959">MCUX_CSSL_SC_SUB_0X10_IMPL</a>()</td></tr>
+<tr class="memdesc:gafa9701e3c0f7e757573c4bfcdae22959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x10.  <a href="#gafa9701e3c0f7e757573c4bfcdae22959">More...</a><br /></td></tr>
+<tr class="separator:gafa9701e3c0f7e757573c4bfcdae22959"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa4a6dba75f476d29637e005dc8272083"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#gaa4a6dba75f476d29637e005dc8272083">MCUX_CSSL_SC_SUB_0X100_IMPL</a>()</td></tr>
+<tr class="memdesc:gaa4a6dba75f476d29637e005dc8272083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x100.  <a href="#gaa4a6dba75f476d29637e005dc8272083">More...</a><br /></td></tr>
+<tr class="separator:gaa4a6dba75f476d29637e005dc8272083"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>WeierECC parameter size definitions for secp192k1. </p>
+<p>Support for decrementing the secure counter. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gaca0635e01e8eef97f9a06a50b24d0941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaca0635e01e8eef97f9a06a50b24d0941">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_IMPL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decrement the secure counter with <code>value</code>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00909.html#gaa4a21360f6c3d08fc777879e4f4551ed" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD_IMPL</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Value with which the secure counter must be decremented. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0X1_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_0X1_IMPL</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decrement the secure counter with 0x1. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00910.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a> </dd></dl>
+
+</div>
+</div>
+<a id="gafa9701e3c0f7e757573c4bfcdae22959"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafa9701e3c0f7e757573c4bfcdae22959">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0X10_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_0X10_IMPL</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decrement the secure counter with 0x10. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00910.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaa4a6dba75f476d29637e005dc8272083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa4a6dba75f476d29637e005dc8272083">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0X100_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_0X100_IMPL</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decrement the secure counter with 0x100. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00910.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a> </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

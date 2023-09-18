@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCsslMemory_Types_Macros</title>
+<title>MCUX CLNS: Expectation handling</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,149 +105,151 @@ $(document).ready(function(){initNavTree('a00794.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCsslMemory_Types_Macros<div class="ingroups"><a class="el" href="a00759.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00784.html">mcuxCssl Memory API</a> &raquo; <a class="el" href="a00793.html">mcuxCsslMemory_Types</a></div></div>  </div>
+<div class="title">Expectation handling<div class="ingroups"><a class="el" href="a00778.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00788.html">Flow Protection API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all macros of <a class="el" href="a00793.html">mcuxCsslMemory_Types</a>.  
+<p>Expectation handling support functionality.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gab2993c75e7ef98fed36f03946630e41c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#gab2993c75e7ef98fed36f03946630e41c">MCUXCSSLMEMORY_STATUS_OK</a></td></tr>
-<tr class="memdesc:gab2993c75e7ef98fed36f03946630e41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The operation was successful.  <a href="#gab2993c75e7ef98fed36f03946630e41c">More...</a><br /></td></tr>
-<tr class="separator:gab2993c75e7ef98fed36f03946630e41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafaad4a560714fdff8064ba9a50f7d572"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#gafaad4a560714fdff8064ba9a50f7d572">MCUXCSSLMEMORY_STATUS_EQUAL</a></td></tr>
-<tr class="memdesc:gafaad4a560714fdff8064ba9a50f7d572"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two contents of the Memory Compare are equal.  <a href="#gafaad4a560714fdff8064ba9a50f7d572">More...</a><br /></td></tr>
-<tr class="separator:gafaad4a560714fdff8064ba9a50f7d572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b5d2b24036bee244a9e7310160b3035"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga2b5d2b24036bee244a9e7310160b3035">MCUXCSSLMEMORY_STATUS_NOT_EQUAL</a></td></tr>
-<tr class="memdesc:ga2b5d2b24036bee244a9e7310160b3035"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two contents of the Memory Compare are not equal.  <a href="#ga2b5d2b24036bee244a9e7310160b3035">More...</a><br /></td></tr>
-<tr class="separator:ga2b5d2b24036bee244a9e7310160b3035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e60adf6203cb3acb2bdb3ddec166766"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga0e60adf6203cb3acb2bdb3ddec166766">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td></tr>
-<tr class="memdesc:ga0e60adf6203cb3acb2bdb3ddec166766"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parameter was invalid.  <a href="#ga0e60adf6203cb3acb2bdb3ddec166766">More...</a><br /></td></tr>
-<tr class="separator:ga0e60adf6203cb3acb2bdb3ddec166766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0923b98a5db9fd23732989986d72f4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#gaf0923b98a5db9fd23732989986d72f4d">MCUXCSSLMEMORY_STATUS_FAULT</a></td></tr>
-<tr class="memdesc:gaf0923b98a5db9fd23732989986d72f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fault occurred in the execution.  <a href="#gaf0923b98a5db9fd23732989986d72f4d">More...</a><br /></td></tr>
-<tr class="separator:gaf0923b98a5db9fd23732989986d72f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0072c925d0ab8c5b0b071abd1d5218af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga0072c925d0ab8c5b0b071abd1d5218af">MCUXCSSLMEMORY_KEEP_ORDER</a></td></tr>
-<tr class="memdesc:ga0072c925d0ab8c5b0b071abd1d5218af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data storing in destination buffer in original order.  <a href="#ga0072c925d0ab8c5b0b071abd1d5218af">More...</a><br /></td></tr>
-<tr class="separator:ga0072c925d0ab8c5b0b071abd1d5218af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c4cf10d8106eca9894d9e3b131b52f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga9c4cf10d8106eca9894d9e3b131b52f9">MCUXCSSLMEMORY_REVERSE_ORDER</a></td></tr>
-<tr class="memdesc:ga9c4cf10d8106eca9894d9e3b131b52f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data storing in destination buffer with reversed order.  <a href="#ga9c4cf10d8106eca9894d9e3b131b52f9">More...</a><br /></td></tr>
-<tr class="separator:ga9c4cf10d8106eca9894d9e3b131b52f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83db474d65df2b52abea45293f9684d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga83db474d65df2b52abea45293f9684d0">MCUX_CSSL_FP_EXPECT</a>(...)</td></tr>
+<tr class="memdesc:ga83db474d65df2b52abea45293f9684d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declaration(s) of expected code flow behavior.  <a href="#ga83db474d65df2b52abea45293f9684d0">More...</a><br /></td></tr>
+<tr class="separator:ga83db474d65df2b52abea45293f9684d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga24a55fecde25d3aa0a227814345b9714"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga24a55fecde25d3aa0a227814345b9714">MCUX_CSSL_FP_CONDITIONAL</a>(condition, ...)</td></tr>
+<tr class="memdesc:ga24a55fecde25d3aa0a227814345b9714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handling of conditionally expected code flow behavior.  <a href="#ga24a55fecde25d3aa0a227814345b9714">More...</a><br /></td></tr>
+<tr class="separator:ga24a55fecde25d3aa0a227814345b9714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga301b8f23ac6981e62649c8f571a6c6eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00794.html#ga301b8f23ac6981e62649c8f571a6c6eb">MCUX_CSSL_FP_ASSERT</a>(...)</td></tr>
+<tr class="memdesc:ga301b8f23ac6981e62649c8f571a6c6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assert an expected state of the code flow.  <a href="#ga301b8f23ac6981e62649c8f571a6c6eb">More...</a><br /></td></tr>
+<tr class="separator:ga301b8f23ac6981e62649c8f571a6c6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all macros of <a class="el" href="a00793.html">mcuxCsslMemory_Types</a>. </p>
+<p>Expectation handling support functionality. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gab2993c75e7ef98fed36f03946630e41c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab2993c75e7ef98fed36f03946630e41c">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_STATUS_OK</h2>
+<a id="ga83db474d65df2b52abea45293f9684d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga83db474d65df2b52abea45293f9684d0">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_EXPECT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_STATUS_OK</td>
+          <td class="memname">#define MCUX_CSSL_FP_EXPECT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The operation was successful. </p>
+<p>Declaration(s) of expected code flow behavior. </p>
+<p>This macro can be used to indicate expectations in the function body at another location than the function entry or exit.</p>
+<dl class="section note"><dt>Note</dt><dd>In general the use of this macro is discouraged, to avoid a potential security and/or code-size impact. However, it may be usefull for complex code, where an intermediate update can actually save code, since conditions for expectations can than be locallized.</dd></dl>
+<dl class="section user"><dt>Expectations</dt><dd><a class="el" href="a00790.html#gac16ad6597579a02a30ada37f86f216d5" title="Expectation of a called function.">MCUX_CSSL_FP_FUNCTION_CALLED</a><br />
+<a class="el" href="a00791.html#gae5aabc3339a46a799d1fefd1095a4898" title="Expected number of loop iterations.">MCUX_CSSL_FP_LOOP_ITERATIONS</a><br />
+<a class="el" href="a00792.html#ga99db0902665c118dbfeacd73dd8c8672" title="Expectation that positive branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a><br />
+<a class="el" href="a00792.html#ga7ca1b74234f560a110647fbc24fec3f9" title="Expectation that negative branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a><br />
+<a class="el" href="a00793.html#gaa620180722a4eaa8e7370a92d2bd18d9" title="Expected that a specific case is handled from a switch.">MCUX_CSSL_FP_SWITCH_TAKEN</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00790.html#ga2fda8e2a0e7d862b113b28bcc1b4d9bb" title="Flow protection handler for the function entry point.">MCUX_CSSL_FP_FUNCTION_ENTRY</a> </dd>
+<dd>
+<a class="el" href="a00790.html#ga9d9934b6d02da9505dd20ac36236b61d" title="Flow protection handler for the function exit point.">MCUX_CSSL_FP_FUNCTION_EXIT</a> </dd>
+<dd>
+<a class="el" href="a00790.html#ga7c4b79e79eecb68ef4e4fb4fb9fbc1b8" title="Flow protection handler for the function exit point which includes an actual check of the code flow.">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK</a> </dd>
+<dd>
+<a class="el" href="a00794.html#ga24a55fecde25d3aa0a227814345b9714" title="Handling of conditionally expected code flow behavior.">MCUX_CSSL_FP_CONDITIONAL</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
+<li>expect: One or more (comma separated) declarations of expected code flow behavior. </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="gafaad4a560714fdff8064ba9a50f7d572"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafaad4a560714fdff8064ba9a50f7d572">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_STATUS_EQUAL</h2>
+<a id="ga24a55fecde25d3aa0a227814345b9714"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga24a55fecde25d3aa0a227814345b9714">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_CONDITIONAL</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_STATUS_EQUAL</td>
+          <td class="memname">#define MCUX_CSSL_FP_CONDITIONAL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">condition, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The two contents of the Memory Compare are equal. </p>
+<p>Handling of conditionally expected code flow behavior. </p>
+<p>This macro can be used to indicate expectations that are only true under a given <code>condition</code>.</p>
+<dl class="section user"><dt>Expectations</dt><dd><a class="el" href="a00790.html#gac16ad6597579a02a30ada37f86f216d5" title="Expectation of a called function.">MCUX_CSSL_FP_FUNCTION_CALLED</a><br />
+<a class="el" href="a00791.html#gae5aabc3339a46a799d1fefd1095a4898" title="Expected number of loop iterations.">MCUX_CSSL_FP_LOOP_ITERATIONS</a><br />
+<a class="el" href="a00792.html#ga99db0902665c118dbfeacd73dd8c8672" title="Expectation that positive branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a><br />
+<a class="el" href="a00792.html#ga7ca1b74234f560a110647fbc24fec3f9" title="Expectation that negative branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a><br />
+<a class="el" href="a00793.html#gaa620180722a4eaa8e7370a92d2bd18d9" title="Expected that a specific case is handled from a switch.">MCUX_CSSL_FP_SWITCH_TAKEN</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00790.html#ga2fda8e2a0e7d862b113b28bcc1b4d9bb" title="Flow protection handler for the function entry point.">MCUX_CSSL_FP_FUNCTION_ENTRY</a> </dd>
+<dd>
+<a class="el" href="a00790.html#ga9d9934b6d02da9505dd20ac36236b61d" title="Flow protection handler for the function exit point.">MCUX_CSSL_FP_FUNCTION_EXIT</a> </dd>
+<dd>
+<a class="el" href="a00790.html#ga7c4b79e79eecb68ef4e4fb4fb9fbc1b8" title="Flow protection handler for the function exit point which includes an actual check of the code flow.">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK</a> </dd>
+<dd>
+<a class="el" href="a00794.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">condition</td><td>Condition under which the given expectations apply. </td></tr>
+    <tr><td class="paramname">...</td><td>One or more (comma separated) declarations of expected code flow behavior. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ga2b5d2b24036bee244a9e7310160b3035"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2b5d2b24036bee244a9e7310160b3035">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_STATUS_NOT_EQUAL</h2>
+<a id="ga301b8f23ac6981e62649c8f571a6c6eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga301b8f23ac6981e62649c8f571a6c6eb">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_ASSERT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_STATUS_NOT_EQUAL</td>
+          <td class="memname">#define MCUX_CSSL_FP_ASSERT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The two contents of the Memory Compare are not equal. </p>
-
-</div>
-</div>
-<a id="ga0e60adf6203cb3acb2bdb3ddec166766"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0e60adf6203cb3acb2bdb3ddec166766">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A parameter was invalid. </p>
-
-</div>
-</div>
-<a id="gaf0923b98a5db9fd23732989986d72f4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf0923b98a5db9fd23732989986d72f4d">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_STATUS_FAULT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_STATUS_FAULT</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A fault occurred in the execution. </p>
-
-</div>
-</div>
-<a id="ga0072c925d0ab8c5b0b071abd1d5218af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0072c925d0ab8c5b0b071abd1d5218af">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_KEEP_ORDER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_KEEP_ORDER</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Data storing in destination buffer in original order. </p>
-
-</div>
-</div>
-<a id="ga9c4cf10d8106eca9894d9e3b131b52f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9c4cf10d8106eca9894d9e3b131b52f9">&#9670;&nbsp;</a></span>MCUXCSSLMEMORY_REVERSE_ORDER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCSSLMEMORY_REVERSE_ORDER</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Data storing in destination buffer with reversed order. </p>
+<p>Assert an expected state of the code flow. </p>
+<p>This macro can be used to check whether the code flow up to this point matches the expected state. Unlike the <a class="el" href="a00794.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a> macro, it will not update the expectations, but merely perform a check on the recorded events against the already recorded expectations plus the ones provided as parameters.</p>
+<p>If the check fails, the code defined in <a class="el" href="a00798.html#ga0c29c395a9104c6d918091b12f63ca74" title="Fallback assert callback implementation.">MCUX_CSSL_FP_ASSERT_CALLBACK()</a> will be executed.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="a00798.html#ga0c29c395a9104c6d918091b12f63ca74" title="Fallback assert callback implementation.">MCUX_CSSL_FP_ASSERT_CALLBACK()</a> must be defined before including the CSSL flow protection headers, otherwise a default implementation could be used.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00794.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
+<li>expect: One or more (comma separated) declarations of expected code flow behavior. </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

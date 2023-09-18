@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Hash_Sha384_One_Block_example.c</title>
+<title>MCUX CLNS: mcuxClRsa_Key Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -102,16 +102,174 @@ $(document).ready(function(){initNavTree('a01273.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Hash_Sha384_One_Block_example.c</div>  </div>
+<div class="title">mcuxClRsa_Key Struct Reference<div class="ingroups"><a class="el" href="a00839.html">mcuxClRsa</a> &raquo; <a class="el" href="a00853.html">mcuxClRsa_Types</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
-<p>Example of SHA2-384 hashing using the ELS (CLNS component mcuxClEls)</p>
-<div class="fragment"><div class="line"><span class="comment">/*--------------------------------------------------------------------------*/</span></div><div class="line"><span class="comment">/* Copyright 2020, 2022-2023 NXP                                            */</span></div><div class="line"><span class="comment">/*                                                                          */</span></div><div class="line"><span class="comment">/* NXP Confidential. This software is owned or controlled by NXP and may    */</span></div><div class="line"><span class="comment">/* only be used strictly in accordance with the applicable license terms.   */</span></div><div class="line"><span class="comment">/* By expressly accepting such terms or by downloading, installing,         */</span></div><div class="line"><span class="comment">/* activating and/or otherwise using the software, you are agreeing that    */</span></div><div class="line"><span class="comment">/* you have read, and that you agree to comply with and are bound by, such  */</span></div><div class="line"><span class="comment">/* license terms. If you do not agree to be bound by the applicable license */</span></div><div class="line"><span class="comment">/* terms, then you may not retain, install, activate or otherwise use the   */</span></div><div class="line"><span class="comment">/* software.                                                                */</span></div><div class="line"><span class="comment">/*--------------------------------------------------------------------------*/</span></div><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="a00293.html">mcuxClEls.h</a>&gt;</span> <span class="comment">// Interface to the entire mcuxClEls component</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="a00581.html">mcuxCsslFlowProtection.h</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="a00260.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</span> <span class="comment">// Code flow protection</span></div><div class="line"><span class="preprocessor">#include &lt;mcuxClCore_Examples.h&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;mcuxClExample_ELS_Helper.h&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">static</span> uint8_t <span class="keyword">const</span> <a name="a0"></a><a class="code" href="a00020.html#a157042750820e99bfa2441a0fcba481e">sha384_padded_input</a>[<a name="a1"></a><a class="code" href="a00720.html#ga3f675b49bbe27893e553c19279260be3">MCUXCLELS_HASH_BLOCK_SIZE_SHA_384</a>] = {0x61U, 0x62U, 0x63U, 0x80U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00u, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00u, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x00U,</div><div class="line">                                                                              0x00U, 0x00U, 0x00U, 0x18U};</div><div class="line"></div><div class="line"><span class="keyword">static</span> uint8_t <a name="a2"></a><a class="code" href="a00020.html#a031991d5ae2823da0e9b5bd7c854e9b3">sha384_reference_digest</a>[<a name="a3"></a><a class="code" href="a00722.html#gab961aed69bd7828bf783f318a9dde671">MCUXCLELS_HASH_OUTPUT_SIZE_SHA_384</a>] = {0xcbU, 0x00U, 0x75U, 0x3fU,</div><div class="line">                                                                             0x45U, 0xa3U, 0x5eU, 0x8bU,</div><div class="line">                                                                             0xb5U, 0xa0U, 0x3dU, 0x69U,</div><div class="line">                                                                             0x9aU, 0xc6U, 0x50U, 0x07U,</div><div class="line">                                                                             0x27U, 0x2cU, 0x32U, 0xabU,</div><div class="line">                                                                             0x0eU, 0xdeU, 0xd1U, 0x63U,</div><div class="line">                                                                             0x1aU, 0x8bU, 0x60U, 0x5aU,</div><div class="line">                                                                             0x43U, 0xffU, 0x5bU, 0xedU,</div><div class="line">                                                                             0x80U, 0x86U, 0x07U, 0x2bU,</div><div class="line">                                                                             0xa1U, 0xe7U, 0xccU, 0x23U,</div><div class="line">                                                                             0x58U, 0xbaU, 0xecU, 0xa1U,</div><div class="line">                                                                             0x34U, 0xc8U, 0x25U, 0xa7U};</div><div class="line"></div><div class="line"><span class="keyword">static</span> uint8_t <a name="a4"></a><a class="code" href="a00020.html#a4fdd7260badc8d686d79df408edb7c21">sha2_384_digest</a>[<a name="a5"></a><a class="code" href="a00721.html#ga2d78f8155107a52c3e618bab9bb52f85">MCUXCLELS_HASH_STATE_SIZE_SHA_384</a>]; <span class="comment">// MCUXCLELS_HASH_STATE_SIZE_SHA_384 has to be used as the mcuxClEls_Hash_Async do not perform the truncation of the hash state.</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><a name="a6"></a><a class="code" href="a00020.html#a5a28e0b6909b5d91b26a95077092fae7">MCUXCLEXAMPLE_FUNCTION</a>(mcuxClEls_Hash_Sha384_One_Block_example)</div><div class="line">{</div><div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Els_Init(<a name="a7"></a><a class="code" href="a00694.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a>))</div><div class="line">    {</div><div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div><div class="line">    }</div><div class="line">    </div><div class="line">    <a name="_a8"></a><a class="code" href="a01146.html">mcuxClEls_HashOption_t</a> hash_options = {0U};              <span class="comment">// Initialize a new configuration for the planned mcuxClEls_Hash_Async operation.</span></div><div class="line">    hash_options.<a name="a9"></a><a class="code" href="a01146.html#aacda3c97994f6b172c7fd69c89d275dc">bits</a>.<a name="a10"></a><a class="code" href="a01146.html#ac9b592abc979189fad34fde3ec0c163c">hashini</a> = <a name="a11"></a><a class="code" href="a00719.html#ga77bb4f8fa18f9e15f8a062c996aaa8b7">MCUXCLELS_HASH_INIT_ENABLE</a>;  <span class="comment">// Configure that the mcuxClEls_Hash_Async operation shall initialized with the standard IV (Initialization Vector).</span></div><div class="line">    hash_options.<a class="code" href="a01146.html#aacda3c97994f6b172c7fd69c89d275dc">bits</a>.<a name="a12"></a><a class="code" href="a01146.html#a2a87b3f8cde5a5cfdbea784ca4c6a58a">hashoe</a> = <a name="a13"></a><a class="code" href="a00719.html#gaba86f7cd657db104d355d74840eb4d42">MCUXCLELS_HASH_OUTPUT_ENABLE</a>; <span class="comment">// Configure the mcuxClEls_Hash_Async operation so that the hash digest is moved into memory at the end of the operation.</span></div><div class="line">    hash_options.<a class="code" href="a01146.html#aacda3c97994f6b172c7fd69c89d275dc">bits</a>.<a name="a14"></a><a class="code" href="a01146.html#a91c25618e98d1a9db1b1b13cfe52495f">hashmd</a> = <a name="a15"></a><a class="code" href="a00719.html#gaff4d85496f5f770b803a8b4643665d5e">MCUXCLELS_HASH_MODE_SHA_384</a>;  <span class="comment">// Configure the mcuxClEls_Hash_Async operation so that the Sha2-384 algorithm is used.</span></div><div class="line"></div><div class="line">    <a name="a16"></a><a class="code" href="a00853.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(result, token, <a name="a17"></a><a class="code" href="a00724.html#ga086eeafba9afb8ea16550414fd33a3b3">mcuxClEls_Hash_Async</a>( <span class="comment">// Perform the hashing.</span></div><div class="line">            hash_options,                                               <span class="comment">// Set the prepared configuration.</span></div><div class="line">            <a class="code" href="a00020.html#a157042750820e99bfa2441a0fcba481e">sha384_padded_input</a>, <span class="keyword">sizeof</span>(<a class="code" href="a00020.html#a157042750820e99bfa2441a0fcba481e">sha384_padded_input</a>),           <span class="comment">// Set the data to be hashed. Note that this data&#39;s length is a multiple of the block length, so no padding is required</span></div><div class="line">            <a class="code" href="a00020.html#a4fdd7260badc8d686d79df408edb7c21">sha2_384_digest</a>                                             <span class="comment">// Output buffer, which the operation will write the hash digest to.</span></div><div class="line">            ));</div><div class="line">    <span class="comment">// mcuxClEls_Hash_Async is a flow-protected function: Check the protection token and the return value</span></div><div class="line">    <span class="keywordflow">if</span> ((<a name="a18"></a><a class="code" href="a00853.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code" href="a00724.html#ga086eeafba9afb8ea16550414fd33a3b3">mcuxClEls_Hash_Async</a>) != token) || (<a name="a19"></a><a class="code" href="a00749.html#ga0c69ecf4e48929c38549c8b430dae4b2">MCUXCLELS_STATUS_OK_WAIT</a> != result))</div><div class="line">    {</div><div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR; <span class="comment">// Expect that no error occurred, meaning that the mcuxClEls_Hash_Async operation was started.</span></div><div class="line">    }</div><div class="line">    <a name="a20"></a><a class="code" href="a00853.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div><div class="line"></div><div class="line">    <a class="code" href="a00853.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(result, token, <a name="a21"></a><a class="code" href="a00699.html#gaee73cb4825b7722d9e085565170eb18e">mcuxClEls_WaitForOperation</a>(<a name="a22"></a><a class="code" href="a00693.html#ga3528b1fa2b3c39524898299a3a90a753">MCUXCLELS_ERROR_FLAGS_CLEAR</a>)); <span class="comment">// Wait for the mcuxClEls_Hash_Async operation to complete.</span></div><div class="line">    <span class="comment">// mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value</span></div><div class="line">    <span class="keywordflow">if</span>((<a class="code" href="a00853.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code" href="a00699.html#gaee73cb4825b7722d9e085565170eb18e">mcuxClEls_WaitForOperation</a>) != token) || (<a name="a23"></a><a class="code" href="a00749.html#ga022996920a649ed71428ed73e53eae8a">MCUXCLELS_STATUS_OK</a> != result))</div><div class="line">    {</div><div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div><div class="line">    }</div><div class="line">    <a class="code" href="a00853.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div><div class="line">    </div><div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <span class="keyword">sizeof</span>(<a class="code" href="a00020.html#a031991d5ae2823da0e9b5bd7c854e9b3">sha384_reference_digest</a>); i++)</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (<a class="code" href="a00020.html#a4fdd7260badc8d686d79df408edb7c21">sha2_384_digest</a>[i] != <a class="code" href="a00020.html#a031991d5ae2823da0e9b5bd7c854e9b3">sha384_reference_digest</a>[i])</div><div class="line">        {</div><div class="line">           <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR; <span class="comment">// Expect that the resulting hash digest matches our expected output</span></div><div class="line">        }</div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Els_Disable())</div><div class="line">    {</div><div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_OK;</div><div class="line">}</div></div><!-- fragment --> </div><!-- contents -->
+
+<p>Structure type for Rsa key, specifying key type and key entries.  
+ <a href="a01273.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="a00566_source.html">mcuxClRsa_Types.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a8d0791ef8960a4316931f55f5848c3fa"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#a8d0791ef8960a4316931f55f5848c3fa">keytype</a></td></tr>
+<tr class="memdesc:a8d0791ef8960a4316931f55f5848c3fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type specifier:  <a href="#a8d0791ef8960a4316931f55f5848c3fa">More...</a><br /></td></tr>
+<tr class="separator:a8d0791ef8960a4316931f55f5848c3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53f60022abcb2c60300022907c460ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#ab53f60022abcb2c60300022907c460ce">pMod1</a></td></tr>
+<tr class="memdesc:ab53f60022abcb2c60300022907c460ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to first key entry:  <a href="#ab53f60022abcb2c60300022907c460ce">More...</a><br /></td></tr>
+<tr class="separator:ab53f60022abcb2c60300022907c460ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b71c75486149a0b722dfe36d3ca6cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#ab1b71c75486149a0b722dfe36d3ca6cd">pMod2</a></td></tr>
+<tr class="memdesc:ab1b71c75486149a0b722dfe36d3ca6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to second key entry:  <a href="#ab1b71c75486149a0b722dfe36d3ca6cd">More...</a><br /></td></tr>
+<tr class="separator:ab1b71c75486149a0b722dfe36d3ca6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9188b106fa0b275218f8dc04fd9fa79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#aa9188b106fa0b275218f8dc04fd9fa79">pQInv</a></td></tr>
+<tr class="memdesc:aa9188b106fa0b275218f8dc04fd9fa79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to third key entry:  <a href="#aa9188b106fa0b275218f8dc04fd9fa79">More...</a><br /></td></tr>
+<tr class="separator:aa9188b106fa0b275218f8dc04fd9fa79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28deb463bb016edacb1938dc272deb8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#a28deb463bb016edacb1938dc272deb8a">pExp1</a></td></tr>
+<tr class="memdesc:a28deb463bb016edacb1938dc272deb8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to fourth key entry:  <a href="#a28deb463bb016edacb1938dc272deb8a">More...</a><br /></td></tr>
+<tr class="separator:a28deb463bb016edacb1938dc272deb8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accac28790b11f7574dd84f6da9877a2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#accac28790b11f7574dd84f6da9877a2c">pExp2</a></td></tr>
+<tr class="memdesc:accac28790b11f7574dd84f6da9877a2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to fifth key entry:  <a href="#accac28790b11f7574dd84f6da9877a2c">More...</a><br /></td></tr>
+<tr class="separator:accac28790b11f7574dd84f6da9877a2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0846b30142dc6cb42d05b5c30afd71cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01273.html#a0846b30142dc6cb42d05b5c30afd71cc">pExp3</a></td></tr>
+<tr class="memdesc:a0846b30142dc6cb42d05b5c30afd71cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to sixth key entry:  <a href="#a0846b30142dc6cb42d05b5c30afd71cc">More...</a><br /></td></tr>
+<tr class="separator:a0846b30142dc6cb42d05b5c30afd71cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Structure type for Rsa key, specifying key type and key entries. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01319.html#_a14">mcuxClRsa_sign_NoEncode_example.c</a>, <a class="el" href="a01317.html#_a15">mcuxClRsa_sign_pss_sha2_256_example.c</a>, <a class="el" href="a01318.html#_a14">mcuxClRsa_verify_NoVerify_example.c</a>, and <a class="el" href="a01316.html#_a16">mcuxClRsa_verify_pssverify_sha2_256_example.c</a>.</dd>
+</dl>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a8d0791ef8960a4316931f55f5848c3fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0791ef8960a4316931f55f5848c3fa">&#9670;&nbsp;</a></span>keytype</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mcuxClRsa_Key::keytype</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Key type specifier: </p>
+<p>In case of an RSA public key this shall be set to <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a>. In case of an RSA private plain key this shall be set to <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a>. In case of an RSA private CRT key this shall be set to <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a>. In case of an RSA private CRT key, with which a fault-protected CRT operation is executed, this shall be set to <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01319.html#a15">mcuxClRsa_sign_NoEncode_example.c</a>, <a class="el" href="a01317.html#a16">mcuxClRsa_sign_pss_sha2_256_example.c</a>, <a class="el" href="a01318.html#a15">mcuxClRsa_verify_NoVerify_example.c</a>, and <a class="el" href="a01316.html#a17">mcuxClRsa_verify_pssverify_sha2_256_example.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="ab53f60022abcb2c60300022907c460ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab53f60022abcb2c60300022907c460ce">&#9670;&nbsp;</a></span>pMod1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a>* mcuxClRsa_Key::pMod1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to first key entry: </p>
+<p>In case of <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a> and <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a> the first key entry points to the public parameter modulus N. In case of <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a> and <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> the first key entry points to the private parameter prime factor P. </p>
+
+</div>
+</div>
+<a id="ab1b71c75486149a0b722dfe36d3ca6cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1b71c75486149a0b722dfe36d3ca6cd">&#9670;&nbsp;</a></span>pMod2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a>* mcuxClRsa_Key::pMod2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to second key entry: </p>
+<p>In case of <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a> and <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a> this pointer shall be set to NULL. In case of <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a> and <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> the second key entry points to the private parameter prime factor Q. </p>
+
+</div>
+</div>
+<a id="aa9188b106fa0b275218f8dc04fd9fa79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9188b106fa0b275218f8dc04fd9fa79">&#9670;&nbsp;</a></span>pQInv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a>* mcuxClRsa_Key::pQInv</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to third key entry: </p>
+<p>In case of <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a> and <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a> this pointer shall be set to NULL. In case of <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a> and <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> the third key entry points to the private parameter QInv = (1 / (Q % P)). </p>
+
+</div>
+</div>
+<a id="a28deb463bb016edacb1938dc272deb8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28deb463bb016edacb1938dc272deb8a">&#9670;&nbsp;</a></span>pExp1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a>* mcuxClRsa_Key::pExp1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to fourth key entry: </p>
+<p>In case of <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a> the first exponent entry points to the public parameter exponent E. In case of <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a> the first exponent entry points to the private parameter exponent D. In case of <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a> and <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> the first exponent entry points to the private parameter DP = D % (P-1). </p>
+
+</div>
+</div>
+<a id="accac28790b11f7574dd84f6da9877a2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accac28790b11f7574dd84f6da9877a2c">&#9670;&nbsp;</a></span>pExp2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a>* mcuxClRsa_Key::pExp2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to fifth key entry: </p>
+<p>In case of <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a> and <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a> this pointer shall be set to NULL. In case of <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a> and <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> the second exponent entry points to the private parameter DQ = D % (Q-1). </p>
+
+</div>
+</div>
+<a id="a0846b30142dc6cb42d05b5c30afd71cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0846b30142dc6cb42d05b5c30afd71cc">&#9670;&nbsp;</a></span>pExp3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01269.html">mcuxClRsa_KeyEntry_t</a>* mcuxClRsa_Key::pExp3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to sixth key entry: </p>
+<p>In case of <a class="el" href="a00851.html#ga4c194e24352de4ab02294292f35f24d9">MCUXCLRSA_KEY_PUBLIC</a>, <a class="el" href="a00851.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a>, and <a class="el" href="a00851.html#gade33615f2bc73e552ca020a1e43a41c3">MCUXCLRSA_KEY_PRIVATECRT</a> this pointer shall be set to NULL. In case of <a class="el" href="a00851.html#gac5562ce31d1bc26cf93b647a17e38814">MCUXCLRSA_KEY_PRIVATECRT_DFA</a> the third exponent entry points to the public parameter exponent E. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="a01273.html">mcuxClRsa_Key</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

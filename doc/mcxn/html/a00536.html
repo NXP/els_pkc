@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClRandomModes_MemoryConsumption.h File Reference</title>
+<title>MCUX CLNS: mcuxClRandom_Types.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,64 +103,55 @@ $(document).ready(function(){initNavTree('a00536.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClRandomModes_MemoryConsumption.h File Reference</div>  </div>
+<div class="title">mcuxClRandom_Types.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines the memory consumption for the mcuxClRandom component.  
+<p>Type definitions of mcuxClRandom component.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<code>#include &lt;mcuxClCore_Platform.h&gt;</code><br />
+</div>
 <p><a href="a00536_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga2e6179f023e993cea2e6d14807f05f50"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_PATCHMODE_DESCRIPTOR_SIZE</b></td></tr>
-<tr class="separator:ga2e6179f023e993cea2e6d14807f05f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59fbf5778ef6a709439a803f25e01588"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE</b></td></tr>
-<tr class="separator:ga59fbf5778ef6a709439a803f25e01588"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaec7b900425ae4a868bc28f07f244e012"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_INIT_WACPU_SIZE</b></td></tr>
-<tr class="separator:gaec7b900425ae4a868bc28f07f244e012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga50a8e0a649ba1eb61230eb08aad49d92"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_RESEED_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga50a8e0a649ba1eb61230eb08aad49d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaacaa5035a96e553110c4f3b6597a89a0"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_GENERATE_WACPU_SIZE</b></td></tr>
-<tr class="separator:gaacaa5035a96e553110c4f3b6597a89a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga92890503eaf94411a6eceede4bc0804c"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_SELFTEST_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga92890503eaf94411a6eceede4bc0804c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8ce34613a3418be522d9420f2ab49656"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_UNINIT_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga8ce34613a3418be522d9420f2ab49656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga641f79548f72b067cebdca4eff78dd76"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_CHECKSECURITYSTRENGTH_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga641f79548f72b067cebdca4eff78dd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02a8fc4426640dc23d863cdef5afbc61"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga02a8fc4426640dc23d863cdef5afbc61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga36727c29c2050920e3e68b692dc76aca"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_NCGENERATE_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga36727c29c2050920e3e68b692dc76aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2fb0e4c6985e63daae5e11e4031b2a8"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_CREATEPATCHMODE_WACPU_SIZE</b></td></tr>
-<tr class="separator:gaa2fb0e4c6985e63daae5e11e4031b2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga34185164de955a9bcda1e71bb3bf281e"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLRANDOMMODES_CREATETESTMODEFROMNORMALMODE_WACPU_SIZE</b></td></tr>
-<tr class="separator:ga34185164de955a9bcda1e71bb3bf281e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01265.html">mcuxClRandom_Config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random config structure.  <a href="a01265.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga768ea9930242003d2a68991684a1e948"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a></td></tr>
+<tr class="memdesc:ga768ea9930242003d2a68991684a1e948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for status codes of mcuxClRandom component functions.  <a href="a00832.html#ga768ea9930242003d2a68991684a1e948">More...</a><br /></td></tr>
+<tr class="separator:ga768ea9930242003d2a68991684a1e948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab409cd7b1e5a4da822bf9ae43d00c79c"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClRandom_Context&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#gab409cd7b1e5a4da822bf9ae43d00c79c">mcuxClRandom_ContextDescriptor_t</a></td></tr>
+<tr class="memdesc:gab409cd7b1e5a4da822bf9ae43d00c79c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random context type.  <a href="a00832.html#gab409cd7b1e5a4da822bf9ae43d00c79c">More...</a><br /></td></tr>
+<tr class="separator:gab409cd7b1e5a4da822bf9ae43d00c79c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac2ce3a52788240794afde522cfad65c5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00832.html#gab409cd7b1e5a4da822bf9ae43d00c79c">mcuxClRandom_ContextDescriptor_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a></td></tr>
+<tr class="memdesc:gac2ce3a52788240794afde522cfad65c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random context type.  <a href="a00832.html#gac2ce3a52788240794afde522cfad65c5">More...</a><br /></td></tr>
+<tr class="separator:gac2ce3a52788240794afde522cfad65c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadcfae984a95f3e98617ca5fb9767f5cd"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClRandom_ModeDescriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#gadcfae984a95f3e98617ca5fb9767f5cd">mcuxClRandom_ModeDescriptor_t</a></td></tr>
+<tr class="memdesc:gadcfae984a95f3e98617ca5fb9767f5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generation mode/algorithm descriptor type.  <a href="a00832.html#gadcfae984a95f3e98617ca5fb9767f5cd">More...</a><br /></td></tr>
+<tr class="separator:gadcfae984a95f3e98617ca5fb9767f5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2998181a66cbdc063aa08d76e5fdef9d"><td class="memItemLeft" align="right" valign="top">typedef const <a class="el" href="a00832.html#gadcfae984a95f3e98617ca5fb9767f5cd">mcuxClRandom_ModeDescriptor_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#ga2998181a66cbdc063aa08d76e5fdef9d">mcuxClRandom_Mode_t</a></td></tr>
+<tr class="memdesc:ga2998181a66cbdc063aa08d76e5fdef9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generation mode/algorithm type.  <a href="a00832.html#ga2998181a66cbdc063aa08d76e5fdef9d">More...</a><br /></td></tr>
+<tr class="separator:ga2998181a66cbdc063aa08d76e5fdef9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf1284eaa96ef47c06697f95e74ffc3ee"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="a01265.html">mcuxClRandom_Config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#gaf1284eaa96ef47c06697f95e74ffc3ee">mcuxClRandom_Config_t</a></td></tr>
+<tr class="memdesc:gaf1284eaa96ef47c06697f95e74ffc3ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random config type.  <a href="a00832.html#gaf1284eaa96ef47c06697f95e74ffc3ee">More...</a><br /></td></tr>
+<tr class="separator:gaf1284eaa96ef47c06697f95e74ffc3ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Defines the memory consumption for the mcuxClRandom component. </p>
+<div class="textblock"><p>Type definitions of mcuxClRandom component. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00536.html">mcuxClRandomModes_MemoryConsumption.h</a></li>
+    <li class="navelem"><a class="el" href="a00536.html">mcuxClRandom_Types.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

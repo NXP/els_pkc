@@ -1,7 +1,5 @@
 var a00965 =
 [
-    [ "MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WACPU_SIZE", "a00965.html#ga89090994d784943f6c0ff6858600a5c8", null ],
-    [ "MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WACPU_SIZE", "a00965.html#gaf968453d3c749fe1e2a79b10877e8c9b", null ],
-    [ "MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WACPU_SIZE", "a00965.html#gaaf4bad03752e8903fc972548c27b40a3", null ],
-    [ "MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WACPU_SIZE", "a00965.html#ga8051604c81692c541171eb8693eb0ebe", null ]
+    [ "mcuxCsslParamIntegrity_Protect", "a00965.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb", null ],
+    [ "mcuxCsslParamIntegrity_Validate", "a00965.html#gaface23af4c626fe4adf70518056f2f33", null ]
 ];

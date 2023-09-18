@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCsslParamIntegrity.h File Reference</title>
+<title>MCUX CLNS: mcuxCsslMemory.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -102,69 +102,28 @@ $(document).ready(function(){initNavTree('a00692.html','');});
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCsslParamIntegrity.h File Reference</div>  </div>
+<div class="title">mcuxCsslMemory.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Top-level include file for the parameter integrity protection mechanism.  
+<p>Top-level include file for the CSSL memory functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &lt;stddef.h&gt;</code><br />
-<code>#include &lt;stdbool.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00656_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00662_source.html">mcuxCsslFlowProtection_FunctionIdentifiers.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="a00707_source.html">mcuxCsslMemory_Types.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00698_source.html">mcuxCsslMemory_Compare.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00695_source.html">mcuxCsslMemory_Clear.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00701_source.html">mcuxCsslMemory_Copy.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00704_source.html">mcuxCsslMemory_Set.h</a>&gt;</code><br />
 </div>
 <p><a href="a00692_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga53aac27cab05b855d2ae62f2b1d3d7d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00944.html#ga53aac27cab05b855d2ae62f2b1d3d7d0">MCUXCSSLPARAMINTEGRITY_BASE_CHECKSUM</a></td></tr>
-<tr class="memdesc:ga53aac27cab05b855d2ae62f2b1d3d7d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">First eight hex digits of Eulers number.  <a href="a00944.html#ga53aac27cab05b855d2ae62f2b1d3d7d0">More...</a><br /></td></tr>
-<tr class="separator:ga53aac27cab05b855d2ae62f2b1d3d7d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad7a460092fbe39b438614ba1d159bb16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00944.html#gad7a460092fbe39b438614ba1d159bb16">MCUXCSSLPARAMINTEGRITY_CHECK_VALID</a></td></tr>
-<tr class="memdesc:gad7a460092fbe39b438614ba1d159bb16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return value of <a class="el" href="a00946.html#gaface23af4c626fe4adf70518056f2f33" title="Verifies the correctness of a parameter checksum.">mcuxCsslParamIntegrity_Validate</a> if the parameter checksum was correct.  <a href="a00944.html#gad7a460092fbe39b438614ba1d159bb16">More...</a><br /></td></tr>
-<tr class="separator:gad7a460092fbe39b438614ba1d159bb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga889eda2d841537edae8f0f7d80dde8b0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00944.html#ga889eda2d841537edae8f0f7d80dde8b0">MCUXCSSLPARAMINTEGRITY_CHECK_INVALID</a></td></tr>
-<tr class="memdesc:ga889eda2d841537edae8f0f7d80dde8b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return value of <a class="el" href="a00946.html#gaface23af4c626fe4adf70518056f2f33" title="Verifies the correctness of a parameter checksum.">mcuxCsslParamIntegrity_Validate</a> if the parameter checksum was incorrect.  <a href="a00944.html#ga889eda2d841537edae8f0f7d80dde8b0">More...</a><br /></td></tr>
-<tr class="separator:ga889eda2d841537edae8f0f7d80dde8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gaf2a8a66e39dd0d33d085d3d412cafb96"><td class="memItemLeft" align="right" valign="top">typedef void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00945.html#gaf2a8a66e39dd0d33d085d3d412cafb96">mcuxCsslParamIntegrity_AssertionCpuWordSize_t</a>[(4u==sizeof(size_t)) ?(+1) :(-1)]</td></tr>
-<tr class="memdesc:gaf2a8a66e39dd0d33d085d3d412cafb96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build time assertion to ensure CPU word size of 32 bit.  <a href="a00945.html#gaf2a8a66e39dd0d33d085d3d412cafb96">More...</a><br /></td></tr>
-<tr class="separator:gaf2a8a66e39dd0d33d085d3d412cafb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6a229130320b395fbb8a8a76a361bd1e"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00945.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a></td></tr>
-<tr class="memdesc:ga6a229130320b395fbb8a8a76a361bd1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a parameter checksum.  <a href="a00945.html#ga6a229130320b395fbb8a8a76a361bd1e">More...</a><br /></td></tr>
-<tr class="separator:ga6a229130320b395fbb8a8a76a361bd1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gaaa2a9f40eb61dbe8ccce1b3b2dc824bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00945.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb">mcuxCsslParamIntegrity_Protect</a> (size_t nargs,...)</td></tr>
-<tr class="memdesc:gaaa2a9f40eb61dbe8ccce1b3b2dc824bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a parameter checksum.  <a href="a00946.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb">More...</a><br /></td></tr>
-<tr class="separator:gaaa2a9f40eb61dbe8ccce1b3b2dc824bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaface23af4c626fe4adf70518056f2f33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00945.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gaface23af4c626fe4adf70518056f2f33">mcuxCsslParamIntegrity_Validate</a> (<a class="el" href="a00945.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a> chk, size_t nargs,...)</td></tr>
-<tr class="memdesc:gaface23af4c626fe4adf70518056f2f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verifies the correctness of a parameter checksum.  <a href="a00946.html#gaface23af4c626fe4adf70518056f2f33">More...</a><br /></td></tr>
-<tr class="separator:gaface23af4c626fe4adf70518056f2f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Top-level include file for the parameter integrity protection mechanism. </p>
-<p>The library exposes the following functions: </p><ol>
-<li>
-Generation of parameter checksums: <a class="el" href="a00946.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a> </li>
-<li>
-Validation of parameter checksums: <a class="el" href="a00946.html#gaface23af4c626fe4adf70518056f2f33" title="Verifies the correctness of a parameter checksum.">mcuxCsslParamIntegrity_Validate</a> </li>
-</ol>
+<div class="textblock"><p>Top-level include file for the CSSL memory functions. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00692.html">mcuxCsslParamIntegrity.h</a></li>
+    <li class="navelem"><a class="el" href="a00692.html">mcuxCsslMemory.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

@@ -1,5 +1,5 @@
 var a00778 =
 [
-    [ "One-shot MAC interfaces", "a00779.html", "a00779" ],
-    [ "Multi part MAC interfaces", "a00780.html", "a00780" ]
+    [ "MCUXCLHMAC_ELS_MIN_PADDING_LENGTH", "a00778.html#gaeea21ec876a193348d5f78b5014da165", null ],
+    [ "MCUXCLHMAC_ELS_INPUTBUFFER_LENGTH", "a00778.html#gac9e4d270e79fa637dfac0c4919bf5eda", null ]
 ];

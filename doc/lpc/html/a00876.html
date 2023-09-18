@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEcc_KeyGen_Param_t Struct Reference</title>
+<title>MCUX CLNS: MCUXCLECC_EDDSA_ED448_SIZE_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,99 +103,132 @@ $(document).ready(function(){initNavTree('a00876.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Data Fields</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEcc_KeyGen_Param_t Struct Reference<div class="ingroups"><a class="el" href="a00595.html">mcuxClEcc</a> &raquo; <a class="el" href="a00602.html">mcuxClEcc_Types</a></div></div>  </div>
+<div class="title">MCUXCLECC_EDDSA_ED448_SIZE_<div class="ingroups"><a class="el" href="a00613.html">mcuxClEcc</a> &raquo; <a class="el" href="a00618.html">mcuxClEcc_ParameterSizes</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Parameter structure for function <a class="el" href="a00597.html#gabc728b0278908265f9923535391005dc" title="implements ECDSA key generation.">mcuxClEcc_KeyGen</a>.  
- <a href="a00876.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00260_source.html">mcuxClEcc_Types.h</a>&gt;</code></p>
+<p>EdDSA parameter size definitions for Ed448.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Data Fields</h2></td></tr>
-<tr class="memitem:a0396802978ddd78f753922c8dadadb18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00872.html">mcuxClEcc_DomainParam_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#a0396802978ddd78f753922c8dadadb18">curveParam</a></td></tr>
-<tr class="memdesc:a0396802978ddd78f753922c8dadadb18"><td class="mdescLeft">&#160;</td><td class="mdescRight">[in] structure of pointers to curve parameters and length of parameters.  <a href="#a0396802978ddd78f753922c8dadadb18">More...</a><br /></td></tr>
-<tr class="separator:a0396802978ddd78f753922c8dadadb18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48dad4664822a37f78c78eca1e660a26"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#a48dad4664822a37f78c78eca1e660a26">pPrivateKey</a></td></tr>
-<tr class="memdesc:a48dad4664822a37f78c78eca1e660a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">[out] pointer to memory area, where the private key will be exported if KeyGen is executed successfully.  <a href="#a48dad4664822a37f78c78eca1e660a26">More...</a><br /></td></tr>
-<tr class="separator:a48dad4664822a37f78c78eca1e660a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96680cb90b6901598b686b38edac1264"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#a96680cb90b6901598b686b38edac1264">pPublicKey</a></td></tr>
-<tr class="memdesc:a96680cb90b6901598b686b38edac1264"><td class="mdescLeft">&#160;</td><td class="mdescRight">[out] pointer to memory area, where the public key will be exported if KeyGen is executed successfully.  <a href="#a96680cb90b6901598b686b38edac1264">More...</a><br /></td></tr>
-<tr class="separator:a96680cb90b6901598b686b38edac1264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d0e636ce4f30294af6bcfe0ae717a01"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#a6d0e636ce4f30294af6bcfe0ae717a01">optLen</a></td></tr>
-<tr class="memdesc:a6d0e636ce4f30294af6bcfe0ae717a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">[in] packed options (reserved): bits 0~31: reserved.  <a href="#a6d0e636ce4f30294af6bcfe0ae717a01">More...</a><br /></td></tr>
-<tr class="separator:a6d0e636ce4f30294af6bcfe0ae717a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga574cb628611266d5182378f52676024b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#ga574cb628611266d5182378f52676024b">MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP</a></td></tr>
+<tr class="memdesc:ga574cb628611266d5182378f52676024b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte length of the underlying prime p used in Ed448.  <a href="#ga574cb628611266d5182378f52676024b">More...</a><br /></td></tr>
+<tr class="separator:ga574cb628611266d5182378f52676024b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2fff3270c5870bb95a69c8f283d91ee4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#ga2fff3270c5870bb95a69c8f283d91ee4">MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER</a></td></tr>
+<tr class="memdesc:ga2fff3270c5870bb95a69c8f283d91ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte length of the base point order n used in Ed448.  <a href="#ga2fff3270c5870bb95a69c8f283d91ee4">More...</a><br /></td></tr>
+<tr class="separator:ga2fff3270c5870bb95a69c8f283d91ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga37d97fd46dcc20e7f93a5e06017ff967"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#ga37d97fd46dcc20e7f93a5e06017ff967">MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY</a></td></tr>
+<tr class="memdesc:ga37d97fd46dcc20e7f93a5e06017ff967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte length of an Ed448 private key.  <a href="#ga37d97fd46dcc20e7f93a5e06017ff967">More...</a><br /></td></tr>
+<tr class="separator:ga37d97fd46dcc20e7f93a5e06017ff967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae310bda6e4756493489df624280503ef"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#gae310bda6e4756493489df624280503ef">MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA</a></td></tr>
+<tr class="memdesc:gae310bda6e4756493489df624280503ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte length of an Ed448 private key handle data buffer.  <a href="#gae310bda6e4756493489df624280503ef">More...</a><br /></td></tr>
+<tr class="separator:gae310bda6e4756493489df624280503ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga51affb40be89a5c0b1eb0d17a135786c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#ga51affb40be89a5c0b1eb0d17a135786c">MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY</a></td></tr>
+<tr class="memdesc:ga51affb40be89a5c0b1eb0d17a135786c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte length of an Ed448 public key.  <a href="#ga51affb40be89a5c0b1eb0d17a135786c">More...</a><br /></td></tr>
+<tr class="separator:ga51affb40be89a5c0b1eb0d17a135786c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae3ae89f1d488c9444e0f8c3813b9753a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00876.html#gae3ae89f1d488c9444e0f8c3813b9753a">MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE</a></td></tr>
+<tr class="memdesc:gae3ae89f1d488c9444e0f8c3813b9753a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte length of an Ed448 signature.  <a href="#gae3ae89f1d488c9444e0f8c3813b9753a">More...</a><br /></td></tr>
+<tr class="separator:gae3ae89f1d488c9444e0f8c3813b9753a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Parameter structure for function <a class="el" href="a00597.html#gabc728b0278908265f9923535391005dc" title="implements ECDSA key generation.">mcuxClEcc_KeyGen</a>. </p>
-</div><h2 class="groupheader">Field Documentation</h2>
-<a id="a0396802978ddd78f753922c8dadadb18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0396802978ddd78f753922c8dadadb18">&#9670;&nbsp;</a></span>curveParam</h2>
+<p>EdDSA parameter size definitions for Ed448. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga574cb628611266d5182378f52676024b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga574cb628611266d5182378f52676024b">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00872.html">mcuxClEcc_DomainParam_t</a> mcuxClEcc_KeyGen_Param_t::curveParam</td>
+          <td class="memname">#define MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>[in] structure of pointers to curve parameters and length of parameters. </p>
+<p>Byte length of the underlying prime p used in Ed448. </p>
 
 </div>
 </div>
-<a id="a48dad4664822a37f78c78eca1e660a26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48dad4664822a37f78c78eca1e660a26">&#9670;&nbsp;</a></span>pPrivateKey</h2>
+<a id="ga2fff3270c5870bb95a69c8f283d91ee4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2fff3270c5870bb95a69c8f283d91ee4">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t* mcuxClEcc_KeyGen_Param_t::pPrivateKey</td>
+          <td class="memname">#define MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>[out] pointer to memory area, where the private key will be exported if KeyGen is executed successfully. </p>
-<p>It will be stored as a Big-endian octet string of the exact length curveParam.byteLenN. </p>
+<p>Byte length of the base point order n used in Ed448. </p>
 
 </div>
 </div>
-<a id="a96680cb90b6901598b686b38edac1264"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96680cb90b6901598b686b38edac1264">&#9670;&nbsp;</a></span>pPublicKey</h2>
+<a id="ga37d97fd46dcc20e7f93a5e06017ff967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga37d97fd46dcc20e7f93a5e06017ff967">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t* mcuxClEcc_KeyGen_Param_t::pPublicKey</td>
+          <td class="memname">#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>[out] pointer to memory area, where the public key will be exported if KeyGen is executed successfully. </p>
-<p>It will be stored in the same format as the base point G. </p>
+<p>Byte length of an Ed448 private key. </p>
 
 </div>
 </div>
-<a id="a6d0e636ce4f30294af6bcfe0ae717a01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d0e636ce4f30294af6bcfe0ae717a01">&#9670;&nbsp;</a></span>optLen</h2>
+<a id="gae310bda6e4756493489df624280503ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae310bda6e4756493489df624280503ef">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t mcuxClEcc_KeyGen_Param_t::optLen</td>
+          <td class="memname">#define MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>[in] packed options (reserved): bits 0~31: reserved. </p>
-<p><b>CAUTION</b> always set optLen = 0. </p>
+<p>Byte length of an Ed448 private key handle data buffer. </p>
+
+</div>
+</div>
+<a id="ga51affb40be89a5c0b1eb0d17a135786c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga51affb40be89a5c0b1eb0d17a135786c">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Byte length of an Ed448 public key. </p>
+
+</div>
+</div>
+<a id="gae3ae89f1d488c9444e0f8c3813b9753a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae3ae89f1d488c9444e0f8c3813b9753a">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Byte length of an Ed448 signature. </p>
 
 </div>
 </div>
@@ -204,7 +237,6 @@ Data Fields</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00876.html">mcuxClEcc_KeyGen_Param_t</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

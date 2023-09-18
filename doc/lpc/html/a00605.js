@@ -1,6 +1,8 @@
 var a00605 =
 [
-    [ "mcuxClEls_Aead_Macros", "a00606.html", "a00606" ],
-    [ "mcuxClEls_Aead_Types", "a00608.html", "a00608" ],
-    [ "mcuxClEls_Aead_Functions", "a00609.html", "a00609" ]
+    [ "mcuxClCipher_Constants", "a00606.html", null ],
+    [ "One-shot Cipher interfaces", "a00608.html", null ],
+    [ "Multi-part Cipher interfaces", "a00609.html", null ],
+    [ "Cipher type definitions", "a00610.html", "a00610" ],
+    [ "Cipher mode definitions", "a00611.html", "a00611" ]
 ];

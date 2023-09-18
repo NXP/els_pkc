@@ -1,7 +1,5 @@
 var a00784 =
 [
-    [ "mcuxClEls_EccKeyGen_Async", "a00784.html#ga060362493427031ef51110b7c381a986", null ],
-    [ "mcuxClEls_EccKeyExchange_Async", "a00784.html#ga39d6102bd9c792eb5a2e33af1f1830c3", null ],
-    [ "mcuxClEls_EccSign_Async", "a00784.html#ga96b17fadb9ee18906bb719e222908209", null ],
-    [ "mcuxClEls_EccVerify_Async", "a00784.html#ga019a066eda05dab4955ed76e83d39b77", null ]
+    [ "MCUXCLELS_ELS_RESET_CLEAR", "a00784.html#ga1a702565c0bfd8fa6b28db41f61ba3be", null ],
+    [ "MCUXCLELS_ELS_RESET_KEEP", "a00784.html#gac963d24ca31b1b3e89d31efb7ccf6abf", null ]
 ];

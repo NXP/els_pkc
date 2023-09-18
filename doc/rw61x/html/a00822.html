@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClHash</title>
+<title>MCUX CLNS: mcuxClEls_Kdf_Types</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,34 +103,29 @@ $(document).ready(function(){initNavTree('a00822.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a>  </div>
+<a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClHash</div>  </div>
+<div class="title">mcuxClEls_Kdf_Types<div class="ingroups"><a class="el" href="a00763.html">mcuxClEls</a> &raquo; <a class="el" href="a00819.html">mcuxClEls_Kdf</a> &raquo; <a class="el" href="a00820.html">mcuxClEls_Kdf_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Hash component.  
+<p>Defines all types of <a class="el" href="a00819.html">mcuxClEls_Kdf</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
-Modules</h2></td></tr>
-<tr class="memitem:a00824"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00824.html">mcuxClHash_Constants</a></td></tr>
-<tr class="memdesc:a00824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants of <a class="el" href="a00822.html">mcuxClHash</a> component. <br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01258.html">mcuxClEls_CkdfOption_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal command option bit field for CKDF functions.  <a href="a01258.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00827"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00827.html">mcuxClHash_Functions</a></td></tr>
-<tr class="memdesc:a00827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all functions of <a class="el" href="a00822.html">mcuxClHash</a>. <br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01270.html">mcuxClEls_HkdfOption_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00823.html#gaad9187ee88fcb4efae7fd9469b51dc81" title="Derives a key using the HKDF (HMAC-based key derivation function) according to RFC5869.">mcuxClEls_Hkdf_Rfc5869_Async</a>.  <a href="a01270.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00831"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00831.html">mcuxClHash_Types</a></td></tr>
-<tr class="memdesc:a00831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all types of the <a class="el" href="a00822.html">mcuxClHash</a> component. <br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01282.html">mcuxClEls_TlsOption_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal command option bit field for <a class="el" href="a00823.html#gac8b832b6cfa9c2b15b51be04ab349ae6" title="Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1....">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a>, and <a class="el" href="a00823.html#gac8b832b6cfa9c2b15b51be04ab349ae6" title="Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1....">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a>.  <a href="a01282.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Hash component. </p>
-<p>The mcuxClHash component implements the Hash functionality supported by CLNS.</p>
-<p>An example of how to use the <a class="el" href="a00822.html">mcuxClHash</a> component can be found in /mcuxClHash/ex.</p>
-<p>The <a class="el" href="a00822.html">mcuxClHash</a> component supports interfaces to either hash a message in one shot (mcuxClHash_compute) or to hash it in parts (mcuxClHash_init, mcuxClHash_process, and mcuxClHash_finish). In case of hashing a message in parts, first an initialization has to be performed (mcuxClHash_init), followed by zero, one, or multiple updates (mcuxClHash_process), followed by a finalization (mcuxClHash_finish). The finalization generates the output data (digest) and destroys the context. After the finalization step, no further updates are possible.</p>
-<p>The targeted hash algorithm is selected by passing one of the offered algorithm mode descriptors (<a class="el" href="a00823.html">mcuxClHash_Modes</a>), which are listed in file <a class="el" href="a00452.html" title="Algorithm/mode definitions for the mcuxClHash component.">mcuxClHash_Algorithms.h</a></p>
-<p>Note: In case the hashing functionality is based on a hardware co-processor, it might be necessary to initialize the co-processor, before it's use in the <a class="el" href="a00822.html">mcuxClHash</a> component. Please refer to the example for further information on this. </p>
+<p>Defines all types of <a class="el" href="a00819.html">mcuxClEls_Kdf</a>. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

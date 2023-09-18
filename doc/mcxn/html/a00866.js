@@ -1,8 +1,7 @@
 var a00866 =
 [
-    [ "mcuxCssl Memory Clear", "a00867.html", "a00867" ],
-    [ "mcuxCssl Memory Compare", "a00869.html", "a00869" ],
-    [ "mcuxCssl Memory Copy", "a00871.html", "a00871" ],
-    [ "mcuxCssl Memory Set", "a00873.html", "a00873" ],
-    [ "mcuxCsslMemory_Types", "a00875.html", "a00875" ]
+    [ "Data Integrity: Disabled", "a00867.html", "a00867" ],
+    [ "Flow Protection: Secure Counter", "a00878.html", "a00878" ],
+    [ "Secure Counter: Disabled", "a00907.html", "a00907" ],
+    [ "Secure Counter: SW Local", "a00912.html", "a00912" ]
 ];

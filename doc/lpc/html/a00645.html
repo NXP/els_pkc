@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Hash_Macros</title>
+<title>MCUX CLNS: MCUXCLELS_ERROR_FLAGS_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,47 +103,58 @@ $(document).ready(function(){initNavTree('a00645.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Hash_Macros<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00644.html">mcuxClEls_Hash</a></div></div>  </div>
+<div class="title">MCUXCLELS_ERROR_FLAGS_<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00640.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00641.html">mcuxClEls_Common_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all macros of <a class="el" href="a00644.html">mcuxClEls_Hash</a>.  
+<p>Options for error flag clearing.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
-Modules</h2></td></tr>
-<tr class="memitem:a00646"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00646.html">MCUXCLELS_HASH_</a></td></tr>
-<tr class="memdesc:a00646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines valid options to be used by <a class="el" href="a01052.html" title="Command option bit field for mcuxClEls_Hash_Async and #mcuxClEls_Hash_ShaDirect.">mcuxClEls_HashOption_t</a>. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00647"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html">MCUXCLELS_HASH_BLOCK_SIZE_</a></td></tr>
-<tr class="memdesc:a00647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines block sizes used by the supported hash algorithms. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00648"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html">MCUXCLELS_HASH_STATE_SIZE_</a></td></tr>
-<tr class="memdesc:a00648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the intermediate state sizes of the supported hash algorithms. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">MCUXCLELS_HASH_OUTPUT_SIZE_</a></td></tr>
-<tr class="memdesc:a00649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the output sizes of the supported hash algorithms (do not use for allocation) <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0441e5ea8ef5538062269e9da3be7b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00645.html#ga0441e5ea8ef5538062269e9da3be7b6f">MCUXCLELS_HASH_RTF_OUTPUT_SIZE</a></td></tr>
-<tr class="separator:ga0441e5ea8ef5538062269e9da3be7b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gab2b0ee14cae59a5f5f4f2563d7189854"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00645.html#gab2b0ee14cae59a5f5f4f2563d7189854">MCUXCLELS_ERROR_FLAGS_KEEP</a></td></tr>
+<tr class="memdesc:gab2b0ee14cae59a5f5f4f2563d7189854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00650.html#ga3411a9581b6770690eba6acc6b69c278" title="Type to handle ELS error clearing options.">mcuxClEls_ErrorHandling_t</a> to not clear any error flags.  <a href="#gab2b0ee14cae59a5f5f4f2563d7189854">More...</a><br /></td></tr>
+<tr class="separator:gab2b0ee14cae59a5f5f4f2563d7189854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3528b1fa2b3c39524898299a3a90a753"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00645.html#ga3528b1fa2b3c39524898299a3a90a753">MCUXCLELS_ERROR_FLAGS_CLEAR</a></td></tr>
+<tr class="memdesc:ga3528b1fa2b3c39524898299a3a90a753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00650.html#ga3411a9581b6770690eba6acc6b69c278" title="Type to handle ELS error clearing options.">mcuxClEls_ErrorHandling_t</a> to clear all ELS error flags.  <a href="#ga3528b1fa2b3c39524898299a3a90a753">More...</a><br /></td></tr>
+<tr class="separator:ga3528b1fa2b3c39524898299a3a90a753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all macros of <a class="el" href="a00644.html">mcuxClEls_Hash</a>. </p>
+<p>Options for error flag clearing. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga0441e5ea8ef5538062269e9da3be7b6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0441e5ea8ef5538062269e9da3be7b6f">&#9670;&nbsp;</a></span>MCUXCLELS_HASH_RTF_OUTPUT_SIZE</h2>
+<a id="gab2b0ee14cae59a5f5f4f2563d7189854"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2b0ee14cae59a5f5f4f2563d7189854">&#9670;&nbsp;</a></span>MCUXCLELS_ERROR_FLAGS_KEEP</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_HASH_RTF_OUTPUT_SIZE</td>
+          <td class="memname">#define MCUXCLELS_ERROR_FLAGS_KEEP</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Size of run-time fingerprint appended to the hash in <code>pDigest</code> in bytes, if <a class="el" href="a00646.html#ga5a22b37440c5513f49344f7fabb8537b" title="Set this option at mcuxClEls_HashOption_t.rtfoe to output the run-time fingerprint (only supported by...">MCUXCLELS_HASH_RTF_OUTPUT_ENABLE</a> was specified </p>
+
+<p>Set this option at <a class="el" href="a00650.html#ga3411a9581b6770690eba6acc6b69c278" title="Type to handle ELS error clearing options.">mcuxClEls_ErrorHandling_t</a> to not clear any error flags. </p>
+
+</div>
+</div>
+<a id="ga3528b1fa2b3c39524898299a3a90a753"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3528b1fa2b3c39524898299a3a90a753">&#9670;&nbsp;</a></span>MCUXCLELS_ERROR_FLAGS_CLEAR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ERROR_FLAGS_CLEAR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a00650.html#ga3411a9581b6770690eba6acc6b69c278" title="Type to handle ELS error clearing options.">mcuxClEls_ErrorHandling_t</a> to clear all ELS error flags. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01181.html#a23">mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c</a>, <a class="el" href="a01180.html#a22">mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c</a>, <a class="el" href="a01182.html#a31">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, <a class="el" href="a01189.html#a24">mcuxClEls_Hash_HW_Security_Counter_example.c</a>, <a class="el" href="a01184.html#a22">mcuxClEls_Hash_Sha224_One_Block_example.c</a>, <a class="el" href="a01185.html#a22">mcuxClEls_Hash_Sha256_One_Block_example.c</a>, <a class="el" href="a01186.html#a22">mcuxClEls_Hash_Sha384_One_Block_example.c</a>, <a class="el" href="a01187.html#a22">mcuxClEls_Hash_Sha512_One_Block_example.c</a>, and <a class="el" href="a01190.html#a24">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
+</dl>
 
 </div>
 </div>

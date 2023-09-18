@@ -1,11 +1,7 @@
 var a00644 =
 [
-    [ "MCUX_CSSL_DI_CHECK_PASSED", "a00908.html#gaf795c9830ecd5c53d21ae5efb05716c0", null ],
-    [ "MCUX_CSSL_DI_CHECK_FAILED", "a00908.html#ga836c5e13eae4d1fdcfe33a41051c26b5", null ],
-    [ "MCUX_CSSL_DI_INIT_DEFAULT_VALUE", "a00908.html#ga43f4285ae50273c0c9ddd7bb4afa123d", null ],
-    [ "MCUX_CSSL_DI_ALLOC", "a00908.html#ga7f64db7a5134579f6225fc87a04c9e10", null ],
-    [ "MCUX_CSSL_DI_INIT", "a00908.html#ga8e9f35be6109155f823f827707af31fb", null ],
-    [ "MCUX_CSSL_DI_CHECK", "a00908.html#ga86a850875eca35952e2c3a8312364896", null ],
-    [ "MCUX_CSSL_DI_RECORD", "a00909.html#ga885885837b7340002b9782ffc41e4842", null ],
-    [ "MCUX_CSSL_DI_EXPUNGE", "a00909.html#ga3e10066c4efffa9040982cde10a52076", null ]
+    [ "mcuxClSession_init", "a00920.html#gaf1b8776b0d519136df17f6dd632442cf", null ],
+    [ "mcuxClSession_setRtf", "a00920.html#ga159bff529d405fd6da2930590a69ac06", null ],
+    [ "mcuxClSession_cleanup", "a00920.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c", null ],
+    [ "mcuxClSession_destroy", "a00920.html#gaad324fd8f8eeefa29521c4297ac75fd2", null ]
 ];

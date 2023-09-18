@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEcc_Descriptors</title>
+<title>MCUX CLNS: mcuxClAes_Constants</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,43 +103,172 @@ $(document).ready(function(){initNavTree('a00603.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#var-members">Variables</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEcc_Descriptors<div class="ingroups"><a class="el" href="a00595.html">mcuxClEcc</a></div></div>  </div>
+<div class="title">mcuxClAes_Constants</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines descriptors of <a class="el" href="a00595.html">mcuxClEcc</a>.  
+<p>Defines of constants associated with mcuxClAes.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ga86ce358d9af15d943c4a254ac4156363"><td class="memItemLeft" align="right" valign="top"><a id="ga86ce358d9af15d943c4a254ac4156363"></a>
-const <a class="el" href="a00602.html#gadee46209e43c63814a86e882b3927b27">mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClEcc_EdDsa_GeneratePrivKeyDescriptor</b></td></tr>
-<tr class="separator:ga86ce358d9af15d943c4a254ac4156363"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga41770640b3d964f8add4ad005c6d81e6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00602.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#ga41770640b3d964f8add4ad005c6d81e6">mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor</a></td></tr>
-<tr class="memdesc:ga41770640b3d964f8add4ad005c6d81e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ed25519 signature protocol descriptor.  <a href="#ga41770640b3d964f8add4ad005c6d81e6">More...</a><br /></td></tr>
-<tr class="separator:ga41770640b3d964f8add4ad005c6d81e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gaa988298f03dda2718fd7d6a893d84b6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#gaa988298f03dda2718fd7d6a893d84b6a">MCUXCLAES_BLOCK_SIZE</a></td></tr>
+<tr class="memdesc:gaa988298f03dda2718fd7d6a893d84b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES block size in bytes.  <a href="#gaa988298f03dda2718fd7d6a893d84b6a">More...</a><br /></td></tr>
+<tr class="separator:gaa988298f03dda2718fd7d6a893d84b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga70310305440fe83e2f18e79341de4830"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#ga70310305440fe83e2f18e79341de4830">MCUXCLAES_BLOCK_SIZE_IN_WORDS</a></td></tr>
+<tr class="memdesc:ga70310305440fe83e2f18e79341de4830"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES block size in words.  <a href="#ga70310305440fe83e2f18e79341de4830">More...</a><br /></td></tr>
+<tr class="separator:ga70310305440fe83e2f18e79341de4830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7377746dc3a4ea714c79c17f9ddbdde"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#gaf7377746dc3a4ea714c79c17f9ddbdde">MCUXCLAES_AES128_KEY_SIZE</a></td></tr>
+<tr class="memdesc:gaf7377746dc3a4ea714c79c17f9ddbdde"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-128 key size in bytes.  <a href="#gaf7377746dc3a4ea714c79c17f9ddbdde">More...</a><br /></td></tr>
+<tr class="separator:gaf7377746dc3a4ea714c79c17f9ddbdde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82f8be599a040e7a44d1c4a78513b643"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#ga82f8be599a040e7a44d1c4a78513b643">MCUXCLAES_AES128_KEY_SIZE_IN_WORDS</a></td></tr>
+<tr class="memdesc:ga82f8be599a040e7a44d1c4a78513b643"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-128 key size in words.  <a href="#ga82f8be599a040e7a44d1c4a78513b643">More...</a><br /></td></tr>
+<tr class="separator:ga82f8be599a040e7a44d1c4a78513b643"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10c60a14d43acdf3a32074b6104c00b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#ga10c60a14d43acdf3a32074b6104c00b4">MCUXCLAES_AES192_KEY_SIZE</a></td></tr>
+<tr class="memdesc:ga10c60a14d43acdf3a32074b6104c00b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-192 key size in bytes.  <a href="#ga10c60a14d43acdf3a32074b6104c00b4">More...</a><br /></td></tr>
+<tr class="separator:ga10c60a14d43acdf3a32074b6104c00b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68bc6c94d74d3ddde085798e06c5968a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#ga68bc6c94d74d3ddde085798e06c5968a">MCUXCLAES_AES192_KEY_SIZE_IN_WORDS</a></td></tr>
+<tr class="memdesc:ga68bc6c94d74d3ddde085798e06c5968a"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-192 key size in words.  <a href="#ga68bc6c94d74d3ddde085798e06c5968a">More...</a><br /></td></tr>
+<tr class="separator:ga68bc6c94d74d3ddde085798e06c5968a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf85d02f88b56069ada0d2e6eaf184af8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#gaf85d02f88b56069ada0d2e6eaf184af8">MCUXCLAES_AES256_KEY_SIZE</a></td></tr>
+<tr class="memdesc:gaf85d02f88b56069ada0d2e6eaf184af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-256 key size in bytes.  <a href="#gaf85d02f88b56069ada0d2e6eaf184af8">More...</a><br /></td></tr>
+<tr class="separator:gaf85d02f88b56069ada0d2e6eaf184af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59948f7fc4145e5dc383387f01dc439b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00603.html#ga59948f7fc4145e5dc383387f01dc439b">MCUXCLAES_AES256_KEY_SIZE_IN_WORDS</a></td></tr>
+<tr class="memdesc:ga59948f7fc4145e5dc383387f01dc439b"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-256 key size in words.  <a href="#ga59948f7fc4145e5dc383387f01dc439b">More...</a><br /></td></tr>
+<tr class="separator:ga59948f7fc4145e5dc383387f01dc439b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines descriptors of <a class="el" href="a00595.html">mcuxClEcc</a>. </p>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ga41770640b3d964f8add4ad005c6d81e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga41770640b3d964f8add4ad005c6d81e6">&#9670;&nbsp;</a></span>mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor</h2>
+<p>Defines of constants associated with mcuxClAes. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gaa988298f03dda2718fd7d6a893d84b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa988298f03dda2718fd7d6a893d84b6a">&#9670;&nbsp;</a></span>MCUXCLAES_BLOCK_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00602.html#gaec003d78ecf36673f595fcc87f11b82c">mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t</a> mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor</td>
+          <td class="memname">#define MCUXCLAES_BLOCK_SIZE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Ed25519 signature protocol descriptor. </p>
-<p>NOTE: To be able to perform an Ed25519 signature generation using this mode, the private key handle must be properly linked to a key handle for the associated public key using the function mcuxClKey_linkKeyPair. This is necessary to make the public key accessible during an Ed25519 signature generation. If this is not satisfied the Ed25519 signature generation will fail. If the key pair has been generated using the mcuxClKey_generate_keypair function, this linking step is already performed by mcuxClKey_generate_keypair. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01177.html#a16">mcuxClEcc_EdDSA_Ed25519_example.c</a>, <a class="el" href="a01179.html#a19">mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c</a>, and <a class="el" href="a01178.html#a12">mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c</a>.</dd>
+<p>AES block size in bytes. </p>
+
+</div>
+</div>
+<a id="ga70310305440fe83e2f18e79341de4830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga70310305440fe83e2f18e79341de4830">&#9670;&nbsp;</a></span>MCUXCLAES_BLOCK_SIZE_IN_WORDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_BLOCK_SIZE_IN_WORDS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES block size in words. </p>
+
+</div>
+</div>
+<a id="gaf7377746dc3a4ea714c79c17f9ddbdde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf7377746dc3a4ea714c79c17f9ddbdde">&#9670;&nbsp;</a></span>MCUXCLAES_AES128_KEY_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_AES128_KEY_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES-128 key size in bytes. </p>
+
+</div>
+</div>
+<a id="ga82f8be599a040e7a44d1c4a78513b643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82f8be599a040e7a44d1c4a78513b643">&#9670;&nbsp;</a></span>MCUXCLAES_AES128_KEY_SIZE_IN_WORDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_AES128_KEY_SIZE_IN_WORDS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES-128 key size in words. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01199.html#a0">mcuxClKey_example.c</a>.</dd>
 </dl>
+
+</div>
+</div>
+<a id="ga10c60a14d43acdf3a32074b6104c00b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga10c60a14d43acdf3a32074b6104c00b4">&#9670;&nbsp;</a></span>MCUXCLAES_AES192_KEY_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_AES192_KEY_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES-192 key size in bytes. </p>
+
+</div>
+</div>
+<a id="ga68bc6c94d74d3ddde085798e06c5968a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga68bc6c94d74d3ddde085798e06c5968a">&#9670;&nbsp;</a></span>MCUXCLAES_AES192_KEY_SIZE_IN_WORDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_AES192_KEY_SIZE_IN_WORDS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES-192 key size in words. </p>
+
+</div>
+</div>
+<a id="gaf85d02f88b56069ada0d2e6eaf184af8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf85d02f88b56069ada0d2e6eaf184af8">&#9670;&nbsp;</a></span>MCUXCLAES_AES256_KEY_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_AES256_KEY_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES-256 key size in bytes. </p>
+
+</div>
+</div>
+<a id="ga59948f7fc4145e5dc383387f01dc439b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga59948f7fc4145e5dc383387f01dc439b">&#9670;&nbsp;</a></span>MCUXCLAES_AES256_KEY_SIZE_IN_WORDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLAES_AES256_KEY_SIZE_IN_WORDS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AES-256 key size in words. </p>
 
 </div>
 </div>

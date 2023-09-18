@@ -1,10 +1,22 @@
 var a00395 =
 [
-    [ "mcuxClKey_init", "a00773.html#ga8c6e891b1f7f973dbdccfe0f2a713142", null ],
-    [ "mcuxClKey_linkKeyPair", "a00773.html#gadac5d6a29e1a0dba2b418b98e4ccd0ee", null ],
-    [ "mcuxClKey_setProtection", "a00773.html#ga761180099785b36b6d5a6014cae54bb8", null ],
-    [ "mcuxClKey_loadCopro", "a00773.html#ga616ead4a2aaab2d0ae5502ba52315fca", null ],
-    [ "mcuxClKey_loadMemory", "a00773.html#gac4ec3d39748fc018dfb50316d2c51490", null ],
-    [ "mcuxClKey_flush", "a00773.html#ga60a86766cba40477651948cfa55eb7cd", null ],
-    [ "mcuxClKey_setKeyproperties", "a00773.html#gab1586a462e51711691901aa099f8b556", null ]
+    [ "MCUXCLHMAC_SIZE_IN_CPUWORDS", "a00782.html#ga7ebd777bda72a587fe816238ee14106c", null ],
+    [ "MCUXCLHMAC_COMPUTE_CPU_WA_BUFFER_SIZE", "a00782.html#gafa4c1919e1b7a450b573c635488f8be5", null ],
+    [ "MCUXCLHMAC_COMPUTE_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00782.html#gad2b69f64e83b40bda46be831f4062da5", null ],
+    [ "MCUXCLHMAC_INIT_CPU_WA_BUFFER_SIZE", "a00782.html#ga01e22cdce0b2a5c08859a4a2b54dbbaa", null ],
+    [ "MCUXCLHMAC_INIT_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00782.html#ga6301069f46a847b4328bb40c9bc1ce05", null ],
+    [ "MCUXCLHMAC_PROCESS_CPU_WA_BUFFER_SIZE", "a00782.html#gad32487e6264e582b7f49a561cce85650", null ],
+    [ "MCUXCLHMAC_PROCESS_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00782.html#ga9f609a47a9855e913e6618067630e79f", null ],
+    [ "MCUXCLHMAC_FINISH_CPU_WA_BUFFER_SIZE", "a00782.html#ga91c9ac6a5ad4b40f506fe571c68c34de", null ],
+    [ "MCUXCLHMAC_FINISH_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00782.html#ga3dafad1d1b9f291435c67c403e4c13b5", null ],
+    [ "MCUXCLHMAC_MAX_CPU_WA_BUFFER_SIZE", "a00782.html#gadd36023bc355c5b378f7e2437e163a48", null ],
+    [ "MCUXCLHMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00782.html#gab4440c0475cc08afa1769fa0e800a231", null ],
+    [ "MCUXCLHMAC_CONTEXT_SIZE_SW", "a00782.html#ga14a7e14d5595d74efaadd2e02182d681", null ],
+    [ "MCUXCLHMAC_CONTEXT_SIZE_SW_IN_WORDS", "a00782.html#ga361d774a54d813f81e554cca45c13326", null ],
+    [ "MCUXCLHMAC_CONTEXT_SIZE_ELS", "a00782.html#gafada1dbe049cd70862e1de0e53f26c71", null ],
+    [ "MCUXCLHMAC_CONTEXT_SIZE_ELS_IN_WORDS", "a00782.html#ga663b075450a0f5fdb41b2b7fe96fcd8e", null ],
+    [ "MCUXCLHMAC_MAX_CONTEXT_SIZE", "a00782.html#gacd9993ae04818b78e0ad3930ceaeb8bd", null ],
+    [ "MCUXCLHMAC_MAX_CONTEXT_SIZE_IN_WORDS", "a00782.html#gaaddc32b2f69d37d2e2a60a96c826aa5e", null ],
+    [ "MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE", "a00782.html#ga3ed5d2cb469346c2bc7c4e5c185cd3ce", null ],
+    [ "MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE_IN_WORDS", "a00782.html#gaf4eac2a7dedcf27bc4bf13e3396268df", null ]
 ];

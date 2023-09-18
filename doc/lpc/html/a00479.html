@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClRsa_Functions.h File Reference</title>
+<title>MCUX CLNS: mcuxClRandomModes_Constants.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,47 +103,36 @@ $(document).ready(function(){initNavTree('a00479.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClRsa_Functions.h File Reference</div>  </div>
+<div class="title">mcuxClRandomModes_Constants.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Top-level API of the mcuxClRsa component.  
+<p>Mode definitions of mcuxClRandomModes component.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00488_source.html">mcuxClSession.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00515_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00233_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00359_source.html">mcuxClKey.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00485_source.html">mcuxClRsa_Types.h</a>&gt;</code><br />
-<code>#include &lt;mcuxClCore_Buffer.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00473_source.html">mcuxClRandom_Types.h</a>&gt;</code><br />
 </div>
 <p><a href="a00479_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gaea19a43d7a52c159675d93d8e7d6ec51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00752.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00742.html#gaea19a43d7a52c159675d93d8e7d6ec51">mcuxClRsa_sign</a> (<a class="el" href="a00758.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, const <a class="el" href="a01148.html">mcuxClRsa_Key</a> *const pKey, <a class="el" href="a00594.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pMessageOrDigest, const uint32_t messageLength, const <a class="el" href="a00752.html#ga9135a8d95f26a1b90c7a251886bce7e5">mcuxClRsa_SignVerifyMode</a> pPaddingMode, const uint32_t saltLength, const uint32_t options, <a class="el" href="a00594.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pSignature)</td></tr>
-<tr class="memdesc:gaea19a43d7a52c159675d93d8e7d6ec51"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA sign operation.  <a href="a00742.html#gaea19a43d7a52c159675d93d8e7d6ec51">More...</a><br /></td></tr>
-<tr class="separator:gaea19a43d7a52c159675d93d8e7d6ec51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga21bf92b81f28be1b6b6fc7d3bdc69098"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00752.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00742.html#ga21bf92b81f28be1b6b6fc7d3bdc69098">mcuxClRsa_verify</a> (<a class="el" href="a00758.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, const <a class="el" href="a01148.html">mcuxClRsa_Key</a> *const pKey, <a class="el" href="a00594.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pMessageOrDigest, const uint32_t messageLength, <a class="el" href="a00594.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pSignature, const <a class="el" href="a00752.html#ga9135a8d95f26a1b90c7a251886bce7e5">mcuxClRsa_SignVerifyMode</a> pVerifyMode, const uint32_t saltLength, const uint32_t options, <a class="el" href="a00594.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pOutput)</td></tr>
-<tr class="memdesc:ga21bf92b81f28be1b6b6fc7d3bdc69098"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA verify operation.  <a href="a00742.html#ga21bf92b81f28be1b6b6fc7d3bdc69098">More...</a><br /></td></tr>
-<tr class="separator:ga21bf92b81f28be1b6b6fc7d3bdc69098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa099449b2290a333aac2dcf090a2740c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00752.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00742.html#gaa099449b2290a333aac2dcf090a2740c">mcuxClRsa_KeyGeneration_Crt</a> (<a class="el" href="a00758.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a00702.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> type, <a class="el" href="a00702.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a> protection, <a class="el" href="a00702.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey, uint8_t *pPrivData, uint32_t *const pPrivDataLength, <a class="el" href="a00702.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey, uint8_t *pPubData, uint32_t *const pPubDataLength)</td></tr>
-<tr class="memdesc:gaa099449b2290a333aac2dcf090a2740c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an RSA key in CRT format.  <a href="a00742.html#gaa099449b2290a333aac2dcf090a2740c">More...</a><br /></td></tr>
-<tr class="separator:gaa099449b2290a333aac2dcf090a2740c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga08dff8d41898b3f372ceab1038205b51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00752.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00742.html#ga08dff8d41898b3f372ceab1038205b51">mcuxClRsa_KeyGeneration_Plain</a> (<a class="el" href="a00758.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a00702.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> type, <a class="el" href="a00702.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a> protection, <a class="el" href="a00702.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey, uint8_t *pPrivData, uint32_t *const pPrivDataLength, <a class="el" href="a00702.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey, uint8_t *pPubData, uint32_t *const pPubDataLength)</td></tr>
-<tr class="memdesc:ga08dff8d41898b3f372ceab1038205b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA key generation of private plain key operation.  <a href="a00742.html#ga08dff8d41898b3f372ceab1038205b51">More...</a><br /></td></tr>
-<tr class="separator:ga08dff8d41898b3f372ceab1038205b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga33a2ec75a1ffddc069c679de7c34b8fc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00752.html#gadcfae984a95f3e98617ca5fb9767f5cd">mcuxClRandom_ModeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00753.html#ga33a2ec75a1ffddc069c679de7c34b8fc">mcuxClRandomModes_mdELS_Drbg</a></td></tr>
+<tr class="memdesc:ga33a2ec75a1ffddc069c679de7c34b8fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mode for a DRBG implemented by the ELS.  <a href="a00753.html#ga33a2ec75a1ffddc069c679de7c34b8fc">More...</a><br /></td></tr>
+<tr class="separator:ga33a2ec75a1ffddc069c679de7c34b8fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf311101fffad7349aa55d1fc33a29f84"><td class="memItemLeft" align="right" valign="top">
+static const <a class="el" href="a00752.html#ga2998181a66cbdc063aa08d76e5fdef9d">mcuxClRandom_Mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClRandomModes_Mode_ELS_Drbg</b></td></tr>
+<tr class="separator:gaf311101fffad7349aa55d1fc33a29f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Top-level API of the mcuxClRsa component. </p>
+<div class="textblock"><p>Mode definitions of mcuxClRandomModes component. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00479.html">mcuxClRsa_Functions.h</a></li>
+    <li class="navelem"><a class="el" href="a00479.html">mcuxClRandomModes_Constants.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

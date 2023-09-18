@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Ecc_Types</title>
+<title>MCUX CLNS: MCUXCLELS_STATUS_DRBGENTLVL_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,54 +103,75 @@ $(document).ready(function(){initNavTree('a00715.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Ecc_Types<div class="ingroups"><a class="el" href="a00670.html">mcuxClEls</a> &raquo; <a class="el" href="a00707.html">mcuxClEls_Ecc</a></div></div>  </div>
+<div class="title">MCUXCLELS_STATUS_DRBGENTLVL_<div class="ingroups"><a class="el" href="a00688.html">mcuxClEls</a> &raquo; <a class="el" href="a00706.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00707.html">mcuxClEls_Common_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all types of <a class="el" href="a00707.html">mcuxClEls_Ecc</a>.  
+<p>Constants for Entropy quality of the current DRBG instance.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01098.html">mcuxClEls_EccSignOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00716.html#ga96b17fadb9ee18906bb719e222908209" title="Generates an ECDSA signature of a given message.">mcuxClEls_EccSign_Async</a> Bit field to configure <a class="el" href="a00716.html#ga96b17fadb9ee18906bb719e222908209" title="Generates an ECDSA signature of a given message.">mcuxClEls_EccSign_Async</a>.  <a href="a01098.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01110.html">mcuxClEls_EccVerifyOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00716.html#ga019a066eda05dab4955ed76e83d39b77" title="Verifies an ECDSA signature of a given message.">mcuxClEls_EccVerify_Async</a> Bit field to configure <a class="el" href="a01110.html" title="Command option bit field for mcuxClEls_EccVerify_Async Bit field to configure mcuxClEls_EccVerifyOpti...">mcuxClEls_EccVerifyOption_t</a>.  <a href="a01110.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01122.html">mcuxClEls_EccKeyGenOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00716.html#ga060362493427031ef51110b7c381a986" title="Generates an ECC key pair on the NIST P-256 curve.">mcuxClEls_EccKeyGen_Async</a> Bit field to configure <a class="el" href="a01122.html" title="Command option bit field for mcuxClEls_EccKeyGen_Async Bit field to configure mcuxClEls_EccKeyGenOpti...">mcuxClEls_EccKeyGenOption_t</a>.  <a href="a01122.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01134.html">mcuxClEls_EccKeyExchOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00716.html#ga39d6102bd9c792eb5a2e33af1f1830c3" title="Performs a Diffie-Hellman key exchange with an internal ECC private key and an external ECC public ke...">mcuxClEls_EccKeyExchange_Async</a>, for internal use only.  <a href="a01134.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gaaca57cf87336b1e866852443c47a019f"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a></td></tr>
-<tr class="memdesc:gaaca57cf87336b1e866852443c47a019f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data type for ECC parameters in ELS format.  <a href="#gaaca57cf87336b1e866852443c47a019f">More...</a><br /></td></tr>
-<tr class="separator:gaaca57cf87336b1e866852443c47a019f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga5fe71d0b1d8e1c52794c24a98b6e2645"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00715.html#ga5fe71d0b1d8e1c52794c24a98b6e2645">MCUXCLELS_STATUS_DRBGENTLVL_NONE</a></td></tr>
+<tr class="memdesc:ga5fe71d0b1d8e1c52794c24a98b6e2645"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value of <a class="el" href="a01045.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG is not running.  <a href="#ga5fe71d0b1d8e1c52794c24a98b6e2645">More...</a><br /></td></tr>
+<tr class="separator:ga5fe71d0b1d8e1c52794c24a98b6e2645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1276cd61f68f743f631cdae25662b310"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00715.html#ga1276cd61f68f743f631cdae25662b310">MCUXCLELS_STATUS_DRBGENTLVL_LOW</a></td></tr>
+<tr class="memdesc:ga1276cd61f68f743f631cdae25662b310"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value of <a class="el" href="a01045.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with a low security strength (sufficient for commands with a low DRBG security strength requirement, see the function description to check which level is required)  <a href="#ga1276cd61f68f743f631cdae25662b310">More...</a><br /></td></tr>
+<tr class="separator:ga1276cd61f68f743f631cdae25662b310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e70aa4c959f092c77fc154327bc4bdb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00715.html#ga9e70aa4c959f092c77fc154327bc4bdb">MCUXCLELS_STATUS_DRBGENTLVL_HIGH</a></td></tr>
+<tr class="memdesc:ga9e70aa4c959f092c77fc154327bc4bdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value of <a class="el" href="a01045.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with 128 bits of security strength (sufficient for commands with a high DRBG security strength requirement, see the function description to check which level is required)  <a href="#ga9e70aa4c959f092c77fc154327bc4bdb">More...</a><br /></td></tr>
+<tr class="separator:ga9e70aa4c959f092c77fc154327bc4bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all types of <a class="el" href="a00707.html">mcuxClEls_Ecc</a>. </p>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="gaaca57cf87336b1e866852443c47a019f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaca57cf87336b1e866852443c47a019f">&#9670;&nbsp;</a></span>mcuxClEls_EccByte_t</h2>
+<p>Constants for Entropy quality of the current DRBG instance. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga5fe71d0b1d8e1c52794c24a98b6e2645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5fe71d0b1d8e1c52794c24a98b6e2645">&#9670;&nbsp;</a></span>MCUXCLELS_STATUS_DRBGENTLVL_NONE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint8_t <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a></td>
+          <td class="memname">#define MCUXCLELS_STATUS_DRBGENTLVL_NONE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Data type for ECC parameters in ELS format. </p>
-<p>This type will be removed soon. </p>
+<p>This value of <a class="el" href="a01045.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG is not running. </p>
+
+</div>
+</div>
+<a id="ga1276cd61f68f743f631cdae25662b310"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1276cd61f68f743f631cdae25662b310">&#9670;&nbsp;</a></span>MCUXCLELS_STATUS_DRBGENTLVL_LOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_STATUS_DRBGENTLVL_LOW</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This value of <a class="el" href="a01045.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with a low security strength (sufficient for commands with a low DRBG security strength requirement, see the function description to check which level is required) </p>
+
+</div>
+</div>
+<a id="ga9e70aa4c959f092c77fc154327bc4bdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e70aa4c959f092c77fc154327bc4bdb">&#9670;&nbsp;</a></span>MCUXCLELS_STATUS_DRBGENTLVL_HIGH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_STATUS_DRBGENTLVL_HIGH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This value of <a class="el" href="a01045.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with 128 bits of security strength (sufficient for commands with a high DRBG security strength requirement, see the function description to check which level is required) </p>
 
 </div>
 </div>

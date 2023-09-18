@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClMac_Types</title>
+<title>MCUX CLNS: mcuxClHmac_KeyTypes</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,118 +103,110 @@ $(document).ready(function(){initNavTree('a00708.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClMac_Types<div class="ingroups"><a class="el" href="a00589.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00703.html">mcuxClMac</a></div></div>  </div>
+<div class="title">mcuxClHmac_KeyTypes<div class="ingroups"><a class="el" href="a00607.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00879.html">HMAC Modes API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all types of the <a class="el" href="a00703.html">mcuxClMac</a> component.  
+<p>Defines of supported key types of <a class="el" href="a00879.html">HMAC Modes API</a>, see <a class="el" href="a00711.html">mcuxClKey</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gaca63aa917056a18f99a911f329f3971b"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a></td></tr>
-<tr class="memdesc:gaca63aa917056a18f99a911f329f3971b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for Mac component error codes.  <a href="#gaca63aa917056a18f99a911f329f3971b">More...</a><br /></td></tr>
-<tr class="separator:gaca63aa917056a18f99a911f329f3971b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad5e6326d43f28d324ef2d98ac3ad2cc"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClMac_ModeDescriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a></td></tr>
-<tr class="memdesc:gaad5e6326d43f28d324ef2d98ac3ad2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC mode/algorithm descriptor type.  <a href="#gaad5e6326d43f28d324ef2d98ac3ad2cc">More...</a><br /></td></tr>
-<tr class="separator:gaad5e6326d43f28d324ef2d98ac3ad2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8e9aa3b88af43aaf819650568abc471f"><td class="memItemLeft" align="right" valign="top">typedef const <a class="el" href="a00708.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a></td></tr>
-<tr class="memdesc:ga8e9aa3b88af43aaf819650568abc471f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC mode/algorithm type.  <a href="#ga8e9aa3b88af43aaf819650568abc471f">More...</a><br /></td></tr>
-<tr class="separator:ga8e9aa3b88af43aaf819650568abc471f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga55e9279a13efd1dd87affcc88f3eb34a"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00708.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#ga55e9279a13efd1dd87affcc88f3eb34a">mcuxClMac_CustomMode_t</a></td></tr>
-<tr class="memdesc:ga55e9279a13efd1dd87affcc88f3eb34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC custom mode/algorithm type.  <a href="#ga55e9279a13efd1dd87affcc88f3eb34a">More...</a><br /></td></tr>
-<tr class="separator:ga55e9279a13efd1dd87affcc88f3eb34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf804dbff6e0d68d2d877b21995ed5c34"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClMac_Context&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a></td></tr>
-<tr class="memdesc:gaf804dbff6e0d68d2d877b21995ed5c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mac context type.  <a href="#gaf804dbff6e0d68d2d877b21995ed5c34">More...</a><br /></td></tr>
-<tr class="separator:gaf804dbff6e0d68d2d877b21995ed5c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gaa7829411660f435c478e54884f9dc235"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00720.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#gaa7829411660f435c478e54884f9dc235">mcuxClKey_TypeDescriptor_HmacSha256</a></td></tr>
+<tr class="memdesc:gaa7829411660f435c478e54884f9dc235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type structure for HMAC-SHA256 based keys.  <a href="#gaa7829411660f435c478e54884f9dc235">More...</a><br /></td></tr>
+<tr class="separator:gaa7829411660f435c478e54884f9dc235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d1ebb714b890c9b193a68edb3038720"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="a00720.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#ga6d1ebb714b890c9b193a68edb3038720">mcuxClKey_Type_HmacSha256</a></td></tr>
+<tr class="memdesc:ga6d1ebb714b890c9b193a68edb3038720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type pointer for HMAC-SHA256 based keys.  <a href="#ga6d1ebb714b890c9b193a68edb3038720">More...</a><br /></td></tr>
+<tr class="separator:ga6d1ebb714b890c9b193a68edb3038720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00720.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f">mcuxClKey_TypeDescriptor_Hmac_variableLength</a></td></tr>
+<tr class="memdesc:gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type structure for Sw-HMAC based keys with variable length.  <a href="#gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f">More...</a><br /></td></tr>
+<tr class="separator:gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga42eb018ca876c87b3d4539532ab2154d"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="a00720.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#ga42eb018ca876c87b3d4539532ab2154d">mcuxClKey_Type_Hmac_variableLength</a></td></tr>
+<tr class="memdesc:ga42eb018ca876c87b3d4539532ab2154d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type pointer for HMAC-SHA256 based keys with variable length.  <a href="#ga42eb018ca876c87b3d4539532ab2154d">More...</a><br /></td></tr>
+<tr class="separator:ga42eb018ca876c87b3d4539532ab2154d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all types of the <a class="el" href="a00703.html">mcuxClMac</a> component. </p>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="gaca63aa917056a18f99a911f329f3971b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaca63aa917056a18f99a911f329f3971b">&#9670;&nbsp;</a></span>mcuxClMac_Status_t</h2>
+<p>Defines of supported key types of <a class="el" href="a00879.html">HMAC Modes API</a>, see <a class="el" href="a00711.html">mcuxClKey</a>. </p>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gaa7829411660f435c478e54884f9dc235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7829411660f435c478e54884f9dc235">&#9670;&nbsp;</a></span>mcuxClKey_TypeDescriptor_HmacSha256</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint32_t <a class="el" href="a00708.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a></td>
+          <td class="memname">const <a class="el" href="a00720.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> mcuxClKey_TypeDescriptor_HmacSha256</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Type for Mac component error codes. </p>
+<p>Key type structure for HMAC-SHA256 based keys. </p>
 
 </div>
 </div>
-<a id="gaad5e6326d43f28d324ef2d98ac3ad2cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaad5e6326d43f28d324ef2d98ac3ad2cc">&#9670;&nbsp;</a></span>mcuxClMac_ModeDescriptor_t</h2>
+<a id="ga6d1ebb714b890c9b193a68edb3038720"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6d1ebb714b890c9b193a68edb3038720">&#9670;&nbsp;</a></span>mcuxClKey_Type_HmacSha256</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00720.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> mcuxClKey_Type_HmacSha256</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Key type pointer for HMAC-SHA256 based keys. </p>
+
+</div>
+</div>
+<a id="gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f">&#9670;&nbsp;</a></span>mcuxClKey_TypeDescriptor_Hmac_variableLength</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct mcuxClMac_ModeDescriptor <a class="el" href="a00708.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a></td>
+          <td class="memname">const <a class="el" href="a00720.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> mcuxClKey_TypeDescriptor_Hmac_variableLength</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>MAC mode/algorithm descriptor type. </p>
-<p>This type captures all the information that the MAC interfaces need to know about a particular MAC mode/algorithm. </p>
+<p>Key type structure for Sw-HMAC based keys with variable length. </p>
 
 </div>
 </div>
-<a id="ga8e9aa3b88af43aaf819650568abc471f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8e9aa3b88af43aaf819650568abc471f">&#9670;&nbsp;</a></span>mcuxClMac_Mode_t</h2>
+<a id="ga42eb018ca876c87b3d4539532ab2154d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga42eb018ca876c87b3d4539532ab2154d">&#9670;&nbsp;</a></span>mcuxClKey_Type_Hmac_variableLength</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">typedef const <a class="el" href="a00708.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a>* const <a class="el" href="a00708.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a></td>
+          <td class="memname">const <a class="el" href="a00720.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> mcuxClKey_Type_Hmac_variableLength</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>MAC mode/algorithm type. </p>
-<p>This type is used to refer to a MAC mode/algorithm. </p>
-
-</div>
-</div>
-<a id="ga55e9279a13efd1dd87affcc88f3eb34a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga55e9279a13efd1dd87affcc88f3eb34a">&#9670;&nbsp;</a></span>mcuxClMac_CustomMode_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="a00708.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a>* const <a class="el" href="a00708.html#ga55e9279a13efd1dd87affcc88f3eb34a">mcuxClMac_CustomMode_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>MAC custom mode/algorithm type. </p>
-<p>This type is used to refer to a custom MAC mode/algorithm that can be created via a provided constructor. </p>
-
-</div>
-</div>
-<a id="gaf804dbff6e0d68d2d877b21995ed5c34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf804dbff6e0d68d2d877b21995ed5c34">&#9670;&nbsp;</a></span>mcuxClMac_Context_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct mcuxClMac_Context <a class="el" href="a00708.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Mac context type. </p>
-<p>This type captures all the information that the Mac interface needs to know for a particular Mac mode/algorithm to work.</p>
-<p>The size of the context depends on the mode used (see mcuxClMac_MemoryConsumption). </p>
+<p>Key type pointer for HMAC-SHA256 based keys with variable length. </p>
 
 </div>
 </div>

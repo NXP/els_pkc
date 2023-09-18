@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLELS_KEYGEN option bit field values</title>
+<title>MCUX CLNS: mcuxClEls_Cmac_Functions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,218 +103,127 @@ $(document).ready(function(){initNavTree('a00639.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLELS_KEYGEN option bit field values<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00634.html">mcuxClEls_Ecc</a> &raquo; <a class="el" href="a00635.html">mcuxClEls_Ecc_Macros</a></div></div>  </div>
+<div class="title">mcuxClEls_Cmac_Functions<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00634.html">mcuxClEls_Cmac</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Bit field constants for <a class="el" href="a01028.html" title="Command option bit field for mcuxClEls_EccKeyGen_Async Bit field to configure mcuxClEls_EccKeyGenOpti...">mcuxClEls_EccKeyGenOption_t</a>.  
+<p>Defines all functions of <a class="el" href="a00634.html">mcuxClEls_Cmac</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga9b6bd96ac94ff7bd763b9b9d057d139f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#ga9b6bd96ac94ff7bd763b9b9d057d139f">MCUXCLELS_ECC_PUBLICKEY_SIGN_ENABLE</a></td></tr>
-<tr class="memdesc:ga9b6bd96ac94ff7bd763b9b9d057d139f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#aa20a2dd1242cfa9c945d09332db760e1" title="Define if signing the output public key.">mcuxClEls_EccKeyGenOption_t.kgsign</a> to sign the public key (signature will be concatenated to the output public key)  <a href="#ga9b6bd96ac94ff7bd763b9b9d057d139f">More...</a><br /></td></tr>
-<tr class="separator:ga9b6bd96ac94ff7bd763b9b9d057d139f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf73a03883462465c3cabb2257981fc5f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#gaf73a03883462465c3cabb2257981fc5f">MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE</a></td></tr>
-<tr class="memdesc:gaf73a03883462465c3cabb2257981fc5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#aa20a2dd1242cfa9c945d09332db760e1" title="Define if signing the output public key.">mcuxClEls_EccKeyGenOption_t.kgsign</a> to not sign the public key.  <a href="#gaf73a03883462465c3cabb2257981fc5f">More...</a><br /></td></tr>
-<tr class="separator:gaf73a03883462465c3cabb2257981fc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacff4169a4b48ee6c6e8ac13e2ea025ab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#gacff4169a4b48ee6c6e8ac13e2ea025ab">MCUXCLELS_ECC_OUTPUTKEY_SIGN</a></td></tr>
-<tr class="memdesc:gacff4169a4b48ee6c6e8ac13e2ea025ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#ade3f3190f07c3a1b8a5948988d3b85d5" title="Define the usage of the output key.">mcuxClEls_EccKeyGenOption_t.kgtypedh</a> to specify output key will be a signing key usable by <a class="el" href="a00643.html#ga96b17fadb9ee18906bb719e222908209" title="Generates an ECDSA signature of a given message.">mcuxClEls_EccSign_Async</a>.  <a href="#gacff4169a4b48ee6c6e8ac13e2ea025ab">More...</a><br /></td></tr>
-<tr class="separator:gacff4169a4b48ee6c6e8ac13e2ea025ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabc39d5811bcaba4278e1f9c4874527ae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#gabc39d5811bcaba4278e1f9c4874527ae">MCUXCLELS_ECC_OUTPUTKEY_KEYEXCHANGE</a></td></tr>
-<tr class="memdesc:gabc39d5811bcaba4278e1f9c4874527ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#ade3f3190f07c3a1b8a5948988d3b85d5" title="Define the usage of the output key.">mcuxClEls_EccKeyGenOption_t.kgtypedh</a> to specify output key will be a Diffie Helman key usable by <a class="el" href="a00643.html#ga39d6102bd9c792eb5a2e33af1f1830c3" title="Performs a Diffie-Hellman key exchange with an internal ECC private key and an external ECC public ke...">mcuxClEls_EccKeyExchange_Async</a>.  <a href="#gabc39d5811bcaba4278e1f9c4874527ae">More...</a><br /></td></tr>
-<tr class="separator:gabc39d5811bcaba4278e1f9c4874527ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8cdc8f5c722207aaef7fef9fd0cc3837"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#ga8cdc8f5c722207aaef7fef9fd0cc3837">MCUXCLELS_ECC_OUTPUTKEY_DETERMINISTIC</a></td></tr>
-<tr class="memdesc:ga8cdc8f5c722207aaef7fef9fd0cc3837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#aa60e98c0d7570daa80ab5536ebf71d94" title="Define if the output key is deterministic or random.">mcuxClEls_EccKeyGenOption_t.kgsrc</a> to specify output key is deterministic.  <a href="#ga8cdc8f5c722207aaef7fef9fd0cc3837">More...</a><br /></td></tr>
-<tr class="separator:ga8cdc8f5c722207aaef7fef9fd0cc3837"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga67348b1833c0bfaccbe334c2cb68b448"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#ga67348b1833c0bfaccbe334c2cb68b448">MCUXCLELS_ECC_OUTPUTKEY_RANDOM</a></td></tr>
-<tr class="memdesc:ga67348b1833c0bfaccbe334c2cb68b448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#aa60e98c0d7570daa80ab5536ebf71d94" title="Define if the output key is deterministic or random.">mcuxClEls_EccKeyGenOption_t.kgsrc</a> to specify output key is random.  <a href="#ga67348b1833c0bfaccbe334c2cb68b448">More...</a><br /></td></tr>
-<tr class="separator:ga67348b1833c0bfaccbe334c2cb68b448"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac67abe2d5052f753cc5f5aca24663066"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#gac67abe2d5052f753cc5f5aca24663066">MCUXCLELS_ECC_GEN_PUBLIC_KEY</a></td></tr>
-<tr class="memdesc:gac67abe2d5052f753cc5f5aca24663066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#afa4cb29e6c55e30a30185180de2f8e49" title="Define if generating a public key.">mcuxClEls_EccKeyGenOption_t.skip_pbk</a> to generate a public key.  <a href="#gac67abe2d5052f753cc5f5aca24663066">More...</a><br /></td></tr>
-<tr class="separator:gac67abe2d5052f753cc5f5aca24663066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacbb5ce65a2ad59ec7a6709059f94426f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#gacbb5ce65a2ad59ec7a6709059f94426f">MCUXCLELS_ECC_SKIP_PUBLIC_KEY</a></td></tr>
-<tr class="memdesc:gacbb5ce65a2ad59ec7a6709059f94426f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#afa4cb29e6c55e30a30185180de2f8e49" title="Define if generating a public key.">mcuxClEls_EccKeyGenOption_t.skip_pbk</a> to not generate a public key.  <a href="#gacbb5ce65a2ad59ec7a6709059f94426f">More...</a><br /></td></tr>
-<tr class="separator:gacbb5ce65a2ad59ec7a6709059f94426f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga10f155f1020130f0b9c952f6df52c784"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#ga10f155f1020130f0b9c952f6df52c784">MCUXCLELS_ECC_NO_RANDOM_DATA</a></td></tr>
-<tr class="memdesc:ga10f155f1020130f0b9c952f6df52c784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#ab2d02455b74fc4f2999c8b579bd87c8d" title="Define if using user provided random data for the signature.">mcuxClEls_EccKeyGenOption_t.kgsign_rnd</a> to not include user provided random data for the signature.  <a href="#ga10f155f1020130f0b9c952f6df52c784">More...</a><br /></td></tr>
-<tr class="separator:ga10f155f1020130f0b9c952f6df52c784"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadcb581867b97e3c3988125eddc5f24e3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#gadcb581867b97e3c3988125eddc5f24e3">MCUXCLELS_ECC_INCLUDE_RANDOM_DATA</a></td></tr>
-<tr class="memdesc:gadcb581867b97e3c3988125eddc5f24e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01028.html#ab2d02455b74fc4f2999c8b579bd87c8d" title="Define if using user provided random data for the signature.">mcuxClEls_EccKeyGenOption_t.kgsign_rnd</a> to include user provided random data for the signature.  <a href="#gadcb581867b97e3c3988125eddc5f24e3">More...</a><br /></td></tr>
-<tr class="separator:gadcb581867b97e3c3988125eddc5f24e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga0cc7e60d184ae44edd8ac6376ecf2387"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00641.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00695.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00639.html#ga0cc7e60d184ae44edd8ac6376ecf2387">mcuxClEls_Cmac_Async</a> (<a class="el" href="a00939.html">mcuxClEls_CmacOption_t</a> options, <a class="el" href="a00695.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdx, uint8_t const *pKey, size_t keyLength, uint8_t const *pInput, size_t inputLength, uint8_t *pMac)</td></tr>
+<tr class="memdesc:ga0cc7e60d184ae44edd8ac6376ecf2387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs CMAC with AES-128 or AES-256.  <a href="#ga0cc7e60d184ae44edd8ac6376ecf2387">More...</a><br /></td></tr>
+<tr class="separator:ga0cc7e60d184ae44edd8ac6376ecf2387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Bit field constants for <a class="el" href="a01028.html" title="Command option bit field for mcuxClEls_EccKeyGen_Async Bit field to configure mcuxClEls_EccKeyGenOpti...">mcuxClEls_EccKeyGenOption_t</a>. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga9b6bd96ac94ff7bd763b9b9d057d139f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9b6bd96ac94ff7bd763b9b9d057d139f">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_PUBLICKEY_SIGN_ENABLE</h2>
+<p>Defines all functions of <a class="el" href="a00634.html">mcuxClEls_Cmac</a>. </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga0cc7e60d184ae44edd8ac6376ecf2387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0cc7e60d184ae44edd8ac6376ecf2387">&#9670;&nbsp;</a></span>mcuxClEls_Cmac_Async()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_ECC_PUBLICKEY_SIGN_ENABLE</td>
+          <td class="memname"><a class="el" href="a00641.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00695.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_Cmac_Async </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00939.html">mcuxClEls_CmacOption_t</a>&#160;</td>
+          <td class="paramname"><em>options</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#aa20a2dd1242cfa9c945d09332db760e1" title="Define if signing the output public key.">mcuxClEls_EccKeyGenOption_t.kgsign</a> to sign the public key (signature will be concatenated to the output public key) </p>
-
-</div>
-</div>
-<a id="gaf73a03883462465c3cabb2257981fc5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf73a03883462465c3cabb2257981fc5f">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00695.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
+          <td class="paramname"><em>keyIdx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>pKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>keyLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>pInput</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>inputLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pMac</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set this option at <a class="el" href="a01028.html#aa20a2dd1242cfa9c945d09332db760e1" title="Define if signing the output public key.">mcuxClEls_EccKeyGenOption_t.kgsign</a> to not sign the public key. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01163.html#a16">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
+<p>Performs CMAC with AES-128 or AES-256. </p>
+<p>Call <a class="el" href="a00651.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">options</td><td>The command options. For more information, see <a class="el" href="a00939.html" title="Command option bit field for mcuxClEls_Cmac_Async.">mcuxClEls_CmacOption_t</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">keyIdx</td><td>The CMAC key index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pKey</td><td>Pointer to the padded CMAC key </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">keyLength</td><td>Size of <code>pKey</code> in bytes. Must be a <a class="el" href="a00636.html">valid CMAC key size</a>. See the parameter properties section in the function description. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pInput</td><td>Pointer to a memory location which contains the data, padded via SP 800-38b standard, to be authenticated </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">inputLength</td><td>Size of <code>pInput</code> in bytes before padding </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pMac</td><td>Pointer to the CMAC command state input/output. See the parameter properties section in the function description.</td></tr>
+  </table>
+  </dd>
 </dl>
-
-</div>
-</div>
-<a id="gacff4169a4b48ee6c6e8ac13e2ea025ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacff4169a4b48ee6c6e8ac13e2ea025ab">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_OUTPUTKEY_SIGN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_OUTPUTKEY_SIGN</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#ade3f3190f07c3a1b8a5948988d3b85d5" title="Define the usage of the output key.">mcuxClEls_EccKeyGenOption_t.kgtypedh</a> to specify output key will be a signing key usable by <a class="el" href="a00643.html#ga96b17fadb9ee18906bb719e222908209" title="Generates an ECDSA signature of a given message.">mcuxClEls_EccSign_Async</a>. </p>
-
-</div>
-</div>
-<a id="gabc39d5811bcaba4278e1f9c4874527ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabc39d5811bcaba4278e1f9c4874527ae">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_OUTPUTKEY_KEYEXCHANGE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_OUTPUTKEY_KEYEXCHANGE</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#ade3f3190f07c3a1b8a5948988d3b85d5" title="Define the usage of the output key.">mcuxClEls_EccKeyGenOption_t.kgtypedh</a> to specify output key will be a Diffie Helman key usable by <a class="el" href="a00643.html#ga39d6102bd9c792eb5a2e33af1f1830c3" title="Performs a Diffie-Hellman key exchange with an internal ECC private key and an external ECC public ke...">mcuxClEls_EccKeyExchange_Async</a>. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01171.html#a11">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
+<p>The properties of some parameters change with respect to selected options.</p>
+<dl>
+<dt>Parameter properties  </dt>
+<dd><dl>
+<dt><code>options.extkey</code> == <a class="el" href="a00637.html#ga0b115dc62b80bece0cfbb37d8d6be71c" title="Set mcuxClEls_CmacOption_t.extkey to this value to use an external key.">MCUXCLELS_CMAC_EXTERNAL_KEY_ENABLE</a> </dt>
+<dd><p class="startdd"><code>keyIdx</code> is ignored.</p>
+<p class="enddd"></p>
+</dd>
+<dt><code>options.extkey</code> == <a class="el" href="a00637.html#gaf8cc08552ae462283ee61cd55a1e6e6d" title="Set mcuxClEls_CmacOption_t.extkey to this value to use a key from the ELS keystore.">MCUXCLELS_CMAC_EXTERNAL_KEY_DISABLE</a> </dt>
+<dd><p class="startdd"><code>pKey</code> is ignored.</p>
+<p class="interdd"><code>keyLength</code> is ignored.</p>
+<p class="enddd"></p>
+</dd>
+<dt>(<code>options.finalize</code> == <a class="el" href="a00637.html#ga5a7186be485cefe12529107214dd872b" title="Set mcuxClEls_CmacOption_t.finalize to this value if the message chunk does not include the last bloc...">MCUXCLELS_CMAC_FINALIZE_DISABLE</a>) </dt>
+<dd><p class="startdd">The intermediate state is written to <code>pMac</code>. </p>
+<p class="enddd"></p>
+</dd>
+<dt><code>options.finalize</code> == <a class="el" href="a00637.html#ga923398d224ee92df39da7b5a27982850" title="Set mcuxClEls_CmacOption_t.finalize to this value if the message chunk includes the last block of the...">MCUXCLELS_CMAC_FINALIZE_ENABLE</a> </dt>
+<dd><p class="startdd">The resulting MAC is written to <code>pMac</code>.</p>
+<p class="enddd"><code>options.soe</code> is ignored. </p>
+</dd>
 </dl>
-
-</div>
-</div>
-<a id="ga8cdc8f5c722207aaef7fef9fd0cc3837"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8cdc8f5c722207aaef7fef9fd0cc3837">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_OUTPUTKEY_DETERMINISTIC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_OUTPUTKEY_DETERMINISTIC</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#aa60e98c0d7570daa80ab5536ebf71d94" title="Define if the output key is deterministic or random.">mcuxClEls_EccKeyGenOption_t.kgsrc</a> to specify output key is deterministic. </p>
-
-</div>
-</div>
-<a id="ga67348b1833c0bfaccbe334c2cb68b448"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga67348b1833c0bfaccbe334c2cb68b448">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_OUTPUTKEY_RANDOM</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_OUTPUTKEY_RANDOM</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#aa60e98c0d7570daa80ab5536ebf71d94" title="Define if the output key is deterministic or random.">mcuxClEls_EccKeyGenOption_t.kgsrc</a> to specify output key is random. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01163.html#a14">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, and <a class="el" href="a01171.html#a9">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
+</dd>
 </dl>
-
-</div>
-</div>
-<a id="gac67abe2d5052f753cc5f5aca24663066"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac67abe2d5052f753cc5f5aca24663066">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_GEN_PUBLIC_KEY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_GEN_PUBLIC_KEY</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#afa4cb29e6c55e30a30185180de2f8e49" title="Define if generating a public key.">mcuxClEls_EccKeyGenOption_t.skip_pbk</a> to generate a public key. </p>
-
-</div>
-</div>
-<a id="gacbb5ce65a2ad59ec7a6709059f94426f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacbb5ce65a2ad59ec7a6709059f94426f">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_SKIP_PUBLIC_KEY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_SKIP_PUBLIC_KEY</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#afa4cb29e6c55e30a30185180de2f8e49" title="Define if generating a public key.">mcuxClEls_EccKeyGenOption_t.skip_pbk</a> to not generate a public key. </p>
-<p>If <a class="el" href="a00639.html#gabc39d5811bcaba4278e1f9c4874527ae" title="Set this option at mcuxClEls_EccKeyGenOption_t.kgtypedh to specify output key will be a Diffie Helman...">MCUXCLELS_ECC_OUTPUTKEY_KEYEXCHANGE</a> set, this option will be ignored and a public key will be generated. </p>
-
-</div>
-</div>
-<a id="ga10f155f1020130f0b9c952f6df52c784"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga10f155f1020130f0b9c952f6df52c784">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_NO_RANDOM_DATA</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_NO_RANDOM_DATA</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#ab2d02455b74fc4f2999c8b579bd87c8d" title="Define if using user provided random data for the signature.">mcuxClEls_EccKeyGenOption_t.kgsign_rnd</a> to not include user provided random data for the signature. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01163.html#a18">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00694.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a00694.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if an invalid parameter was specified </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00694.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00694.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
+  </table>
+  </dd>
 </dl>
-
-</div>
-</div>
-<a id="gadcb581867b97e3c3988125eddc5f24e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadcb581867b97e3c3988125eddc5f24e3">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_INCLUDE_RANDOM_DATA</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ECC_INCLUDE_RANDOM_DATA</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a01028.html#ab2d02455b74fc4f2999c8b579bd87c8d" title="Define if using user provided random data for the signature.">mcuxClEls_EccKeyGenOption_t.kgsign_rnd</a> to include user provided random data for the signature. </p>
-<p><a class="el" href="a00639.html#ga9b6bd96ac94ff7bd763b9b9d057d139f" title="Set this option at mcuxClEls_EccKeyGenOption_t.kgsign to sign the public key (signature will be conca...">MCUXCLELS_ECC_PUBLICKEY_SIGN_ENABLE</a> must be set in this case. </p>
 
 </div>
 </div>

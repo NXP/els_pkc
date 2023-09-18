@@ -1,6 +1,6 @@
 var a00700 =
 [
-    [ "mcuxClEls_Crc_Macros", "a00701.html", "a00701" ],
-    [ "mcuxClEls_Crc_Types", "a00705.html", "a00705" ],
-    [ "mcuxClEls_Crc_Functions", "a00706.html", "a00706" ]
+    [ "mcuxClEls_Cmac_Macros", "a00701.html", "a00701" ],
+    [ "mcuxClEls_Cmac_Types", "a00704.html", "a00704" ],
+    [ "mcuxClEls_Cmac_Functions", "a00705.html", "a00705" ]
 ];

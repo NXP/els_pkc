@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClRandom_Constants.h File Reference</title>
+<title>MCUX CLNS: mcuxClPsaDriver.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,42 +105,35 @@ $(document).ready(function(){initNavTree('a00590.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClRandom_Constants.h File Reference</div>  </div>
+<div class="title">mcuxClPsaDriver.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Constant definitions of mcuxClRandom component.  
+<p>Additional macros for the ARM PSA driver.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;crypto.h&gt;</code><br />
+<code>#include &lt;psa_crypto_driver_wrappers.h&gt;</code><br />
+<code>#include &lt;mcuxClConfig.h&gt;</code><br />
 </div>
 <p><a href="a00590_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga1b55e6564466854e9bd070d5bf20c46c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01015.html#ga1b55e6564466854e9bd070d5bf20c46c">MCUXCLRANDOM_STATUS_ERROR</a></td></tr>
-<tr class="memdesc:ga1b55e6564466854e9bd070d5bf20c46c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random function returned error.  <a href="a01015.html#ga1b55e6564466854e9bd070d5bf20c46c">More...</a><br /></td></tr>
-<tr class="separator:ga1b55e6564466854e9bd070d5bf20c46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1318606347b0aa4a477b68572a862552"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01015.html#ga1318606347b0aa4a477b68572a862552">MCUXCLRANDOM_STATUS_LOW_SECURITY_STRENGTH</a></td></tr>
-<tr class="memdesc:ga1318606347b0aa4a477b68572a862552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Security strength of given RNG lower than requested.  <a href="a01015.html#ga1318606347b0aa4a477b68572a862552">More...</a><br /></td></tr>
-<tr class="separator:ga1318606347b0aa4a477b68572a862552"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9b0f869c046d3055dcc6f994c9aa0191"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01015.html#ga9b0f869c046d3055dcc6f994c9aa0191">MCUXCLRANDOM_STATUS_INVALID_PARAM</a></td></tr>
-<tr class="memdesc:ga9b0f869c046d3055dcc6f994c9aa0191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random function parameter invalid.  <a href="a01015.html#ga9b0f869c046d3055dcc6f994c9aa0191">More...</a><br /></td></tr>
-<tr class="separator:ga9b0f869c046d3055dcc6f994c9aa0191"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga951990ff5179cd6fce7310de16002b20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01015.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a></td></tr>
-<tr class="memdesc:ga951990ff5179cd6fce7310de16002b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random function returned successfully.  <a href="a01015.html#ga951990ff5179cd6fce7310de16002b20">More...</a><br /></td></tr>
-<tr class="separator:ga951990ff5179cd6fce7310de16002b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6d4a0c17c9ec70556936f749305dace8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01015.html#ga6d4a0c17c9ec70556936f749305dace8">MCUXCLRANDOM_STATUS_FAULT_ATTACK</a></td></tr>
-<tr class="memdesc:ga6d4a0c17c9ec70556936f749305dace8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random function returned fault attack.  <a href="a01015.html#ga6d4a0c17c9ec70556936f749305dace8">More...</a><br /></td></tr>
-<tr class="separator:ga6d4a0c17c9ec70556936f749305dace8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0184a236fe90cc56eb3d6e79976d6ba"><td class="memItemLeft" align="right" valign="top"><a id="ad0184a236fe90cc56eb3d6e79976d6ba"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLPSADRIVER_IS_LOCAL_STORAGE</b>(location)</td></tr>
+<tr class="separator:ad0184a236fe90cc56eb3d6e79976d6ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8842df1714a936b36a9fc0615adc5cbf"><td class="memItemLeft" align="right" valign="top"><a id="a8842df1714a936b36a9fc0615adc5cbf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_KEY_LOCATION_EXTERNAL_STORAGE</b></td></tr>
+<tr class="separator:a8842df1714a936b36a9fc0615adc5cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Constant definitions of mcuxClRandom component. </p>
+<div class="textblock"><p>Additional macros for the ARM PSA driver. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00590.html">mcuxClRandom_Constants.h</a></li>
+    <li class="navelem"><a class="el" href="a00590.html">mcuxClPsaDriver.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

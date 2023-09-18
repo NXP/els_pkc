@@ -1,8 +1,7 @@
 var a00781 =
 [
-    [ "mcuxClMac_Status_t", "a00781.html#gaca63aa917056a18f99a911f329f3971b", null ],
-    [ "mcuxClMac_ModeDescriptor_t", "a00781.html#gaad5e6326d43f28d324ef2d98ac3ad2cc", null ],
-    [ "mcuxClMac_Mode_t", "a00781.html#ga8e9aa3b88af43aaf819650568abc471f", null ],
-    [ "mcuxClMac_CustomMode_t", "a00781.html#ga55e9279a13efd1dd87affcc88f3eb34a", null ],
-    [ "mcuxClMac_Context_t", "a00781.html#gaf804dbff6e0d68d2d877b21995ed5c34", null ]
+    [ "mcuxClKey_TypeDescriptor_HmacSha256", "a00781.html#gaa7829411660f435c478e54884f9dc235", null ],
+    [ "mcuxClKey_Type_HmacSha256", "a00781.html#ga6d1ebb714b890c9b193a68edb3038720", null ],
+    [ "mcuxClKey_TypeDescriptor_Hmac_variableLength", "a00781.html#gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f", null ],
+    [ "mcuxClKey_Type_Hmac_variableLength", "a00781.html#ga42eb018ca876c87b3d4539532ab2154d", null ]
 ];

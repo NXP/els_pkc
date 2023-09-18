@@ -1,12 +1,8 @@
 var a00665 =
 [
-    [ "MCUXCLECC_WACPU_", "a00899.html", "a00899" ],
-    [ "MCUXCLECC_MONTDH_WACPU_", "a00900.html", "a00900" ],
-    [ "MCUXCLECC_EDDSA_WACPU_", "a00901.html", "a00901" ],
-    [ "MCUXCLECC_WAPKC_", "a00902.html", "a00902" ],
-    [ "MCUXCLECC_MONTDH_WAPKC_", "a00903.html", "a00903" ],
-    [ "MCUXCLECC_EDDSA_WAPKC_", "a00904.html", "a00904" ],
-    [ "MCUXCLECC_EDDSA_GENKEYPAIR_DESC_SIZE_", "a00905.html", "a00905" ],
-    [ "MCUXCLECC_EDDSA_SIGNATURE_PROTOCOL_DESC_SIZE_", "a00906.html", "a00906" ],
-    [ "MCUXCLECC_CUSTOMWEIERECCDOMAINPARAMS_SIZE", "a00665.html#gac8895d8165cf3c84b10ac986a30c37e4", null ]
+    [ "mcuxClAead_init", "a00665.html#gaeb2451aba7d135f7af05e94f9b095fae", null ],
+    [ "mcuxClAead_process", "a00665.html#gaa4af5201aaf549186bf80cbf4284f3d1", null ],
+    [ "mcuxClAead_process_adata", "a00665.html#ga40cbd731ba8874d971213fa03605736d", null ],
+    [ "mcuxClAead_finish", "a00665.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba", null ],
+    [ "mcuxClAead_verify", "a00665.html#gafb82bc41120d69281d0fbb719fb35d9d", null ]
 ];

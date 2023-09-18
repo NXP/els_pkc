@@ -1,6 +1,11 @@
 var a00613 =
 [
-    [ "MCUXCLELS_CIPHER_KEY_SIZE_AES_128", "a00613.html#ga68ee2f7110cd9f2dbce9af07b7c64f0f", null ],
-    [ "MCUXCLELS_CIPHER_KEY_SIZE_AES_192", "a00613.html#ga40b6da61509c272916be81c25780eeff", null ],
-    [ "MCUXCLELS_CIPHER_KEY_SIZE_AES_256", "a00613.html#ga474b8fd0f1e5832a4ba327ba7aee3520", null ]
+    [ "mcuxClEcc_Constants", "a00614.html", null ],
+    [ "mcuxClEcc_Functions", "a00615.html", "a00615" ],
+    [ "mcuxClEcc_KeyTypeDescriptors", "a00616.html", "a00616" ],
+    [ "mcuxClEcc_MemoryConsumption", "a00617.html", "a00617" ],
+    [ "mcuxClEcc_ParameterSizes", "a00618.html", "a00618" ],
+    [ "mcuxClEcc_Macros", "a00619.html", "a00619" ],
+    [ "mcuxClEcc_Types", "a00620.html", "a00620" ],
+    [ "mcuxClEcc_Descriptors", "a00621.html", "a00621" ]
 ];

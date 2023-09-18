@@ -1,7 +1,4 @@
 var a00893 =
 [
-    [ "Secure counter core functionality", "a00894.html", "a00894" ],
-    [ "Secure counter increment", "a00895.html", "a00895" ],
-    [ "Secure counter decrement", "a00896.html", "a00896" ],
-    [ "Secure counter direct access", "a00897.html", "a00897" ]
+    [ "mcuxCsslMemory_Set", "a00893.html#ga0a0ed6d55e0cb4d633ba19a32aca64c6", null ]
 ];

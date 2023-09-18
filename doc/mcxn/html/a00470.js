@@ -1,6 +1,6 @@
 var a00470 =
 [
-    [ "mcuxClOscca_MPInt_t", "a01234.html", "a01234" ],
-    [ "mcuxClOscca_Rng_Ctx_t", "a00470.html#ab3464aacd01247830fe9a57570620d23", null ],
-    [ "mcuxClOscca_MPInt_t", "a00470.html#a167ac5bec44e63a398cce013bd85476f", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_SET", "a00813.html#ga039e0b482faab4d1aabe2dd5c79d3eb5", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF", "a00813.html#gad65a5023a0b0263462b6cfcd6761b904", null ],
+    [ "mcuxClMemory_set", "a00813.html#ga5d86af41c30044c28809914e2901884d", null ]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_KeyManagement_Macros</title>
+<title>MCUX CLNS: mcuxClEls_Hash_Macros</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,27 +105,48 @@ $(document).ready(function(){initNavTree('a00807.html','');});
   <div class="summary">
 <a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_KeyManagement_Macros<div class="ingroups"><a class="el" href="a00745.html">mcuxClEls</a> &raquo; <a class="el" href="a00806.html">mcuxClEls_KeyManagement</a></div></div>  </div>
+<div class="title">mcuxClEls_Hash_Macros<div class="ingroups"><a class="el" href="a00763.html">mcuxClEls</a> &raquo; <a class="el" href="a00806.html">mcuxClEls_Hash</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all macros of <a class="el" href="a00806.html">mcuxClEls_KeyManagement</a>.  
+<p>Defines all macros of <a class="el" href="a00806.html">mcuxClEls_Hash</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:a00808"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00808.html">MCUXCLELS_KEYIMPORT_VALUE_KFMT_</a></td></tr>
-<tr class="memdesc:a00808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines valid options (word value) to be used by <a class="el" href="a00812.html#ga867d4be563b347273af25a559abd7f87" title="Imports a key from external storage to an internal key register.">mcuxClEls_KeyImport_Async</a>. <br /></td></tr>
+<tr class="memitem:a00808"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00808.html">MCUXCLELS_HASH_</a></td></tr>
+<tr class="memdesc:a00808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines valid options to be used by <a class="el" href="a01234.html" title="Command option bit field for mcuxClEls_Hash_Async and #mcuxClEls_Hash_ShaDirect.">mcuxClEls_HashOption_t</a>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00809"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html">MCUXCLELS_KEYIMPORT_KFMT_</a></td></tr>
-<tr class="memdesc:a00809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines valid options (bit values) to be used by <a class="el" href="a00812.html#ga867d4be563b347273af25a559abd7f87" title="Imports a key from external storage to an internal key register.">mcuxClEls_KeyImport_Async</a>. <br /></td></tr>
+<tr class="memitem:a00809"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html">MCUXCLELS_HASH_BLOCK_SIZE_</a></td></tr>
+<tr class="memdesc:a00809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines block sizes used by the supported hash algorithms. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00810"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00810.html">MCUXCLELS_RFC3394_</a></td></tr>
-<tr class="memdesc:a00810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines specifying the length of RFC3394 containers. <br /></td></tr>
+<tr class="memitem:a00810"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00810.html">MCUXCLELS_HASH_STATE_SIZE_</a></td></tr>
+<tr class="memdesc:a00810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the intermediate state sizes of the supported hash algorithms. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00811"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00811.html">MCUXCLELS_HASH_OUTPUT_SIZE_</a></td></tr>
+<tr class="memdesc:a00811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the output sizes of the supported hash algorithms (do not use for allocation) <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0441e5ea8ef5538062269e9da3be7b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00807.html#ga0441e5ea8ef5538062269e9da3be7b6f">MCUXCLELS_HASH_RTF_OUTPUT_SIZE</a></td></tr>
+<tr class="separator:ga0441e5ea8ef5538062269e9da3be7b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all macros of <a class="el" href="a00806.html">mcuxClEls_KeyManagement</a>. </p>
+<p>Defines all macros of <a class="el" href="a00806.html">mcuxClEls_Hash</a>. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga0441e5ea8ef5538062269e9da3be7b6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0441e5ea8ef5538062269e9da3be7b6f">&#9670;&nbsp;</a></span>MCUXCLELS_HASH_RTF_OUTPUT_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_HASH_RTF_OUTPUT_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Size of run-time fingerprint appended to the hash in <code>pDigest</code> in bytes, if <a class="el" href="a00808.html#ga5a22b37440c5513f49344f7fabb8537b" title="Set this option at mcuxClEls_HashOption_t.rtfoe to output the run-time fingerprint (only supported by...">MCUXCLELS_HASH_RTF_OUTPUT_ENABLE</a> was specified </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

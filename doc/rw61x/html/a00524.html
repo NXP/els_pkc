@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClMacModes_MemoryConsumption.h File Reference</title>
+<title>MCUX CLNS: mcuxClMac_Types.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,67 +103,56 @@ $(document).ready(function(){initNavTree('a00524.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClMacModes_MemoryConsumption.h File Reference</div>  </div>
+<div class="title">mcuxClMac_Types.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines the memory consumption for the mcuxClMacModes component All work area sizes in bytes are a multiple of CPU wordsize.  
+<p>Type definitions for the mcuxClMac component.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
+<code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00653_source.html">mcuxClSession_Types.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00674_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00356_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
+</div>
 <p><a href="a00524_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga84842218ae711915efb61e0367612a1a"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_MAX_SIZE_IN_CPUWORDS</b>(size)</td></tr>
-<tr class="separator:ga84842218ae711915efb61e0367612a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadda00ba9831fbe307d2e351ffd68e881"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE</b></td></tr>
-<tr class="separator:gadda00ba9831fbe307d2e351ffd68e881"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1b01f0c494353c88edd45e9db5ed645c"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga1b01f0c494353c88edd45e9db5ed645c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga714b7602c4434bdb9de3d0490fe86933"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE</b></td></tr>
-<tr class="separator:ga714b7602c4434bdb9de3d0490fe86933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga185deb298f4e4ec0c52d1d8268f5eaaa"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga185deb298f4e4ec0c52d1d8268f5eaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76f5246882165b0c2686ef7b829cd792"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE</b></td></tr>
-<tr class="separator:ga76f5246882165b0c2686ef7b829cd792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5bbb8825cf62bc8d9cece88079a6c230"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga5bbb8825cf62bc8d9cece88079a6c230"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga74efbfc67317a7e98173ff1e168c0a1d"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE</b></td></tr>
-<tr class="separator:ga74efbfc67317a7e98173ff1e168c0a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2afda137b04670ff1433367446720e76"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga2afda137b04670ff1433367446720e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf4b9285d00220f9797d3912c06fb5ced"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE</b></td></tr>
-<tr class="separator:gaf4b9285d00220f9797d3912c06fb5ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga801ae8228e57d64f40752f67878d2fb8"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga801ae8228e57d64f40752f67878d2fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaecd5a4a9d2cb95f881e289793ba56c41"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_CONTEXT_SIZE</b></td></tr>
-<tr class="separator:gaecd5a4a9d2cb95f881e289793ba56c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga924f3e3033b2d83dabdccd56915221fa"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_CONTEXT_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga924f3e3033b2d83dabdccd56915221fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:gaca63aa917056a18f99a911f329f3971b"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a></td></tr>
+<tr class="memdesc:gaca63aa917056a18f99a911f329f3971b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for Mac component error codes.  <a href="a00870.html#gaca63aa917056a18f99a911f329f3971b">More...</a><br /></td></tr>
+<tr class="separator:gaca63aa917056a18f99a911f329f3971b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad5e6326d43f28d324ef2d98ac3ad2cc"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClMac_ModeDescriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a></td></tr>
+<tr class="memdesc:gaad5e6326d43f28d324ef2d98ac3ad2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC mode/algorithm descriptor type.  <a href="a00870.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">More...</a><br /></td></tr>
+<tr class="separator:gaad5e6326d43f28d324ef2d98ac3ad2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8e9aa3b88af43aaf819650568abc471f"><td class="memItemLeft" align="right" valign="top">typedef const <a class="el" href="a00870.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a></td></tr>
+<tr class="memdesc:ga8e9aa3b88af43aaf819650568abc471f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC mode/algorithm type.  <a href="a00870.html#ga8e9aa3b88af43aaf819650568abc471f">More...</a><br /></td></tr>
+<tr class="separator:ga8e9aa3b88af43aaf819650568abc471f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55e9279a13efd1dd87affcc88f3eb34a"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00870.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#ga55e9279a13efd1dd87affcc88f3eb34a">mcuxClMac_CustomMode_t</a></td></tr>
+<tr class="memdesc:ga55e9279a13efd1dd87affcc88f3eb34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAC custom mode/algorithm type.  <a href="a00870.html#ga55e9279a13efd1dd87affcc88f3eb34a">More...</a><br /></td></tr>
+<tr class="separator:ga55e9279a13efd1dd87affcc88f3eb34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05358be86e9c9b69f46225171d63f406"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClMac_TestDescriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#ga05358be86e9c9b69f46225171d63f406">mcuxClMac_TestDescriptor_t</a></td></tr>
+<tr class="memdesc:ga05358be86e9c9b69f46225171d63f406"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mac selftest mode/algorithm descriptor type.  <a href="a00870.html#ga05358be86e9c9b69f46225171d63f406">More...</a><br /></td></tr>
+<tr class="separator:ga05358be86e9c9b69f46225171d63f406"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0af47561198575f7792301a2a5135e75"><td class="memItemLeft" align="right" valign="top">typedef const <a class="el" href="a00870.html#ga05358be86e9c9b69f46225171d63f406">mcuxClMac_TestDescriptor_t</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#ga0af47561198575f7792301a2a5135e75">mcuxClMac_Test_t</a></td></tr>
+<tr class="memdesc:ga0af47561198575f7792301a2a5135e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mac selftest mode/algorithm type.  <a href="a00870.html#ga0af47561198575f7792301a2a5135e75">More...</a><br /></td></tr>
+<tr class="separator:ga0af47561198575f7792301a2a5135e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf804dbff6e0d68d2d877b21995ed5c34"><td class="memItemLeft" align="right" valign="top">typedef struct mcuxClMac_Context&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a></td></tr>
+<tr class="memdesc:gaf804dbff6e0d68d2d877b21995ed5c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mac context type.  <a href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">More...</a><br /></td></tr>
+<tr class="separator:gaf804dbff6e0d68d2d877b21995ed5c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Defines the memory consumption for the mcuxClMacModes component All work area sizes in bytes are a multiple of CPU wordsize. </p>
+<div class="textblock"><p>Type definitions for the mcuxClMac component. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00524.html">mcuxClMacModes_MemoryConsumption.h</a></li>
+    <li class="navelem"><a class="el" href="a00524.html">mcuxClMac_Types.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

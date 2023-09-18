@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClOscca_Memory.h File Reference</title>
+<title>MCUX CLNS: mcuxClMemory_Copy_Reversed.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -106,53 +106,39 @@ $(document).ready(function(){initNavTree('a00464.html','');});
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClOscca_Memory.h File Reference</div>  </div>
+<div class="title">mcuxClMemory_Copy_Reversed.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>: Macros for alignment memory  
+<p>Memory header for reversed copy functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00581_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00461_source.html">mcuxClOscca_FunctionIdentifiers.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;mcuxClCore_Platform.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00473_source.html">mcuxClMemory_Types.h</a>&gt;</code><br />
+<code>#include &lt;mcuxCsslAnalysis.h&gt;</code><br />
 </div>
 <p><a href="a00464_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aa3a71a50c5a16ac11d40fca22e0e8e6a"><td class="memItemLeft" align="right" valign="top"><a id="aa3a71a50c5a16ac11d40fca22e0e8e6a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLOSCCA_SIZE_ALIGN_OFFSET</b></td></tr>
-<tr class="separator:aa3a71a50c5a16ac11d40fca22e0e8e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d7d960d5c32329501e917a5ec57bbfc"><td class="memItemLeft" align="right" valign="top"><a id="a4d7d960d5c32329501e917a5ec57bbfc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignAddress</b>(address)</td></tr>
-<tr class="separator:a4d7d960d5c32329501e917a5ec57bbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abed72009d14359c88321efd18d77d518"><td class="memItemLeft" align="right" valign="top"><a id="abed72009d14359c88321efd18d77d518"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignSize</b>(size)</td></tr>
-<tr class="separator:abed72009d14359c88321efd18d77d518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a568d2c25122791e10569de52d2257d0a"><td class="memItemLeft" align="right" valign="top"><a id="a568d2c25122791e10569de52d2257d0a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignAddressWithOffset</b>(address,  offset)</td></tr>
-<tr class="separator:a568d2c25122791e10569de52d2257d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adecf327b9cbf358250b83b0adf2484b9"><td class="memItemLeft" align="right" valign="top"><a id="adecf327b9cbf358250b83b0adf2484b9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignAddressToBoundary</b>(address,  boundary)</td></tr>
-<tr class="separator:adecf327b9cbf358250b83b0adf2484b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga34f4a48eda22ae64759db5d7893d0c36"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00811.html#ga34f4a48eda22ae64759db5d7893d0c36">MCUXCLMEMORY_FP_MEMORY_COPY_REVERSED</a>(pTarget,  pSource,  byteLen)</td></tr>
+<tr class="memdesc:ga34f4a48eda22ae64759db5d7893d0c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00811.html#gafc918d181009c3af7638604e5e4b9281" title="Copies a memory buffer to another location reversely.">mcuxClMemory_copy_reversed</a> with flow protection.  <a href="a00811.html#ga34f4a48eda22ae64759db5d7893d0c36">More...</a><br /></td></tr>
+<tr class="separator:ga34f4a48eda22ae64759db5d7893d0c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abd4377e6f133173e8dcef7e841659c5c"><td class="memItemLeft" align="right" valign="top"><a id="abd4377e6f133173e8dcef7e841659c5c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_FastSecureXor</b> (void *pTgt, void *pSrc1, void *pSrc2, uint32_t length)</td></tr>
-<tr class="separator:abd4377e6f133173e8dcef7e841659c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3ac8e537c7ce9fc0ea5f22bb33192e8"><td class="memItemLeft" align="right" valign="top"><a id="af3ac8e537c7ce9fc0ea5f22bb33192e8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_switch_endianness</b> (uint32_t *ptr, uint32_t length)</td></tr>
-<tr class="separator:af3ac8e537c7ce9fc0ea5f22bb33192e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafc918d181009c3af7638604e5e4b9281"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00811.html#gafc918d181009c3af7638604e5e4b9281">mcuxClMemory_copy_reversed</a> (uint8_t *pDst, uint8_t const *pSrc, size_t length, size_t bufLength)</td></tr>
+<tr class="memdesc:gafc918d181009c3af7638604e5e4b9281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a memory buffer to another location reversely.  <a href="a00811.html#gafc918d181009c3af7638604e5e4b9281">More...</a><br /></td></tr>
+<tr class="separator:gafc918d181009c3af7638604e5e4b9281"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Macros for alignment memory </p>
+<div class="textblock"><p>Memory header for reversed copy functions. </p>
+<p>This header exposes functions that enable using memory reversed copy function. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00464.html">mcuxClOscca_Memory.h</a></li>
+    <li class="navelem"><a class="el" href="a00464.html">mcuxClMemory_Copy_Reversed.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

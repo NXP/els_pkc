@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLELS_KEYIMPORT_KFMT_</title>
+<title>MCUX CLNS: MCUXCLELS_HASH_BLOCK_SIZE_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,94 +105,100 @@ $(document).ready(function(){initNavTree('a00809.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLELS_KEYIMPORT_KFMT_<div class="ingroups"><a class="el" href="a00745.html">mcuxClEls</a> &raquo; <a class="el" href="a00806.html">mcuxClEls_KeyManagement</a> &raquo; <a class="el" href="a00807.html">mcuxClEls_KeyManagement_Macros</a></div></div>  </div>
+<div class="title">MCUXCLELS_HASH_BLOCK_SIZE_<div class="ingroups"><a class="el" href="a00763.html">mcuxClEls</a> &raquo; <a class="el" href="a00806.html">mcuxClEls_Hash</a> &raquo; <a class="el" href="a00807.html">mcuxClEls_Hash_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines valid options (bit values) to be used by <a class="el" href="a00812.html#ga867d4be563b347273af25a559abd7f87" title="Imports a key from external storage to an internal key register.">mcuxClEls_KeyImport_Async</a>.  
+<p>Defines block sizes used by the supported hash algorithms.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga1935d246d89a89d4d04c393b40161429"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga1935d246d89a89d4d04c393b40161429">MCUXCLELS_KEYIMPORT_KFMT_UDF</a></td></tr>
-<tr class="memdesc:ga1935d246d89a89d4d04c393b40161429"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key format UDF with shares in RTL or memory.  <a href="#ga1935d246d89a89d4d04c393b40161429">More...</a><br /></td></tr>
-<tr class="separator:ga1935d246d89a89d4d04c393b40161429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa3f8c4e99d3c233eeaa2685d9e0d4b67"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#gaa3f8c4e99d3c233eeaa2685d9e0d4b67">MCUXCLELS_KEYIMPORT_KFMT_RFC3394</a></td></tr>
-<tr class="memdesc:gaa3f8c4e99d3c233eeaa2685d9e0d4b67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key format RFC3394 with shares in memory.  <a href="#gaa3f8c4e99d3c233eeaa2685d9e0d4b67">More...</a><br /></td></tr>
-<tr class="separator:gaa3f8c4e99d3c233eeaa2685d9e0d4b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga757baa3bf038e4f16c63e356a2a590a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga757baa3bf038e4f16c63e356a2a590a6">MCUXCLELS_KEYIMPORT_KFMT_PUF</a></td></tr>
-<tr class="memdesc:ga757baa3bf038e4f16c63e356a2a590a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key from PUF.  <a href="#ga757baa3bf038e4f16c63e356a2a590a6">More...</a><br /></td></tr>
-<tr class="separator:ga757baa3bf038e4f16c63e356a2a590a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c38ef72ae48380b864e6e5fb950ee17"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga9c38ef72ae48380b864e6e5fb950ee17">MCUXCLELS_RFC3394_OVERHEAD</a></td></tr>
-<tr class="memdesc:ga9c38ef72ae48380b864e6e5fb950ee17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overhead between RFC3394 blob and key size.  <a href="#ga9c38ef72ae48380b864e6e5fb950ee17">More...</a><br /></td></tr>
-<tr class="separator:ga9c38ef72ae48380b864e6e5fb950ee17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga675b25b13fc541b6caf4ede098e62a3a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga675b25b13fc541b6caf4ede098e62a3a">MCUXCLELS_HASH_BLOCK_SIZE_SHA_224</a></td></tr>
+<tr class="memdesc:ga675b25b13fc541b6caf4ede098e62a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-224 output size: 512 bit (64 bytes)  <a href="#ga675b25b13fc541b6caf4ede098e62a3a">More...</a><br /></td></tr>
+<tr class="separator:ga675b25b13fc541b6caf4ede098e62a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa8a671b476a7428d5a63addc98c196ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#gaa8a671b476a7428d5a63addc98c196ce">MCUXCLELS_HASH_BLOCK_SIZE_SHA_256</a></td></tr>
+<tr class="memdesc:gaa8a671b476a7428d5a63addc98c196ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-256 output size: 512 bit (64 bytes)  <a href="#gaa8a671b476a7428d5a63addc98c196ce">More...</a><br /></td></tr>
+<tr class="separator:gaa8a671b476a7428d5a63addc98c196ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3f675b49bbe27893e553c19279260be3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga3f675b49bbe27893e553c19279260be3">MCUXCLELS_HASH_BLOCK_SIZE_SHA_384</a></td></tr>
+<tr class="memdesc:ga3f675b49bbe27893e553c19279260be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 output size: 1024 bit (128 bytes)  <a href="#ga3f675b49bbe27893e553c19279260be3">More...</a><br /></td></tr>
+<tr class="separator:ga3f675b49bbe27893e553c19279260be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9488afdc7a3f5faf48e796ca3b2117dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga9488afdc7a3f5faf48e796ca3b2117dc">MCUXCLELS_HASH_BLOCK_SIZE_SHA_512</a></td></tr>
+<tr class="memdesc:ga9488afdc7a3f5faf48e796ca3b2117dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512 output size: 1024 bit (128 bytes)  <a href="#ga9488afdc7a3f5faf48e796ca3b2117dc">More...</a><br /></td></tr>
+<tr class="separator:ga9488afdc7a3f5faf48e796ca3b2117dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines valid options (bit values) to be used by <a class="el" href="a00812.html#ga867d4be563b347273af25a559abd7f87" title="Imports a key from external storage to an internal key register.">mcuxClEls_KeyImport_Async</a>. </p>
+<p>Defines block sizes used by the supported hash algorithms. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga1935d246d89a89d4d04c393b40161429"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1935d246d89a89d4d04c393b40161429">&#9670;&nbsp;</a></span>MCUXCLELS_KEYIMPORT_KFMT_UDF</h2>
+<a id="ga675b25b13fc541b6caf4ede098e62a3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga675b25b13fc541b6caf4ede098e62a3a">&#9670;&nbsp;</a></span>MCUXCLELS_HASH_BLOCK_SIZE_SHA_224</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_KEYIMPORT_KFMT_UDF</td>
+          <td class="memname">#define MCUXCLELS_HASH_BLOCK_SIZE_SHA_224</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Key format UDF with shares in RTL or memory. </p>
-
-</div>
-</div>
-<a id="gaa3f8c4e99d3c233eeaa2685d9e0d4b67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa3f8c4e99d3c233eeaa2685d9e0d4b67">&#9670;&nbsp;</a></span>MCUXCLELS_KEYIMPORT_KFMT_RFC3394</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_KEYIMPORT_KFMT_RFC3394</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Key format RFC3394 with shares in memory. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01358.html#a58">mcuxClPsaDriver_keygen_export_public_key_oracle_example.c</a>.</dd>
+<p>SHA-224 output size: 512 bit (64 bytes) </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01347.html#a1">mcuxClEls_Hash_Sha224_One_Block_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="ga757baa3bf038e4f16c63e356a2a590a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga757baa3bf038e4f16c63e356a2a590a6">&#9670;&nbsp;</a></span>MCUXCLELS_KEYIMPORT_KFMT_PUF</h2>
+<a id="gaa8a671b476a7428d5a63addc98c196ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa8a671b476a7428d5a63addc98c196ce">&#9670;&nbsp;</a></span>MCUXCLELS_HASH_BLOCK_SIZE_SHA_256</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_KEYIMPORT_KFMT_PUF</td>
+          <td class="memname">#define MCUXCLELS_HASH_BLOCK_SIZE_SHA_256</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Key from PUF. </p>
+<p>SHA-256 output size: 512 bit (64 bytes) </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01348.html#a1">mcuxClEls_Hash_Sha256_One_Block_example.c</a>.</dd>
+</dl>
 
 </div>
 </div>
-<a id="ga9c38ef72ae48380b864e6e5fb950ee17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9c38ef72ae48380b864e6e5fb950ee17">&#9670;&nbsp;</a></span>MCUXCLELS_RFC3394_OVERHEAD</h2>
+<a id="ga3f675b49bbe27893e553c19279260be3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3f675b49bbe27893e553c19279260be3">&#9670;&nbsp;</a></span>MCUXCLELS_HASH_BLOCK_SIZE_SHA_384</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_RFC3394_OVERHEAD</td>
+          <td class="memname">#define MCUXCLELS_HASH_BLOCK_SIZE_SHA_384</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Overhead between RFC3394 blob and key size. </p>
+<p>SHA-384 output size: 1024 bit (128 bytes) </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01349.html#a1">mcuxClEls_Hash_Sha384_One_Block_example.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="ga9488afdc7a3f5faf48e796ca3b2117dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9488afdc7a3f5faf48e796ca3b2117dc">&#9670;&nbsp;</a></span>MCUXCLELS_HASH_BLOCK_SIZE_SHA_512</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_HASH_BLOCK_SIZE_SHA_512</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SHA-512 output size: 1024 bit (128 bytes) </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01350.html#a1">mcuxClEls_Hash_Sha512_One_Block_example.c</a>.</dd>
+</dl>
 
 </div>
 </div>

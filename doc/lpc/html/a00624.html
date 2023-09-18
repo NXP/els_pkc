@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_InterruptOptionEn_t</title>
+<title>MCUX CLNS: mcuxClEls_Aead_Macros</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,56 +103,99 @@ $(document).ready(function(){initNavTree('a00624.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#groups">Modules</a> &#124;
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_InterruptOptionEn_t<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00622.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00623.html">mcuxClEls_Common_Macros</a></div></div>  </div>
+<div class="title">mcuxClEls_Aead_Macros<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00623.html">mcuxClEls_Aead</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines interrupt enable option values.  
+<p>Defines all macros of <a class="el" href="a00623.html">mcuxClEls_Aead</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:a00625"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00625.html">MCUXCLELS_AEAD_</a></td></tr>
+<tr class="memdesc:a00625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines macros used to initialize <a class="el" href="a00915.html" title="Command option bit field for mcuxClEls_Aead_Init_Async, mcuxClEls_Aead_UpdateAad_Async,...">mcuxClEls_AeadOption_t</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga845d16f6376f2c28864f1855ddbde61c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00624.html#ga845d16f6376f2c28864f1855ddbde61c">MCUXCLELS_ELS_INTERRUPT_ENABLE</a></td></tr>
-<tr class="memdesc:ga845d16f6376f2c28864f1855ddbde61c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00956.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to allow ELS to trigger an interrupt.  <a href="#ga845d16f6376f2c28864f1855ddbde61c">More...</a><br /></td></tr>
-<tr class="separator:ga845d16f6376f2c28864f1855ddbde61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2427d922e877e78bac483cf68f6c5892"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00624.html#ga2427d922e877e78bac483cf68f6c5892">MCUXCLELS_ELS_INTERRUPT_DISABLE</a></td></tr>
-<tr class="memdesc:ga2427d922e877e78bac483cf68f6c5892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00956.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to prevent ELS from triggering an interrupt.  <a href="#ga2427d922e877e78bac483cf68f6c5892">More...</a><br /></td></tr>
-<tr class="separator:ga2427d922e877e78bac483cf68f6c5892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacc54b347065e037fd7d5814334b82826"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00624.html#gacc54b347065e037fd7d5814334b82826">MCUXCLELS_AEAD_IV_BLOCK_SIZE</a></td></tr>
+<tr class="separator:gacc54b347065e037fd7d5814334b82826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8a1dab00c208f1b7dc1cf8a2a30a3991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00624.html#ga8a1dab00c208f1b7dc1cf8a2a30a3991">MCUXCLELS_AEAD_AAD_BLOCK_SIZE</a></td></tr>
+<tr class="memdesc:ga8a1dab00c208f1b7dc1cf8a2a30a3991"><td class="mdescLeft">&#160;</td><td class="mdescRight">AES-GCM AAD Granularity: 128 bit (16 bytes)  <a href="#ga8a1dab00c208f1b7dc1cf8a2a30a3991">More...</a><br /></td></tr>
+<tr class="separator:ga8a1dab00c208f1b7dc1cf8a2a30a3991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga61d8f500ac3ed42fff023025b54692f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00624.html#ga61d8f500ac3ed42fff023025b54692f2">MCUXCLELS_AEAD_TAG_SIZE</a></td></tr>
+<tr class="memdesc:ga61d8f500ac3ed42fff023025b54692f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">tag size: Tag generation supports only a 128 bit wide tag (16 bytes)  <a href="#ga61d8f500ac3ed42fff023025b54692f2">More...</a><br /></td></tr>
+<tr class="separator:ga61d8f500ac3ed42fff023025b54692f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga191963434b3271e31bdffc12943745e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00624.html#ga191963434b3271e31bdffc12943745e2">MCUXCLELS_AEAD_CONTEXT_SIZE</a></td></tr>
+<tr class="memdesc:ga191963434b3271e31bdffc12943745e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">context size: 512 bit (64 bytes) + 16 bytes for finalize  <a href="#ga191963434b3271e31bdffc12943745e2">More...</a><br /></td></tr>
+<tr class="separator:ga191963434b3271e31bdffc12943745e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines interrupt enable option values. </p>
+<p>Defines all macros of <a class="el" href="a00623.html">mcuxClEls_Aead</a>. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga845d16f6376f2c28864f1855ddbde61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga845d16f6376f2c28864f1855ddbde61c">&#9670;&nbsp;</a></span>MCUXCLELS_ELS_INTERRUPT_ENABLE</h2>
+<a id="gacc54b347065e037fd7d5814334b82826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacc54b347065e037fd7d5814334b82826">&#9670;&nbsp;</a></span>MCUXCLELS_AEAD_IV_BLOCK_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_ELS_INTERRUPT_ENABLE</td>
+          <td class="memname">#define MCUXCLELS_AEAD_IV_BLOCK_SIZE</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a00956.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to allow ELS to trigger an interrupt. </p>
+<p>AES-GCM IV Granularity: 128 bit (16 bytes) </p>
 
 </div>
 </div>
-<a id="ga2427d922e877e78bac483cf68f6c5892"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2427d922e877e78bac483cf68f6c5892">&#9670;&nbsp;</a></span>MCUXCLELS_ELS_INTERRUPT_DISABLE</h2>
+<a id="ga8a1dab00c208f1b7dc1cf8a2a30a3991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8a1dab00c208f1b7dc1cf8a2a30a3991">&#9670;&nbsp;</a></span>MCUXCLELS_AEAD_AAD_BLOCK_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_ELS_INTERRUPT_DISABLE</td>
+          <td class="memname">#define MCUXCLELS_AEAD_AAD_BLOCK_SIZE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set this option at <a class="el" href="a00956.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to prevent ELS from triggering an interrupt. </p>
+<p>AES-GCM AAD Granularity: 128 bit (16 bytes) </p>
+
+</div>
+</div>
+<a id="ga61d8f500ac3ed42fff023025b54692f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61d8f500ac3ed42fff023025b54692f2">&#9670;&nbsp;</a></span>MCUXCLELS_AEAD_TAG_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_AEAD_TAG_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>tag size: Tag generation supports only a 128 bit wide tag (16 bytes) </p>
+
+</div>
+</div>
+<a id="ga191963434b3271e31bdffc12943745e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga191963434b3271e31bdffc12943745e2">&#9670;&nbsp;</a></span>MCUXCLELS_AEAD_CONTEXT_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_AEAD_CONTEXT_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>context size: 512 bit (64 bytes) + 16 bytes for finalize </p>
 
 </div>
 </div>

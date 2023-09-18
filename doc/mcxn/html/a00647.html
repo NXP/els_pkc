@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Multi-part AEAD interfaces</title>
+<title>MCUX CLNS: mcuxCsslSecureCounter_None.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,372 +103,85 @@ $(document).ready(function(){initNavTree('a00647.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">Multi-part AEAD interfaces<div class="ingroups"><a class="el" href="a00655.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00643.html">mcuxClAead</a> &raquo; <a class="el" href="a00646.html">One-shot AEAD interfaces</a></div></div>  </div>
+<div class="title">mcuxCsslSecureCounter_None.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Interfaces to perform AEAD operations in multiple parts.  
+<p>Implementation that disables the CSSL secure counter mechanism.  
 <a href="#details">More...</a></p>
+
+<p><a href="a00647_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gaeb2451aba7d135f7af05e94f9b095fae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html#gaeb2451aba7d135f7af05e94f9b095fae">mcuxClAead_init</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const pContext, <a class="el" href="a00775.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key, <a class="el" href="a00648.html#ga8084949e97b9ab9cd35ac041b8bbea0a">mcuxClAead_Mode_t</a> mode, <a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pNonce, uint32_t nonceLength, uint32_t inLength, uint32_t adataLength, uint32_t tagLength)</td></tr>
-<tr class="memdesc:gaeb2451aba7d135f7af05e94f9b095fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part authenticated encryption/decryption initialization function.  <a href="#gaeb2451aba7d135f7af05e94f9b095fae">More...</a><br /></td></tr>
-<tr class="separator:gaeb2451aba7d135f7af05e94f9b095fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4af5201aaf549186bf80cbf4284f3d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html#gaa4af5201aaf549186bf80cbf4284f3d1">mcuxClAead_process</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const pContext, <a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pIn, uint32_t inLength, <a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pOut, uint32_t *const pOutLength)</td></tr>
-<tr class="memdesc:gaa4af5201aaf549186bf80cbf4284f3d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part authenticated encryption/decryption processing function for the regular data (authenticated and encrypted)  <a href="#gaa4af5201aaf549186bf80cbf4284f3d1">More...</a><br /></td></tr>
-<tr class="separator:gaa4af5201aaf549186bf80cbf4284f3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40cbd731ba8874d971213fa03605736d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html#ga40cbd731ba8874d971213fa03605736d">mcuxClAead_process_adata</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const pContext, <a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pAdata, uint32_t adataLength)</td></tr>
-<tr class="memdesc:ga40cbd731ba8874d971213fa03605736d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part authenticated encryption/decryption processing function for the associated data (authenticated only)  <a href="#ga40cbd731ba8874d971213fa03605736d">More...</a><br /></td></tr>
-<tr class="separator:ga40cbd731ba8874d971213fa03605736d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b18aa6585e4d229d7ccfdd34f3f9dba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">mcuxClAead_finish</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const pContext, <a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pOut, uint32_t *const pOutLength, <a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pTag)</td></tr>
-<tr class="memdesc:ga2b18aa6585e4d229d7ccfdd34f3f9dba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part authenticated encryption/decryption finalization function.  <a href="#ga2b18aa6585e4d229d7ccfdd34f3f9dba">More...</a><br /></td></tr>
-<tr class="separator:ga2b18aa6585e4d229d7ccfdd34f3f9dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb82bc41120d69281d0fbb719fb35d9d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html#gafb82bc41120d69281d0fbb719fb35d9d">mcuxClAead_verify</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const pContext, <a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pTag, <a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pOut, uint32_t *const pOutLength)</td></tr>
-<tr class="memdesc:gafb82bc41120d69281d0fbb719fb35d9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part authenticated decryption verification function.  <a href="#gafb82bc41120d69281d0fbb719fb35d9d">More...</a><br /></td></tr>
-<tr class="separator:gafb82bc41120d69281d0fbb719fb35d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga417202932e9a8a880e23e8a3321309ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#ga417202932e9a8a880e23e8a3321309ac">MCUX_CSSL_SC_CHECK_PASSED_IMPL</a></td></tr>
+<tr class="memdesc:ga417202932e9a8a880e23e8a3321309ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive comparison result value.  <a href="a00908.html#ga417202932e9a8a880e23e8a3321309ac">More...</a><br /></td></tr>
+<tr class="separator:ga417202932e9a8a880e23e8a3321309ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1d032d150bd774f86bbb50fdfa0ee19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#gac1d032d150bd774f86bbb50fdfa0ee19">MCUX_CSSL_SC_CHECK_FAILED_IMPL</a></td></tr>
+<tr class="memdesc:gac1d032d150bd774f86bbb50fdfa0ee19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negative comparison result value.  <a href="a00908.html#gac1d032d150bd774f86bbb50fdfa0ee19">More...</a><br /></td></tr>
+<tr class="separator:gac1d032d150bd774f86bbb50fdfa0ee19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaafa4d13a4e311121551b8e49662c3470"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#gaafa4d13a4e311121551b8e49662c3470">MCUX_CSSL_SC_COUNTER_TYPE_IMPL</a></td></tr>
+<tr class="memdesc:gaafa4d13a4e311121551b8e49662c3470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data type used for the secure counter.  <a href="a00908.html#gaafa4d13a4e311121551b8e49662c3470">More...</a><br /></td></tr>
+<tr class="separator:gaafa4d13a4e311121551b8e49662c3470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf84485a6eb6bbcd39933ff1abcb3ee61"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#gaf84485a6eb6bbcd39933ff1abcb3ee61">MCUX_CSSL_SC_VALUE_TYPE_IMPL</a></td></tr>
+<tr class="memdesc:gaf84485a6eb6bbcd39933ff1abcb3ee61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data type used for the secure counter values.  <a href="a00908.html#gaf84485a6eb6bbcd39933ff1abcb3ee61">More...</a><br /></td></tr>
+<tr class="separator:gaf84485a6eb6bbcd39933ff1abcb3ee61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga919150430f3033eb5d6c8025216548b3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#ga919150430f3033eb5d6c8025216548b3">MCUX_CSSL_SC_BALANCING_VALUE_TYPE_IMPL</a></td></tr>
+<tr class="memdesc:ga919150430f3033eb5d6c8025216548b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data type used for properly casting the secure counter balancing values.  <a href="a00908.html#ga919150430f3033eb5d6c8025216548b3">More...</a><br /></td></tr>
+<tr class="separator:ga919150430f3033eb5d6c8025216548b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad413de64b4cc420be30b5278fd5083d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#gad413de64b4cc420be30b5278fd5083d0">MCUX_CSSL_SC_ALLOC_IMPL</a>()</td></tr>
+<tr class="memdesc:gad413de64b4cc420be30b5278fd5083d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocation operation implementation for the secure counter.  <a href="a00908.html#gad413de64b4cc420be30b5278fd5083d0">More...</a><br /></td></tr>
+<tr class="separator:gad413de64b4cc420be30b5278fd5083d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf8d9ebeb36322ea86fc8766afa84bc3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#gaf8d9ebeb36322ea86fc8766afa84bc3f">MCUX_CSSL_SC_INIT_IMPL</a>(value)</td></tr>
+<tr class="memdesc:gaf8d9ebeb36322ea86fc8766afa84bc3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization operation implementation for the secure counter.  <a href="a00908.html#gaf8d9ebeb36322ea86fc8766afa84bc3f">More...</a><br /></td></tr>
+<tr class="separator:gaf8d9ebeb36322ea86fc8766afa84bc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf15120a3e9f4edf59cb5b42860fe86dd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00908.html#gaf15120a3e9f4edf59cb5b42860fe86dd">MCUX_CSSL_SC_CHECK_IMPL</a>(value)</td></tr>
+<tr class="memdesc:gaf15120a3e9f4edf59cb5b42860fe86dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operation implementation for the secure counter.  <a href="a00908.html#gaf15120a3e9f4edf59cb5b42860fe86dd">More...</a><br /></td></tr>
+<tr class="separator:gaf15120a3e9f4edf59cb5b42860fe86dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa4a21360f6c3d08fc777879e4f4551ed"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00909.html#gaa4a21360f6c3d08fc777879e4f4551ed">MCUX_CSSL_SC_ADD_IMPL</a>(value)</td></tr>
+<tr class="memdesc:gaa4a21360f6c3d08fc777879e4f4551ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with <code>value</code>.  <a href="a00909.html#gaa4a21360f6c3d08fc777879e4f4551ed">More...</a><br /></td></tr>
+<tr class="separator:gaa4a21360f6c3d08fc777879e4f4551ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9c0484fdff900c04462d668a0870bf33"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00909.html#ga9c0484fdff900c04462d668a0870bf33">MCUX_CSSL_SC_ADD_ON_CALL_IMPL</a>(value)</td></tr>
+<tr class="memdesc:ga9c0484fdff900c04462d668a0870bf33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with <code>value</code> in case of function call.  <a href="a00909.html#ga9c0484fdff900c04462d668a0870bf33">More...</a><br /></td></tr>
+<tr class="separator:ga9c0484fdff900c04462d668a0870bf33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga45a909bcf29531036b1aad68ac8b0afb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00909.html#ga45a909bcf29531036b1aad68ac8b0afb">MCUX_CSSL_SC_ADD_0X1_IMPL</a>()</td></tr>
+<tr class="memdesc:ga45a909bcf29531036b1aad68ac8b0afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x1.  <a href="a00909.html#ga45a909bcf29531036b1aad68ac8b0afb">More...</a><br /></td></tr>
+<tr class="separator:ga45a909bcf29531036b1aad68ac8b0afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac716380d3c29a995745053bb6915044"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00909.html#gaac716380d3c29a995745053bb6915044">MCUX_CSSL_SC_ADD_0X10_IMPL</a>()</td></tr>
+<tr class="memdesc:gaac716380d3c29a995745053bb6915044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x10.  <a href="a00909.html#gaac716380d3c29a995745053bb6915044">More...</a><br /></td></tr>
+<tr class="separator:gaac716380d3c29a995745053bb6915044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafb5fa6d42145120126b00ab3707711be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00909.html#gafb5fa6d42145120126b00ab3707711be">MCUX_CSSL_SC_ADD_0X100_IMPL</a>()</td></tr>
+<tr class="memdesc:gafb5fa6d42145120126b00ab3707711be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x100.  <a href="a00909.html#gafb5fa6d42145120126b00ab3707711be">More...</a><br /></td></tr>
+<tr class="separator:gafb5fa6d42145120126b00ab3707711be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca0635e01e8eef97f9a06a50b24d0941"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#gaca0635e01e8eef97f9a06a50b24d0941">MCUX_CSSL_SC_SUB_IMPL</a>(value)</td></tr>
+<tr class="memdesc:gaca0635e01e8eef97f9a06a50b24d0941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with <code>value</code>.  <a href="a00910.html#gaca0635e01e8eef97f9a06a50b24d0941">More...</a><br /></td></tr>
+<tr class="separator:gaca0635e01e8eef97f9a06a50b24d0941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">MCUX_CSSL_SC_SUB_0X1_IMPL</a>()</td></tr>
+<tr class="memdesc:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x1.  <a href="a00910.html#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">More...</a><br /></td></tr>
+<tr class="separator:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa9701e3c0f7e757573c4bfcdae22959"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#gafa9701e3c0f7e757573c4bfcdae22959">MCUX_CSSL_SC_SUB_0X10_IMPL</a>()</td></tr>
+<tr class="memdesc:gafa9701e3c0f7e757573c4bfcdae22959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x10.  <a href="a00910.html#gafa9701e3c0f7e757573c4bfcdae22959">More...</a><br /></td></tr>
+<tr class="separator:gafa9701e3c0f7e757573c4bfcdae22959"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa4a6dba75f476d29637e005dc8272083"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00910.html#gaa4a6dba75f476d29637e005dc8272083">MCUX_CSSL_SC_SUB_0X100_IMPL</a>()</td></tr>
+<tr class="memdesc:gaa4a6dba75f476d29637e005dc8272083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x100.  <a href="a00910.html#gaa4a6dba75f476d29637e005dc8272083">More...</a><br /></td></tr>
+<tr class="separator:gaa4a6dba75f476d29637e005dc8272083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5ebadc1cc4cc3e849527adcf3da5c258"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00911.html#ga5ebadc1cc4cc3e849527adcf3da5c258">MCUX_CSSL_SC_VALUE_IMPL</a>()</td></tr>
+<tr class="memdesc:ga5ebadc1cc4cc3e849527adcf3da5c258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access operation for the current secure counter value.  <a href="a00911.html#ga5ebadc1cc4cc3e849527adcf3da5c258">More...</a><br /></td></tr>
+<tr class="separator:ga5ebadc1cc4cc3e849527adcf3da5c258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga87e741e67b757bf719409530176e56b9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00911.html#ga87e741e67b757bf719409530176e56b9">MCUX_CSSL_SC_ASSIGN_IMPL</a>(value)</td></tr>
+<tr class="memdesc:ga87e741e67b757bf719409530176e56b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operation for the secure counter.  <a href="a00911.html#ga87e741e67b757bf719409530176e56b9">More...</a><br /></td></tr>
+<tr class="separator:ga87e741e67b757bf719409530176e56b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Interfaces to perform AEAD operations in multiple parts. </p>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="gaeb2451aba7d135f7af05e94f9b095fae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeb2451aba7d135f7af05e94f9b095fae">&#9670;&nbsp;</a></span>mcuxClAead_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a> mcuxClAead_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>session</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const&#160;</td>
-          <td class="paramname"><em>pContext</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00775.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00648.html#ga8084949e97b9ab9cd35ac041b8bbea0a">mcuxClAead_Mode_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a>&#160;</td>
-          <td class="paramname"><em>pNonce</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>nonceLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>inLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>adataLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>tagLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-part authenticated encryption/decryption initialization function. </p>
-<p>This function performs the initialization for a multi part authenticated encryption/decryption operation. The algorithm to be used will be determined based on the key and mode that are provided.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pContext</td><td>AEAD context which is used to maintain the state and store other relevant information about the operation. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">key</td><td>Key to be used to encrypt the data. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">mode</td><td>AEAD mode that should be used during the encryption/decryption operation. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pNonce</td><td>Pointer to the buffer that contains the nonce. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">nonceLength</td><td>Number of bytes of nonce data in the <code>nonce</code> buffer. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">inLength</td><td>Number of bytes of plain data that will be processed. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">adataLength</td><td>Number of bytes of associated data that will be processed. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">tagLength</td><td>Number of bytes to be used for the authentication tag. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
-<a id="gaa4af5201aaf549186bf80cbf4284f3d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa4af5201aaf549186bf80cbf4284f3d1">&#9670;&nbsp;</a></span>mcuxClAead_process()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a> mcuxClAead_process </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>session</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const&#160;</td>
-          <td class="paramname"><em>pContext</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a>&#160;</td>
-          <td class="paramname"><em>pIn</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>inLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a>&#160;</td>
-          <td class="paramname"><em>pOut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t *const&#160;</td>
-          <td class="paramname"><em>pOutLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-part authenticated encryption/decryption processing function for the regular data (authenticated and encrypted) </p>
-<p>This function performs the processing of (a part of) a data stream for an authenticated encryption/decryption operation. The algorithm and key to be used will be determined based on the context that is provided.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pContext</td><td>AEAD context which is used to maintain the state and store other relevant information about the operation. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pIn</td><td>Pointer to the input buffer that contains the data that needs to be processed. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">inLength</td><td>Number of bytes of data in the <code>in</code> buffer. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Pointer to the output buffer where the processed data needs to be written. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOutLength</td><td>Will be incremented by the number of bytes of processed data that have been written to the <code>out</code> buffer. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
-<a id="ga40cbd731ba8874d971213fa03605736d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40cbd731ba8874d971213fa03605736d">&#9670;&nbsp;</a></span>mcuxClAead_process_adata()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a> mcuxClAead_process_adata </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>session</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const&#160;</td>
-          <td class="paramname"><em>pContext</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a>&#160;</td>
-          <td class="paramname"><em>pAdata</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>adataLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-part authenticated encryption/decryption processing function for the associated data (authenticated only) </p>
-<p>This function performs the processing of (a part of) an associated data stream for an authenticated encryption/decryption operation. The algorithm and key to be used will be determined based on the context that is provided.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pContext</td><td>AEAD context which is used to maintain the state and store other relevant information about the operation. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pAdata</td><td>Associated data that needs to be proccessed. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">adataLength</td><td>Number of bytes of associated data in the <code>adata</code> buffer. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
-<a id="ga2b18aa6585e4d229d7ccfdd34f3f9dba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2b18aa6585e4d229d7ccfdd34f3f9dba">&#9670;&nbsp;</a></span>mcuxClAead_finish()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a> mcuxClAead_finish </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>session</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const&#160;</td>
-          <td class="paramname"><em>pContext</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a>&#160;</td>
-          <td class="paramname"><em>pOut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t *const&#160;</td>
-          <td class="paramname"><em>pOutLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a>&#160;</td>
-          <td class="paramname"><em>pTag</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-part authenticated encryption/decryption finalization function. </p>
-<p>This function performs the finalization of an authenticated encryption or decryption operation and produces the authentication tag. The algorithm and key to be used will be determined based on the context that is provided.</p>
-<p>Note: the taglength is already specified when the INIT function is called.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pContext</td><td>AEAD context which is used to maintain the state and store other relevant information about the operation. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Pointer to the output buffer where the processed data needs to be written. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOutLength</td><td>Will be incremented by the number of bytes of processed data that have been written to the <code>out</code> buffer. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pTag</td><td>Pointer to the output buffer where the tag needs to be written. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
-<a id="gafb82bc41120d69281d0fbb719fb35d9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafb82bc41120d69281d0fbb719fb35d9d">&#9670;&nbsp;</a></span>mcuxClAead_verify()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00648.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a> mcuxClAead_verify </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>session</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00648.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> *const&#160;</td>
-          <td class="paramname"><em>pContext</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a>&#160;</td>
-          <td class="paramname"><em>pTag</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00660.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a>&#160;</td>
-          <td class="paramname"><em>pOut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t *const&#160;</td>
-          <td class="paramname"><em>pOutLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-part authenticated decryption verification function. </p>
-<p>This function performs the finalization of an authenticated decryption operation and verifies the authentication tag. The algorithm and key to be used will be determined based on the context that is provided.</p>
-<p>This function can be used as an alternative for <code>mcuxClAead_finish</code> when one also wants to perform the tag verification step.</p>
-<p>Note: the taglength is already specified when the INIT function is called.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pContext</td><td>AEAD context which is used to maintain the state and store other relevant information about the operation. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pTag</td><td>Pointer to the buffer that contains the tag. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Pointer to the output buffer where the authenticated decrypted data needs to be written. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOutLength</td><td>Will be incremented by the number of bytes of authenticated decrypted data that have been written to the <code>out</code> buffer. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><p>Implementation that disables the CSSL secure counter mechanism. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="a00647.html">mcuxCsslSecureCounter_None.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClMac_Constants.h File Reference</title>
+<title>MCUX CLNS: mcuxClKey_MemoryConsumption.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,45 +105,44 @@ $(document).ready(function(){initNavTree('a00410.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClMac_Constants.h File Reference</div>  </div>
+<div class="title">mcuxClKey_MemoryConsumption.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Constants and status codes for the mcuxClMac component.  
+<p>Defines the memory consumption for the mcuxClKey component All work area sizes in bytes are a multiple of CPU wordsize.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
-</div>
+
 <p><a href="a00410_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga29a0556d236921ec9e6680cd049f784b"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_STATUS_ERROR</b></td></tr>
-<tr class="separator:ga29a0556d236921ec9e6680cd049f784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeee9d7aded8807ac014d1030847457a2"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_STATUS_FAILURE</b></td></tr>
-<tr class="separator:gaeee9d7aded8807ac014d1030847457a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8eb86baa218d3f14c65c4cf1fd4a9a6b"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_STATUS_INVALID_PARAM</b></td></tr>
-<tr class="separator:ga8eb86baa218d3f14c65c4cf1fd4a9a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga025cf49de0fa3225a6d15fd972bf3c64"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_STATUS_FAULT_ATTACK</b></td></tr>
-<tr class="separator:ga025cf49de0fa3225a6d15fd972bf3c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7df50ebdaad50cfe8661c930df6c43df"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_STATUS_OK</b></td></tr>
-<tr class="separator:ga7df50ebdaad50cfe8661c930df6c43df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga322f2ecd934013fbc12b609d7f92b49f"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLMAC_STATUS_COMPARE_NOK</b></td></tr>
-<tr class="separator:ga322f2ecd934013fbc12b609d7f92b49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b9695046f1c43593266896742ce3e8f"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLKEY_DESCRIPTOR_SIZE</b></td></tr>
+<tr class="separator:ga2b9695046f1c43593266896742ce3e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga738fd85c6dc17cc4209d08e940d57775"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:ga738fd85c6dc17cc4209d08e940d57775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa477e27c0893deffea7f8f71ddb8925"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLKEY_TYPEDESCRIPTOR_SIZE</b></td></tr>
+<tr class="separator:gafa477e27c0893deffea7f8f71ddb8925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga879c5be1d91cd1c7816fe5b5cefb6549"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLKEY_TYPEDESCRIPTOR_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:ga879c5be1d91cd1c7816fe5b5cefb6549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaef10bc9f41b3b52769460161840fb082"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE</b></td></tr>
+<tr class="separator:gaef10bc9f41b3b52769460161840fb082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0cc0a564e13bd274c94afa281ed495b7"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:ga0cc0a564e13bd274c94afa281ed495b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Constants and status codes for the mcuxClMac component. </p>
+<div class="textblock"><p>Defines the memory consumption for the mcuxClKey component All work area sizes in bytes are a multiple of CPU wordsize. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00410.html">mcuxClMac_Constants.h</a></li>
+    <li class="navelem"><a class="el" href="a00410.html">mcuxClKey_MemoryConsumption.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

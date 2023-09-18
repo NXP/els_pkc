@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Branching flow protection</title>
+<title>MCUX CLNS: mcuxClSession_Functions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,211 +103,209 @@ $(document).ready(function(){initNavTree('a00855.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Branching flow protection<div class="ingroups"><a class="el" href="a00841.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00851.html">Flow Protection API</a></div></div>  </div>
+<div class="title">mcuxClSession_Functions<div class="ingroups"><a class="el" href="a00854.html">mcuxClSession</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Support for flow protected branches.  
+<p>Defines all functions of <a class="el" href="a00854.html">mcuxClSession</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga1406430491edf42797f1fbb6fec6d400"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400">MCUX_CSSL_FP_BRANCH_DECL</a>(id)</td></tr>
-<tr class="memdesc:ga1406430491edf42797f1fbb6fec6d400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declaration of a flow protected branch.  <a href="#ga1406430491edf42797f1fbb6fec6d400">More...</a><br /></td></tr>
-<tr class="separator:ga1406430491edf42797f1fbb6fec6d400"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9aaebd3ae72dfb08a7a286c9cf02898c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c">MCUX_CSSL_FP_BRANCH_POSITIVE</a>(...)</td></tr>
-<tr class="memdesc:ga9aaebd3ae72dfb08a7a286c9cf02898c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive scenario for a branch is executed.  <a href="#ga9aaebd3ae72dfb08a7a286c9cf02898c">More...</a><br /></td></tr>
-<tr class="separator:ga9aaebd3ae72dfb08a7a286c9cf02898c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga67a87d7f006f7f4fc09f1a0b93d21043"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043">MCUX_CSSL_FP_BRANCH_NEGATIVE</a>(...)</td></tr>
-<tr class="memdesc:ga67a87d7f006f7f4fc09f1a0b93d21043"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negative scenario of a branch is executed.  <a href="#ga67a87d7f006f7f4fc09f1a0b93d21043">More...</a><br /></td></tr>
-<tr class="separator:ga67a87d7f006f7f4fc09f1a0b93d21043"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga99db0902665c118dbfeacd73dd8c8672"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga99db0902665c118dbfeacd73dd8c8672">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a>(...)</td></tr>
-<tr class="memdesc:ga99db0902665c118dbfeacd73dd8c8672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expectation that positive branch has been taken.  <a href="#ga99db0902665c118dbfeacd73dd8c8672">More...</a><br /></td></tr>
-<tr class="separator:ga99db0902665c118dbfeacd73dd8c8672"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7ca1b74234f560a110647fbc24fec3f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga7ca1b74234f560a110647fbc24fec3f9">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a>(...)</td></tr>
-<tr class="memdesc:ga7ca1b74234f560a110647fbc24fec3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expectation that negative branch has been taken.  <a href="#ga7ca1b74234f560a110647fbc24fec3f9">More...</a><br /></td></tr>
-<tr class="separator:ga7ca1b74234f560a110647fbc24fec3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaf1b8776b0d519136df17f6dd632442cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#gaf1b8776b0d519136df17f6dd632442cf">mcuxClSession_init</a> (<a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint32_t *const pCpuWaBuffer, uint32_t cpuWaLength, uint32_t *const pPkcWaBuffer, uint32_t pkcWaLength)</td></tr>
+<tr class="memdesc:gaf1b8776b0d519136df17f6dd632442cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Crypto Library session.  <a href="#gaf1b8776b0d519136df17f6dd632442cf">More...</a><br /></td></tr>
+<tr class="separator:gaf1b8776b0d519136df17f6dd632442cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga159bff529d405fd6da2930590a69ac06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga159bff529d405fd6da2930590a69ac06">mcuxClSession_setRtf</a> (<a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint8_t *const pRtf, <a class="el" href="a00859.html#gac635eeca4268dbd500e45806ee37f685">mcuxClSession_Rtf_t</a> RtfOptions)</td></tr>
+<tr class="memdesc:ga159bff529d405fd6da2930590a69ac06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the RTF option in a Crypto Library session.  <a href="#ga159bff529d405fd6da2930590a69ac06">More...</a><br /></td></tr>
+<tr class="separator:ga159bff529d405fd6da2930590a69ac06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ba3d2c6e561c86e1da8fcc0abfd046c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c">mcuxClSession_cleanup</a> (<a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
+<tr class="memdesc:ga1ba3d2c6e561c86e1da8fcc0abfd046c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up a Crypto Library session.  <a href="#ga1ba3d2c6e561c86e1da8fcc0abfd046c">More...</a><br /></td></tr>
+<tr class="separator:ga1ba3d2c6e561c86e1da8fcc0abfd046c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad324fd8f8eeefa29521c4297ac75fd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00855.html#gaad324fd8f8eeefa29521c4297ac75fd2">mcuxClSession_destroy</a> (<a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
+<tr class="memdesc:gaad324fd8f8eeefa29521c4297ac75fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a Crypto Library session.  <a href="#gaad324fd8f8eeefa29521c4297ac75fd2">More...</a><br /></td></tr>
+<tr class="separator:gaad324fd8f8eeefa29521c4297ac75fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Support for flow protected branches. </p>
-<dl class="section user"><dt>Declaration</dt><dd><a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> </dd></dl>
-<dl class="section user"><dt>Events</dt><dd><a class="el" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c" title="Positive scenario for a branch is executed.">MCUX_CSSL_FP_BRANCH_POSITIVE</a><br />
-<a class="el" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043" title="Negative scenario of a branch is executed.">MCUX_CSSL_FP_BRANCH_NEGATIVE</a> </dd></dl>
-<dl class="section user"><dt>Expectations</dt><dd><a class="el" href="a00855.html#ga99db0902665c118dbfeacd73dd8c8672" title="Expectation that positive branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a><br />
-<a class="el" href="a00855.html#ga7ca1b74234f560a110647fbc24fec3f9" title="Expectation that negative branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a> </dd></dl>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga1406430491edf42797f1fbb6fec6d400"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1406430491edf42797f1fbb6fec6d400">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_BRANCH_DECL</h2>
+<p>Defines all functions of <a class="el" href="a00854.html">mcuxClSession</a>. </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gaf1b8776b0d519136df17f6dd632442cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf1b8776b0d519136df17f6dd632442cf">&#9670;&nbsp;</a></span>mcuxClSession_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_FP_BRANCH_DECL</td>
+          <td class="memname"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a> mcuxClSession_init </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">id</td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *const&#160;</td>
+          <td class="paramname"><em>pCpuWaBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cpuWaLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *const&#160;</td>
+          <td class="paramname"><em>pPkcWaBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>pkcWaLength</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize a Crypto Library session. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pSession</td><td>Session to be initialized. </td></tr>
+    <tr><td class="paramname">pCpuWaBuffer</td><td>Pointer to buffer to be used as workarea for CPU operations. This pointer shall be CPU-word aligned. </td></tr>
+    <tr><td class="paramname">cpuWaLength</td><td>Size (in bytes) of the workarea for CPU operations. The size shall be a multiple of CPU wordsize. </td></tr>
+    <tr><td class="paramname">pPkcWaBuffer</td><td>Pointer to buffer to be used as workarea for PKC operations. This pointer shall be PKC-word aligned. </td></tr>
+    <tr><td class="paramname">pkcWaLength</td><td>Size (in bytes) of the workarea for PKC operations. The size shall be a multiple of <b>CPU</b> wordsize.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a00857.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6" title="Session operation successful.">MCUXCLSESSION_STATUS_OK</a></td><td>Session has been initialized successfully </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00857.html#ga547425b7379de3ee1fb96c79140fd68e" title="Error occurred during Session operation.">MCUXCLSESSION_STATUS_ERROR</a></td><td>Error occurred during session initializing. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01313.html#a3">mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="ga159bff529d405fd6da2930590a69ac06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga159bff529d405fd6da2930590a69ac06">&#9670;&nbsp;</a></span>mcuxClSession_setRtf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a> mcuxClSession_setRtf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *const&#160;</td>
+          <td class="paramname"><em>pRtf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00859.html#gac635eeca4268dbd500e45806ee37f685">mcuxClSession_Rtf_t</a>&#160;</td>
+          <td class="paramname"><em>RtfOptions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the RTF option in a Crypto Library session. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pSession</td><td>Session to be initialized. </td></tr>
+    <tr><td class="paramname">pRtf</td><td>buffer to store the rtf result. </td></tr>
+    <tr><td class="paramname">RtfOptions</td><td>Options to define RTF processing.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
+
+</div>
+</div>
+<a id="ga1ba3d2c6e561c86e1da8fcc0abfd046c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1ba3d2c6e561c86e1da8fcc0abfd046c">&#9670;&nbsp;</a></span>mcuxClSession_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a> mcuxClSession_cleanup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Declaration of a flow protected branch. </p>
-<p>To inform the flow protection mechanism about a branch that needs to be protected, a branch identifier needs to be declared. This identifier can then be used in the events and expectation macros. For example: </p><div class="fragment"><div class="line"><a class="code" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400">MCUX_CSSL_FP_BRANCH_DECL</a>(someBranchIdentifier);</div><div class="line"><span class="keywordflow">if</span> (condition)</div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c">MCUX_CSSL_FP_BRANCH_POSITIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="keywordflow">else</span></div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043">MCUX_CSSL_FP_BRANCH_NEGATIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="comment">// ...</span></div><div class="line"><a class="code" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d">MCUX_CSSL_FP_FUNCTION_EXIT</a>(someFunction, 0,</div><div class="line">  MCUX_CSSL_FP_BRANCH_TAKEN(someBranchIdentifier,</div><div class="line">    MCUX_CSSL_FP_BRANCH_POSITIVE_SCENARIO, condition)</div><div class="line">);</div></div><!-- fragment --><dl class="section user"><dt>Events</dt><dd><a class="el" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c" title="Positive scenario for a branch is executed.">MCUX_CSSL_FP_BRANCH_POSITIVE</a><br />
-<a class="el" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043" title="Negative scenario of a branch is executed.">MCUX_CSSL_FP_BRANCH_NEGATIVE</a> </dd></dl>
-<dl class="section user"><dt>Expectations</dt><dd><a class="el" href="a00855.html#ga99db0902665c118dbfeacd73dd8c8672" title="Expectation that positive branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a><br />
-<a class="el" href="a00855.html#ga7ca1b74234f560a110647fbc24fec3f9" title="Expectation that negative branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a></dd></dl>
+<p>Clean up a Crypto Library session. </p>
+<p>This function will (securely) cleanup the session, which will still be usable afterwards.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>Identifier for the branch that is flow protected. </td></tr>
+    <tr><td class="paramname">pSession</td><td>Session to be cleaned.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a00857.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6" title="Session operation successful.">MCUXCLSESSION_STATUS_OK</a></td><td>Session operation successful </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ga9aaebd3ae72dfb08a7a286c9cf02898c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9aaebd3ae72dfb08a7a286c9cf02898c">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_BRANCH_POSITIVE</h2>
+<a id="gaad324fd8f8eeefa29521c4297ac75fd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaad324fd8f8eeefa29521c4297ac75fd2">&#9670;&nbsp;</a></span>mcuxClSession_destroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_FP_BRANCH_POSITIVE</td>
+          <td class="memname"><a class="el" href="a00859.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a> mcuxClSession_destroy </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00859.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Positive scenario for a branch is executed. </p>
-<p>This branch event macro informs the flow mechanism that the positive scenario of the branch is executed for the branch declared by <a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> with the given <code>id</code>. For example: </p><div class="fragment"><div class="line"><a class="code" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400">MCUX_CSSL_FP_BRANCH_DECL</a>(someBranchIdentifier);</div><div class="line"><span class="keywordflow">if</span> (condition)</div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c">MCUX_CSSL_FP_BRANCH_POSITIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="keywordflow">else</span></div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043">MCUX_CSSL_FP_BRANCH_NEGATIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="comment">// ...</span></div><div class="line"><a class="code" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d">MCUX_CSSL_FP_FUNCTION_EXIT</a>(someFunction, 0,</div><div class="line">  <a class="code" href="a00860.html#ga643cc00e2fecb3e73de572797618ad35">MCUX_CSSL_FP_CONDITIONAL_IMPL</a>(!condition,</div><div class="line">    <a class="code" href="a00855.html#ga99db0902665c118dbfeacd73dd8c8672">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a>(someBranchIdentifier)</div><div class="line">  )</div><div class="line">);</div></div><!-- fragment --><dl class="section user"><dt>Declaration</dt><dd><a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> </dd></dl>
-<dl class="section user"><dt>Expectation</dt><dd><a class="el" href="a00855.html#ga99db0902665c118dbfeacd73dd8c8672" title="Expectation that positive branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a></dd></dl>
+<p>Destroy a Crypto Library session. </p>
+<p>This function will (securely) cleanup the session, including uninitialization etc. The session will no longer be usable afterwards.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
-<li>id: Identifier for the branch for which the positive scenario is executed.</li>
-<li>expect: Zero or more (comma separated) declarations of expected code flow behavior related to this event. </li>
-</ul>
-</td></tr>
+    <tr><td class="paramname">pSession</td><td>Session to be destroyed.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ga67a87d7f006f7f4fc09f1a0b93d21043"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga67a87d7f006f7f4fc09f1a0b93d21043">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_BRANCH_NEGATIVE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_FP_BRANCH_NEGATIVE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Negative scenario of a branch is executed. </p>
-<p>This branch event macro informs the flow mechanism that the positive scenario of the branch is executed for the branch declared by <a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> with the given <code>id</code>. For example: </p><div class="fragment"><div class="line"><a class="code" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400">MCUX_CSSL_FP_BRANCH_DECL</a>(someBranchIdentifier);</div><div class="line"><span class="keywordflow">if</span> (condition)</div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c">MCUX_CSSL_FP_BRANCH_POSITIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="keywordflow">else</span></div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043">MCUX_CSSL_FP_BRANCH_NEGATIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="comment">// ...</span></div><div class="line"><a class="code" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d">MCUX_CSSL_FP_FUNCTION_EXIT</a>(someFunction, 0,</div><div class="line">  <a class="code" href="a00860.html#ga643cc00e2fecb3e73de572797618ad35">MCUX_CSSL_FP_CONDITIONAL_IMPL</a>(!condition,</div><div class="line">    <a class="code" href="a00855.html#ga7ca1b74234f560a110647fbc24fec3f9">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a>(someBranchIdentifier)</div><div class="line">  )</div><div class="line">);</div></div><!-- fragment --><dl class="section user"><dt>Declaration</dt><dd><a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> </dd></dl>
-<dl class="section user"><dt>Expectation</dt><dd><a class="el" href="a00855.html#ga7ca1b74234f560a110647fbc24fec3f9" title="Expectation that negative branch has been taken.">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
-<li>id: Identifier for the branch for which the negative scenario is executed.</li>
-<li>expect: Zero or more (comma separated) declarations of expected code flow behavior related to this event. </li>
-</ul>
-</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga99db0902665c118dbfeacd73dd8c8672"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga99db0902665c118dbfeacd73dd8c8672">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Expectation that positive branch has been taken. </p>
-<p>This expectation macro indicates to the flow protection mechanism that the branch declared by <a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> with the given <code>id</code> has executed the positive scenario (under the given <code>condition</code>). For example: </p><div class="fragment"><div class="line"><a class="code" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400">MCUX_CSSL_FP_BRANCH_DECL</a>(someBranchIdentifier);</div><div class="line"><span class="keywordflow">if</span> (condition)</div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c">MCUX_CSSL_FP_BRANCH_POSITIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="keywordflow">else</span></div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043">MCUX_CSSL_FP_BRANCH_NEGATIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="comment">// ...</span></div><div class="line"><a class="code" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d">MCUX_CSSL_FP_FUNCTION_EXIT</a>(someFunction, 0,</div><div class="line">  <span class="comment">// Providing the condition as part of the branch expectation.</span></div><div class="line">  <span class="comment">// Alternatively, the expectation can be placed in a conditional block.</span></div><div class="line">  <a class="code" href="a00855.html#ga99db0902665c118dbfeacd73dd8c8672">MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE</a>(someBranchIdentifier, condition)</div><div class="line">);</div></div><!-- fragment --><dl class="section user"><dt>Declaration</dt><dd><a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> </dd></dl>
-<dl class="section user"><dt>Event</dt><dd><a class="el" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c" title="Positive scenario for a branch is executed.">MCUX_CSSL_FP_BRANCH_POSITIVE</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00853.html#ga2fda8e2a0e7d862b113b28bcc1b4d9bb" title="Flow protection handler for the function entry point.">MCUX_CSSL_FP_FUNCTION_ENTRY</a> </dd>
-<dd>
-<a class="el" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d" title="Flow protection handler for the function exit point.">MCUX_CSSL_FP_FUNCTION_EXIT</a> </dd>
-<dd>
-<a class="el" href="a00853.html#ga7c4b79e79eecb68ef4e4fb4fb9fbc1b8" title="Flow protection handler for the function exit point which includes an actual check of the code flow.">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK</a> </dd>
-<dd>
-<a class="el" href="a00857.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a> </dd>
-<dd>
-<a class="el" href="a00857.html#ga24a55fecde25d3aa0a227814345b9714" title="Handling of conditionally expected code flow behavior.">MCUX_CSSL_FP_CONDITIONAL</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
-<li>id: Identifier of the flow protected branch.</li>
-<li>condition: Optional, condition under which this branch is taken. </li>
-</ul>
-</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga7ca1b74234f560a110647fbc24fec3f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7ca1b74234f560a110647fbc24fec3f9">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Expectation that negative branch has been taken. </p>
-<p>This expectation macro indicates to the flow protection mechanism that the branch declared by <a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> with the given <code>id</code> has executed the negative scenario (under the given <code>condition</code>). For example: </p><div class="fragment"><div class="line"><a class="code" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400">MCUX_CSSL_FP_BRANCH_DECL</a>(someBranchIdentifier);</div><div class="line"><span class="keywordflow">if</span> (condition)</div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga9aaebd3ae72dfb08a7a286c9cf02898c">MCUX_CSSL_FP_BRANCH_POSITIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="keywordflow">else</span></div><div class="line">{</div><div class="line">  <a class="code" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043">MCUX_CSSL_FP_BRANCH_NEGATIVE</a>(someBranchIdentifier);</div><div class="line">}</div><div class="line"><span class="comment">// ...</span></div><div class="line"><a class="code" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d">MCUX_CSSL_FP_FUNCTION_EXIT</a>(someFunction, 0,</div><div class="line">  <span class="comment">// Providing the branch expectation as part of a conditional block.</span></div><div class="line">  <span class="comment">// Alternatively, the condition can be provided in the branch expectation.</span></div><div class="line">  <a class="code" href="a00857.html#ga24a55fecde25d3aa0a227814345b9714">MCUX_CSSL_FP_CONDITIONAL</a>(!condition,</div><div class="line">    <a class="code" href="a00855.html#ga7ca1b74234f560a110647fbc24fec3f9">MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE</a>(someBranchIdentifier)</div><div class="line">  )</div><div class="line">);</div></div><!-- fragment --><dl class="section user"><dt>Declaration</dt><dd><a class="el" href="a00855.html#ga1406430491edf42797f1fbb6fec6d400" title="Declaration of a flow protected branch.">MCUX_CSSL_FP_BRANCH_DECL</a> </dd></dl>
-<dl class="section user"><dt>Event</dt><dd><a class="el" href="a00855.html#ga67a87d7f006f7f4fc09f1a0b93d21043" title="Negative scenario of a branch is executed.">MCUX_CSSL_FP_BRANCH_NEGATIVE</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00853.html#ga2fda8e2a0e7d862b113b28bcc1b4d9bb" title="Flow protection handler for the function entry point.">MCUX_CSSL_FP_FUNCTION_ENTRY</a> </dd>
-<dd>
-<a class="el" href="a00853.html#ga9d9934b6d02da9505dd20ac36236b61d" title="Flow protection handler for the function exit point.">MCUX_CSSL_FP_FUNCTION_EXIT</a> </dd>
-<dd>
-<a class="el" href="a00853.html#ga7c4b79e79eecb68ef4e4fb4fb9fbc1b8" title="Flow protection handler for the function exit point which includes an actual check of the code flow.">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK</a> </dd>
-<dd>
-<a class="el" href="a00857.html#ga83db474d65df2b52abea45293f9684d0" title="Declaration(s) of expected code flow behavior.">MCUX_CSSL_FP_EXPECT</a> </dd>
-<dd>
-<a class="el" href="a00857.html#ga24a55fecde25d3aa0a227814345b9714" title="Handling of conditionally expected code flow behavior.">MCUX_CSSL_FP_CONDITIONAL</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">...</td><td>The following parameters need to be passed (comma separated):<ul>
-<li>id: Identifier of the flow protected branch.</li>
-<li>condition: Optional, condition under which this branch is taken. </li>
-</ul>
-</td></tr>
+<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a00857.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6" title="Session operation successful.">MCUXCLSESSION_STATUS_OK</a></td><td>Session operation successful </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00857.html#ga547425b7379de3ee1fb96c79140fd68e" title="Error occurred during Session operation.">MCUXCLSESSION_STATUS_ERROR</a></td><td>Error occurred during Session operation </td></tr>
   </table>
   </dd>
 </dl>

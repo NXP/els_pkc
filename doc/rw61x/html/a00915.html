@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Data integrity record</title>
+<title>MCUX CLNS: MCUXCLRSA_STATUS_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,96 +105,212 @@ $(document).ready(function(){initNavTree('a00915.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">Data integrity record<div class="ingroups"><a class="el" href="a00912.html">MCUX CSSL &amp;ndash; Implementations</a> &raquo; <a class="el" href="a00913.html">Data Integrity: Disabled</a></div></div>  </div>
+<div class="title">MCUXCLRSA_STATUS_<div class="ingroups"><a class="el" href="a00904.html">mcuxClRsa</a> &raquo; <a class="el" href="a00914.html">mcuxClRsa_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Support for recording a value in the data integrity register, when data integrity is disabled.  
+<p>Return code definitions.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga528d28a827727ba460795460a30cccfd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#ga528d28a827727ba460795460a30cccfd">MCUX_CSSL_DI_RECORD_IMPL</a>(identifier,  value)</td></tr>
-<tr class="memdesc:ga528d28a827727ba460795460a30cccfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation: Record the value for data integrity checking.  <a href="#ga528d28a827727ba460795460a30cccfd">More...</a><br /></td></tr>
-<tr class="separator:ga528d28a827727ba460795460a30cccfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac8a8ea1888347d41f58f27f11c9caab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gaac8a8ea1888347d41f58f27f11c9caab">MCUX_CSSL_DI_EXPUNGE_IMPL</a>(identifier,  value)</td></tr>
-<tr class="memdesc:gaac8a8ea1888347d41f58f27f11c9caab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation: Expunge the record for value.  <a href="#gaac8a8ea1888347d41f58f27f11c9caab">More...</a><br /></td></tr>
-<tr class="separator:gaac8a8ea1888347d41f58f27f11c9caab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7719ba5cbecc181bef2b21dca99fdf3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gac7719ba5cbecc181bef2b21dca99fdf3">MCUXCLRSA_STATUS_SIGN_OK</a></td></tr>
+<tr class="memdesc:gac7719ba5cbecc181bef2b21dca99fdf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA sign operation successful.  <a href="#gac7719ba5cbecc181bef2b21dca99fdf3">More...</a><br /></td></tr>
+<tr class="separator:gac7719ba5cbecc181bef2b21dca99fdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2dbb489ad7452a487a5d49df5a979d69"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#ga2dbb489ad7452a487a5d49df5a979d69">MCUXCLRSA_STATUS_VERIFY_OK</a></td></tr>
+<tr class="memdesc:ga2dbb489ad7452a487a5d49df5a979d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA verify operation successful.  <a href="#ga2dbb489ad7452a487a5d49df5a979d69">More...</a><br /></td></tr>
+<tr class="separator:ga2dbb489ad7452a487a5d49df5a979d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadabda4063a5cfe9766a7201d271d8f0a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gadabda4063a5cfe9766a7201d271d8f0a">MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK</a></td></tr>
+<tr class="memdesc:gadabda4063a5cfe9766a7201d271d8f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA verify primitive operation (RSAVP1) successful.  <a href="#gadabda4063a5cfe9766a7201d271d8f0a">More...</a><br /></td></tr>
+<tr class="separator:gadabda4063a5cfe9766a7201d271d8f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac062bb04172f071a8595aa39bef80edc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gac062bb04172f071a8595aa39bef80edc">MCUXCLRSA_STATUS_ERROR</a></td></tr>
+<tr class="memdesc:gac062bb04172f071a8595aa39bef80edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error occurred during RSA operation.  <a href="#gac062bb04172f071a8595aa39bef80edc">More...</a><br /></td></tr>
+<tr class="separator:gac062bb04172f071a8595aa39bef80edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14e28c4e4b6a325ddd1f038b5274ccec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#ga14e28c4e4b6a325ddd1f038b5274ccec">MCUXCLRSA_STATUS_INVALID_INPUT</a></td></tr>
+<tr class="memdesc:ga14e28c4e4b6a325ddd1f038b5274ccec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input data cannot be processed.  <a href="#ga14e28c4e4b6a325ddd1f038b5274ccec">More...</a><br /></td></tr>
+<tr class="separator:ga14e28c4e4b6a325ddd1f038b5274ccec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05d091562f747706d7aecfb99b5a735c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#ga05d091562f747706d7aecfb99b5a735c">MCUXCLRSA_STATUS_VERIFY_FAILED</a></td></tr>
+<tr class="memdesc:ga05d091562f747706d7aecfb99b5a735c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signature verification failed.  <a href="#ga05d091562f747706d7aecfb99b5a735c">More...</a><br /></td></tr>
+<tr class="separator:ga05d091562f747706d7aecfb99b5a735c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf886957f4dc2794dd12839a690ae05d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gaf886957f4dc2794dd12839a690ae05d0">MCUXCLRSA_STATUS_FAULT_ATTACK</a></td></tr>
+<tr class="memdesc:gaf886957f4dc2794dd12839a690ae05d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fault attack detected.  <a href="#gaf886957f4dc2794dd12839a690ae05d0">More...</a><br /></td></tr>
+<tr class="separator:gaf886957f4dc2794dd12839a690ae05d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab08354492e4b0feceab7a3615abee1f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gab08354492e4b0feceab7a3615abee1f0">MCUXCLRSA_STATUS_KEYGENERATION_OK</a></td></tr>
+<tr class="memdesc:gab08354492e4b0feceab7a3615abee1f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA key generation operation executed successfully.  <a href="#gab08354492e4b0feceab7a3615abee1f0">More...</a><br /></td></tr>
+<tr class="separator:gab08354492e4b0feceab7a3615abee1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga90072cc31c18394f5e5d3a2e63e014fa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#ga90072cc31c18394f5e5d3a2e63e014fa">MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED</a></td></tr>
+<tr class="memdesc:ga90072cc31c18394f5e5d3a2e63e014fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA key generation exceeds the limit of iterations to generate a prime.  <a href="#ga90072cc31c18394f5e5d3a2e63e014fa">More...</a><br /></td></tr>
+<tr class="separator:ga90072cc31c18394f5e5d3a2e63e014fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadd600ddd2a4c8c2fc79f427e438f81f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html#gadd600ddd2a4c8c2fc79f427e438f81f4">MCUXCLRSA_STATUS_RNG_ERROR</a></td></tr>
+<tr class="memdesc:gadd600ddd2a4c8c2fc79f427e438f81f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random number (DRBG / PRNG) error (unexpected behavior)  <a href="#gadd600ddd2a4c8c2fc79f427e438f81f4">More...</a><br /></td></tr>
+<tr class="separator:gadd600ddd2a4c8c2fc79f427e438f81f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Support for recording a value in the data integrity register, when data integrity is disabled. </p>
+<p>Return code definitions. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga528d28a827727ba460795460a30cccfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga528d28a827727ba460795460a30cccfd">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_RECORD_IMPL</h2>
+<a id="gac7719ba5cbecc181bef2b21dca99fdf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7719ba5cbecc181bef2b21dca99fdf3">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_SIGN_OK</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_DI_RECORD_IMPL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">identifier, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">value&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define MCUXCLRSA_STATUS_SIGN_OK</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Implementation: Record the value for data integrity checking. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">identifier</td><td>Identifier for the value that will be recorded. </td></tr>
-    <tr><td class="paramname">value</td><td>Value which needs to be recorded for the given identifier. </td></tr>
-  </table>
-  </dd>
+<p>RSA sign operation successful. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01375.html#a19">mcuxClRsa_sign_NoEncode_example.c</a>, and <a class="el" href="a01373.html#a22">mcuxClRsa_sign_pss_sha2_256_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="gaac8a8ea1888347d41f58f27f11c9caab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaac8a8ea1888347d41f58f27f11c9caab">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_EXPUNGE_IMPL</h2>
+<a id="ga2dbb489ad7452a487a5d49df5a979d69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2dbb489ad7452a487a5d49df5a979d69">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_VERIFY_OK</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_DI_EXPUNGE_IMPL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">identifier, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">value&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define MCUXCLRSA_STATUS_VERIFY_OK</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Implementation: Expunge the record for value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">identifier</td><td>Identifier for the value that will be expunged. </td></tr>
-    <tr><td class="paramname">value</td><td>Expected value that was recorded for the given identifier. </td></tr>
-  </table>
-  </dd>
+<p>RSA verify operation successful. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01372.html#a23">mcuxClRsa_verify_pssverify_sha2_256_example.c</a>.</dd>
 </dl>
+
+</div>
+</div>
+<a id="gadabda4063a5cfe9766a7201d271d8f0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadabda4063a5cfe9766a7201d271d8f0a">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RSA verify primitive operation (RSAVP1) successful. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01374.html#a19">mcuxClRsa_verify_NoVerify_example.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="gac062bb04172f071a8595aa39bef80edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac062bb04172f071a8595aa39bef80edc">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_ERROR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Error occurred during RSA operation. </p>
+
+</div>
+</div>
+<a id="ga14e28c4e4b6a325ddd1f038b5274ccec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga14e28c4e4b6a325ddd1f038b5274ccec">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_INVALID_INPUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_INVALID_INPUT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Input data cannot be processed. </p>
+
+</div>
+</div>
+<a id="ga05d091562f747706d7aecfb99b5a735c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05d091562f747706d7aecfb99b5a735c">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_VERIFY_FAILED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_VERIFY_FAILED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Signature verification failed. </p>
+
+</div>
+</div>
+<a id="gaf886957f4dc2794dd12839a690ae05d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf886957f4dc2794dd12839a690ae05d0">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_FAULT_ATTACK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_FAULT_ATTACK</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fault attack detected. </p>
+
+</div>
+</div>
+<a id="gab08354492e4b0feceab7a3615abee1f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab08354492e4b0feceab7a3615abee1f0">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_KEYGENERATION_OK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_KEYGENERATION_OK</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RSA key generation operation executed successfully. </p>
+
+</div>
+</div>
+<a id="ga90072cc31c18394f5e5d3a2e63e014fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90072cc31c18394f5e5d3a2e63e014fa">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RSA key generation exceeds the limit of iterations to generate a prime. </p>
+
+</div>
+</div>
+<a id="gadd600ddd2a4c8c2fc79f427e438f81f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadd600ddd2a4c8c2fc79f427e438f81f4">&#9670;&nbsp;</a></span>MCUXCLRSA_STATUS_RNG_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_STATUS_RNG_ERROR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Random number (DRBG / PRNG) error (unexpected behavior) </p>
 
 </div>
 </div>

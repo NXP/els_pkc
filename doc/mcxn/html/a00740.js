@@ -1,13 +1,7 @@
 var a00740 =
 [
-    [ "mcuxClEls_KeyImportOption_t", "a01206.html", [
-      [ "value", "a01206.html#ad5bfabd7e1e04a95627e0cbc144afdcb", null ],
-      [ "word", "a01206.html#a9a03426cf6b706ee292473b3d695ebe0", null ],
-      [ "__pad0__", "a01206.html#a2dfcb81e1476a07a6ab67f8c090b4ab5", null ],
-      [ "revf", "a01206.html#aa699b2cfb2fc82dcbc25d833e09d442e", null ],
-      [ "__pad1__", "a01206.html#ad67985d38d1563a926768316825e1944", null ],
-      [ "kfmt", "a01206.html#ae3892b035704c00a855dd43d96a21b2c", null ],
-      [ "__pad2__", "a01206.html#a05660839da43298f12f96572bf538330", null ],
-      [ "bits", "a01206.html#ad0fc563d3f708b06c986ec2ae604d69e", null ]
-    ] ]
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_224", "a00740.html#ga5cc6964abb7966c445feb2abf14f8067", null ],
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256", "a00740.html#gaaa520442bedd60dec1b7e4b10ac57fe3", null ],
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_384", "a00740.html#gab961aed69bd7828bf783f318a9dde671", null ],
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_512", "a00740.html#gab75499823ecacb60bc8c9fdc8d541e95", null ]
 ];

@@ -1,7 +1,5 @@
 var a00709 =
 [
-    [ "MCUXCLELS_ECC_VALUE_HASHED", "a00709.html#gac3be2289b4247767251a8d85014652bb", null ],
-    [ "MCUXCLELS_ECC_VALUE_NOT_HASHED", "a00709.html#ga90e38c2c9caeb976594c32d92bbc5d05", null ],
-    [ "MCUXCLELS_ECC_VALUE_RTF", "a00709.html#ga48a69913a0b9d082ea72b81f56ac1fdc", null ],
-    [ "MCUXCLELS_ECC_VALUE_NO_RTF", "a00709.html#ga66a8fbee1f549d2ad1819c0e08780e13", null ]
+    [ "MCUXCLELS_ELS_RESET_CLEAR", "a00709.html#ga1a702565c0bfd8fa6b28db41f61ba3be", null ],
+    [ "MCUXCLELS_ELS_RESET_KEEP", "a00709.html#gac963d24ca31b1b3e89d31efb7ccf6abf", null ]
 ];

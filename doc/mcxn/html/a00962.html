@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEcc_Sign_Param_t Struct Reference</title>
+<title>MCUX CLNS: MAC Modes API</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,125 +103,37 @@ $(document).ready(function(){initNavTree('a00962.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Data Fields</a>  </div>
+<a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEcc_Sign_Param_t Struct Reference<div class="ingroups"><a class="el" href="a00661.html">mcuxClEcc</a> &raquo; <a class="el" href="a00668.html">mcuxClEcc_Types</a></div></div>  </div>
+<div class="title">MAC Modes API<div class="ingroups"><a class="el" href="a00673.html">MCUX CL &amp;ndash; API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Parameter structure for function <a class="el" href="a00663.html#ga105ec4e9dc29573334f52979381686de" title="implements ECDSA signature generation.">mcuxClEcc_Sign</a>.  
- <a href="a00962.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00287_source.html">mcuxClEcc_Types.h</a>&gt;</code></p>
+<p>Message Authentication Code (MAC) mode operations.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Data Fields</h2></td></tr>
-<tr class="memitem:a9af6c185c258baa0a6a4b0080b35b1aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00954.html">mcuxClEcc_DomainParam_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00962.html#a9af6c185c258baa0a6a4b0080b35b1aa">curveParam</a></td></tr>
-<tr class="memdesc:a9af6c185c258baa0a6a4b0080b35b1aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">[in] structure of pointers to curve parameters and length of parameters.  <a href="#a9af6c185c258baa0a6a4b0080b35b1aa">More...</a><br /></td></tr>
-<tr class="separator:a9af6c185c258baa0a6a4b0080b35b1aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeccbb72505744e1f627b67b1f51508ef"><td class="memItemLeft" align="right" valign="top">const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00962.html#aeccbb72505744e1f627b67b1f51508ef">pHash</a></td></tr>
-<tr class="memdesc:aeccbb72505744e1f627b67b1f51508ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">[in] pointer to string of message digest (hash), of which the length is byteLenHash (in optLen).  <a href="#aeccbb72505744e1f627b67b1f51508ef">More...</a><br /></td></tr>
-<tr class="separator:aeccbb72505744e1f627b67b1f51508ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e61b674ac7f46c4157397535d97ce81"><td class="memItemLeft" align="right" valign="top">const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00962.html#a0e61b674ac7f46c4157397535d97ce81">pPrivateKey</a></td></tr>
-<tr class="memdesc:a0e61b674ac7f46c4157397535d97ce81"><td class="mdescLeft">&#160;</td><td class="mdescRight">[in] pointer to octet string of private key, which is of the same format as base point order n.  <a href="#a0e61b674ac7f46c4157397535d97ce81">More...</a><br /></td></tr>
-<tr class="separator:a0e61b674ac7f46c4157397535d97ce81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae25d26ef489ff1614a0a6ab6abe9fc97"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00962.html#ae25d26ef489ff1614a0a6ab6abe9fc97">pSignature</a></td></tr>
-<tr class="memdesc:ae25d26ef489ff1614a0a6ab6abe9fc97"><td class="mdescLeft">&#160;</td><td class="mdescRight">[out] pointer to memory area in which signature R and S will be exported if signature is generated successfully.  <a href="#ae25d26ef489ff1614a0a6ab6abe9fc97">More...</a><br /></td></tr>
-<tr class="separator:ae25d26ef489ff1614a0a6ab6abe9fc97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5376d1c58c5cfaf33ae6156572700ff"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00962.html#af5376d1c58c5cfaf33ae6156572700ff">optLen</a></td></tr>
-<tr class="memdesc:af5376d1c58c5cfaf33ae6156572700ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">[in] packed options (reserved) and lengths: bits 0~7: byteLenHash: length of the string of message digest; bits 8~31: reserved.  <a href="#af5376d1c58c5cfaf33ae6156572700ff">More...</a><br /></td></tr>
-<tr class="separator:af5376d1c58c5cfaf33ae6156572700ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:a00800"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00800.html">mcuxClMacModes Constants</a></td></tr>
+<tr class="memdesc:a00800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants of <a class="el" href="a00962.html">MAC Modes API</a> component. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00801"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00801.html">mcuxClMacModes Functions</a></td></tr>
+<tr class="memdesc:a00801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all functions of <a class="el" href="a00962.html">MAC Modes API</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00803"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00803.html">mcuxClMacModes_MemoryConsumption</a></td></tr>
+<tr class="memdesc:a00803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the memory consumption for the mcuxClMacModes component. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00804"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html">MAC mode definitions</a></td></tr>
+<tr class="memdesc:a00804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modes used by the MAC operations. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Parameter structure for function <a class="el" href="a00663.html#ga105ec4e9dc29573334f52979381686de" title="implements ECDSA signature generation.">mcuxClEcc_Sign</a>. </p>
-</div><h2 class="groupheader">Field Documentation</h2>
-<a id="a9af6c185c258baa0a6a4b0080b35b1aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9af6c185c258baa0a6a4b0080b35b1aa">&#9670;&nbsp;</a></span>curveParam</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00954.html">mcuxClEcc_DomainParam_t</a> mcuxClEcc_Sign_Param_t::curveParam</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>[in] structure of pointers to curve parameters and length of parameters. </p>
-
-</div>
-</div>
-<a id="aeccbb72505744e1f627b67b1f51508ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeccbb72505744e1f627b67b1f51508ef">&#9670;&nbsp;</a></span>pHash</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const uint8_t* mcuxClEcc_Sign_Param_t::pHash</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>[in] pointer to string of message digest (hash), of which the length is byteLenHash (in optLen). </p>
-
-</div>
-</div>
-<a id="a0e61b674ac7f46c4157397535d97ce81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e61b674ac7f46c4157397535d97ce81">&#9670;&nbsp;</a></span>pPrivateKey</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const uint8_t* mcuxClEcc_Sign_Param_t::pPrivateKey</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>[in] pointer to octet string of private key, which is of the same format as base point order n. </p>
-
-</div>
-</div>
-<a id="ae25d26ef489ff1614a0a6ab6abe9fc97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae25d26ef489ff1614a0a6ab6abe9fc97">&#9670;&nbsp;</a></span>pSignature</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t* mcuxClEcc_Sign_Param_t::pSignature</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>[out] pointer to memory area in which signature R and S will be exported if signature is generated successfully. </p>
-<p>They will be stored as Big-endian octet strings of the exact length curveParam.byteLenN. The string of R is followed by the string of S. </p>
-
-</div>
-</div>
-<a id="af5376d1c58c5cfaf33ae6156572700ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5376d1c58c5cfaf33ae6156572700ff">&#9670;&nbsp;</a></span>optLen</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t mcuxClEcc_Sign_Param_t::optLen</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>[in] packed options (reserved) and lengths: bits 0~7: byteLenHash: length of the string of message digest; bits 8~31: reserved. </p>
-
-</div>
-</div>
+<p>Message Authentication Code (MAC) mode operations. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00962.html">mcuxClEcc_Sign_Param_t</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

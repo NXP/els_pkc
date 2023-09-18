@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLECC_WEIERECC_NIST_P192_SIZE_</title>
+<title>MCUX CLNS: MCUXCLECC_WACPU_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,36 +105,125 @@ $(document).ready(function(){initNavTree('a00983.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLECC_WEIERECC_NIST_P192_SIZE_<div class="ingroups"><a class="el" href="a00736.html">mcuxClEcc</a> &raquo; <a class="el" href="a00741.html">mcuxClEcc_ParameterSizes</a></div></div>  </div>
+<div class="title">MCUXCLECC_WACPU_<div class="ingroups"><a class="el" href="a00754.html">mcuxClEcc</a> &raquo; <a class="el" href="a00758.html">mcuxClEcc_MemoryConsumption</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>WeierECC parameter size definitions for NIST P-192.  
+<p>Define the CPU workarea size required by mcuxClEcc APIs.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga6a1e5f15f31e2e5c1973f1b16815bf5a"><td class="memItemLeft" align="right" valign="top"><a id="ga6a1e5f15f31e2e5c1973f1b16815bf5a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P192_SIZE_PRIMEP</b></td></tr>
-<tr class="separator:ga6a1e5f15f31e2e5c1973f1b16815bf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf98fd2699492d41641811074d107efb2"><td class="memItemLeft" align="right" valign="top"><a id="gaf98fd2699492d41641811074d107efb2"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P192_SIZE_BASEPOINTORDER</b></td></tr>
-<tr class="separator:gaf98fd2699492d41641811074d107efb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga73d7ccf303168577a0af45e50b0d7b54"><td class="memItemLeft" align="right" valign="top"><a id="ga73d7ccf303168577a0af45e50b0d7b54"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P192_SIZE_PRIVATEKEY</b></td></tr>
-<tr class="separator:ga73d7ccf303168577a0af45e50b0d7b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28ae2e17531d7264a04374c47b22e30d"><td class="memItemLeft" align="right" valign="top"><a id="ga28ae2e17531d7264a04374c47b22e30d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P192_SIZE_PUBLICKEY</b></td></tr>
-<tr class="separator:ga28ae2e17531d7264a04374c47b22e30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga81c60eb78dbbd4f67028dc8ac25992a4"><td class="memItemLeft" align="right" valign="top"><a id="ga81c60eb78dbbd4f67028dc8ac25992a4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P192_SIZE_SHAREDSECRET</b></td></tr>
-<tr class="separator:ga81c60eb78dbbd4f67028dc8ac25992a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac00f674b3c0c8216c0b047f5213b86f5"><td class="memItemLeft" align="right" valign="top"><a id="gac00f674b3c0c8216c0b047f5213b86f5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P192_SIZE_SIGNATURE</b></td></tr>
-<tr class="separator:gac00f674b3c0c8216c0b047f5213b86f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga060c9729b406c2295fffad1f87a39a41"><td class="memItemLeft" align="right" valign="top"><a id="ga060c9729b406c2295fffad1f87a39a41"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_ALIGN_SIZE_CPU</b>(byteLen)</td></tr>
+<tr class="separator:ga060c9729b406c2295fffad1f87a39a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0fdfb866390f13e869a59e859da3866e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00983.html#ga0fdfb866390f13e869a59e859da3866e">MCUXCLECC_KEYGEN_WACPU_SIZE</a>(byteLenN)</td></tr>
+<tr class="memdesc:ga0fdfb866390f13e869a59e859da3866e"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU workarea size (in bytes) for <a class="el" href="a00756.html#gabc728b0278908265f9923535391005dc" title="implements ECDSA key generation.">mcuxClEcc_KeyGen</a>. Parameter byteLenN is just to keep the API consistent.  <a href="#ga0fdfb866390f13e869a59e859da3866e">More...</a><br /></td></tr>
+<tr class="separator:ga0fdfb866390f13e869a59e859da3866e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe6907845de629a54b0eae63da78d099"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00983.html#gabe6907845de629a54b0eae63da78d099">MCUXCLECC_SIGN_WACPU_SIZE</a>(byteLenN)</td></tr>
+<tr class="memdesc:gabe6907845de629a54b0eae63da78d099"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU workarea size (in bytes) for <a class="el" href="a00756.html#ga105ec4e9dc29573334f52979381686de" title="implements ECDSA signature generation.">mcuxClEcc_Sign</a>. Parameter byteLenN is just to keep the API consistent.  <a href="#gabe6907845de629a54b0eae63da78d099">More...</a><br /></td></tr>
+<tr class="separator:gabe6907845de629a54b0eae63da78d099"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77a772614cead92da188f20009bc24b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00983.html#ga77a772614cead92da188f20009bc24b5">MCUXCLECC_VERIFY_WACPU_SIZE</a></td></tr>
+<tr class="memdesc:ga77a772614cead92da188f20009bc24b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU workarea size (in bytes) for <a class="el" href="a00756.html#ga80f15538ec3cb2d3bfa8dc2f2da86366" title="implements ECDSA signature verification.">mcuxClEcc_Verify</a>.  <a href="#ga77a772614cead92da188f20009bc24b5">More...</a><br /></td></tr>
+<tr class="separator:ga77a772614cead92da188f20009bc24b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga46349810877e3b79a8d899648e1b2e06"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00983.html#ga46349810877e3b79a8d899648e1b2e06">MCUXCLECC_POINTMULT_WACPU_SIZE</a></td></tr>
+<tr class="memdesc:ga46349810877e3b79a8d899648e1b2e06"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU workarea size (in bytes) for <a class="el" href="a00756.html#gab199a221c61f252a0c755ab8d8a6a77c" title="implements ECC point multiplication.">mcuxClEcc_PointMult</a>.  <a href="#ga46349810877e3b79a8d899648e1b2e06">More...</a><br /></td></tr>
+<tr class="separator:ga46349810877e3b79a8d899648e1b2e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29e85a389cf38d61196691fc4f3a35f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00983.html#ga29e85a389cf38d61196691fc4f3a35f1">MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WACPU_SIZE</a></td></tr>
+<tr class="memdesc:ga29e85a389cf38d61196691fc4f3a35f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU workarea size (in bytes) for <a class="el" href="a00386.html#a1deb22c96b88674a4513e56cdd2dfe3a" title="ECC Weierstrass custom domain parameter generation function.">mcuxClEcc_WeierECC_GenerateDomainParams</a>.  <a href="#ga29e85a389cf38d61196691fc4f3a35f1">More...</a><br /></td></tr>
+<tr class="separator:ga29e85a389cf38d61196691fc4f3a35f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>WeierECC parameter size definitions for NIST P-192. </p>
+<p>Define the CPU workarea size required by mcuxClEcc APIs. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga0fdfb866390f13e869a59e859da3866e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0fdfb866390f13e869a59e859da3866e">&#9670;&nbsp;</a></span>MCUXCLECC_KEYGEN_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_KEYGEN_WACPU_SIZE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">byteLenN</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CPU workarea size (in bytes) for <a class="el" href="a00756.html#gabc728b0278908265f9923535391005dc" title="implements ECDSA key generation.">mcuxClEcc_KeyGen</a>. Parameter byteLenN is just to keep the API consistent. </p>
+
+</div>
+</div>
+<a id="gabe6907845de629a54b0eae63da78d099"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabe6907845de629a54b0eae63da78d099">&#9670;&nbsp;</a></span>MCUXCLECC_SIGN_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_SIGN_WACPU_SIZE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">byteLenN</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CPU workarea size (in bytes) for <a class="el" href="a00756.html#ga105ec4e9dc29573334f52979381686de" title="implements ECDSA signature generation.">mcuxClEcc_Sign</a>. Parameter byteLenN is just to keep the API consistent. </p>
+
+</div>
+</div>
+<a id="ga77a772614cead92da188f20009bc24b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga77a772614cead92da188f20009bc24b5">&#9670;&nbsp;</a></span>MCUXCLECC_VERIFY_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_VERIFY_WACPU_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CPU workarea size (in bytes) for <a class="el" href="a00756.html#ga80f15538ec3cb2d3bfa8dc2f2da86366" title="implements ECDSA signature verification.">mcuxClEcc_Verify</a>. </p>
+
+</div>
+</div>
+<a id="ga46349810877e3b79a8d899648e1b2e06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga46349810877e3b79a8d899648e1b2e06">&#9670;&nbsp;</a></span>MCUXCLECC_POINTMULT_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_POINTMULT_WACPU_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CPU workarea size (in bytes) for <a class="el" href="a00756.html#gab199a221c61f252a0c755ab8d8a6a77c" title="implements ECC point multiplication.">mcuxClEcc_PointMult</a>. </p>
+
+</div>
+</div>
+<a id="ga29e85a389cf38d61196691fc4f3a35f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga29e85a389cf38d61196691fc4f3a35f1">&#9670;&nbsp;</a></span>MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WACPU_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CPU workarea size (in bytes) for <a class="el" href="a00386.html#a1deb22c96b88674a4513e56cdd2dfe3a" title="ECC Weierstrass custom domain parameter generation function.">mcuxClEcc_WeierECC_GenerateDomainParams</a>. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCsslMemory_Types_Types</title>
+<title>MCUX CLNS: Flow Protection Configuration</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,37 +103,75 @@ $(document).ready(function(){initNavTree('a00942.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCsslMemory_Types_Types<div class="ingroups"><a class="el" href="a00906.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00931.html">mcuxCssl Memory API</a> &raquo; <a class="el" href="a00940.html">mcuxCsslMemory_Types</a></div></div>  </div>
+<div class="title">Flow Protection Configuration<div class="ingroups"><a class="el" href="a00929.html">MCUX CSSL &amp;ndash; Configurations</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all types of <a class="el" href="a00940.html">mcuxCsslMemory_Types</a>.  
+<p>Configuration options for the flow protection mechanism.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga19c7a1367cb21d7bcb720607f495d86c"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00942.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a></td></tr>
-<tr class="memdesc:ga19c7a1367cb21d7bcb720607f495d86c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for CSSL Memory status codes.  <a href="#ga19c7a1367cb21d7bcb720607f495d86c">More...</a><br /></td></tr>
-<tr class="separator:ga19c7a1367cb21d7bcb720607f495d86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gaeaecd08382d1bf7542d523e67c15b90b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00942.html#gaeaecd08382d1bf7542d523e67c15b90b">MCUX_CSSL_FP_USE_CODE_SIGNATURE</a></td></tr>
+<tr class="memdesc:gaeaecd08382d1bf7542d523e67c15b90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, use the flow protection mechanism implementation based on the Zen-V code signature HW mechanism.  <a href="#gaeaecd08382d1bf7542d523e67c15b90b">More...</a><br /></td></tr>
+<tr class="separator:gaeaecd08382d1bf7542d523e67c15b90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga645fafaa87e927ec807c9679dfa6d74e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00942.html#ga645fafaa87e927ec807c9679dfa6d74e">MCUX_CSSL_FP_USE_SECURE_COUNTER</a></td></tr>
+<tr class="memdesc:ga645fafaa87e927ec807c9679dfa6d74e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, use the flow protection mechanism implementation based on the CSSL secure counter mechanism.  <a href="#ga645fafaa87e927ec807c9679dfa6d74e">More...</a><br /></td></tr>
+<tr class="separator:ga645fafaa87e927ec807c9679dfa6d74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00942.html#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7">MCUX_CSSL_FP_USE_NONE</a></td></tr>
+<tr class="memdesc:ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, do not use the flow protection mechanism.  <a href="#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7">More...</a><br /></td></tr>
+<tr class="separator:ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all types of <a class="el" href="a00940.html">mcuxCsslMemory_Types</a>. </p>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga19c7a1367cb21d7bcb720607f495d86c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga19c7a1367cb21d7bcb720607f495d86c">&#9670;&nbsp;</a></span>mcuxCsslMemory_Status_t</h2>
+<p>Configuration options for the flow protection mechanism. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gaeaecd08382d1bf7542d523e67c15b90b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeaecd08382d1bf7542d523e67c15b90b">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_USE_CODE_SIGNATURE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint32_t <a class="el" href="a00942.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a></td>
+          <td class="memname">#define MCUX_CSSL_FP_USE_CODE_SIGNATURE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Type for CSSL Memory status codes. </p>
+<p>If set to 1, use the flow protection mechanism implementation based on the Zen-V code signature HW mechanism. </p>
+
+</div>
+</div>
+<a id="ga645fafaa87e927ec807c9679dfa6d74e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga645fafaa87e927ec807c9679dfa6d74e">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_USE_SECURE_COUNTER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_FP_USE_SECURE_COUNTER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If set to 1, use the flow protection mechanism implementation based on the CSSL secure counter mechanism. </p>
+
+</div>
+</div>
+<a id="ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_USE_NONE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_FP_USE_NONE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If set to 1, do not use the flow protection mechanism. </p>
 
 </div>
 </div>

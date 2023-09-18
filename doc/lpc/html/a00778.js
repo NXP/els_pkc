@@ -1,7 +1,8 @@
 var a00778 =
 [
-    [ "MCUX_CSSL_FP_DECL_NAME", "a00778.html#ga116350fa9fa1a37d3fca3d3a15f010f3", null ],
-    [ "MCUX_CSSL_FP_DECL_IMPL", "a00778.html#gab0919c85280cbf0aa51daaec18cb524a", null ],
-    [ "MCUX_CSSL_FP_ID_IMPL", "a00778.html#ga6bc8b7f3f35325ca98c1b5d0f7658061", null ],
-    [ "MCUX_CSSL_FP_CONDITIONAL_IMPL", "a00778.html#ga643cc00e2fecb3e73de572797618ad35", null ]
+    [ "Data Integrity API", "a00779.html", "a00779" ],
+    [ "Flow Protection API", "a00788.html", "a00788" ],
+    [ "mcuxCssl Memory API", "a00803.html", "a00803" ],
+    [ "Parameter Integrity API", "a00815.html", "a00815" ],
+    [ "Secure Counter API", "a00819.html", "a00819" ]
 ];

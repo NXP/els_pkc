@@ -1,16 +1,10 @@
 var a00398 =
 [
-    [ "MCUXCLMAC_MAX_SIZE_IN_CPUWORDS", "a00712.html#ga84842218ae711915efb61e0367612a1a", null ],
-    [ "MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE", "a00712.html#gadda00ba9831fbe307d2e351ffd68e881", null ],
-    [ "MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00712.html#ga1b01f0c494353c88edd45e9db5ed645c", null ],
-    [ "MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE", "a00712.html#ga714b7602c4434bdb9de3d0490fe86933", null ],
-    [ "MCUXCLMAC_COMPUTE_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00712.html#ga185deb298f4e4ec0c52d1d8268f5eaaa", null ],
-    [ "MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE", "a00712.html#ga76f5246882165b0c2686ef7b829cd792", null ],
-    [ "MCUXCLMAC_INIT_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00712.html#ga5bbb8825cf62bc8d9cece88079a6c230", null ],
-    [ "MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE", "a00712.html#ga74efbfc67317a7e98173ff1e168c0a1d", null ],
-    [ "MCUXCLMAC_PROCESS_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00712.html#ga2afda137b04670ff1433367446720e76", null ],
-    [ "MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE", "a00712.html#gaf4b9285d00220f9797d3912c06fb5ced", null ],
-    [ "MCUXCLMAC_FINISH_CPU_WA_BUFFER_SIZE_IN_WORDS", "a00712.html#ga801ae8228e57d64f40752f67878d2fb8", null ],
-    [ "MCUXCLMAC_CONTEXT_SIZE", "a00712.html#gaecd5a4a9d2cb95f881e289793ba56c41", null ],
-    [ "MCUXCLMAC_CONTEXT_SIZE_IN_WORDS", "a00712.html#ga924f3e3033b2d83dabdccd56915221fa", null ]
+    [ "mcuxClMac_Status_t", "a00726.html#gaca63aa917056a18f99a911f329f3971b", null ],
+    [ "mcuxClMac_ModeDescriptor_t", "a00726.html#gaad5e6326d43f28d324ef2d98ac3ad2cc", null ],
+    [ "mcuxClMac_Mode_t", "a00726.html#ga8e9aa3b88af43aaf819650568abc471f", null ],
+    [ "mcuxClMac_CustomMode_t", "a00726.html#ga55e9279a13efd1dd87affcc88f3eb34a", null ],
+    [ "mcuxClMac_TestDescriptor_t", "a00726.html#ga05358be86e9c9b69f46225171d63f406", null ],
+    [ "mcuxClMac_Test_t", "a00726.html#ga0af47561198575f7792301a2a5135e75", null ],
+    [ "mcuxClMac_Context_t", "a00726.html#gaf804dbff6e0d68d2d877b21995ed5c34", null ]
 ];

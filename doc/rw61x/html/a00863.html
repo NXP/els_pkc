@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClMemory_Copy</title>
+<title>MCUX CLNS: Key protection mechanism definitions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,165 +103,112 @@ $(document).ready(function(){initNavTree('a00863.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClMemory_Copy<div class="ingroups"><a class="el" href="a00861.html">mcuxClMemory</a></div></div>  </div>
+<div class="title">Key protection mechanism definitions<div class="ingroups"><a class="el" href="a00748.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00855.html">mcuxClKey</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This function copies a memory region from <code>src</code> to <code>dst</code>.  
+<p>Mechanisms used by the Key operations.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga5d16560ac24ef6ba2dae129206e70208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#ga5d16560ac24ef6ba2dae129206e70208">MCUXCLMEMORY_FP_MEMORY_COPY</a>(pTarget,  pSource,  byteLen)</td></tr>
-<tr class="memdesc:ga5d16560ac24ef6ba2dae129206e70208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00863.html#gab564183ab5f02cf11b66b6244ba2112a" title="Copies a memory buffer to another location.">mcuxClMemory_copy</a> with flow protection.  <a href="#ga5d16560ac24ef6ba2dae129206e70208">More...</a><br /></td></tr>
-<tr class="separator:ga5d16560ac24ef6ba2dae129206e70208"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaab249829be1231ec5f08f90093943a40"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#gaab249829be1231ec5f08f90093943a40">MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF</a>(pTarget,  pSource,  byteLen,  buffLen)</td></tr>
-<tr class="memdesc:gaab249829be1231ec5f08f90093943a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a00863.html#gab564183ab5f02cf11b66b6244ba2112a" title="Copies a memory buffer to another location.">mcuxClMemory_copy</a> with flow protection with buffer.  <a href="#gaab249829be1231ec5f08f90093943a40">More...</a><br /></td></tr>
-<tr class="separator:gaab249829be1231ec5f08f90093943a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gab564183ab5f02cf11b66b6244ba2112a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#gab564183ab5f02cf11b66b6244ba2112a">mcuxClMemory_copy</a> (uint8_t *pDst, uint8_t const *pSrc, size_t length, size_t bufLength)</td></tr>
-<tr class="memdesc:gab564183ab5f02cf11b66b6244ba2112a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a memory buffer to another location.  <a href="#gab564183ab5f02cf11b66b6244ba2112a">More...</a><br /></td></tr>
-<tr class="separator:gab564183ab5f02cf11b66b6244ba2112a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gaa4fc9e15d78b127eaab9ec4c273d64b1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00864.html#ga1c51acf51723d52dbcdc1a0f80f98572">mcuxClKey_ProtectionDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#gaa4fc9e15d78b127eaab9ec4c273d64b1">mcuxClKey_ProtectionDescriptor_None</a></td></tr>
+<tr class="memdesc:gaa4fc9e15d78b127eaab9ec4c273d64b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key protection descriptor for using no key protection.  <a href="#gaa4fc9e15d78b127eaab9ec4c273d64b1">More...</a><br /></td></tr>
+<tr class="separator:gaa4fc9e15d78b127eaab9ec4c273d64b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabf61ad39ecaba937f41b73721ce80b6a"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="a00864.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#gabf61ad39ecaba937f41b73721ce80b6a">mcuxClKey_Protection_None</a></td></tr>
+<tr class="memdesc:gabf61ad39ecaba937f41b73721ce80b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">No key protection.  <a href="#gabf61ad39ecaba937f41b73721ce80b6a">More...</a><br /></td></tr>
+<tr class="separator:gabf61ad39ecaba937f41b73721ce80b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11724513bd08cb490212fa5d70c7c5b0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00864.html#ga1c51acf51723d52dbcdc1a0f80f98572">mcuxClKey_ProtectionDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#ga11724513bd08cb490212fa5d70c7c5b0">mcuxClKey_ProtectionDescriptor_Ckdf</a></td></tr>
+<tr class="memdesc:ga11724513bd08cb490212fa5d70c7c5b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key protection descriptor for using CKDF based key protection This protection mechanism cannot be used for <a class="el" href="a00861.html#gac4ec3d39748fc018dfb50316d2c51490" title="Load key into destination memory buffer.">mcuxClKey_loadMemory</a>.  <a href="#ga11724513bd08cb490212fa5d70c7c5b0">More...</a><br /></td></tr>
+<tr class="separator:ga11724513bd08cb490212fa5d70c7c5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga46912713307ab64e4f20075064224838"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="a00864.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00863.html#ga46912713307ab64e4f20075064224838">mcuxClKey_Protection_Ckdf</a></td></tr>
+<tr class="memdesc:ga46912713307ab64e4f20075064224838"><td class="mdescLeft">&#160;</td><td class="mdescRight">CKDF key protection.  <a href="#ga46912713307ab64e4f20075064224838">More...</a><br /></td></tr>
+<tr class="separator:ga46912713307ab64e4f20075064224838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>This function copies a memory region from <code>src</code> to <code>dst</code>. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga5d16560ac24ef6ba2dae129206e70208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5d16560ac24ef6ba2dae129206e70208">&#9670;&nbsp;</a></span>MCUXCLMEMORY_FP_MEMORY_COPY</h2>
+<p>Mechanisms used by the Key operations. </p>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gaa4fc9e15d78b127eaab9ec4c273d64b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa4fc9e15d78b127eaab9ec4c273d64b1">&#9670;&nbsp;</a></span>mcuxClKey_ProtectionDescriptor_None</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLMEMORY_FP_MEMORY_COPY</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">pTarget, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">pSource, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">byteLen&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">const <a class="el" href="a00864.html#ga1c51acf51723d52dbcdc1a0f80f98572">mcuxClKey_ProtectionDescriptor_t</a> mcuxClKey_ProtectionDescriptor_None</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Helper macro to call <a class="el" href="a00863.html#gab564183ab5f02cf11b66b6244ba2112a" title="Copies a memory buffer to another location.">mcuxClMemory_copy</a> with flow protection. </p>
+<p>Key protection descriptor for using no key protection. </p>
 
 </div>
 </div>
-<a id="gaab249829be1231ec5f08f90093943a40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaab249829be1231ec5f08f90093943a40">&#9670;&nbsp;</a></span>MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF</h2>
+<a id="gabf61ad39ecaba937f41b73721ce80b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabf61ad39ecaba937f41b73721ce80b6a">&#9670;&nbsp;</a></span>mcuxClKey_Protection_None</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">pTarget, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">pSource, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">byteLen, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buffLen&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">const <a class="el" href="a00864.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a> mcuxClKey_Protection_None</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Helper macro to call <a class="el" href="a00863.html#gab564183ab5f02cf11b66b6244ba2112a" title="Copies a memory buffer to another location.">mcuxClMemory_copy</a> with flow protection with buffer. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="gab564183ab5f02cf11b66b6244ba2112a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab564183ab5f02cf11b66b6244ba2112a">&#9670;&nbsp;</a></span>mcuxClMemory_copy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void mcuxClMemory_copy </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pDst</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pSrc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bufLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copies a memory buffer to another location. </p>
-<p>The two buffers must not overlap.</p>
-<p>If the destination buffer is too small, i.e. if bufLength &lt; length, (length-bufLength) is added to the Flow Protection token (see <a class="el" href="a00916.html">Flow Protection API</a>).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>pointer to the buffer to be copied to. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSrc</td><td>pointer to the buffer to copy. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>size (in bytes) to be copied. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufLength</td><td>buffer size (if bufLength &lt; length, only bufLength bytes are copied). </td></tr>
-  </table>
-  </dd>
+<p>No key protection. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01353.html#a7">mcuxClEcc_Mont_Curve25519_example.c</a>, and <a class="el" href="a01354.html#a7">mcuxClEcc_Mont_Curve448_example.c</a>.</dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01333.html#a30">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>, and <a class="el" href="a01358.html#a12">mcuxClPsaDriver_keygen_export_public_key_oracle_example.c</a>.</dd>
-</dl>
+
+</div>
+</div>
+<a id="ga11724513bd08cb490212fa5d70c7c5b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga11724513bd08cb490212fa5d70c7c5b0">&#9670;&nbsp;</a></span>mcuxClKey_ProtectionDescriptor_Ckdf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00864.html#ga1c51acf51723d52dbcdc1a0f80f98572">mcuxClKey_ProtectionDescriptor_t</a> mcuxClKey_ProtectionDescriptor_Ckdf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Key protection descriptor for using CKDF based key protection This protection mechanism cannot be used for <a class="el" href="a00861.html#gac4ec3d39748fc018dfb50316d2c51490" title="Load key into destination memory buffer.">mcuxClKey_loadMemory</a>. </p>
+
+</div>
+</div>
+<a id="ga46912713307ab64e4f20075064224838"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga46912713307ab64e4f20075064224838">&#9670;&nbsp;</a></span>mcuxClKey_Protection_Ckdf</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00864.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a> mcuxClKey_Protection_Ckdf</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CKDF key protection. </p>
 
 </div>
 </div>

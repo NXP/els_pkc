@@ -1,7 +1,12 @@
 var a00362 =
 [
-    [ "mcuxClHash_compute", "a00756.html#ga7beb1bb4063eae682eca700efeba93db", null ],
-    [ "mcuxClHash_init", "a00756.html#ga68263436904cf849bfbe8c9b1f6542d4", null ],
-    [ "mcuxClHash_process", "a00756.html#ga49bdf3dca9746328fe58e6d5859e92eb", null ],
-    [ "mcuxClHash_finish", "a00756.html#gad55cc3a702b915f84d9cd2e94c2b7f6b", null ]
+    [ "MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX", "a00362.html#a8b3af117f171a613124593df58ada62a", null ],
+    [ "MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MAX", "a00362.html#a8e985e955759e3f5f6fb1d11c3901e2c", null ],
+    [ "MCUXCLHASH_INIT_CPU_WA_BUFFER_SIZE", "a00362.html#a8434a263faa18d7d5f1db037eca3a130", null ],
+    [ "MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX", "a00362.html#ac7007695fab49af24194295d81f80b56", null ],
+    [ "MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX", "a00362.html#a63da111398b07963ed1a77da6c97a64d", null ],
+    [ "MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MAX", "a00362.html#a59a048780405bb5b38b256cf689bdf80", null ],
+    [ "MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE", "a00362.html#a8c70073fba8e9b6bdd946ca99e3dfcf4", null ],
+    [ "MCUXCLHASH_CONTEXT_SIZE", "a00362.html#a42253ef03c357fbdcc8a0c502f34c4f3", null ],
+    [ "MCUXCLHASH_CONTEXT_SIZE_IN_WORDS", "a00362.html#a7f64d7a91943132c5f4be29307f70059", null ]
 ];

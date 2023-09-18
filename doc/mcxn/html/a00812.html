@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClRandom_Functions</title>
+<title>MCUX CLNS: mcuxClMemory_Endianness</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,68 +103,53 @@ $(document).ready(function(){initNavTree('a00812.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClRandom_Functions<div class="ingroups"><a class="el" href="a00810.html">mcuxClRandom</a></div></div>  </div>
+<div class="title">mcuxClMemory_Endianness<div class="ingroups"><a class="el" href="a00808.html">mcuxClMemory</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all functions of <a class="el" href="a00810.html">mcuxClRandom</a>.  
+<p>These macros implement endianess management on integers.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ga989cf9033b30c383d1548037f2ec8bc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a00813.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a> pContext, <a class="el" href="a00813.html#ga2998181a66cbdc063aa08d76e5fdef9d">mcuxClRandom_Mode_t</a> mode)</td></tr>
-<tr class="memdesc:ga989cf9033b30c383d1548037f2ec8bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generator initialization function.  <a href="#ga989cf9033b30c383d1548037f2ec8bc9">More...</a><br /></td></tr>
-<tr class="separator:ga989cf9033b30c383d1548037f2ec8bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga89fe90a4ca175d03b4a821cf2fa2004f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga89fe90a4ca175d03b4a821cf2fa2004f">mcuxClRandom_reseed</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
-<tr class="memdesc:ga89fe90a4ca175d03b4a821cf2fa2004f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generator reseed function.  <a href="#ga89fe90a4ca175d03b4a821cf2fa2004f">More...</a><br /></td></tr>
-<tr class="separator:ga89fe90a4ca175d03b4a821cf2fa2004f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadb7d7b6ff820450be3533014cb47f279"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#gadb7d7b6ff820450be3533014cb47f279">mcuxClRandom_generate</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint8_t *pOut, uint32_t outLength)</td></tr>
-<tr class="memdesc:gadb7d7b6ff820450be3533014cb47f279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generation function.  <a href="#gadb7d7b6ff820450be3533014cb47f279">More...</a><br /></td></tr>
-<tr class="separator:gadb7d7b6ff820450be3533014cb47f279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga92889d1e06ba33656278bd2a4110be99"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
-<tr class="memdesc:ga92889d1e06ba33656278bd2a4110be99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generator uninitialization function.  <a href="#ga92889d1e06ba33656278bd2a4110be99">More...</a><br /></td></tr>
-<tr class="separator:ga92889d1e06ba33656278bd2a4110be99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4c882c0d6b1e1bba418934c44acc873c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga4c882c0d6b1e1bba418934c44acc873c">mcuxClRandom_selftest</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a00813.html#ga2998181a66cbdc063aa08d76e5fdef9d">mcuxClRandom_Mode_t</a> mode)</td></tr>
-<tr class="memdesc:ga4c882c0d6b1e1bba418934c44acc873c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generator self-test function.  <a href="#ga4c882c0d6b1e1bba418934c44acc873c">More...</a><br /></td></tr>
-<tr class="separator:ga4c882c0d6b1e1bba418934c44acc873c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6e48c6007ea1d6cfa2ec329152072fc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga6e48c6007ea1d6cfa2ec329152072fc0">mcuxClRandom_checkSecurityStrength</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint32_t securityStrength)</td></tr>
-<tr class="memdesc:ga6e48c6007ea1d6cfa2ec329152072fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random data generator security strength check.  <a href="#ga6e48c6007ea1d6cfa2ec329152072fc0">More...</a><br /></td></tr>
-<tr class="separator:ga6e48c6007ea1d6cfa2ec329152072fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4522b9cfa28cb224b653003d481d7100"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga4522b9cfa28cb224b653003d481d7100">mcuxClRandom_ncInit</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
-<tr class="memdesc:ga4522b9cfa28cb224b653003d481d7100"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-cryptographic PRNG initialization function.  <a href="#ga4522b9cfa28cb224b653003d481d7100">More...</a><br /></td></tr>
-<tr class="separator:ga4522b9cfa28cb224b653003d481d7100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga942c035e4c1971f3e4da8cf252b6cdf6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga942c035e4c1971f3e4da8cf252b6cdf6">mcuxClRandom_ncGenerate</a> (<a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint8_t *pOut, uint32_t outLength)</td></tr>
-<tr class="memdesc:ga942c035e4c1971f3e4da8cf252b6cdf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-cryptographic PRNG data generation function.  <a href="#ga942c035e4c1971f3e4da8cf252b6cdf6">More...</a><br /></td></tr>
-<tr class="separator:ga942c035e4c1971f3e4da8cf252b6cdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gaef4886d199c2539b209458a8c62378cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#gaef4886d199c2539b209458a8c62378cd">mcuxClMemory_StoreLittleEndian32</a>(destination,  value)</td></tr>
+<tr class="memdesc:gaef4886d199c2539b209458a8c62378cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a 32-bit unsigned integer to a little-endian order <code>uint8_t</code> array .  <a href="#gaef4886d199c2539b209458a8c62378cd">More...</a><br /></td></tr>
+<tr class="separator:gaef4886d199c2539b209458a8c62378cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84f8097975ebea39deaea4ab9306d2ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#ga84f8097975ebea39deaea4ab9306d2ce">mcuxClMemory_StoreBigEndian32</a>(destination,  value)</td></tr>
+<tr class="memdesc:ga84f8097975ebea39deaea4ab9306d2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a 32-bit unsigned integer to a big-endian order <code>uint8_t</code> array.  <a href="#ga84f8097975ebea39deaea4ab9306d2ce">More...</a><br /></td></tr>
+<tr class="separator:ga84f8097975ebea39deaea4ab9306d2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa3eba98f422623a6a02f15898449c874"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#gaa3eba98f422623a6a02f15898449c874">mcuxClMemory_LoadLittleEndian32</a>(source)</td></tr>
+<tr class="memdesc:gaa3eba98f422623a6a02f15898449c874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a little-endian order <code>uint8_t</code> array to a 32-bit unsigned integer.  <a href="#gaa3eba98f422623a6a02f15898449c874">More...</a><br /></td></tr>
+<tr class="separator:gaa3eba98f422623a6a02f15898449c874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd3fd1c7ee32c2cd202a67bce5036778"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#gabd3fd1c7ee32c2cd202a67bce5036778">mcuxClMemory_LoadBigEndian32</a>(source)</td></tr>
+<tr class="memdesc:gabd3fd1c7ee32c2cd202a67bce5036778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a big-endian order <code>uint8_t</code> array to a 32-bit unsigned integer.  <a href="#gabd3fd1c7ee32c2cd202a67bce5036778">More...</a><br /></td></tr>
+<tr class="separator:gabd3fd1c7ee32c2cd202a67bce5036778"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac426a079f1808ff0183d2851ead720c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00812.html#gac426a079f1808ff0183d2851ead720c5">MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS</a>(input)</td></tr>
+<tr class="memdesc:gac426a079f1808ff0183d2851ead720c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">MACRO that switches byte endianness of given CPU word.  <a href="#gac426a079f1808ff0183d2851ead720c5">More...</a><br /></td></tr>
+<tr class="separator:gac426a079f1808ff0183d2851ead720c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all functions of <a class="el" href="a00810.html">mcuxClRandom</a>. </p>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ga989cf9033b30c383d1548037f2ec8bc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga989cf9033b30c383d1548037f2ec8bc9">&#9670;&nbsp;</a></span>mcuxClRandom_init()</h2>
+<p>These macros implement endianess management on integers. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gaef4886d199c2539b209458a8c62378cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef4886d199c2539b209458a8c62378cd">&#9670;&nbsp;</a></span>mcuxClMemory_StoreLittleEndian32</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_init </td>
+          <td class="memname">#define mcuxClMemory_StoreLittleEndian32</td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">destination, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00813.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>&#160;</td>
-          <td class="paramname"><em>pContext</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00813.html#ga2998181a66cbdc063aa08d76e5fdef9d">mcuxClRandom_Mode_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -174,75 +159,35 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Random data generator initialization function. </p>
-<p>This function performs the initialization of a random data generator. This operation initializes the Random context referenced in the session handle.</p>
+<p>Converts a 32-bit unsigned integer to a little-endian order <code>uint8_t</code> array . </p>
+<dl class="section note"><dt>Note</dt><dd>Implementation is platform independent.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>Pointer to a Random data context buffer large enough to hold the context for the selected <code>mode</code> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Mode of operation for random data generator.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">destination</td><td>pointer to a 4 byte buffer were 32-bit integer in little-endian will be encoded. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>pointer to the 32-bit integer to be encoded. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01291.html#a8">mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01293.html#a8">mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01289.html#a8">mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c</a>, <a class="el" href="a01292.html#a8">mcuxClRandomModes_Different_Sessions_example.c</a>, <a class="el" href="a01290.html#a4">mcuxClRandomModes_ELS_example.c</a>, <a class="el" href="a01294.html#a8">mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01296.html#a7">mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c</a>, and <a class="el" href="a01295.html#a7">mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="ga89fe90a4ca175d03b4a821cf2fa2004f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga89fe90a4ca175d03b4a821cf2fa2004f">&#9670;&nbsp;</a></span>mcuxClRandom_reseed()</h2>
+<a id="ga84f8097975ebea39deaea4ab9306d2ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga84f8097975ebea39deaea4ab9306d2ce">&#9670;&nbsp;</a></span>mcuxClMemory_StoreBigEndian32</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_reseed </td>
+          <td class="memname">#define mcuxClMemory_StoreBigEndian32</td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Random data generator reseed function. </p>
-<p>This function performs the reseeding of a random data generator. This operation fetches a fresh seed from a TRNG and updates the state in the Random context referenced in the session handle.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01291.html#a10">mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01293.html#a10">mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01289.html#a10">mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c</a>, <a class="el" href="a01292.html#a12">mcuxClRandomModes_Different_Sessions_example.c</a>, <a class="el" href="a01296.html#a8">mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c</a>, and <a class="el" href="a01295.html#a8">mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c</a>.</dd>
-</dl>
-
-</div>
-</div>
-<a id="gadb7d7b6ff820450be3533014cb47f279"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadb7d7b6ff820450be3533014cb47f279">&#9670;&nbsp;</a></span>mcuxClRandom_generate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_generate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">destination, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pOut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>outLength</em>&#160;</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -252,205 +197,93 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Random data generation function. </p>
-<p>This function generates random data based on the information contained in the Random context referenced in the session handle.</p>
+<p>Converts a 32-bit unsigned integer to a big-endian order <code>uint8_t</code> array. </p>
+<dl class="section note"><dt>Note</dt><dd>Implementation is platform independent.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Buffer in which the generated random data must be written. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">outLength</td><td>Number of random data bytes that must be written in the <code>pOut</code> buffer.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>pointer to a 4 byte big-endian order <code>uint8_t</code> buffer that will be converted to an unsigned integer </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01291.html#a9">mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01293.html#a9">mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01289.html#a9">mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c</a>, <a class="el" href="a01292.html#a9">mcuxClRandomModes_Different_Sessions_example.c</a>, <a class="el" href="a01290.html#a8">mcuxClRandomModes_ELS_example.c</a>, <a class="el" href="a01294.html#a10">mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01296.html#a9">mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c</a>, and <a class="el" href="a01295.html#a9">mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="ga92889d1e06ba33656278bd2a4110be99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga92889d1e06ba33656278bd2a4110be99">&#9670;&nbsp;</a></span>mcuxClRandom_uninit()</h2>
+<a id="gaa3eba98f422623a6a02f15898449c874"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa3eba98f422623a6a02f15898449c874">&#9670;&nbsp;</a></span>mcuxClMemory_LoadLittleEndian32</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_uninit </td>
+          <td class="memname">#define mcuxClMemory_LoadLittleEndian32</td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em></td><td>)</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">source</td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Random data generator uninitialization function. </p>
-<p>This function performs the cleanup of a random data generator. This operation cleans up the Random context referenced in the session handle.</p>
+<p>Converts a little-endian order <code>uint8_t</code> array to a 32-bit unsigned integer. </p>
+<dl class="section note"><dt>Note</dt><dd>Implementation is platform independent.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>pointer to a 4 byte little-endian order <code>uint8_t</code> buffer that will be converted to an unsigned integer </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01291.html#a11">mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01293.html#a11">mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01289.html#a11">mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c</a>, <a class="el" href="a01292.html#a13">mcuxClRandomModes_Different_Sessions_example.c</a>, <a class="el" href="a01290.html#a11">mcuxClRandomModes_ELS_example.c</a>, <a class="el" href="a01294.html#a11">mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01296.html#a10">mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c</a>, and <a class="el" href="a01295.html#a10">mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="ga4c882c0d6b1e1bba418934c44acc873c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4c882c0d6b1e1bba418934c44acc873c">&#9670;&nbsp;</a></span>mcuxClRandom_selftest()</h2>
+<a id="gabd3fd1c7ee32c2cd202a67bce5036778"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabd3fd1c7ee32c2cd202a67bce5036778">&#9670;&nbsp;</a></span>mcuxClMemory_LoadBigEndian32</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_selftest </td>
+          <td class="memname">#define mcuxClMemory_LoadBigEndian32</td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">source</td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00813.html#ga2998181a66cbdc063aa08d76e5fdef9d">mcuxClRandom_Mode_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Random data generator self-test function. </p>
-<p>This function performs a series of selft-tests on the random data generator. These tests are performed on the random data generator defined by Random context referenced in the session handle.</p>
+<p>Converts a big-endian order <code>uint8_t</code> array to a 32-bit unsigned integer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">destination</td><td>pointer to a 4 byte buffer were 32-bit integer in big-endian will be decoded.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01291.html#a4">mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01293.html#a4">mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01289.html#a4">mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c</a>, and <a class="el" href="a01292.html#a4">mcuxClRandomModes_Different_Sessions_example.c</a>.</dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>a 32-bit unsigned integer </dd></dl>
 
 </div>
 </div>
-<a id="ga6e48c6007ea1d6cfa2ec329152072fc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6e48c6007ea1d6cfa2ec329152072fc0">&#9670;&nbsp;</a></span>mcuxClRandom_checkSecurityStrength()</h2>
+<a id="gac426a079f1808ff0183d2851ead720c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac426a079f1808ff0183d2851ead720c5">&#9670;&nbsp;</a></span>MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_checkSecurityStrength </td>
+          <td class="memname">#define MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS</td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>securityStrength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Random data generator security strength check. </p>
-<p>This function reports whether the the random data generator can provide the requested security strength.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">securityStrength</td><td>Requested security strength in bits.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
-<a id="ga4522b9cfa28cb224b653003d481d7100"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4522b9cfa28cb224b653003d481d7100">&#9670;&nbsp;</a></span>mcuxClRandom_ncInit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_ncInit </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em></td><td>)</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">input</td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Non-cryptographic PRNG initialization function. </p>
-<p>This function performs the initialization of the non-cryptographic random number generator.</p>
+<p>MACRO that switches byte endianness of given CPU word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>a 32-bit unsigned integer whose endianness will be reversed. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01290.html#a9">mcuxClRandomModes_ELS_example.c</a>, <a class="el" href="a01300.html#a8">mcuxClRsa_sign_NoEncode_example.c</a>, <a class="el" href="a01298.html#a9">mcuxClRsa_sign_pss_sha2_256_example.c</a>, <a class="el" href="a01299.html#a8">mcuxClRsa_verify_NoVerify_example.c</a>, and <a class="el" href="a01297.html#a10">mcuxClRsa_verify_pssverify_sha2_256_example.c</a>.</dd>
-</dl>
-
-</div>
-</div>
-<a id="ga942c035e4c1971f3e4da8cf252b6cdf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga942c035e4c1971f3e4da8cf252b6cdf6">&#9670;&nbsp;</a></span>mcuxClRandom_ncGenerate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00813.html#ga768ea9930242003d2a68991684a1e948">mcuxClRandom_Status_t</a> mcuxClRandom_ncGenerate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00840.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pOut</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>outLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Non-cryptographic PRNG data generation function. </p>
-<p>This function generates non-cryptographic random data based on the information contained in the Random context referenced in the session handle.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Buffer in which the generated random data must be written. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">outLength</td><td>Number of random data bytes that must be written in the <code>pOut</code> buffer.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01290.html#a10">mcuxClRandomModes_ELS_example.c</a>.</dd>
 </dl>
 
 </div>

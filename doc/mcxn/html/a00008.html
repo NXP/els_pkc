@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('a00008.html','');});
 <p>Example of ECC for key generation, signing and verification using the ELS (CLNS component mcuxClEls)  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="a00293_source.html">mcuxClEls.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00581_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00599_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="a00260_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClCore_Examples.h&gt;</code><br />
 <code>#include &lt;mcuxClExample_ELS_Helper.h&gt;</code><br />
@@ -127,21 +127,21 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ae951d0a54ca7834571b2870fdee3ee9c"><td class="memItemLeft" align="right" valign="top">static uint32_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ae951d0a54ca7834571b2870fdee3ee9c">ecc_digest</a> [<a class="el" href="a00722.html#gaaa520442bedd60dec1b7e4b10ac57fe3">MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256</a>/sizeof(uint32_t)]</td></tr>
+<tr class="memitem:ae951d0a54ca7834571b2870fdee3ee9c"><td class="memItemLeft" align="right" valign="top">static uint32_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ae951d0a54ca7834571b2870fdee3ee9c">ecc_digest</a> [<a class="el" href="a00740.html#gaaa520442bedd60dec1b7e4b10ac57fe3">MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256</a>/sizeof(uint32_t)]</td></tr>
 <tr class="memdesc:ae951d0a54ca7834571b2870fdee3ee9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre-hashed data to be signed.  <a href="#ae951d0a54ca7834571b2870fdee3ee9c">More...</a><br /></td></tr>
 <tr class="separator:ae951d0a54ca7834571b2870fdee3ee9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2a6bb3aae38a75b559936cb2a304daa"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ae2a6bb3aae38a75b559936cb2a304daa">ecc_public_key</a> [<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>/sizeof(uint32_t)]</td></tr>
+<tr class="memitem:ae2a6bb3aae38a75b559936cb2a304daa"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ae2a6bb3aae38a75b559936cb2a304daa">ecc_public_key</a> [<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>/sizeof(uint32_t)]</td></tr>
 <tr class="memdesc:ae2a6bb3aae38a75b559936cb2a304daa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination buffer to receive the public key of the mcuxClEls_EccKeyGen_Async operation.  <a href="#ae2a6bb3aae38a75b559936cb2a304daa">More...</a><br /></td></tr>
 <tr class="separator:ae2a6bb3aae38a75b559936cb2a304daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a3957d46a69327df60b6fc5294d1bb1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a5a3957d46a69327df60b6fc5294d1bb1">ecc_signature</a> [<a class="el" href="a00714.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>]</td></tr>
-<tr class="memdesc:a5a3957d46a69327df60b6fc5294d1bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination buffer to receive the signature of the mcuxClEls_EccSign_Async operation.  <a href="#a5a3957d46a69327df60b6fc5294d1bb1">More...</a><br /></td></tr>
-<tr class="separator:a5a3957d46a69327df60b6fc5294d1bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57a841d595acc7ce88072d1310ba6d9b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a57a841d595acc7ce88072d1310ba6d9b">ecc_signature_r</a> [<a class="el" href="a00714.html#ga18a35b4e98dac7862895339b720d667a">MCUXCLELS_ECC_SIGNATURE_R_SIZE</a>]</td></tr>
-<tr class="memdesc:a57a841d595acc7ce88072d1310ba6d9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination buffer to receive the signature part r of the VerifyOptions operation.  <a href="#a57a841d595acc7ce88072d1310ba6d9b">More...</a><br /></td></tr>
-<tr class="separator:a57a841d595acc7ce88072d1310ba6d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3457a11827fedba7cf2d4b99b2a00b4e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a3457a11827fedba7cf2d4b99b2a00b4e">ecc_signature_and_public_key</a> [<a class="el" href="a00714.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>+<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
-<tr class="memdesc:a3457a11827fedba7cf2d4b99b2a00b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenation of the ECC signature and public key, needed for the mcuxClEls_EccVerify_Async operation.  <a href="#a3457a11827fedba7cf2d4b99b2a00b4e">More...</a><br /></td></tr>
-<tr class="separator:a3457a11827fedba7cf2d4b99b2a00b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c919da2c9c7078b5c7243da9fa76322"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a0c919da2c9c7078b5c7243da9fa76322">ecc_signature</a> [<a class="el" href="a00732.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>/sizeof(uint32_t)]</td></tr>
+<tr class="memdesc:a0c919da2c9c7078b5c7243da9fa76322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination buffer to receive the signature of the mcuxClEls_EccSign_Async operation.  <a href="#a0c919da2c9c7078b5c7243da9fa76322">More...</a><br /></td></tr>
+<tr class="separator:a0c919da2c9c7078b5c7243da9fa76322"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9723d2c5493f5403895e91d633105402"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a9723d2c5493f5403895e91d633105402">ecc_signature_r</a> [<a class="el" href="a00732.html#ga18a35b4e98dac7862895339b720d667a">MCUXCLELS_ECC_SIGNATURE_R_SIZE</a>/sizeof(uint32_t)]</td></tr>
+<tr class="memdesc:a9723d2c5493f5403895e91d633105402"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination buffer to receive the signature part r of the VerifyOptions operation.  <a href="#a9723d2c5493f5403895e91d633105402">More...</a><br /></td></tr>
+<tr class="separator:a9723d2c5493f5403895e91d633105402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94d4ee9f78d77b0c9e977400ad498190"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a94d4ee9f78d77b0c9e977400ad498190">ecc_signature_and_public_key</a> [(<a class="el" href="a00732.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>+<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>)/sizeof(uint32_t)]</td></tr>
+<tr class="memdesc:a94d4ee9f78d77b0c9e977400ad498190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenation of the ECC signature and public key, needed for the mcuxClEls_EccVerify_Async operation.  <a href="#a94d4ee9f78d77b0c9e977400ad498190">More...</a><br /></td></tr>
+<tr class="separator:a94d4ee9f78d77b0c9e977400ad498190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Example of ECC for key generation, signing and verification using the ELS (CLNS component mcuxClEls) </p>
@@ -173,7 +173,7 @@ Variables</h2></td></tr>
 <p>Initialize ELS, Enable the ELS</p>
 <p>deleted keyIdx keySlot</p>
 <p>Disable the ELS </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01269.html#a9">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01288.html#a9">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -189,7 +189,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t const ecc_digest[<a class="el" href="a00722.html#gaaa520442bedd60dec1b7e4b10ac57fe3">MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256</a>/sizeof(uint32_t)]</td>
+          <td class="memname">uint32_t const ecc_digest[<a class="el" href="a00740.html#gaaa520442bedd60dec1b7e4b10ac57fe3">MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256</a>/sizeof(uint32_t)]</td>
         </tr>
       </table>
   </td>
@@ -200,7 +200,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pre-hashed data to be signed. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01269.html#a0">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01288.html#a0">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -215,7 +215,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t ecc_public_key[<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>/sizeof(uint32_t)]</td>
+          <td class="memname">uint32_t ecc_public_key[<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>/sizeof(uint32_t)]</td>
         </tr>
       </table>
   </td>
@@ -226,13 +226,13 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destination buffer to receive the public key of the mcuxClEls_EccKeyGen_Async operation. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01269.html#a2">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01288.html#a2">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="a5a3957d46a69327df60b6fc5294d1bb1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a3957d46a69327df60b6fc5294d1bb1">&#9670;&nbsp;</a></span>ecc_signature</h2>
+<a id="a0c919da2c9c7078b5c7243da9fa76322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c919da2c9c7078b5c7243da9fa76322">&#9670;&nbsp;</a></span>ecc_signature</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +241,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_signature[<a class="el" href="a00714.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>]</td>
+          <td class="memname">uint32_t ecc_signature[<a class="el" href="a00732.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>/sizeof(uint32_t)]</td>
         </tr>
       </table>
   </td>
@@ -252,13 +252,13 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destination buffer to receive the signature of the mcuxClEls_EccSign_Async operation. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01269.html#a4">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, and <a class="el" href="a01277.html#a7">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01288.html#a4">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, and <a class="el" href="a01296.html#a7">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="a57a841d595acc7ce88072d1310ba6d9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57a841d595acc7ce88072d1310ba6d9b">&#9670;&nbsp;</a></span>ecc_signature_r</h2>
+<a id="a9723d2c5493f5403895e91d633105402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9723d2c5493f5403895e91d633105402">&#9670;&nbsp;</a></span>ecc_signature_r</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,8 +267,9 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_signature_r </td>
+          <td class="memname">static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_signature_r </td>
           <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -283,13 +284,13 @@ Variables</h2></td></tr>
 <p>Destination buffer to receive the signature part r of the VerifyOptions operation. </p>
 <p>Output buffer for the signature part r of the mcuxClEls_KeyImportPuk_Async operation.</p>
 <p>Must be word-aligned! </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01269.html#a6">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, and <a class="el" href="a01277.html#a10">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01288.html#a6">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, and <a class="el" href="a01296.html#a10">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="a3457a11827fedba7cf2d4b99b2a00b4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3457a11827fedba7cf2d4b99b2a00b4e">&#9670;&nbsp;</a></span>ecc_signature_and_public_key</h2>
+<a id="a94d4ee9f78d77b0c9e977400ad498190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94d4ee9f78d77b0c9e977400ad498190">&#9670;&nbsp;</a></span>ecc_signature_and_public_key</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,7 +299,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_signature_and_public_key[<a class="el" href="a00714.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>+<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td>
+          <td class="memname">uint32_t ecc_signature_and_public_key[(<a class="el" href="a00732.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>+<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>)/sizeof(uint32_t)]</td>
         </tr>
       </table>
   </td>
@@ -309,7 +310,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Concatenation of the ECC signature and public key, needed for the mcuxClEls_EccVerify_Async operation. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01269.html#a8">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01288.html#a8">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>.</dd>
 </dl>
 
 </div>

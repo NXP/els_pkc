@@ -1,13 +1,11 @@
 var a00896 =
 [
-    [ "MCUXCLRSA_STATUS_SIGN_OK", "a00896.html#gac7719ba5cbecc181bef2b21dca99fdf3", null ],
-    [ "MCUXCLRSA_STATUS_VERIFY_OK", "a00896.html#ga2dbb489ad7452a487a5d49df5a979d69", null ],
-    [ "MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK", "a00896.html#gadabda4063a5cfe9766a7201d271d8f0a", null ],
-    [ "MCUXCLRSA_STATUS_ERROR", "a00896.html#gac062bb04172f071a8595aa39bef80edc", null ],
-    [ "MCUXCLRSA_STATUS_INVALID_INPUT", "a00896.html#ga14e28c4e4b6a325ddd1f038b5274ccec", null ],
-    [ "MCUXCLRSA_STATUS_VERIFY_FAILED", "a00896.html#ga05d091562f747706d7aecfb99b5a735c", null ],
-    [ "MCUXCLRSA_STATUS_FAULT_ATTACK", "a00896.html#gaf886957f4dc2794dd12839a690ae05d0", null ],
-    [ "MCUXCLRSA_STATUS_KEYGENERATION_OK", "a00896.html#gab08354492e4b0feceab7a3615abee1f0", null ],
-    [ "MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED", "a00896.html#ga90072cc31c18394f5e5d3a2e63e014fa", null ],
-    [ "MCUXCLRSA_STATUS_RNG_ERROR", "a00896.html#gadd600ddd2a4c8c2fc79f427e438f81f4", null ]
+    [ "mcuxClRandom_init", "a00896.html#ga989cf9033b30c383d1548037f2ec8bc9", null ],
+    [ "mcuxClRandom_reseed", "a00896.html#ga89fe90a4ca175d03b4a821cf2fa2004f", null ],
+    [ "mcuxClRandom_generate", "a00896.html#gadb7d7b6ff820450be3533014cb47f279", null ],
+    [ "mcuxClRandom_uninit", "a00896.html#ga92889d1e06ba33656278bd2a4110be99", null ],
+    [ "mcuxClRandom_selftest", "a00896.html#ga4c882c0d6b1e1bba418934c44acc873c", null ],
+    [ "mcuxClRandom_checkSecurityStrength", "a00896.html#ga6e48c6007ea1d6cfa2ec329152072fc0", null ],
+    [ "mcuxClRandom_ncInit", "a00896.html#ga4522b9cfa28cb224b653003d481d7100", null ],
+    [ "mcuxClRandom_ncGenerate", "a00896.html#ga942c035e4c1971f3e4da8cf252b6cdf6", null ]
 ];

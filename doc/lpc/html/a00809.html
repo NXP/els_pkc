@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Secure counter decrement</title>
+<title>MCUX CLNS: mcuxCsslMemory_Copy Function Definitions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,117 +103,95 @@ $(document).ready(function(){initNavTree('a00809.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Secure counter decrement<div class="ingroups"><a class="el" href="a00765.html">MCUX CSSL &amp;ndash; Implementations</a> &raquo; <a class="el" href="a00806.html">Secure Counter: Disabled</a></div></div>  </div>
+<div class="title">mcuxCsslMemory_Copy Function Definitions<div class="ingroups"><a class="el" href="a00778.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00803.html">mcuxCssl Memory API</a> &raquo; <a class="el" href="a00808.html">mcuxCssl Memory Copy</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Support for decrementing the secure counter.  
+<p>mcuxCsslMemory_Copy Function Definitions  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gaca0635e01e8eef97f9a06a50b24d0941"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#gaca0635e01e8eef97f9a06a50b24d0941">MCUX_CSSL_SC_SUB_IMPL</a>(value)</td></tr>
-<tr class="memdesc:gaca0635e01e8eef97f9a06a50b24d0941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with <code>value</code>.  <a href="#gaca0635e01e8eef97f9a06a50b24d0941">More...</a><br /></td></tr>
-<tr class="separator:gaca0635e01e8eef97f9a06a50b24d0941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">MCUX_CSSL_SC_SUB_0X1_IMPL</a>()</td></tr>
-<tr class="memdesc:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x1.  <a href="#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">More...</a><br /></td></tr>
-<tr class="separator:ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa9701e3c0f7e757573c4bfcdae22959"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#gafa9701e3c0f7e757573c4bfcdae22959">MCUX_CSSL_SC_SUB_0X10_IMPL</a>()</td></tr>
-<tr class="memdesc:gafa9701e3c0f7e757573c4bfcdae22959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x10.  <a href="#gafa9701e3c0f7e757573c4bfcdae22959">More...</a><br /></td></tr>
-<tr class="separator:gafa9701e3c0f7e757573c4bfcdae22959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4a6dba75f476d29637e005dc8272083"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#gaa4a6dba75f476d29637e005dc8272083">MCUX_CSSL_SC_SUB_0X100_IMPL</a>()</td></tr>
-<tr class="memdesc:gaa4a6dba75f476d29637e005dc8272083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x100.  <a href="#gaa4a6dba75f476d29637e005dc8272083">More...</a><br /></td></tr>
-<tr class="separator:gaa4a6dba75f476d29637e005dc8272083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaa29b7e8d23c8d95ce248fc8e0a4b37c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00814.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00809.html#gaa29b7e8d23c8d95ce248fc8e0a4b37c8">mcuxCsslMemory_Copy</a> (<a class="el" href="a00817.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a> chk, void const *pSrc, void *pDst, size_t dstLength, size_t length)</td></tr>
+<tr class="memdesc:gaa29b7e8d23c8d95ce248fc8e0a4b37c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies <code>length</code> bytes of data from <code>pSrc</code> to <code>pDst</code>.  <a href="#gaa29b7e8d23c8d95ce248fc8e0a4b37c8">More...</a><br /></td></tr>
+<tr class="separator:gaa29b7e8d23c8d95ce248fc8e0a4b37c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Support for decrementing the secure counter. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gaca0635e01e8eef97f9a06a50b24d0941"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaca0635e01e8eef97f9a06a50b24d0941">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_IMPL</h2>
+<p>mcuxCsslMemory_Copy Function Definitions </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gaa29b7e8d23c8d95ce248fc8e0a4b37c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa29b7e8d23c8d95ce248fc8e0a4b37c8">&#9670;&nbsp;</a></span>mcuxCsslMemory_Copy()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_SC_SUB_IMPL</td>
+          <td class="memname"><a class="el" href="a00814.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a> mcuxCsslMemory_Copy </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">value</td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00817.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a>&#160;</td>
+          <td class="paramname"><em>chk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>pSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>dstLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Decrement the secure counter with <code>value</code>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00808.html#gaa4a21360f6c3d08fc777879e4f4551ed" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD_IMPL</a></dd></dl>
+<p>Copies <code>length</code> bytes of data from <code>pSrc</code> to <code>pDst</code>. </p>
+<p>The implementation is secure in the following aspects:</p>
+<ul>
+<li>Constant execution time: If <code>pSrc</code> and <code>pDst</code> have the same offset to the nearest 16-byte boundary, and if <code>length</code> is the same, the execution sequence of the code is always identical.</li>
+<li>Parameter integrity protection: An incorrect parameter checksum makes the function return immediately.</li>
+<li>Code flow protection: The function call is protected. Additionally, the result depends on all steps of the calculation.</li>
+<li>Buffer overflow protection: No data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Value with which the secure counter must be decremented. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="a00818.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSrc</td><td>The data to be copied. Must not be NULL. Must not overlap with <code>pDst</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pDst</td><td>The destination pointer. Must not be NULL. Must not overlap with <code>pSrc</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dstLength</td><td>The size of the destination data buffer in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The number of bytes to copy. Must be different from zero. </td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ga0ffac921b9dfcb2fcf8796e0a4e1b0c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0X1_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_SUB_0X1_IMPL</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Decrement the secure counter with 0x1. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00809.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a> </dd></dl>
-
-</div>
-</div>
-<a id="gafa9701e3c0f7e757573c4bfcdae22959"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafa9701e3c0f7e757573c4bfcdae22959">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0X10_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_SUB_0X10_IMPL</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Decrement the secure counter with 0x10. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00809.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a> </dd></dl>
-
-</div>
-</div>
-<a id="gaa4a6dba75f476d29637e005dc8272083"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa4a6dba75f476d29637e005dc8272083">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0X100_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_SUB_0X100_IMPL</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Decrement the secure counter with 0x100. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00809.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A status code encapsulated in a flow-protection type. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a00813.html#gab2993c75e7ef98fed36f03946630e41c" title="The operation was successful.">MCUXCSSLMEMORY_STATUS_OK</a></td><td>If the operation was successful. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00813.html#ga0e60adf6203cb3acb2bdb3ddec166766" title="A parameter was invalid.">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td><td>If one of the parameters was invalid (i.e. <code>pSrc</code> or <code>pDst</code> was NULL or <code>length</code> was zero). </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00813.html#gaf0923b98a5db9fd23732989986d72f4d" title="A fault occurred in the execution.">MCUXCSSLMEMORY_STATUS_FAULT</a></td><td>If a fault was detected. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

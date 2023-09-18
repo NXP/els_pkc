@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Ecc_Types</title>
+<title>MCUX CLNS: mcuxClEls_InterruptOptionEn_t</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,54 +103,56 @@ $(document).ready(function(){initNavTree('a00642.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Ecc_Types<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00634.html">mcuxClEls_Ecc</a></div></div>  </div>
+<div class="title">mcuxClEls_InterruptOptionEn_t<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00640.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00641.html">mcuxClEls_Common_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all types of <a class="el" href="a00634.html">mcuxClEls_Ecc</a>.  
+<p>Defines interrupt enable option values.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01004.html">mcuxClEls_EccSignOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00643.html#ga96b17fadb9ee18906bb719e222908209" title="Generates an ECDSA signature of a given message.">mcuxClEls_EccSign_Async</a> Bit field to configure <a class="el" href="a00643.html#ga96b17fadb9ee18906bb719e222908209" title="Generates an ECDSA signature of a given message.">mcuxClEls_EccSign_Async</a>.  <a href="a01004.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01016.html">mcuxClEls_EccVerifyOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00643.html#ga019a066eda05dab4955ed76e83d39b77" title="Verifies an ECDSA signature of a given message.">mcuxClEls_EccVerify_Async</a> Bit field to configure <a class="el" href="a01016.html" title="Command option bit field for mcuxClEls_EccVerify_Async Bit field to configure mcuxClEls_EccVerifyOpti...">mcuxClEls_EccVerifyOption_t</a>.  <a href="a01016.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01028.html">mcuxClEls_EccKeyGenOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00643.html#ga060362493427031ef51110b7c381a986" title="Generates an ECC key pair on the NIST P-256 curve.">mcuxClEls_EccKeyGen_Async</a> Bit field to configure <a class="el" href="a01028.html" title="Command option bit field for mcuxClEls_EccKeyGen_Async Bit field to configure mcuxClEls_EccKeyGenOpti...">mcuxClEls_EccKeyGenOption_t</a>.  <a href="a01028.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01040.html">mcuxClEls_EccKeyExchOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00643.html#ga39d6102bd9c792eb5a2e33af1f1830c3" title="Performs a Diffie-Hellman key exchange with an internal ECC private key and an external ECC public ke...">mcuxClEls_EccKeyExchange_Async</a>, for internal use only.  <a href="a01040.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gaaca57cf87336b1e866852443c47a019f"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00642.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a></td></tr>
-<tr class="memdesc:gaaca57cf87336b1e866852443c47a019f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data type for ECC parameters in ELS format.  <a href="#gaaca57cf87336b1e866852443c47a019f">More...</a><br /></td></tr>
-<tr class="separator:gaaca57cf87336b1e866852443c47a019f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga845d16f6376f2c28864f1855ddbde61c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00642.html#ga845d16f6376f2c28864f1855ddbde61c">MCUXCLELS_ELS_INTERRUPT_ENABLE</a></td></tr>
+<tr class="memdesc:ga845d16f6376f2c28864f1855ddbde61c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00975.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to allow ELS to trigger an interrupt.  <a href="#ga845d16f6376f2c28864f1855ddbde61c">More...</a><br /></td></tr>
+<tr class="separator:ga845d16f6376f2c28864f1855ddbde61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2427d922e877e78bac483cf68f6c5892"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00642.html#ga2427d922e877e78bac483cf68f6c5892">MCUXCLELS_ELS_INTERRUPT_DISABLE</a></td></tr>
+<tr class="memdesc:ga2427d922e877e78bac483cf68f6c5892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00975.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to prevent ELS from triggering an interrupt.  <a href="#ga2427d922e877e78bac483cf68f6c5892">More...</a><br /></td></tr>
+<tr class="separator:ga2427d922e877e78bac483cf68f6c5892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all types of <a class="el" href="a00634.html">mcuxClEls_Ecc</a>. </p>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="gaaca57cf87336b1e866852443c47a019f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaca57cf87336b1e866852443c47a019f">&#9670;&nbsp;</a></span>mcuxClEls_EccByte_t</h2>
+<p>Defines interrupt enable option values. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga845d16f6376f2c28864f1855ddbde61c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga845d16f6376f2c28864f1855ddbde61c">&#9670;&nbsp;</a></span>MCUXCLELS_ELS_INTERRUPT_ENABLE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint8_t <a class="el" href="a00642.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a></td>
+          <td class="memname">#define MCUXCLELS_ELS_INTERRUPT_ENABLE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Data type for ECC parameters in ELS format. </p>
-<p>This type will be removed soon. </p>
+<p>Set this option at <a class="el" href="a00975.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to allow ELS to trigger an interrupt. </p>
+
+</div>
+</div>
+<a id="ga2427d922e877e78bac483cf68f6c5892"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2427d922e877e78bac483cf68f6c5892">&#9670;&nbsp;</a></span>MCUXCLELS_ELS_INTERRUPT_DISABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ELS_INTERRUPT_DISABLE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a00975.html#a1ceef382dbc3fbafdff1d553658c7ea9" title="Whether ELS interrupt should be used. (For possible values of this field, see mcuxClEls_InterruptOpti...">mcuxClEls_InterruptOptionEn_t.elsint</a> to prevent ELS from triggering an interrupt. </p>
 
 </div>
 </div>

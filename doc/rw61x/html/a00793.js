@@ -1,7 +1,6 @@
 var a00793 =
 [
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_224", "a00793.html#ga5cc6964abb7966c445feb2abf14f8067", null ],
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256", "a00793.html#gaaa520442bedd60dec1b7e4b10ac57fe3", null ],
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_384", "a00793.html#gab961aed69bd7828bf783f318a9dde671", null ],
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_512", "a00793.html#gab75499823ecacb60bc8c9fdc8d541e95", null ]
+    [ "mcuxClEls_Ecc_Macros", "a00794.html", "a00794" ],
+    [ "mcuxClEls_Ecc_Types", "a00801.html", "a00801" ],
+    [ "mcuxClEls_Ecc_Functions", "a00802.html", "a00802" ]
 ];

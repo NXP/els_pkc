@@ -1,27 +1,45 @@
 var a00660 =
 [
-    [ "mcuxClEls_CkdfOption_t", "a01076.html", [
-      [ "value", "a01076.html#a00abd43e6b7c9816562f2aa1d93c0b9e", null ],
-      [ "word", "a01076.html#a652920b9c38dc9732927ce4c4514b72b", null ],
-      [ "__pad0__", "a01076.html#a3d042b5093efe84ebc959168e0d4a5cc", null ],
-      [ "ckdf_algo", "a01076.html#afc52662f6e41b83e0c731d77c616506c", null ],
-      [ "__pad1__", "a01076.html#a00e88c3d9213e40f64c614df04a7735e", null ],
-      [ "bits", "a01076.html#ada492a2f9d5f17f0e8f726d7d43a7523", null ]
+    [ "mcuxClEls_EccSignOption_t", "a01023.html", [
+      [ "value", "a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456", null ],
+      [ "word", "a01023.html#a18b75a3278352825587a8045b43283d7", null ],
+      [ "echashchl", "a01023.html#ab825e88899ff7627304d25fbcc1adffd", null ],
+      [ "signrtf", "a01023.html#aa4bcc3f1aaf9e991e62cdc22ffd7500e", null ],
+      [ "__pad0__", "a01023.html#a0e9a4b194d887a2b2c4c2297c2cbd868", null ],
+      [ "revf", "a01023.html#aa75bf5c0b29ee02a16ca1b31e3300b0f", null ],
+      [ "__pad1__", "a01023.html#a5527caf737b06f5053f89c60354dbe65", null ],
+      [ "bits", "a01023.html#afe6a2747050966488f4cd56af8118fd1", null ]
     ] ],
-    [ "mcuxClEls_HkdfOption_t", "a01088.html", [
-      [ "value", "a01088.html#aa39e185af4b2cfd758c0b7b7d3bea8db", null ],
-      [ "word", "a01088.html#acca889fe07f579abd2cd64c50ca3c313", null ],
-      [ "rtfdrvdat", "a01088.html#a7830e4ca489dcbca0e0b535e0979f5cc", null ],
-      [ "hkdf_algo", "a01088.html#ab385e81dfad37e2cdd8faaa1521ac405", null ],
-      [ "__pad0__", "a01088.html#aa8d2970a725074eb3ee5b9baed362eb3", null ],
-      [ "bits", "a01088.html#ad08688099b106ec8702de54948446404", null ]
+    [ "mcuxClEls_EccVerifyOption_t", "a01035.html", [
+      [ "value", "a01035.html#a73b0b8e42d753a97bb03cb053799e33a", null ],
+      [ "word", "a01035.html#a462a8f5b886e8c37b80d852c0a7f4a21", null ],
+      [ "echashchl", "a01035.html#a2642a5936ec9f5c7394704161c984598", null ],
+      [ "__pad0__", "a01035.html#a7dffb127ef2f32236227c9023af7e5cd", null ],
+      [ "revf", "a01035.html#afbf76f7ebcfc43ca99708cd1064a651a", null ],
+      [ "__pad1__", "a01035.html#ad2bdfda87da142b43bfd1e64ee8bb072", null ],
+      [ "bits", "a01035.html#af763b274638675307f253e65d3ccf8d1", null ]
     ] ],
-    [ "mcuxClEls_TlsOption_t", "a01100.html", [
-      [ "value", "a01100.html#acfe68053c7558c29e085ca434cf432cd", null ],
-      [ "word", "a01100.html#a147d0211a4ada143e829a9aec445d5c4", null ],
-      [ "__pad0__", "a01100.html#acff6fecdc2046f7299e575ff0b7177e4", null ],
-      [ "mode", "a01100.html#a3f8fbc06563e97492965d16d9f7a4ed1", null ],
-      [ "__pad1__", "a01100.html#a9d609161f300e9d3a67c2144079a17d3", null ],
-      [ "bits", "a01100.html#ac1460b5ef0e779125f732cddccb04205", null ]
-    ] ]
+    [ "mcuxClEls_EccKeyGenOption_t", "a01047.html", [
+      [ "value", "a01047.html#a2c377cdae550923ee7e1234735e08b40", null ],
+      [ "word", "a01047.html#a1bd0421f9094e41241f571d9c43d534a", null ],
+      [ "kgsign", "a01047.html#aa20a2dd1242cfa9c945d09332db760e1", null ],
+      [ "kgtypedh", "a01047.html#ade3f3190f07c3a1b8a5948988d3b85d5", null ],
+      [ "kgsrc", "a01047.html#aa60e98c0d7570daa80ab5536ebf71d94", null ],
+      [ "skip_pbk", "a01047.html#afa4cb29e6c55e30a30185180de2f8e49", null ],
+      [ "revf", "a01047.html#a7e2c0f35b5f6904c1a232f3552cb185f", null ],
+      [ "kgsign_rnd", "a01047.html#ab2d02455b74fc4f2999c8b579bd87c8d", null ],
+      [ "__pad0__", "a01047.html#ab6d97c184d6c34f0d6c1bc8e0a77057c", null ],
+      [ "bits", "a01047.html#af42b92502a567af3f8ab859c15065105", null ]
+    ] ],
+    [ "mcuxClEls_EccKeyExchOption_t", "a01059.html", [
+      [ "value", "a01059.html#aaa4e256f25f9c74123c28c5926d21ba2", null ],
+      [ "word", "a01059.html#a99bc128b60446fc3ce73f3b76dbc8b80", null ],
+      [ "__pad0__", "a01059.html#a98a12e39b9f189c172f6b951c2ae781c", null ],
+      [ "revf", "a01059.html#a2a46aaff0c4f6f2cfa19b302ba713b43", null ],
+      [ "__pad1__", "a01059.html#a06d0377a60794946f8788a7fad8af177", null ],
+      [ "extkey", "a01059.html#ab28493ba971ceb64a4fa0f741e98358d", null ],
+      [ "__pad2__", "a01059.html#a82f1e57ea7fcdfd607a3954396e6ec84", null ],
+      [ "bits", "a01059.html#aa3ad3903ab4c691b3a85e9b27c74847d", null ]
+    ] ],
+    [ "mcuxClEls_EccByte_t", "a00660.html#gaaca57cf87336b1e866852443c47a019f", null ]
 ];

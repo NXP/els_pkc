@@ -1,6 +1,6 @@
 var a00775 =
 [
-    [ "mcuxClEls_Ecc_Macros", "a00776.html", "a00776" ],
-    [ "mcuxClEls_Ecc_Types", "a00783.html", "a00783" ],
-    [ "mcuxClEls_Ecc_Functions", "a00784.html", "a00784" ]
+    [ "mcuxClEls_Cmac_Macros", "a00776.html", "a00776" ],
+    [ "mcuxClEls_Cmac_Types", "a00779.html", "a00779" ],
+    [ "mcuxClEls_Cmac_Functions", "a00780.html", "a00780" ]
 ];

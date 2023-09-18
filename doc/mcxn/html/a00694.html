@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLELS_RESET_</title>
+<title>MCUX CLNS: mcuxClEls_Cipher</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,61 +103,29 @@ $(document).ready(function(){initNavTree('a00694.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLELS_RESET_<div class="ingroups"><a class="el" href="a00670.html">mcuxClEls</a> &raquo; <a class="el" href="a00688.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00689.html">mcuxClEls_Common_Macros</a></div></div>  </div>
+<div class="title">mcuxClEls_Cipher<div class="ingroups"><a class="el" href="a00688.html">mcuxClEls</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Options for reset handling.  
+<p>This part of the <a class="el" href="a00688.html">mcuxClEls</a> driver supports functionality for symmetric ciphers.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gac02fc8694aa89061b1eb47bad8fca21d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00694.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a></td></tr>
-<tr class="memdesc:gac02fc8694aa89061b1eb47bad8fca21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00698.html#gab1ed08db7ad22b92ac714d17566d2fff" title="Type to handle ELS reset options.">mcuxClEls_ResetOption_t</a> to abort the requested command if another ELS operation is still running.  <a href="#gac02fc8694aa89061b1eb47bad8fca21d">More...</a><br /></td></tr>
-<tr class="separator:gac02fc8694aa89061b1eb47bad8fca21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1f4338ba7f7d0ddd5b84236bc4545ee3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00694.html#ga1f4338ba7f7d0ddd5b84236bc4545ee3">MCUXCLELS_RESET_CANCEL</a></td></tr>
-<tr class="memdesc:ga1f4338ba7f7d0ddd5b84236bc4545ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00698.html#gab1ed08db7ad22b92ac714d17566d2fff" title="Type to handle ELS reset options.">mcuxClEls_ResetOption_t</a> to execute the requested command even if another ELS operation is still running.  <a href="#ga1f4338ba7f7d0ddd5b84236bc4545ee3">More...</a><br /></td></tr>
-<tr class="separator:ga1f4338ba7f7d0ddd5b84236bc4545ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:a00695"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00695.html">mcuxClEls_Cipher_Macros</a></td></tr>
+<tr class="memdesc:a00695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all macros of <a class="el" href="a00694.html">mcuxClEls_Cipher</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00698"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00698.html">mcuxClEls_Cipher_Types</a></td></tr>
+<tr class="memdesc:a00698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all types of <a class="el" href="a00694.html">mcuxClEls_Cipher</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00699"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00699.html">mcuxClEls_Cipher_Functions</a></td></tr>
+<tr class="memdesc:a00699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all functions of <a class="el" href="a00694.html">mcuxClEls_Cipher</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Options for reset handling. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gac02fc8694aa89061b1eb47bad8fca21d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac02fc8694aa89061b1eb47bad8fca21d">&#9670;&nbsp;</a></span>MCUXCLELS_RESET_DO_NOT_CANCEL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_RESET_DO_NOT_CANCEL</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a00698.html#gab1ed08db7ad22b92ac714d17566d2fff" title="Type to handle ELS reset options.">mcuxClEls_ResetOption_t</a> to abort the requested command if another ELS operation is still running. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01283.html#a0">mcuxClEcc_EdDSA_Ed25519_example.c</a>, <a class="el" href="a01281.html#a2">mcuxClEcc_EdDSA_Ed25519ctx_example.c</a>, <a class="el" href="a01282.html#a3">mcuxClEcc_EdDSA_Ed25519ph_example.c</a>, <a class="el" href="a01285.html#a2">mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c</a>, <a class="el" href="a01284.html#a2">mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c</a>, <a class="el" href="a01278.html#a1">mcuxClEcc_Mont_Curve25519_example.c</a>, <a class="el" href="a01279.html#a1">mcuxClEcc_Mont_Curve448_example.c</a>, <a class="el" href="a01268.html#a8">mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c</a>, <a class="el" href="a01267.html#a7">mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c</a>, <a class="el" href="a01270.html#a1">mcuxClEls_Common_Get_Info_example.c</a>, <a class="el" href="a01269.html#a10">mcuxClEls_Ecc_Keygen_Sign_Verify_example.c</a>, <a class="el" href="a01271.html#a7">mcuxClEls_Hash_Sha224_One_Block_example.c</a>, <a class="el" href="a01272.html#a7">mcuxClEls_Hash_Sha256_One_Block_example.c</a>, <a class="el" href="a01273.html#a7">mcuxClEls_Hash_Sha384_One_Block_example.c</a>, <a class="el" href="a01274.html#a7">mcuxClEls_Hash_Sha512_One_Block_example.c</a>, <a class="el" href="a01277.html#a13">mcuxClEls_Key_Import_Puk_DER_example.c</a>, <a class="el" href="a01275.html#a1">mcuxClEls_Rng_Prng_Get_Random_example.c</a>, <a class="el" href="a01276.html#a5">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>, <a class="el" href="a01291.html#a1">mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01293.html#a1">mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01289.html#a1">mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c</a>, <a class="el" href="a01292.html#a1">mcuxClRandomModes_Different_Sessions_example.c</a>, <a class="el" href="a01290.html#a1">mcuxClRandomModes_ELS_example.c</a>, <a class="el" href="a01294.html#a13">mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c</a>, <a class="el" href="a01296.html#a1">mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c</a>, <a class="el" href="a01295.html#a1">mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c</a>, <a class="el" href="a01300.html#a3">mcuxClRsa_sign_NoEncode_example.c</a>, <a class="el" href="a01298.html#a4">mcuxClRsa_sign_pss_sha2_256_example.c</a>, <a class="el" href="a01299.html#a3">mcuxClRsa_verify_NoVerify_example.c</a>, and <a class="el" href="a01297.html#a5">mcuxClRsa_verify_pssverify_sha2_256_example.c</a>.</dd>
-</dl>
-
-</div>
-</div>
-<a id="ga1f4338ba7f7d0ddd5b84236bc4545ee3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1f4338ba7f7d0ddd5b84236bc4545ee3">&#9670;&nbsp;</a></span>MCUXCLELS_RESET_CANCEL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_RESET_CANCEL</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a00698.html#gab1ed08db7ad22b92ac714d17566d2fff" title="Type to handle ELS reset options.">mcuxClEls_ResetOption_t</a> to execute the requested command even if another ELS operation is still running. </p>
-
-</div>
-</div>
+<p>This part of the <a class="el" href="a00688.html">mcuxClEls</a> driver supports functionality for symmetric ciphers. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

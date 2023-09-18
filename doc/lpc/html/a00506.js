@@ -1,5 +1,7 @@
 var a00506 =
 [
-    [ "MCUX_CSSL_DI_USE_SECURE_COUNTER", "a00764.html#gad14940e758b00b26f2e699b4fc0144bb", null ],
-    [ "MCUX_CSSL_DI_USE_NONE", "a00764.html#ga4f0cea555852c5171e55303b6cb062be", null ]
+    [ "mcuxClSession_init", "a00773.html#gaf1b8776b0d519136df17f6dd632442cf", null ],
+    [ "mcuxClSession_setRtf", "a00773.html#ga159bff529d405fd6da2930590a69ac06", null ],
+    [ "mcuxClSession_cleanup", "a00773.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c", null ],
+    [ "mcuxClSession_destroy", "a00773.html#gaad324fd8f8eeefa29521c4297ac75fd2", null ]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLELS_HMAC_EXTERNAL_KEY_</title>
+<title>MCUX CLNS: MCUXCLELS_ECC (Sign and Verify) option word values</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,54 +105,92 @@ $(document).ready(function(){initNavTree('a00654.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLELS_HMAC_EXTERNAL_KEY_<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00652.html">mcuxClEls_Hmac</a> &raquo; <a class="el" href="a00653.html">mcuxClEls_Hmac_Macros</a></div></div>  </div>
+<div class="title">MCUXCLELS_ECC (Sign and Verify) option word values<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00652.html">mcuxClEls_Ecc</a> &raquo; <a class="el" href="a00653.html">mcuxClEls_Ecc_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines valid options to be used by <a class="el" href="a01064.html" title="Command option bit field for mcuxClEls_Hmac_Async.">mcuxClEls_HmacOption_t</a>.  
+<p>Constants for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a> and <a class="el" href="a01035.html" title="Command option bit field for mcuxClEls_EccVerify_Async Bit field to configure mcuxClEls_EccVerifyOpti...">mcuxClEls_EccVerifyOption_t</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga19feebc17331ebe966c67a9bfed79e33"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00654.html#ga19feebc17331ebe966c67a9bfed79e33">MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE</a></td></tr>
-<tr class="memdesc:ga19feebc17331ebe966c67a9bfed79e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="a01064.html#a4e16fabb042914665cabe00f5d6a6795" title="Whether an external key should be used.">mcuxClEls_HmacOption_t.extkey</a> to this value to use an external key.  <a href="#ga19feebc17331ebe966c67a9bfed79e33">More...</a><br /></td></tr>
-<tr class="separator:ga19feebc17331ebe966c67a9bfed79e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga876370de65e0c65b54c39b34921a4444"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00654.html#ga876370de65e0c65b54c39b34921a4444">MCUXCLELS_HMAC_EXTERNAL_KEY_DISABLE</a></td></tr>
-<tr class="memdesc:ga876370de65e0c65b54c39b34921a4444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="a01064.html#a4e16fabb042914665cabe00f5d6a6795" title="Whether an external key should be used.">mcuxClEls_HmacOption_t.extkey</a> to this value to use a key from the ELS keystore.  <a href="#ga876370de65e0c65b54c39b34921a4444">More...</a><br /></td></tr>
-<tr class="separator:ga876370de65e0c65b54c39b34921a4444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac3be2289b4247767251a8d85014652bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00654.html#gac3be2289b4247767251a8d85014652bb">MCUXCLELS_ECC_VALUE_HASHED</a></td></tr>
+<tr class="memdesc:gac3be2289b4247767251a8d85014652bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> or <a class="el" href="a01035.html#a73b0b8e42d753a97bb03cb053799e33a" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccVerifyOption_t.value</a> to specify input is the hash of the message.  <a href="#gac3be2289b4247767251a8d85014652bb">More...</a><br /></td></tr>
+<tr class="separator:gac3be2289b4247767251a8d85014652bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga90e38c2c9caeb976594c32d92bbc5d05"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00654.html#ga90e38c2c9caeb976594c32d92bbc5d05">MCUXCLELS_ECC_VALUE_NOT_HASHED</a></td></tr>
+<tr class="memdesc:ga90e38c2c9caeb976594c32d92bbc5d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> or <a class="el" href="a01035.html#a73b0b8e42d753a97bb03cb053799e33a" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccVerifyOption_t.value</a> to specify input is the plain message.  <a href="#ga90e38c2c9caeb976594c32d92bbc5d05">More...</a><br /></td></tr>
+<tr class="separator:ga90e38c2c9caeb976594c32d92bbc5d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga48a69913a0b9d082ea72b81f56ac1fdc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00654.html#ga48a69913a0b9d082ea72b81f56ac1fdc">MCUXCLELS_ECC_VALUE_RTF</a></td></tr>
+<tr class="memdesc:ga48a69913a0b9d082ea72b81f56ac1fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> to include the RTF in the signature, only for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a>.  <a href="#ga48a69913a0b9d082ea72b81f56ac1fdc">More...</a><br /></td></tr>
+<tr class="separator:ga48a69913a0b9d082ea72b81f56ac1fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga66a8fbee1f549d2ad1819c0e08780e13"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00654.html#ga66a8fbee1f549d2ad1819c0e08780e13">MCUXCLELS_ECC_VALUE_NO_RTF</a></td></tr>
+<tr class="memdesc:ga66a8fbee1f549d2ad1819c0e08780e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> to not include the RTF in the signature, only for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a>.  <a href="#ga66a8fbee1f549d2ad1819c0e08780e13">More...</a><br /></td></tr>
+<tr class="separator:ga66a8fbee1f549d2ad1819c0e08780e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines valid options to be used by <a class="el" href="a01064.html" title="Command option bit field for mcuxClEls_Hmac_Async.">mcuxClEls_HmacOption_t</a>. </p>
+<p>Constants for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a> and <a class="el" href="a01035.html" title="Command option bit field for mcuxClEls_EccVerify_Async Bit field to configure mcuxClEls_EccVerifyOpti...">mcuxClEls_EccVerifyOption_t</a>. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga19feebc17331ebe966c67a9bfed79e33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga19feebc17331ebe966c67a9bfed79e33">&#9670;&nbsp;</a></span>MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE</h2>
+<a id="gac3be2289b4247767251a8d85014652bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac3be2289b4247767251a8d85014652bb">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_VALUE_HASHED</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE</td>
+          <td class="memname">#define MCUXCLELS_ECC_VALUE_HASHED</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set <a class="el" href="a01064.html#a4e16fabb042914665cabe00f5d6a6795" title="Whether an external key should be used.">mcuxClEls_HmacOption_t.extkey</a> to this value to use an external key. </p>
+<p>Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> or <a class="el" href="a01035.html#a73b0b8e42d753a97bb03cb053799e33a" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccVerifyOption_t.value</a> to specify input is the hash of the message. </p>
 
 </div>
 </div>
-<a id="ga876370de65e0c65b54c39b34921a4444"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga876370de65e0c65b54c39b34921a4444">&#9670;&nbsp;</a></span>MCUXCLELS_HMAC_EXTERNAL_KEY_DISABLE</h2>
+<a id="ga90e38c2c9caeb976594c32d92bbc5d05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90e38c2c9caeb976594c32d92bbc5d05">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_VALUE_NOT_HASHED</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_HMAC_EXTERNAL_KEY_DISABLE</td>
+          <td class="memname">#define MCUXCLELS_ECC_VALUE_NOT_HASHED</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set <a class="el" href="a01064.html#a4e16fabb042914665cabe00f5d6a6795" title="Whether an external key should be used.">mcuxClEls_HmacOption_t.extkey</a> to this value to use a key from the ELS keystore. </p>
+<p>Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> or <a class="el" href="a01035.html#a73b0b8e42d753a97bb03cb053799e33a" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccVerifyOption_t.value</a> to specify input is the plain message. </p>
+
+</div>
+</div>
+<a id="ga48a69913a0b9d082ea72b81f56ac1fdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga48a69913a0b9d082ea72b81f56ac1fdc">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_VALUE_RTF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ECC_VALUE_RTF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> to include the RTF in the signature, only for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a>. </p>
+
+</div>
+</div>
+<a id="ga66a8fbee1f549d2ad1819c0e08780e13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga66a8fbee1f549d2ad1819c0e08780e13">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_VALUE_NO_RTF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ECC_VALUE_NO_RTF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a01023.html#a7e32d20de26a1ca2d7eee8fe2fd95456" title="Access the bit field as a full word; initialize with a combination of constants from MCUXCLELS_ECC (S...">mcuxClEls_EccSignOption_t.value</a> to not include the RTF in the signature, only for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a>. </p>
 
 </div>
 </div>

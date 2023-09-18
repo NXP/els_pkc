@@ -1,12 +1,11 @@
 var a00822 =
 [
-    [ "mcuxClRsa_Mode_Sign_NoEncode", "a00822.html#ga4459d773156bf4ac906a1416dd4ed4f4", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_224", "a00822.html#gac7cfd526cb16ba49a48ea0881c12e778", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_256", "a00822.html#ga1845c307f6b2897cf563c1ad97523840", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_384", "a00822.html#ga2e630f5e6e06e0b5adc2d5f63268b77f", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_512", "a00822.html#ga61cdf384d5eb7774a35bec2dd28b67c8", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_224", "a00822.html#ga6544c3cc75077dde34304c5c45999edf", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_256", "a00822.html#gaf88819f8def0ed1dc626168103856a25", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_384", "a00822.html#ga884749f4e133157dcdc3b85d15b98ada", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_512", "a00822.html#gab71896db47c552effcdad152a574e5a1", null ]
+    [ "MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_SM3", "a00822.html#ga69194394354130bb74c3a659c6a6382a", null ],
+    [ "MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_MAX", "a00822.html#gaac9381a82113d329dd25ab934c95dfd5", null ],
+    [ "MCUXCLOSCCASM3_INIT_CPU_WA_BUFFER_SIZE", "a00822.html#gab8638606efbce3f6c35b1584e2edf157", null ],
+    [ "MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_SM3", "a00822.html#ga44f1d4fbc45ff4047678df48c2673868", null ],
+    [ "MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_MAX", "a00822.html#ga7fc2a9c206d05b1b56fdb4a50964e8aa", null ],
+    [ "MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_SM3", "a00822.html#gac8ba7076a5518d52ce295d48099d4ae3", null ],
+    [ "MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_MAX", "a00822.html#ga53ef6d92e75dc64d5cdf0bf5cf9c4231", null ],
+    [ "MCUXCLOSCCASM3_MAX_CPU_WA_BUFFER_SIZE", "a00822.html#ga92c12b7d0bcd8ebcaf3ffa9bcac45b6b", null ]
 ];

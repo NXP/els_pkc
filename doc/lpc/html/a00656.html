@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Hmac_Functions</title>
+<title>MCUX CLNS: MCUXCLELS_ECC (Sign and Verify) option bit field values</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,119 +103,94 @@ $(document).ready(function(){initNavTree('a00656.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Hmac_Functions<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00652.html">mcuxClEls_Hmac</a></div></div>  </div>
+<div class="title">MCUXCLELS_ECC (Sign and Verify) option bit field values<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00652.html">mcuxClEls_Ecc</a> &raquo; <a class="el" href="a00653.html">mcuxClEls_Ecc_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all functions of <a class="el" href="a00652.html">mcuxClEls_Hmac</a>.  
+<p>Bit field constants for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a> and <a class="el" href="a01035.html" title="Command option bit field for mcuxClEls_EccVerify_Async Bit field to configure mcuxClEls_EccVerifyOpti...">mcuxClEls_EccVerifyOption_t</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gafc82ce850568a1e0c9f44f9e59d6fbbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00623.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00677.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00656.html#gafc82ce850568a1e0c9f44f9e59d6fbbf">mcuxClEls_Hmac_Async</a> (<a class="el" href="a01064.html">mcuxClEls_HmacOption_t</a> options, <a class="el" href="a00677.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdx, uint8_t const *pPaddedKey, uint8_t const *pInput, size_t inputLength, uint8_t *pOutput)</td></tr>
-<tr class="memdesc:gafc82ce850568a1e0c9f44f9e59d6fbbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs HMAC with SHA-256.  <a href="#gafc82ce850568a1e0c9f44f9e59d6fbbf">More...</a><br /></td></tr>
-<tr class="separator:gafc82ce850568a1e0c9f44f9e59d6fbbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gafad38c505a64137b0283ad96c144c503"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00656.html#gafad38c505a64137b0283ad96c144c503">MCUXCLELS_ECC_HASHED</a></td></tr>
+<tr class="memdesc:gafad38c505a64137b0283ad96c144c503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#ab825e88899ff7627304d25fbcc1adffd" title="Define type of input, plain message or hash of message.">mcuxClEls_EccSignOption_t.echashchl</a> or <a class="el" href="a01035.html#a2642a5936ec9f5c7394704161c984598" title="Define type of input, plain message or hash of message.">mcuxClEls_EccVerifyOption_t.echashchl</a> to specify input is the hash of the message.  <a href="#gafad38c505a64137b0283ad96c144c503">More...</a><br /></td></tr>
+<tr class="separator:gafad38c505a64137b0283ad96c144c503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga871f176b3998d9b5dd709d5a6e2585bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00656.html#ga871f176b3998d9b5dd709d5a6e2585bd">MCUXCLELS_ECC_NOT_HASHED</a></td></tr>
+<tr class="memdesc:ga871f176b3998d9b5dd709d5a6e2585bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#ab825e88899ff7627304d25fbcc1adffd" title="Define type of input, plain message or hash of message.">mcuxClEls_EccSignOption_t.echashchl</a> or <a class="el" href="a01035.html#a2642a5936ec9f5c7394704161c984598" title="Define type of input, plain message or hash of message.">mcuxClEls_EccVerifyOption_t.echashchl</a> to specify input is the plain message.  <a href="#ga871f176b3998d9b5dd709d5a6e2585bd">More...</a><br /></td></tr>
+<tr class="separator:ga871f176b3998d9b5dd709d5a6e2585bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04c77ad43887a66b1b8df87cb9258981"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00656.html#ga04c77ad43887a66b1b8df87cb9258981">MCUXCLELS_ECC_RTF</a></td></tr>
+<tr class="memdesc:ga04c77ad43887a66b1b8df87cb9258981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#aa4bcc3f1aaf9e991e62cdc22ffd7500e" title="Define if signing the Run-Time Fingerprint.">mcuxClEls_EccSignOption_t.signrtf</a> to include the RTF in the signature.  <a href="#ga04c77ad43887a66b1b8df87cb9258981">More...</a><br /></td></tr>
+<tr class="separator:ga04c77ad43887a66b1b8df87cb9258981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae7ffc3999117e1796727bd7700d88745"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00656.html#gae7ffc3999117e1796727bd7700d88745">MCUXCLELS_ECC_NO_RTF</a></td></tr>
+<tr class="memdesc:gae7ffc3999117e1796727bd7700d88745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a01023.html#aa4bcc3f1aaf9e991e62cdc22ffd7500e" title="Define if signing the Run-Time Fingerprint.">mcuxClEls_EccSignOption_t.signrtf</a> to not include the RTF in the signature.  <a href="#gae7ffc3999117e1796727bd7700d88745">More...</a><br /></td></tr>
+<tr class="separator:gae7ffc3999117e1796727bd7700d88745"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all functions of <a class="el" href="a00652.html">mcuxClEls_Hmac</a>. </p>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="gafc82ce850568a1e0c9f44f9e59d6fbbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafc82ce850568a1e0c9f44f9e59d6fbbf">&#9670;&nbsp;</a></span>mcuxClEls_Hmac_Async()</h2>
+<p>Bit field constants for <a class="el" href="a01023.html" title="Command option bit field for mcuxClEls_EccSign_Async Bit field to configure mcuxClEls_EccSign_Async.">mcuxClEls_EccSignOption_t</a> and <a class="el" href="a01035.html" title="Command option bit field for mcuxClEls_EccVerify_Async Bit field to configure mcuxClEls_EccVerifyOpti...">mcuxClEls_EccVerifyOption_t</a>. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gafad38c505a64137b0283ad96c144c503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafad38c505a64137b0283ad96c144c503">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_HASHED</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00623.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00677.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_Hmac_Async </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a01064.html">mcuxClEls_HmacOption_t</a>&#160;</td>
-          <td class="paramname"><em>options</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00677.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>keyIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pPaddedKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pInput</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>inputLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pOutput</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define MCUXCLELS_ECC_HASHED</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Performs HMAC with SHA-256. </p>
-<p>Call <a class="el" href="a00633.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">options</td><td>The command options. For more information, see <a class="el" href="a01064.html" title="Command option bit field for mcuxClEls_Hmac_Async.">mcuxClEls_HmacOption_t</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">keyIdx</td><td>The HMAC key index, if an internal key shall be used </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pPaddedKey</td><td>Pointer to a memory location containing the padded HMAC key </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pInput</td><td>Pointer to a memory location which contains the data to be authenticated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">inputLength</td><td>Size of <code>pInput</code> in bytes </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pOutput</td><td>The output message authentication code</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>The properties of some parameters change with respect to selected options.</p>
-<dl>
-<dt>Parameter properties  </dt>
-<dd><dl>
-<dt><code>options.extkey</code> == <a class="el" href="a00654.html#ga19feebc17331ebe966c67a9bfed79e33" title="Set mcuxClEls_HmacOption_t.extkey to this value to use an external key.">MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE</a> </dt>
-<dd><p class="startdd"><code>keyIdx</code> is ignored.</p>
-<p class="interdd"><code>pPaddedKey</code> must contain the padded HMAC key, which can mean one of two things depending on the length of the original HMAC key, L<sub>kHMAC</sub>: </p><ul>
-<li>
-<p class="startli">If L<sub>kHMAC</sub> &le; <a class="el" href="a00653.html#ga039409b9bba04a61be14b175117fb932">MCUXCLELS_HMAC_PADDED_KEY_SIZE</a>, <code>pPaddedKey</code> must be the HMAC key padded with zero-bytes to fill the required length of <a class="el" href="a00653.html#ga039409b9bba04a61be14b175117fb932">MCUXCLELS_HMAC_PADDED_KEY_SIZE</a> bytes.</p>
-<p class="endli"></p>
-</li>
-<li>
-If L<sub>kHMAC</sub> &gt; <a class="el" href="a00653.html#ga039409b9bba04a61be14b175117fb932">MCUXCLELS_HMAC_PADDED_KEY_SIZE</a>, <code>pPaddedKey</code> must contain the SHA-256 hash of the HMAC key, padded with zero-bytes to fill the required length of <a class="el" href="a00653.html#ga039409b9bba04a61be14b175117fb932">MCUXCLELS_HMAC_PADDED_KEY_SIZE</a> bytes.</li>
-</ul>
-<p class="enddd"></p>
-</dd>
-<dt><code>options.extkey</code> == <a class="el" href="a00654.html#ga876370de65e0c65b54c39b34921a4444" title="Set mcuxClEls_HmacOption_t.extkey to this value to use a key from the ELS keystore.">MCUXCLELS_HMAC_EXTERNAL_KEY_DISABLE</a> </dt>
-<dd><p class="startdd"><code>keyIdx</code> must be a valid key index with the correct usage rights for HMAC.</p>
-<p class="interdd"><code>pPaddedKey</code> is ignored.</p>
-<p class="enddd"></p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00676.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00676.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00676.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Set this option at <a class="el" href="a01023.html#ab825e88899ff7627304d25fbcc1adffd" title="Define type of input, plain message or hash of message.">mcuxClEls_EccSignOption_t.echashchl</a> or <a class="el" href="a01035.html#a2642a5936ec9f5c7394704161c984598" title="Define type of input, plain message or hash of message.">mcuxClEls_EccVerifyOption_t.echashchl</a> to specify input is the hash of the message. </p>
+
+</div>
+</div>
+<a id="ga871f176b3998d9b5dd709d5a6e2585bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga871f176b3998d9b5dd709d5a6e2585bd">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_NOT_HASHED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ECC_NOT_HASHED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a01023.html#ab825e88899ff7627304d25fbcc1adffd" title="Define type of input, plain message or hash of message.">mcuxClEls_EccSignOption_t.echashchl</a> or <a class="el" href="a01035.html#a2642a5936ec9f5c7394704161c984598" title="Define type of input, plain message or hash of message.">mcuxClEls_EccVerifyOption_t.echashchl</a> to specify input is the plain message. </p>
+
+</div>
+</div>
+<a id="ga04c77ad43887a66b1b8df87cb9258981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga04c77ad43887a66b1b8df87cb9258981">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_RTF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ECC_RTF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a01023.html#aa4bcc3f1aaf9e991e62cdc22ffd7500e" title="Define if signing the Run-Time Fingerprint.">mcuxClEls_EccSignOption_t.signrtf</a> to include the RTF in the signature. </p>
+
+</div>
+</div>
+<a id="gae7ffc3999117e1796727bd7700d88745"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae7ffc3999117e1796727bd7700d88745">&#9670;&nbsp;</a></span>MCUXCLELS_ECC_NO_RTF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_ECC_NO_RTF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set this option at <a class="el" href="a01023.html#aa4bcc3f1aaf9e991e62cdc22ffd7500e" title="Define if signing the Run-Time Fingerprint.">mcuxClEls_EccSignOption_t.signrtf</a> to not include the RTF in the signature. </p>
 
 </div>
 </div>

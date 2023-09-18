@@ -1,9 +1,14 @@
 var a00596 =
 [
-    [ "mcuxClRandom_Status_t", "a00878.html#ga768ea9930242003d2a68991684a1e948", null ],
-    [ "mcuxClRandom_ContextDescriptor_t", "a00878.html#gab409cd7b1e5a4da822bf9ae43d00c79c", null ],
-    [ "mcuxClRandom_Context_t", "a00878.html#gac2ce3a52788240794afde522cfad65c5", null ],
-    [ "mcuxClRandom_ModeDescriptor_t", "a00878.html#gadcfae984a95f3e98617ca5fb9767f5cd", null ],
-    [ "mcuxClRandom_Mode_t", "a00878.html#ga2998181a66cbdc063aa08d76e5fdef9d", null ],
-    [ "mcuxClRandom_Config_t", "a00878.html#gaf1284eaa96ef47c06697f95e74ffc3ee", null ]
+    [ "mcuxClPsaDriver_Oracle_ExportPublicKey", "a00596.html#adcfc3eb30f8118b55740824564c6df36", null ],
+    [ "mcuxClPsaDriver_Oracle_LoadKey", "a00596.html#ad21416927fc67dc0db13e64d44e1f534", null ],
+    [ "mcuxClPsaDriver_Oracle_SuspendKey", "a00596.html#a1050e1cbae583aa795c783bf9284aa80", null ],
+    [ "mcuxClPsaDriver_Oracle_ResumeKey", "a00596.html#ac54cc3be0e7de1f066d17482b99944b2", null ],
+    [ "mcuxClPsaDriver_Oracle_UnloadKey", "a00596.html#a8aace3937de694abfb7334358892c4f6", null ],
+    [ "mcuxClPsaDriver_Oracle_ReserveKey", "a00596.html#ae12c6d141521eec4788e47fe7d804994", null ],
+    [ "mcuxClPsaDriver_Oracle_StoreKey", "a00596.html#a6ade92ad6a6c35191bcbbdf58d4dd186", null ],
+    [ "mcuxClPsaDriver_Oracle_ImportKey", "a00596.html#aa70e529f7af52dcd338e12863342c397", null ],
+    [ "mcuxClPsaDriver_Oracle_GetKeyBufferSizeFromKeyData", "a00596.html#a1638efe4265ebc5a46eb4514cbec4b2f", null ],
+    [ "mcuxClPsaDriver_Oracle_GetBuiltinKeyBufferSize", "a00596.html#a0a46af82599a799db12b9207968c2faf", null ],
+    [ "mcuxClPsaDriver_Oracle_GetBuiltinKeyBuffer", "a00596.html#aec7ace9faf5db20fdd142afd5d514f36", null ]
 ];

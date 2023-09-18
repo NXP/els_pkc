@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCsslDataIntegrity_Cfg.h File Reference</title>
+<title>MCUX CLNS: mcuxClSession_Functions.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,34 +103,44 @@ $(document).ready(function(){initNavTree('a00647.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCsslDataIntegrity_Cfg.h File Reference</div>  </div>
+<div class="title">mcuxClSession_Functions.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Configuration of the implementation for the data integrity mechanism.  
+<p>Top-level API of the mcuxClSession component.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;mcuxClCore_Platform.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00356_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00674_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00653_source.html">mcuxClSession_Types.h</a>&gt;</code><br />
+</div>
 <p><a href="a00647_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gad14940e758b00b26f2e699b4fc0144bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00911.html#gad14940e758b00b26f2e699b4fc0144bb">MCUX_CSSL_DI_USE_SECURE_COUNTER</a></td></tr>
-<tr class="memdesc:gad14940e758b00b26f2e699b4fc0144bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, use the data integrity mechanism implementation based on the CSSL secure counter mechanism.  <a href="a00911.html#gad14940e758b00b26f2e699b4fc0144bb">More...</a><br /></td></tr>
-<tr class="separator:gad14940e758b00b26f2e699b4fc0144bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4f0cea555852c5171e55303b6cb062be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00911.html#ga4f0cea555852c5171e55303b6cb062be">MCUX_CSSL_DI_USE_NONE</a></td></tr>
-<tr class="memdesc:ga4f0cea555852c5171e55303b6cb062be"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, do not use the data integrity mechanism.  <a href="a00911.html#ga4f0cea555852c5171e55303b6cb062be">More...</a><br /></td></tr>
-<tr class="separator:ga4f0cea555852c5171e55303b6cb062be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaf1b8776b0d519136df17f6dd632442cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00924.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00920.html#gaf1b8776b0d519136df17f6dd632442cf">mcuxClSession_init</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint32_t *const pCpuWaBuffer, uint32_t cpuWaLength, uint32_t *const pPkcWaBuffer, uint32_t pkcWaLength)</td></tr>
+<tr class="memdesc:gaf1b8776b0d519136df17f6dd632442cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Crypto Library session.  <a href="a00920.html#gaf1b8776b0d519136df17f6dd632442cf">More...</a><br /></td></tr>
+<tr class="separator:gaf1b8776b0d519136df17f6dd632442cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga159bff529d405fd6da2930590a69ac06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00924.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00920.html#ga159bff529d405fd6da2930590a69ac06">mcuxClSession_setRtf</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint8_t *const pRtf, <a class="el" href="a00924.html#gac635eeca4268dbd500e45806ee37f685">mcuxClSession_Rtf_t</a> RtfOptions)</td></tr>
+<tr class="memdesc:ga159bff529d405fd6da2930590a69ac06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the RTF option in a Crypto Library session.  <a href="a00920.html#ga159bff529d405fd6da2930590a69ac06">More...</a><br /></td></tr>
+<tr class="separator:ga159bff529d405fd6da2930590a69ac06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ba3d2c6e561c86e1da8fcc0abfd046c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00924.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00920.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c">mcuxClSession_cleanup</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
+<tr class="memdesc:ga1ba3d2c6e561c86e1da8fcc0abfd046c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up a Crypto Library session.  <a href="a00920.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c">More...</a><br /></td></tr>
+<tr class="separator:ga1ba3d2c6e561c86e1da8fcc0abfd046c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad324fd8f8eeefa29521c4297ac75fd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00924.html#ga9f2ec672d5a5fe92159f0e6159e04e4e">mcuxClSession_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00920.html#gaad324fd8f8eeefa29521c4297ac75fd2">mcuxClSession_destroy</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession)</td></tr>
+<tr class="memdesc:gaad324fd8f8eeefa29521c4297ac75fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a Crypto Library session.  <a href="a00920.html#gaad324fd8f8eeefa29521c4297ac75fd2">More...</a><br /></td></tr>
+<tr class="separator:gaad324fd8f8eeefa29521c4297ac75fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Configuration of the implementation for the data integrity mechanism. </p>
+<div class="textblock"><p>Top-level API of the mcuxClSession component. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00647.html">mcuxCsslDataIntegrity_Cfg.h</a></li>
+    <li class="navelem"><a class="el" href="a00647.html">mcuxClSession_Functions.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

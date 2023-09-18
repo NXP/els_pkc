@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Secure counter increment</title>
+<title>MCUX CLNS: mcuxCssl Memory Copy</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,150 +103,23 @@ $(document).ready(function(){initNavTree('a00955.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">Secure counter increment<div class="ingroups"><a class="el" href="a00912.html">MCUX CSSL &amp;ndash; Implementations</a> &raquo; <a class="el" href="a00953.html">Secure Counter: Disabled</a></div></div>  </div>
+<div class="title">mcuxCssl Memory Copy<div class="ingroups"><a class="el" href="a00925.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00950.html">mcuxCssl Memory API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Support for incrementing the secure counter.  
+<p>Control Flow Protected Memory Copy Function.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gaa4a21360f6c3d08fc777879e4f4551ed"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00955.html#gaa4a21360f6c3d08fc777879e4f4551ed">MCUX_CSSL_SC_ADD_IMPL</a>(value)</td></tr>
-<tr class="memdesc:gaa4a21360f6c3d08fc777879e4f4551ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with <code>value</code>.  <a href="#gaa4a21360f6c3d08fc777879e4f4551ed">More...</a><br /></td></tr>
-<tr class="separator:gaa4a21360f6c3d08fc777879e4f4551ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c0484fdff900c04462d668a0870bf33"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00955.html#ga9c0484fdff900c04462d668a0870bf33">MCUX_CSSL_SC_ADD_ON_CALL_IMPL</a>(value)</td></tr>
-<tr class="memdesc:ga9c0484fdff900c04462d668a0870bf33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with <code>value</code> in case of function call.  <a href="#ga9c0484fdff900c04462d668a0870bf33">More...</a><br /></td></tr>
-<tr class="separator:ga9c0484fdff900c04462d668a0870bf33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga45a909bcf29531036b1aad68ac8b0afb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00955.html#ga45a909bcf29531036b1aad68ac8b0afb">MCUX_CSSL_SC_ADD_0X1_IMPL</a>()</td></tr>
-<tr class="memdesc:ga45a909bcf29531036b1aad68ac8b0afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x1.  <a href="#ga45a909bcf29531036b1aad68ac8b0afb">More...</a><br /></td></tr>
-<tr class="separator:ga45a909bcf29531036b1aad68ac8b0afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac716380d3c29a995745053bb6915044"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00955.html#gaac716380d3c29a995745053bb6915044">MCUX_CSSL_SC_ADD_0X10_IMPL</a>()</td></tr>
-<tr class="memdesc:gaac716380d3c29a995745053bb6915044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x10.  <a href="#gaac716380d3c29a995745053bb6915044">More...</a><br /></td></tr>
-<tr class="separator:gaac716380d3c29a995745053bb6915044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb5fa6d42145120126b00ab3707711be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00955.html#gafb5fa6d42145120126b00ab3707711be">MCUX_CSSL_SC_ADD_0X100_IMPL</a>()</td></tr>
-<tr class="memdesc:gafb5fa6d42145120126b00ab3707711be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x100.  <a href="#gafb5fa6d42145120126b00ab3707711be">More...</a><br /></td></tr>
-<tr class="separator:gafb5fa6d42145120126b00ab3707711be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:a00956"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00956.html">mcuxCsslMemory_Copy Function Definitions</a></td></tr>
+<tr class="memdesc:a00956"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxCsslMemory_Copy Function Definitions <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Support for incrementing the secure counter. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gaa4a21360f6c3d08fc777879e4f4551ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa4a21360f6c3d08fc777879e4f4551ed">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_ADD_IMPL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">value</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Increment the secure counter with <code>value</code>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00956.html#gaca0635e01e8eef97f9a06a50b24d0941" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB_IMPL</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>Value with which the secure counter must be incremented. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga9c0484fdff900c04462d668a0870bf33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9c0484fdff900c04462d668a0870bf33">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_ON_CALL_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_ADD_ON_CALL_IMPL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">value</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Increment the secure counter with <code>value</code> in case of function call. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00955.html#gaa4a21360f6c3d08fc777879e4f4551ed" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD_IMPL</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>Value with which the secure counter must be incremented. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga45a909bcf29531036b1aad68ac8b0afb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga45a909bcf29531036b1aad68ac8b0afb">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_0X1_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_ADD_0X1_IMPL</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Increment the secure counter with 0x1. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00955.html#gaa4a21360f6c3d08fc777879e4f4551ed" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD_IMPL</a> </dd></dl>
-
-</div>
-</div>
-<a id="gaac716380d3c29a995745053bb6915044"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaac716380d3c29a995745053bb6915044">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_0X10_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_ADD_0X10_IMPL</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Increment the secure counter with 0x10. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00955.html#gaa4a21360f6c3d08fc777879e4f4551ed" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD_IMPL</a> </dd></dl>
-
-</div>
-</div>
-<a id="gafb5fa6d42145120126b00ab3707711be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafb5fa6d42145120126b00ab3707711be">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_0X100_IMPL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_SC_ADD_0X100_IMPL</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Increment the secure counter with 0x100. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00955.html#gaa4a21360f6c3d08fc777879e4f4551ed" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD_IMPL</a> </dd></dl>
-
-</div>
-</div>
+<p>Control Flow Protected Memory Copy Function. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

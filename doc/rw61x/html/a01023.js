@@ -1,6 +1,9 @@
 var a01023 =
 [
-    [ "dummy", "a01023.html#a3936b821c5632ad1dc249881a4e12b23", null ],
-    [ "mbedtls_ctx", "a01023.html#ae22b1d9e5b14ef372d65fb79faed5e04", null ],
-    [ "clns_data", "a01023.html#ac303e92a5b66d34eb4c15df7a0acea7a", null ]
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP", "a01023.html#ga574cb628611266d5182378f52676024b", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER", "a01023.html#ga2fff3270c5870bb95a69c8f283d91ee4", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY", "a01023.html#ga37d97fd46dcc20e7f93a5e06017ff967", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA", "a01023.html#gae310bda6e4756493489df624280503ef", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY", "a01023.html#ga51affb40be89a5c0b1eb0d17a135786c", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE", "a01023.html#gae3ae89f1d488c9444e0f8c3813b9753a", null ]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClPadding_Types.h File Reference</title>
+<title>MCUX CLNS: mcuxClMemory_Endianness.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,33 +103,46 @@ $(document).ready(function(){initNavTree('a00437.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClPadding_Types.h File Reference</div>  </div>
+<div class="title">mcuxClMemory_Endianness.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Type definitions for the mcuxClPadding component.  
+<p>Memory header for endianness support functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="a00443_source.html">mcuxClMemory_Types.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClConfig.h&gt;</code><br />
 </div>
 <p><a href="a00437_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga965eb15986e53917365f3f3b769e0968"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00726.html#ga965eb15986e53917365f3f3b769e0968">mcuxClPadding_Status_t</a></td></tr>
-<tr class="memdesc:ga965eb15986e53917365f3f3b769e0968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Padding status code.  <a href="a00726.html#ga965eb15986e53917365f3f3b769e0968">More...</a><br /></td></tr>
-<tr class="separator:ga965eb15986e53917365f3f3b769e0968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gaef4886d199c2539b209458a8c62378cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00739.html#gaef4886d199c2539b209458a8c62378cd">mcuxClMemory_StoreLittleEndian32</a>(destination,  value)</td></tr>
+<tr class="memdesc:gaef4886d199c2539b209458a8c62378cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a 32-bit unsigned integer to a little-endian order <code>uint8_t</code> array .  <a href="a00739.html#gaef4886d199c2539b209458a8c62378cd">More...</a><br /></td></tr>
+<tr class="separator:gaef4886d199c2539b209458a8c62378cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84f8097975ebea39deaea4ab9306d2ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00739.html#ga84f8097975ebea39deaea4ab9306d2ce">mcuxClMemory_StoreBigEndian32</a>(destination,  value)</td></tr>
+<tr class="memdesc:ga84f8097975ebea39deaea4ab9306d2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a 32-bit unsigned integer to a big-endian order <code>uint8_t</code> array.  <a href="a00739.html#ga84f8097975ebea39deaea4ab9306d2ce">More...</a><br /></td></tr>
+<tr class="separator:ga84f8097975ebea39deaea4ab9306d2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa3eba98f422623a6a02f15898449c874"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00739.html#gaa3eba98f422623a6a02f15898449c874">mcuxClMemory_LoadLittleEndian32</a>(source)</td></tr>
+<tr class="memdesc:gaa3eba98f422623a6a02f15898449c874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a little-endian order <code>uint8_t</code> array to a 32-bit unsigned integer.  <a href="a00739.html#gaa3eba98f422623a6a02f15898449c874">More...</a><br /></td></tr>
+<tr class="separator:gaa3eba98f422623a6a02f15898449c874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd3fd1c7ee32c2cd202a67bce5036778"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00739.html#gabd3fd1c7ee32c2cd202a67bce5036778">mcuxClMemory_LoadBigEndian32</a>(source)</td></tr>
+<tr class="memdesc:gabd3fd1c7ee32c2cd202a67bce5036778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a big-endian order <code>uint8_t</code> array to a 32-bit unsigned integer.  <a href="a00739.html#gabd3fd1c7ee32c2cd202a67bce5036778">More...</a><br /></td></tr>
+<tr class="separator:gabd3fd1c7ee32c2cd202a67bce5036778"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac426a079f1808ff0183d2851ead720c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00739.html#gac426a079f1808ff0183d2851ead720c5">MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS</a>(input)</td></tr>
+<tr class="memdesc:gac426a079f1808ff0183d2851ead720c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">MACRO that switches byte endianness of given CPU word.  <a href="a00739.html#gac426a079f1808ff0183d2851ead720c5">More...</a><br /></td></tr>
+<tr class="separator:gac426a079f1808ff0183d2851ead720c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Type definitions for the mcuxClPadding component. </p>
+<div class="textblock"><p>Memory header for endianness support functions. </p>
+<p>This header exposes macros that enable using endianness support functions. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00437.html">mcuxClPadding_Types.h</a></li>
+    <li class="navelem"><a class="el" href="a00437.html">mcuxClMemory_Endianness.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

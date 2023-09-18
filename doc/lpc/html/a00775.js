@@ -1,6 +1,6 @@
 var a00775 =
 [
-    [ "MCUX_CSSL_FP_EXPECT", "a00775.html#ga83db474d65df2b52abea45293f9684d0", null ],
-    [ "MCUX_CSSL_FP_CONDITIONAL", "a00775.html#ga24a55fecde25d3aa0a227814345b9714", null ],
-    [ "MCUX_CSSL_FP_ASSERT", "a00775.html#ga301b8f23ac6981e62649c8f571a6c6eb", null ]
+    [ "MCUXCLSESSION_STATUS_OK", "a00775.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6", null ],
+    [ "MCUXCLSESSION_STATUS_ERROR", "a00775.html#ga547425b7379de3ee1fb96c79140fd68e", null ],
+    [ "MCUXCLSESSION_STATUS_HW_UNAVAILABLE", "a00775.html#gaa3a0727f4c8a2658cb607d45cd28229e", null ]
 ];

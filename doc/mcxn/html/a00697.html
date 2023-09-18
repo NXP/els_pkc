@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLELS_STATUS_DRBGENTLVL_</title>
+<title>MCUX CLNS: MCUXCLELS_CIPHER_KEY_SIZE_AES_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,73 +105,75 @@ $(document).ready(function(){initNavTree('a00697.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLELS_STATUS_DRBGENTLVL_<div class="ingroups"><a class="el" href="a00670.html">mcuxClEls</a> &raquo; <a class="el" href="a00688.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00689.html">mcuxClEls_Common_Macros</a></div></div>  </div>
+<div class="title">MCUXCLELS_CIPHER_KEY_SIZE_AES_<div class="ingroups"><a class="el" href="a00688.html">mcuxClEls</a> &raquo; <a class="el" href="a00694.html">mcuxClEls_Cipher</a> &raquo; <a class="el" href="a00695.html">mcuxClEls_Cipher_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Constants for Entropy quality of the current DRBG instance.  
+<p>Defines valid AES key sizes in bytes.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga5fe71d0b1d8e1c52794c24a98b6e2645"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00697.html#ga5fe71d0b1d8e1c52794c24a98b6e2645">MCUXCLELS_STATUS_DRBGENTLVL_NONE</a></td></tr>
-<tr class="memdesc:ga5fe71d0b1d8e1c52794c24a98b6e2645"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value of <a class="el" href="a01026.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG is not running.  <a href="#ga5fe71d0b1d8e1c52794c24a98b6e2645">More...</a><br /></td></tr>
-<tr class="separator:ga5fe71d0b1d8e1c52794c24a98b6e2645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1276cd61f68f743f631cdae25662b310"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00697.html#ga1276cd61f68f743f631cdae25662b310">MCUXCLELS_STATUS_DRBGENTLVL_LOW</a></td></tr>
-<tr class="memdesc:ga1276cd61f68f743f631cdae25662b310"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value of <a class="el" href="a01026.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with a low security strength (sufficient for commands with a low DRBG security strength requirement, see the function description to check which level is required)  <a href="#ga1276cd61f68f743f631cdae25662b310">More...</a><br /></td></tr>
-<tr class="separator:ga1276cd61f68f743f631cdae25662b310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9e70aa4c959f092c77fc154327bc4bdb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00697.html#ga9e70aa4c959f092c77fc154327bc4bdb">MCUXCLELS_STATUS_DRBGENTLVL_HIGH</a></td></tr>
-<tr class="memdesc:ga9e70aa4c959f092c77fc154327bc4bdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This value of <a class="el" href="a01026.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with 128 bits of security strength (sufficient for commands with a high DRBG security strength requirement, see the function description to check which level is required)  <a href="#ga9e70aa4c959f092c77fc154327bc4bdb">More...</a><br /></td></tr>
-<tr class="separator:ga9e70aa4c959f092c77fc154327bc4bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68ee2f7110cd9f2dbce9af07b7c64f0f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00697.html#ga68ee2f7110cd9f2dbce9af07b7c64f0f">MCUXCLELS_CIPHER_KEY_SIZE_AES_128</a></td></tr>
+<tr class="memdesc:ga68ee2f7110cd9f2dbce9af07b7c64f0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of an AES128 key: 128 bit (16 bytes)  <a href="#ga68ee2f7110cd9f2dbce9af07b7c64f0f">More...</a><br /></td></tr>
+<tr class="separator:ga68ee2f7110cd9f2dbce9af07b7c64f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40b6da61509c272916be81c25780eeff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00697.html#ga40b6da61509c272916be81c25780eeff">MCUXCLELS_CIPHER_KEY_SIZE_AES_192</a></td></tr>
+<tr class="memdesc:ga40b6da61509c272916be81c25780eeff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of an AES192 key: 192 bit (24 bytes)  <a href="#ga40b6da61509c272916be81c25780eeff">More...</a><br /></td></tr>
+<tr class="separator:ga40b6da61509c272916be81c25780eeff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga474b8fd0f1e5832a4ba327ba7aee3520"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00697.html#ga474b8fd0f1e5832a4ba327ba7aee3520">MCUXCLELS_CIPHER_KEY_SIZE_AES_256</a></td></tr>
+<tr class="memdesc:ga474b8fd0f1e5832a4ba327ba7aee3520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of an AES192 key: 256 bit (32 bytes)  <a href="#ga474b8fd0f1e5832a4ba327ba7aee3520">More...</a><br /></td></tr>
+<tr class="separator:ga474b8fd0f1e5832a4ba327ba7aee3520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Constants for Entropy quality of the current DRBG instance. </p>
+<p>Defines valid AES key sizes in bytes. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga5fe71d0b1d8e1c52794c24a98b6e2645"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5fe71d0b1d8e1c52794c24a98b6e2645">&#9670;&nbsp;</a></span>MCUXCLELS_STATUS_DRBGENTLVL_NONE</h2>
+<a id="ga68ee2f7110cd9f2dbce9af07b7c64f0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga68ee2f7110cd9f2dbce9af07b7c64f0f">&#9670;&nbsp;</a></span>MCUXCLELS_CIPHER_KEY_SIZE_AES_128</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_STATUS_DRBGENTLVL_NONE</td>
+          <td class="memname">#define MCUXCLELS_CIPHER_KEY_SIZE_AES_128</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This value of <a class="el" href="a01026.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG is not running. </p>
+<p>Size of an AES128 key: 128 bit (16 bytes) </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01287.html#a5">mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c</a>, and <a class="el" href="a01286.html#a4">mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c</a>.</dd>
+</dl>
 
 </div>
 </div>
-<a id="ga1276cd61f68f743f631cdae25662b310"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1276cd61f68f743f631cdae25662b310">&#9670;&nbsp;</a></span>MCUXCLELS_STATUS_DRBGENTLVL_LOW</h2>
+<a id="ga40b6da61509c272916be81c25780eeff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga40b6da61509c272916be81c25780eeff">&#9670;&nbsp;</a></span>MCUXCLELS_CIPHER_KEY_SIZE_AES_192</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_STATUS_DRBGENTLVL_LOW</td>
+          <td class="memname">#define MCUXCLELS_CIPHER_KEY_SIZE_AES_192</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This value of <a class="el" href="a01026.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with a low security strength (sufficient for commands with a low DRBG security strength requirement, see the function description to check which level is required) </p>
+<p>Size of an AES192 key: 192 bit (24 bytes) </p>
 
 </div>
 </div>
-<a id="ga9e70aa4c959f092c77fc154327bc4bdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9e70aa4c959f092c77fc154327bc4bdb">&#9670;&nbsp;</a></span>MCUXCLELS_STATUS_DRBGENTLVL_HIGH</h2>
+<a id="ga474b8fd0f1e5832a4ba327ba7aee3520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga474b8fd0f1e5832a4ba327ba7aee3520">&#9670;&nbsp;</a></span>MCUXCLELS_CIPHER_KEY_SIZE_AES_256</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLELS_STATUS_DRBGENTLVL_HIGH</td>
+          <td class="memname">#define MCUXCLELS_CIPHER_KEY_SIZE_AES_256</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This value of <a class="el" href="a01026.html#a87b6c5ce545619bb478efcc020f862ff" title="Entropy quality of the current DRBG instance (For possible values of this field, see MCUXCLELS_STATUS...">mcuxClEls_HwState_t.drbgentlvl</a> means that the DRBG can generate random numbers with 128 bits of security strength (sufficient for commands with a high DRBG security strength requirement, see the function description to check which level is required) </p>
+<p>Size of an AES192 key: 256 bit (32 bytes) </p>
 
 </div>
 </div>

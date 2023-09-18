@@ -1,4 +1,4 @@
 var a00868 =
 [
-    [ "MCUXCLMEMORY_STATUS_OK", "a00868.html#ga0a6eff5e1bb27d6c237a16f7d60b9eb9", null ]
+    [ "mcuxClMac_compute", "a00868.html#gad2fe8b5e17f2b468fbe8a61f8fee5400", null ]
 ];

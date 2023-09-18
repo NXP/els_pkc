@@ -113,8 +113,8 @@ $(document).ready(function(){initNavTree('a00029.html','');});
 <p>TLS key derivation example.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="a00293_source.html">mcuxClEls.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00443_source.html">mcuxClMemory.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00581_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00455_source.html">mcuxClMemory.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00599_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="a00260_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClCore_Examples.h&gt;</code><br />
 <code>#include &lt;mcuxClExample_ELS_Helper.h&gt;</code><br />
@@ -128,20 +128,20 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a0f8366d89d3959a37ba157fad828c3f5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a0f8366d89d3959a37ba157fad828c3f5">ecc_public_key_client</a> [<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
+<tr class="memitem:a0f8366d89d3959a37ba157fad828c3f5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a0f8366d89d3959a37ba157fad828c3f5">ecc_public_key_client</a> [<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
 <tr class="memdesc:a0f8366d89d3959a37ba157fad828c3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination buffer to receive the public key of the mcuxClEls_EccKeyGen_Async operation.  <a href="#a0f8366d89d3959a37ba157fad828c3f5">More...</a><br /></td></tr>
 <tr class="separator:a0f8366d89d3959a37ba157fad828c3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad46e921046ed161d25a77f77fafeb4e8"><td class="memItemLeft" align="right" valign="top"><a id="ad46e921046ed161d25a77f77fafeb4e8"></a>
-static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ecc_public_key_server</b> [<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
+static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ecc_public_key_server</b> [<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
 <tr class="separator:ad46e921046ed161d25a77f77fafeb4e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41dc6b7ee183699c7c329f650ac0942b"><td class="memItemLeft" align="right" valign="top"><a id="a41dc6b7ee183699c7c329f650ac0942b"></a>
-static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>derivation_data</b> [<a class="el" href="a00732.html#ga542a08e762e187464b77a707973eff65">MCUXCLELS_TLS_DERIVATIONDATA_SIZE</a>]</td></tr>
+static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>derivation_data</b> [<a class="el" href="a00750.html#ga542a08e762e187464b77a707973eff65">MCUXCLELS_TLS_DERIVATIONDATA_SIZE</a>]</td></tr>
 <tr class="separator:a41dc6b7ee183699c7c329f650ac0942b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dea7e556f3948d30c543999250e9209"><td class="memItemLeft" align="right" valign="top"><a id="a5dea7e556f3948d30c543999250e9209"></a>
-static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>client_random</b> [<a class="el" href="a00732.html#gaf6beb56c924bf4d0bcea3a6fa31803be">MCUXCLELS_TLS_RANDOM_SIZE</a>]</td></tr>
+static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>client_random</b> [<a class="el" href="a00750.html#gaf6beb56c924bf4d0bcea3a6fa31803be">MCUXCLELS_TLS_RANDOM_SIZE</a>]</td></tr>
 <tr class="separator:a5dea7e556f3948d30c543999250e9209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39c9969896b3113bb25fc2643a6ea41e"><td class="memItemLeft" align="right" valign="top"><a id="a39c9969896b3113bb25fc2643a6ea41e"></a>
-static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>server_random</b> [<a class="el" href="a00732.html#gaf6beb56c924bf4d0bcea3a6fa31803be">MCUXCLELS_TLS_RANDOM_SIZE</a>]</td></tr>
+static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>server_random</b> [<a class="el" href="a00750.html#gaf6beb56c924bf4d0bcea3a6fa31803be">MCUXCLELS_TLS_RANDOM_SIZE</a>]</td></tr>
 <tr class="separator:a39c9969896b3113bb25fc2643a6ea41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a433bc05dd30cd1802dbea7a904e77065"><td class="memItemLeft" align="right" valign="top"><a id="a433bc05dd30cd1802dbea7a904e77065"></a>
 static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>master_key_string</b> []</td></tr>
@@ -179,15 +179,15 @@ static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>key_expansi
 </dl>
 <p>Initialize ELS, Enable the ELS</p>
 <p>&lt; [in] The TLS derivation data</p>
-<p>&lt; [in] Desired key properties. Only <a class="el" href="a01218.html#a50d3bbaabf919fab908e2ae83fe5a5ab" title="Access restriction to privileged mode.">mcuxClEls_KeyProp_t::upprot_priv</a> and <a class="el" href="a01218.html#a0d130be83d337e7a5d9ef56f4a92f3a0" title="Access restriction to TrustZone secure mode.">mcuxClEls_KeyProp_t::upprot_sec</a> are used, the rest are ignored.</p>
+<p>&lt; [in] Desired key properties. Only <a class="el" href="a01237.html#a50d3bbaabf919fab908e2ae83fe5a5ab" title="Access restriction to privileged mode.">mcuxClEls_KeyProp_t::upprot_priv</a> and <a class="el" href="a01237.html#a0d130be83d337e7a5d9ef56f4a92f3a0" title="Access restriction to TrustZone secure mode.">mcuxClEls_KeyProp_t::upprot_sec</a> are used, the rest are ignored.</p>
 <p>&lt; [in] The index of the TLS pre-master key, which is overwritten with the master key</p>
 <p>&lt; [in] The TLS derivation data</p>
-<p>&lt; [in] Desired key properties. Only <a class="el" href="a01218.html#a50d3bbaabf919fab908e2ae83fe5a5ab" title="Access restriction to privileged mode.">mcuxClEls_KeyProp_t::upprot_priv</a> and <a class="el" href="a01218.html#a0d130be83d337e7a5d9ef56f4a92f3a0" title="Access restriction to TrustZone secure mode.">mcuxClEls_KeyProp_t::upprot_sec</a> are used, the rest are ignored.</p>
+<p>&lt; [in] Desired key properties. Only <a class="el" href="a01237.html#a50d3bbaabf919fab908e2ae83fe5a5ab" title="Access restriction to privileged mode.">mcuxClEls_KeyProp_t::upprot_priv</a> and <a class="el" href="a01237.html#a0d130be83d337e7a5d9ef56f4a92f3a0" title="Access restriction to TrustZone secure mode.">mcuxClEls_KeyProp_t::upprot_sec</a> are used, the rest are ignored.</p>
 <p>&lt; [in] The index of the TLS master key, which is overwritten with one of the session keys.</p>
 <p>deleted keyIdxPrivClient keySlot</p>
 <p>deleted keyIdxPrivServer keySlot</p>
 <p>deleted i keySlot </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01276.html#a4">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01295.html#a4">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -203,7 +203,7 @@ static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>key_expansi
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_public_key_client[<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td>
+          <td class="memname"><a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_public_key_client[<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td>
         </tr>
       </table>
   </td>
@@ -214,7 +214,7 @@ static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>key_expansi
 </div><div class="memdoc">
 
 <p>Destination buffer to receive the public key of the mcuxClEls_EccKeyGen_Async operation. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01276.html#a0">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01295.html#a0">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
 </dl>
 
 </div>

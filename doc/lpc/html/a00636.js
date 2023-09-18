@@ -1,7 +1,5 @@
 var a00636 =
 [
-    [ "MCUXCLELS_ECC_VALUE_HASHED", "a00636.html#gac3be2289b4247767251a8d85014652bb", null ],
-    [ "MCUXCLELS_ECC_VALUE_NOT_HASHED", "a00636.html#ga90e38c2c9caeb976594c32d92bbc5d05", null ],
-    [ "MCUXCLELS_ECC_VALUE_RTF", "a00636.html#ga48a69913a0b9d082ea72b81f56ac1fdc", null ],
-    [ "MCUXCLELS_ECC_VALUE_NO_RTF", "a00636.html#ga66a8fbee1f549d2ad1819c0e08780e13", null ]
+    [ "MCUXCLELS_CMAC_KEY_SIZE_128", "a00636.html#ga62fa42c9462e49ed1e357287492a64e8", null ],
+    [ "MCUXCLELS_CMAC_KEY_SIZE_256", "a00636.html#gab62855422ff04c5fb61bdcd555282931", null ]
 ];

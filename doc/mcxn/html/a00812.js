@@ -1,11 +1,8 @@
 var a00812 =
 [
-    [ "mcuxClRandom_init", "a00812.html#ga989cf9033b30c383d1548037f2ec8bc9", null ],
-    [ "mcuxClRandom_reseed", "a00812.html#ga89fe90a4ca175d03b4a821cf2fa2004f", null ],
-    [ "mcuxClRandom_generate", "a00812.html#gadb7d7b6ff820450be3533014cb47f279", null ],
-    [ "mcuxClRandom_uninit", "a00812.html#ga92889d1e06ba33656278bd2a4110be99", null ],
-    [ "mcuxClRandom_selftest", "a00812.html#ga4c882c0d6b1e1bba418934c44acc873c", null ],
-    [ "mcuxClRandom_checkSecurityStrength", "a00812.html#ga6e48c6007ea1d6cfa2ec329152072fc0", null ],
-    [ "mcuxClRandom_ncInit", "a00812.html#ga4522b9cfa28cb224b653003d481d7100", null ],
-    [ "mcuxClRandom_ncGenerate", "a00812.html#ga942c035e4c1971f3e4da8cf252b6cdf6", null ]
+    [ "mcuxClMemory_StoreLittleEndian32", "a00812.html#gaef4886d199c2539b209458a8c62378cd", null ],
+    [ "mcuxClMemory_StoreBigEndian32", "a00812.html#ga84f8097975ebea39deaea4ab9306d2ce", null ],
+    [ "mcuxClMemory_LoadLittleEndian32", "a00812.html#gaa3eba98f422623a6a02f15898449c874", null ],
+    [ "mcuxClMemory_LoadBigEndian32", "a00812.html#gabd3fd1c7ee32c2cd202a67bce5036778", null ],
+    [ "MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS", "a00812.html#gac426a079f1808ff0183d2851ead720c5", null ]
 ];

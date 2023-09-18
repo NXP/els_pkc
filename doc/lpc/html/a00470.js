@@ -1,15 +1,11 @@
 var a00470 =
 [
-    [ "MCUXCLRANDOMMODES_PATCHMODE_DESCRIPTOR_SIZE", "a00737.html#ga2e6179f023e993cea2e6d14807f05f50", null ],
-    [ "MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE", "a00737.html#ga59fbf5778ef6a709439a803f25e01588", null ],
-    [ "MCUXCLRANDOMMODES_INIT_WACPU_SIZE", "a00737.html#gaec7b900425ae4a868bc28f07f244e012", null ],
-    [ "MCUXCLRANDOMMODES_RESEED_WACPU_SIZE", "a00737.html#ga50a8e0a649ba1eb61230eb08aad49d92", null ],
-    [ "MCUXCLRANDOMMODES_GENERATE_WACPU_SIZE", "a00737.html#gaacaa5035a96e553110c4f3b6597a89a0", null ],
-    [ "MCUXCLRANDOMMODES_SELFTEST_WACPU_SIZE", "a00737.html#ga92890503eaf94411a6eceede4bc0804c", null ],
-    [ "MCUXCLRANDOMMODES_UNINIT_WACPU_SIZE", "a00737.html#ga8ce34613a3418be522d9420f2ab49656", null ],
-    [ "MCUXCLRANDOMMODES_CHECKSECURITYSTRENGTH_WACPU_SIZE", "a00737.html#ga641f79548f72b067cebdca4eff78dd76", null ],
-    [ "MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE", "a00737.html#ga02a8fc4426640dc23d863cdef5afbc61", null ],
-    [ "MCUXCLRANDOMMODES_NCGENERATE_WACPU_SIZE", "a00737.html#ga36727c29c2050920e3e68b692dc76aca", null ],
-    [ "MCUXCLRANDOMMODES_CREATEPATCHMODE_WACPU_SIZE", "a00737.html#gaa2fb0e4c6985e63daae5e11e4031b2a8", null ],
-    [ "MCUXCLRANDOMMODES_CREATETESTMODEFROMNORMALMODE_WACPU_SIZE", "a00737.html#ga34185164de955a9bcda1e71bb3bf281e", null ]
+    [ "mcuxClRandom_init", "a00751.html#ga989cf9033b30c383d1548037f2ec8bc9", null ],
+    [ "mcuxClRandom_reseed", "a00751.html#ga89fe90a4ca175d03b4a821cf2fa2004f", null ],
+    [ "mcuxClRandom_generate", "a00751.html#gadb7d7b6ff820450be3533014cb47f279", null ],
+    [ "mcuxClRandom_uninit", "a00751.html#ga92889d1e06ba33656278bd2a4110be99", null ],
+    [ "mcuxClRandom_selftest", "a00751.html#ga4c882c0d6b1e1bba418934c44acc873c", null ],
+    [ "mcuxClRandom_checkSecurityStrength", "a00751.html#ga6e48c6007ea1d6cfa2ec329152072fc0", null ],
+    [ "mcuxClRandom_ncInit", "a00751.html#ga4522b9cfa28cb224b653003d481d7100", null ],
+    [ "mcuxClRandom_ncGenerate", "a00751.html#ga942c035e4c1971f3e4da8cf252b6cdf6", null ]
 ];

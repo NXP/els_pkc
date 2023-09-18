@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClHmac_Constants.h File Reference</title>
+<title>MCUX CLNS: mcuxClHashModes_Constants.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,52 +105,78 @@ $(document).ready(function(){initNavTree('a00470.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClHmac_Constants.h File Reference</div>  </div>
+<div class="title">mcuxClHashModes_Constants.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Constants for the mcuxClHmac component.  
+<p>Constants for use with the mcuxClHashModes component.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00455_source.html">mcuxClHash_Constants.h</a>&gt;</code><br />
 </div>
 <p><a href="a00470_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gab2c0a4b35c88ad7030723c7c08589973"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHMAC_ELS_OUTPUT_SIZE</b></td></tr>
-<tr class="separator:gab2c0a4b35c88ad7030723c7c08589973"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga834fe8d5cb9bd67d7546fb65b1ce0a3d"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHMAC_ELS_OUTPUT_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:ga834fe8d5cb9bd67d7546fb65b1ce0a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga805cc0a6fd67f42bd457b3580e74d1f3"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHMAC_MAX_OUTPUT_SIZE</b></td></tr>
-<tr class="separator:ga805cc0a6fd67f42bd457b3580e74d1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad0284f5ab76848289067aff908176bd"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHMAC_MAX_OUTPUT_SIZE_IN_WORDS</b></td></tr>
-<tr class="separator:gaad0284f5ab76848289067aff908176bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a88f703f1237941c22789183be3ddc2"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHMAC_ELS_BLOCK_SIZE</b></td></tr>
-<tr class="separator:ga3a88f703f1237941c22789183be3ddc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga38f449fb5de294a9f398b33a37b96708"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHMAC_ELS_SIZE_OF_LENGTH_FIELD</b></td></tr>
-<tr class="separator:ga38f449fb5de294a9f398b33a37b96708"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeea21ec876a193348d5f78b5014da165"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#gaeea21ec876a193348d5f78b5014da165">MCUXCLHMAC_ELS_MIN_PADDING_LENGTH</a></td></tr>
-<tr class="memdesc:gaeea21ec876a193348d5f78b5014da165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of minimum HMAC padding length.  <a href="a00832.html#gaeea21ec876a193348d5f78b5014da165">More...</a><br /></td></tr>
-<tr class="separator:gaeea21ec876a193348d5f78b5014da165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac9e4d270e79fa637dfac0c4919bf5eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00832.html#gac9e4d270e79fa637dfac0c4919bf5eda">MCUXCLHMAC_ELS_INPUTBUFFER_LENGTH</a>(dataLength)</td></tr>
-<tr class="memdesc:gac9e4d270e79fa637dfac0c4919bf5eda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formula to calculate input buffer size for HMAC with SHA-256.  <a href="a00832.html#gac9e4d270e79fa637dfac0c4919bf5eda">More...</a><br /></td></tr>
-<tr class="separator:gac9e4d270e79fa637dfac0c4919bf5eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafe7e3fec63db293d11223cf996b0f933"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#gafe7e3fec63db293d11223cf996b0f933">MCUXCLHASH_OUTPUT_SIZE_MD5</a></td></tr>
+<tr class="memdesc:gafe7e3fec63db293d11223cf996b0f933"><td class="mdescLeft">&#160;</td><td class="mdescRight">MD5 output size: 128 bit (16 bytes)  <a href="a00846.html#gafe7e3fec63db293d11223cf996b0f933">More...</a><br /></td></tr>
+<tr class="separator:gafe7e3fec63db293d11223cf996b0f933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8e6f2196aa9cc22514327290e9c6d265"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga8e6f2196aa9cc22514327290e9c6d265">MCUXCLHASH_OUTPUT_SIZE_SHA_1</a></td></tr>
+<tr class="memdesc:ga8e6f2196aa9cc22514327290e9c6d265"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-1 output size: 160 bit (20 bytes)  <a href="a00846.html#ga8e6f2196aa9cc22514327290e9c6d265">More...</a><br /></td></tr>
+<tr class="separator:ga8e6f2196aa9cc22514327290e9c6d265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f3a086ffb19f8127e04dd2e9c458a48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga4f3a086ffb19f8127e04dd2e9c458a48">MCUXCLHASH_OUTPUT_SIZE_SHA_224</a></td></tr>
+<tr class="memdesc:ga4f3a086ffb19f8127e04dd2e9c458a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-224 output size: 224 bit (28 bytes)  <a href="a00846.html#ga4f3a086ffb19f8127e04dd2e9c458a48">More...</a><br /></td></tr>
+<tr class="separator:ga4f3a086ffb19f8127e04dd2e9c458a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4d4bd473c10a1c0e474dfa6ebad83d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#gaf4d4bd473c10a1c0e474dfa6ebad83d3">MCUXCLHASH_OUTPUT_SIZE_SHA_256</a></td></tr>
+<tr class="memdesc:gaf4d4bd473c10a1c0e474dfa6ebad83d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-256 output size: 256 bit (32 bytes)  <a href="a00846.html#gaf4d4bd473c10a1c0e474dfa6ebad83d3">More...</a><br /></td></tr>
+<tr class="separator:gaf4d4bd473c10a1c0e474dfa6ebad83d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad9f68a357e04e78a8930ae8575d2fb95"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#gad9f68a357e04e78a8930ae8575d2fb95">MCUXCLHASH_OUTPUT_SIZE_SHA_384</a></td></tr>
+<tr class="memdesc:gad9f68a357e04e78a8930ae8575d2fb95"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 output size: 384 bit (48 bytes)  <a href="a00846.html#gad9f68a357e04e78a8930ae8575d2fb95">More...</a><br /></td></tr>
+<tr class="separator:gad9f68a357e04e78a8930ae8575d2fb95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab3854625bf1807c8be0d0eda40c9b15c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#gab3854625bf1807c8be0d0eda40c9b15c">MCUXCLHASH_OUTPUT_SIZE_SHA_512</a></td></tr>
+<tr class="memdesc:gab3854625bf1807c8be0d0eda40c9b15c"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512 output size: 512 bit (64 bytes)  <a href="a00846.html#gab3854625bf1807c8be0d0eda40c9b15c">More...</a><br /></td></tr>
+<tr class="separator:gab3854625bf1807c8be0d0eda40c9b15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b26c1ca0f30feb3c3e12f97ca433935"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga2b26c1ca0f30feb3c3e12f97ca433935">MCUXCLHASH_OUTPUT_SIZE_SHA_512_224</a></td></tr>
+<tr class="memdesc:ga2b26c1ca0f30feb3c3e12f97ca433935"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512/224 output size: 224 bit (28 bytes)  <a href="a00846.html#ga2b26c1ca0f30feb3c3e12f97ca433935">More...</a><br /></td></tr>
+<tr class="separator:ga2b26c1ca0f30feb3c3e12f97ca433935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga106037a11d7e73694703696f1cbd9b8a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga106037a11d7e73694703696f1cbd9b8a">MCUXCLHASH_OUTPUT_SIZE_SHA_512_256</a></td></tr>
+<tr class="memdesc:ga106037a11d7e73694703696f1cbd9b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512/256 output size: 256 bit (32 bytes)  <a href="a00846.html#ga106037a11d7e73694703696f1cbd9b8a">More...</a><br /></td></tr>
+<tr class="separator:ga106037a11d7e73694703696f1cbd9b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9b455baf1195244a5a21f95d24d1bb78"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga9b455baf1195244a5a21f95d24d1bb78">MCUXCLHASH_OUTPUT_SIZE_SHA3_224</a></td></tr>
+<tr class="memdesc:ga9b455baf1195244a5a21f95d24d1bb78"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-224 output size: 224 bit (28 bytes)  <a href="a00846.html#ga9b455baf1195244a5a21f95d24d1bb78">More...</a><br /></td></tr>
+<tr class="separator:ga9b455baf1195244a5a21f95d24d1bb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d4ce7c5407c45486781710968933d59"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga2d4ce7c5407c45486781710968933d59">MCUXCLHASH_OUTPUT_SIZE_SHA3_256</a></td></tr>
+<tr class="memdesc:ga2d4ce7c5407c45486781710968933d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-256 output size: 256 bit (32 bytes)  <a href="a00846.html#ga2d4ce7c5407c45486781710968933d59">More...</a><br /></td></tr>
+<tr class="separator:ga2d4ce7c5407c45486781710968933d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ba519f3947e62fe3c33ba89912415f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga9ba519f3947e62fe3c33ba89912415f2">MCUXCLHASH_OUTPUT_SIZE_SHA3_384</a></td></tr>
+<tr class="memdesc:ga9ba519f3947e62fe3c33ba89912415f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-384 output size: 384 bit (48 bytes)  <a href="a00846.html#ga9ba519f3947e62fe3c33ba89912415f2">More...</a><br /></td></tr>
+<tr class="separator:ga9ba519f3947e62fe3c33ba89912415f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98c0f235847458f6e0785ce7e1fa4de1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga98c0f235847458f6e0785ce7e1fa4de1">MCUXCLHASH_OUTPUT_SIZE_SHA3_512</a></td></tr>
+<tr class="memdesc:ga98c0f235847458f6e0785ce7e1fa4de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-512 output size: 512 bit (64 bytes)  <a href="a00846.html#ga98c0f235847458f6e0785ce7e1fa4de1">More...</a><br /></td></tr>
+<tr class="separator:ga98c0f235847458f6e0785ce7e1fa4de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf92c4c2afd86cf0276655d833fc92946"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#gaf92c4c2afd86cf0276655d833fc92946">MCUXCLHASH_OUTPUT_SIZE_SHA3_SHAKE_128</a></td></tr>
+<tr class="memdesc:gaf92c4c2afd86cf0276655d833fc92946"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-SHAKE 128 output size: 1344 bit (168 bytes)  <a href="a00846.html#gaf92c4c2afd86cf0276655d833fc92946">More...</a><br /></td></tr>
+<tr class="separator:gaf92c4c2afd86cf0276655d833fc92946"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6208318273d199569492d2df54285bfb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga6208318273d199569492d2df54285bfb">MCUXCLHASH_OUTPUT_SIZE_SHA3_SHAKE_256</a></td></tr>
+<tr class="memdesc:ga6208318273d199569492d2df54285bfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-SHAKE 256 output size: 1088 bit (136 bytes)  <a href="a00846.html#ga6208318273d199569492d2df54285bfb">More...</a><br /></td></tr>
+<tr class="separator:ga6208318273d199569492d2df54285bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabee2279c4070bb6e490acc465d19f7b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#gabee2279c4070bb6e490acc465d19f7b1">MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_128</a></td></tr>
+<tr class="memdesc:gabee2279c4070bb6e490acc465d19f7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-CSHAKE 128 output size: 1344 bit (168 bytes)  <a href="a00846.html#gabee2279c4070bb6e490acc465d19f7b1">More...</a><br /></td></tr>
+<tr class="separator:gabee2279c4070bb6e490acc465d19f7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1310682860222f35228b9b69e9110b7b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga1310682860222f35228b9b69e9110b7b">MCUXCLHASH_OUTPUT_SIZE_SHA3_CSHAKE_256</a></td></tr>
+<tr class="memdesc:ga1310682860222f35228b9b69e9110b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA3-CSHAKE 256 output size: 1088 bit (136 bytes)  <a href="a00846.html#ga1310682860222f35228b9b69e9110b7b">More...</a><br /></td></tr>
+<tr class="separator:ga1310682860222f35228b9b69e9110b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1be4781928bd9fa5aa9ea9fc9140320b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00846.html#ga1be4781928bd9fa5aa9ea9fc9140320b">MCUXCLHASH_MAX_OUTPUT_SIZE</a></td></tr>
+<tr class="memdesc:ga1be4781928bd9fa5aa9ea9fc9140320b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum output size.  <a href="a00846.html#ga1be4781928bd9fa5aa9ea9fc9140320b">More...</a><br /></td></tr>
+<tr class="separator:ga1be4781928bd9fa5aa9ea9fc9140320b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Constants for the mcuxClHmac component. </p>
+<div class="textblock"><p>Constants for use with the mcuxClHashModes component. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00470.html">mcuxClHmac_Constants.h</a></li>
+    <li class="navelem"><a class="el" href="a00470.html">mcuxClHashModes_Constants.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

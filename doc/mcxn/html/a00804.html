@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLOSCCASM3_CONTEXT</title>
+<title>MCUX CLNS: MAC mode definitions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,37 +103,202 @@ $(document).ready(function(){initNavTree('a00804.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLOSCCASM3_CONTEXT</div>  </div>
+<div class="title">MAC mode definitions<div class="ingroups"><a class="el" href="a00673.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00962.html">MAC Modes API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Definitions of context sizes for the mcuxClOsccaSm3 multi-part functions.  
+<p>Modes used by the MAC operations.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga1ac92cebbc8b9f549fd7c7eddc563134"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga1ac92cebbc8b9f549fd7c7eddc563134">MCUXCLOSCCASM3_CONTEXT_SIZE</a></td></tr>
-<tr class="memdesc:ga1ac92cebbc8b9f549fd7c7eddc563134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the context size for streaming hashing interfaces.  <a href="#ga1ac92cebbc8b9f549fd7c7eddc563134">More...</a><br /></td></tr>
-<tr class="separator:ga1ac92cebbc8b9f549fd7c7eddc563134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga7df28da412f427562a5ffcb2b3ab8c35"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga7df28da412f427562a5ffcb2b3ab8c35">mcuxClMac_ModeDescriptor_CMAC</a></td></tr>
+<tr class="memdesc:ga7df28da412f427562a5ffcb2b3ab8c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">CMAC mode descriptor.  <a href="#ga7df28da412f427562a5ffcb2b3ab8c35">More...</a><br /></td></tr>
+<tr class="separator:ga7df28da412f427562a5ffcb2b3ab8c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab5f61e17bb7b7d97f69745700f107bc6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#gab5f61e17bb7b7d97f69745700f107bc6">mcuxClMac_Mode_CMAC</a></td></tr>
+<tr class="memdesc:gab5f61e17bb7b7d97f69745700f107bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">CMAC mode.  <a href="#gab5f61e17bb7b7d97f69745700f107bc6">More...</a><br /></td></tr>
+<tr class="separator:gab5f61e17bb7b7d97f69745700f107bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab8171ca5a2cad3f74f26cade42abb4fa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#gab8171ca5a2cad3f74f26cade42abb4fa">mcuxClMac_ModeDescriptor_CBCMAC_NoPadding</a></td></tr>
+<tr class="memdesc:gab8171ca5a2cad3f74f26cade42abb4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">CBC-MAC mode descriptor without padding.  <a href="#gab8171ca5a2cad3f74f26cade42abb4fa">More...</a><br /></td></tr>
+<tr class="separator:gab8171ca5a2cad3f74f26cade42abb4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0edfb9edb1c66eba797754851e463a20"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga0edfb9edb1c66eba797754851e463a20">mcuxClMac_Mode_CBCMAC_NoPadding</a></td></tr>
+<tr class="memdesc:ga0edfb9edb1c66eba797754851e463a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">CBC-MAC mode without padding.  <a href="#ga0edfb9edb1c66eba797754851e463a20">More...</a><br /></td></tr>
+<tr class="separator:ga0edfb9edb1c66eba797754851e463a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf3978d54625d231254d9b42bcbf349c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#gacf3978d54625d231254d9b42bcbf349c">mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1</a></td></tr>
+<tr class="memdesc:gacf3978d54625d231254d9b42bcbf349c"><td class="mdescLeft">&#160;</td><td class="mdescRight">CBC-MAC mode descriptor with ISO/IEC 9797-1 padding method 1.  <a href="#gacf3978d54625d231254d9b42bcbf349c">More...</a><br /></td></tr>
+<tr class="separator:gacf3978d54625d231254d9b42bcbf349c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39e525bf4e237be5933966afa1eafd02"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga39e525bf4e237be5933966afa1eafd02">mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method1</a></td></tr>
+<tr class="memdesc:ga39e525bf4e237be5933966afa1eafd02"><td class="mdescLeft">&#160;</td><td class="mdescRight">CBC-MAC mode with ISO/IEC 9797-1 padding method 1.  <a href="#ga39e525bf4e237be5933966afa1eafd02">More...</a><br /></td></tr>
+<tr class="separator:ga39e525bf4e237be5933966afa1eafd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaacbabbb60934ae05725b5cb2889c7bce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#gaacbabbb60934ae05725b5cb2889c7bce">mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2</a></td></tr>
+<tr class="memdesc:gaacbabbb60934ae05725b5cb2889c7bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">CBC-MAC mode descriptor with ISO/IEC 9797-1 padding method 2.  <a href="#gaacbabbb60934ae05725b5cb2889c7bce">More...</a><br /></td></tr>
+<tr class="separator:gaacbabbb60934ae05725b5cb2889c7bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6727ecd0ad3c728bb1ba822f7fd6f485"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga6727ecd0ad3c728bb1ba822f7fd6f485">mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2</a></td></tr>
+<tr class="memdesc:ga6727ecd0ad3c728bb1ba822f7fd6f485"><td class="mdescLeft">&#160;</td><td class="mdescRight">CBC-MAC mode with ISO/IEC 9797-1 padding method 2.  <a href="#ga6727ecd0ad3c728bb1ba822f7fd6f485">More...</a><br /></td></tr>
+<tr class="separator:ga6727ecd0ad3c728bb1ba822f7fd6f485"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Definitions of context sizes for the mcuxClOsccaSm3 multi-part functions. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga1ac92cebbc8b9f549fd7c7eddc563134"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1ac92cebbc8b9f549fd7c7eddc563134">&#9670;&nbsp;</a></span>MCUXCLOSCCASM3_CONTEXT_SIZE</h2>
+<p>Modes used by the MAC operations. </p>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ga7df28da412f427562a5ffcb2b3ab8c35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7df28da412f427562a5ffcb2b3ab8c35">&#9670;&nbsp;</a></span>mcuxClMac_ModeDescriptor_CMAC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLOSCCASM3_CONTEXT_SIZE</td>
+          <td class="memname">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> mcuxClMac_ModeDescriptor_CMAC</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Defines the context size for streaming hashing interfaces. </p>
+<p>CMAC mode descriptor. </p>
+
+</div>
+</div>
+<a id="gab5f61e17bb7b7d97f69745700f107bc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab5f61e17bb7b7d97f69745700f107bc6">&#9670;&nbsp;</a></span>mcuxClMac_Mode_CMAC</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a> mcuxClMac_Mode_CMAC</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CMAC mode. </p>
+
+</div>
+</div>
+<a id="gab8171ca5a2cad3f74f26cade42abb4fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab8171ca5a2cad3f74f26cade42abb4fa">&#9670;&nbsp;</a></span>mcuxClMac_ModeDescriptor_CBCMAC_NoPadding</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> mcuxClMac_ModeDescriptor_CBCMAC_NoPadding</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CBC-MAC mode descriptor without padding. </p>
+
+</div>
+</div>
+<a id="ga0edfb9edb1c66eba797754851e463a20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0edfb9edb1c66eba797754851e463a20">&#9670;&nbsp;</a></span>mcuxClMac_Mode_CBCMAC_NoPadding</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a> mcuxClMac_Mode_CBCMAC_NoPadding</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CBC-MAC mode without padding. </p>
+
+</div>
+</div>
+<a id="gacf3978d54625d231254d9b42bcbf349c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacf3978d54625d231254d9b42bcbf349c">&#9670;&nbsp;</a></span>mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CBC-MAC mode descriptor with ISO/IEC 9797-1 padding method 1. </p>
+
+</div>
+</div>
+<a id="ga39e525bf4e237be5933966afa1eafd02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga39e525bf4e237be5933966afa1eafd02">&#9670;&nbsp;</a></span>mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a> mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CBC-MAC mode with ISO/IEC 9797-1 padding method 1. </p>
+
+</div>
+</div>
+<a id="gaacbabbb60934ae05725b5cb2889c7bce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaacbabbb60934ae05725b5cb2889c7bce">&#9670;&nbsp;</a></span>mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00799.html#gaad5e6326d43f28d324ef2d98ac3ad2cc">mcuxClMac_ModeDescriptor_t</a> mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CBC-MAC mode descriptor with ISO/IEC 9797-1 padding method 2. </p>
+
+</div>
+</div>
+<a id="ga6727ecd0ad3c728bb1ba822f7fd6f485"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6727ecd0ad3c728bb1ba822f7fd6f485">&#9670;&nbsp;</a></span>mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00799.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a> mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CBC-MAC mode with ISO/IEC 9797-1 padding method 2. </p>
 
 </div>
 </div>

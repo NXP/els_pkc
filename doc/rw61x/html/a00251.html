@@ -114,12 +114,12 @@ $(document).ready(function(){initNavTree('a00251.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;common.h&quot;</code><br />
 <code>#include &lt;<a class="el" href="a00389_source.html">mcuxClEls.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00629_source.html">mcuxClSession.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00485_source.html">mcuxClKey.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00656_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00644_source.html">mcuxClSession.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00497_source.html">mcuxClKey.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00674_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClToolchain.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00575_source.html">mcuxClPsaDriver.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00590_source.html">mcuxClPsaDriver.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClCore_Examples.h&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -134,12 +134,12 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a5ae4fcb345fcf8d9a134c9d3441ded27"><td class="memItemLeft" align="right" valign="top"><a id="a5ae4fcb345fcf8d9a134c9d3441ded27"></a>
-static const uint8_t expectKeyRet [<a class="el" href="a00782.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((aligned(4)))</td></tr>
+static const uint8_t expectKeyRet [<a class="el" href="a00800.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((aligned(4)))</td></tr>
 <tr class="separator:a5ae4fcb345fcf8d9a134c9d3441ded27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a325f97a9cfe0c10829bec5763bfc4e92"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00251.html#a325f97a9cfe0c10829bec5763bfc4e92">load_key_udf</a> (<a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> targetKeyIdx, <a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a> targetKeyProperties, uint8_t *pOutKey)</td></tr>
+<tr class="memitem:a325f97a9cfe0c10829bec5763bfc4e92"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00251.html#a325f97a9cfe0c10829bec5763bfc4e92">load_key_udf</a> (<a class="el" href="a00839.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> targetKeyIdx, <a class="el" href="a01306.html">mcuxClEls_KeyProp_t</a> targetKeyProperties, uint8_t *pOutKey)</td></tr>
 <tr class="memdesc:a325f97a9cfe0c10829bec5763bfc4e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal function that loads a known key into the ELS key store via mcuxClEls_KeyProvision_Async.  <a href="#a325f97a9cfe0c10829bec5763bfc4e92">More...</a><br /></td></tr>
 <tr class="separator:a325f97a9cfe0c10829bec5763bfc4e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65fd6402d13f2df2135f2e1e8ade2200"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00251.html#a65fd6402d13f2df2135f2e1e8ade2200">rfc3394_wrap</a> (const uint8_t *pInput, size_t inputLength, <a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdx, uint8_t *pOutput, <a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a> properties)</td></tr>
+<tr class="memitem:a65fd6402d13f2df2135f2e1e8ade2200"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00251.html#a65fd6402d13f2df2135f2e1e8ade2200">rfc3394_wrap</a> (const uint8_t *pInput, size_t inputLength, <a class="el" href="a00839.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdx, uint8_t *pOutput, <a class="el" href="a01306.html">mcuxClEls_KeyProp_t</a> properties)</td></tr>
 <tr class="memdesc:a65fd6402d13f2df2135f2e1e8ade2200"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal function that performs RFC3394 key wrapping.  <a href="#a65fd6402d13f2df2135f2e1e8ade2200">More...</a><br /></td></tr>
 <tr class="separator:a65fd6402d13f2df2135f2e1e8ade2200"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78d54162c02665f0c1db9d60b506984f"><td class="memItemLeft" align="right" valign="top"><a id="a78d54162c02665f0c1db9d60b506984f"></a>
@@ -161,13 +161,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClPsaDriver_keyge
         <tr>
           <td class="memname">static bool load_key_udf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00839.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
           <td class="paramname"><em>targetKeyIdx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a01306.html">mcuxClEls_KeyProp_t</a>&#160;</td>
           <td class="paramname"><em>targetKeyProperties</em>, </td>
         </tr>
         <tr>
@@ -198,7 +198,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClPsaDriver_keyge
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01358.html#a1">mcuxClPsaDriver_keygen_export_public_key_oracle_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01377.html#a1">mcuxClPsaDriver_keygen_export_public_key_oracle_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -227,7 +227,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClPsaDriver_keyge
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00839.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
           <td class="paramname"><em>keyIdx</em>, </td>
         </tr>
         <tr>
@@ -239,7 +239,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClPsaDriver_keyge
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a01306.html">mcuxClEls_KeyProp_t</a>&#160;</td>
           <td class="paramname"><em>properties</em>&#160;</td>
         </tr>
         <tr>
@@ -263,7 +263,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClPsaDriver_keyge
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01358.html#a14">mcuxClPsaDriver_keygen_export_public_key_oracle_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01377.html#a14">mcuxClPsaDriver_keygen_export_public_key_oracle_example.c</a>.</dd>
 </dl>
 
 </div>

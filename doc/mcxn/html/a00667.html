@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEcc_Macros</title>
+<title>MCUX CLNS: mcuxClAead_MemoryConsumption</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,66 +103,89 @@ $(document).ready(function(){initNavTree('a00667.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEcc_Macros<div class="ingroups"><a class="el" href="a00661.html">mcuxClEcc</a></div></div>  </div>
+<div class="title">mcuxClAead_MemoryConsumption<div class="ingroups"><a class="el" href="a00673.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00661.html">mcuxClAead</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all macros of <a class="el" href="a00661.html">mcuxClEcc</a>.  
+<p>Defines the memory consumption for the mcuxClAead component All work area sizes in bytes are a multiple of CPU wordsize.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
-Modules</h2></td></tr>
-<tr class="memitem:a00940"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00940.html">MCUXCLECC_STATUS_</a></td></tr>
-<tr class="memdesc:a00940"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxClEcc return code definitions <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00941"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html">MCUXCLECC_MONTDH_STATUS_</a></td></tr>
-<tr class="memdesc:a00941"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxClEcc_Mont return code definitions <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gaf044f4a5eeeecc4ec5b01aed19f2fe41"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00667.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a></td></tr>
-<tr class="memdesc:gaf044f4a5eeeecc4ec5b01aed19f2fe41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for mcuxClEcc component return codes.  <a href="#gaf044f4a5eeeecc4ec5b01aed19f2fe41">More...</a><br /></td></tr>
-<tr class="separator:gaf044f4a5eeeecc4ec5b01aed19f2fe41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3900d9bdb95a061d26b71f300318b6a1"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00667.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00667.html#ga3900d9bdb95a061d26b71f300318b6a1">mcuxClEcc_Status_Protected_t</a></td></tr>
-<tr class="memdesc:ga3900d9bdb95a061d26b71f300318b6a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deprecated type for mcuxClEcc component return codes.  <a href="#ga3900d9bdb95a061d26b71f300318b6a1">More...</a><br /></td></tr>
-<tr class="separator:ga3900d9bdb95a061d26b71f300318b6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga53e8c4dc830f50602ff699bf0b747495"><td class="memItemLeft" align="right" valign="top"><a id="ga53e8c4dc830f50602ff699bf0b747495"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_SIZE_IN_CPUWORDS</b>(size)</td></tr>
+<tr class="separator:ga53e8c4dc830f50602ff699bf0b747495"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d28570552a4193d7077054cbda8e618"><td class="memItemLeft" align="right" valign="top"><a id="ga0d28570552a4193d7077054cbda8e618"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_CRYPT_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:ga0d28570552a4193d7077054cbda8e618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf205dbdf5c15f82012a737aff0c00a08"><td class="memItemLeft" align="right" valign="top"><a id="gaf205dbdf5c15f82012a737aff0c00a08"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_CRYPT_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:gaf205dbdf5c15f82012a737aff0c00a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae82e7089a8cecc5b45bd852ea297b0c1"><td class="memItemLeft" align="right" valign="top"><a id="gae82e7089a8cecc5b45bd852ea297b0c1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_INIT_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:gae82e7089a8cecc5b45bd852ea297b0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa19dc3346683e79084c252cd00c9e8f1"><td class="memItemLeft" align="right" valign="top"><a id="gaa19dc3346683e79084c252cd00c9e8f1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_INIT_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:gaa19dc3346683e79084c252cd00c9e8f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9603396be29445bde86580ed7dbfad26"><td class="memItemLeft" align="right" valign="top"><a id="ga9603396be29445bde86580ed7dbfad26"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_PROCESS_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:ga9603396be29445bde86580ed7dbfad26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32478a7abada179f4de0de2e0ead4dc9"><td class="memItemLeft" align="right" valign="top"><a id="ga32478a7abada179f4de0de2e0ead4dc9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_PROCESS_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:ga32478a7abada179f4de0de2e0ead4dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac0c234139ddc3dacfb48774e34565140"><td class="memItemLeft" align="right" valign="top"><a id="gac0c234139ddc3dacfb48774e34565140"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_PROCESS_ADATA_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:gac0c234139ddc3dacfb48774e34565140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaae9aecd6c4b7d34ec93ef74be250ca5"><td class="memItemLeft" align="right" valign="top"><a id="gaaae9aecd6c4b7d34ec93ef74be250ca5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_PROCESS_ADATA_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:gaaae9aecd6c4b7d34ec93ef74be250ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga659891bea9bc39459ec08e63425ffd9c"><td class="memItemLeft" align="right" valign="top"><a id="ga659891bea9bc39459ec08e63425ffd9c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_FINISH_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:ga659891bea9bc39459ec08e63425ffd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga50aed34b2310689b37909b6461ce1e4f"><td class="memItemLeft" align="right" valign="top"><a id="ga50aed34b2310689b37909b6461ce1e4f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_FINISH_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:ga50aed34b2310689b37909b6461ce1e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadfc0bd4adcf283c13dd2c5411cd12b83"><td class="memItemLeft" align="right" valign="top"><a id="gadfc0bd4adcf283c13dd2c5411cd12b83"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_VERIFY_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:gadfc0bd4adcf283c13dd2c5411cd12b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d51597b8101e7236462bbdbc18b8d8a"><td class="memItemLeft" align="right" valign="top"><a id="ga4d51597b8101e7236462bbdbc18b8d8a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_VERIFY_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:ga4d51597b8101e7236462bbdbc18b8d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7c6348ab0e03e3c682368c4eec68a68"><td class="memItemLeft" align="right" valign="top"><a id="gaa7c6348ab0e03e3c682368c4eec68a68"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_MAX_CPU_WA_BUFFER_SIZE</b></td></tr>
+<tr class="separator:gaa7c6348ab0e03e3c682368c4eec68a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac639e0e2b92fb940c4b22e0b264b6a44"><td class="memItemLeft" align="right" valign="top"><a id="gac639e0e2b92fb940c4b22e0b264b6a44"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:gac639e0e2b92fb940c4b22e0b264b6a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace6ad3b0b19634794833b688437380ff"><td class="memItemLeft" align="right" valign="top"><a id="gace6ad3b0b19634794833b688437380ff"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_CONTEXT_SIZE</b></td></tr>
+<tr class="separator:gace6ad3b0b19634794833b688437380ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab4cc3939b235a6d122ce012c23d3e61a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00667.html#gab4cc3939b235a6d122ce012c23d3e61a">MCUXCLAEAD_WA_SIZE_MAX</a></td></tr>
+<tr class="memdesc:gab4cc3939b235a6d122ce012c23d3e61a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the max workarea size in bytes required for this component.  <a href="#gab4cc3939b235a6d122ce012c23d3e61a">More...</a><br /></td></tr>
+<tr class="separator:gab4cc3939b235a6d122ce012c23d3e61a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf71be8e9107754f330cd397794b12ab3"><td class="memItemLeft" align="right" valign="top"><a id="gaf71be8e9107754f330cd397794b12ab3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLAEAD_WA_SIZE_IN_WORDS_MAX</b></td></tr>
+<tr class="separator:gaf71be8e9107754f330cd397794b12ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all macros of <a class="el" href="a00661.html">mcuxClEcc</a>. </p>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="gaf044f4a5eeeecc4ec5b01aed19f2fe41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf044f4a5eeeecc4ec5b01aed19f2fe41">&#9670;&nbsp;</a></span>mcuxClEcc_Status_t</h2>
+<p>Defines the memory consumption for the mcuxClAead component All work area sizes in bytes are a multiple of CPU wordsize. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gab4cc3939b235a6d122ce012c23d3e61a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab4cc3939b235a6d122ce012c23d3e61a">&#9670;&nbsp;</a></span>MCUXCLAEAD_WA_SIZE_MAX</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint32_t <a class="el" href="a00667.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a></td>
+          <td class="memname">#define MCUXCLAEAD_WA_SIZE_MAX</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Type for mcuxClEcc component return codes. </p>
-
-</div>
-</div>
-<a id="ga3900d9bdb95a061d26b71f300318b6a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3900d9bdb95a061d26b71f300318b6a1">&#9670;&nbsp;</a></span>mcuxClEcc_Status_Protected_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="a00667.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a> <a class="el" href="a00667.html#ga3900d9bdb95a061d26b71f300318b6a1">mcuxClEcc_Status_Protected_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Deprecated type for mcuxClEcc component return codes. </p>
+<p>Define the max workarea size in bytes required for this component. </p>
+<p>Work area sizes in bytes are a multiple of CPU wordsize. </p>
 
 </div>
 </div>

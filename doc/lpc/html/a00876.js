@@ -1,7 +1,9 @@
 var a00876 =
 [
-    [ "curveParam", "a00876.html#a0396802978ddd78f753922c8dadadb18", null ],
-    [ "pPrivateKey", "a00876.html#a48dad4664822a37f78c78eca1e660a26", null ],
-    [ "pPublicKey", "a00876.html#a96680cb90b6901598b686b38edac1264", null ],
-    [ "optLen", "a00876.html#a6d0e636ce4f30294af6bcfe0ae717a01", null ]
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIMEP", "a00876.html#ga574cb628611266d5182378f52676024b", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_BASEPOINTORDER", "a00876.html#ga2fff3270c5870bb95a69c8f283d91ee4", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY", "a00876.html#ga37d97fd46dcc20e7f93a5e06017ff967", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEYDATA", "a00876.html#gae310bda6e4756493489df624280503ef", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_PUBLICKEY", "a00876.html#ga51affb40be89a5c0b1eb0d17a135786c", null ],
+    [ "MCUXCLECC_EDDSA_ED448_SIZE_SIGNATURE", "a00876.html#gae3ae89f1d488c9444e0f8c3813b9753a", null ]
 ];

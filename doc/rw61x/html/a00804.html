@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Kdf_Types</title>
+<title>MCUX CLNS: mcuxClEls_GlitchDetector_Macros</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,29 +103,59 @@ $(document).ready(function(){initNavTree('a00804.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Kdf_Types<div class="ingroups"><a class="el" href="a00745.html">mcuxClEls</a> &raquo; <a class="el" href="a00801.html">mcuxClEls_Kdf</a> &raquo; <a class="el" href="a00802.html">mcuxClEls_Kdf_Macros</a></div></div>  </div>
+<div class="title">mcuxClEls_GlitchDetector_Macros<div class="ingroups"><a class="el" href="a00763.html">mcuxClEls</a> &raquo; <a class="el" href="a00803.html">mcuxClEls_GlitchDetector</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all types of <a class="el" href="a00801.html">mcuxClEls_Kdf</a>.  
+<p>Defines all macros of <a class="el" href="a00803.html">mcuxClEls_GlitchDetector</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01239.html">mcuxClEls_CkdfOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal command option bit field for CKDF functions.  <a href="a01239.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01251.html">mcuxClEls_HkdfOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00805.html#gaad9187ee88fcb4efae7fd9469b51dc81" title="Derives a key using the HKDF (HMAC-based key derivation function) according to RFC5869.">mcuxClEls_Hkdf_Rfc5869_Async</a>.  <a href="a01251.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01263.html">mcuxClEls_TlsOption_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal command option bit field for <a class="el" href="a00805.html#gac8b832b6cfa9c2b15b51be04ab349ae6" title="Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1....">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a>, and <a class="el" href="a00805.html#gac8b832b6cfa9c2b15b51be04ab349ae6" title="Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1....">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a>.  <a href="a01263.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga2e602fc14163aee68664a89d14bf8bd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga2e602fc14163aee68664a89d14bf8bd0">MCUXCLELS_GLITCHDETECTOR_CFG_SIZE</a></td></tr>
+<tr class="memdesc:ga2e602fc14163aee68664a89d14bf8bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Glitch detector configuration size.  <a href="#ga2e602fc14163aee68664a89d14bf8bd0">More...</a><br /></td></tr>
+<tr class="separator:ga2e602fc14163aee68664a89d14bf8bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga38a93e9e15614af275f56eace687e4ab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00804.html#ga38a93e9e15614af275f56eace687e4ab">MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE</a></td></tr>
+<tr class="memdesc:ga38a93e9e15614af275f56eace687e4ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Glitch detector trim value size.  <a href="#ga38a93e9e15614af275f56eace687e4ab">More...</a><br /></td></tr>
+<tr class="separator:ga38a93e9e15614af275f56eace687e4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all types of <a class="el" href="a00801.html">mcuxClEls_Kdf</a>. </p>
+<p>Defines all macros of <a class="el" href="a00803.html">mcuxClEls_GlitchDetector</a>. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga2e602fc14163aee68664a89d14bf8bd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2e602fc14163aee68664a89d14bf8bd0">&#9670;&nbsp;</a></span>MCUXCLELS_GLITCHDETECTOR_CFG_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_GLITCHDETECTOR_CFG_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Glitch detector configuration size. </p>
+
+</div>
+</div>
+<a id="ga38a93e9e15614af275f56eace687e4ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga38a93e9e15614af275f56eace687e4ab">&#9670;&nbsp;</a></span>MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Glitch detector trim value size. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

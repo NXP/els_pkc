@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClHash_Functions.h File Reference</title>
+<title>MCUX CLNS: mcuxClHash_MemoryConsumption.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,46 +103,184 @@ $(document).ready(function(){initNavTree('a00458.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClHash_Functions.h File Reference</div>  </div>
+<div class="title">mcuxClHash_MemoryConsumption.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Top-level API of the mcuxClHash component.  
+<p>Defines the memory consumption for the mcuxClHash component.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00635_source.html">mcuxClSession_Types.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00464_source.html">mcuxClHash_Types.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00656_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00356_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
-<code>#include &lt;mcuxClCore_Buffer.h&gt;</code><br />
-</div>
+
 <p><a href="a00458_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ga7beb1bb4063eae682eca700efeba93db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00831.html#gacdfd7a833fcd06684a73c22364e89b7c">mcuxClHash_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00827.html#ga7beb1bb4063eae682eca700efeba93db">mcuxClHash_compute</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00831.html#ga0ffeeb89c76da6470176e7621713e1b2">mcuxClHash_Algo_t</a> algorithm, <a class="el" href="a00735.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pIn, uint32_t inSize, <a class="el" href="a00735.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pOut, uint32_t *const pOutSize)</td></tr>
-<tr class="memdesc:ga7beb1bb4063eae682eca700efeba93db"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-shot Hash computation function.  <a href="a00827.html#ga7beb1bb4063eae682eca700efeba93db">More...</a><br /></td></tr>
-<tr class="separator:ga7beb1bb4063eae682eca700efeba93db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68263436904cf849bfbe8c9b1f6542d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00831.html#gacdfd7a833fcd06684a73c22364e89b7c">mcuxClHash_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00827.html#ga68263436904cf849bfbe8c9b1f6542d4">mcuxClHash_init</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00831.html#ga84c437ceb6b43a992b75866f793d0956">mcuxClHash_Context_t</a> pContext, <a class="el" href="a00831.html#ga0ffeeb89c76da6470176e7621713e1b2">mcuxClHash_Algo_t</a> algorithm)</td></tr>
-<tr class="memdesc:ga68263436904cf849bfbe8c9b1f6542d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part Hash initialization function.  <a href="a00827.html#ga68263436904cf849bfbe8c9b1f6542d4">More...</a><br /></td></tr>
-<tr class="separator:ga68263436904cf849bfbe8c9b1f6542d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga49bdf3dca9746328fe58e6d5859e92eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00831.html#gacdfd7a833fcd06684a73c22364e89b7c">mcuxClHash_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00827.html#ga49bdf3dca9746328fe58e6d5859e92eb">mcuxClHash_process</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00831.html#ga84c437ceb6b43a992b75866f793d0956">mcuxClHash_Context_t</a> pContext, <a class="el" href="a00735.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pIn, uint32_t inSize)</td></tr>
-<tr class="memdesc:ga49bdf3dca9746328fe58e6d5859e92eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part Hash processing function.  <a href="a00827.html#ga49bdf3dca9746328fe58e6d5859e92eb">More...</a><br /></td></tr>
-<tr class="separator:ga49bdf3dca9746328fe58e6d5859e92eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad55cc3a702b915f84d9cd2e94c2b7f6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00831.html#gacdfd7a833fcd06684a73c22364e89b7c">mcuxClHash_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00827.html#gad55cc3a702b915f84d9cd2e94c2b7f6b">mcuxClHash_finish</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00831.html#ga84c437ceb6b43a992b75866f793d0956">mcuxClHash_Context_t</a> pContext, <a class="el" href="a00735.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pOut, uint32_t *const pOutSize)</td></tr>
-<tr class="memdesc:gad55cc3a702b915f84d9cd2e94c2b7f6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-part Hash computation finalization function.  <a href="a00827.html#gad55cc3a702b915f84d9cd2e94c2b7f6b">More...</a><br /></td></tr>
-<tr class="separator:gad55cc3a702b915f84d9cd2e94c2b7f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a8b3af117f171a613124593df58ada62a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a8b3af117f171a613124593df58ada62a">MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX</a></td></tr>
+<tr class="memdesc:a8b3af117f171a613124593df58ada62a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for mcuxClHash_compute.  <a href="#a8b3af117f171a613124593df58ada62a">More...</a><br /></td></tr>
+<tr class="separator:a8b3af117f171a613124593df58ada62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e985e955759e3f5f6fb1d11c3901e2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a8e985e955759e3f5f6fb1d11c3901e2c">MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MAX</a></td></tr>
+<tr class="memdesc:a8e985e955759e3f5f6fb1d11c3901e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for mcuxClHash_compare.  <a href="#a8e985e955759e3f5f6fb1d11c3901e2c">More...</a><br /></td></tr>
+<tr class="separator:a8e985e955759e3f5f6fb1d11c3901e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8434a263faa18d7d5f1db037eca3a130"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a8434a263faa18d7d5f1db037eca3a130">MCUXCLHASH_INIT_CPU_WA_BUFFER_SIZE</a></td></tr>
+<tr class="memdesc:a8434a263faa18d7d5f1db037eca3a130"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for mcuxClHash_init.  <a href="#a8434a263faa18d7d5f1db037eca3a130">More...</a><br /></td></tr>
+<tr class="separator:a8434a263faa18d7d5f1db037eca3a130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7007695fab49af24194295d81f80b56"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#ac7007695fab49af24194295d81f80b56">MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX</a></td></tr>
+<tr class="memdesc:ac7007695fab49af24194295d81f80b56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for mcuxClHash_process.  <a href="#ac7007695fab49af24194295d81f80b56">More...</a><br /></td></tr>
+<tr class="separator:ac7007695fab49af24194295d81f80b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63da111398b07963ed1a77da6c97a64d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a63da111398b07963ed1a77da6c97a64d">MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX</a></td></tr>
+<tr class="memdesc:a63da111398b07963ed1a77da6c97a64d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for mcuxClHash_finish.  <a href="#a63da111398b07963ed1a77da6c97a64d">More...</a><br /></td></tr>
+<tr class="separator:a63da111398b07963ed1a77da6c97a64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a048780405bb5b38b256cf689bdf80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a59a048780405bb5b38b256cf689bdf80">MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MAX</a></td></tr>
+<tr class="memdesc:a59a048780405bb5b38b256cf689bdf80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for mcuxClHash_verify.  <a href="#a59a048780405bb5b38b256cf689bdf80">More...</a><br /></td></tr>
+<tr class="separator:a59a048780405bb5b38b256cf689bdf80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c70073fba8e9b6bdd946ca99e3dfcf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a8c70073fba8e9b6bdd946ca99e3dfcf4">MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE</a></td></tr>
+<tr class="memdesc:a8c70073fba8e9b6bdd946ca99e3dfcf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the max workarea size required for this component.  <a href="#a8c70073fba8e9b6bdd946ca99e3dfcf4">More...</a><br /></td></tr>
+<tr class="separator:a8c70073fba8e9b6bdd946ca99e3dfcf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42253ef03c357fbdcc8a0c502f34c4f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00458.html#a42253ef03c357fbdcc8a0c502f34c4f3">MCUXCLHASH_CONTEXT_SIZE</a></td></tr>
+<tr class="memdesc:a42253ef03c357fbdcc8a0c502f34c4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the maximum size a context might need.  <a href="#a42253ef03c357fbdcc8a0c502f34c4f3">More...</a><br /></td></tr>
+<tr class="separator:a42253ef03c357fbdcc8a0c502f34c4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f64d7a91943132c5f4be29307f70059"><td class="memItemLeft" align="right" valign="top"><a id="a7f64d7a91943132c5f4be29307f70059"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLHASH_CONTEXT_SIZE_IN_WORDS</b></td></tr>
+<tr class="separator:a7f64d7a91943132c5f4be29307f70059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Top-level API of the mcuxClHash component. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>Defines the memory consumption for the mcuxClHash component. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a8b3af117f171a613124593df58ada62a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b3af117f171a613124593df58ada62a">&#9670;&nbsp;</a></span>MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for mcuxClHash_compute. </p>
+
+</div>
+</div>
+<a id="a8e985e955759e3f5f6fb1d11c3901e2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e985e955759e3f5f6fb1d11c3901e2c">&#9670;&nbsp;</a></span>MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for mcuxClHash_compare. </p>
+
+</div>
+</div>
+<a id="a8434a263faa18d7d5f1db037eca3a130"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8434a263faa18d7d5f1db037eca3a130">&#9670;&nbsp;</a></span>MCUXCLHASH_INIT_CPU_WA_BUFFER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_INIT_CPU_WA_BUFFER_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for mcuxClHash_init. </p>
+
+</div>
+</div>
+<a id="ac7007695fab49af24194295d81f80b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7007695fab49af24194295d81f80b56">&#9670;&nbsp;</a></span>MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for mcuxClHash_process. </p>
+
+</div>
+</div>
+<a id="a63da111398b07963ed1a77da6c97a64d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63da111398b07963ed1a77da6c97a64d">&#9670;&nbsp;</a></span>MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for mcuxClHash_finish. </p>
+
+</div>
+</div>
+<a id="a59a048780405bb5b38b256cf689bdf80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a048780405bb5b38b256cf689bdf80">&#9670;&nbsp;</a></span>MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for mcuxClHash_verify. </p>
+
+</div>
+</div>
+<a id="a8c70073fba8e9b6bdd946ca99e3dfcf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c70073fba8e9b6bdd946ca99e3dfcf4">&#9670;&nbsp;</a></span>MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the max workarea size required for this component. </p>
+
+</div>
+</div>
+<a id="a42253ef03c357fbdcc8a0c502f34c4f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42253ef03c357fbdcc8a0c502f34c4f3">&#9670;&nbsp;</a></span>MCUXCLHASH_CONTEXT_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLHASH_CONTEXT_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines the maximum size a context might need. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00458.html">mcuxClHash_Functions.h</a></li>
+    <li class="navelem"><a class="el" href="a00458.html">mcuxClHash_MemoryConsumption.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

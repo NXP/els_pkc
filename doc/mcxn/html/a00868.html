@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCsslMemory_Clear Function Definitions</title>
+<title>MCUX CLNS: Data integrity core functionality</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,82 +103,137 @@ $(document).ready(function(){initNavTree('a00868.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCsslMemory_Clear Function Definitions<div class="ingroups"><a class="el" href="a00841.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00866.html">mcuxCssl Memory API</a> &raquo; <a class="el" href="a00867.html">mcuxCssl Memory Clear</a></div></div>  </div>
+<div class="title">Data integrity core functionality<div class="ingroups"><a class="el" href="a00866.html">MCUX CSSL &amp;ndash; Implementations</a> &raquo; <a class="el" href="a00867.html">Data Integrity: Disabled</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>mcuxCsslMemory_Clear Function Definitions  
+<p>Data integrity handling core functionality, when data integrity is disabled.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gaea7d5f3c8d216e752f153827689e88c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00877.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#gaea7d5f3c8d216e752f153827689e88c3">mcuxCsslMemory_Clear</a> (<a class="el" href="a00880.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a> chk, void *pDst, size_t dstLength, size_t length)</td></tr>
-<tr class="memdesc:gaea7d5f3c8d216e752f153827689e88c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear <code>length</code> bytes of data at <code>pDst</code>.  <a href="#gaea7d5f3c8d216e752f153827689e88c3">More...</a><br /></td></tr>
-<tr class="separator:gaea7d5f3c8d216e752f153827689e88c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga4deb1836544c454f189e5aefe3a16b90"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#ga4deb1836544c454f189e5aefe3a16b90">MCUX_CSSL_DI_CHECK_PASSED_IMPL</a></td></tr>
+<tr class="memdesc:ga4deb1836544c454f189e5aefe3a16b90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive comparison result value.  <a href="#ga4deb1836544c454f189e5aefe3a16b90">More...</a><br /></td></tr>
+<tr class="separator:ga4deb1836544c454f189e5aefe3a16b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga381a9c96de77bfc8d099d9ebcc54f71b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#ga381a9c96de77bfc8d099d9ebcc54f71b">MCUX_CSSL_DI_CHECK_FAILED_IMPL</a></td></tr>
+<tr class="memdesc:ga381a9c96de77bfc8d099d9ebcc54f71b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negative comparison result value.  <a href="#ga381a9c96de77bfc8d099d9ebcc54f71b">More...</a><br /></td></tr>
+<tr class="separator:ga381a9c96de77bfc8d099d9ebcc54f71b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga923d5186da2eecf410950262961e03c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#ga923d5186da2eecf410950262961e03c5">MCUX_CSSL_DI_ALLOC_IMPL</a>()</td></tr>
+<tr class="memdesc:ga923d5186da2eecf410950262961e03c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocation operation implementation for the data integrity.  <a href="#ga923d5186da2eecf410950262961e03c5">More...</a><br /></td></tr>
+<tr class="separator:ga923d5186da2eecf410950262961e03c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc0c4c5c446999ac332e799edbe04249"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#gadc0c4c5c446999ac332e799edbe04249">MCUX_CSSL_DI_INIT_IMPL</a>(value)</td></tr>
+<tr class="memdesc:gadc0c4c5c446999ac332e799edbe04249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization operation implementation for the data integrity.  <a href="#gadc0c4c5c446999ac332e799edbe04249">More...</a><br /></td></tr>
+<tr class="separator:gadc0c4c5c446999ac332e799edbe04249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac19903f4bcc14df44ce3779e82eeec8b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00868.html#gac19903f4bcc14df44ce3779e82eeec8b">MCUX_CSSL_DI_CHECK_IMPL</a>(reference)</td></tr>
+<tr class="memdesc:gac19903f4bcc14df44ce3779e82eeec8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operation implementation for the data integrity.  <a href="#gac19903f4bcc14df44ce3779e82eeec8b">More...</a><br /></td></tr>
+<tr class="separator:gac19903f4bcc14df44ce3779e82eeec8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>mcuxCsslMemory_Clear Function Definitions </p>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="gaea7d5f3c8d216e752f153827689e88c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaea7d5f3c8d216e752f153827689e88c3">&#9670;&nbsp;</a></span>mcuxCsslMemory_Clear()</h2>
+<p>Data integrity handling core functionality, when data integrity is disabled. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga4deb1836544c454f189e5aefe3a16b90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4deb1836544c454f189e5aefe3a16b90">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_CHECK_PASSED_IMPL</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00877.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a> mcuxCsslMemory_Clear </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00880.html#ga6a229130320b395fbb8a8a76a361bd1e">mcuxCsslParamIntegrity_Checksum_t</a>&#160;</td>
-          <td class="paramname"><em>chk</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>pDst</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>dstLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">#define MCUX_CSSL_DI_CHECK_PASSED_IMPL</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Clear <code>length</code> bytes of data at <code>pDst</code>. </p>
-<p>The implementation is secure in the following aspects: Parameter integrity protection: the function returns immediately in case of an incorrect parameter checksum. Code flow protection: the function call is protected. Buffer overflow protection: no data is written to <code>pDst</code> beyond <code>dstLength</code> bytes.</p>
+<p>Positive comparison result value. </p>
+
+</div>
+</div>
+<a id="ga381a9c96de77bfc8d099d9ebcc54f71b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga381a9c96de77bfc8d099d9ebcc54f71b">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_CHECK_FAILED_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_DI_CHECK_FAILED_IMPL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Negative comparison result value. </p>
+
+</div>
+</div>
+<a id="ga923d5186da2eecf410950262961e03c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga923d5186da2eecf410950262961e03c5">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_ALLOC_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_DI_ALLOC_IMPL</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Allocation operation implementation for the data integrity. </p>
+
+</div>
+</div>
+<a id="gadc0c4c5c446999ac332e799edbe04249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc0c4c5c446999ac332e799edbe04249">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_INIT_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_DI_INIT_IMPL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialization operation implementation for the data integrity. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">chk</td><td>The parameter checksum, generated with <a class="el" href="a00881.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb" title="Calculates a parameter checksum.">mcuxCsslParamIntegrity_Protect</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pDst</td><td>The destination pointer to buffer to be cleared. Must not be NULL. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dstLength</td><td>The size of the destination data buffer in bytes. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The number of bytes to clear. Must be different from zero.</td></tr>
+    <tr><td class="paramname">value</td><td>Value with which the data integrity must be initialized. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A status code encapsulated in a flow-protection type. </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00876.html#gab2993c75e7ef98fed36f03946630e41c" title="The operation was successful.">MCUXCSSLMEMORY_STATUS_OK</a></td><td>If the contents in buffer at <code>pDst</code> is cleared. </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00876.html#ga0e60adf6203cb3acb2bdb3ddec166766" title="A parameter was invalid.">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td><td>If one of the parameters is invalid. </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00876.html#gaf0923b98a5db9fd23732989986d72f4d" title="A fault occurred in the execution.">MCUXCSSLMEMORY_STATUS_FAULT</a></td><td>If a fault was detected, included invalid checksum <code>chk</code>. </td></tr>
+
+</div>
+</div>
+<a id="gac19903f4bcc14df44ce3779e82eeec8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac19903f4bcc14df44ce3779e82eeec8b">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_CHECK_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_DI_CHECK_IMPL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">reference</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Comparison operation implementation for the data integrity. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reference</td><td>Reference value to compare the data integrity value against. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Always <a class="el" href="a00862.html#gaf795c9830ecd5c53d21ae5efb05716c0" title="Positive comparison result value.">MCUX_CSSL_DI_CHECK_PASSED</a>. </dd></dl>
 
 </div>
 </div>

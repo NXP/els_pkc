@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_InterruptOptionSet_t</title>
+<title>MCUX CLNS: mcuxClEls_Aead_Types</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,59 +103,23 @@ $(document).ready(function(){initNavTree('a00626.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_InterruptOptionSet_t<div class="ingroups"><a class="el" href="a00604.html">mcuxClEls</a> &raquo; <a class="el" href="a00622.html">mcuxClEls_Common</a> &raquo; <a class="el" href="a00623.html">mcuxClEls_Common_Macros</a></div></div>  </div>
+<div class="title">mcuxClEls_Aead_Types<div class="ingroups"><a class="el" href="a00622.html">mcuxClEls</a> &raquo; <a class="el" href="a00623.html">mcuxClEls_Aead</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines interrupt set option values.  
+<p>Defines all types of <a class="el" href="a00623.html">mcuxClEls_Aead</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga08923159f1ba8aff0b1b06a547db7ff6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00626.html#ga08923159f1ba8aff0b1b06a547db7ff6">MCUXCLELS_ELS_INTERRUPT_SET</a></td></tr>
-<tr class="memdesc:ga08923159f1ba8aff0b1b06a547db7ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00980.html#a694dd46e51d111832674fdd7827ba7a2" title="Whether ELS interrupt should be set. (For possible values of this field, see mcuxClEls_InterruptOptio...">mcuxClEls_InterruptOptionSet_t.elsint</a> to set the ELS interrupt flag.  <a href="#ga08923159f1ba8aff0b1b06a547db7ff6">More...</a><br /></td></tr>
-<tr class="separator:ga08923159f1ba8aff0b1b06a547db7ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab3911a79259043879d2446269741ac19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00626.html#gab3911a79259043879d2446269741ac19">MCUXCLELS_ELS_INTERRUPT_KEEP</a></td></tr>
-<tr class="memdesc:gab3911a79259043879d2446269741ac19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this option at <a class="el" href="a00980.html#a694dd46e51d111832674fdd7827ba7a2" title="Whether ELS interrupt should be set. (For possible values of this field, see mcuxClEls_InterruptOptio...">mcuxClEls_InterruptOptionSet_t.elsint</a> to leave the ELS interrupt flag unchanged.  <a href="#gab3911a79259043879d2446269741ac19">More...</a><br /></td></tr>
-<tr class="separator:gab3911a79259043879d2446269741ac19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00915.html">mcuxClEls_AeadOption_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command option bit field for <a class="el" href="a00627.html#ga86bbde5d55c2e44102158ef7b802b819" title="AES-GCM initialization.">mcuxClEls_Aead_Init_Async</a>, <a class="el" href="a00627.html#gaa34534b5e5196e07cbcef7c858cc0ea9" title="AES-GCM update of the Additional Authenticated Data (AAD)">mcuxClEls_Aead_UpdateAad_Async</a>, <a class="el" href="a00627.html#ga7d5f1b08fbbcda07f881c274b0100c8b" title="AES-GCM update of the encrypted data.">mcuxClEls_Aead_UpdateData_Async</a> and <a class="el" href="a00627.html#gab2f0d1f82ce7537c78967ea2989a2054" title="AES-GCM final encryption/decryption.">mcuxClEls_Aead_Finalize_Async</a>.  <a href="a00915.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines interrupt set option values. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga08923159f1ba8aff0b1b06a547db7ff6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga08923159f1ba8aff0b1b06a547db7ff6">&#9670;&nbsp;</a></span>MCUXCLELS_ELS_INTERRUPT_SET</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ELS_INTERRUPT_SET</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a00980.html#a694dd46e51d111832674fdd7827ba7a2" title="Whether ELS interrupt should be set. (For possible values of this field, see mcuxClEls_InterruptOptio...">mcuxClEls_InterruptOptionSet_t.elsint</a> to set the ELS interrupt flag. </p>
-
-</div>
-</div>
-<a id="gab3911a79259043879d2446269741ac19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab3911a79259043879d2446269741ac19">&#9670;&nbsp;</a></span>MCUXCLELS_ELS_INTERRUPT_KEEP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLELS_ELS_INTERRUPT_KEEP</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set this option at <a class="el" href="a00980.html#a694dd46e51d111832674fdd7827ba7a2" title="Whether ELS interrupt should be set. (For possible values of this field, see mcuxClEls_InterruptOptio...">mcuxClEls_InterruptOptionSet_t.elsint</a> to leave the ELS interrupt flag unchanged. </p>
-
-</div>
-</div>
+<p>Defines all types of <a class="el" href="a00623.html">mcuxClEls_Aead</a>. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

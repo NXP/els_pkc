@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Aead</title>
+<title>MCUX CLNS: mcuxClCipher</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,27 +105,39 @@ $(document).ready(function(){initNavTree('a00746.html','');});
   <div class="summary">
 <a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Aead<div class="ingroups"><a class="el" href="a00745.html">mcuxClEls</a></div></div>  </div>
+<div class="title">mcuxClCipher<div class="ingroups"><a class="el" href="a00748.html">MCUX CL &amp;ndash; API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This part of the <a class="el" href="a00745.html">mcuxClEls</a> driver supports Authenticated Encryption with Associated Data (AEAD).  
+<p>Cipher component.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:a00747"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00747.html">mcuxClEls_Aead_Macros</a></td></tr>
-<tr class="memdesc:a00747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all macros of <a class="el" href="a00746.html">mcuxClEls_Aead</a>. <br /></td></tr>
+<tr class="memitem:a00747"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00747.html">mcuxClCipher_Constants</a></td></tr>
+<tr class="memdesc:a00747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants of <a class="el" href="a00746.html">mcuxClCipher</a> component. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00749"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00749.html">mcuxClEls_Aead_Types</a></td></tr>
-<tr class="memdesc:a00749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all types of <a class="el" href="a00746.html">mcuxClEls_Aead</a>. <br /></td></tr>
+<tr class="memitem:a00749"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00749.html">One-shot Cipher interfaces</a></td></tr>
+<tr class="memdesc:a00749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interfaces to perform Cipher operations in one shot. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00750"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00750.html">mcuxClEls_Aead_Functions</a></td></tr>
-<tr class="memdesc:a00750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all functions of <a class="el" href="a00746.html">mcuxClEls_Aead</a>. <br /></td></tr>
+<tr class="memitem:a00750"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00750.html">Multi-part Cipher interfaces</a></td></tr>
+<tr class="memdesc:a00750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interfaces to perform Cipher operations in multiple parts. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00751"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00751.html">Cipher type definitions</a></td></tr>
+<tr class="memdesc:a00751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types used by the Cipher operations. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00752"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00752.html">Cipher mode definitions</a></td></tr>
+<tr class="memdesc:a00752"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modes used by the Cipher operations. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>This part of the <a class="el" href="a00745.html">mcuxClEls</a> driver supports Authenticated Encryption with Associated Data (AEAD). </p>
+<p>Cipher component. </p>
+<p>Cipher operations.</p>
+<p>The mcuxClCipher component implements the Encryption and Decryption functionality supported by CLNS. It supports Symmetric encryption algorithms.</p>
+<p>An example of how to use the <a class="el" href="a00746.html">mcuxClCipher</a> component can be found in /mcuxClCipher/ex.</p>
+<p>The component uses the ELS hardware. The ELS hardware has to be initialized, prior to calling any function of the <a class="el" href="a00746.html">mcuxClCipher</a> component.</p>
+<p>The <a class="el" href="a00746.html">mcuxClCipher</a> component supports interfaces to either encrypt/decrypt a message in one shot (mcuxClCipher_crypt) or to encrypt/decrypt it in parts (mcuxClCipher_init, mcuxClCipher_process, and mcuxClCipher_finish). In case of encrypting/decrypting a message in parts, first an initialization has to be performed (mcuxClCipher_init), followed by zero, one or multiple updates (mcuxClCipher_process), followed by a finalization (mcuxClCipher_finish). The finalization generates the encrypted/decrypted output data and destroys the context. After the finalization step, no further updates are possible.</p>
+<p>The targeted encryption algorithm is selected by passing one of the offered algorithm mode descriptors, which are available in the mcuxClCipherModes components. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

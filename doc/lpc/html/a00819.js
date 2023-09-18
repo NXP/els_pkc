@@ -1,9 +1,7 @@
 var a00819 =
 [
-    [ "MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE", "a00819.html#ga647bd322f94b65acba45b872cacf5ba8", null ],
-    [ "MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WACPU_SIZE", "a00819.html#gad7ee128279d1230a6f0dee32093e4dc0", null ],
-    [ "MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE", "a00819.html#ga9ec654b676b4d3e3ccdda604ba55e5ed", null ],
-    [ "MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WACPU_SIZE", "a00819.html#ga86d2a91a15fd9c10989b363bcd9ab6af", null ],
-    [ "MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE", "a00819.html#gaf1baa23b5fa695897dade1e24bd60881", null ],
-    [ "MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WACPU_SIZE", "a00819.html#gaeb4fa934c84d576b93c321b436af5ccd", null ]
+    [ "Secure counter core functionality", "a00820.html", "a00820" ],
+    [ "Secure counter increment", "a00821.html", "a00821" ],
+    [ "Secure counter decrement", "a00822.html", "a00822" ],
+    [ "Secure counter direct access", "a00823.html", "a00823" ]
 ];

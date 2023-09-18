@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClOsccaPkc_Types.h File Reference</title>
+<title>MCUX CLNS: mcuxClOscca_Memory.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,73 +103,56 @@ $(document).ready(function(){initNavTree('a00479.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClOsccaPkc_Types.h File Reference</div>  </div>
+<div class="title">mcuxClOscca_Memory.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Type definitions of mcuxClOsccaPkc component.  
+<p>: Macros for alignment memory  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &lt;mcuxClConfig.h&gt;</code><br />
-<code>#include &lt;platform_specific_headers.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00581_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00461_source.html">mcuxClOscca_FunctionIdentifiers.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;mcuxClConfig.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00599_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00476_source.html">mcuxClOscca_FunctionIdentifiers.h</a>&gt;</code><br />
 </div>
 <p><a href="a00479_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aba1b2e7258d3f4a2080b728cc7f91eaf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00479.html#aba1b2e7258d3f4a2080b728cc7f91eaf">MCUXCLOSCCAPKC_PKCPACKARGS2</a>(hi8,  lo8)</td></tr>
-<tr class="memdesc:aba1b2e7258d3f4a2080b728cc7f91eaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macros for packing 2 8-bit parameters.  <a href="#aba1b2e7258d3f4a2080b728cc7f91eaf">More...</a><br /></td></tr>
-<tr class="separator:aba1b2e7258d3f4a2080b728cc7f91eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf92a6a0dd052e3ae6ca7a9929ebb7a7"><td class="memItemLeft" align="right" valign="top"><a id="abf92a6a0dd052e3ae6ca7a9929ebb7a7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLOSCCAPKC_PKC_RAM_BASEADDR</b></td></tr>
-<tr class="separator:abf92a6a0dd052e3ae6ca7a9929ebb7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33bcea3ff2387d7065f0565f17c9038e"><td class="memItemLeft" align="right" valign="top"><a id="a33bcea3ff2387d7065f0565f17c9038e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLOSCCAPKC_WORD_SIZE</b></td></tr>
-<tr class="separator:a33bcea3ff2387d7065f0565f17c9038e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3a71a50c5a16ac11d40fca22e0e8e6a"><td class="memItemLeft" align="right" valign="top"><a id="aa3a71a50c5a16ac11d40fca22e0e8e6a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLOSCCA_SIZE_ALIGN_OFFSET</b></td></tr>
+<tr class="separator:aa3a71a50c5a16ac11d40fca22e0e8e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d7d960d5c32329501e917a5ec57bbfc"><td class="memItemLeft" align="right" valign="top"><a id="a4d7d960d5c32329501e917a5ec57bbfc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignAddress</b>(address)</td></tr>
+<tr class="separator:a4d7d960d5c32329501e917a5ec57bbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abed72009d14359c88321efd18d77d518"><td class="memItemLeft" align="right" valign="top"><a id="abed72009d14359c88321efd18d77d518"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignSize</b>(size)</td></tr>
+<tr class="separator:abed72009d14359c88321efd18d77d518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a568d2c25122791e10569de52d2257d0a"><td class="memItemLeft" align="right" valign="top"><a id="a568d2c25122791e10569de52d2257d0a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignAddressWithOffset</b>(address,  offset)</td></tr>
+<tr class="separator:a568d2c25122791e10569de52d2257d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adecf327b9cbf358250b83b0adf2484b9"><td class="memItemLeft" align="right" valign="top"><a id="adecf327b9cbf358250b83b0adf2484b9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_alignAddressToBoundary</b>(address,  boundary)</td></tr>
+<tr class="separator:adecf327b9cbf358250b83b0adf2484b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:abd4377e6f133173e8dcef7e841659c5c"><td class="memItemLeft" align="right" valign="top"><a id="abd4377e6f133173e8dcef7e841659c5c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_FastSecureXor</b> (void *pTgt, void *pSrc1, void *pSrc2, uint32_t length)</td></tr>
+<tr class="separator:abd4377e6f133173e8dcef7e841659c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3ac8e537c7ce9fc0ea5f22bb33192e8"><td class="memItemLeft" align="right" valign="top"><a id="af3ac8e537c7ce9fc0ea5f22bb33192e8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>mcuxClOscca_switch_endianness</b> (uint32_t *ptr, uint32_t length)</td></tr>
+<tr class="separator:af3ac8e537c7ce9fc0ea5f22bb33192e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Type definitions of mcuxClOsccaPkc component. </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="aba1b2e7258d3f4a2080b728cc7f91eaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba1b2e7258d3f4a2080b728cc7f91eaf">&#9670;&nbsp;</a></span>MCUXCLOSCCAPKC_PKCPACKARGS2</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLOSCCAPKC_PKCPACKARGS2</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">hi8, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">lo8&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Macros for packing 2 8-bit parameters. </p>
-
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><p>: Macros for alignment memory </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00479.html">mcuxClOsccaPkc_Types.h</a></li>
+    <li class="navelem"><a class="el" href="a00479.html">mcuxClOscca_Memory.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: APIs to construct HMAC modes</title>
+<title>MCUX CLNS: mcuxClEls_Types</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,64 +103,26 @@ $(document).ready(function(){initNavTree('a00763.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#groups">Modules</a>  </div>
   <div class="headertitle">
-<div class="title">APIs to construct HMAC modes<div class="ingroups"><a class="el" href="a00655.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00942.html">HMAC Modes API</a> &raquo; <a class="el" href="a00762.html">mcuxClHmac Functions</a></div></div>  </div>
+<div class="title">mcuxClEls_Types<div class="ingroups"><a class="el" href="a00688.html">mcuxClEls</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Interfaces to construct HMAC modes of operation.  
+<p>This part of the <a class="el" href="a00688.html">mcuxClEls</a> driver defines common types.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ga43f6d98b6b3b6a6e62263130e2c95a68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00781.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00763.html#ga43f6d98b6b3b6a6e62263130e2c95a68">mcuxClHmac_createHmacMode</a> (<a class="el" href="a00781.html#ga55e9279a13efd1dd87affcc88f3eb34a">mcuxClMac_CustomMode_t</a> mode, <a class="el" href="a00760.html#ga0ffeeb89c76da6470176e7621713e1b2">mcuxClHash_Algo_t</a> hashAlgorithm)</td></tr>
-<tr class="memdesc:ga43f6d98b6b3b6a6e62263130e2c95a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function creates a HMAC mode descriptor for software implementations of HMAC.  <a href="#ga43f6d98b6b3b6a6e62263130e2c95a68">More...</a><br /></td></tr>
-<tr class="separator:ga43f6d98b6b3b6a6e62263130e2c95a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:a00764"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html">mcuxClEls_Types_Macros</a></td></tr>
+<tr class="memdesc:a00764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all macros of <a class="el" href="a00763.html">mcuxClEls_Types</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00768"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00768.html">mcuxClEls_Types_Types</a></td></tr>
+<tr class="memdesc:a00768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all types of <a class="el" href="a00763.html">mcuxClEls_Types</a>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Interfaces to construct HMAC modes of operation. </p>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ga43f6d98b6b3b6a6e62263130e2c95a68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga43f6d98b6b3b6a6e62263130e2c95a68">&#9670;&nbsp;</a></span>mcuxClHmac_createHmacMode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00781.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a> mcuxClHmac_createHmacMode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00781.html#ga55e9279a13efd1dd87affcc88f3eb34a">mcuxClMac_CustomMode_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00760.html#ga0ffeeb89c76da6470176e7621713e1b2">mcuxClHash_Algo_t</a>&#160;</td>
-          <td class="paramname"><em>hashAlgorithm</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function creates a HMAC mode descriptor for software implementations of HMAC. </p>
-<p>The SW-HMAC modes of operation require additional input, hence a mode descriptor has to be constructed with this function. The resulting descriptor will be written to <code>mode</code>.</p>
-<p>This function must be called before any SW-HMAC operation is performed.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mode[out]</td><td>Pointer to HMAC custom mode to be initialized. </td></tr>
-    <tr><td class="paramname">mcuxClHash_Algo_t[in]</td><td>Pointer to the Hash algorithm descriptor to be used.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
-
-</div>
-</div>
+<p>This part of the <a class="el" href="a00688.html">mcuxClEls</a> driver defines common types. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,11 +1,15 @@
 var a00356 =
 [
-    [ "mcuxClHash_AlgorithmDescriptor_Sha224", "a00752.html#ga56d71cf5a53a9e64a648c4d9776efa8e", null ],
-    [ "mcuxClHash_Algorithm_Sha224", "a00752.html#ga4de6a5917dc46d3aae22f93df66fc228", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha256", "a00752.html#ga0332b3c0540cd1761dfaa17b33f02f02", null ],
-    [ "mcuxClHash_Algorithm_Sha256", "a00752.html#ga672407195f718d55fcee73d1dfb7c623", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha384", "a00752.html#ga18de1261f5761dfc43ef89a102fda259", null ],
-    [ "mcuxClHash_Algorithm_Sha384", "a00752.html#gaa7389b8db9ec5c97b44db899e2b9f8db", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha512", "a00752.html#ga50a5ce5101cf1175127bdf1ea7bfb0e1", null ],
-    [ "mcuxClHash_Algorithm_Sha512", "a00752.html#gae0687309bef869b41302594c6c934d9a", null ]
+    [ "MCUXCLHASH_STATUS_OK", "a00771.html#gadf29410b02d95357d48a3ba443558da4", null ],
+    [ "MCUXCLHASH_STATUS_COMPARE_EQUAL", "a00771.html#gaaf06d7932b91cce6e94312a534f61934", null ],
+    [ "MCUXCLHASH_COMPARE_EQUAL", "a00771.html#ga05eaccf399e17f323499f31e764d5173", null ],
+    [ "MCUXCLHASH_STATUS_FAILURE", "a00771.html#ga377eaddc82740c4c4590688c754f78a0", null ],
+    [ "MCUXCLHASH_FAILURE", "a00771.html#gaaef282127a4c3c3e8f9a034cba1b70e0", null ],
+    [ "MCUXCLHASH_STATUS_INVALID_PARAMS", "a00771.html#ga6cd095f16a5ff26877cc877cecbd0e2b", null ],
+    [ "MCUXCLHASH_STATUS_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK", "a00771.html#gabeb9fdba3834bd6d1b62b53d0b981bb9", null ],
+    [ "MCUXCLHASH_EXPORT_STATE_NOT_MULTIPLE_OF_BLOCK", "a00771.html#ga5cb4d265e6848270e5a3e38b5e57e84a", null ],
+    [ "MCUXCLHASH_STATUS_COMPARE_NOT_EQUAL", "a00771.html#gad39c265fd8728f3287eeef999cfeb599", null ],
+    [ "MCUXCLHASH_COMPARE_NOT_EQUAL", "a00771.html#ga647cd722111188a5d028d1f3ab4eb795", null ],
+    [ "MCUXCLHASH_STATUS_FULL", "a00771.html#ga9abcd3d90166d6f4fd532d8b7c24931f", null ],
+    [ "MCUXCLHASH_STATUS_FAULT_ATTACK", "a00771.html#gaca3624d074b137e5587052f6ffb1b6f6", null ]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCsslMemory_Types.h File Reference</title>
+<title>MCUX CLNS: mcuxCsslFlowProtection_SecureCounter_Local.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,57 +103,130 @@ $(document).ready(function(){initNavTree('a00689.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCsslMemory_Types.h File Reference</div>  </div>
+<div class="title">mcuxCsslFlowProtection_SecureCounter_Local.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Type definitions for the mcuxCsslMemory component.  
+<p>Counter based implementation for the flow protection mechanism, for a local security counter.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="a00659_source.html">mcuxCsslCPreProcessor.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00713_source.html">mcuxCsslSecureCounter.h</a>&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
 </div>
 <p><a href="a00689_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gab2993c75e7ef98fed36f03946630e41c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#gab2993c75e7ef98fed36f03946630e41c">MCUXCSSLMEMORY_STATUS_OK</a></td></tr>
-<tr class="memdesc:gab2993c75e7ef98fed36f03946630e41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The operation was successful.  <a href="a00941.html#gab2993c75e7ef98fed36f03946630e41c">More...</a><br /></td></tr>
-<tr class="separator:gab2993c75e7ef98fed36f03946630e41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafaad4a560714fdff8064ba9a50f7d572"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#gafaad4a560714fdff8064ba9a50f7d572">MCUXCSSLMEMORY_STATUS_EQUAL</a></td></tr>
-<tr class="memdesc:gafaad4a560714fdff8064ba9a50f7d572"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two contents of the Memory Compare are equal.  <a href="a00941.html#gafaad4a560714fdff8064ba9a50f7d572">More...</a><br /></td></tr>
-<tr class="separator:gafaad4a560714fdff8064ba9a50f7d572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b5d2b24036bee244a9e7310160b3035"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#ga2b5d2b24036bee244a9e7310160b3035">MCUXCSSLMEMORY_STATUS_NOT_EQUAL</a></td></tr>
-<tr class="memdesc:ga2b5d2b24036bee244a9e7310160b3035"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two contents of the Memory Compare are not equal.  <a href="a00941.html#ga2b5d2b24036bee244a9e7310160b3035">More...</a><br /></td></tr>
-<tr class="separator:ga2b5d2b24036bee244a9e7310160b3035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e60adf6203cb3acb2bdb3ddec166766"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#ga0e60adf6203cb3acb2bdb3ddec166766">MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER</a></td></tr>
-<tr class="memdesc:ga0e60adf6203cb3acb2bdb3ddec166766"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parameter was invalid.  <a href="a00941.html#ga0e60adf6203cb3acb2bdb3ddec166766">More...</a><br /></td></tr>
-<tr class="separator:ga0e60adf6203cb3acb2bdb3ddec166766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0923b98a5db9fd23732989986d72f4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#gaf0923b98a5db9fd23732989986d72f4d">MCUXCSSLMEMORY_STATUS_FAULT</a></td></tr>
-<tr class="memdesc:gaf0923b98a5db9fd23732989986d72f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fault occurred in the execution.  <a href="a00941.html#gaf0923b98a5db9fd23732989986d72f4d">More...</a><br /></td></tr>
-<tr class="separator:gaf0923b98a5db9fd23732989986d72f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0072c925d0ab8c5b0b071abd1d5218af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#ga0072c925d0ab8c5b0b071abd1d5218af">MCUXCSSLMEMORY_KEEP_ORDER</a></td></tr>
-<tr class="memdesc:ga0072c925d0ab8c5b0b071abd1d5218af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data storing in destination buffer in original order.  <a href="a00941.html#ga0072c925d0ab8c5b0b071abd1d5218af">More...</a><br /></td></tr>
-<tr class="separator:ga0072c925d0ab8c5b0b071abd1d5218af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c4cf10d8106eca9894d9e3b131b52f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00941.html#ga9c4cf10d8106eca9894d9e3b131b52f9">MCUXCSSLMEMORY_REVERSE_ORDER</a></td></tr>
-<tr class="memdesc:ga9c4cf10d8106eca9894d9e3b131b52f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data storing in destination buffer with reversed order.  <a href="a00941.html#ga9c4cf10d8106eca9894d9e3b131b52f9">More...</a><br /></td></tr>
-<tr class="separator:ga9c4cf10d8106eca9894d9e3b131b52f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga19c7a1367cb21d7bcb720607f495d86c"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00942.html#ga19c7a1367cb21d7bcb720607f495d86c">mcuxCsslMemory_Status_t</a></td></tr>
-<tr class="memdesc:ga19c7a1367cb21d7bcb720607f495d86c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for CSSL Memory status codes.  <a href="a00942.html#ga19c7a1367cb21d7bcb720607f495d86c">More...</a><br /></td></tr>
-<tr class="separator:ga19c7a1367cb21d7bcb720607f495d86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c5845ea3e1b932b969db83484b26ecf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga8c5845ea3e1b932b969db83484b26ecf">MCUX_CSSL_FP_PROTECTED_TYPE_IMPL</a>(resultType)</td></tr>
+<tr class="memdesc:ga8c5845ea3e1b932b969db83484b26ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Based on a given base type, builds a return type with flow protection.  <a href="a00946.html#ga8c5845ea3e1b932b969db83484b26ecf">More...</a><br /></td></tr>
+<tr class="separator:ga8c5845ea3e1b932b969db83484b26ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a8ea6cc710859bcadb79a488dd8db25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga1a8ea6cc710859bcadb79a488dd8db25">MCUX_CSSL_FP_FUNCTION_ENTRY_IMPLn</a>(function, ...)</td></tr>
+<tr class="memdesc:ga1a8ea6cc710859bcadb79a488dd8db25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function entry point.  <a href="a00946.html#ga1a8ea6cc710859bcadb79a488dd8db25">More...</a><br /></td></tr>
+<tr class="separator:ga1a8ea6cc710859bcadb79a488dd8db25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab4ce00a3b45306924fe9b0b6664bde0a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gab4ce00a3b45306924fe9b0b6664bde0a">MCUX_CSSL_FP_FUNCTION_ENTRY_IMPL1</a>(function)</td></tr>
+<tr class="memdesc:gab4ce00a3b45306924fe9b0b6664bde0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function entry point.  <a href="a00946.html#gab4ce00a3b45306924fe9b0b6664bde0a">More...</a><br /></td></tr>
+<tr class="separator:gab4ce00a3b45306924fe9b0b6664bde0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade96ac1fafaf20164fda6e40ec29b111"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gade96ac1fafaf20164fda6e40ec29b111">MCUX_CSSL_FP_FUNCTION_ENTRY_IMPL</a>(...)</td></tr>
+<tr class="memdesc:gade96ac1fafaf20164fda6e40ec29b111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function entry point.  <a href="a00946.html#gade96ac1fafaf20164fda6e40ec29b111">More...</a><br /></td></tr>
+<tr class="separator:gade96ac1fafaf20164fda6e40ec29b111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadff771aa8e6ddffa0943c1e05d143d3b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gadff771aa8e6ddffa0943c1e05d143d3b">MCUX_CSSL_FP_FUNCTION_EXIT_IMPLn</a>(id,  result, ...)</td></tr>
+<tr class="memdesc:gadff771aa8e6ddffa0943c1e05d143d3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point.  <a href="a00946.html#gadff771aa8e6ddffa0943c1e05d143d3b">More...</a><br /></td></tr>
+<tr class="separator:gadff771aa8e6ddffa0943c1e05d143d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafbffa86482e7c82632c29b7b47268cc0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gafbffa86482e7c82632c29b7b47268cc0">MCUX_CSSL_FP_FUNCTION_EXIT_IMPL1</a>(id)</td></tr>
+<tr class="memdesc:gafbffa86482e7c82632c29b7b47268cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point.  <a href="a00946.html#gafbffa86482e7c82632c29b7b47268cc0">More...</a><br /></td></tr>
+<tr class="separator:gafbffa86482e7c82632c29b7b47268cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9c6252af0f1985853ed349c5d1ae1788"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga9c6252af0f1985853ed349c5d1ae1788">MCUX_CSSL_FP_FUNCTION_EXIT_IMPL2</a>(id,  result)</td></tr>
+<tr class="memdesc:ga9c6252af0f1985853ed349c5d1ae1788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point.  <a href="a00946.html#ga9c6252af0f1985853ed349c5d1ae1788">More...</a><br /></td></tr>
+<tr class="separator:ga9c6252af0f1985853ed349c5d1ae1788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa04b0a2008a71b07057236083492ff59"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gaa04b0a2008a71b07057236083492ff59">MCUX_CSSL_FP_FUNCTION_EXIT_IMPL</a>(...)</td></tr>
+<tr class="memdesc:gaa04b0a2008a71b07057236083492ff59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point.  <a href="a00946.html#gaa04b0a2008a71b07057236083492ff59">More...</a><br /></td></tr>
+<tr class="separator:gaa04b0a2008a71b07057236083492ff59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98f3eec493dd7bf7b26f064c31302c73"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga98f3eec493dd7bf7b26f064c31302c73">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK_IMPLn</a>(id,  pass,  fail, ...)</td></tr>
+<tr class="memdesc:ga98f3eec493dd7bf7b26f064c31302c73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point which includes an actual check of the code flow.  <a href="a00946.html#ga98f3eec493dd7bf7b26f064c31302c73">More...</a><br /></td></tr>
+<tr class="separator:ga98f3eec493dd7bf7b26f064c31302c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad1f605647ff376aba41b2362d8d02def"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gad1f605647ff376aba41b2362d8d02def">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK_IMPL3</a>(id,  pass,  fail)</td></tr>
+<tr class="memdesc:gad1f605647ff376aba41b2362d8d02def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point which includes an actual check of the code flow.  <a href="a00946.html#gad1f605647ff376aba41b2362d8d02def">More...</a><br /></td></tr>
+<tr class="separator:gad1f605647ff376aba41b2362d8d02def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03a6226c405fe4012598d538b751d8e0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga03a6226c405fe4012598d538b751d8e0">MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK_IMPL</a>(...)</td></tr>
+<tr class="memdesc:ga03a6226c405fe4012598d538b751d8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler implementation for the function exit point which includes an actual check of the code flow.  <a href="a00946.html#ga03a6226c405fe4012598d538b751d8e0">More...</a><br /></td></tr>
+<tr class="separator:ga03a6226c405fe4012598d538b751d8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d4f6f29ec46da78d39c6835c2353c43"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga7d4f6f29ec46da78d39c6835c2353c43">MCUX_CSSL_FP_FUNCTION_EXIT_VOID_IMPL1</a>(id)</td></tr>
+<tr class="memdesc:ga7d4f6f29ec46da78d39c6835c2353c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler for the exit point of functions with the return type <code>void</code>.  <a href="a00946.html#ga7d4f6f29ec46da78d39c6835c2353c43">More...</a><br /></td></tr>
+<tr class="separator:ga7d4f6f29ec46da78d39c6835c2353c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383ad2c7cc236f1956892a325bce1c06"><td class="memItemLeft" align="right" valign="top"><a id="a383ad2c7cc236f1956892a325bce1c06"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUX_CSSL_FP_FUNCTION_EXIT_VOID_IMPLn</b>(id, ...)</td></tr>
+<tr class="separator:a383ad2c7cc236f1956892a325bce1c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gada3bd3043e47a7155cbd6f48a19d8a7b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gada3bd3043e47a7155cbd6f48a19d8a7b">MCUX_CSSL_FP_FUNCTION_EXIT_VOID_IMPL</a>(...)</td></tr>
+<tr class="memdesc:gada3bd3043e47a7155cbd6f48a19d8a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow protection handler for the exit point of functions with the return type <code>void</code>.  <a href="a00946.html#gada3bd3043e47a7155cbd6f48a19d8a7b">More...</a><br /></td></tr>
+<tr class="separator:gada3bd3043e47a7155cbd6f48a19d8a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6dea11ddfc9ee7a58fd4c002bd2aa298"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga6dea11ddfc9ee7a58fd4c002bd2aa298">MCUX_CSSL_FP_FUNCTION_CALL_IMPL</a>(result,  call)</td></tr>
+<tr class="memdesc:ga6dea11ddfc9ee7a58fd4c002bd2aa298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event implementation of a flow protected function call.  <a href="a00946.html#ga6dea11ddfc9ee7a58fd4c002bd2aa298">More...</a><br /></td></tr>
+<tr class="separator:ga6dea11ddfc9ee7a58fd4c002bd2aa298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac90557cb39d20ea0c0fda3985497b45"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00689.html#aac90557cb39d20ea0c0fda3985497b45">MCUX_CSSL_FP_FUNCTION_CALL_VOID_IMPL</a>(call)</td></tr>
+<tr class="memdesc:aac90557cb39d20ea0c0fda3985497b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event implementation of a flow protected void function call.  <a href="#aac90557cb39d20ea0c0fda3985497b45">More...</a><br /></td></tr>
+<tr class="separator:aac90557cb39d20ea0c0fda3985497b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf0993520e666067ce074749c90e3d84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gacf0993520e666067ce074749c90e3d84">MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED_IMPL</a>(result,  token,  call)</td></tr>
+<tr class="memdesc:gacf0993520e666067ce074749c90e3d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a flow protected function call meant to be used from within an unprotected function.  <a href="a00946.html#gacf0993520e666067ce074749c90e3d84">More...</a><br /></td></tr>
+<tr class="separator:gacf0993520e666067ce074749c90e3d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc1544cfd424c8ea5e09a97a6b48defa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gadc1544cfd424c8ea5e09a97a6b48defa">MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED_IMPL</a>(token,  call)</td></tr>
+<tr class="memdesc:gadc1544cfd424c8ea5e09a97a6b48defa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a flow protected void function call meant to be used from within an unprotected function.  <a href="a00946.html#gadc1544cfd424c8ea5e09a97a6b48defa">More...</a><br /></td></tr>
+<tr class="separator:gadc1544cfd424c8ea5e09a97a6b48defa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab0ff0e165d943faba9241de4f57c2d75"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gab0ff0e165d943faba9241de4f57c2d75">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN_IMPL</a>(result,  token,  call)</td></tr>
+<tr class="memdesc:gab0ff0e165d943faba9241de4f57c2d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a flow protected function call meant to be used from within an unprotected function, that must be terminated by <a class="el" href="a00946.html#ga260f6caaf5d3f526e664835f6889fec5" title="Implementation of the end of a section started by MCUX_CSSL_FP_FUNCTION_CALL_BEGIN_IMPL.">MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL</a>.  <a href="a00946.html#gab0ff0e165d943faba9241de4f57c2d75">More...</a><br /></td></tr>
+<tr class="separator:gab0ff0e165d943faba9241de4f57c2d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga260f6caaf5d3f526e664835f6889fec5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga260f6caaf5d3f526e664835f6889fec5">MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL</a>()</td></tr>
+<tr class="memdesc:ga260f6caaf5d3f526e664835f6889fec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the end of a section started by <a class="el" href="a00946.html#gab0ff0e165d943faba9241de4f57c2d75" title="Implementation of a flow protected function call meant to be used from within an unprotected function...">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN_IMPL</a>.  <a href="a00946.html#ga260f6caaf5d3f526e664835f6889fec5">More...</a><br /></td></tr>
+<tr class="separator:ga260f6caaf5d3f526e664835f6889fec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8f9fbedb24cf72ef01632cc7a2df1f91"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#ga8f9fbedb24cf72ef01632cc7a2df1f91">MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL</a>(token,  call)</td></tr>
+<tr class="memdesc:ga8f9fbedb24cf72ef01632cc7a2df1f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a flow protected void function call meant to be used from within an unprotected function, that must be terminated by <a class="el" href="a00946.html#gae44806e59bfa6e136c7df9c641809621" title="Implementation of the end of a section started by MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL.">MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL</a>.  <a href="a00946.html#ga8f9fbedb24cf72ef01632cc7a2df1f91">More...</a><br /></td></tr>
+<tr class="separator:ga8f9fbedb24cf72ef01632cc7a2df1f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae44806e59bfa6e136c7df9c641809621"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00946.html#gae44806e59bfa6e136c7df9c641809621">MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL</a>()</td></tr>
+<tr class="memdesc:gae44806e59bfa6e136c7df9c641809621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the end of a section started by <a class="el" href="a00946.html#ga8f9fbedb24cf72ef01632cc7a2df1f91" title="Implementation of a flow protected void function call meant to be used from within an unprotected fun...">MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL</a>.  <a href="a00946.html#gae44806e59bfa6e136c7df9c641809621">More...</a><br /></td></tr>
+<tr class="separator:gae44806e59bfa6e136c7df9c641809621"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga391e0f29868a1dd17bd0d23a4737c129"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00945.html#ga391e0f29868a1dd17bd0d23a4737c129">MCUX_CSSL_FP_ASSERT_IMPL</a>(...)</td></tr>
+<tr class="memdesc:ga391e0f29868a1dd17bd0d23a4737c129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assert an expected state of the code flow.  <a href="a00945.html#ga391e0f29868a1dd17bd0d23a4737c129">More...</a><br /></td></tr>
+<tr class="separator:ga391e0f29868a1dd17bd0d23a4737c129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Type definitions for the mcuxCsslMemory component. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>Counter based implementation for the flow protection mechanism, for a local security counter. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aac90557cb39d20ea0c0fda3985497b45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac90557cb39d20ea0c0fda3985497b45">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_FUNCTION_CALL_VOID_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_IMPL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">call</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Event implementation of a flow protected void function call. </p>
+<dl class="section user"><dt>Declaration</dt><dd><a class="el" href="a00946.html#gad18deaf144ed415268a00f1634552e22" title="Declaration implementation of a flow protected function.">MCUX_CSSL_FP_FUNCTION_DECL_IMPL</a> </dd></dl>
+<dl class="section user"><dt>Expectation</dt><dd><a class="el" href="a00946.html#ga387940e23bd51390165c5cdffe5b2e6e" title="Expectation implementation of a called function.">MCUX_CSSL_FP_FUNCTION_CALLED_IMPL</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">call</td><td>The (protected) function call that must be performed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00689.html">mcuxCsslMemory_Types.h</a></li>
+    <li class="navelem"><a class="el" href="a00689.html">mcuxCsslFlowProtection_SecureCounter_Local.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

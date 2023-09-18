@@ -1,13 +1,10 @@
 var a00878 =
 [
-    [ "mcuxClRandom_Config", "a01303.html", [
-      [ "mode", "a01303.html#ad723b63c438689b0d5c978fceb289506", null ],
-      [ "ctx", "a01303.html#a2869dc5912686dc81c5076587bb83327", null ]
-    ] ],
-    [ "mcuxClRandom_Status_t", "a00878.html#ga768ea9930242003d2a68991684a1e948", null ],
-    [ "mcuxClRandom_ContextDescriptor_t", "a00878.html#gab409cd7b1e5a4da822bf9ae43d00c79c", null ],
-    [ "mcuxClRandom_Context_t", "a00878.html#gac2ce3a52788240794afde522cfad65c5", null ],
-    [ "mcuxClRandom_ModeDescriptor_t", "a00878.html#gadcfae984a95f3e98617ca5fb9767f5cd", null ],
-    [ "mcuxClRandom_Mode_t", "a00878.html#ga2998181a66cbdc063aa08d76e5fdef9d", null ],
-    [ "mcuxClRandom_Config_t", "a00878.html#gaf1284eaa96ef47c06697f95e74ffc3ee", null ]
+    [ "MCUXCLMATH_STATUS_OK", "a00878.html#ga745dd2a8966d1760f3475089b2f7aa47", null ],
+    [ "MCUXCLMATH_ERRORCODE_OK", "a00878.html#gacc4f37c95272b523a0ca1eca8d2e3735", null ],
+    [ "MCUXCLMATH_STATUS_ERROR", "a00878.html#ga6e43ca61303440dc7e9a83fbe9cce4d3", null ],
+    [ "MCUXCLMATH_ERRORCODE_ERROR", "a00878.html#ga1427ab8cd82a164dee226ae554894772", null ],
+    [ "MCUXCLMATH_SECMODEXP_OPTION_DIS_RERAND", "a00878.html#ga81bd9ab98d67ca3c7e944ad922d1d353", null ],
+    [ "mcuxClMath_Status_t", "a00878.html#gaf541274a57cf9f823c029f73ff733ae0", null ],
+    [ "mcuxClMath_Status_Protected_t", "a00878.html#ga0560097c958abffba7b41198a7af6c8b", null ]
 ];

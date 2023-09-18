@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLECC_EDDSA_WAPKC_</title>
+<title>MCUX CLNS: Secure counter decrement</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,133 +105,139 @@ $(document).ready(function(){initNavTree('a00822.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLECC_EDDSA_WAPKC_<div class="ingroups"><a class="el" href="a00595.html">mcuxClEcc</a> &raquo; <a class="el" href="a00599.html">mcuxClEcc_MemoryConsumption</a></div></div>  </div>
+<div class="title">Secure counter decrement<div class="ingroups"><a class="el" href="a00778.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00819.html">Secure Counter API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Define the PKC workarea size required by mcuxClEcc EdDSA APIs.  
+<p>Support for decrementing the secure counter.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga6584fe2b7bc2e31a739cfb453fd2a9e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#ga6584fe2b7bc2e31a739cfb453fd2a9e6">MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:ga6584fe2b7bc2e31a739cfb453fd2a9e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85" title="This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 ...">mcuxClEcc_EdDSA_GenerateKeyPair</a>.  <a href="#ga6584fe2b7bc2e31a739cfb453fd2a9e6">More...</a><br /></td></tr>
-<tr class="separator:ga6584fe2b7bc2e31a739cfb453fd2a9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4dd4582e5d6cdec3e4537a3447281348"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#ga4dd4582e5d6cdec3e4537a3447281348">MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:ga4dd4582e5d6cdec3e4537a3447281348"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85" title="This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 ...">mcuxClEcc_EdDSA_GenerateKeyPair</a> for Ed448.  <a href="#ga4dd4582e5d6cdec3e4537a3447281348">More...</a><br /></td></tr>
-<tr class="separator:ga4dd4582e5d6cdec3e4537a3447281348"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e082808f23a46021d65be49224fef54"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#ga0e082808f23a46021d65be49224fef54">MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:ga0e082808f23a46021d65be49224fef54"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0b9ad0b0aa3afccae32a14aeddf9d8fe" title="This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032...">mcuxClEcc_EdDSA_GenerateSignature</a>.  <a href="#ga0e082808f23a46021d65be49224fef54">More...</a><br /></td></tr>
-<tr class="separator:ga0e082808f23a46021d65be49224fef54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaca347a8466c7addee0aa63eb112fcb72"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#gaca347a8466c7addee0aa63eb112fcb72">MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:gaca347a8466c7addee0aa63eb112fcb72"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0b9ad0b0aa3afccae32a14aeddf9d8fe" title="This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032...">mcuxClEcc_EdDSA_GenerateSignature</a> for Ed448.  <a href="#gaca347a8466c7addee0aa63eb112fcb72">More...</a><br /></td></tr>
-<tr class="separator:gaca347a8466c7addee0aa63eb112fcb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1a0b00eab2150578dc7afc98f8e82f2a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#ga1a0b00eab2150578dc7afc98f8e82f2a">MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:ga1a0b00eab2150578dc7afc98f8e82f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga514b29374472b14ad00e0e5ef3469c7f" title="This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc80...">mcuxClEcc_EdDSA_VerifySignature</a>.  <a href="#ga1a0b00eab2150578dc7afc98f8e82f2a">More...</a><br /></td></tr>
-<tr class="separator:ga1a0b00eab2150578dc7afc98f8e82f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad04926b8f100205fb4726200c825e1f6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#gad04926b8f100205fb4726200c825e1f6">MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:gad04926b8f100205fb4726200c825e1f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga514b29374472b14ad00e0e5ef3469c7f" title="This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc80...">mcuxClEcc_EdDSA_VerifySignature</a> for Ed448.  <a href="#gad04926b8f100205fb4726200c825e1f6">More...</a><br /></td></tr>
-<tr class="separator:gad04926b8f100205fb4726200c825e1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga270e4467ff02a10df72b1da177385858"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#ga270e4467ff02a10df72b1da177385858">MCUX_CSSL_SC_SUB</a>(value)</td></tr>
+<tr class="memdesc:ga270e4467ff02a10df72b1da177385858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with <code>value</code>.  <a href="#ga270e4467ff02a10df72b1da177385858">More...</a><br /></td></tr>
+<tr class="separator:ga270e4467ff02a10df72b1da177385858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7df8a7a4e7798142da2e668ca21f3a5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#ga7df8a7a4e7798142da2e668ca21f3a5e">MCUX_CSSL_SC_SUB_0x1</a>()</td></tr>
+<tr class="memdesc:ga7df8a7a4e7798142da2e668ca21f3a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x1.  <a href="#ga7df8a7a4e7798142da2e668ca21f3a5e">More...</a><br /></td></tr>
+<tr class="separator:ga7df8a7a4e7798142da2e668ca21f3a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabb6f649421ad8405aa47812615301933"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#gabb6f649421ad8405aa47812615301933">MCUX_CSSL_SC_SUB_0x10</a>()</td></tr>
+<tr class="memdesc:gabb6f649421ad8405aa47812615301933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x10.  <a href="#gabb6f649421ad8405aa47812615301933">More...</a><br /></td></tr>
+<tr class="separator:gabb6f649421ad8405aa47812615301933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf7c177e9dbd78d8c5a81fe3b9b4b5cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00822.html#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb">MCUX_CSSL_SC_SUB_0x100</a>()</td></tr>
+<tr class="memdesc:gacf7c177e9dbd78d8c5a81fe3b9b4b5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the secure counter with 0x100.  <a href="#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb">More...</a><br /></td></tr>
+<tr class="separator:gacf7c177e9dbd78d8c5a81fe3b9b4b5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Define the PKC workarea size required by mcuxClEcc EdDSA APIs. </p>
+<p>Support for decrementing the secure counter. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga6584fe2b7bc2e31a739cfb453fd2a9e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6584fe2b7bc2e31a739cfb453fd2a9e6">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE</h2>
+<a id="ga270e4467ff02a10df72b1da177385858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga270e4467ff02a10df72b1da177385858">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_SUB</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value</td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85" title="This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 ...">mcuxClEcc_EdDSA_GenerateKeyPair</a>. </p>
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85" title="This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 ...">mcuxClEcc_EdDSA_GenerateKeyPair</a> for Ed25519. </p>
+<p>Decrement the secure counter with <code>value</code>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00822.html#ga7df8a7a4e7798142da2e668ca21f3a5e" title="Decrement the secure counter with 0x1.">MCUX_CSSL_SC_SUB_0x1</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gabb6f649421ad8405aa47812615301933" title="Decrement the secure counter with 0x10.">MCUX_CSSL_SC_SUB_0x10</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb" title="Decrement the secure counter with 0x100.">MCUX_CSSL_SC_SUB_0x100</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaebd375f1bd8786078a00d2d8326c23aa" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Value with which the secure counter must be decremented. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ga4dd4582e5d6cdec3e4537a3447281348"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4dd4582e5d6cdec3e4537a3447281348">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WAPKC_SIZE</h2>
+<a id="ga7df8a7a4e7798142da2e668ca21f3a5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7df8a7a4e7798142da2e668ca21f3a5e">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0x1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED448_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_0x1</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85" title="This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032 ...">mcuxClEcc_EdDSA_GenerateKeyPair</a> for Ed448. </p>
+<p>Decrement the secure counter with 0x1. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00822.html#ga270e4467ff02a10df72b1da177385858" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gabb6f649421ad8405aa47812615301933" title="Decrement the secure counter with 0x10.">MCUX_CSSL_SC_SUB_0x10</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb" title="Decrement the secure counter with 0x100.">MCUX_CSSL_SC_SUB_0x100</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaca21d031efe80f6dd488932f0e335842" title="Increment the secure counter with 0x1.">MCUX_CSSL_SC_ADD_0x1</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga0e082808f23a46021d65be49224fef54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0e082808f23a46021d65be49224fef54">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE</h2>
+<a id="gabb6f649421ad8405aa47812615301933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabb6f649421ad8405aa47812615301933">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0x10</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_0x10</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0b9ad0b0aa3afccae32a14aeddf9d8fe" title="This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032...">mcuxClEcc_EdDSA_GenerateSignature</a>. </p>
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0b9ad0b0aa3afccae32a14aeddf9d8fe" title="This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032...">mcuxClEcc_EdDSA_GenerateSignature</a> for Ed25519. </p>
+<p>Decrement the secure counter with 0x10. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00822.html#ga270e4467ff02a10df72b1da177385858" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB</a> </dd>
+<dd>
+<a class="el" href="a00822.html#ga7df8a7a4e7798142da2e668ca21f3a5e" title="Decrement the secure counter with 0x1.">MCUX_CSSL_SC_SUB_0x1</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb" title="Decrement the secure counter with 0x100.">MCUX_CSSL_SC_SUB_0x100</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gab6aafbee4e72e020907dc9f382ac6b65" title="Increment the secure counter with 0x10.">MCUX_CSSL_SC_ADD_0x10</a> </dd></dl>
 
 </div>
 </div>
-<a id="gaca347a8466c7addee0aa63eb112fcb72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaca347a8466c7addee0aa63eb112fcb72">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WAPKC_SIZE</h2>
+<a id="gacf7c177e9dbd78d8c5a81fe3b9b4b5cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_SUB_0x100</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_EDDSA_GENERATESIGNATURE_ED448_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_SUB_0x100</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga0b9ad0b0aa3afccae32a14aeddf9d8fe" title="This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032...">mcuxClEcc_EdDSA_GenerateSignature</a> for Ed448. </p>
-
-</div>
-</div>
-<a id="ga1a0b00eab2150578dc7afc98f8e82f2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1a0b00eab2150578dc7afc98f8e82f2a">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga514b29374472b14ad00e0e5ef3469c7f" title="This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc80...">mcuxClEcc_EdDSA_VerifySignature</a>. </p>
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga514b29374472b14ad00e0e5ef3469c7f" title="This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc80...">mcuxClEcc_EdDSA_VerifySignature</a> for Ed25519. </p>
-
-</div>
-</div>
-<a id="gad04926b8f100205fb4726200c825e1f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad04926b8f100205fb4726200c825e1f6">&#9670;&nbsp;</a></span>MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WAPKC_SIZE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED448_WAPKC_SIZE</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga514b29374472b14ad00e0e5ef3469c7f" title="This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc80...">mcuxClEcc_EdDSA_VerifySignature</a> for Ed448. </p>
+<p>Decrement the secure counter with 0x100. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00822.html#ga270e4467ff02a10df72b1da177385858" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB</a> </dd>
+<dd>
+<a class="el" href="a00822.html#ga7df8a7a4e7798142da2e668ca21f3a5e" title="Decrement the secure counter with 0x1.">MCUX_CSSL_SC_SUB_0x1</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gabb6f649421ad8405aa47812615301933" title="Decrement the secure counter with 0x10.">MCUX_CSSL_SC_SUB_0x10</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaa7340bed15dc7026e9d2a0a9a1464cbf" title="Increment the secure counter with 0x100.">MCUX_CSSL_SC_ADD_0x100</a> </dd></dl>
 
 </div>
 </div>

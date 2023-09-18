@@ -1,9 +1,8 @@
 var a00467 =
 [
-    [ "mcuxClOscca_ScratchPad_t", "a01230.html", "a01230" ],
-    [ "MCUX_CLOSCCA_SCRATCHPAD_SECTION", "a00467.html#ac438f82df94a0dea75e654d301de3ee7", null ],
-    [ "mcuxClOscca_Size_t", "a00467.html#a2e3f534011a27f600fd71444c8aa4b7e", null ],
-    [ "mcuxClOscca_Uint_t", "a00467.html#a1221f25b4eada35e16ead85a3587dba2", null ],
-    [ "mcuxClOscca_Int_t", "a00467.html#aec73edcb9b0dc6107be06f7bd0a97caa", null ],
-    [ "gmcuxClOscca_ScratchPad", "a00467.html#ac37c24690a87ce8d10e039d46b426a2c", null ]
+    [ "mcuxClMemory_StoreLittleEndian32", "a00812.html#gaef4886d199c2539b209458a8c62378cd", null ],
+    [ "mcuxClMemory_StoreBigEndian32", "a00812.html#ga84f8097975ebea39deaea4ab9306d2ce", null ],
+    [ "mcuxClMemory_LoadLittleEndian32", "a00812.html#gaa3eba98f422623a6a02f15898449c874", null ],
+    [ "mcuxClMemory_LoadBigEndian32", "a00812.html#gabd3fd1c7ee32c2cd202a67bce5036778", null ],
+    [ "MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS", "a00812.html#gac426a079f1808ff0183d2851ead720c5", null ]
 ];

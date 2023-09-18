@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLECC_WEIERECC_NIST_P521_SIZE_</title>
+<title>MCUX CLNS: MCUXCLECC_MONTDH_WAPKC_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,36 +105,95 @@ $(document).ready(function(){initNavTree('a00922.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLECC_WEIERECC_NIST_P521_SIZE_<div class="ingroups"><a class="el" href="a00661.html">mcuxClEcc</a> &raquo; <a class="el" href="a00666.html">mcuxClEcc_ParameterSizes</a></div></div>  </div>
+<div class="title">MCUXCLECC_MONTDH_WAPKC_<div class="ingroups"><a class="el" href="a00679.html">mcuxClEcc</a> &raquo; <a class="el" href="a00683.html">mcuxClEcc_MemoryConsumption</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>WeierECC parameter size definitions for NIST P-521.  
+<p>Define the PKC workarea size required by mcuxClEcc_Mont APIs.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga480093eabf4d155ca413b74c19283232"><td class="memItemLeft" align="right" valign="top"><a id="ga480093eabf4d155ca413b74c19283232"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P521_SIZE_PRIMEP</b></td></tr>
-<tr class="separator:ga480093eabf4d155ca413b74c19283232"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9a22c8961e50ad75362e6a6623fef3aa"><td class="memItemLeft" align="right" valign="top"><a id="ga9a22c8961e50ad75362e6a6623fef3aa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P521_SIZE_BASEPOINTORDER</b></td></tr>
-<tr class="separator:ga9a22c8961e50ad75362e6a6623fef3aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28a1b9618bfb3d3457dd594e5b1729f0"><td class="memItemLeft" align="right" valign="top"><a id="ga28a1b9618bfb3d3457dd594e5b1729f0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P521_SIZE_PRIVATEKEY</b></td></tr>
-<tr class="separator:ga28a1b9618bfb3d3457dd594e5b1729f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga235a3ef333eb9befaffff160277d106b"><td class="memItemLeft" align="right" valign="top"><a id="ga235a3ef333eb9befaffff160277d106b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P521_SIZE_PUBLICKEY</b></td></tr>
-<tr class="separator:ga235a3ef333eb9befaffff160277d106b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga45a80ee215dca5187e30ed3ec06da650"><td class="memItemLeft" align="right" valign="top"><a id="ga45a80ee215dca5187e30ed3ec06da650"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P521_SIZE_SHAREDSECRET</b></td></tr>
-<tr class="separator:ga45a80ee215dca5187e30ed3ec06da650"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4c05eb063afd9d4f49d60b59d57f6247"><td class="memItemLeft" align="right" valign="top"><a id="ga4c05eb063afd9d4f49d60b59d57f6247"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_NIST_P521_SIZE_SIGNATURE</b></td></tr>
-<tr class="separator:ga4c05eb063afd9d4f49d60b59d57f6247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae36dff0de90c37f30b946bf2788b8c50"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00922.html#gae36dff0de90c37f30b946bf2788b8c50">MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:gae36dff0de90c37f30b946bf2788b8c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00681.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve25519.  <a href="#gae36dff0de90c37f30b946bf2788b8c50">More...</a><br /></td></tr>
+<tr class="separator:gae36dff0de90c37f30b946bf2788b8c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab8a50884589fb6a8e9c3a27176a98f17"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00922.html#gab8a50884589fb6a8e9c3a27176a98f17">MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:gab8a50884589fb6a8e9c3a27176a98f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00681.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve25519.  <a href="#gab8a50884589fb6a8e9c3a27176a98f17">More...</a><br /></td></tr>
+<tr class="separator:gab8a50884589fb6a8e9c3a27176a98f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10eb15479cf16f2bbe6834d0dce7480b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00922.html#ga10eb15479cf16f2bbe6834d0dce7480b">MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:ga10eb15479cf16f2bbe6834d0dce7480b"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00681.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve448.  <a href="#ga10eb15479cf16f2bbe6834d0dce7480b">More...</a><br /></td></tr>
+<tr class="separator:ga10eb15479cf16f2bbe6834d0dce7480b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga42aed746692f49fa0a4e27f5b3f5d743"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00922.html#ga42aed746692f49fa0a4e27f5b3f5d743">MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:ga42aed746692f49fa0a4e27f5b3f5d743"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00681.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve448.  <a href="#ga42aed746692f49fa0a4e27f5b3f5d743">More...</a><br /></td></tr>
+<tr class="separator:ga42aed746692f49fa0a4e27f5b3f5d743"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>WeierECC parameter size definitions for NIST P-521. </p>
+<p>Define the PKC workarea size required by mcuxClEcc_Mont APIs. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gae36dff0de90c37f30b946bf2788b8c50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae36dff0de90c37f30b946bf2788b8c50">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PKC workarea size (in bytes) for <a class="el" href="a00681.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve25519. </p>
+
+</div>
+</div>
+<a id="gab8a50884589fb6a8e9c3a27176a98f17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab8a50884589fb6a8e9c3a27176a98f17">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PKC workarea size (in bytes) for <a class="el" href="a00681.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve25519. </p>
+
+</div>
+</div>
+<a id="ga10eb15479cf16f2bbe6834d0dce7480b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga10eb15479cf16f2bbe6834d0dce7480b">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PKC workarea size (in bytes) for <a class="el" href="a00681.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve448. </p>
+
+</div>
+</div>
+<a id="ga42aed746692f49fa0a4e27f5b3f5d743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga42aed746692f49fa0a4e27f5b3f5d743">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PKC workarea size (in bytes) for <a class="el" href="a00681.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve448. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,11 +1,9 @@
 var a00967 =
 [
-    [ "MCUXCLECC_PKC_WORDSIZE", "a00967.html#ga636a89c09b2210ea78da464825e4bf99", null ],
-    [ "MCUXCLECC_MAX", "a00967.html#gaf74ecb9246e198a6078c55c48ddf479e", null ],
-    [ "MCUXCLECC_ALIGN_SIZE_PKC", "a00967.html#gac836b17e161566b045beb35f53828d1b", null ],
-    [ "MCUXCLECC_KEYGEN_WAPKC_SIZE", "a00967.html#ga7e26bba72c6eefd7f91907d0df33f17b", null ],
-    [ "MCUXCLECC_SIGN_WAPKC_SIZE", "a00967.html#ga3574ac0f7b7b9b6d17003263fc47c6c0", null ],
-    [ "MCUXCLECC_VERIFY_WAPKC_SIZE", "a00967.html#gab4cdcbfb78c215dbee9ff06dc2955034", null ],
-    [ "MCUXCLECC_POINTMULT_WAPKC_SIZE", "a00967.html#ga36cab670f924640163fc1b02bb753792", null ],
-    [ "MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WAPKC_SIZE", "a00967.html#gad8881999c0f76cfb55a70d953fb979da", null ]
+    [ "MCUX_CSSL_SC_CHECK_PASSED", "a00967.html#ga1f0a9fc2ca02b221c00acb56c1e93b9e", null ],
+    [ "MCUX_CSSL_SC_CHECK_FAILED", "a00967.html#ga9c4c267ec8ea4df79b0f5affe471ee7b", null ],
+    [ "MCUX_CSSL_SC_VALUE_TYPE", "a00967.html#ga614b8a54453d52240162efb2118db47f", null ],
+    [ "MCUX_CSSL_SC_ALLOC", "a00967.html#gae251628d245da18aa3c7aff92dbc8731", null ],
+    [ "MCUX_CSSL_SC_INIT", "a00967.html#ga25e2c92db2dee1b0cd339d3a8ca4112a", null ],
+    [ "MCUX_CSSL_SC_CHECK", "a00967.html#ga09971b594be3d77043145756712bd1bb", null ]
 ];

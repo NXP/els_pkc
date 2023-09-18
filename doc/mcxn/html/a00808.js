@@ -1,7 +1,9 @@
 var a00808 =
 [
-    [ "McuxClPkc_Functions_Init", "a00944.html", "a00944" ],
-    [ "McuxClPkc_Functions_UPTRT", "a00945.html", "a00945" ],
-    [ "McuxClPkc_Functions_Calculation", "a00946.html", "a00946" ],
-    [ "McuxClPkc_Functions_Wait", "a00947.html", "a00947" ]
+    [ "mcuxClMemory_Clear", "a00809.html", "a00809" ],
+    [ "mcuxClMemory_Copy", "a00810.html", "a00810" ],
+    [ "mcuxClMemory_Copy_Reversed", "a00811.html", "a00811" ],
+    [ "mcuxClMemory_Endianness", "a00812.html", "a00812" ],
+    [ "mcuxClMemory_Set", "a00813.html", "a00813" ],
+    [ "mcuxClMemory_Types", "a00814.html", "a00814" ]
 ];

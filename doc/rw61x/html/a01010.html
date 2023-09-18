@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: McuxClPkc_Functions_UPTRT</title>
+<title>MCUX CLNS: MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,286 +103,38 @@ $(document).ready(function(){initNavTree('a01010.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">McuxClPkc_Functions_UPTRT<div class="ingroups"><a class="el" href="a00871.html">mcuxClPkc</a> &raquo; <a class="el" href="a00872.html">mcuxClPkc_Functions</a></div></div>  </div>
+<div class="title">MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_<div class="ingroups"><a class="el" href="a00754.html">mcuxClEcc</a> &raquo; <a class="el" href="a00759.html">mcuxClEcc_ParameterSizes</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>mcuxClPkc functions of PKC UPTR table setup  
+<p>WeierECC parameter size definitions for brainpoolP256r1.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga26921e5d9a66bd8247a277794b04b42c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01010.html#ga26921e5d9a66bd8247a277794b04b42c">MCUXCLPKC_FP_GENERATEUPTRT</a>(pUPTRT,  pBaseBuffer,  bufferSize,  noOfBuffer)</td></tr>
-<tr class="memdesc:ga26921e5d9a66bd8247a277794b04b42c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to call <a class="el" href="a01010.html#gae14e20fe9fd56e0ca8125773bc88f822" title="Initialize UPTR table.">mcuxClPkc_GenerateUPTRT</a> with flow protection.  <a href="#ga26921e5d9a66bd8247a277794b04b42c">More...</a><br /></td></tr>
-<tr class="separator:ga26921e5d9a66bd8247a277794b04b42c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gae14e20fe9fd56e0ca8125773bc88f822"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01010.html#gae14e20fe9fd56e0ca8125773bc88f822">mcuxClPkc_GenerateUPTRT</a> (uint16_t *pUPTRT, const uint8_t *pBaseBuffer, uint16_t bufferLength, uint8_t noOfBuffer)</td></tr>
-<tr class="memdesc:gae14e20fe9fd56e0ca8125773bc88f822"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize UPTR table.  <a href="#gae14e20fe9fd56e0ca8125773bc88f822">More...</a><br /></td></tr>
-<tr class="separator:gae14e20fe9fd56e0ca8125773bc88f822"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf961165a01be833d3200563399a2c9aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01013.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01010.html#gaf961165a01be833d3200563399a2c9aa">mcuxClPkc_RandomizeUPTRT</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint16_t *pUPTRT, uint8_t noOfBuffer)</td></tr>
-<tr class="memdesc:gaf961165a01be833d3200563399a2c9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randomize UPTR table.  <a href="#gaf961165a01be833d3200563399a2c9aa">More...</a><br /></td></tr>
-<tr class="separator:gaf961165a01be833d3200563399a2c9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga195c78d51f2084c693257bc52c725c1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01013.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01010.html#ga195c78d51f2084c693257bc52c725c1f">mcuxClPkc_ReRandomizeUPTRT</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint16_t *pUPTRT, uint16_t bufferLength, uint8_t noOfBuffer)</td></tr>
-<tr class="memdesc:ga195c78d51f2084c693257bc52c725c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randomize UPTR table and operands in PKC workarea.  <a href="#ga195c78d51f2084c693257bc52c725c1f">More...</a><br /></td></tr>
-<tr class="separator:ga195c78d51f2084c693257bc52c725c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8185b90c41b37c25830dba8d48c8762b"><td class="memItemLeft" align="right" valign="top"><a id="ga8185b90c41b37c25830dba8d48c8762b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIMEP</b></td></tr>
+<tr class="separator:ga8185b90c41b37c25830dba8d48c8762b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59996f5a8c7431e5449005358a65ca61"><td class="memItemLeft" align="right" valign="top"><a id="ga59996f5a8c7431e5449005358a65ca61"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_BASEPOINTORDER</b></td></tr>
+<tr class="separator:ga59996f5a8c7431e5449005358a65ca61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga875aeb34b6dbe1c9e1e2c36d5a3329ac"><td class="memItemLeft" align="right" valign="top"><a id="ga875aeb34b6dbe1c9e1e2c36d5a3329ac"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PRIVATEKEY</b></td></tr>
+<tr class="separator:ga875aeb34b6dbe1c9e1e2c36d5a3329ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9980496a153c2adf526d4ca4e33fb4d2"><td class="memItemLeft" align="right" valign="top"><a id="ga9980496a153c2adf526d4ca4e33fb4d2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_PUBLICKEY</b></td></tr>
+<tr class="separator:ga9980496a153c2adf526d4ca4e33fb4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3ee900d646eb0ccb46436c8cba8ec81e"><td class="memItemLeft" align="right" valign="top"><a id="ga3ee900d646eb0ccb46436c8cba8ec81e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_SHAREDSECRET</b></td></tr>
+<tr class="separator:ga3ee900d646eb0ccb46436c8cba8ec81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6bf8477ef868c13359ab8b54c7861d9f"><td class="memItemLeft" align="right" valign="top"><a id="ga6bf8477ef868c13359ab8b54c7861d9f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MCUXCLECC_WEIERECC_BRAINPOOLP256R1_SIZE_SIGNATURE</b></td></tr>
+<tr class="separator:ga6bf8477ef868c13359ab8b54c7861d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>mcuxClPkc functions of PKC UPTR table setup </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga26921e5d9a66bd8247a277794b04b42c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga26921e5d9a66bd8247a277794b04b42c">&#9670;&nbsp;</a></span>MCUXCLPKC_FP_GENERATEUPTRT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUXCLPKC_FP_GENERATEUPTRT</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">pUPTRT, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">pBaseBuffer, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufferSize, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">noOfBuffer&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Helper macro to call <a class="el" href="a01010.html#gae14e20fe9fd56e0ca8125773bc88f822" title="Initialize UPTR table.">mcuxClPkc_GenerateUPTRT</a> with flow protection. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="gae14e20fe9fd56e0ca8125773bc88f822"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae14e20fe9fd56e0ca8125773bc88f822">&#9670;&nbsp;</a></span>mcuxClPkc_GenerateUPTRT()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void mcuxClPkc_GenerateUPTRT </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>pUPTRT</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>pBaseBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>bufferLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>noOfBuffer</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialize UPTR table. </p>
-<p>This function initializes elements in UPTR table. UPTR table contains the address (16-bit offset in PKC workarea) of each buffer (PKC operand). Each element of the table will be initialized with a 16-bit offset, associated with a buffer allocated in sequence in PKC workarea. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be initialized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pBaseBuffer</td><td>address of the buffer in PKC workarea, with which the first element will be associated. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be initialized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
-<dt><code>pBaseBuffer</code>  </dt>
-<dd>this address shall be MCUXCLPKC_WORDSIZE aligned. </dd>
-<dt><code>bufferLength</code>  </dt>
-<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
-</dl>
-</dd>
-</dl>
-
-</div>
-</div>
-<a id="gaf961165a01be833d3200563399a2c9aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf961165a01be833d3200563399a2c9aa">&#9670;&nbsp;</a></span>mcuxClPkc_RandomizeUPTRT()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a01013.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a> mcuxClPkc_RandomizeUPTRT </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>pUPTRT</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>noOfBuffer</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Randomize UPTR table. </p>
-<p>This function randomly permutes offsets stored in UPTR table. It randomizes the buffer allocation (physical address in PKC workarea). When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt>pSession: </dt>
-<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>Only the buffer allocation will be randomized, existing operands stored in each buffer will not be moved accordingly. </dd>
-<dd>
-This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="a00916.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a01013.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>if UPTR table is randomized successfully. </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01013.html#gab1f0a5295736463652b7a8c1ba887991" title="PKC operation not successful.">MCUXCLPKC_STATUS_NOK</a></td><td>if the operation failed.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function. </dd></dl>
-
-</div>
-</div>
-<a id="ga195c78d51f2084c693257bc52c725c1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga195c78d51f2084c693257bc52c725c1f">&#9670;&nbsp;</a></span>mcuxClPkc_ReRandomizeUPTRT()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a01013.html#ga9382ab1c4689794b50a3b75ad39a350c">mcuxClPkc_Status_t</a> mcuxClPkc_ReRandomizeUPTRT </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
-          <td class="paramname"><em>pSession</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>pUPTRT</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>bufferLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>noOfBuffer</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Randomize UPTR table and operands in PKC workarea. </p>
-<p>This function randomly permutes offsets stored in UPTR table, together with operands stored in each buffer in PKC workarea. It randomizes the buffer allocation (physical address in PKC workarea) and moves operands stored accordingly. When calling this function, there shall be no on-going and pending PKC calculations using the specified UPTR table elements.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>handle for the current CL session. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">pUPTRT</td><td>pointer to the first element to be randomized in UPTR table. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufferLength</td><td>byte length of each buffer in PKC workarea. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">noOfBuffer</td><td>number of elements to be randomized.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl>
-<dt>Parameter properties </dt>
-<dd><dl>
-<dt>pSession: </dt>
-<dd>The session pointed to by pSession has to be initialized prior to a call to this function. </dd>
-<dt><code>pUPTRT</code>  </dt>
-<dd>this pointer shall be 2-byte aligned. <br />
-All offsets (pUPTRT[0~(noOfBuffer-1)]) shall be exactly a multiple of MCUXCLPKC_WORDSIZE. </dd>
-<dt><code>bufferLength</code>  </dt>
-<dd>this length shall be a multiple of MCUXCLPKC_WORDSIZE. </dd>
-</dl>
-</dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG. Caller needs to check if PRNG is ready.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>A flow-protected status code (see <a class="el" href="a00916.html">Flow Protection API</a>). </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a01013.html#ga12385077399c226411e29ef427246669" title="PKC operation successful.">MCUXCLPKC_STATUS_OK</a></td><td>if UPTR table is randomized successfully. </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01013.html#gab1f0a5295736463652b7a8c1ba887991" title="PKC operation not successful.">MCUXCLPKC_STATUS_NOK</a></td><td>if the operation failed.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section attention"><dt>Attention</dt><dd>This function uses PRNG which has to be initialized prior to calling the function. </dd></dl>
-
-</div>
-</div>
+<p>WeierECC parameter size definitions for brainpoolP256r1. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

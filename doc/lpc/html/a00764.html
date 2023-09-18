@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Data Integrity Configuration</title>
+<title>MCUX CLNS: MCUXCLRSA_KEYGENERATION_CRT_WA</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,54 +105,176 @@ $(document).ready(function(){initNavTree('a00764.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">Data Integrity Configuration<div class="ingroups"><a class="el" href="a00763.html">MCUX CSSL &amp;ndash; Configurations</a></div></div>  </div>
+<div class="title">MCUXCLRSA_KEYGENERATION_CRT_WA<div class="ingroups"><a class="el" href="a00757.html">mcuxClRsa</a> &raquo; <a class="el" href="a00767.html">mcuxClRsa_Macros</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Configuration options for the data integrity mechanism.  
+<p>Definitions of workarea sizes for the mcuxClRsa_KeyGeneration_Crt function.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gad14940e758b00b26f2e699b4fc0144bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#gad14940e758b00b26f2e699b4fc0144bb">MCUX_CSSL_DI_USE_SECURE_COUNTER</a></td></tr>
-<tr class="memdesc:gad14940e758b00b26f2e699b4fc0144bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, use the data integrity mechanism implementation based on the CSSL secure counter mechanism.  <a href="#gad14940e758b00b26f2e699b4fc0144bb">More...</a><br /></td></tr>
-<tr class="separator:gad14940e758b00b26f2e699b4fc0144bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4f0cea555852c5171e55303b6cb062be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga4f0cea555852c5171e55303b6cb062be">MCUX_CSSL_DI_USE_NONE</a></td></tr>
-<tr class="memdesc:ga4f0cea555852c5171e55303b6cb062be"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, do not use the data integrity mechanism.  <a href="#ga4f0cea555852c5171e55303b6cb062be">More...</a><br /></td></tr>
-<tr class="separator:ga4f0cea555852c5171e55303b6cb062be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad96d63918b029c58379a519458e0fe5e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#gad96d63918b029c58379a519458e0fe5e">MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE</a></td></tr>
+<tr class="memdesc:gad96d63918b029c58379a519458e0fe5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys.  <a href="#gad96d63918b029c58379a519458e0fe5e">More...</a><br /></td></tr>
+<tr class="separator:gad96d63918b029c58379a519458e0fe5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f7ea947e335da713b995b3dd5756726"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga4f7ea947e335da713b995b3dd5756726">MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE</a></td></tr>
+<tr class="memdesc:ga4f7ea947e335da713b995b3dd5756726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys.  <a href="#ga4f7ea947e335da713b995b3dd5756726">More...</a><br /></td></tr>
+<tr class="separator:ga4f7ea947e335da713b995b3dd5756726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7cd47280b5c29ab35fe15afdb1aff9b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga7cd47280b5c29ab35fe15afdb1aff9b5">MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE</a></td></tr>
+<tr class="memdesc:ga7cd47280b5c29ab35fe15afdb1aff9b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys.  <a href="#ga7cd47280b5c29ab35fe15afdb1aff9b5">More...</a><br /></td></tr>
+<tr class="separator:ga7cd47280b5c29ab35fe15afdb1aff9b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab62b9607b6acf175174f192227482782"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#gab62b9607b6acf175174f192227482782">MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE</a>(keyBitLength)</td></tr>
+<tr class="memdesc:gab62b9607b6acf175174f192227482782"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to extract CPU workarea size (in bytes) for the given key length.  <a href="#gab62b9607b6acf175174f192227482782">More...</a><br /></td></tr>
+<tr class="separator:gab62b9607b6acf175174f192227482782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga50df60e5ac10a4d18d91793b9975f931"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga50df60e5ac10a4d18d91793b9975f931">MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:ga50df60e5ac10a4d18d91793b9975f931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys.  <a href="#ga50df60e5ac10a4d18d91793b9975f931">More...</a><br /></td></tr>
+<tr class="separator:ga50df60e5ac10a4d18d91793b9975f931"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cddbdf9c06180c1ad4f1004c013a3b0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga9cddbdf9c06180c1ad4f1004c013a3b0">MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:ga9cddbdf9c06180c1ad4f1004c013a3b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys.  <a href="#ga9cddbdf9c06180c1ad4f1004c013a3b0">More...</a><br /></td></tr>
+<tr class="separator:ga9cddbdf9c06180c1ad4f1004c013a3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga046e2a5713b8ad6d69f9882d2fde5b3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga046e2a5713b8ad6d69f9882d2fde5b3f">MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE</a></td></tr>
+<tr class="memdesc:ga046e2a5713b8ad6d69f9882d2fde5b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys.  <a href="#ga046e2a5713b8ad6d69f9882d2fde5b3f">More...</a><br /></td></tr>
+<tr class="separator:ga046e2a5713b8ad6d69f9882d2fde5b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga398705431e601a6309bcf59a65f72328"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#ga398705431e601a6309bcf59a65f72328">MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE</a>(keyBitLength)</td></tr>
+<tr class="memdesc:ga398705431e601a6309bcf59a65f72328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to extract PKC workarea size (in bytes) for the given key length.  <a href="#ga398705431e601a6309bcf59a65f72328">More...</a><br /></td></tr>
+<tr class="separator:ga398705431e601a6309bcf59a65f72328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Configuration options for the data integrity mechanism. </p>
+<p>Definitions of workarea sizes for the mcuxClRsa_KeyGeneration_Crt function. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gad14940e758b00b26f2e699b4fc0144bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad14940e758b00b26f2e699b4fc0144bb">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_USE_SECURE_COUNTER</h2>
+<a id="gad96d63918b029c58379a519458e0fe5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad96d63918b029c58379a519458e0fe5e">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_DI_USE_SECURE_COUNTER</td>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>If set to 1, use the data integrity mechanism implementation based on the CSSL secure counter mechanism. </p>
+<p>Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys. </p>
 
 </div>
 </div>
-<a id="ga4f0cea555852c5171e55303b6cb062be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4f0cea555852c5171e55303b6cb062be">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_USE_NONE</h2>
+<a id="ga4f7ea947e335da713b995b3dd5756726"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f7ea947e335da713b995b3dd5756726">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_DI_USE_NONE</td>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>If set to 1, do not use the data integrity mechanism. </p>
+<p>Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys. </p>
+
+</div>
+</div>
+<a id="ga7cd47280b5c29ab35fe15afdb1aff9b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7cd47280b5c29ab35fe15afdb1aff9b5">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys. </p>
+
+</div>
+</div>
+<a id="gab62b9607b6acf175174f192227482782"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab62b9607b6acf175174f192227482782">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">keyBitLength</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Macro to extract CPU workarea size (in bytes) for the given key length. </p>
+
+</div>
+</div>
+<a id="ga50df60e5ac10a4d18d91793b9975f931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga50df60e5ac10a4d18d91793b9975f931">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys. </p>
+
+</div>
+</div>
+<a id="ga9cddbdf9c06180c1ad4f1004c013a3b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9cddbdf9c06180c1ad4f1004c013a3b0">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys. </p>
+
+</div>
+</div>
+<a id="ga046e2a5713b8ad6d69f9882d2fde5b3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga046e2a5713b8ad6d69f9882d2fde5b3f">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition of PKC workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys. </p>
+
+</div>
+</div>
+<a id="ga398705431e601a6309bcf59a65f72328"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga398705431e601a6309bcf59a65f72328">&#9670;&nbsp;</a></span>MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">keyBitLength</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Macro to extract PKC workarea size (in bytes) for the given key length. </p>
 
 </div>
 </div>

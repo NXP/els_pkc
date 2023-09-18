@@ -1,5 +1,11 @@
 var a00482 =
 [
-    [ "mcuxClHmac_ModeDescriptor_SHA2_256_ELS", "a00482.html#a06144963f16c396f82dcab7f0a3bb0db", null ],
-    [ "mcuxClMac_Mode_HMAC_SHA2_256_ELS", "a00482.html#ad6bd4a8254a45bfc3f319c4177fd8d80", null ]
+    [ "MCUXCLHMAC_ELS_OUTPUT_SIZE", "a00849.html#gab2c0a4b35c88ad7030723c7c08589973", null ],
+    [ "MCUXCLHMAC_ELS_OUTPUT_SIZE_IN_WORDS", "a00849.html#ga834fe8d5cb9bd67d7546fb65b1ce0a3d", null ],
+    [ "MCUXCLHMAC_MAX_OUTPUT_SIZE", "a00849.html#ga805cc0a6fd67f42bd457b3580e74d1f3", null ],
+    [ "MCUXCLHMAC_MAX_OUTPUT_SIZE_IN_WORDS", "a00849.html#gaad0284f5ab76848289067aff908176bd", null ],
+    [ "MCUXCLHMAC_ELS_BLOCK_SIZE", "a00849.html#ga3a88f703f1237941c22789183be3ddc2", null ],
+    [ "MCUXCLHMAC_ELS_SIZE_OF_LENGTH_FIELD", "a00849.html#ga38f449fb5de294a9f398b33a37b96708", null ],
+    [ "MCUXCLHMAC_ELS_MIN_PADDING_LENGTH", "a00849.html#gaeea21ec876a193348d5f78b5014da165", null ],
+    [ "MCUXCLHMAC_ELS_INPUTBUFFER_LENGTH", "a00849.html#gac9e4d270e79fa637dfac0c4919bf5eda", null ]
 ];

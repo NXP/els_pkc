@@ -1,6 +1,9 @@
 var a00751 =
 [
-    [ "mcuxClEls_Cipher_Macros", "a00752.html", "a00752" ],
-    [ "mcuxClEls_Cipher_Types", "a00755.html", "a00755" ],
-    [ "mcuxClEls_Cipher_Functions", "a00756.html", "a00756" ]
+    [ "mcuxClCipher_ModeDescriptor_t", "a00751.html#gaa9586d961025bb80660a563be606451e", null ],
+    [ "mcuxClCipher_Mode_t", "a00751.html#gacd434e81399ac5f9752f61d55ecfb305", null ],
+    [ "mcuxClCipher_TestDescriptor_t", "a00751.html#gae10b2dde7d4883d6992adb3e23d57714", null ],
+    [ "mcuxClCipher_Test_t", "a00751.html#ga2d2ad865d5d552ea37a471acb2c48a74", null ],
+    [ "mcuxClCipher_Context_t", "a00751.html#ga9faa78dbb34107f8f28344b36b91c93d", null ],
+    [ "mcuxClCipher_Status_t", "a00751.html#gadcf65a3850bca1bd4059213edf23df4f", null ]
 ];

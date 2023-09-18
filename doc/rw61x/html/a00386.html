@@ -114,16 +114,16 @@ $(document).ready(function(){initNavTree('a00386.html','');});
 <p>header of mcuxClEcc functionalities related to ECC protocols based on (short) Weierstrass curves  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="a00356_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00629_source.html">mcuxClSession.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00485_source.html">mcuxClKey.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00644_source.html">mcuxClSession.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00497_source.html">mcuxClKey.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="a00383_source.html">mcuxClEcc_Types.h</a>&gt;</code><br />
 </div>
 <p><a href="a00386_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01055.html">mcuxClEcc_Weier_BasicDomainParams_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to define basic custom domain parameters for (short) Weierstrass curves with cofactor 1.  <a href="a01055.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01074.html">mcuxClEcc_Weier_BasicDomainParams_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to define basic custom domain parameters for (short) Weierstrass curves with cofactor 1.  <a href="a01074.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -143,10 +143,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1deb22c96b88674a4513e56cdd2dfe3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00742.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00386.html#a1deb22c96b88674a4513e56cdd2dfe3a">mcuxClEcc_WeierECC_GenerateDomainParams</a> (<a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a00743.html#gafe84edad82c8934ef1634e9f29effa55">mcuxClEcc_Weier_DomainParams_t</a> *pEccWeierDomainParams, <a class="el" href="a01055.html">mcuxClEcc_Weier_BasicDomainParams_t</a> *pEccWeierBasicDomainParams, uint32_t options)</td></tr>
+<tr class="memitem:a1deb22c96b88674a4513e56cdd2dfe3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00760.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00386.html#a1deb22c96b88674a4513e56cdd2dfe3a">mcuxClEcc_WeierECC_GenerateDomainParams</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a00761.html#gafe84edad82c8934ef1634e9f29effa55">mcuxClEcc_Weier_DomainParams_t</a> *pEccWeierDomainParams, <a class="el" href="a01074.html">mcuxClEcc_Weier_BasicDomainParams_t</a> *pEccWeierBasicDomainParams, uint32_t options)</td></tr>
 <tr class="memdesc:a1deb22c96b88674a4513e56cdd2dfe3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">ECC Weierstrass custom domain parameter generation function.  <a href="#a1deb22c96b88674a4513e56cdd2dfe3a">More...</a><br /></td></tr>
 <tr class="separator:a1deb22c96b88674a4513e56cdd2dfe3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd1f9ebda4a913d82eefe752ca54923b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00742.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00386.html#abd1f9ebda4a913d82eefe752ca54923b">mcuxClEcc_WeierECC_GenerateCustomKeyType</a> (<a class="el" href="a00846.html#ga4249d6ccc1dab6d15b46270da3c3d6d4">mcuxClKey_CustomType_t</a> customType, <a class="el" href="a00846.html#ga322cbacb57f10aa6cb6731d64d4e64e3">mcuxClKey_AlgorithmId_t</a> algoId, <a class="el" href="a00846.html#ga90c030f08081016123496c56021b9bab">mcuxClKey_Size_t</a> size, void *pCustomParams)</td></tr>
+<tr class="memitem:abd1f9ebda4a913d82eefe752ca54923b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00760.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00386.html#abd1f9ebda4a913d82eefe752ca54923b">mcuxClEcc_WeierECC_GenerateCustomKeyType</a> (<a class="el" href="a00864.html#ga4249d6ccc1dab6d15b46270da3c3d6d4">mcuxClKey_CustomType_t</a> customType, <a class="el" href="a00864.html#ga322cbacb57f10aa6cb6731d64d4e64e3">mcuxClKey_AlgorithmId_t</a> algoId, <a class="el" href="a00864.html#ga90c030f08081016123496c56021b9bab">mcuxClKey_Size_t</a> size, void *pCustomParams)</td></tr>
 <tr class="memdesc:abd1f9ebda4a913d82eefe752ca54923b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type constructor.  <a href="#abd1f9ebda4a913d82eefe752ca54923b">More...</a><br /></td></tr>
 <tr class="separator:abd1f9ebda4a913d82eefe752ca54923b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -160,21 +160,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00742.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a> mcuxClEcc_WeierECC_GenerateDomainParams </td>
+          <td class="memname"><a class="el" href="a00760.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a> mcuxClEcc_WeierECC_GenerateDomainParams </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00905.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
           <td class="paramname"><em>pSession</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00743.html#gafe84edad82c8934ef1634e9f29effa55">mcuxClEcc_Weier_DomainParams_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00761.html#gafe84edad82c8934ef1634e9f29effa55">mcuxClEcc_Weier_DomainParams_t</a> *&#160;</td>
           <td class="paramname"><em>pEccWeierDomainParams</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a01055.html">mcuxClEcc_Weier_BasicDomainParams_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a01074.html">mcuxClEcc_Weier_BasicDomainParams_t</a> *&#160;</td>
           <td class="paramname"><em>pEccWeierBasicDomainParams</em>, </td>
         </tr>
         <tr>
@@ -207,16 +207,16 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>the generated optimized domain parameter cannot be copied or moved, but shall be used in the original memory address where it is generated.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="a01005.html">MCUXCLECC_STATUS_</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="a01024.html">MCUXCLECC_STATUS_</a>) </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a01005.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>if optimized domain parameters are generated successfully; </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01005.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>if parameters are invalid; </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01005.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>if fault attack (unexpected behavior) is detected. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01024.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>if optimized domain parameters are generated successfully; </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01024.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>if parameters are invalid; </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01024.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>if fault attack (unexpected behavior) is detected. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01336.html#a12">mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01355.html#a12">mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -228,21 +228,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00742.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a> mcuxClEcc_WeierECC_GenerateCustomKeyType </td>
+          <td class="memname"><a class="el" href="a00760.html#gaf044f4a5eeeecc4ec5b01aed19f2fe41">mcuxClEcc_Status_t</a> mcuxClEcc_WeierECC_GenerateCustomKeyType </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00846.html#ga4249d6ccc1dab6d15b46270da3c3d6d4">mcuxClKey_CustomType_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00864.html#ga4249d6ccc1dab6d15b46270da3c3d6d4">mcuxClKey_CustomType_t</a>&#160;</td>
           <td class="paramname"><em>customType</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00846.html#ga322cbacb57f10aa6cb6731d64d4e64e3">mcuxClKey_AlgorithmId_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00864.html#ga322cbacb57f10aa6cb6731d64d4e64e3">mcuxClKey_AlgorithmId_t</a>&#160;</td>
           <td class="paramname"><em>algoId</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00846.html#ga90c030f08081016123496c56021b9bab">mcuxClKey_Size_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00864.html#ga90c030f08081016123496c56021b9bab">mcuxClKey_Size_t</a>&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -275,7 +275,7 @@ Functions</h2></td></tr>
 </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>Algorithm based key size. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pCustomParams</td><td>Pointer to algorithm based custom parameters. If algoId &amp; MCUXCLKEY_ALGO_ID_ALGO_MASK equals<ul>
-<li>MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_EPHEMERAL_CUSTOM, a pointer to an <a class="el" href="a01055.html" title="Structure to define basic custom domain parameters for (short) Weierstrass curves with cofactor 1.">mcuxClEcc_Weier_BasicDomainParams_t</a> struct specifying custom ECC Weierstrass domain parameters</li>
+<li>MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_EPHEMERAL_CUSTOM, a pointer to an <a class="el" href="a01074.html" title="Structure to define basic custom domain parameters for (short) Weierstrass curves with cofactor 1.">mcuxClEcc_Weier_BasicDomainParams_t</a> struct specifying custom ECC Weierstrass domain parameters</li>
 <li>MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM, a pointer to an mcuxClEcc_Weier_DomainParams_t struct specifying optimized custom ECC Weierstrass domain parameters In all other cases, the pointer shall be set to NULL </li>
 </ul>
 </td></tr>
@@ -285,13 +285,13 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a01005.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>if custom key type is generated successfully; </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01005.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>if Parameters are invalid. </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01005.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>if fault attack (unexpected behavior) is detected. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01024.html#gafed6866e44c300e1946713be81aefb9c" title="Operation was successful.">MCUXCLECC_STATUS_OK</a></td><td>if custom key type is generated successfully; </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01024.html#ga7eec856d4a1438ff6e603ee42aaa9aae" title="Parameters are invalid.">MCUXCLECC_STATUS_INVALID_PARAMS</a></td><td>if Parameters are invalid. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01024.html#ga9d53aaec17a413449e5cb6b73702c2c3" title="Fault attack (unexpected behavior) is detected.">MCUXCLECC_STATUS_FAULT_ATTACK</a></td><td>if fault attack (unexpected behavior) is detected. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01336.html#a17">mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01355.html#a17">mcuxClEcc_WeierECC_CustomEccWeierType_BN256_example.c</a>.</dd>
 </dl>
 
 </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxCssl Memory Compare</title>
+<title>MCUX CLNS: Data integrity record</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,23 +103,101 @@ $(document).ready(function(){initNavTree('a00934.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxCssl Memory Compare<div class="ingroups"><a class="el" href="a00906.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00931.html">mcuxCssl Memory API</a></div></div>  </div>
+<div class="title">Data integrity record<div class="ingroups"><a class="el" href="a00931.html">MCUX CSSL &amp;ndash; Implementations</a> &raquo; <a class="el" href="a00932.html">Data Integrity: Disabled</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Control Flow Protected Memory Compare Function.  
+<p>Support for recording a value in the data integrity register, when data integrity is disabled.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
-Modules</h2></td></tr>
-<tr class="memitem:a00935"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00935.html">mcuxCsslMemory_Compare Function Definitions</a></td></tr>
-<tr class="memdesc:a00935"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcuxCsslMemory_Compare Function Definitions <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga528d28a827727ba460795460a30cccfd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00934.html#ga528d28a827727ba460795460a30cccfd">MCUX_CSSL_DI_RECORD_IMPL</a>(identifier,  value)</td></tr>
+<tr class="memdesc:ga528d28a827727ba460795460a30cccfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation: Record the value for data integrity checking.  <a href="#ga528d28a827727ba460795460a30cccfd">More...</a><br /></td></tr>
+<tr class="separator:ga528d28a827727ba460795460a30cccfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac8a8ea1888347d41f58f27f11c9caab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00934.html#gaac8a8ea1888347d41f58f27f11c9caab">MCUX_CSSL_DI_EXPUNGE_IMPL</a>(identifier,  value)</td></tr>
+<tr class="memdesc:gaac8a8ea1888347d41f58f27f11c9caab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation: Expunge the record for value.  <a href="#gaac8a8ea1888347d41f58f27f11c9caab">More...</a><br /></td></tr>
+<tr class="separator:gaac8a8ea1888347d41f58f27f11c9caab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Control Flow Protected Memory Compare Function. </p>
+<p>Support for recording a value in the data integrity register, when data integrity is disabled. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga528d28a827727ba460795460a30cccfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga528d28a827727ba460795460a30cccfd">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_RECORD_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_DI_RECORD_IMPL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">identifier, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implementation: Record the value for data integrity checking. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">identifier</td><td>Identifier for the value that will be recorded. </td></tr>
+    <tr><td class="paramname">value</td><td>Value which needs to be recorded for the given identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaac8a8ea1888347d41f58f27f11c9caab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaac8a8ea1888347d41f58f27f11c9caab">&#9670;&nbsp;</a></span>MCUX_CSSL_DI_EXPUNGE_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_DI_EXPUNGE_IMPL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">identifier, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implementation: Expunge the record for value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">identifier</td><td>Identifier for the value that will be expunged. </td></tr>
+    <tr><td class="paramname">value</td><td>Expected value that was recorded for the given identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

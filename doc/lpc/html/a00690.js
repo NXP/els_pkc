@@ -1,4 +1,5 @@
 var a00690 =
 [
-    [ "mcuxClHmac_createHmacMode", "a00690.html#ga43f6d98b6b3b6a6e62263130e2c95a68", null ]
+    [ "mcuxClEls_Types_Macros", "a00691.html", "a00691" ],
+    [ "mcuxClEls_Types_Types", "a00695.html", "a00695" ]
 ];

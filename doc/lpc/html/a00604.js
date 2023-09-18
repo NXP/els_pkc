@@ -1,14 +1,9 @@
 var a00604 =
 [
-    [ "mcuxClEls_Aead", "a00605.html", "a00605" ],
-    [ "mcuxClEls_Cipher", "a00610.html", "a00610" ],
-    [ "mcuxClEls_Cmac", "a00616.html", "a00616" ],
-    [ "mcuxClEls_Common", "a00622.html", "a00622" ],
-    [ "mcuxClEls_Ecc", "a00634.html", "a00634" ],
-    [ "mcuxClEls_Hash", "a00644.html", "a00644" ],
-    [ "mcuxClEls_Hmac", "a00652.html", "a00652" ],
-    [ "mcuxClEls_Kdf", "a00657.html", "a00657" ],
-    [ "mcuxClEls_KeyManagement", "a00662.html", "a00662" ],
-    [ "mcuxClEls_Rng", "a00669.html", "a00669" ],
-    [ "mcuxClEls_Types", "a00672.html", "a00672" ]
+    [ "mcuxClKey_TypeDescriptor_Aes128", "a00604.html#ga8f7fce2b87e12c68354d223b9a75dc37", null ],
+    [ "mcuxClKey_Type_Aes128", "a00604.html#ga8f0a74b8ec63f9bcfff2723f37602d0d", null ],
+    [ "mcuxClKey_TypeDescriptor_Aes192", "a00604.html#ga16e79ab35a7a7da20948688481fe15ad", null ],
+    [ "mcuxClKey_Type_Aes192", "a00604.html#gaaeae50366310367805cb6ae6d81d88b1", null ],
+    [ "mcuxClKey_TypeDescriptor_Aes256", "a00604.html#ga5a8d0b88ec6b1da1730d861ca6fb7f97", null ],
+    [ "mcuxClKey_Type_Aes256", "a00604.html#ga1249b014f089397821eceab3fd04ed5c", null ]
 ];

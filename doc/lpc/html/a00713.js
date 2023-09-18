@@ -1,11 +1,10 @@
 var a00713 =
 [
-    [ "mcuxClMac_ModeDescriptor_CMAC", "a00713.html#ga7df28da412f427562a5ffcb2b3ab8c35", null ],
-    [ "mcuxClMac_Mode_CMAC", "a00713.html#gab5f61e17bb7b7d97f69745700f107bc6", null ],
-    [ "mcuxClMac_ModeDescriptor_CBCMAC_NoPadding", "a00713.html#gab8171ca5a2cad3f74f26cade42abb4fa", null ],
-    [ "mcuxClMac_Mode_CBCMAC_NoPadding", "a00713.html#ga0edfb9edb1c66eba797754851e463a20", null ],
-    [ "mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method1", "a00713.html#gacf3978d54625d231254d9b42bcbf349c", null ],
-    [ "mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method1", "a00713.html#ga39e525bf4e237be5933966afa1eafd02", null ],
-    [ "mcuxClMac_ModeDescriptor_CBCMAC_PaddingISO9797_1_Method2", "a00713.html#gaacbabbb60934ae05725b5cb2889c7bce", null ],
-    [ "mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2", "a00713.html#ga6727ecd0ad3c728bb1ba822f7fd6f485", null ]
+    [ "MCUXCLKEY_STATUS_OK", "a00713.html#ga3cac3b08cb53d2949698e19319010c49", null ],
+    [ "MCUXCLKEY_STATUS_ERROR", "a00713.html#gaad298a05e6e023bc251b91ad5173ac59", null ],
+    [ "MCUXCLKEY_STATUS_FAILURE", "a00713.html#gabcc2c3ef67df555b363b5bb51f71d83b", null ],
+    [ "MCUXCLKEY_STATUS_INVALID_INPUT", "a00713.html#gaf5c8b802949e1a7920cfdd65ec3fe42b", null ],
+    [ "MCUXCLKEY_STATUS_FAULT_ATTACK", "a00713.html#ga7be083c8ca459a7290b5cf7784c75469", null ],
+    [ "MCUXCLKEY_STATUS_CRC_NOT_OK", "a00713.html#gaa1223f9f839075cd078103d4129b5218", null ],
+    [ "MCUXCLKEY_STATUS_NOT_SUPPORTED", "a00713.html#gacb7a3820f23f7cc17d33498ab12e3b3c", null ]
 ];

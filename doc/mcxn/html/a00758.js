@@ -1,12 +1,13 @@
 var a00758 =
 [
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_MD5", "a00758.html#ga8ec2efaea50a9fc310af8105607e87aa", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA_1", "a00758.html#ga33b704215984285abfe33b51074e7199", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_224", "a00758.html#ga64ea4a6c44d5714d06cde9c858ca963f", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_256", "a00758.html#gac40907ce6e09e87b7931823ad48a50c3", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_384", "a00758.html#ga09b5656067c3ab3e89c3d0aaa9f2e5ad", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512", "a00758.html#gad09b3d78d2a33f965308f2e4c34ea0cf", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512_224", "a00758.html#gafdc371fcd745111898ccdf7b278cf417", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512_256", "a00758.html#gad8765430a45e16650b7c7b4ae70eff73", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_MAX", "a00758.html#gac974f1f5c32fc1bfca59435e95da14ee", null ]
+    [ "mcuxClEls_KeyImportOption_t", "a01225.html", [
+      [ "value", "a01225.html#ad5bfabd7e1e04a95627e0cbc144afdcb", null ],
+      [ "word", "a01225.html#a9a03426cf6b706ee292473b3d695ebe0", null ],
+      [ "__pad0__", "a01225.html#a2dfcb81e1476a07a6ab67f8c090b4ab5", null ],
+      [ "revf", "a01225.html#aa699b2cfb2fc82dcbc25d833e09d442e", null ],
+      [ "__pad1__", "a01225.html#ad67985d38d1563a926768316825e1944", null ],
+      [ "kfmt", "a01225.html#ae3892b035704c00a855dd43d96a21b2c", null ],
+      [ "__pad2__", "a01225.html#a05660839da43298f12f96572bf538330", null ],
+      [ "bits", "a01225.html#ad0fc563d3f708b06c986ec2ae604d69e", null ]
+    ] ]
 ];

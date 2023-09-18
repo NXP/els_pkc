@@ -114,8 +114,8 @@ $(document).ready(function(){initNavTree('a00032.html','');});
 <p>Example of PuK import from a DER-encoded certificate using the ELS (CLNS component mcuxClEls)  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="a00293_source.html">mcuxClEls.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00443_source.html">mcuxClMemory.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="a00581_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00455_source.html">mcuxClMemory.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="a00599_source.html">mcuxCsslFlowProtection.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="a00260_source.html">mcuxClCore_FunctionIdentifiers.h</a>&gt;</code><br />
 <code>#include &lt;mcuxClCore_Examples.h&gt;</code><br />
 <code>#include &lt;mcuxClExample_ELS_Helper.h&gt;</code><br />
@@ -130,7 +130,7 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3e0329840494bde2557d01ee51c9aa52"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> <a class="el" href="a00008.html#a5a3957d46a69327df60b6fc5294d1bb1">ecc_signature</a> [<a class="el" href="a00714.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a3e0329840494bde2557d01ee51c9aa52">__attribute__</a> ((aligned(4)))</td></tr>
+<tr class="memitem:a3e0329840494bde2557d01ee51c9aa52"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> <a class="el" href="a00008.html#a0c919da2c9c7078b5c7243da9fa76322">ecc_signature</a> [<a class="el" href="a00732.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a3e0329840494bde2557d01ee51c9aa52">__attribute__</a> ((aligned(4)))</td></tr>
 <tr class="memdesc:a3e0329840494bde2557d01ee51c9aa52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output buffer for the signature of the mcuxClEls_EccSign_Async operation.  <a href="#a3e0329840494bde2557d01ee51c9aa52">More...</a><br /></td></tr>
 <tr class="separator:a3e0329840494bde2557d01ee51c9aa52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa131c8f7a3740ff4732892b4db16bec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#afa131c8f7a3740ff4732892b4db16bec">MCUXCLEXAMPLE_FUNCTION</a> (mcuxClEls_Key_Import_Puk_DER_example)</td></tr>
@@ -154,11 +154,11 @@ Variables</h2></td></tr>
 <tr class="memitem:adf7528a77c2e6b48821cbed7c0337096"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#adf7528a77c2e6b48821cbed7c0337096">der_certificate_import</a> [sizeof(<a class="el" href="a00032.html#a9aaa67299df29bf9b32ac94aa91dde50">der_certificate</a>)+SHA256_BLOCK_SIZE]</td></tr>
 <tr class="memdesc:adf7528a77c2e6b48821cbed7c0337096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output buffer for the certificate and padding.  <a href="#adf7528a77c2e6b48821cbed7c0337096">More...</a><br /></td></tr>
 <tr class="separator:adf7528a77c2e6b48821cbed7c0337096"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a961fa94f9b6e3852e50ad9417f7a6601"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a961fa94f9b6e3852e50ad9417f7a6601">ecc_root_public_key</a> [<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
+<tr class="memitem:a961fa94f9b6e3852e50ad9417f7a6601"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a961fa94f9b6e3852e50ad9417f7a6601">ecc_root_public_key</a> [<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
 <tr class="memdesc:a961fa94f9b6e3852e50ad9417f7a6601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output buffers for the public key of the mcuxClEls_EccKeyGen_Async operation.  <a href="#a961fa94f9b6e3852e50ad9417f7a6601">More...</a><br /></td></tr>
 <tr class="separator:a961fa94f9b6e3852e50ad9417f7a6601"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8a9e11309b1e008ef85ce7e2fc6fc5b"><td class="memItemLeft" align="right" valign="top"><a id="ae8a9e11309b1e008ef85ce7e2fc6fc5b"></a>
-static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ecc_root_public_key_switched</b> [<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
+static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ecc_root_public_key_switched</b> [<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td></tr>
 <tr class="separator:ae8a9e11309b1e008ef85ce7e2fc6fc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -174,7 +174,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> <a class="el" href="a00008.html#a5a3957d46a69327df60b6fc5294d1bb1">ecc_signature</a> [<a class="el" href="a00714.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>] __attribute__ </td>
+          <td class="memname">static <a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> <a class="el" href="a00008.html#a0c919da2c9c7078b5c7243da9fa76322">ecc_signature</a> [<a class="el" href="a00732.html#ga922fa06cbacda443d50f2b3c29fdea8c">MCUXCLELS_ECC_SIGNATURE_SIZE</a>] __attribute__ </td>
           <td>(</td>
           <td class="paramtype">(aligned(4))&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -191,7 +191,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 <p>Output buffer for the signature of the mcuxClEls_EccSign_Async operation. </p>
 <p>Output buffer for the signature part r of the mcuxClEls_KeyImportPuk_Async operation.</p>
 <p>Must be word-aligned! </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a9">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a9">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -238,7 +238,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 <p>deleted key_idx_ecc_root_public_key keySlot</p>
 <p>deleted key_idx_ecc_import_public_key keySlot</p>
 <p>Disable the ELS </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a12">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a12">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -266,7 +266,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 
 <p>Key wrapping key. </p>
 <p>Raw DER-encoded certificate. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a0">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a0">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -292,7 +292,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 </div><div class="memdoc">
 
 <p>Offset of the public key that we want to import within the certificate. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a1">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a1">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -318,7 +318,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 </div><div class="memdoc">
 
 <p>Total length of the certificate without signature. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a2">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a2">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -344,7 +344,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 </div><div class="memdoc">
 
 <p>Output buffer for the wrapped ECC public root key. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a3">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a3">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -370,7 +370,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 </div><div class="memdoc">
 
 <p>Output buffer for the certificate and padding. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a4">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a4">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>
@@ -385,7 +385,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_root_public_key[<a class="el" href="a00714.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td>
+          <td class="memname"><a class="el" href="a00733.html#gaaca57cf87336b1e866852443c47a019f">mcuxClEls_EccByte_t</a> ecc_root_public_key[<a class="el" href="a00732.html#ga7298491d4e2d679496d0bacab6f351f8">MCUXCLELS_ECC_PUBLICKEY_SIZE</a>]</td>
         </tr>
       </table>
   </td>
@@ -396,7 +396,7 @@ static <a class="el" href="a00715.html#gaaca57cf87336b1e866852443c47a019f">mcuxC
 </div><div class="memdoc">
 
 <p>Output buffers for the public key of the mcuxClEls_EccKeyGen_Async operation. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01277.html#a5">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01296.html#a5">mcuxClEls_Key_Import_Puk_DER_example.c</a>.</dd>
 </dl>
 
 </div>

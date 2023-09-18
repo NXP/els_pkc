@@ -1,4 +1,5 @@
 var a00867 =
 [
-    [ "mcuxCsslMemory_Clear Function Definitions", "a00868.html", "a00868" ]
+    [ "Data integrity core functionality", "a00868.html", "a00868" ],
+    [ "Data integrity record", "a00869.html", "a00869" ]
 ];

@@ -1,6 +1,6 @@
 var a00290 =
 [
-    [ "mcuxClEcc_Weier_BasicDomainParams_t", "a00974.html", "a00974" ],
+    [ "mcuxClEcc_Weier_BasicDomainParams_t", "a00993.html", "a00993" ],
     [ "MCUXCLECC_OPTION_GENERATEPRECPOINT_YES", "a00290.html#a4e9b583c3b1411f1e637077f94830923", null ],
     [ "MCUXCLECC_OPTION_GENERATEPRECPOINT_NO", "a00290.html#ab9477bfbda79aa92959c0d5d932a90b7", null ],
     [ "MCUXCLECC_OPTION_GENERATEPRECPOINT_MASK", "a00290.html#a7ad5ff52b9bccfda2081787268a5bf12", null ],

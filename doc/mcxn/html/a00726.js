@@ -1,6 +1,9 @@
 var a00726 =
 [
-    [ "MCUXCLELS_HMAC_EXTERNAL_KEY_", "a00727.html", "a00727" ],
-    [ "MCUXCLELS_HMAC_PADDED_KEY_SIZE", "a00726.html#ga039409b9bba04a61be14b175117fb932", null ],
-    [ "MCUXCLELS_HMAC_OUTPUT_SIZE", "a00726.html#ga80d89c1569e578566088cad0ea9127f4", null ]
+    [ "MCUXCLELS_ECC (Sign and Verify) option word values", "a00727.html", "a00727" ],
+    [ "MCUXCLELS_KEYGEN option word values", "a00728.html", "a00728" ],
+    [ "MCUXCLELS_ECC (Sign and Verify) option bit field values", "a00729.html", "a00729" ],
+    [ "MCUXCLELS_KEYGEN option bit field values", "a00730.html", "a00730" ],
+    [ "Option bit field values that are needed for internal use only", "a00731.html", "a00731" ],
+    [ "MCUXCLELS_ECC_SIZE", "a00732.html", "a00732" ]
 ];

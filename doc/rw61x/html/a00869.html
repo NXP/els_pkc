@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Constants definitions</title>
+<title>MCUX CLNS: Multi part MAC interfaces</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,95 +103,233 @@ $(document).ready(function(){initNavTree('a00869.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Constants definitions</div>  </div>
+<div class="title">Multi part MAC interfaces<div class="ingroups"><a class="el" href="a00748.html">MCUX CL &amp;ndash; API</a> &raquo; <a class="el" href="a00865.html">mcuxClMac</a> &raquo; <a class="el" href="a00867.html">mcuxClMac Functions</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Constants used by the Padding component.  
+<p>Interfaces to perform MAC operations in multi part.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gad64734c94edeab85fc1d8e05c4134f52"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#gad64734c94edeab85fc1d8e05c4134f52">MCUXCLPADDING_STATUS_OK</a></td></tr>
-<tr class="memdesc:gad64734c94edeab85fc1d8e05c4134f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return codes.  <a href="#gad64734c94edeab85fc1d8e05c4134f52">More...</a><br /></td></tr>
-<tr class="separator:gad64734c94edeab85fc1d8e05c4134f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6393900f48c3b32dd379a6ea30bc730a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#ga6393900f48c3b32dd379a6ea30bc730a">MCUXCLPADDING_STATUS_NOT_OK</a></td></tr>
-<tr class="memdesc:ga6393900f48c3b32dd379a6ea30bc730a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Incorrect padding.  <a href="#ga6393900f48c3b32dd379a6ea30bc730a">More...</a><br /></td></tr>
-<tr class="separator:ga6393900f48c3b32dd379a6ea30bc730a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga27d0fc33860c93a2241e1d6b37a92d94"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#ga27d0fc33860c93a2241e1d6b37a92d94">MCUXCLPADDING_STATUS_ERROR</a></td></tr>
-<tr class="memdesc:ga27d0fc33860c93a2241e1d6b37a92d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error occurred during Padding operation.  <a href="#ga27d0fc33860c93a2241e1d6b37a92d94">More...</a><br /></td></tr>
-<tr class="separator:ga27d0fc33860c93a2241e1d6b37a92d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4dff5913bd142d42c0a8825ce553bc3c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#ga4dff5913bd142d42c0a8825ce553bc3c">MCUXCLPADDING_STATUS_FAULT_ATTACK</a></td></tr>
-<tr class="memdesc:ga4dff5913bd142d42c0a8825ce553bc3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fault attack (unexpected behaviour) detected.  <a href="#ga4dff5913bd142d42c0a8825ce553bc3c">More...</a><br /></td></tr>
-<tr class="separator:ga4dff5913bd142d42c0a8825ce553bc3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga803bd7822372bdca8dfd0c81b5db96eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#ga803bd7822372bdca8dfd0c81b5db96eb">mcuxClMac_init</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a> *const pContext, <a class="el" href="a00864.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key, <a class="el" href="a00870.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a> mode)</td></tr>
+<tr class="memdesc:ga803bd7822372bdca8dfd0c81b5db96eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization for a multipart MAC computation.  <a href="#ga803bd7822372bdca8dfd0c81b5db96eb">More...</a><br /></td></tr>
+<tr class="separator:ga803bd7822372bdca8dfd0c81b5db96eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2749e40209d4308f21ebe761485d4d56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#ga2749e40209d4308f21ebe761485d4d56">mcuxClMac_process</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a> *const pContext, <a class="el" href="a00753.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a> pIn, uint32_t inLength)</td></tr>
+<tr class="memdesc:ga2749e40209d4308f21ebe761485d4d56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data processing for a multipart MAC computation.  <a href="#ga2749e40209d4308f21ebe761485d4d56">More...</a><br /></td></tr>
+<tr class="separator:ga2749e40209d4308f21ebe761485d4d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9d66c6e242ff75b6ff4826fdcb784e08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00869.html#ga9d66c6e242ff75b6ff4826fdcb784e08">mcuxClMac_finish</a> (<a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session, <a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a> *const pContext, <a class="el" href="a00753.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a> pMac, uint32_t *const pMacLength)</td></tr>
+<tr class="memdesc:ga9d66c6e242ff75b6ff4826fdcb784e08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalize a MAC generation for a multipart MAC computation.  <a href="#ga9d66c6e242ff75b6ff4826fdcb784e08">More...</a><br /></td></tr>
+<tr class="separator:ga9d66c6e242ff75b6ff4826fdcb784e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Constants used by the Padding component. </p>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gad64734c94edeab85fc1d8e05c4134f52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad64734c94edeab85fc1d8e05c4134f52">&#9670;&nbsp;</a></span>MCUXCLPADDING_STATUS_OK</h2>
+<p>Interfaces to perform MAC operations in multi part. </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga803bd7822372bdca8dfd0c81b5db96eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga803bd7822372bdca8dfd0c81b5db96eb">&#9670;&nbsp;</a></span>mcuxClMac_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLPADDING_STATUS_OK</td>
+          <td class="memname"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a> mcuxClMac_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a> *const&#160;</td>
+          <td class="paramname"><em>pContext</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00864.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00870.html#ga8e9aa3b88af43aaf819650568abc471f">mcuxClMac_Mode_t</a>&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return codes. </p>
-<p>Padding operation successful </p>
+<p>Initialization for a multipart MAC computation. </p>
+<p>This function performs the initialization of a context for a multipart MAC computation. The algorithm to be used will be determined based on the key that is provided.</p>
+<p>This function should only be called once, as the first step for a multipart computation.</p>
+<p>For example, to perform a multipart AES MAC computation with a 128-bit key in CMAC mode on padded data, the following needs to be provided in this step:</p><ul>
+<li>AES128 key</li>
+<li>CMAC mode</li>
+</ul>
+<p>The size of the context depends on the mode used (see mcuxClMac_MemoryConsumption).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>MAC context which is used to maintain the state and store other relevant information about the operation. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>Key to be used to MAC the data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Mode that should be used during the MAC operation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="a00935.html">Flow Protection API</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">MCUXCLMAC_STATUS_OK</td><td>Mac operation successful </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_ERROR</td><td>Error occurred during Mac operation </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_INVALID_PARAM</td><td>An invalid parameter was given to the function </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_FAULT_ATTACK</td><td>Fault attack detected </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ga6393900f48c3b32dd379a6ea30bc730a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6393900f48c3b32dd379a6ea30bc730a">&#9670;&nbsp;</a></span>MCUXCLPADDING_STATUS_NOT_OK</h2>
+<a id="ga2749e40209d4308f21ebe761485d4d56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2749e40209d4308f21ebe761485d4d56">&#9670;&nbsp;</a></span>mcuxClMac_process()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLPADDING_STATUS_NOT_OK</td>
+          <td class="memname"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a> mcuxClMac_process </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a> *const&#160;</td>
+          <td class="paramname"><em>pContext</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00753.html#gae1ad733bc1a05d9dc6e9fb8b0e9b436d">mcuxCl_InputBuffer_t</a>&#160;</td>
+          <td class="paramname"><em>pIn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>inLength</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Incorrect padding. </p>
+<p>Data processing for a multipart MAC computation. </p>
+<p>This function performs the data processing for a multipart MAC computation. The algorithm and key to be used will be determined based on the context that is provided.</p>
+<p>This function can be called multiple times, after the multipart context initialization.</p>
+<p>For example, to perform a multipart AES MAC computation with a 128-bit key in CMAC mode on padded data, the following needs to be provided in this step:</p><ul>
+<li>Input data</li>
+</ul>
+<p>The size of the context depends on the mode used (see mcuxClMac_MemoryConsumption).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00869.html#ga803bd7822372bdca8dfd0c81b5db96eb" title="Initialization for a multipart MAC computation.">mcuxClMac_init</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>MAC context which is used to maintain the state and store other relevant information about the operation. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pIn</td><td>Pointer to the input buffer that contains the data that need to be processed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">inLength</td><td>Number of bytes of data in the <code>in</code> buffer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="a00935.html">Flow Protection API</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">MCUXCLMAC_STATUS_OK</td><td>Mac operation successful </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_ERROR</td><td>Error occurred during Mac operation </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_INVALID_PARAM</td><td>An invalid parameter was given to the function </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_FAULT_ATTACK</td><td>Fault attack detected </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ga27d0fc33860c93a2241e1d6b37a92d94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga27d0fc33860c93a2241e1d6b37a92d94">&#9670;&nbsp;</a></span>MCUXCLPADDING_STATUS_ERROR</h2>
+<a id="ga9d66c6e242ff75b6ff4826fdcb784e08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9d66c6e242ff75b6ff4826fdcb784e08">&#9670;&nbsp;</a></span>mcuxClMac_finish()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLPADDING_STATUS_ERROR</td>
+          <td class="memname"><a class="el" href="a00870.html#gaca63aa917056a18f99a911f329f3971b">mcuxClMac_Status_t</a> mcuxClMac_finish </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00924.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Error occurred during Padding operation. </p>
-
-</div>
-</div>
-<a id="ga4dff5913bd142d42c0a8825ce553bc3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4dff5913bd142d42c0a8825ce553bc3c">&#9670;&nbsp;</a></span>MCUXCLPADDING_STATUS_FAULT_ATTACK</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLPADDING_STATUS_FAULT_ATTACK</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00870.html#gaf804dbff6e0d68d2d877b21995ed5c34">mcuxClMac_Context_t</a> *const&#160;</td>
+          <td class="paramname"><em>pContext</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00753.html#gaa29a7ef1a28440e75f2c0d007011ae2b">mcuxCl_Buffer_t</a>&#160;</td>
+          <td class="paramname"><em>pMac</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *const&#160;</td>
+          <td class="paramname"><em>pMacLength</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Fault attack (unexpected behaviour) detected. </p>
+<p>Finalize a MAC generation for a multipart MAC computation. </p>
+<p>This function performs the final MAC generation step for a multipart MAC computation. The algorithm and key to be used will be determined based on the context that is provided.</p>
+<p>This function should only be called once, as the last step for a multipart computation.</p>
+<p>For example, to perform a multipart AES MAC computation with a 128-bit key in CMAC mode on padded data, the following needs to be provided in this step:</p><ul>
+<li>Output data buffer, at least the size of a single AES block</li>
+</ul>
+<p>The size of the context depends on the mode used (see mcuxClMac_MemoryConsumption).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00869.html#ga803bd7822372bdca8dfd0c81b5db96eb" title="Initialization for a multipart MAC computation.">mcuxClMac_init</a> </dd>
+<dd>
+<a class="el" href="a00869.html#ga2749e40209d4308f21ebe761485d4d56" title="Data processing for a multipart MAC computation.">mcuxClMac_process</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pContext</td><td>MAC context which is used to maintain the state and store other relevant information about the operation. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pMac</td><td>Pointer to the output buffer where the MAC needs to be written. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pMacLength</td><td>Will be incremented by the number of bytes of data that have been written to the <code>pMac</code> buffer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A code-flow protected error code (see <a class="el" href="a00935.html">Flow Protection API</a>) </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">MCUXCLMAC_STATUS_OK</td><td>Mac operation successful </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_ERROR</td><td>Error occurred during Mac operation </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_INVALID_PARAM</td><td>An invalid parameter was given to the function </td></tr>
+    <tr><td class="paramname">MCUXCLMAC_STATUS_FAULT_ATTACK</td><td>Fault attack detected </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

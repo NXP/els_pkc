@@ -1,10 +1,7 @@
 var a00884 =
 [
-    [ "curveParam", "a00884.html#a58660c912b751cbea8360e214c482b42", null ],
-    [ "pPrecG", "a00884.html#ae5ba73e49b3346a860000f13d05bfbf0", null ],
-    [ "pHash", "a00884.html#adb5823e73ed5542ddd0b4a7103e62f1f", null ],
-    [ "pSignature", "a00884.html#ac9477410362aebdb892fdf382864342c", null ],
-    [ "pPublicKey", "a00884.html#a2db1a83966c659495b7bca80d7b5ab25", null ],
-    [ "pOutputR", "a00884.html#a6b6eb3da4f84de13269bb74d79583b51", null ],
-    [ "optLen", "a00884.html#afa16cb1249abe8848bfe2beeb909c4f3", null ]
+    [ "MCUXCLPKC_FP_WAITFORFINISH", "a00884.html#gac1f65eb00620f5683ffd7965a084a977", null ],
+    [ "MCUXCLPKC_FP_WAITFORREADY", "a00884.html#ga1733f3b346a3bd00ffdd8b3f7df0c3fc", null ],
+    [ "mcuxClPkc_WaitForFinish", "a00884.html#ga7d26efcc91094390f7c55fbd870692cd", null ],
+    [ "mcuxClPkc_WaitForReady", "a00884.html#ga963b13a65f2ae869947cbbebf2f9a823", null ]
 ];

@@ -1,9 +1,9 @@
 var a00392 =
 [
-    [ "MCUXCLMAC_CBCMAC_OUTPUT_SIZE", "a00709.html#gae3fbb2da7d5fef73ea388eb30cb0e8a4", null ],
-    [ "MCUXCLMAC_CBCMAC_OUTPUT_SIZE_IN_WORDS", "a00709.html#ga071c1074dbc84e227e6bb7de4355d9e4", null ],
-    [ "MCUXCLMAC_CMAC_OUTPUT_SIZE", "a00709.html#ga19fabc0fcc4bb740d3ae3f5af0801932", null ],
-    [ "MCUXCLMAC_CMAC_OUTPUT_SIZE_IN_WORDS", "a00709.html#ga6c92dadeb46681334a49ccd369639ca3", null ],
-    [ "MCUXCLMACMODES_MAX_OUTPUT_SIZE", "a00709.html#ga0ef0a7fc1fb078d453b8f662d1b35538", null ],
-    [ "MCUXCLMACMODES_MAX_OUTPUT_SIZE_IN_WORDS", "a00709.html#ga9d79d99b39bcb663b8f5f43db2b90105", null ]
+    [ "MCUXCLMAC_STATUS_ERROR", "a00722.html#ga29a0556d236921ec9e6680cd049f784b", null ],
+    [ "MCUXCLMAC_STATUS_FAILURE", "a00722.html#gaeee9d7aded8807ac014d1030847457a2", null ],
+    [ "MCUXCLMAC_STATUS_INVALID_PARAM", "a00722.html#ga8eb86baa218d3f14c65c4cf1fd4a9a6b", null ],
+    [ "MCUXCLMAC_STATUS_FAULT_ATTACK", "a00722.html#ga025cf49de0fa3225a6d15fd972bf3c64", null ],
+    [ "MCUXCLMAC_STATUS_OK", "a00722.html#ga7df50ebdaad50cfe8661c930df6c43df", null ],
+    [ "MCUXCLMAC_STATUS_COMPARE_NOK", "a00722.html#ga322f2ecd934013fbc12b609d7f92b49f", null ]
 ];

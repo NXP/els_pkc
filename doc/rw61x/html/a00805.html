@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: mcuxClEls_Kdf_Functions</title>
+<title>MCUX CLNS: mcuxClEls_GlitchDetector_Functions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,342 +105,161 @@ $(document).ready(function(){initNavTree('a00805.html','');});
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">mcuxClEls_Kdf_Functions<div class="ingroups"><a class="el" href="a00745.html">mcuxClEls</a> &raquo; <a class="el" href="a00801.html">mcuxClEls_Kdf</a></div></div>  </div>
+<div class="title">mcuxClEls_GlitchDetector_Functions<div class="ingroups"><a class="el" href="a00763.html">mcuxClEls</a> &raquo; <a class="el" href="a00803.html">mcuxClEls_GlitchDetector</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all functions of <a class="el" href="a00801.html">mcuxClEls_Kdf</a>.  
+<p>Defines all functions of <a class="el" href="a00803.html">mcuxClEls_GlitchDetector</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaad9187ee88fcb4efae7fd9469b51dc81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#gaad9187ee88fcb4efae7fd9469b51dc81">mcuxClEls_Hkdf_Rfc5869_Async</a> (<a class="el" href="a01251.html">mcuxClEls_HkdfOption_t</a> options, <a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> derivationKeyIdx, <a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> targetKeyIdx, <a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a> targetKeyProperties, uint8_t const *pDerivationData)</td></tr>
-<tr class="memdesc:gaad9187ee88fcb4efae7fd9469b51dc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives a key using the HKDF (HMAC-based key derivation function) according to RFC5869.  <a href="#gaad9187ee88fcb4efae7fd9469b51dc81">More...</a><br /></td></tr>
-<tr class="separator:gaad9187ee88fcb4efae7fd9469b51dc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8d44c8b880565afe51d941057570361b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga8d44c8b880565afe51d941057570361b">mcuxClEls_Hkdf_Sp80056c_Async</a> (<a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> derivationKeyIdx, uint8_t *pTagetKey, uint8_t const *pDerivationData, size_t derivationDataLength)</td></tr>
-<tr class="memdesc:ga8d44c8b880565afe51d941057570361b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives a key using the HKDF (HMAC-based key derivation function) according to SP800-56C one-step approach with Sha2-256.  <a href="#ga8d44c8b880565afe51d941057570361b">More...</a><br /></td></tr>
-<tr class="separator:ga8d44c8b880565afe51d941057570361b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4cf223def750c39f5c955fdfbe12bc8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga4cf223def750c39f5c955fdfbe12bc8d">mcuxClEls_Ckdf_Sp800108_Async</a> (<a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> derivationKeyIdx, <a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> targetKeyIdx, <a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a> targetKeyProperties, uint8_t const *pDerivationData)</td></tr>
-<tr class="memdesc:ga4cf223def750c39f5c955fdfbe12bc8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives a key using the NIST SP 800-108 CMAC-based Extract-and-Expand Key Derivation Function.  <a href="#ga4cf223def750c39f5c955fdfbe12bc8d">More...</a><br /></td></tr>
-<tr class="separator:ga4cf223def750c39f5c955fdfbe12bc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac8b832b6cfa9c2b15b51be04ab349ae6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#gac8b832b6cfa9c2b15b51be04ab349ae6">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a> (uint8_t const *pDerivationData, <a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a> keyProperties, <a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdx)</td></tr>
-<tr class="memdesc:gac8b832b6cfa9c2b15b51be04ab349ae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1.2 specification.  <a href="#gac8b832b6cfa9c2b15b51be04ab349ae6">More...</a><br /></td></tr>
-<tr class="separator:gac8b832b6cfa9c2b15b51be04ab349ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga50b0d0753ed6a370b187904db49826ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga50b0d0753ed6a370b187904db49826ff">mcuxClEls_TlsGenerateSessionKeysFromMasterKey_Async</a> (uint8_t const *pDerivationData, <a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a> keyProperties, <a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdx)</td></tr>
-<tr class="memdesc:ga50b0d0753ed6a370b187904db49826ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates TLS session keys based on a master key and derivation data, according to the TLS 1.2 specification.  <a href="#ga50b0d0753ed6a370b187904db49826ff">More...</a><br /></td></tr>
-<tr class="separator:ga50b0d0753ed6a370b187904db49826ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga398e0132665a3f5b1f5a703fca2ee0da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga398e0132665a3f5b1f5a703fca2ee0da">mcuxClEls_GlitchDetector_LoadConfig_Async</a> (uint8_t const *pInput)</td></tr>
+<tr class="memdesc:ga398e0132665a3f5b1f5a703fca2ee0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a glitch detector configuration.  <a href="#ga398e0132665a3f5b1f5a703fca2ee0da">More...</a><br /></td></tr>
+<tr class="separator:ga398e0132665a3f5b1f5a703fca2ee0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga67252ef3e66584aaa01bddd0f6d243f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga67252ef3e66584aaa01bddd0f6d243f4">mcuxClEls_GlitchDetector_Trim_Async</a> (uint8_t *pOutput)</td></tr>
+<tr class="memdesc:ga67252ef3e66584aaa01bddd0f6d243f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates optimal ELS glitch detector configuration and writes it to system memory.  <a href="#ga67252ef3e66584aaa01bddd0f6d243f4">More...</a><br /></td></tr>
+<tr class="separator:ga67252ef3e66584aaa01bddd0f6d243f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0097a446c7af94a841c345109a0edf5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga0097a446c7af94a841c345109a0edf5a">mcuxClEls_GlitchDetector_GetEventCounter</a> (uint8_t *pCount)</td></tr>
+<tr class="memdesc:ga0097a446c7af94a841c345109a0edf5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the glitch detector's event counter.  <a href="#ga0097a446c7af94a841c345109a0edf5a">More...</a><br /></td></tr>
+<tr class="separator:ga0097a446c7af94a841c345109a0edf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga636bd4ef80d9654ee5e951f355ec0e95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ga636bd4ef80d9654ee5e951f355ec0e95">mcuxClEls_GlitchDetector_ResetEventCounter</a> (void)</td></tr>
+<tr class="memdesc:ga636bd4ef80d9654ee5e951f355ec0e95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the glitch detector's event counter.  <a href="#ga636bd4ef80d9654ee5e951f355ec0e95">More...</a><br /></td></tr>
+<tr class="separator:ga636bd4ef80d9654ee5e951f355ec0e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Defines all functions of <a class="el" href="a00801.html">mcuxClEls_Kdf</a>. </p>
+<p>Defines all functions of <a class="el" href="a00803.html">mcuxClEls_GlitchDetector</a>. </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gaad9187ee88fcb4efae7fd9469b51dc81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaad9187ee88fcb4efae7fd9469b51dc81">&#9670;&nbsp;</a></span>mcuxClEls_Hkdf_Rfc5869_Async()</h2>
+<a id="ga398e0132665a3f5b1f5a703fca2ee0da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga398e0132665a3f5b1f5a703fca2ee0da">&#9670;&nbsp;</a></span>mcuxClEls_GlitchDetector_LoadConfig_Async()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_Hkdf_Rfc5869_Async </td>
+          <td class="memname"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_GlitchDetector_LoadConfig_Async </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a01251.html">mcuxClEls_HkdfOption_t</a>&#160;</td>
-          <td class="paramname"><em>options</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>derivationKeyIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>targetKeyIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a>&#160;</td>
-          <td class="paramname"><em>targetKeyProperties</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pDerivationData</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>pInput</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Derives a key using the HKDF (HMAC-based key derivation function) according to RFC5869. </p>
-<p>Call <a class="el" href="a00774.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Loads a glitch detector configuration. </p>
+<p>Call <a class="el" href="a00792.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">options</td><td>The command options. For more information, see <a class="el" href="a01251.html" title="Command option bit field for mcuxClEls_Hkdf_Rfc5869_Async.">mcuxClEls_HkdfOption_t</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">derivationKeyIdx</td><td>Key index used for derivation. Must be a 256-bit key with HKDF property bit set to 1. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">targetKeyIdx</td><td>Key bank number of the derived key. Will be a 256-bit key, the user must ensure there is enough space in the keystore to hold the derived key. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">targetKeyProperties</td><td>Requested properties for the derived key. The ksize field will be ignored. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pDerivationData</td><td>The algorithm-specific derivation data, the length is <a class="el" href="a00803.html#ga7b1d08f458ed93ea2a17bdb8f8ecee40" title="Size of HKDF derivation data.">MCUXCLELS_HKDF_RFC5869_DERIVATIONDATA_SIZE</a> bytes</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Pointer</td><td>to the memory area which contains the glitch detector configuration. The size is fixed at <a class="el" href="a00804.html#ga2e602fc14163aee68664a89d14bf8bd0" title="Glitch detector configuration size.">MCUXCLELS_GLITCHDETECTOR_CFG_SIZE</a> bytes.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00820.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information</dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00838.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
 
 </div>
 </div>
-<a id="ga8d44c8b880565afe51d941057570361b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8d44c8b880565afe51d941057570361b">&#9670;&nbsp;</a></span>mcuxClEls_Hkdf_Sp80056c_Async()</h2>
+<a id="ga67252ef3e66584aaa01bddd0f6d243f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga67252ef3e66584aaa01bddd0f6d243f4">&#9670;&nbsp;</a></span>mcuxClEls_GlitchDetector_Trim_Async()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_Hkdf_Sp80056c_Async </td>
+          <td class="memname"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_GlitchDetector_Trim_Async </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>derivationKeyIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pTagetKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>pOutput</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pDerivationData</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>derivationDataLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Derives a key using the HKDF (HMAC-based key derivation function) according to SP800-56C one-step approach with Sha2-256. </p>
-<p>Call <a class="el" href="a00774.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
+<p>Calculates optimal ELS glitch detector configuration and writes it to system memory. </p>
+<p>Call <a class="el" href="a00792.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">derivationKeyIdx</td><td>Key index used for derivation. Must be a 256-bit key with HKDF property bit set to 1. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pTagetKey</td><td>Memory area to store the derived key. Will be a 256-bit key, the user must ensure there is enough space in the keystore to hold the derived key. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pDerivationData</td><td>The algorithm-specific derivation data </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">derivationDataLength</td><td>Length of the derivation data</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">Pointer</td><td>to the memory area which receives the glitch detector trim value. The size is fixed at <a class="el" href="a00804.html#ga38a93e9e15614af275f56eace687e4ab" title="Glitch detector trim value size.">MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE</a> bytes.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00820.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00838.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
 
 </div>
 </div>
-<a id="ga4cf223def750c39f5c955fdfbe12bc8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4cf223def750c39f5c955fdfbe12bc8d">&#9670;&nbsp;</a></span>mcuxClEls_Ckdf_Sp800108_Async()</h2>
+<a id="ga0097a446c7af94a841c345109a0edf5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0097a446c7af94a841c345109a0edf5a">&#9670;&nbsp;</a></span>mcuxClEls_GlitchDetector_GetEventCounter()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_Ckdf_Sp800108_Async </td>
+          <td class="memname"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_GlitchDetector_GetEventCounter </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>derivationKeyIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pCount</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>targetKeyIdx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a>&#160;</td>
-          <td class="paramname"><em>targetKeyProperties</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pDerivationData</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Derives a key using the NIST SP 800-108 CMAC-based Extract-and-Expand Key Derivation Function. </p>
-<p>Call <a class="el" href="a00774.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
+<p>Reads the glitch detector's event counter. </p>
+<p>This function converts the event counter from Gray code to an unsigned number.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">derivationKeyIdx</td><td>Key index used for derivation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">targetKeyIdx</td><td>Key bank number of the derived key </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">targetKeyProperties</td><td>Requested properties for the derived key. Only set usage bits. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pDerivationData</td><td>The algorithm-specific derivation data, the length is <a class="el" href="a00803.html#gae0e48994f0652e42fec3acca8c4469bb" title="Size of CKDF SP800-108 derivation data.">MCUXCLELS_CKDF_DERIVATIONDATA_SIZE</a> bytes</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Pointer</td><td>to the word where the counter value will be stored.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00820.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga022996920a649ed71428ed73e53eae8a" title="No error occurred.">MCUXCLELS_STATUS_OK</a></td><td>on successful request</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00838.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
 
 </div>
 </div>
-<a id="gac8b832b6cfa9c2b15b51be04ab349ae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac8b832b6cfa9c2b15b51be04ab349ae6">&#9670;&nbsp;</a></span>mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async()</h2>
+<a id="ga636bd4ef80d9654ee5e951f355ec0e95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga636bd4ef80d9654ee5e951f355ec0e95">&#9670;&nbsp;</a></span>mcuxClEls_GlitchDetector_ResetEventCounter()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async </td>
+          <td class="memname"><a class="el" href="a00782.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00839.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_GlitchDetector_ResetEventCounter </td>
           <td>(</td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pDerivationData</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a>&#160;</td>
-          <td class="paramname"><em>keyProperties</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>keyIdx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1.2 specification. </p>
-<p>The pre-master key is overwritten in this operation. Call <a class="el" href="a00774.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pDerivationData</td><td>The TLS derivation data, consisting of Label, Client Random and Server Random from the TLS 1.2 specification. Note: The order is different from <a class="el" href="a00805.html#ga50b0d0753ed6a370b187904db49826ff" title="Generates TLS session keys based on a master key and derivation data, according to the TLS 1....">mcuxClEls_TlsGenerateSessionKeysFromMasterKey_Async</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">keyProperties</td><td>Desired key properties. Only <a class="el" href="a01287.html#a50d3bbaabf919fab908e2ae83fe5a5ab" title="Access restriction to privileged mode.">mcuxClEls_KeyProp_t::upprot_priv</a> and <a class="el" href="a01287.html#a0d130be83d337e7a5d9ef56f4a92f3a0" title="Access restriction to TrustZone secure mode.">mcuxClEls_KeyProp_t::upprot_sec</a> are used, the rest are ignored. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">keyIdx</td><td>The index of the TLS pre-master key, which is overwritten with the master key</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00820.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
+<p>Resets the glitch detector's event counter. </p>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
+    <tr><td class="paramname"><a class="el" href="a00838.html#ga022996920a649ed71428ed73e53eae8a" title="No error occurred.">MCUXCLELS_STATUS_OK</a></td><td>on successful request</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01333.html#a35">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
-</dl>
-
-</div>
-</div>
-<a id="ga50b0d0753ed6a370b187904db49826ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga50b0d0753ed6a370b187904db49826ff">&#9670;&nbsp;</a></span>mcuxClEls_TlsGenerateSessionKeysFromMasterKey_Async()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00764.html#ga5f87370c0e52126f57afb5b13c283d73">MCUXCLELS_API</a> <a class="el" href="a00821.html#ga734d7200290fe0eda6ef3347f52177f3">mcuxClEls_Status_t</a> mcuxClEls_TlsGenerateSessionKeysFromMasterKey_Async </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t const *&#160;</td>
-          <td class="paramname"><em>pDerivationData</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a01287.html">mcuxClEls_KeyProp_t</a>&#160;</td>
-          <td class="paramname"><em>keyProperties</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00821.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>&#160;</td>
-          <td class="paramname"><em>keyIdx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Generates TLS session keys based on a master key and derivation data, according to the TLS 1.2 specification. </p>
-<p>The master key and the following five key indices are overwritten in this operation. The keys are written in the following order: </p><ol>
-<li>
-Client Encryption Key </li>
-<li>
-Client Message Authentication Key </li>
-<li>
-Server Encryption Key </li>
-<li>
-Server Message Authentication Key </li>
-</ol>
-<p>Call <a class="el" href="a00774.html#gaee73cb4825b7722d9e085565170eb18e" title="Wait for an ELS operation and optionally clear the error status.">mcuxClEls_WaitForOperation</a> to complete the operation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pDerivationData</td><td>The TLS derivation data, consisting of Label, Server Random and Client Random from the TLS 1.2 specification. Note: The order is different from <a class="el" href="a00805.html#gac8b832b6cfa9c2b15b51be04ab349ae6" title="Generates a TLS master key based on a pre-master key and derivation data, according to the TLS 1....">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">keyProperties</td><td>Desired key properties. Only <a class="el" href="a01287.html#a50d3bbaabf919fab908e2ae83fe5a5ab" title="Access restriction to privileged mode.">mcuxClEls_KeyProp_t::upprot_priv</a> and <a class="el" href="a01287.html#a0d130be83d337e7a5d9ef56f4a92f3a0" title="Access restriction to TrustZone secure mode.">mcuxClEls_KeyProp_t::upprot_sec</a> are used, the rest are ignored. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">keyIdx</td><td>The index of the TLS master key, which is overwritten with one of the session keys. There must be three further consecutive unoccupied key indices following this index.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00820.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga96347d1bd07cc9ee18688f1973219878" title="Incorrect parameters were supplied.">MCUXCLELS_STATUS_SW_INVALID_PARAM</a></td><td>if invalid parameters were specified </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga20ac618d5c0b386df110135322b94ed6" title="an ELS command was started while the ELS was still busy, or a SHA-Direct command was started while th...">MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT</a></td><td>if a running operation prevented the request </td></tr>
-    <tr><td class="paramname"><a class="el" href="a00820.html#ga0c69ecf4e48929c38549c8b430dae4b2" title="An _Async function successfully started an ELS command. Call mcuxClEls_WaitForOperation to complete i...">MCUXCLELS_STATUS_OK_WAIT</a></td><td>on successful request </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01333.html#a37">mcuxClEls_Tls_Master_Key_Session_Keys_example.c</a>.</dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a00838.html">MCUXCLELS_STATUS_</a>, see individual documentation for more information </dd></dl>
 
 </div>
 </div>

@@ -1,13 +1,9 @@
 var a00749 =
 [
-    [ "MCUXCLRSA_STATUS_SIGN_OK", "a00749.html#gac7719ba5cbecc181bef2b21dca99fdf3", null ],
-    [ "MCUXCLRSA_STATUS_VERIFY_OK", "a00749.html#ga2dbb489ad7452a487a5d49df5a979d69", null ],
-    [ "MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK", "a00749.html#gadabda4063a5cfe9766a7201d271d8f0a", null ],
-    [ "MCUXCLRSA_STATUS_ERROR", "a00749.html#gac062bb04172f071a8595aa39bef80edc", null ],
-    [ "MCUXCLRSA_STATUS_INVALID_INPUT", "a00749.html#ga14e28c4e4b6a325ddd1f038b5274ccec", null ],
-    [ "MCUXCLRSA_STATUS_VERIFY_FAILED", "a00749.html#ga05d091562f747706d7aecfb99b5a735c", null ],
-    [ "MCUXCLRSA_STATUS_FAULT_ATTACK", "a00749.html#gaf886957f4dc2794dd12839a690ae05d0", null ],
-    [ "MCUXCLRSA_STATUS_KEYGENERATION_OK", "a00749.html#gab08354492e4b0feceab7a3615abee1f0", null ],
-    [ "MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED", "a00749.html#ga90072cc31c18394f5e5d3a2e63e014fa", null ],
-    [ "MCUXCLRSA_STATUS_RNG_ERROR", "a00749.html#gadd600ddd2a4c8c2fc79f427e438f81f4", null ]
+    [ "mcuxClRandom_Constants", "a00750.html", "a00750" ],
+    [ "mcuxClRandom_Functions", "a00751.html", "a00751" ],
+    [ "mcuxClRandom_Types", "a00752.html", "a00752" ],
+    [ "mcuxClRandom_Constants", "a00753.html", "a00753" ],
+    [ "Random interfaces", "a00755.html", null ],
+    [ "mcuxClRandomModes_MemoryConsumption", "a00756.html", null ]
 ];

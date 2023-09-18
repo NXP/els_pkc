@@ -1,6 +1,10 @@
 var a00479 =
 [
-    [ "MCUXCLOSCCAPKC_PKCPACKARGS2", "a00479.html#aba1b2e7258d3f4a2080b728cc7f91eaf", null ],
-    [ "MCUXCLOSCCAPKC_PKC_RAM_BASEADDR", "a00479.html#abf92a6a0dd052e3ae6ca7a9929ebb7a7", null ],
-    [ "MCUXCLOSCCAPKC_WORD_SIZE", "a00479.html#a33bcea3ff2387d7065f0565f17c9038e", null ]
+    [ "MCUXCLOSCCA_SIZE_ALIGN_OFFSET", "a00479.html#aa3a71a50c5a16ac11d40fca22e0e8e6a", null ],
+    [ "mcuxClOscca_alignAddress", "a00479.html#a4d7d960d5c32329501e917a5ec57bbfc", null ],
+    [ "mcuxClOscca_alignSize", "a00479.html#abed72009d14359c88321efd18d77d518", null ],
+    [ "mcuxClOscca_alignAddressWithOffset", "a00479.html#a568d2c25122791e10569de52d2257d0a", null ],
+    [ "mcuxClOscca_alignAddressToBoundary", "a00479.html#adecf327b9cbf358250b83b0adf2484b9", null ],
+    [ "mcuxClOscca_FastSecureXor", "a00479.html#abd4377e6f133173e8dcef7e841659c5c", null ],
+    [ "mcuxClOscca_switch_endianness", "a00479.html#af3ac8e537c7ce9fc0ea5f22bb33192e8", null ]
 ];

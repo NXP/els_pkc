@@ -1,5 +1,6 @@
 var a00628 =
 [
-    [ "MCUXCLELS_RESET_DO_NOT_CANCEL", "a00628.html#gac02fc8694aa89061b1eb47bad8fca21d", null ],
-    [ "MCUXCLELS_RESET_CANCEL", "a00628.html#ga1f4338ba7f7d0ddd5b84236bc4545ee3", null ]
+    [ "mcuxClEls_Cipher_Macros", "a00629.html", "a00629" ],
+    [ "mcuxClEls_Cipher_Types", "a00632.html", "a00632" ],
+    [ "mcuxClEls_Cipher_Functions", "a00633.html", "a00633" ]
 ];

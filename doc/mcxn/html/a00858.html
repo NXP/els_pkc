@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: Flow Protection Configuration</title>
+<title>MCUX CLNS: Session RTF configuration values</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,73 +105,50 @@ $(document).ready(function(){initNavTree('a00858.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">Flow Protection Configuration<div class="ingroups"><a class="el" href="a00845.html">MCUX CSSL &amp;ndash; Configurations</a></div></div>  </div>
+<div class="title">Session RTF configuration values<div class="ingroups"><a class="el" href="a00854.html">mcuxClSession</a> &raquo; <a class="el" href="a00856.html">mcuxClSession_Constants</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Configuration options for the flow protection mechanism.  
-<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gaeaecd08382d1bf7542d523e67c15b90b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00858.html#gaeaecd08382d1bf7542d523e67c15b90b">MCUX_CSSL_FP_USE_CODE_SIGNATURE</a></td></tr>
-<tr class="memdesc:gaeaecd08382d1bf7542d523e67c15b90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, use the flow protection mechanism implementation based on the Zen-V code signature HW mechanism.  <a href="#gaeaecd08382d1bf7542d523e67c15b90b">More...</a><br /></td></tr>
-<tr class="separator:gaeaecd08382d1bf7542d523e67c15b90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga645fafaa87e927ec807c9679dfa6d74e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00858.html#ga645fafaa87e927ec807c9679dfa6d74e">MCUX_CSSL_FP_USE_SECURE_COUNTER</a></td></tr>
-<tr class="memdesc:ga645fafaa87e927ec807c9679dfa6d74e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, use the flow protection mechanism implementation based on the CSSL secure counter mechanism.  <a href="#ga645fafaa87e927ec807c9679dfa6d74e">More...</a><br /></td></tr>
-<tr class="separator:ga645fafaa87e927ec807c9679dfa6d74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00858.html#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7">MCUX_CSSL_FP_USE_NONE</a></td></tr>
-<tr class="memdesc:ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to 1, do not use the flow protection mechanism.  <a href="#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7">More...</a><br /></td></tr>
-<tr class="separator:ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17963249b8a091124c5442ca642a55d8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00858.html#ga17963249b8a091124c5442ca642a55d8">MCUXCLSESSION_RTF_UPDATE_TRUE</a></td></tr>
+<tr class="memdesc:ga17963249b8a091124c5442ca642a55d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">RTF will be updated.  <a href="#ga17963249b8a091124c5442ca642a55d8">More...</a><br /></td></tr>
+<tr class="separator:ga17963249b8a091124c5442ca642a55d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga922a60abc33fb57bb5b4587324f2d73c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00858.html#ga922a60abc33fb57bb5b4587324f2d73c">MCUXCLSESSION_RTF_UPDATE_FALSE</a></td></tr>
+<tr class="memdesc:ga922a60abc33fb57bb5b4587324f2d73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">RTF will not be updated.  <a href="#ga922a60abc33fb57bb5b4587324f2d73c">More...</a><br /></td></tr>
+<tr class="separator:ga922a60abc33fb57bb5b4587324f2d73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Configuration options for the flow protection mechanism. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gaeaecd08382d1bf7542d523e67c15b90b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeaecd08382d1bf7542d523e67c15b90b">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_USE_CODE_SIGNATURE</h2>
+<a id="ga17963249b8a091124c5442ca642a55d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga17963249b8a091124c5442ca642a55d8">&#9670;&nbsp;</a></span>MCUXCLSESSION_RTF_UPDATE_TRUE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_FP_USE_CODE_SIGNATURE</td>
+          <td class="memname">#define MCUXCLSESSION_RTF_UPDATE_TRUE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>If set to 1, use the flow protection mechanism implementation based on the Zen-V code signature HW mechanism. </p>
+<p>RTF will be updated. </p>
 
 </div>
 </div>
-<a id="ga645fafaa87e927ec807c9679dfa6d74e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga645fafaa87e927ec807c9679dfa6d74e">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_USE_SECURE_COUNTER</h2>
+<a id="ga922a60abc33fb57bb5b4587324f2d73c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga922a60abc33fb57bb5b4587324f2d73c">&#9670;&nbsp;</a></span>MCUXCLSESSION_RTF_UPDATE_FALSE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUX_CSSL_FP_USE_SECURE_COUNTER</td>
+          <td class="memname">#define MCUXCLSESSION_RTF_UPDATE_FALSE</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>If set to 1, use the flow protection mechanism implementation based on the CSSL secure counter mechanism. </p>
-
-</div>
-</div>
-<a id="ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7">&#9670;&nbsp;</a></span>MCUX_CSSL_FP_USE_NONE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MCUX_CSSL_FP_USE_NONE</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>If set to 1, do not use the flow protection mechanism. </p>
+<p>RTF will not be updated. </p>
 
 </div>
 </div>

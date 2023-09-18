@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MCUX CLNS: MCUXCLECC_MONTDH_WAPKC_</title>
+<title>MCUX CLNS: Secure counter increment</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,92 +105,169 @@ $(document).ready(function(){initNavTree('a00821.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">MCUXCLECC_MONTDH_WAPKC_<div class="ingroups"><a class="el" href="a00595.html">mcuxClEcc</a> &raquo; <a class="el" href="a00599.html">mcuxClEcc_MemoryConsumption</a></div></div>  </div>
+<div class="title">Secure counter increment<div class="ingroups"><a class="el" href="a00778.html">MCUX CSSL &amp;ndash; API</a> &raquo; <a class="el" href="a00819.html">Secure Counter API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Define the PKC workarea size required by mcuxClEcc_Mont APIs.  
+<p>Support for incrementing the secure counter.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gae36dff0de90c37f30b946bf2788b8c50"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#gae36dff0de90c37f30b946bf2788b8c50">MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:gae36dff0de90c37f30b946bf2788b8c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve25519.  <a href="#gae36dff0de90c37f30b946bf2788b8c50">More...</a><br /></td></tr>
-<tr class="separator:gae36dff0de90c37f30b946bf2788b8c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8a50884589fb6a8e9c3a27176a98f17"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#gab8a50884589fb6a8e9c3a27176a98f17">MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:gab8a50884589fb6a8e9c3a27176a98f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve25519.  <a href="#gab8a50884589fb6a8e9c3a27176a98f17">More...</a><br /></td></tr>
-<tr class="separator:gab8a50884589fb6a8e9c3a27176a98f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga10eb15479cf16f2bbe6834d0dce7480b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#ga10eb15479cf16f2bbe6834d0dce7480b">MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:ga10eb15479cf16f2bbe6834d0dce7480b"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve448.  <a href="#ga10eb15479cf16f2bbe6834d0dce7480b">More...</a><br /></td></tr>
-<tr class="separator:ga10eb15479cf16f2bbe6834d0dce7480b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga42aed746692f49fa0a4e27f5b3f5d743"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#ga42aed746692f49fa0a4e27f5b3f5d743">MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE</a></td></tr>
-<tr class="memdesc:ga42aed746692f49fa0a4e27f5b3f5d743"><td class="mdescLeft">&#160;</td><td class="mdescRight">PKC workarea size (in bytes) for <a class="el" href="a00597.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve448.  <a href="#ga42aed746692f49fa0a4e27f5b3f5d743">More...</a><br /></td></tr>
-<tr class="separator:ga42aed746692f49fa0a4e27f5b3f5d743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebd375f1bd8786078a00d2d8326c23aa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#gaebd375f1bd8786078a00d2d8326c23aa">MCUX_CSSL_SC_ADD</a>(value)</td></tr>
+<tr class="memdesc:gaebd375f1bd8786078a00d2d8326c23aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with <code>value</code>.  <a href="#gaebd375f1bd8786078a00d2d8326c23aa">More...</a><br /></td></tr>
+<tr class="separator:gaebd375f1bd8786078a00d2d8326c23aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4103d92fd5d240d12ace815c84d9d6f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#ga4103d92fd5d240d12ace815c84d9d6f1">MCUX_CSSL_SC_ADD_ON_CALL</a>(value)</td></tr>
+<tr class="memdesc:ga4103d92fd5d240d12ace815c84d9d6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with <code>value</code> in case of function call.  <a href="#ga4103d92fd5d240d12ace815c84d9d6f1">More...</a><br /></td></tr>
+<tr class="separator:ga4103d92fd5d240d12ace815c84d9d6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca21d031efe80f6dd488932f0e335842"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#gaca21d031efe80f6dd488932f0e335842">MCUX_CSSL_SC_ADD_0x1</a>()</td></tr>
+<tr class="memdesc:gaca21d031efe80f6dd488932f0e335842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x1.  <a href="#gaca21d031efe80f6dd488932f0e335842">More...</a><br /></td></tr>
+<tr class="separator:gaca21d031efe80f6dd488932f0e335842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6aafbee4e72e020907dc9f382ac6b65"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#gab6aafbee4e72e020907dc9f382ac6b65">MCUX_CSSL_SC_ADD_0x10</a>()</td></tr>
+<tr class="memdesc:gab6aafbee4e72e020907dc9f382ac6b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x10.  <a href="#gab6aafbee4e72e020907dc9f382ac6b65">More...</a><br /></td></tr>
+<tr class="separator:gab6aafbee4e72e020907dc9f382ac6b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7340bed15dc7026e9d2a0a9a1464cbf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00821.html#gaa7340bed15dc7026e9d2a0a9a1464cbf">MCUX_CSSL_SC_ADD_0x100</a>()</td></tr>
+<tr class="memdesc:gaa7340bed15dc7026e9d2a0a9a1464cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the secure counter with 0x100.  <a href="#gaa7340bed15dc7026e9d2a0a9a1464cbf">More...</a><br /></td></tr>
+<tr class="separator:gaa7340bed15dc7026e9d2a0a9a1464cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Define the PKC workarea size required by mcuxClEcc_Mont APIs. </p>
+<p>Support for incrementing the secure counter. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gae36dff0de90c37f30b946bf2788b8c50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae36dff0de90c37f30b946bf2788b8c50">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WAPKC_SIZE</h2>
+<a id="gaebd375f1bd8786078a00d2d8326c23aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaebd375f1bd8786078a00d2d8326c23aa">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_MONT_DHKEYGENERATION_CURVE25519_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_ADD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value</td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve25519. </p>
+<p>Increment the secure counter with <code>value</code>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00821.html#gaca21d031efe80f6dd488932f0e335842" title="Increment the secure counter with 0x1.">MCUX_CSSL_SC_ADD_0x1</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gab6aafbee4e72e020907dc9f382ac6b65" title="Increment the secure counter with 0x10.">MCUX_CSSL_SC_ADD_0x10</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaa7340bed15dc7026e9d2a0a9a1464cbf" title="Increment the secure counter with 0x100.">MCUX_CSSL_SC_ADD_0x100</a> </dd>
+<dd>
+<a class="el" href="a00822.html#ga270e4467ff02a10df72b1da177385858" title="Decrement the secure counter with value.">MCUX_CSSL_SC_SUB</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Value with which the secure counter must be incremented. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="gab8a50884589fb6a8e9c3a27176a98f17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab8a50884589fb6a8e9c3a27176a98f17">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WAPKC_SIZE</h2>
+<a id="ga4103d92fd5d240d12ace815c84d9d6f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4103d92fd5d240d12ace815c84d9d6f1">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_ON_CALL</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE25519_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_ADD_ON_CALL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value</td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve25519. </p>
+<p>Increment the secure counter with <code>value</code> in case of function call. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00821.html#gaebd375f1bd8786078a00d2d8326c23aa" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Value with which the secure counter must be incremented. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ga10eb15479cf16f2bbe6834d0dce7480b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga10eb15479cf16f2bbe6834d0dce7480b">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE</h2>
+<a id="gaca21d031efe80f6dd488932f0e335842"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaca21d031efe80f6dd488932f0e335842">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_0x1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_MONT_DHKEYGENERATION_CURVE448_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_ADD_0x1</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#ga71406ab7d35c51f12c01efcb73305196" title="implements ECC key pair generation step for a MontDh key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyGeneration</a> for Curve448. </p>
+<p>Increment the secure counter with 0x1. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00821.html#gaebd375f1bd8786078a00d2d8326c23aa" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gab6aafbee4e72e020907dc9f382ac6b65" title="Increment the secure counter with 0x10.">MCUX_CSSL_SC_ADD_0x10</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaa7340bed15dc7026e9d2a0a9a1464cbf" title="Increment the secure counter with 0x100.">MCUX_CSSL_SC_ADD_0x100</a> </dd>
+<dd>
+<a class="el" href="a00822.html#ga7df8a7a4e7798142da2e668ca21f3a5e" title="Decrement the secure counter with 0x1.">MCUX_CSSL_SC_SUB_0x1</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga42aed746692f49fa0a4e27f5b3f5d743"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga42aed746692f49fa0a4e27f5b3f5d743">&#9670;&nbsp;</a></span>MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE</h2>
+<a id="gab6aafbee4e72e020907dc9f382ac6b65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6aafbee4e72e020907dc9f382ac6b65">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_0x10</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MCUXCLECC_MONT_DHKEYAGREEMENT_CURVE448_WAPKC_SIZE</td>
+          <td class="memname">#define MCUX_CSSL_SC_ADD_0x10</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>PKC workarea size (in bytes) for <a class="el" href="a00597.html#gaef77a1a80276b44da54c66a8d606f20d" title="implements ECC key agreement according to rfc7748.">mcuxClEcc_Mont_DhKeyAgreement</a> for Curve448. </p>
+<p>Increment the secure counter with 0x10. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00821.html#gaebd375f1bd8786078a00d2d8326c23aa" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaca21d031efe80f6dd488932f0e335842" title="Increment the secure counter with 0x1.">MCUX_CSSL_SC_ADD_0x1</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaa7340bed15dc7026e9d2a0a9a1464cbf" title="Increment the secure counter with 0x100.">MCUX_CSSL_SC_ADD_0x100</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gabb6f649421ad8405aa47812615301933" title="Decrement the secure counter with 0x10.">MCUX_CSSL_SC_SUB_0x10</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaa7340bed15dc7026e9d2a0a9a1464cbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7340bed15dc7026e9d2a0a9a1464cbf">&#9670;&nbsp;</a></span>MCUX_CSSL_SC_ADD_0x100</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MCUX_CSSL_SC_ADD_0x100</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Increment the secure counter with 0x100. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00821.html#gaebd375f1bd8786078a00d2d8326c23aa" title="Increment the secure counter with value.">MCUX_CSSL_SC_ADD</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gaca21d031efe80f6dd488932f0e335842" title="Increment the secure counter with 0x1.">MCUX_CSSL_SC_ADD_0x1</a> </dd>
+<dd>
+<a class="el" href="a00821.html#gab6aafbee4e72e020907dc9f382ac6b65" title="Increment the secure counter with 0x10.">MCUX_CSSL_SC_ADD_0x10</a> </dd>
+<dd>
+<a class="el" href="a00822.html#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb" title="Decrement the secure counter with 0x100.">MCUX_CSSL_SC_SUB_0x100</a> </dd></dl>
 
 </div>
 </div>
