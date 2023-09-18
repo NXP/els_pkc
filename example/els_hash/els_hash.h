@@ -16,11 +16,11 @@
 /*******************************************************************************
  * API
  ******************************************************************************/
-extern bool mcuxClHash_sha224_oneshot_example(void);
-extern bool mcuxClHash_sha256_oneshot_example(void);
-extern bool mcuxClHash_sha256_longMsgOneshot_example(void);
-extern bool mcuxClHash_sha256_streaming_example(void);
-extern bool mcuxClHash_sha384_oneshot_example(void);
-extern bool mcuxClHash_sha512_oneshot_example(void);
+extern bool mcuxClHashModes_sha224_oneshot_example(void);
+extern bool mcuxClHashModes_sha256_oneshot_example(void);
+extern bool mcuxClHashModes_sha256_longMsgOneshot_example(void);
+extern bool mcuxClHashModes_sha256_streaming_example(void);
+extern bool mcuxClHashModes_sha384_oneshot_example(void);
+extern bool mcuxClHashModes_sha512_oneshot_example(void);
 
 #endif /* _ELS_HASH_H_ */

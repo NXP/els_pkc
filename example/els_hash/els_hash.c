@@ -39,7 +39,7 @@ int main(void)
     PRINTF("\r\n============================\r\n");
 
     PRINTF("SHA224 one shot:");
-    if (mcuxClHash_sha224_oneshot_example() == true)
+    if (mcuxClHashModes_sha224_oneshot_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -51,7 +51,7 @@ int main(void)
     }
 
     PRINTF("SHA256 one shot:");
-    if (mcuxClHash_sha256_oneshot_example() == true)
+    if (mcuxClHashModes_sha256_oneshot_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -63,7 +63,7 @@ int main(void)
     }
 
     PRINTF("SHA256 streaming example:");
-    if (mcuxClHash_sha256_streaming_example() == true)
+    if (mcuxClHashModes_sha256_streaming_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -75,7 +75,7 @@ int main(void)
     }
 
     PRINTF("SHA256 long message example:");
-    if (mcuxClHash_sha256_longMsgOneshot_example() == true)
+    if (mcuxClHashModes_sha256_longMsgOneshot_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -87,7 +87,7 @@ int main(void)
     }
 
     PRINTF("SHA384 one shot:");
-    if (mcuxClHash_sha384_oneshot_example() == true)
+    if (mcuxClHashModes_sha384_oneshot_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -99,7 +99,7 @@ int main(void)
     }
 
     PRINTF("SHA512 one shot:");
-    if (mcuxClHash_sha512_oneshot_example() == true)
+    if (mcuxClHashModes_sha512_oneshot_example() == true)
     {
         pass++;
         PRINTF("pass \r\n");
