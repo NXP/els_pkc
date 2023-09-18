@@ -25,7 +25,7 @@
 
 /* Include TF-M builtin key driver added from TFM v1.8 updates */
 #if defined(PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER)
-#include "tfm_builtin_key_loader.h"
+#include "tfm_crypto_defs.h"
 #endif /* PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER */
 
 /* If TF-M builtin key driver is enabled (only aplicable for tfm examples) */
