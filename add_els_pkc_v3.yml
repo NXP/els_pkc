@@ -219,7 +219,7 @@ component.els_pkc.aead_modes:
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_AesCcm.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_AesGcm.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_CcmEngineAes.c
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_Constants.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Modes.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_GcmEngineAes.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_MultiPart.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_OneShot.c
@@ -326,14 +326,24 @@ component.els_pkc.cipher_modes:
     - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_ELS_EngineAes.c
     - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Helper.c
     - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Modes.c
+
     - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes.h
     - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
     - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_Modes.h
-    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Algorithms.h
+
+    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes.h
+    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
+    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_Modes.h
+    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes.h
+    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
+    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_Modes.h    
+
+    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Algorithms_Els.h
+    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Helper.h
+    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal_Functions_Els.h
+    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal_Types_Els.h
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal.h
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal_Constants.h
-    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal_Functions.h
-    - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal_Types.h
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Wa.h
   belong_to: set.component.els_pkc
   section_info:
@@ -484,6 +494,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_SetupEnvironment.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_Ed448.c
 
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Constants.h
@@ -530,7 +541,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_Ed25519.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_Hash.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_PkcWaLayout.h
-
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_EdDSA_Internal_Ed448.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_Convert_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Internal_Interleave_FUP.h
@@ -559,8 +570,8 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_KeyGen_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_PointArithmetic_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_PointCheck_FUP.h
-    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_SecurePointMult_CoZMontLadder_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_KeyGen_FUP.h
+    - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_SecurePointMult_CoZMontLadder_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_PointMult_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Sign_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Verify_FUP.h
@@ -600,7 +611,6 @@ component.els_pkc.els_header_only:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cmac.h
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_Crc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Ecc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hash.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hmac.h
@@ -629,7 +639,7 @@ component.els_pkc.els_common:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEls/inc/
+    - repo_relative_path: src/comps/mcuxClEls/inc
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
@@ -711,7 +721,6 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Aead.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cipher.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Cmac.c
-    - source: src/comps/mcuxClEls/src/mcuxClEls_Crc.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Ecc.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hash.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hmac.c
@@ -753,17 +762,14 @@ component.els_pkc.hash:
     - source: src/comps/mcuxClHash/src/mcuxClHash_api_multipart_common.c
     - source: src/comps/mcuxClHash/src/mcuxClHash_api_multipart_compute.c
     - source: src/comps/mcuxClHash/src/mcuxClHash_api_oneshot_compute.c
-    - source: src/comps/mcuxClHash/src/mcuxClHash_core_els_sha2.c
-    - source: src/comps/mcuxClHash/src/mcuxClHash_internal_els_sha2.c
+
     - source: src/comps/mcuxClHash/inc/mcuxClHash.h
-    - source: src/comps/mcuxClHash/inc/mcuxClHash_Algorithms.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_Constants.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_Functions.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_MemoryConsumption.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_Types.h
-    - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Core_els_sha2.h
+
     - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal.h
-    - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal_els_sha2.h
     - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal_Memory.h
   belong_to: set.component.els_pkc
   section_info:
@@ -776,6 +782,43 @@ component.els_pkc.hash:
       belong_to: els_pkc_main
       cgroup: els_pkc_hash
     display_name: els_pkc.hash
+  dependency:
+    allOf:
+    - component.els_pkc.session
+    - component.els_pkc.els
+    - component.els_pkc.hashmodes
+component.els_pkc.hashmodes:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/comps/mcuxClHashModes/inc
+    - repo_relative_path: src/comps/mcuxClHashModes/inc/internal
+    files:
+    - source: src/comps/mcuxClHashModes/src/mcuxClHashModes_Core_els_sha2.c
+    - source: src/comps/mcuxClHashModes/src/mcuxClHashModes_Internal_els_sha2.c
+    - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes.h
+    - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_Algorithms.h
+    - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_Constants.h
+    - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_Functions.h
+    - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_MemoryConsumption.h
+    - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_els_sha2.h
+    - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal.h
+    - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_els_sha2.h
+    - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_Memory.h
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc.hashmodes
+    description: Component els_pkc.hashmodes
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_hashmodes
+    display_name: els_pkc.hashmodes
   dependency:
     allOf:
     - component.els_pkc.session
@@ -929,6 +972,7 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Functions.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Macros.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Types.h
+    - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Memory.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Wa.h
   belong_to: set.component.els_pkc
   section_info:
@@ -1022,6 +1066,8 @@ component.els_pkc.memory:
     - source: src/comps/mcuxClMemory/inc/mcuxClMemory_Endianness.h
     - source: src/comps/mcuxClMemory/inc/mcuxClMemory_Set.h
     - source: src/comps/mcuxClMemory/inc/mcuxClMemory_Types.h
+    - source: src/comps/mcuxClMemory/inc/mcuxClMemory_Copy_Reversed.h
+
     - source: src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Copy_Internal.h
     - source: src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Clear.c
     - source: src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Compare.c
@@ -1172,6 +1218,7 @@ component.els_pkc.pkc:
     - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Operations.h
     - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_SfrAccess.h
     - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Inline_Functions.h
+    - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Resource.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1450,6 +1497,7 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Public_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPQDistance_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPrimeCandidate_FUP.h
+    - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_PkcTypes.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1955,16 +2003,16 @@ component.els_pkc.examples:
     - source: examples/mcuxClAeadModes/mcuxClAeadModes_multiPart_ELS_CCM_example.c
     - source: examples/mcuxClAeadModes/mcuxClAeadModes_oneshot_ELS_CCM_example.c
     - source: examples/mcuxClAeadModes/mcuxClAeadModes_oneshot_ELS_GCM_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_CBC_Multipart_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_CBC_Oneshot_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_CBC_Oneshot_ZeroPadding_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_CTR_Multipart_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_CTR_Oneshot_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Multipart_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Oneshot_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Oneshot_ZeroPadding_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Multipart_PaddingPKCS7_ELS_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_ECB_Oneshot_PaddingPKCS7_ELS_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Cbc_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Ctr_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Ecb_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Ecb_PaddingPKCS7_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Oneshot_Cbc_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Oneshot_Cbc_ZeroPadding_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Oneshot_Ctr_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Oneshot_Ecb_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Oneshot_Ecb_PaddingPKCS7_Els_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Oneshot_Ecb_ZeroPadding_Els_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c
     - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
@@ -1982,12 +2030,12 @@ component.els_pkc.examples:
     - source: examples/mcuxClEls/mcuxClEls_Hash_Sha512_One_Block_example.c
     - source: examples/mcuxClEls/mcuxClEls_Rng_Prng_Get_Random_example.c
     - source: examples/mcuxClEls/mcuxClEls_Tls_Master_Key_Session_Keys_example.c
-    - source: examples/mcuxClHash/mcuxClHash_sha224_oneshot_example.c
-    - source: examples/mcuxClHash/mcuxClHash_sha256_longMsgOneshot_example.c
-    - source: examples/mcuxClHash/mcuxClHash_sha256_oneshot_example.c
-    - source: examples/mcuxClHash/mcuxClHash_sha256_streaming_example.c
-    - source: examples/mcuxClHash/mcuxClHash_sha384_oneshot_example.c
-    - source: examples/mcuxClHash/mcuxClHash_sha512_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha224_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_longMsgOneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_streaming_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha384_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_oneshot_example.c
     - source: examples/mcuxClHmac/mcuxClHmac_Els_Oneshot_External_Key_example.c
     - source: examples/mcuxClHmac/mcuxClHmac_Sw_Oneshot_example.c
     - source: examples/mcuxClKey/mcuxClKey_example.c
