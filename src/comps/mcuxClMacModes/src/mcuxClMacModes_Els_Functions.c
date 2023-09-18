@@ -53,8 +53,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_init(
   mcuxClMac_Context_t * const pContext,
   mcuxClKey_Handle_t key)
 {
-  /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret structure for different MacModes Algorithm types")
   mcuxClMacModes_Context_t * const pCtx = (mcuxClMacModes_Context_t *) pContext;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
   mcuxClMacModes_Algorithm_t pAlgo = (mcuxClMacModes_Algorithm_t) pCtx->common.pMode->common.pAlgorithm;
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_init, pAlgo->protectionToken_engineInit);
   pCtx->key = (mcuxClKey_Descriptor_t *) key;
@@ -69,8 +70,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_process(
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength)
 {
-  /* MISRA Ex. 9 to Rule 11.3 - reinterpret memory */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret structure for different MacModes Algorithm types")
   mcuxClMacModes_Context_t * const pCtx = (mcuxClMacModes_Context_t *) pContext;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
   mcuxClMacModes_Algorithm_t pAlgo = (mcuxClMacModes_Algorithm_t) pCtx->common.pMode->common.pAlgorithm;
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_process, pAlgo->protectionToken_engineUpdate);
   MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgo->engineUpdate(session, pCtx, pIn, inLength));
@@ -84,8 +86,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_finish(
   mcuxCl_Buffer_t pMac,
   uint32_t * const pMacLength)
 {
-  /* MISRA Ex. 9 to Rule 11.3 */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret structure for different MacModes Algorithm types")
   mcuxClMacModes_Context_t * const pCtx = (mcuxClMacModes_Context_t *) pContext;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
   mcuxClMacModes_Algorithm_t pAlgo = (mcuxClMacModes_Algorithm_t) pCtx->common.pMode->common.pAlgorithm;
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_finish, pAlgo->protectionToken_engineFinalize);
   MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgo->engineFinalize(session, pCtx, pMac, pMacLength));

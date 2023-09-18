@@ -51,8 +51,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(mcuxC
 
     mcuxClEls_KeyIndex_t key_idx_sk     = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(mcuxClKey_getParentKey(key));
     mcuxClEls_KeyIndex_t key_idx_mack   = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(key);
-    /* MISRA Ex. 9 - Needed to correctly reinterpret the auxilary data */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClEls_KeyProp_t  key_properties = *((mcuxClEls_KeyProp_t*) mcuxClKey_getAuxData(key));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     MCUX_CSSL_FP_FUNCTION_CALL(resultCkdf, mcuxClEls_Ckdf_Sp800108_Async(
                                  key_idx_sk,

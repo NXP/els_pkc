@@ -47,6 +47,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMac_compute(
 }
 
 
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMac_init)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMac_init(
   mcuxClSession_Handle_t session,

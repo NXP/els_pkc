@@ -46,7 +46,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
         uint32_t remainLength = length / 2u;
         while (0u < remainLength)
         {
-            MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "ptrH will be in the valid range [ptr+length-(length/2), ptr+length] and ptrL will be in the valid range [ptr, ptr+length/2].")
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("ptrH will be in the valid range [ptr+length-(length/2), ptr+length] and ptrL will be in the valid range [ptr, ptr+length/2].")
             ptrH--;
             uint8_t byteH = *ptrH;
             uint8_t byteL = *ptrL;
@@ -54,7 +54,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
             *ptrL = byteH;
             *ptrH = byteL;
             ptrL++;
-            MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
             remainLength--;
         }
@@ -65,16 +65,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
     /* When the length is a multiple of CPU word size, fall down to the original implementation. */
     /* length is a multiple of CPU word size (4). */
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("ptr is CPU word aligned, and length is a multiple of CPU word size.")
-    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "ptrH32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("ptrH32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
     uint32_t *ptrH32 = (uint32_t *) ((uint8_t *) ptr + length - 4u);
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 #else
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("use of UNALIGNED keyword")
     MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_EXP36_C, "use of UNALIGNED keyword")
-    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "ptrH32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("ptrH32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
     uint32_t UNALIGNED *ptrH32 = (uint32_t UNALIGNED *) ((uint8_t *) ptr + length - 4u);
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_EXP36_C)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 #endif
@@ -87,9 +87,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_ARR36_C)
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_18_3)
     {
-        MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "ptrH32 and ptrL32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("ptrH32 and ptrL32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
         uint32_t wordL = *ptrL32;
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("ptrH32 = (uint32_t *) ((uint8_t *) ptr + length - 4u) is safe.")
         uint32_t wordH = *ptrH32;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
 
         wordL = MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS(wordL);
         wordH = MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS(wordH);
@@ -98,7 +100,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
         ptrH32--;
         *ptrL32 = wordH;
         ptrL32++;
-        MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     }
 #ifdef MCUXCL_FEATURE_PKC_PKCRAM_NO_UNALIGNED_ACCESS
     /* Now, ptrH32 = phtL32 - 4 or ptrL32 - 8, nothing more to do. */
@@ -154,12 +156,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_FastSecureXor(void *pTgt,
         {
             pTgtWd[i] = pSrc1Wd[i] ^ pSrc2Wd[i];
             length -= wordSize;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("The size of i is big enough, it cannot overflow.")
             i++;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
         }
-
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("In the actual situation, i * wordSize cannot overflow.")
         pTgtBt = pTgtBt + i * wordSize;
         pSrc1Bt = pSrc1Bt + i * wordSize;
         pSrc2Bt = pSrc2Bt + i * wordSize;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     }
 
 

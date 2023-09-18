@@ -20,11 +20,13 @@
 
 #include <crypto_types.h>
 
+#include <internal/mcuxClHashModes_Internal.h>
 #include <internal/mcuxClKey_Types_Internal.h>
-#include <internal/mcuxClCipherModes_Internal_Types.h>
-#include <internal/mcuxClAeadModes_ELS_Types.h>
+#include <internal/mcuxClCipherModes_Internal_Types_Els.h>
+#include <internal/mcuxClAeadModes_Els_Types.h>
 #include <internal/mcuxClMacModes_Els_Ctx.h>
 #include <internal/mcuxClHash_Internal.h>
+#include <internal/mcuxClHash_Internal_Memory.h>
 
 /* Definition for mcuxClPsaDriver_Sign and mcuxClPsaDriver_Verify */
 
@@ -39,6 +41,10 @@
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_Sign function */
 #define MCUXCLPSADRIVER_MAX(a, b) ((a) > (b) ? (a) : (b))
 
+/* Macro for calculating bit/byte sizes */
+#define MCUXCLPSADRIVER_BITS_TO_BYTES(bits) (((bits) + 7u) / 8u)
+#define MCUXCLPSADRIVER_BYTES_TO_BITS(bytes) ((bytes) * 8u)
+
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_PLAIN_WACPU_SIZE_MAX  \
             MCUXCLPSADRIVER_MAX(MCUXCLRSA_SIGN_PLAIN_PSSENCODE_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
                                MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_WACPU_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX))
@@ -52,7 +58,7 @@
             MCUXCLPSADRIVER_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE, \
                                MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_SIGN_BY_CLNS_RSA_WACPU_SIZE_MAX, \
                                                   MCUXCLECC_SIGN_WACPU_SIZE(MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER)), \
-                                                  MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX))
+                                                  MCUXCLHASH_INTERNAL_WACPU_MAX))
 
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_Verify function */
 #define MCUXCLPSADRIVER_VERIFY_BY_CLNS_RSA_WACPU_SIZE_MAX  \
@@ -61,7 +67,7 @@
 #define MCUXCLPSADRIVER_VERIFY_BY_CLNS_WACPU_SIZE_MAX  \
             MCUXCLPSADRIVER_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE, \
                                MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_MAX(MCUXCLPSADRIVER_VERIFY_BY_CLNS_RSA_WACPU_SIZE_MAX, MCUXCLECC_VERIFY_WACPU_SIZE), \
-                                                  MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX))
+                                                  MCUXCLHASH_INTERNAL_WACPU_MAX))
 
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_Sign function */
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_WAPKC_SIZE_MAX  \

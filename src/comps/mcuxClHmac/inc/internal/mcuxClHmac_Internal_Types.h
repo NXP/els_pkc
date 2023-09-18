@@ -30,6 +30,7 @@
 #include <internal/mcuxClPadding_Types_Internal.h> /* for mcuxClHash_ContextBuffer_t */
 #include <mcuxClHash_Types.h>
 #include <internal/mcuxClHash_Internal.h>
+#include <internal/mcuxClHashModes_Internal.h>
 #include <mcuxClEls_Hmac.h>
 
 #ifdef __cplusplus
@@ -79,9 +80,9 @@ typedef struct mcuxClHmac_Context_Els
 typedef struct mcuxClHmac_Context_Sw
 {
     MCUXCLHMAC_CONTEXT_COMMON_ENTRIES
-    mcuxClHash_ContextDescriptor_t *hashCtx;                                                 /* Hash context for SW-HMAC */
-    mcuxClHash_ContextDescriptor_t hashContextBuffer;                                        /* Buffer to store the actual hash context data */
-    uint32_t preparedHmacKey[MCUXCLHASH_BLOCK_SIZE_MAX / sizeof(uint32_t)];                  /* Padded/Hashed HMAC key, must be large enough to hold any block */
+    mcuxClHash_ContextDescriptor_t *hashCtx;                                                             /* Hash context for SW-HMAC */
+    uint32_t hashContextBuffer[MCUXCLHASHMODES_CONTEXT_MAX_SIZE_INTERNAL_NO_SECSHA / sizeof(uint32_t)];  /* Buffer to store the actual hash context data using maximum size of a hash context */
+    uint32_t preparedHmacKey[MCUXCLHASH_BLOCK_SIZE_MAX / sizeof(uint32_t)];                              /* Padded/Hashed HMAC key, must be large enough to hold any block */
 } mcuxClHmac_Context_Sw_t;
 
 

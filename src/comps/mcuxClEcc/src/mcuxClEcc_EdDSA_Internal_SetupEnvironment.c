@@ -59,6 +59,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_SetupEnvironment
         mcuxClEcc_SetupEnvironment(pSession, &(pDomainParams->common), noOfBuffers));
     if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
     {
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(retSetupEnvironment, mcuxClEcc_EdDSA_SetupEnvironment);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_SetupEnvironment, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 

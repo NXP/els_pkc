@@ -162,8 +162,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncInit(
 /**
  * @brief Non-cryptographic PRNG data generation function.
  *
- * This function generates non-cryptographic random data based on the information
- * contained in the Random context referenced in the session handle.
+ * This function generates non-cryptographic random data
  *
  * @param [in]     pSession  Handle for the current CL session.
  * @param [out]    pOut      Buffer in which the generated random data must be

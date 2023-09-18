@@ -73,13 +73,11 @@
 #define GDET_INTERRUPT_ERR_NUMBER          ELS_GDET_ERR_IRQn
 
 
-#ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS
 /* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from ip_css.h
  * Redefine CSS as an extern pointer.
  */
 #undef CSS_BASE
 extern void * ip_css_base;
 #define CSS_BASE                     ip_css_base
-#endif /* NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS */
 
 #endif

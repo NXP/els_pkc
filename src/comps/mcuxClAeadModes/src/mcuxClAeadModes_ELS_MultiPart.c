@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,12 +11,12 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAeadModes_ELS_MultiPart.c
- *  @brief implementation of the multipart functions of the mcuxClAead component */
+/** @file  mcuxClAeadModes_Els_Multipart.c
+ *  @brief implementation of the multipart functions of the mcuxClAeadModes component */
 
 #include <mcuxClAead.h>
-#include <internal/mcuxClAeadModes_ELS_Types.h>
-#include <internal/mcuxClAeadModes_ELS_Functions.h>
+#include <internal/mcuxClAeadModes_Els_Types.h>
+#include <internal/mcuxClAeadModes_Els_Functions.h>
 #include <internal/mcuxClAeadModes_Common_Functions.h>
 #include <mcuxClSession.h>
 #include <mcuxCsslFlowProtection.h>
@@ -59,6 +59,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init(
     pCtx->tagLength = tagLength;
     pCtx->processedDataLength = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pCtx->common.mode->algorithm->pSkeleton(
       /* mcuxClSession_Handle_t session,        */ session,
       /* mcuxClAead_Context_t * const pCtx,     */ pCtx,
@@ -72,8 +73,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init(
       /* uint32_t * const pOutLength,          */ NULL,
       /* mcuxCl_Buffer_t pTag,                  */ NULL,
       /* uint32_t tagLength,                   */ tagLength,
-      /* uint32_t options                      */ MCUXCLAEAD_OPTION_INIT
+      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_INIT
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
     if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
     {
@@ -114,7 +116,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process(
          MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_process, MCUXCLAEAD_STATUS_ERROR);
     }
 
-
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pCtx->common.mode->algorithm->pSkeleton(
       /* mcuxClSession_Handle_t session,        */ session,
       /* mcuxClAead_Context_t * const pCtx,     */ pCtx,
@@ -128,8 +130,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ NULL,
       /* uint32_t tagLength,                   */ 0u,
-      /* uint32_t options                      */ MCUXCLAEAD_OPTION_PROCESS
+      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_PROCESS
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
     if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
     {
@@ -166,6 +169,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_process_adata, MCUXCLAEAD_STATUS_ERROR);
     }
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pCtx->common.mode->algorithm->pSkeleton(
       /* mcuxClSession_Handle_t session,        */ session,
       /* mcuxClAead_Context_t * const pCtx,     */ pCtx,
@@ -179,8 +183,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
       /* uint32_t * const pOutLength,          */ NULL,
       /* mcuxCl_Buffer_t pTag,                  */ NULL,
       /* uint32_t tagLength,                   */ 0u,
-      /* uint32_t options                      */ MCUXCLAEAD_OPTION_PROCESS_AAD
+      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_PROCESS_AAD
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
     if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
     {
@@ -218,6 +223,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_finish(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_finish, MCUXCLAEAD_STATUS_ERROR);
     }
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pCtx->common.mode->algorithm->pSkeleton(
       /* mcuxClSession_Handle_t session,        */ session,
       /* mcuxClAead_Context_t * const pCtx,     */ pCtx,
@@ -231,15 +237,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_finish(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ pTag,
       /* uint32_t tagLength,                   */ pCtx->tagLength,
-      /* uint32_t options                      */ MCUXCLAEAD_OPTION_FINISH
+      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_FINISH
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
     if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
     {
        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_finish, MCUXCLAEAD_STATUS_ERROR,
                                  pCtx->common.mode->algorithm->protection_token_skeleton);
     }
-    //if in Context->mode->pSkeletonfunction for MCUXCLAEAD_OPTION_VERIFY or MCUXCLAEAD_OPTION_FINISH options,
+    //if in Context->mode->pSkeletonfunction for MCUXCLAEADMODES_OPTION_VERIFY or MCUXCLAEADMODES_OPTION_FINISH options,
     //the context has been clear, ctx.mode->protection_token_skeleton can't be used  here
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_finish, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
                                          pCtx->common.mode->algorithm->protection_token_skeleton);
@@ -271,6 +278,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_verify(
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_verify, MCUXCLAEAD_STATUS_ERROR);
     }
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pCtx->common.mode->algorithm->pSkeleton(
       /* mcuxClSession_Handle_t session,        */ session,
       /* mcuxClAead_Context_t * const pCtx,     */ pCtx,
@@ -284,15 +292,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_verify(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ (mcuxCl_Buffer_t) pTag,
       /* uint32_t tagLength,                   */ pCtx->tagLength,
-      /* uint32_t options                      */ MCUXCLAEAD_OPTION_VERIFY
+      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_VERIFY
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
     if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
     {
        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_verify, MCUXCLAEAD_STATUS_ERROR,
                                  pCtx->common.mode->algorithm->protection_token_skeleton);
     }
-    //if in Context->mode->pSkeletonfunction for MCUXCLAEAD_OPTION_VERIFY or MCUXCLAEAD_OPTION_FINISH options,
+    //if in Context->mode->pSkeletonfunction for MCUXCLAEADMODES_OPTION_VERIFY or MCUXCLAEADMODES_OPTION_FINISH options,
     //the context has been clear, ctx.mode->protection_token_skeleton can't be used  here
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_verify, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
                                          pCtx->common.mode->algorithm->protection_token_skeleton);

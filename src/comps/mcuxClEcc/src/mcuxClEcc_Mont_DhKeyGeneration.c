@@ -35,6 +35,7 @@
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClPkc_Macros.h>
 #include <internal/mcuxClPkc_ImportExport.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClEcc_Internal_Random.h>
 #include <internal/mcuxClEcc_Mont_Internal.h>
 
@@ -83,6 +84,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
                                                                  ECC_MONTDH_NO_OF_BUFFERS));
     if(MCUXCLECC_STATUS_OK != retCode_MontDH_SetupEnvironment)
     {
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(retCode_MontDH_SetupEnvironment, mcuxClEcc_Mont_DhKeyGeneration);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
@@ -155,8 +157,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
         }
 
         /* Return OK and exit */
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_Mont_DhKeyGeneration, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
@@ -167,7 +171,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyGeneration(
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
-            );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 }

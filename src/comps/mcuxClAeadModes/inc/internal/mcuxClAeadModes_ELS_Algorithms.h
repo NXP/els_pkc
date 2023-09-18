@@ -11,22 +11,22 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAeadModes_ELS_Algorithms.h
+/** @file  mcuxClAeadModes_Els_Algorithms.h
  *  @brief Internal exports of the algorithm descriptors for the mcuxClAeadModes component
  */
 
 #ifndef MCUXCLAEADMODES_ELS_ALGORITHMS_H_
 #define MCUXCLAEADMODES_ELS_ALGORITHMS_H_
 
-#include <internal/mcuxClAeadModes_ELS_Types.h>
+#include <internal/mcuxClAeadModes_Els_Types.h>
 
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_CCM_DEC;
+extern const mcuxClAeadModes_AlgorithmDescriptor_t mcuxClAeadModes_AlgorithmDescriptor_Aes_Ccm_dec;
 
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_CCM_ENC;
+extern const mcuxClAeadModes_AlgorithmDescriptor_t mcuxClAeadModes_AlgorithmDescriptor_Aes_Ccm_enc;
 
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_GCM_DEC;
+extern const mcuxClAeadModes_AlgorithmDescriptor_t mcuxClAeadModes_AlgorithmDescriptor_Aes_Gcm_dec;
 
-extern const mcuxClAead_algorithm_t mcuxClAead_algorithm_AES_GCM_ENC;
+extern const mcuxClAeadModes_AlgorithmDescriptor_t mcuxClAeadModes_AlgorithmDescriptor_Aes_Gcm_enc;
 
 
 #endif /* MCUXCLAEADMODES_ELS_ALGORITHMS_H_ */

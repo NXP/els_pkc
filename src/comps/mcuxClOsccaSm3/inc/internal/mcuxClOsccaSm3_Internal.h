@@ -19,10 +19,10 @@
 #ifndef MCUXCLOSCCASM3_INTERNAL_H_
 #define MCUXCLOSCCASM3_INTERNAL_H_
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
+#include <mcuxClHash_Types.h>
+#include <mcuxClSession.h>
+#include <internal/mcuxClHash_Internal.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #ifdef MCUXCL_FEATURE_HASH_HW_SM3
@@ -38,11 +38,25 @@
  * @ingroup mcuxClOsccaSm3
  * @{
  */
+#define MCUXCLOSCCASM3_WACPU_SIZE_SM3       (128u)
+
 #define MCUXCLOSCCASM3_BLOCK_SIZE_SM3       (64U) ///< SM3 block size: 512 bit (64 bytes)
 
 #define MCUXCLOSCCASM3_STATE_SIZE_SM3       (32U) ///< SM3 state size: 256 bit (32 bytes)
 
 #define MCUXCLOSCCASM3_COUNTER_SIZE_SM3     (8U)  ///< Counter size for SM3 padding
+
+#define MCUXCLOSCCASM3_CONTEXT_SIZE_SM3     (sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + MCUXCLOSCCASM3_STATE_SIZE_SM3)    ///< Context size for SM3 mulit-part
+
+/**********************************************************/
+/* Internal APIs of mcuxClOsccaSm3                         */
+/**********************************************************/
+/**
+ * @defgroup mcuxClOsccaSm3_Internal_Functions mcuxClOsccaSm3_Internal_Functions
+ * @brief Defines all internal functions of @ref mcuxClOsccaSm3 component
+ * @ingroup mcuxClOsccaSm3
+ * @{
+ */
 /**@}*/
 
 #endif /* MCUXCLOSCCASM3_INTERNAL_H_ */

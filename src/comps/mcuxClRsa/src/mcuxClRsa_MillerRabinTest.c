@@ -36,6 +36,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_MillerRabinTest_FUP.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_MillerRabinTest)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
@@ -69,15 +70,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
 
   /* PKC buffer sizes */
   const uint32_t byteLenPrime = (keyBitLength / 2u) / 8u; /* keyBitLength is multiple of 8 */
-  const uint32_t pkcOperandSize = MCUXCLPKC_ROUNDUP_SIZE(byteLenPrime);
+  const uint32_t pkcOperandSize = MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenPrime);
   const uint32_t bufferSizeQSquared = pkcOperandSize;                    // size of temp buffer QSquared
-  const uint32_t bufferSizeResult = pkcOperandSize + MCUXCLPKC_WORDSIZE;  // size of the result of the exponentiation
+  const uint32_t bufferSizeResult = pkcOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of the result of the exponentiation
   const uint32_t bufferSizeX = pkcOperandSize;                           // size of the base number of the exponentiation
-  const uint32_t bufferSizeT0 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T0
-  const uint32_t bufferSizeT1 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T1
-  const uint32_t bufferSizeT2 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T2
-  const uint32_t bufferSizeT3 = pkcOperandSize + MCUXCLPKC_WORDSIZE;      // size of temp buffer T3
-  const uint32_t bufferSizeTE = 6u * MCUXCLPKC_WORDSIZE;                  // size of temp buffer TE
+  const uint32_t bufferSizeT0 = pkcOperandSize + MCUXCLRSA_PKC_WORDSIZE;      // size of temp buffer T0
+  const uint32_t bufferSizeT1 = pkcOperandSize + MCUXCLRSA_PKC_WORDSIZE;      // size of temp buffer T1
+  const uint32_t bufferSizeT2 = pkcOperandSize + MCUXCLRSA_PKC_WORDSIZE;      // size of temp buffer T2
+  const uint32_t bufferSizeT3 = pkcOperandSize + MCUXCLRSA_PKC_WORDSIZE;      // size of temp buffer T3
+  const uint32_t bufferSizeTE = 6u * MCUXCLRSA_PKC_WORDSIZE;                  // size of temp buffer TE
 
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE] = backupPtrUptrt[uptrtIndexPrimeCandidate];
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED] = backupPtrUptrt[uptrtIndexTmp];

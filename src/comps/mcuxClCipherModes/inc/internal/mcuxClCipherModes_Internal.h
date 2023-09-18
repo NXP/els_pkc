@@ -16,18 +16,11 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
-#include <internal/mcuxClCipherModes_Algorithms.h>
 #include <internal/mcuxClCipherModes_Wa.h>
-#include <internal/mcuxClCipherModes_Internal_Functions.h>
-#include <internal/mcuxClCipherModes_Internal_Types.h>
 #include <internal/mcuxClCipherModes_Internal_Constants.h>
-
-/* Macro used to align the size to the CPU wordsize */
-#define MCUXCLCIPHERMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size)  \
-    (((uint32_t) (((uint32_t) (size)) + ((sizeof(uint32_t)) - 1U))) & ((uint32_t) (~((sizeof(uint32_t)) - 1U))))
-
-/* Macro used to compute number of CPU words */
-#define MCUXCLCIPHERMODES_INTERNAL_COMPUTE_CPUWORDS(size)  \
-    (MCUXCLCIPHERMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size) / (sizeof(uint32_t)))
+#include <internal/mcuxClCipherModes_Helper.h>
+#include <internal/mcuxClCipherModes_Algorithms_Els.h>
+#include <internal/mcuxClCipherModes_Internal_Functions_Els.h>
+#include <internal/mcuxClCipherModes_Internal_Types_Els.h>
 
 #endif /* MCUXCLCIPHERMODES_INTERNAL_H_ */

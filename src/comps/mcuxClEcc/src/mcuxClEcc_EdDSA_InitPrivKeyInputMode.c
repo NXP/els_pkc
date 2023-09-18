@@ -25,7 +25,7 @@
 #include <mcuxClEcc.h>
 
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
-
+#include <internal/mcuxClKey_Types_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_InitPrivKeyInputMode)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInputMode(

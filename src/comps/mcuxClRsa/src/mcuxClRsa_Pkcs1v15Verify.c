@@ -22,6 +22,7 @@
 #include <mcuxCsslMemory.h>
 
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <mcuxClRsa.h>
 
 #include <internal/mcuxClSession_Internal.h>

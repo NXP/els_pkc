@@ -19,21 +19,11 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include "fsl_device_registers.h"
+#include <LPC55S36.h>
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
-
-#define MCUXCL_FEATURE_TRNG_SA_TRNG_256
-
-#define GDET_EVTCNT             ELS_GDET_EVTCNT
-#define GDET_EVTCNT_CLR_DONE    ELS_GDET_EVTCNT_CLR
-
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_MASK             S50_ELS_GDET_EVTCNT_GDET_EVTCNT_MASK
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_SHIFT            S50_ELS_GDET_EVTCNT_GDET_EVTCNT_SHIFT
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_CLR_MASK     S50_ELS_GDET_EVTCNT_CLR_GDET_EVTCNT_CLR_MASK
-#define S50_ELS_GDET_EVTCNT_ELS_GDET_EVTCNT_CLR_SHIFT    S50_ELS_GDET_EVTCNT_CLR_GDET_EVTCNT_CLR_SHIFT
 
 // Define base address of ELS
 #define ELS_SFR_BASE            ELS         ///< base of ELS SFRs
@@ -51,7 +41,6 @@
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x20002000UL)
 #define PKC_WORD_SIZE  8u
-#define PKC_RAM_SIZE  ((uint32_t)0x1000u) /* TODO Check that value if its correct*/
 
 #define CSS_INTERRUPT_BUSY_NUMBER  54
 #define CSS_INTERRUPT_ERR_NUMBER   112
@@ -76,13 +65,11 @@
 #define ELS_HW_VERSION_MAJOR               2
 #define ELS_HW_VERSION_LEVEL               0
 
-#ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS
 /* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from the platform header file
  * Redefine IP_CSS as an extern pointer.
  */
 #undef ELS_SFR_BASE
 extern void * ip_css_base;
 #define ELS_SFR_BASE           ((S50_Type *) ip_css_base)
-#endif /* NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS */
 
 #endif

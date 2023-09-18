@@ -11,17 +11,20 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClKey_MemoryConsumption.h
+ *  @brief Defines the memory consumption for the mcuxClKey component
+ *         All work area sizes in bytes are a multiple of CPU wordsize.
+ */
+
 #ifndef MCUXCLKEY_MEMORYCONSUMPTION_H_
 #define MCUXCLKEY_MEMORYCONSUMPTION_H_
 
-#include <mcuxClCore_Platform.h>
-
-
-
-/** Round up a size (in bytes) to a multiple of the CPU wordsize (4 bytes). */
-#define MCUXCLKEY_ROUND_UP_TO_CPU_WORDSIZE(size) \
-    ((((size) + sizeof(uint32_t) - 1U ) / (sizeof(uint32_t))) * (sizeof(uint32_t)))
-
+/**
+ * @defgroup mcuxClKey_MemoryConsumption mcuxClKey_MemoryConsumption
+ * @brief Defines the memory consumption for the mcuxClKey component
+ * @ingroup mcuxClKey
+ * @{
+ */
 
 #define MCUXCLKEY_DESCRIPTOR_SIZE          (56u)
 #define MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS (MCUXCLKEY_DESCRIPTOR_SIZE / sizeof(uint32_t))
@@ -32,5 +35,9 @@
 #define MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE          (12u)
 #define MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE_IN_WORDS (MCUXCLKEY_CUSTOMTYPEDESCRIPTOR_SIZE / sizeof(uint32_t))
 
+
+/**
+ * @}
+ */ /* mcuxClKey_MemoryConsumption */
 
 #endif /* MCUXCLKEY_MEMORYCONSUMPTION_H_ */

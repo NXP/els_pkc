@@ -23,6 +23,7 @@
 #include <mcuxClSession.h>
 
 #include <internal/mcuxClPsaDriver_Functions.h>
+#include <internal/mcuxClPsaDriver_Internal.h>
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
@@ -32,8 +33,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_ecp_key(
     size_t *key_buffer_length)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_OF_COMPOSITE_EXPRESSION("PSA_KEY_TYPE_ECC_GET_FAMILY macro comes from external library outside our control")
     psa_ecc_family_t curve = PSA_KEY_TYPE_ECC_GET_FAMILY(psa_get_key_type(attributes));
-    size_t bytes = PSA_BITS_TO_BYTES(psa_get_key_bits(attributes));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_OF_COMPOSITE_EXPRESSION()
+    size_t bytes = MCUXCLPSADRIVER_BITS_TO_BYTES(psa_get_key_bits(attributes));
 
     if(key_buffer_size < bytes)
     {
@@ -86,10 +89,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             /* Prepare input for key generation */
+            MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
             uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE / (sizeof(uint32_t))];
             mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privKeyDesc;
             uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
             mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
             uint8_t pubKeyBuffer[MCUXCLECC_MONT_CURVE448_SIZE_PUBLICKEY]={0};
             uint32_t privKeyLength = 0u;
             uint32_t pubKeyLength = 0u;
@@ -158,11 +163,13 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+            MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
             /* Prepare input for key generation */
             uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE / (sizeof(uint32_t))];
             mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privKeyDesc;
             uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
             mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
             uint8_t pubKeyBuffer[MCUXCLECC_MONT_CURVE25519_SIZE_PUBLICKEY]={0};
             uint32_t privKeyLength = 0u;
             uint32_t pubKeyLength = 0u;

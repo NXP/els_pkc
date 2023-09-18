@@ -22,7 +22,9 @@
 #include <mcuxClAes.h>
 #include <mcuxClCore_Platform.h>
 #include <internal/mcuxClCipher_Internal_Constants.h>
+#include <mcuxClCipher_Types.h>
 #include <internal/mcuxClAes_Wa.h>
+//#include <internal/mcuxClCipher_Internal_Types.h>
 
 /* TODO CLNS-5399: this is AES SGI specific, rework WA */
 typedef struct mcuxClCipherModes_WorkArea

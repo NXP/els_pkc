@@ -38,15 +38,16 @@
  */
 
 /**
- * \defgroup mcuxClSessionStatusValues  Session Status values
+ * @defgroup mcuxClSessionStatusValues  Session Status values
  * @{
  */
-#define MCUXCLSESSION_STATUS_OK          ((mcuxClSession_Status_t) 0x0EEE2E03u )  ///< Session operation successful
-#define MCUXCLSESSION_STATUS_ERROR       ((mcuxClSession_Status_t) 0x0EEE5330u )  ///< Error occurred during Session operation
+#define MCUXCLSESSION_STATUS_OK              ((mcuxClSession_Status_t) 0x0EEE2E03u)  ///< Session operation successful
+#define MCUXCLSESSION_STATUS_ERROR           ((mcuxClSession_Status_t) 0x0EEE5330u)  ///< Error occurred during Session operation
+#define MCUXCLSESSION_STATUS_HW_UNAVAILABLE  ((mcuxClSession_Status_t) 0x0EEE5334u)  ///< Required HW is unavailable
 /**@}*/
 
 /**
- * \defgroup mcuxClSessionRtfValues  Session RTF configuration values
+ * @defgroup mcuxClSessionRtfValues  Session RTF configuration values
  * @{
  */
 #define MCUXCLSESSION_RTF_UPDATE_TRUE    ((mcuxClSession_Rtf_t) 0xF0F00F0Fu )     ///< RTF will be updated

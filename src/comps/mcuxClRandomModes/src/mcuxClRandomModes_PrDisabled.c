@@ -15,6 +15,7 @@
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
+#include <mcuxCsslAnalysis.h>
 
 #include <mcuxClRandomModes_Functions_TestMode.h>
 
@@ -56,7 +57,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_PrDisabled_selftestAlgorithm);
 
     /* Set entropy input pointer in pTestMode */
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pTestMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
 
     const uint32_t *const * testVectors = pDrbgMode->pDrbgTestVectors;
     MCUX_CSSL_FP_FUNCTION_CALL(ret_updateIn, mcuxClRandomModes_updateEntropyInput(pTestMode,
@@ -100,8 +103,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_
      ***********************************************/
 
     uint32_t randomBytes[MCUXCLRANDOMMODES_SELFTEST_RANDOMDATALENGTH/sizeof(uint32_t)];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     MCUX_CSSL_FP_FUNCTION_CALL(ret_generate,
             mcuxClRandom_generate(pSession, (uint8_t*)randomBytes, MCUXCLRANDOMMODES_SELFTEST_RANDOMDATALENGTH));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()    
     if(MCUXCLRANDOM_STATUS_OK != ret_generate)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_PrDisabled_selftestAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
@@ -112,8 +117,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_
      * Generate second value using                 *
      * mcuxClRandom_generate function               *
      ***********************************************/
+    MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     MCUX_CSSL_FP_FUNCTION_CALL(ret_generate2,
             mcuxClRandom_generate(pSession, (uint8_t*)randomBytes, MCUXCLRANDOMMODES_SELFTEST_RANDOMDATALENGTH));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()    
     if(MCUXCLRANDOM_STATUS_OK != ret_generate2)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_PrDisabled_selftestAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);

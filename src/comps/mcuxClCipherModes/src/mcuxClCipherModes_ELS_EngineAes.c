@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClCipherModes_ELS_EngineAes.c
+/** @file  mcuxClCipherModes_Els_EngineAes.c
  *  @brief implementation of the Engine functions of the mcuxClCipher component */
 
 #include <mcuxClToolchain.h>

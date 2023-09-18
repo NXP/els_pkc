@@ -180,7 +180,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_df);
 
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-    uint32_t seedLen = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    uint32_t seedLen = pDrbgMode->pDrbgVariant->seedLen;
     uint32_t keyLen = (uint32_t)(pMode->securityStrength) / 8u;
 
     /*
@@ -220,7 +224,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     }
 
     /* Allocate space for S */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("pS is always valid in work area.")
     uint32_t *pS = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUNDED_UP_CPU_WORDSIZE(lenOfS));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     if(NULL == pS)
     {
         /* Free workarea (pIV) */
@@ -232,15 +238,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_df(
     MCUXCLMEMORY_FP_MEMORY_SET((uint8_t*)pIV, 0u, MCUXCLAES_BLOCK_SIZE);
 
     /* Pre-initialize S with zeros to take care of cases where padding with 0 is needed at the end */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("pSByte will be in the valid range pS[0 ~ lenOfS].");
     uint8_t *pSByte = (uint8_t *) pS;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     MCUXCLMEMORY_FP_MEMORY_SET(pSByte, 0u, lenOfS);
 
     /* Calculate (big integer) values L and N and initialize value S as specified in NIST SP800-90A */
     uint32_t L = inputStringLen << 24;
     uint32_t S = outputLen << 24;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("pS is always valid in work area.")
     pS[0] = L;
     pS[1] = S;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("pSByte+tempLen will be in the valid range pS[0 ~ lenOfS].");
     pSByte[tempLen] = 0x80;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     MCUXCLRANDOM_SECURECOPY(mcuxClRandomModes_CtrDrbg_df,
                         MCUXCLRANDOM_STATUS_FAULT_ATTACK,
                         (uint8_t *)&pS[2],
@@ -431,10 +443,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_ins
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_instantiateAlgorithm);
 
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClRandomModes_Context_CtrDrbg_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_CtrDrbg_Generic_t *) pSession->randomCfg.ctx;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-    uint32_t seedLen = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
-    uint32_t initSeedSize = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->initSeedSize;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    uint32_t seedLen = pDrbgMode->pDrbgVariant->seedLen;
+    uint32_t initSeedSize = pDrbgMode->pDrbgVariant->initSeedSize;
 
     /* This max is needed as initSeedSize might be smaller than seedlen, but the df uses this buffer both for input and output. */
     uint32_t dfBufferSize = MCUXCLRANDOMMODES_MAX(initSeedSize, seedLen);
@@ -496,7 +515,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_ins
             MCUXCLRANDOM_FP_CALLED_SECURECOPY,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_UpdateState));
-#endif 
+#endif
     }
     else if (MCUXCLRANDOM_STATUS_OK != result_updatestate)
     {
@@ -544,10 +563,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_res
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_reseedAlgorithm);
 
-    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClRandomModes_Context_CtrDrbg_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_CtrDrbg_Generic_t *) pSession->randomCfg.ctx;
-    uint32_t seedLen = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
-    uint32_t reseedSeedSize = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->reseedSeedSize;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    uint32_t seedLen = pDrbgMode->pDrbgVariant->seedLen;
+    uint32_t reseedSeedSize = pDrbgMode->pDrbgVariant->reseedSeedSize;
 
     /* This max is needed as reseedSeedSize might be smaller than seedlen, but the df uses this buffer both for input and output. */
     uint32_t dfBufferSize = MCUXCLRANDOMMODES_MAX(reseedSeedSize, seedLen);
@@ -569,7 +595,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_res
         /* Free workarea (pSeedMaterial) */
         mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUNDED_UP_CPU_WORDSIZE(dfBufferSize));
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_reseedAlgorithm, MCUXCLRANDOM_STATUS_ERROR,
-            MCUXCLRANDOM_FP_CALLED_SECURECOPY, 
+            MCUXCLRANDOM_FP_CALLED_SECURECOPY,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_df));
     }
     else if (MCUXCLRANDOM_STATUS_OK != ret_df)
@@ -597,7 +623,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_res
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_reseedAlgorithm, MCUXCLRANDOM_STATUS_ERROR,
             MCUXCLRANDOM_FP_CALLED_SECURECOPY,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_CtrDrbg_UpdateState));
-#endif 
+#endif
     }
     else if (MCUXCLRANDOM_STATUS_OK != result_updatestate)
     {
@@ -642,9 +668,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_generateAlgorithm);
 
-    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClRandomModes_Context_CtrDrbg_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_CtrDrbg_Generic_t *) pSession->randomCfg.ctx;
-    uint32_t seedLen = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    uint32_t seedLen = pDrbgMode->pDrbgVariant->seedLen;
 
     MCUX_CSSL_FP_FUNCTION_CALL(result_generate,
         mcuxClRandomModes_CtrDrbg_generateOutput(pSession, pOut, outLength));
@@ -708,9 +741,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_Upd
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_UpdateState);
 
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClRandomModes_Context_CtrDrbg_Generic_t *pCtx = (mcuxClRandomModes_Context_CtrDrbg_Generic_t *) pSession->randomCfg.ctx;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
-    uint32_t seedLen = ((const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode)->pDrbgVariant->seedLen;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    uint32_t seedLen = pDrbgMode->pDrbgVariant->seedLen;
     uint32_t securityStrength = (uint32_t)(pMode->securityStrength);
     uint32_t *pState = pCtx->state;
     uint32_t *pKey = pState;
@@ -787,7 +827,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_CtrDrbg_generateOutput);
 
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClRandomModes_Context_CtrDrbg_Generic_t *pCtx = (mcuxClRandomModes_Context_CtrDrbg_Generic_t *) pSession->randomCfg.ctx;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
     mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
     uint32_t securityStrength = (uint32_t)(pMode->securityStrength);
 
@@ -807,7 +850,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_CtrDrbg_gen
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_CtrDrbg_generateOutput, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
         }
-        
+
         MCUX_CSSL_FP_FUNCTION_CALL(ret_Internal_blockcipher,
             mcuxClRandomModes_DRBG_AES_Internal_blockcipher(pV, pKey, &pOut[outIndex], securityStrength/8u));
         if (MCUXCLRANDOM_STATUS_ERROR == ret_Internal_blockcipher)

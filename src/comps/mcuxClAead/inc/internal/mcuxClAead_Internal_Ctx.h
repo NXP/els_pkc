@@ -11,6 +11,10 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClAead_Internal_Ctx.h
+ *  @brief Internal structure of the context for the mcuxClAead component
+ */
+
 #ifndef MCUXCLAEAD_INTERNAL_CTX_H_
 #define MCUXCLAEAD_INTERNAL_CTX_H_
 

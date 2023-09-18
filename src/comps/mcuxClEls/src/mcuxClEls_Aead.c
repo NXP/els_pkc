@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -117,7 +117,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Aead_Upd
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Aead_UpdateAad_Async);
 
-    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Aead_UpdateAad_Async, (0U == aadLength) || (0u != aadLength % MCUXCLELS_AEAD_AAD_BLOCK_SIZE));
+    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Aead_UpdateAad_Async, (MCUXCLELS_AEAD_INTERN_KEY == options.bits.extkey && ELS_KS_CNT <= keyIdx)
+            || (MCUXCLELS_AEAD_EXTERN_KEY == options.bits.extkey && (MCUXCLELS_CIPHER_KEY_SIZE_AES_128 != keyLength && MCUXCLELS_CIPHER_KEY_SIZE_AES_192 != keyLength && MCUXCLELS_CIPHER_KEY_SIZE_AES_256 != keyLength))
+            || (0U == aadLength) || (0u != aadLength % MCUXCLELS_AEAD_AAD_BLOCK_SIZE));
 
     uint8_t * pStartIpCtxArea = pAeadCtx + MCUXCLELS_CIPHER_BLOCK_SIZE_AES;
 

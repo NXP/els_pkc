@@ -33,9 +33,11 @@
 #include <internal/mcuxClPkc_Macros.h>
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClPkc_ImportExport.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
+#include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal.h>
 #include <internal/mcuxClEcc_EdDSA_Internal_Hash.h>
@@ -82,6 +84,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                         ECC_EDDSA_NO_OF_BUFFERS) );
     if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
     {
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(retSetupEnvironment, mcuxClEcc_EdDSA_GenerateSignature_Core);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
@@ -105,8 +108,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
-    /* Initialize hash context buffer in CPU workarea (used for all hash operations) */
-    mcuxClHash_Context_t pCtx = (mcuxClHash_Context_t) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
+    /* Initialize hash context buffer in CPU workarea (used for all secure and non-secure hash operations) */
+    uint32_t hashContextSizeInWords = MCUXCLECC_MAX(mcuxClHash_getContextWordSize(pDomainParams->algoHash), mcuxClHash_getContextWordSize(pDomainParams->algoSecHash));
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Return pointer is 32-bit aligned and satisfies the requirement of mcuxClHash_Context_t");
+    mcuxClHash_Context_t pCtx = (mcuxClHash_Context_t) mcuxClSession_allocateWords_cpuWa(pSession, hashContextSizeInWords);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING();
 
     /* Clear upper bytes of buffer to store H(prefix || (h_b,...,h_{2b-1}) || m') which will later be considered of size (operandSize + bufferSize). */
     mcuxClEcc_CommonDomainParams_t *pCommonDomainParams = (mcuxClEcc_CommonDomainParams_t *) &pDomainParams->common;
@@ -242,7 +248,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Free the hash context (it's not needed anymore) */
-    mcuxClSession_freeWords_cpuWa(pSession, MCUXCLHASH_CONTEXT_SIZE / sizeof(uint32_t));
+    mcuxClSession_freeWords_cpuWa(pSession, hashContextSizeInWords);
 
     /*
      * Step 6: Securely import the secret scalar s and securely calculate signature component
@@ -303,8 +309,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
     /* Clean up and exit */
-    MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
     mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+        mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+
     mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_OK,
@@ -336,7 +344,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         /* Step 7 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc) * 2u,
         /* Step 8 */
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateSignature)

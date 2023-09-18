@@ -29,37 +29,7 @@
 extern "C" {
 #endif
 
-/**
- * @brief Decrypt padding function, which copies a full block to the output buffer.
- * @api
- *
- * This function throws an error if @p lastBlockLength is not equal to
- * @p blockLength, and copies one block from @p pIn to @p pOut and
- * returns OK otherwise.
- *
- * @param[in]  blockLength      The block length of the used block cipher.
- *
- * @param[in]  pIn              Pointer to the input buffer of the block that will
- *                              be padded.
- * @param[in]  lastBlockLength  Number of bytes in the last block, i.e. the number of bytes
- *                              in @p pIn. Must be equal to @p blockLength.
- * @param[in]  totalInputLength Total number of ciphertext bytes.
- *
- * @param[out] pOut             Pointer to the output buffer where the padded data
- *                              needs to be written.
- * @param[out] pOutLength       Length of the data written to @p pOut, including the padding.
- *
- * @return status
- */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClPadding_addPadding_Decrypt, mcuxClPadding_addPaddingMode_t)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Decrypt(
-  uint32_t blockLength,
-  const uint8_t * const pIn,
-  uint32_t lastBlockLength,
-  uint32_t totalInputLength,
-  uint8_t * const pOut,
-  uint32_t * const pOutLength
-);
+
 
 /**
  * @brief No-padding function, which adds no padding at all
@@ -191,6 +161,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_MAC
  *
  * This function adds PKCS7 padding according to rfc2315, it adds the remaning
  * bytes in the block with the value equal to the total number of added bytes.
+ * The random masking byte depends on a call to @ref mcuxClRandom_ncInit.
  *
  * @param[in]  blockLength      The block length of the used block cipher.
  *
@@ -222,6 +193,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_PKC
  *
  * This function copies @p lastBlockLength bytes to @p pOut and fills the
  * remainder with random bytes.
+ * The random bytes depend on a call to @ref mcuxClRandom_ncInit.
  *
  * @param[in]  blockLength      The block length of the used block cipher.
  *

@@ -28,14 +28,15 @@
  * @brief Securely compares the two memory regions @p lhs and @p rhs - internal use only
  *
  * The implementation is secure in the following aspects:
- * 
+ *
  * * Constant execution time: The execution sequence of the code is always identical for equal @p length parameters,
  *     i.e. no branches are performed based on the data in @p pLhs or @p pRhs.
  * * Code flow protection: The function call is protected. Additionally, the result depends on all steps of the calculation.
  * * Random order memory access: an attacker shall not be able to distinguish the position of the difference between the two compared buffers.
  * * Blinded word compare: SPA protection.
  * * Integrity of the result is ensured. The accumulator of differences is checked twice when generating the return status (EQUAL or NOT_EQUAL).
- * 
+ * * Data Integrity: Record(pLhs + pRhs + length)
+ *
  * @param pLhs   The left-hand side data to compare. Must not be NULL.
  * @param pRhs   The right-hand side data to compare. Must not be NULL.
  * @param length The number of bytes to compare. Must be different from zero.

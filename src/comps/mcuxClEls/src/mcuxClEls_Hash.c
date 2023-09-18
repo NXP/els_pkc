@@ -34,7 +34,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Asy
 
     /* Length must not be zero and aligned with the block length */
     MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Hash_Async,
-                               false
+                               (0 == 1) // fixing MISRA warning
                                || ((MCUXCLELS_HASH_MODE_SHA_224 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_224)))
                                || ((MCUXCLELS_HASH_MODE_SHA_256 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_256)))
                                || ((MCUXCLELS_HASH_RTF_UPDATE_ENABLE == options.bits.rtfupd) && (MCUXCLELS_HASH_MODE_SHA_256 != options.bits.hashmd))

@@ -25,7 +25,6 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
-#include <mcuxClPkc.h>              // Interface to the entire mcuxClPkc component
 #include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <mcuxClToolchain.h>             // Memory segment definitions

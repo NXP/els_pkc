@@ -32,7 +32,7 @@
  */
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(uint8_t **p,
+psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(const uint8_t **p,
                           uint8_t tag)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
@@ -92,7 +92,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
  */
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(uint8_t **p,
+psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(const uint8_t **p,
                           mcuxClRsa_KeyEntry_t  * key)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
@@ -154,7 +154,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
       key->keyEntryLength -= 1u;
     }
     *p += ptrLen;
-    key->pKeyEntryData = *p;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
+    key->pKeyEntryData = (uint8_t *)*p;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
     *p += key->keyEntryLength;
 
@@ -188,10 +190,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     *ptr = 0x02u;
     if(key->keyEntryLength > 0x7Fu) //long form
     {
-        uint8_t h3_byte = ((key->keyEntryLength) & 0xFF000000u) >> 24u;
-        uint8_t h2_byte = ((key->keyEntryLength) & 0xFF0000u) >> 16u;
-        uint8_t h1_byte = ((key->keyEntryLength) & 0xFF00u) >> 8u;
-        uint8_t h0_byte = (key->keyEntryLength) & 0xFFu;
+        uint8_t h3_byte = (uint8_t)(((key->keyEntryLength) & 0xFF000000u) >> 24u);
+        uint8_t h2_byte = (uint8_t)(((key->keyEntryLength) & 0xFF0000u) >> 16u);
+        uint8_t h1_byte = (uint8_t)(((key->keyEntryLength) & 0xFF00u) >> 8u);
+        uint8_t h0_byte = (uint8_t)((key->keyEntryLength) & 0xFFu);
         if(h3_byte != 0u)
         {
             ptr[1u] = 0x84u;
@@ -225,7 +227,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
     else                           //short from
     {
-        ptr[1] = key->keyEntryLength;
+        ptr[1] = (uint8_t)key->keyEntryLength;
         ptrLen = 2u;
     }
 

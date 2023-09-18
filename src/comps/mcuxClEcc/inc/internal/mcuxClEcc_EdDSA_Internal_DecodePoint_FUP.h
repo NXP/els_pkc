@@ -27,14 +27,32 @@
 /**
  * FUP program declaration mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common
  */
-#define mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common_LEN  11u
+#define mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common_LEN  7u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common[mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Common_LEN];
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed25519
+ */
+#define mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed25519_LEN  7u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed25519[mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed25519_LEN];
 
 /**
  * FUP program declaration mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed25519
  */
 #define mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed25519_LEN  7u
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed25519[mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed25519_LEN];
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed448
+ */
+#define mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed448_LEN  7u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed448[mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_PrepareExp_Ed448_LEN];
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed448
+ */
+#define mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed448_LEN  6u
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed448[mcuxClEcc_FUP_EdDSA_Internal_DecodePoint_ComputeXCandidate_Ed448_LEN];
 
 
 #endif /* MCUXCLECC_EDDSA_INTERNAL_DECODEPOINT_FUP_H_ */

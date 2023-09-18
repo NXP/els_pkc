@@ -25,6 +25,7 @@
 #include <mcuxClMemory.h>
 #include <mcuxClKey.h>
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <mcuxClHmac_Functions.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>

@@ -21,6 +21,7 @@
 #include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClPsaDriver_Internal.h>
+#include <internal/mcuxClHashModes_Internal_Memory.h>
 
 /* ******************************** */
 /* *** Internal structure sizes *** */
@@ -30,5 +31,6 @@ MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile mcuxClPsaDriver_ClnsData_Cipher_t mcuxClPsaDriver_ClnsData_Cipher;
 volatile mcuxClPsaDriver_ClnsData_Aead_t mcuxClPsaDriver_ClnsData_Aead;
 volatile mcuxClPsaDriver_ClnsData_Mac_t mcuxClPsaDriver_ClnsData_Mac;
-volatile mcuxClPsaDriver_ClnsData_Hash_t mcuxClPsaDriver_ClnsData_Hash;
+/* mcuxClPsaDriver_ClnsData_Hash_t cannot be used, because additional context data is placed in memory behind the Hash context struct */
+volatile uint8_t mcuxClPsaDriver_ClnsData_Hash[MCUXCLHASHMODES_CONTEXT_MAX_SIZE_INTERNAL];
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

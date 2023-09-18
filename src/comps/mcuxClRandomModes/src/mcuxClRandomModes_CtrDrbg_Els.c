@@ -42,6 +42,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_DRBG_AES_In
     cipher_options.bits.cphmde = MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB;
     cipher_options.bits.dcrpt = MCUXCLELS_CIPHER_ENCRYPT;
     cipher_options.bits.extkey = MCUXCLELS_CIPHER_EXTERNAL_KEY;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     MCUX_CSSL_FP_FUNCTION_CALL(result_cipher, mcuxClEls_Cipher_Async(
                 cipher_options,
                 (mcuxClEls_KeyIndex_t)0U,
@@ -51,6 +52,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_DRBG_AES_In
                 MCUXCLAES_BLOCK_SIZE,
                 NULL,
                 elsOut));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()    
     if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == result_cipher)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_DRBG_AES_Internal_blockcipher, MCUXCLRANDOM_STATUS_ERROR,

@@ -11,6 +11,9 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClAeadModes_Internal.h
+ *  @brief Internal definitions and headers for the mcuxClAeadModes component */
+
 #ifndef MCUXCLAEADMODES_INTERNAL_H_
 #define MCUXCLAEADMODES_INTERNAL_H_
 
@@ -20,9 +23,9 @@
 #include <internal/mcuxClAeadModes_Internal_Constants.h>
 
 
-#include <internal/mcuxClAeadModes_ELS_Algorithms.h>
-#include <internal/mcuxClAeadModes_ELS_Functions.h>
-#include <internal/mcuxClAeadModes_ELS_Types.h>
+#include <internal/mcuxClAeadModes_Els_Algorithms.h>
+#include <internal/mcuxClAeadModes_Els_Functions.h>
+#include <internal/mcuxClAeadModes_Els_Types.h>
 
 /* Macro used to align the size to the CPU wordsize */
 #define MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size)  \

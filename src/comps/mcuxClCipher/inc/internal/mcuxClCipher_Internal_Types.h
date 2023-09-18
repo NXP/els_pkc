@@ -49,23 +49,29 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) (*mcuxClCipher_CryptF
 ));
 
 
-MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClCipher_SelfTestFunc_t,
-typedef mcuxClCipher_Status_t (*mcuxClCipher_SelfTestFunc_t) (
-  mcuxClSession_Handle_t session,
-  mcuxClCipher_Mode_t pMode
-));
 
 /**
- * @brief Cipher selftest mode/algorithm descriptor structure
- *
- * This structure captures all the information that the Cipher selftest interfaces need
- * to know about a particular Cipher selftest mode/algorithm.
+ * @brief Macros for @ref mcuxClCipher_ModeFunctions_t
  */
-struct mcuxClCipher_TestDescriptor
+#define MCUXCLCIPHER_CRYPT_MODEFUNCTIONS \
+  mcuxClCipher_CryptFunc_t       crypt; \
+  uint32_t                      protection_token_crypt;
+
+#define MCUXCLCIPHER_ENCRYPT_DECRYPT_ONESHOT_MODEFUNCTIONS
+#define MCUXCLCIPHER_ENCRYPT_DECRYPT_MULTIPART_MODEFUNCTIONS
+
+/**
+ * @brief Cipher mode function structure
+ * 
+ * This structure captures all the information related to the functions
+ * of the Cipher interfaces.
+ */
+typedef struct mcuxClCipher_ModeFunctions
 {
-  mcuxClCipher_SelfTestFunc_t    selftest;
-  uint32_t                      protection_token_selftest;
-};
+  MCUXCLCIPHER_ENCRYPT_DECRYPT_ONESHOT_MODEFUNCTIONS
+  MCUXCLCIPHER_ENCRYPT_DECRYPT_MULTIPART_MODEFUNCTIONS
+  MCUXCLCIPHER_CRYPT_MODEFUNCTIONS
+} mcuxClCipher_ModeFunctions_t;
 
 /**
  * @brief Cipher mode/algorithm descriptor structure
@@ -75,10 +81,8 @@ struct mcuxClCipher_TestDescriptor
  */
 struct mcuxClCipher_ModeDescriptor
 {
-  mcuxClCipher_CryptFunc_t       crypt;  // this is a one-shot function taking option flags that will be called for multi-part functions as well
-  uint32_t                      protection_token_crypt;
-
-  void *                        pAlgorithm;
+  const void *pModeFunctions;
+  void *      pAlgorithm;
 };
 
 /**

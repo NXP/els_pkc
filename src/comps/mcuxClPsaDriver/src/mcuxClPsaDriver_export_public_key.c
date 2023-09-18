@@ -25,6 +25,7 @@
 
 #include <internal/mcuxClEcc_Mont_Internal.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
+#include <internal/mcuxClPsaDriver_Internal.h>
 #include <internal/mcuxClKey_Internal.h>
 
 
@@ -80,30 +81,30 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
     mcuxClRsa_KeyEntry_t rsaPrivateE = {0};
             
     /* check and skip the sequence tag */
-    if (PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x10u | 0x20u))
+    if (PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&key_buffer, 0x10u | 0x20u))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
     /* check and skip the version tag */
-    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag((uint8_t **)&key_buffer, 0x02u))
+    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&key_buffer, 0x02u))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    uint8_t *originKey = (uint8_t *)key_buffer;
+    const uint8_t *originKey = key_buffer;
     
     /* Modulus*/
-    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer((uint8_t **)&key_buffer, &rsaPrivateN))
+    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&key_buffer, &rsaPrivateN))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
     /* Public Exponent*/
-    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer((uint8_t **)&key_buffer, &rsaPrivateE))
+    if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&key_buffer, &rsaPrivateE))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
     
-    size_t pubKeyLen = (size_t)(key_buffer - originKey);
+    size_t pubKeyLen = ((size_t)key_buffer - (size_t)originKey);
     /* Start the public key with sequence, tag and length of public key*/
     size_t seqAndTagLen= 0x04u;
     data[0] = 0x30;
@@ -130,8 +131,10 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     const uint8_t *key_buffer, size_t key_buffer_size,
     uint8_t *data, size_t data_size, size_t *data_length )
 {
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_OF_COMPOSITE_EXPRESSION("PSA_KEY_TYPE_ECC_GET_FAMILY macro comes from external library outside our control")
     psa_ecc_family_t curve = PSA_KEY_TYPE_ECC_GET_FAMILY(psa_get_key_type(attributes));
-    size_t bytes = PSA_BITS_TO_BYTES(psa_get_key_bits(attributes));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_OF_COMPOSITE_EXPRESSION()
+    size_t bytes = MCUXCLPSADRIVER_BITS_TO_BYTES(psa_get_key_bits(attributes));
 
     //For Montgomery curves
     if(curve == PSA_ECC_FAMILY_MONTGOMERY)
@@ -179,20 +182,28 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             /* Create and fill common structures*/
             mcuxClKey_Descriptor_t privKeyData;
             privKeyData.type.size = MCUXCLKEY_SIZE_NOTUSED;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             privKeyData.type.info = (void *) &mcuxClEcc_MontDH_DomainParams_Curve448;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
             privKeyData.type.algoId = (MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_KEY_PAIR) ^
                                       (MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PRIVATE_KEY);
             privKeyData.protection = mcuxClKey_Protection_None;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             privKeyData.container.pData = (uint8_t *)key_buffer;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
             mcuxClKey_Descriptor_t pubKeyData;
             pubKeyData.type.size = MCUXCLKEY_SIZE_NOTUSED;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             pubKeyData.type.info = (void *) &mcuxClEcc_MontDH_DomainParams_Curve448;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
             pubKeyData.type.algoId = (MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_KEY_PAIR) ^
                                       (MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PUBLIC_KEY);
             pubKeyData.protection = mcuxClKey_Protection_None;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = (mcuxClEcc_MontDH_DomainParams_t *)(&mcuxClEcc_MontDH_DomainParams_Curve448);
             pubKeyData.container.pData = (uint8_t *)pDomainParameters->common.pGx;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
             /* Call Dh KeyAgreement for public keys generation and check FP and return code */
             uint32_t outLength = 0u;
@@ -264,19 +275,27 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
 
             mcuxClKey_Descriptor_t privKeyData;
             privKeyData.type.size = MCUXCLKEY_SIZE_NOTUSED;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             privKeyData.type.info = (void *) &mcuxClEcc_MontDH_DomainParams_Curve25519;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
             privKeyData.type.algoId = (MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_KEY_PAIR) ^
                                       (MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PRIVATE_KEY);
             privKeyData.protection = mcuxClKey_Protection_None;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             privKeyData.container.pData = (uint8_t *)key_buffer;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
             mcuxClKey_Descriptor_t pubKeyData;
             pubKeyData.type.size = MCUXCLKEY_SIZE_NOTUSED;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             pubKeyData.type.info = (void *) &mcuxClEcc_MontDH_DomainParams_Curve25519;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
             pubKeyData.type.algoId = (MCUXCLKEY_ALGO_ID_ECC_MONTDH | MCUXCLKEY_ALGO_ID_KEY_PAIR) ^
                                       (MCUXCLKEY_ALGO_ID_KEY_PAIR ^ MCUXCLKEY_ALGO_ID_PUBLIC_KEY);
             pubKeyData.protection = mcuxClKey_Protection_None;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = (mcuxClEcc_MontDH_DomainParams_t *)(&mcuxClEcc_MontDH_DomainParams_Curve25519);
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
             pubKeyData.container.pData = (uint8_t *)pDomainParameters->common.pGx;
 
             /* Call Dh KeyAgreement for public keys generation and check FP and return code */

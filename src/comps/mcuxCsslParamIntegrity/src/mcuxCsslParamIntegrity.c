@@ -14,6 +14,7 @@
 #include <mcuxCsslParamIntegrity.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
+#include <mcuxCsslAnalysis.h>
 #include <stdarg.h>
 #include <stddef.h>
 
@@ -23,7 +24,9 @@
 
 MCUX_CSSL_FP_FUNCTION_DEF(rotate_right)
 static uint32_t rotate_right(uint32_t val, uint32_t shift_amt) {
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("shift_amt will be always less than 32.")
     return ((val) >> (shift_amt) % 32u) | ((val) << (32u - (shift_amt)) % 32u);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxCsslParamIntegrity_InternalProtect)

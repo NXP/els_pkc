@@ -33,6 +33,7 @@
 #include <internal/mcuxClMath_Internal_Utils.h>
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClPkc_ImportExport.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClEcc_Weier_Verify_FUP.h>
 #include <internal/mcuxClEcc_Weier_Internal_PointArithmetic_FUP.h>
@@ -68,6 +69,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Weier_SetupEnvironment) );
         }
 
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(ret_SetupEnvironment, mcuxClEcc_Verify);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
@@ -96,29 +98,33 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Check r != 0, r != n. */
     if (MCUXCLPKC_FLAG_ZERO == MCUXCLPKC_WAITFORFINISH_GETZERO())
     {   /* r = 0 or n. */
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_SIGNATURE,
             MCUXCLECC_FP_VERIFY_INIT,
             MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
     /* Check r < n. */
     MCUXCLPKC_FP_CALC_OP1_CMP(ECC_S3, ECC_N);
     if (MCUXCLPKC_FLAG_CARRY != MCUXCLPKC_WAITFORFINISH_GETCARRY())
     {   /* r > n. */
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_SIGNATURE,
             MCUXCLECC_FP_VERIFY_INIT,
             MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
             MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
     /* If s < n, then t3 = s; otherwise t3 = s - n. */
@@ -127,8 +133,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     /* Check s != 0, s != n. */
     if (MCUXCLPKC_FLAG_ZERO == MCUXCLPKC_WAITFORFINISH_GETZERO())
     {   /* s = 0 or n. */
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_SIGNATURE,
@@ -136,15 +144,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
             MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
             MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
             MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
     /* Check s < n. */
     MCUXCLPKC_FP_CALC_OP1_CMP(ECC_T1, ECC_N);
     if (MCUXCLPKC_FLAG_CARRY != MCUXCLPKC_WAITFORFINISH_GETCARRY())
     {   /* s > n. */
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_SIGNATURE,
@@ -153,7 +163,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
             MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
             MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
             MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
 
@@ -226,8 +236,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         MCUX_CSSL_FP_FUNCTION_CALL(pointCheckBasePointStatus, mcuxClEcc_PointCheckAffineNR());
         if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckBasePointStatus)
         {
-            MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
             mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+            MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+                mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
             mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_PARAMS,
@@ -238,7 +250,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+                MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
         }
         else if (MCUXCLECC_STATUS_OK != pointCheckBasePointStatus)
         {
@@ -255,8 +267,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         MCUX_CSSL_FP_FUNCTION_CALL(pointCheckPrecPointStatus, mcuxClEcc_PointCheckAffineNR());
         if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckPrecPointStatus)
         {
-            MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
             mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+            MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+                mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
             mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_PARAMS,
@@ -268,7 +282,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+                MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
         }
         else if (MCUXCLECC_STATUS_OK != pointCheckPrecPointStatus)
         {
@@ -337,8 +351,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     MCUX_CSSL_FP_FUNCTION_CALL(pointCheckPubKeyStatus, mcuxClEcc_PointCheckAffineNR());
     if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckPubKeyStatus)
     {
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_PARAMS,
@@ -346,7 +362,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
             MCUXCLECC_FP_VERIFY_PREPARE_AND_CHECK,
             MCUXCLECC_FP_VERIFY_CALC_P1,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
     else if (MCUXCLECC_STATUS_OK != pointCheckPubKeyStatus)
     {
@@ -416,8 +432,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         MCUX_CSSL_FP_FUNCTION_CALL(statusPointFullAdd, mcuxClEcc_PointFullAdd());
         if (MCUXCLECC_STATUS_NEUTRAL_POINT == statusPointFullAdd)
         {
-            MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
             mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+            MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+                mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
             mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_SIGNATURE,
@@ -426,7 +444,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
                 MCUXCLECC_FP_VERIFY_CALC_P1,
                 MCUXCLECC_FP_VERIFY_CALC_P2,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointFullAdd),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+                MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
         }
     }
 
@@ -455,8 +473,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
     MCUXCLPKC_FP_CALC_OP1_CMP(WEIER_X1, ECC_S3);
     if (MCUXCLPKC_FLAG_ZERO != MCUXCLPKC_WAITFORFINISH_GETZERO())
     {
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_SIGNATURE,
@@ -465,7 +485,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
             MCUXCLECC_FP_VERIFY_CALC_P1,
             MCUXCLECC_FP_VERIFY_CALC_P2,
             MCUXCLECC_FP_VERIFY_CALC_P1_ADD_P2,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
     /* Import prime p and order n again, and check (compare with) existing one. */
@@ -496,8 +516,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         /* Export the calculated r. */
         MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(pParam->pOutputR, WEIER_X1, byteLenN);
 
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_Verify, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
@@ -513,7 +535,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare),
             /* Clean up and exit */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportBigEndianFromPkc),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
     /* Results of checking R are inconsistent, or p or n got modified. */

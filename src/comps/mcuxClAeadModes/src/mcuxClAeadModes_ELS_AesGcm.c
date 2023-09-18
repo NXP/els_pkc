@@ -11,12 +11,12 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAeadModes_ELS_AesGcm.c
- *  @brief implementation of the AES GCM skeleton functions of the mcuxClAead component */
+/** @file  mcuxClAeadModes_Els_AesGcm.c
+ *  @brief Implementation of the AES GCM skeleton functions of the mcuxClAeadModes component */
 
 #include <mcuxClAead.h>
-#include <internal/mcuxClAeadModes_ELS_Types.h>
-#include <internal/mcuxClAeadModes_ELS_Functions.h>
+#include <internal/mcuxClAeadModes_Els_Types.h>
+#include <internal/mcuxClAeadModes_Els_Functions.h>
 #include <mcuxClMemory.h>
 #include <mcuxClSession.h>
 #include <mcuxClKey.h>
@@ -28,8 +28,8 @@
 #include <internal/mcuxClPadding_Internal.h>
 #include <mcuxClAes.h>
 
-MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAead_ModeSkeletonAesGcm)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAeadModes_SkeletonAesGcm)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesGcm(
     mcuxClSession_Handle_t session,
     mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pNonce,
@@ -102,9 +102,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
         - exit
     */
 
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAead_ModeSkeletonAesGcm);
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_SkeletonAesGcm);
 
-    const mcuxClAead_algorithm_t* const pAlgo = pContext->common.mode->algorithm;
+    const mcuxClAeadModes_AlgorithmDescriptor_t* const pAlgo = pContext->common.mode->algorithm;
 
     uint32_t bytesToCopy = 0u;
     uint32_t bytesCopied = 0u;
@@ -122,31 +122,33 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
 
     /* Number of bytes added by the padding. */
     uint32_t padOutLength = 0u;
-    if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_INIT))
+    if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_INIT))
     {
         pContext->partialDataLength = 0u;
 
         if (nonceLength != 12u)
         {
-            uint32_t engineOptions = MCUXCLAEAD_ENGINE_OPTION_IV_PARTIAL_START;
+            uint32_t engineOptions = MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START;
 
             /* If nonce is not 12 bytes, perform a partial init. Start with the full blocks of the IV */
             bytesFullIvBlocks = (nonceLength / MCUXCLAES_BLOCK_SIZE) * MCUXCLAES_BLOCK_SIZE;
             if(0u != bytesFullIvBlocks)
             {
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
                 MCUX_CSSL_FP_FUNCTION_CALL(retIV, pAlgo->pEngine(session, pContext,
                                                                    pNonce,
                                                                    bytesFullIvBlocks,
                                                                    NULL,
                                                                    NULL,
                                                                    engineOptions));
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
                 if(MCUXCLAEAD_STATUS_OK != retIV)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
                 }
 
-                engineOptions = MCUXCLAEAD_ENGINE_OPTION_IV_PARTIAL_CONT;
+                engineOptions = MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT;
             }
 
             MCUX_CSSL_FP_FUNCTION_CALL(padResult, mcuxClPadding_addPadding_ISO9797_1_Method1(MCUXCLELS_AEAD_IV_BLOCK_SIZE,
@@ -158,24 +160,26 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
 
             if (MCUXCLPADDING_STATUS_OK != padResult)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
 
             if(MCUXCLELS_AEAD_IV_BLOCK_SIZE == padOutLength)
             {
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
                 MCUX_CSSL_FP_FUNCTION_CALL(retIV, pAlgo->pEngine(session, pContext,
                                                                     pContext->partialData,
                                                                     MCUXCLELS_AEAD_IV_BLOCK_SIZE,
                                                                     NULL,
                                                                     NULL,
                                                                     engineOptions));
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
                 if(MCUXCLAEAD_STATUS_OK != retIV)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
                 }
 
-                engineOptions = MCUXCLAEAD_ENGINE_OPTION_IV_PARTIAL_CONT;
+                engineOptions = MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT;
             }
 
 
@@ -189,16 +193,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             pContext->partialData[11] = (uint8_t)(nonceLength >> 29u);
 
             /* Finish the nonce initialization. */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
             MCUX_CSSL_FP_FUNCTION_CALL(retIVFinal, pAlgo->pEngine(session, pContext,
                                                                           pContext->partialData,
                                                                           MCUXCLELS_AEAD_IV_BLOCK_SIZE,
                                                                           NULL,
                                                                           NULL,
-                                                                          engineOptions | MCUXCLAEAD_ENGINE_OPTION_IV_FINAL));
+                                                                          engineOptions | MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
             if(MCUXCLAEAD_STATUS_OK != retIVFinal)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
         }
         else
@@ -215,16 +221,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             pContext->partialData[15] = 0x01u;
 
             /* Do the nonce initialization. */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
             MCUX_CSSL_FP_FUNCTION_CALL(retIV, pAlgo->pEngine(session, pContext,
                                                                      pContext->partialData,
                                                                      MCUXCLELS_AEAD_IV_BLOCK_SIZE,
                                                                      NULL,
                                                                      NULL,
-                                                                     MCUXCLAEAD_ENGINE_OPTION_IV_FINAL));
+                                                                     MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
             if(MCUXCLAEAD_STATUS_OK != retIV)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
         }
     }
@@ -245,7 +253,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
     uint32_t aadProFPFlag = 0u;
     uint32_t aadProFPFlag1 = 0u;
     uint32_t aadProFPFlag2 = 0u;
-    if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_PROCESS_AAD))
+    if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS_AAD))
     {
         /* Number of bytes to possibly copy into the partial data buffer, which is min(free buffer space, new data). */
         bytesToCopy = (((MCUXCLELS_AEAD_AAD_BLOCK_SIZE - pContext->partialDataLength) < (adataLength)) ?
@@ -267,16 +275,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             {
                 aadProFPFlag2 = 1u;
                 /* partialData now contains a full block, so process it. */
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
                 MCUX_CSSL_FP_FUNCTION_CALL(retAad, pAlgo->pEngine(session, pContext,
                                                                    pContext->partialData,
                                                                    MCUXCLELS_AEAD_AAD_BLOCK_SIZE,
                                                                    NULL,
                                                                    NULL,
-                                                                   MCUXCLAEAD_ENGINE_OPTION_AAD));
+                                                                   MCUXCLAEADMODES_ENGINE_OPTION_AAD));
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
                 if(MCUXCLAEAD_STATUS_OK != retAad)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
                 }
 
                 /* The partial data buffer is now empty. */
@@ -294,16 +304,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
         if(0u != bytesRemainingAad)
         {
             /* Process as many remaining full blocks as possible. */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
             MCUX_CSSL_FP_FUNCTION_CALL(retBlkAad, pAlgo->pEngine(session, pContext,
                                                                          pAdata + bytesCopied,
                                                                          bytesRemainingAad,
                                                                          NULL,
                                                                          NULL,
-                                                                         MCUXCLAEAD_ENGINE_OPTION_AAD));
+                                                                         MCUXCLAEADMODES_ENGINE_OPTION_AAD));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
             if(MCUXCLAEAD_STATUS_OK != retBlkAad)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
 
             /* The bytes copied already should not be taken into account further. */
@@ -332,16 +344,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             /* There is still AAD which needs to be zero-padded and processed. */
             MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF(pContext->partialData + pContext->partialDataLength, 0u, MCUXCLELS_AEAD_AAD_BLOCK_SIZE - pContext->partialDataLength, MCUXCLELS_AEAD_AAD_BLOCK_SIZE);
 
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
             MCUX_CSSL_FP_FUNCTION_CALL(retPadAad, pAlgo->pEngine(session, pContext,
                                                                   pContext->partialData,
                                                                   MCUXCLELS_AEAD_AAD_BLOCK_SIZE,
                                                                   NULL,
                                                                   NULL,
-                                                                  MCUXCLAEAD_ENGINE_OPTION_AAD));
+                                                                  MCUXCLAEADMODES_ENGINE_OPTION_AAD));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
             if(MCUXCLAEAD_STATUS_OK != retPadAad)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
 
             pContext->partialDataLength = 0u;
@@ -366,7 +380,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
     uint32_t dataProFPFlag1 = 0u;
     uint32_t dataProFPFlag2 = 0u;
     uint8_t *pOutput = pOut;
-    if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_PROCESS))
+    if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS))
     {
         /* Number of bytes to possibly copy into the partial data buffer. */
         bytesCopied = 0u;
@@ -390,16 +404,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             {
                 dataProFPFlag2 = 1u;
                 /* partialData now contains a full block, so process it. */
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
                 MCUX_CSSL_FP_FUNCTION_CALL(retData, pAlgo->pEngine(session, pContext,
                                                                              pContext->partialData,
                                                                              MCUXCLAES_BLOCK_SIZE,
                                                                              pOutput,
                                                                              NULL,
-                                                                             MCUXCLAEAD_ENGINE_OPTION_DATA));
+                                                                             MCUXCLAEADMODES_ENGINE_OPTION_DATA));
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
                 if(MCUXCLAEAD_STATUS_OK != retData)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
                 }
 
                 /* The partial data buffer is now empty. */
@@ -420,16 +436,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
         if(0u != bytesRemainingData)
         {
             /* Process as many remaining full blocks as possible. */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
             MCUX_CSSL_FP_FUNCTION_CALL(retBlkData, pAlgo->pEngine(session, pContext,
                                                                      pIn + bytesCopied,
                                                                      bytesRemainingData,
                                                                      pOutput,
                                                                      NULL,
-                                                                     MCUXCLAEAD_ENGINE_OPTION_DATA));
+                                                                     MCUXCLAEADMODES_ENGINE_OPTION_DATA));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
             if(MCUXCLAEAD_STATUS_OK != retBlkData)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
 
             pContext->processedDataLength += bytesRemainingData;
@@ -460,16 +478,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             /* There is still data which needs to be zero-padded and processed. */
             MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF(pContext->partialData + pContext->partialDataLength, 0u, MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength, MCUXCLAES_BLOCK_SIZE);
 
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
             MCUX_CSSL_FP_FUNCTION_CALL(redFinalData, pAlgo->pEngine(session, pContext,
                                                                      pContext->partialData,
                                                                      MCUXCLAES_BLOCK_SIZE,
                                                                      pOutput,
                                                                      NULL,
-                                                                     MCUXCLAEAD_ENGINE_OPTION_DATA_FINAL));
+                                                                     MCUXCLAEADMODES_ENGINE_OPTION_DATA_FINAL));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
             if(MCUXCLAEAD_STATUS_OK != redFinalData)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
             }
 
             /* Write to pOutLength how many bytes have been processed. */
@@ -487,24 +507,26 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             - perform the finalize processing using pEngine(option:finish), store tag in partialData in context
 */
 
-    if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_FINISH) || (options == MCUXCLAEAD_OPTION_VERIFY))
+    if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_FINISH) || (options == MCUXCLAEADMODES_OPTION_VERIFY))
     {
         if (pContext->partialDataLength != 0u)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
         }
 
         /* Call the finalize function. */
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
         MCUX_CSSL_FP_FUNCTION_CALL(retFinal, pAlgo->pEngine(session, pContext,
                                                                    NULL,
                                                                    0u,
                                                                    pContext->partialData,
                                                                    NULL,
-                                                                   MCUXCLAEAD_ENGINE_OPTION_FINISH));
+                                                                   MCUXCLAEADMODES_ENGINE_OPTION_FINISH));
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
 
         if(MCUXCLAEAD_STATUS_OK != retFinal)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
         }
     }
 
@@ -513,7 +535,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             - copy tagLength bytes from partialData to the tag
             - clean up context
 */
-    if ((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_FINISH))
+    if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_FINISH))
     {
         MCUXCLMEMORY_FP_MEMORY_COPY(pTag,pContext->partialData,tagLength);
     }
@@ -527,7 +549,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
 
         - exit
 */
-    if (options == MCUXCLAEAD_OPTION_VERIFY)
+    if (options == MCUXCLAEADMODES_OPTION_VERIFY)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pTag, pContext->partialData, tagLength),
                                                                       pTag,
@@ -536,14 +558,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
 
         if(compare_result != MCUXCSSLMEMORY_STATUS_EQUAL)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
         }
 
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAead_ModeSkeletonAesGcm, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
-        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_INIT)),
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_INIT)),
             MCUX_CSSL_FP_CONDITIONAL((nonceLength != 12u), MCUX_CSSL_FP_CONDITIONAL((0u != bytesFullIvBlocks), pAlgo->protection_token_engine),
                                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPadding_addPadding_ISO9797_1_Method1),
                                                         MCUX_CSSL_FP_CONDITIONAL((MCUXCLELS_AEAD_IV_BLOCK_SIZE == padOutLength), pAlgo->protection_token_engine),
@@ -552,7 +574,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             MCUX_CSSL_FP_CONDITIONAL((nonceLength == 12u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
             pAlgo->protection_token_engine
         ),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_PROCESS_AAD))),
+        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS_AAD))),
             MCUX_CSSL_FP_CONDITIONAL((aadProFPFlag1 == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_CONDITIONAL((aadProFPFlag2 == 1u), pAlgo->protection_token_engine)
             ),
@@ -561,7 +583,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             MCUX_CSSL_FP_CONDITIONAL((aadProFPFlag != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                                                           pAlgo->protection_token_engine)
         ),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_PROCESS))),
+        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS))),
             MCUX_CSSL_FP_CONDITIONAL((dataProFPFlag1 == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_CONDITIONAL((dataProFPFlag2 == 1u), pAlgo->protection_token_engine)
             ),
@@ -570,13 +592,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
             MCUX_CSSL_FP_CONDITIONAL((dataProFPFlag != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
                                                            pAlgo->protection_token_engine)
         ),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_FINISH) || (options == MCUXCLAEAD_OPTION_VERIFY))),
+        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_FINISH) || (options == MCUXCLAEADMODES_OPTION_VERIFY))),
             pAlgo->protection_token_engine
         ),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEAD_OPTION_ONESHOT) || (options == MCUXCLAEAD_OPTION_FINISH))),
+        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_FINISH))),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
         ),
-        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEAD_OPTION_VERIFY)),
+        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEADMODES_OPTION_VERIFY)),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare)
         )
     );

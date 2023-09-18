@@ -219,7 +219,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
         }
 
         /* perform validation of correct ciphered text */
-        status = mcuxClPsaDriver_psa_driver_wrapper_aead_compare_tags( (uint8_t *)&ciphertext[ciphertext_length - tag_length], tag_for_comparison, tag_length );
+        status = mcuxClPsaDriver_psa_driver_wrapper_aead_compare_tags( &ciphertext[ciphertext_length - tag_length], tag_for_comparison, tag_length );
 
         if( status != PSA_SUCCESS )
         {
@@ -1059,7 +1059,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
     *plaintext_length = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPsaDriver_ClnsData_Aead_t * pClnsAeadData = (mcuxClPsaDriver_ClnsData_Aead_t *) operation->ctx.clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     /* Validate the given buffer sizes */
     /* Used stored tag length from pContext instead of determining it at run time,

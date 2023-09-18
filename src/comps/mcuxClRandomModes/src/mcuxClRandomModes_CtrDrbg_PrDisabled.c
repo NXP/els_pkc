@@ -141,7 +141,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 #ifdef MCUXCL_FEATURE_RANDOMMODES_TESTMODE
     .auxParam         = (uint32_t) &mcuxClRandomModes_OperationModeDescriptor_TestMode_PrDisabled,
 #else
-    .auxParam         = 0u
+    .auxParam         = 0u,
 #endif /* MCUXCL_FEATURE_RANDOMMODES_TESTMODE */
     .securityStrength = MCUXCLRANDOMMODES_SECURITYSTRENGTH_CTR_DRBG_AES256
 };

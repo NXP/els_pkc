@@ -20,7 +20,7 @@
 #define MCUXCLHMAC_CONSTANTS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
-#include <mcuxClHash_Constants.h>
+#include <mcuxClHashModes_Constants.h>
 
 /**
  * @defgroup mcuxClHmac_Constants mcuxClHmac Constants

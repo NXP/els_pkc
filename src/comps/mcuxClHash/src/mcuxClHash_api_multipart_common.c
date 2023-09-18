@@ -29,9 +29,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_init(
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_init);
 
-    pContext->data.unprocessedLength = 0u;
-    pContext->data.processedLength[0] = 0u;
-    pContext->data.processedLength[1] = 0u;
+    pContext->unprocessedLength = 0u;
+    pContext->processedLength[0] = 0u;
+    pContext->processedLength[1] = 0u;
     pContext->algo = algorithm;
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClHash_init, MCUXCLHASH_STATUS_OK, MCUXCLHASH_STATUS_FAULT_ATTACK);

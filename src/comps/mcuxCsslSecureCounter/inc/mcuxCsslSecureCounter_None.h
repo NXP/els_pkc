@@ -70,6 +70,14 @@
 #define MCUX_CSSL_SC_VALUE_TYPE_IMPL \
   static const uint32_t
 
+/**
+ * \def MCUX_CSSL_SC_BALANCING_VALUE_TYPE_IMPL
+ * \brief Data type used for properly casting the secure counter balancing values.
+ * \ingroup scNoneCore
+ */
+#define MCUX_CSSL_SC_BALANCING_VALUE_TYPE_IMPL \
+  uint32_t
+
 /****************************************************************************/
 /* Initialization                                                           */
 /****************************************************************************/

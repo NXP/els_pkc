@@ -120,7 +120,7 @@ const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_WeierECC_brainpoolP512
 const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_WeierECC_brainpoolP512t1_Priv = {.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_PRIVATE_KEY, .size = MCUXCLECC_WEIERECC_BRAINPOOLP512T1_SIZE_PRIVATEKEY, .info = (void *) &mcuxClEcc_Weier_DomainParams_brainpoolP512t1};
 
 /* Key type structure for private and public EdDSA keys for twisted Edwards curve Ed25519 */
-const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_EdDSA_Ed25519_Priv = {.algoId = MCUXCLKEY_ALGO_ID_ECC_EDDSA | MCUXCLKEY_ALGO_ID_PRIVATE_KEY, .size = MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA, .info = (void *) &mcuxClEcc_EdDSA_DomainParams_Ed25519};
+const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_EdDSA_Ed25519_Priv = {.algoId = MCUXCLKEY_ALGO_ID_ECC_EDDSA | MCUXCLKEY_ALGO_ID_PRIVATE_KEY, .size = MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEY, .info = (void *) &mcuxClEcc_EdDSA_DomainParams_Ed25519};
 const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_EdDSA_Ed25519_Pub = {.algoId = MCUXCLKEY_ALGO_ID_ECC_EDDSA | MCUXCLKEY_ALGO_ID_PUBLIC_KEY, .size = MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY, .info = (void *) &mcuxClEcc_EdDSA_DomainParams_Ed25519};
 
 /* Key type structure for private and public EdDSA keys for twisted Edwards curve Ed448 */

@@ -23,6 +23,7 @@
 #include <mcuxClMemory.h>
 
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>

@@ -20,6 +20,8 @@
 #include <mcuxClSession.h>
 #include <mcuxCsslAnalysis.h>
 #include <mcuxClPadding.h>
+#include <mcuxCsslDataIntegrity.h>
+#include <internal/mcuxClPrng_Internal.h>
 
 #define MCUXCLPADDING_ISO_PADDING_BYTE (0x80u)
 
@@ -172,7 +174,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t)  mcuxClPadding_addPadding_PK
 }
 
 
-/* TODO CLNS-3507: Replace by actual random padding (is currently a copy of M1) */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPadding_addPadding_Random, mcuxClPadding_addPaddingMode_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Random(
   uint32_t blockLength,
@@ -195,7 +196,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Ran
 
   if(0u != paddingBytes)
   {
-    MCUXCLMEMORY_FP_MEMORY_SET(pOut + lastBlockLength, 0x00u, paddingBytes);
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_generate, mcuxClPrng_generate(pOut + lastBlockLength, paddingBytes));
+    if(MCUXCLPRNG_STATUS_OK != ret_Prng_generate)
+    {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClPadding_addPadding_Random, MCUXCLPADDING_STATUS_NOT_OK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_generate));
+    }
   }
 
   MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(pOut, pIn, lastBlockLength, blockLength);
@@ -204,6 +210,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPadding_Status_t) mcuxClPadding_addPadding_Ran
 
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClPadding_addPadding_Random, MCUXCLPADDING_STATUS_OK, MCUXCLPADDING_STATUS_FAULT_ATTACK,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPrng_generate));
 }
 

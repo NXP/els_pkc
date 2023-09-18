@@ -46,7 +46,6 @@ typedef struct mcuxClOscca_MPInt_t
   uint16_t wNumBytes;       /**< Length in bytes of multi precision integer. */
 } mcuxClOscca_MPInt_t;
 
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

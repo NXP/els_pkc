@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClCipherModes_ELS_Aes.c
+/** @file  mcuxClCipherModes_Els_Aes.c
  *  @brief implementation of the Skeleton functions of the mcuxClCipher component */
 
 #include <mcuxClMemory.h>

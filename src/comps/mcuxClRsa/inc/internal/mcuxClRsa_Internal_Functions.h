@@ -23,7 +23,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClHash.h>
-#include <mcuxClPkc_Functions.h>
 #include <mcuxClRsa_Types.h>
 #include <mcuxClKey.h>
 
@@ -89,7 +88,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
 );
 
 
-
 /**
  * \brief RSA private plain operation
  *
@@ -120,7 +118,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
  *               - It is located in PKC RAM;
  *               - It is provided in little-endian byte order;
  *               - The input buffer length should be:
- *                 MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(modulus length) = MCUXCLPKC_ROUNDUP_SIZE(modulus length) + 2*MCUXCLPKC_WORDSIZE.
+ *                 MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(modulus length) = MCUXCLRSA_PKC_ROUNDUP_SIZE(modulus length) + 2*MCUXCLRSA_PKC_WORDSIZE.
  *                 Inside this buffer, the input has the same byte length as the modulus, while upper bytes are used as temporary buffer for internal operations.
  *               - It is overwritten by the function.
  *      <dt>pOutput:</dt>
@@ -667,17 +665,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
  *        <br><code>iX</code> (bits 16~23): index of input X in Montgomery representation (PKC operand).
  *        <br>Its size shall be at least nbPkcByteLength.
  *        <br><code>iR</code> (bits 16~23: index of result R in normal representation (PKC operand)
- *        <br>Its buffer size shall be at least (nbPkcByteLength - bPkcByteLength + 2 * MCUXCLPKC_WORDSIZE).
- *        <br>The result fits in size = (nbPkcByteLength - bPkcByteLength + MCUXCLPKC_WORDSIZE).</dd>
+ *        <br>Its buffer size shall be at least (nbPkcByteLength - bPkcByteLength + 2 * MCUXCLRSA_PKC_WORDSIZE).
+ *        <br>The result fits in size = (nbPkcByteLength - bPkcByteLength + MCUXCLRSA_PKC_WORDSIZE).</dd>
  *      <dt>iT2_iT1:</dt>
  *       <dd><code>iT1</code> (bits 0~7): index of temp1 (PKC operand).
- *       <br>Its buffer size shall be at least (nbPkcByteLength + MCUXCLPKC_WORDSIZE).
+ *       <br>Its buffer size shall be at least (nbPkcByteLength + MCUXCLRSA_PKC_WORDSIZE).
  *       <br><code>iT2</code> (bits 8~15): index of temp2 (PKC operand).
- *       <br>Its buffer size shall be at least MAX(nbPkcByteLength, 3 * MCUXCLPKC_WORDSIZE).</dd>
+ *       <br>Its buffer size shall be at least MAX(nbPkcByteLength, 3 * MCUXCLRSA_PKC_WORDSIZE).</dd>
  *     <dt>@p nbPkcByteLength</dt>
- *       <dd>Length of modulus Nb. It shall be a multiple of MCUXCLPKC_WORDSIZE.</dd>
+ *       <dd>Length of modulus Nb. It shall be a multiple of MCUXCLRSA_PKC_WORDSIZE.</dd>
  *     <dt>@p bPkcByteLength</dt>
- *       <dd>Length of blinding value B. It shall be a multiple of MCUXCLPKC_WORDSIZE.</dd>
+ *       <dd>Length of blinding value B. It shall be a multiple of MCUXCLRSA_PKC_WORDSIZE.</dd>
  *  </dl></dd>
  * </dl>
  *
@@ -867,10 +865,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
  *          <dd>The session pointed to by pSession has to be initialized prior to a call to this function. The RNG shall be initialized
  *              with the entropy level (security strength) in accordance with the value of primeLength, as specified in SP 800-57, Part 1.
  *      <dt>iP_iT:</dt>
- *          <dd> iP: index of prime candidate buffer, of which the size should be at least MCUXCLPKC_ROUNDUP_SIZE(byteLenPrimeCandidate).
+ *          <dd> iP: index of prime candidate buffer, of which the size should be at least MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenPrimeCandidate).
  *                   Additionally one PKC word shall be reserved before P for the NDash calculated in mcuxClRsa_MillerRabinTest.
  *                   Prime candidate length shall be keyBitLength/2.
- *          <br> iT: index of temp buffer, of which the size should be at least 9 * MCUXCLPKC_ROUNDUP_SIZE(byteLenPrimeCandidate) + 10 * PKC wordsize.
+ *          <br> iT: index of temp buffer, of which the size should be at least 9 * MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenPrimeCandidate) + 10 * PKC wordsize.
  *      <dt>keyBitLength:</dt>
  *          <dd>Specifies the size of the generated key, it shall be even value.
  *  </dl></dd>
@@ -970,7 +968,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
  *      <dt>iP_iQ_iT1:</dt>
  *          <dd> iP: index of p prime buffer. The size shall be a multiple of PKC word and at least primeByteLength.
  *          <br> iQ: index of q prime buffer. The size shall be a multiple of PKC word and at least primeByteLength.
- *          <br> iT: index of temporary buffer. The size shall be at least 2 * MCUXCLPKC_ROUNDUP_SIZE(16).
+ *          <br> iT: index of temporary buffer. The size shall be at least 2 * MCUXCLRSA_PKC_ROUNDUP_SIZE(16).
  *      <dt>primeByteLength:</dt>
  *          <dd>The length of primes p and q. It must be a multiple of the PKC word.
  *  </dl></dd>

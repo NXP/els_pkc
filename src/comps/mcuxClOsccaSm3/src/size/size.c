@@ -20,6 +20,7 @@
 #include <mcuxClCore_Platform.h>
 #include <mcuxCsslAnalysis.h>
 #include <mcuxClOscca_Memory.h>
+#include <mcuxClOsccaSm3_Constants.h>
 #include <internal/mcuxClOsccaSm3_Internal.h>
 #include <internal/mcuxClHash_Internal.h>
 
@@ -30,6 +31,7 @@ MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 3u * MCUXCLOSCCASM3_STATE_SIZE_SM3]; // one additional state for compare
 volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuMax [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 3u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
+
 volatile uint8_t mcuxClOsccaSm3_process_WaCpuSm3 [MCUXCLOSCCASM3_STATE_SIZE_SM3];
 volatile uint8_t mcuxClOsccaSm3_process_WaCpuMax [MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
@@ -37,7 +39,9 @@ volatile uint8_t mcuxClOsccaSm3_finish_WaCpuSm3 [2u * MCUXCLOSCCASM3_STATE_SIZE_
 volatile uint8_t mcuxClOsccaSm3_finish_WaCpuMax [2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
 /* Hash multi-part context size generation */
-volatile uint8_t mcuxClOsccaSm3_Ctx_size[mcuxClOscca_alignSize(sizeof(mcuxClHash_ContextDescriptor_t))];
+volatile uint8_t mcuxClOsccaSm3_Ctx_size[mcuxClOscca_alignSize(sizeof(mcuxClHash_ContextDescriptor_t)) + MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + MCUXCLOSCCASM3_STATE_SIZE_SM3];
+
+volatile uint8_t mcuxClOsccaSm3_export_import_WaCpu[MCUXCLOSCCASM3_COUNTER_SIZE_SM3 + MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 #endif /* MCUXCL_FEATURE_HASH_SW_SM3 || MCUXCL_FEATURE_HASH_HW_SM3 */

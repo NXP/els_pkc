@@ -11,6 +11,10 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClAead_Internal_Descriptor.h
+ *  @brief Internal definitions for the mcuxClAead component
+ */
+
 #ifndef MCUXCLAEAD_INTERNAL_DESCRIPTOR_H_
 #define MCUXCLAEAD_INTERNAL_DESCRIPTOR_H_
 
@@ -134,7 +138,7 @@ struct mcuxClAead_ModeDescriptor
 
 
   //-------------Common
-  const struct mcuxClAead_algorithm *algorithm;
+  const struct mcuxClAead_AlgorithmDescriptor *algorithm;
 
   //TODO add CTR mode - CLNS-4374
   //TODO add macMode (gmac/cbc_mac) - CLNS-4374

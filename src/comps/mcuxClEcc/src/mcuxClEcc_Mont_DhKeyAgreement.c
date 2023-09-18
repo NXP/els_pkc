@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -31,6 +31,7 @@
 
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClEcc_Mont_Internal.h>
 #include <internal/mcuxClPkc_Macros.h>
@@ -72,6 +73,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
                                                                  ECC_MONTDH_NO_OF_BUFFERS));
     if(MCUXCLECC_STATUS_OK != retCode_MontDH_SetupEnvironment)
     {
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(retCode_MontDH_SetupEnvironment, mcuxClEcc_Mont_DhKeyAgreement);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Mont_DhKeyAgreement, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
@@ -111,10 +113,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
         }
 
         *pOutLength = keyLen;
-        /* Return OK and exit */
 
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
+        /* Return OK and exit */
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_Mont_DhKeyAgreement, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_Mont_DhKeyAgreement, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
@@ -122,7 +126,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportLittleEndianToPkc),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_X),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportLittleEndianFromPkc),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
-            );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 }

@@ -17,6 +17,7 @@
 #include <mcuxClEls.h>
 #include <mcuxClEcc.h>
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <mcuxClPsaDriver.h>
 #include <mcuxClPsaDriver_Oracle.h>
 #include <mcuxClRandom.h>
@@ -89,12 +90,14 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     uint32_t cpuWorkarea[MCUXCLPSADRIVER_VERIFY_BY_CLNS_WACPU_SIZE_MAX / sizeof(uint32_t)];
 
     /* Create session */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_INVARIANT_EXPRESSION_WORKAREA_CALCULATIONS()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultSessionInit, tokenSessionInit,
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
                                                       MCUXCLPSADRIVER_VERIFY_BY_CLNS_WACPU_SIZE_MAX,
                                                       (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS,
                                                       MCUXCLPSADRIVER_VERIFY_BY_CLNS_WAPKC_SIZE_MAX));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_INVARIANT_EXPRESSION_WORKAREA_CALCULATIONS()
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != tokenSessionInit) || (MCUXCLSESSION_STATUS_OK != resultSessionInit))
     {
       return PSA_ERROR_GENERIC_ERROR;
@@ -116,7 +119,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       /*
        * Decode key
        */
-      uint8_t * pDerData = mcuxClKey_getLoadedKeyData(pKey);
+      const uint8_t * pDerData = mcuxClKey_getLoadedKeyData(pKey);
       /* check and skip the sequence + constructed tag */
       if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&pDerData, 0x10u | 0x20u))
       {
@@ -185,55 +188,57 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       }
 
       /* Set the verification mode (in case of PSA_ALG_RSA_PSS the salt length should be equal to the length of the hash) */
-      mcuxClRsa_SignVerifyMode_t * pVerifyMode;
+      const mcuxClRsa_SignVerifyMode_t * pVerifyMode;
       psa_algorithm_t hash_alg = PSA_ALG_SIGN_GET_HASH(alg);
       uint32_t saltLength = 0u;
 
       if(PSA_ALG_IS_RSA_PSS(alg))
       {
+        MCUX_CSSL_ANALYSIS_START_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
         switch(hash_alg)
         {
           case PSA_ALG_SHA_224:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_Pss_Sha2_224;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_Pss_Sha2_224;
             saltLength = MCUXCLHASH_OUTPUT_SIZE_SHA_224;
             break;
           case PSA_ALG_SHA_256:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_Pss_Sha2_256;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_Pss_Sha2_256;
             saltLength = MCUXCLHASH_OUTPUT_SIZE_SHA_256;
             break;
           case PSA_ALG_SHA_384:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_Pss_Sha2_384;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_Pss_Sha2_384;
             saltLength = MCUXCLHASH_OUTPUT_SIZE_SHA_384;
             break;
           case PSA_ALG_SHA_512:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_Pss_Sha2_512;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_Pss_Sha2_512;
             saltLength = MCUXCLHASH_OUTPUT_SIZE_SHA_512;
             break;
           default:
             return PSA_ERROR_NOT_SUPPORTED;
-            break;
         }
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
       }
       else if(PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg))
       {
+        MCUX_CSSL_ANALYSIS_START_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
         switch(hash_alg)
         {
           case PSA_ALG_SHA_224:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_224;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_224;
             break;
           case PSA_ALG_SHA_256:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256;
             break;
           case PSA_ALG_SHA_384:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_384;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_384;
             break;
           case PSA_ALG_SHA_512:
-            pVerifyMode = (mcuxClRsa_SignVerifyMode_t *) &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_512;
+            pVerifyMode = &mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_512;
             break;
           default:
             return PSA_ERROR_NOT_SUPPORTED;
-            break;
         }
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
       }
       else
       {
@@ -251,10 +256,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClRsa_verify(
         /* mcuxClSession_Handle_t           pSession: */           &session,
         /* const mcuxClRsa_Key * const      pKey: */               &public_key,
-        /* mcuxCl_InputBuffer_t             pMessageOrDigest: */   (uint8_t *)input,
+        /* mcuxCl_InputBuffer_t             pMessageOrDigest: */   input,
         /* const uint32_t                  messageLength: */      messageLength,
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("signature will not be modified in verify")
         /* mcuxCl_Buffer_t                  pSignature: */         (uint8_t *)signature,
-        /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        pVerifyMode,
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+        /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        (const mcuxClRsa_SignVerifyMode) pVerifyMode,
         /* const uint32_t                  saltLength: */         saltLength,
         /* uint32_t                        options: */            options,
         /* mcuxCl_Buffer_t                  pOutput: */            NULL));
@@ -274,8 +281,6 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       }
       const uint32_t pLen = domainParams->common.byteLenP;
       const uint32_t nLen = domainParams->common.byteLenN;
-      uint8_t * pKeyData = mcuxClKey_getLoadedKeyData(pKey);
-
       uint8_t pOutputR[MCUXCLECC_WEIERECC_MAX_SIZE_BASEPOINTORDER];
 
       /* buffer for hash */
@@ -335,6 +340,8 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
 
       uint8_t publicKey[2u * MCUXCLECC_WEIERECC_MAX_SIZE_PRIMEP];
 
+      uint8_t * pKeyData = mcuxClKey_getLoadedKeyData(pKey);
+
       /* Decode as described in ANSI X9.62
          Octet String to Elliptic Curve Point Conversion */
       if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) == true)
@@ -374,13 +381,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
           }
         }
         else
-        {		  
+        {
           if(pKeyData == NULL)
           {
             return PSA_ERROR_GENERIC_ERROR;
           }
-		  
-          /* TODO: CLNS-8546 Check if this can be replaced by direct loading of public key (since it is keypair) */
+
           /* Calculate public point */
           mcuxClEcc_PointMult_Param_t params = {
               .curveParam = (mcuxClEcc_DomainParam_t){.pA   = a,

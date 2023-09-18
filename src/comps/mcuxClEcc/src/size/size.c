@@ -16,7 +16,7 @@
 
 #include <mcuxClPkc_Types.h>
 
-#include <internal/mcuxClHash_Internal_Memory.h>
+#include <internal/mcuxClHashModes_Internal_Memory.h>
 #include <internal/mcuxClRandomModes_Internal_SizeDefinitions.h>
 
 #include <mcuxClEcc_ParameterSizes.h>
@@ -104,16 +104,16 @@ volatile uint8_t mcuxClEcc_EdDSA_GenerateKeyPair_Ed448_WaCPU_SIZE[SIZEOF_ECCCPUW
                                                                  + MCUXCLECC_ALIGNED_SIZE(MCUXCLECC_EDDSA_ED448_SIZE_PRIVATEKEY)
                                                                  + 0u /* TODO: Add hash CPU workarea size (CLNS-4207) */];
 volatile uint8_t mcuxClEcc_EdDSA_GenerateSignature_Ed25519_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
-                                                                     + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
+                                                                     + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_STATE_SIZE_SHA_512 + MCUXCLHASH_BLOCK_SIZE_SHA_512)
                                                                      + MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClEcc_EdDSA_GenerateSignature_Ed448_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
-                                                                   + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
+                                                                   + 0u /* TODO: Add hash-algo specific hash context size (CLNS-4207) */
                                                                    + 0u /* TODO: Add hash CPU workarea size (CLNS-4207) */];
 volatile uint8_t mcuxClEcc_EdDSA_VerifySignature_Ed25519_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
-                                                                     + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
+                                                                     + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_STATE_SIZE_SHA_512 + MCUXCLHASH_BLOCK_SIZE_SHA_512)
                                                                      + MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClEcc_EdDSA_VerifySignature_Ed448_WaCPU_SIZE[SIZEOF_ECCCPUWA_T + SIZEOF_EDDSA_UPTRT
-                                                                     + MCUXCLECC_ALIGNED_SIZE(sizeof(mcuxClHash_ContextDescriptor_t))
+                                                                     + 0u /* TODO: Add hash-algo specific hash context size (CLNS-4207) */
                                                                      + 0u]; /* TODO: Add hash CPU workarea size (CLNS-4207) */
 
 /* byteLenP = byteLenN in both Ed25519 and Ed448. */

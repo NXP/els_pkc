@@ -17,8 +17,6 @@
 #include <mcuxClSession.h>
 #include <mcuxCsslAnalysis.h>
 
-#include <mcuxCsslAnalysis.h>
-
 #include <mcuxClRandomModes_MemoryConsumption.h>
 #include <mcuxClRandomModes_Functions_TestMode.h>
 
@@ -46,7 +44,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 #endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
-
 /**
  * \brief This function instantiates a DRBG in NORMAL_MODE following the lines of the function Instantiate_function specified in NIST SP800-90A
  *
@@ -65,9 +62,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_NormalMode_initFunction);
 
-    mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) sessionMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
 
     /* Initialize buffer in CPU workarea for the entropy input to derive the DRBG seed */
     uint32_t *pEntropyInput = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUNDED_UP_CPU_WORDSIZE(pDrbgMode->pDrbgVariant->initSeedSize));
@@ -152,7 +154,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_NormalMode_reseedFunction);
 
     mcuxClRandom_Mode_t sessionMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) sessionMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
 
     /* Initialize buffer in CPU workarea for the entropy input to derive the DRBG seed */
     uint32_t *pEntropyInput = mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_ROUNDED_UP_CPU_WORDSIZE(pDrbgMode->pDrbgVariant->reseedSeedSize));
@@ -228,9 +232,14 @@ MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_generateFunction_PrDisabled(mcuxClSession_Handle_t pSession, uint8_t *pOut, uint32_t outLength)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    mcuxClRandom_Mode_t pMode = (mcuxClRandom_Mode_t) pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     const mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) pSession->randomCfg.ctx;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+
+    mcuxClRandom_Mode_t pMode = pSession->randomCfg.mode;
+    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
 
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_NormalMode_generateFunction_PrDisabled,
           MCUX_CSSL_FP_CONDITIONAL((pRngCtxGeneric->reseedCounter >= pDrbgMode->pDrbgVariant->reseedInterval),
@@ -261,7 +270,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     if(MCUXCLRANDOM_STATUS_ERROR == result_generate)
     {
          MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_NormalMode_generateFunction_PrDisabled, MCUXCLRANDOM_STATUS_ERROR,
-            pDrbgMode->pDrbgAlgorithms->protectionTokenGenerateAlgorithm);       
+            pDrbgMode->pDrbgAlgorithms->protectionTokenGenerateAlgorithm);
     }
     else if (MCUXCLRANDOM_STATUS_OK != result_generate)
     {
@@ -277,7 +286,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 
-#ifdef MCUXCL_FEATURE_RANDOMMODES_TESTMODE
 /**
  * \brief This function performs a selftest of a DRBG in NORMAL_MODE
  *
@@ -344,7 +352,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
         pDrbgMode->pDrbgAlgorithms->protectionTokenSelftestAlgorithm);
 }
-#endif /* MCUXCL_FEATURE_RANDOMMODES_TESTMODE */
+
 
 /**
  * \brief This function performs a comparison of two arrays

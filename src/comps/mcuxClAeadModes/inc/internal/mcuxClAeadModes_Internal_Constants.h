@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -10,6 +10,10 @@
 /* terms, then you may not retain, install, activate or otherwise use the   */
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
+
+/** @file  mcuxClAeadModes_Internal_Constants.h
+ *  @brief Internal definitions for the mcuxClAeadModes component */
+
 
 #ifndef MCUXCLAEADMODES_INTERNAL_CONSTANTS_H_
 #define MCUXCLAEADMODES_INTERNAL_CONSTANTS_H_

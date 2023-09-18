@@ -21,7 +21,7 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by MCUX and may    */
+/* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
@@ -48,6 +48,10 @@
 
 #include <internal/mcuxClPsaDriver_Functions.h>
 #include <internal/mcuxClMac_Internal_Constants.h>
+
+#include <mcuxCsslFlowProtection.h>
+#include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
+#include <mcuxCsslParamIntegrity.h>
 
 #if defined(MBEDTLS_PSA_CRYPTO_C)
 
@@ -671,11 +675,6 @@ psa_status_t psa_driver_wrapper_generate_key(
     {
         return status;
     }
-    else
-    {
-        // reset to default
-        status = PSA_ERROR_CORRUPTION_DETECTED;
-    }
 
     /* Try dynamically-registered SE interface first */
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
@@ -762,7 +761,9 @@ psa_status_t psa_driver_wrapper_import_key(
         key_descriptor.container.pData    = (uint8_t *)key_buffer;
         key_descriptor.container.length   = (uint16_t)key_buffer_size;
         key_descriptor.container.used     = (uint16_t)key_buffer_size;
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
         key_descriptor.container.pAuxData = (void *)attributes;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
         status = mcuxClPsaDriver_Oracle_ImportKey(&key_descriptor,
                                                   data,
@@ -2092,12 +2093,7 @@ psa_status_t psa_driver_wrapper_aead_encrypt_setup(
     {
         return status;
     }
-    else
-    {
-        // reset to default
-        status = PSA_ERROR_CORRUPTION_DETECTED;
-    }
-
+    
     switch( location )
     {
         case PSA_KEY_LOCATION_LOCAL_STORAGE:
@@ -2874,15 +2870,16 @@ psa_status_t psa_driver_wrapper_mac_verify_finish(
             psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, mac_length, NULL);
             if (status == PSA_SUCCESS)
             {
-                mcuxCsslMemory_Status_t compare_result = mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, mac, macCalc, mac_length),
+                MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(compare_result, compare_token, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, mac, macCalc, mac_length),
                                                                       mac,
                                                                       macCalc,
-                                                                      mac_length);
+                                                                      mac_length));
 
-                if(compare_result != MCUXCSSLMEMORY_STATUS_EQUAL)
+                if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare) != compare_token) || (compare_result != MCUXCSSLMEMORY_STATUS_EQUAL))
                 {
                     return PSA_ERROR_INVALID_SIGNATURE;
                 }
+                MCUX_CSSL_FP_FUNCTION_CALL_END();
             }
             return status;
         }
@@ -2922,7 +2919,6 @@ psa_status_t psa_driver_wrapper_mac_abort(
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
         {
             return mcuxClPsaDriver_psa_driver_wrapper_mac_abort(operation);
-            break;
         }
 #if defined(MBEDTLS_PSA_BUILTIN_MAC)
         case PSA_CRYPTO_MBED_TLS_DRIVER_ID:
@@ -2952,7 +2948,9 @@ psa_status_t psa_driver_get_tag_len( psa_aead_operation_t *operation,
                                      uint8_t *tag_len )
 {
     if( operation == NULL || tag_len == NULL )
+    {
         return( PSA_ERROR_INVALID_ARGUMENT );
+    }
 
     switch( operation->id )
     {                      

@@ -32,6 +32,7 @@
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClPkc_Macros.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClEcc_Internal_Random.h>
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClEcc_Weier_Internal_FP.h>
@@ -68,6 +69,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Weier_SetupEnvironment) );
         }
 
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(ret_SetupEnvironment, mcuxClEcc_PointMult);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
@@ -107,13 +109,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
     MCUX_CSSL_FP_FUNCTION_CALL(pointCheckStatus, mcuxClEcc_PointCheckAffineNR());
     if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckStatus)
     {
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_INVALID_PARAMS,
             MCUXCLECC_FP_POINTMULT_BASE_POINT,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
     else if (MCUXCLECC_STATUS_OK != pointCheckStatus)
     {
@@ -196,14 +200,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
         pOperands[ECC_P] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea);
         MCUXCLPKC_FP_CALC_OP1_CONST(ECC_P, 0u);
 
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_NEUTRAL_POINT,
             MCUXCLECC_FP_POINTMULT_SCALAR,
             MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
 
@@ -322,12 +328,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointMult(
         pOperands[ECC_P] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea);
         MCUXCLPKC_FP_CALC_OP1_CONST(ECC_P, 0u);
 
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);
+
         mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_PointMult, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
-            MCUXCLECC_FP_POINTMULT_FINAL );
+            MCUXCLECC_FP_POINTMULT_FINAL);
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointMult, MCUXCLECC_STATUS_FAULT_ATTACK);

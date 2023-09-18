@@ -18,9 +18,19 @@
  *
  */
 
+#include <mcuxClCore_Platform.h>
 #include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClKey_Types_Internal.h>
+
+
+
+
+/** Round up a size (in bytes) to a multiple of the CPU wordsize (4 bytes). */
+#define MCUXCLKEY_ROUND_UP_TO_CPU_WORDSIZE(size) \
+    ((((size) + sizeof(uint32_t) - 1U ) / (sizeof(uint32_t))) * (sizeof(uint32_t)))
+
+#define MCUXCLKEY_MAX(value0, value1)  (((value0) > (value1)) ? (value0) : (value1))
 
 /* *********************** */
 /* *** Structure sizes *** */
@@ -29,4 +39,5 @@
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 volatile uint8_t mcuxClKey_DescriptorSize[sizeof(mcuxClKey_Descriptor_t)];
 volatile uint8_t mcuxClKey_TypeDescriptorSize[sizeof(mcuxClKey_TypeDescriptor_t)];
+
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

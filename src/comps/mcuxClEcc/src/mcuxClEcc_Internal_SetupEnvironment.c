@@ -26,6 +26,7 @@
 
 #include <mcuxClEcc.h>
 
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClMemory_Copy_Internal.h>
 #include <internal/mcuxClEcc_Internal.h>
@@ -81,8 +82,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SetupEnvironment(mcuxC
     pCpuWorkarea->wordNumCpuWa = wordNumCpuWa;
     pCpuWorkarea->wordNumPkcWa = wordNumPkcWa;
 
-    /* Backup PKC state and initialize PKC. */
-    MCUXCLPKC_FP_INITIALIZE(&pCpuWorkarea->pkcStateBackup);
+    MCUXCLPKC_FP_REQUEST_INITIALIZE(pSession, &pCpuWorkarea->pkcStateBackup, mcuxClEcc_SetupEnvironment, MCUXCLECC_STATUS_FAULT_ATTACK);
 
     /* Set PS1 MCLEN and LEN. */
     MCUXCLPKC_PS1_SETLENGTH(operandSize, operandSize);
@@ -124,7 +124,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SetupEnvironment(mcuxC
     MCUXCLMATH_FP_SHIFTMODULUS(ECC_NS, ECC_N);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_SetupEnvironment, MCUXCLECC_STATUS_OK,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+        MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_GenerateUPTRT),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),

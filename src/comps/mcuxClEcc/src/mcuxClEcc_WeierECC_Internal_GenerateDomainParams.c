@@ -27,9 +27,11 @@
 #include <mcuxClEcc.h>
 #include <mcuxClEcc_WeierECC.h>
 
+#include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClPkc_Macros.h>
 #include <internal/mcuxClPkc_Operations.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClEcc_Weier_Internal_FP.h>
 #include <internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.h>
@@ -74,6 +76,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Weier_SetupEnvironment) );
     }
 
+    MCUXCLECC_HANDLE_HW_UNAVAILABLE(ret_SetupEnvironment, mcuxClEcc_WeierECC_GenerateDomainParams);
+
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
     uint32_t *pOperands32 = (uint32_t *) pOperands;
@@ -99,12 +103,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     MCUX_CSSL_FP_FUNCTION_CALL(pointCheckBasePointStatus, mcuxClEcc_PointCheckAffineNR());
     if (MCUXCLECC_INTSTATUS_POINTCHECK_NOT_OK == pointCheckBasePointStatus)
     {
-        MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
-        pSession->pkcWa.used -= pCpuWorkarea->wordNumPkcWa;
-        pSession->cpuWa.used -= pCpuWorkarea->wordNumCpuWa;
+        mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+        MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+            mcuxClEcc_WeierECC_GenerateDomainParams, MCUXCLECC_STATUS_FAULT_ATTACK);
 
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_Verify, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK,
-            MCUXCLECC_FP_WEIERECC_GENERATEDOMAINPARAMS_INIT_AND_VERIFY );
+        mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_WeierECC_GenerateDomainParams, MCUXCLECC_STATUS_INVALID_PARAMS, MCUXCLECC_STATUS_FAULT_ATTACK,
+            MCUXCLECC_FP_WEIERECC_GENERATEDOMAINPARAMS_INIT_AND_VERIFY,
+            MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
     else if (MCUXCLECC_STATUS_OK != pointCheckBasePointStatus)
     {
@@ -238,10 +245,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_GenerateDomai
     /**********************************************************/
     /* Clean up                                               */
     /**********************************************************/
-    MCUXCLPKC_FP_DEINITIALIZE(& pCpuWorkarea->pkcStateBackup);
-    pSession->pkcWa.used -= pCpuWorkarea->wordNumPkcWa;
-    pSession->cpuWa.used -= pCpuWorkarea->wordNumCpuWa;
+    mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+        mcuxClEcc_WeierECC_GenerateDomainParams, MCUXCLECC_STATUS_FAULT_ATTACK);
+
+    mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_WeierECC_GenerateDomainParams, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
-        MCUXCLECC_FP_WEIERECC_GENERATEDOMAINPARAMS_FINAL(options) );
+        MCUXCLECC_FP_WEIERECC_GENERATEDOMAINPARAMS_FINAL(options));
 }

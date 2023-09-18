@@ -33,8 +33,8 @@
 #include <mcuxClMemory_Endianness.h>
 #include <mcuxClMemory_Clear.h>
 #include <mcuxClMemory_Copy.h>
+#include <mcuxClMemory_Copy_Reversed.h>
 #include <mcuxClMemory_Set.h>
-
 
 /**
  * @}

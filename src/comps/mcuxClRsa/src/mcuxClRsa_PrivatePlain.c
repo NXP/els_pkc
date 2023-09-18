@@ -34,6 +34,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_privatePlain)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
@@ -89,17 +90,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
 
   /* Prepare buffers in PKC workarea and clear PKC workarea */
   const uint32_t blindLen = MCUXCLRSA_INTERNAL_PRIVATEPLAIN_BLINDING_SIZE;  // length in bytes of the random value used for blinding
-  const uint32_t operandSize = MCUXCLPKC_ROUNDUP_SIZE(byteLenN);
-  const uint32_t blindAlignLen = MCUXCLPKC_ROUNDUP_SIZE(blindLen);
+  const uint32_t operandSize = MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenN);
+  const uint32_t blindAlignLen = MCUXCLRSA_PKC_ROUNDUP_SIZE(blindLen);
   const uint32_t blindOperandSize = operandSize + blindAlignLen;
 
-  const uint16_t bufferSizeR = (uint16_t)blindOperandSize + MCUXCLPKC_WORDSIZE;  // size of the result of the exponentiation
-  const uint16_t bufferSizeN = (uint16_t)blindOperandSize + MCUXCLPKC_WORDSIZE;  // size of N + PKC word in front of the modulus buffer for NDash
-  const uint16_t bufferSizeT0 = (uint16_t)blindOperandSize + MCUXCLPKC_WORDSIZE;  // size of temp buffer T0
-  const uint16_t bufferSizeT1 = (uint16_t)blindOperandSize + MCUXCLPKC_WORDSIZE;  // size of temp buffer T1
-  const uint16_t bufferSizeT2 = (uint16_t)blindOperandSize + MCUXCLPKC_WORDSIZE;  // size of temp buffer T2
-  const uint16_t bufferSizeT3 = (uint16_t)blindOperandSize + MCUXCLPKC_WORDSIZE;  // size of temp buffer T3
-  const uint16_t bufferSizeTE = (uint16_t)6u*MCUXCLPKC_WORDSIZE;                  // size of temp buffer TE
+  const uint16_t bufferSizeR = (uint16_t)blindOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of the result of the exponentiation
+  const uint16_t bufferSizeN = (uint16_t)blindOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of N + PKC word in front of the modulus buffer for NDash
+  const uint16_t bufferSizeT0 = (uint16_t)blindOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of temp buffer T0
+  const uint16_t bufferSizeT1 = (uint16_t)blindOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of temp buffer T1
+  const uint16_t bufferSizeT2 = (uint16_t)blindOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of temp buffer T2
+  const uint16_t bufferSizeT3 = (uint16_t)blindOperandSize + MCUXCLRSA_PKC_WORDSIZE;  // size of temp buffer T3
+  const uint16_t bufferSizeTE = (uint16_t)6u*MCUXCLRSA_PKC_WORDSIZE;                  // size of temp buffer TE
   const uint16_t bufferSizeRand = (uint16_t)blindAlignLen;  // size of buffer for random multiplicative blinding
 
   /* Setup session. */
@@ -125,7 +126,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
 
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X] = MCUXCLPKC_PTR2OFFSET(pInput);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + MCUXCLPKC_WORDSIZE /* for NDash stored in the PKC word in front of the modulus */);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_N] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + MCUXCLRSA_PKC_WORDSIZE /* for NDash stored in the PKC word in front of the modulus */);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T0] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T1] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN + bufferSizeT0);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_T2] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea8 + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1);

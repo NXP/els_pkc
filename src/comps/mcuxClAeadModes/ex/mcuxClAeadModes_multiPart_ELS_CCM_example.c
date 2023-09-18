@@ -12,7 +12,7 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file:  mcuxClAeadModes_multiPart_ELS_CCM_example.c
+ * @file:  mcuxClAeadModes_Multipart_Els_Ccm_Example.c
  * @brief: Example Aead application
  */
 
@@ -64,7 +64,7 @@ static const uint8_t msg_enc_expected[24] = {
   0x61u, 0x76u, 0xaau, 0xd9u, 0xa4u, 0x42u, 0x8au, 0xa5
 };
 
-MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_multiPart_ELS_CCM_example)
+MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Multipart_Els_Ccm_Example)
 {
     /**************************************************************************/
     /* Preparation                                                            */

@@ -11,6 +11,9 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClAeadModes_Modes.h
+ *  @brief This file defines the modes for the mcuxClAeadModes component */
+
 #ifndef MCUXCLAEADMODES_MODES_H_
 #define MCUXCLAEADMODES_MODES_H_
 
@@ -22,17 +25,17 @@ extern "C" {
 #endif
 
 /**
- * \addtogroup mcuxClAPI MCUX CL -- API
+ * @addtogroup mcuxClAPI MCUX CL -- API
  *
- * \addtogroup mcuxClAead Aead API
- * \brief Authenticated Encryption with Associated Data (AEAD) operations.
- * \ingroup mcuxClAPI
+ * @addtogroup mcuxClAead Aead API
+ * @brief Authenticated Encryption with Associated Data (AEAD) operations.
+ * @ingroup mcuxClAPI
  */
 
 /**
- * \defgroup clAeadModes AEAD mode definitions
- * \brief Modes used by the AEAD operations.
- * \ingroup mcuxClAead
+ * @defgroup clAeadModes AEAD mode definitions
+ * @brief Modes used by the AEAD operations.
+ * @ingroup mcuxClAead
  */
 
 

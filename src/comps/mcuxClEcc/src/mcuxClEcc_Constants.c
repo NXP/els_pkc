@@ -23,7 +23,7 @@
 #include <internal/mcuxClEcc_EdDSA_Internal_Ed25519.h>
 #include <internal/mcuxClEcc_TwEd_Internal.h>
 #include <internal/mcuxClEcc_TwEd_Internal_Ed25519.h>
-#include <mcuxClHash_Algorithms.h>
+#include <mcuxClHashModes_Algorithms.h>
 #include <mcuxClEcc_Constants.h>
 #include <mcuxClEcc_ParameterSizes.h>
 #include <mcuxCsslAnalysis.h>

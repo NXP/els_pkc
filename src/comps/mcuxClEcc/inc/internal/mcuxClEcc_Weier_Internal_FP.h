@@ -73,7 +73,7 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportBigEndianFromPkc),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportBigEndianFromPkc),  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
+    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE
 
 
 /**********************************************************/
@@ -131,7 +131,7 @@
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportBigEndianFromPkc),  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportBigEndianFromPkc),  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
+    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE
 
 
 /**********************************************************/
@@ -189,7 +189,7 @@
     MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,  \
     (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportBigEndianFromPkc)),  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
+    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE
 
 
 /**********************************************************/
@@ -338,7 +338,7 @@
     MCUX_CSSL_FP_CONDITIONAL(MCUXCLECC_OPTION_GENERATEPRECPOINT_YES == ((options) & MCUXCLECC_OPTION_GENERATEPRECPOINT_MASK),  \
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),  \
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc) ),  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize)
+    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE
 
 
 #endif /* MCUXCLECC_WEIER_INTERNAL_FP_H_ */

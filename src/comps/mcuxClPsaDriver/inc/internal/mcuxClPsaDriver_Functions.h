@@ -75,6 +75,7 @@ static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectMo
             mode = mcuxClAead_Mode_AES_GCM_ENC;
             break;
         default:
+            mode = NULL;
             break;
     }
     return (mcuxClAead_Mode_t) mode;
@@ -139,15 +140,16 @@ static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectMo
         mode = &mcuxClAead_ModeDescriptor_AES_GCM_DEC;
         break;
     default:
+        mode = NULL;
         break;
     }
     return (mcuxClAead_Mode_t)mode;
 }
 
-static inline uint32_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectDec(const psa_algorithm_t alg,
+static inline uint8_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectDec(const psa_algorithm_t alg,
                                                    const mcuxClCipher_ModeDescriptor_t **mode)
 {
-    uint32_t iv_required = 1u;
+    uint8_t iv_required = 1u;
     switch (alg)
     {
     case PSA_ALG_ECB_NO_PADDING:
@@ -328,11 +330,11 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
 );
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(
-    uint8_t **p,
+    const uint8_t **p,
     uint8_t tag);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(
-    uint8_t **p,
+    const uint8_t **p,
     mcuxClRsa_KeyEntry_t  * key);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_der_integer(
@@ -463,7 +465,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign(
     psa_algorithm_t alg,
     const uint8_t *input,
     size_t input_length,
-    const uint8_t *signature,
+    uint8_t *signature,
     size_t signature_size,
     size_t *signature_length,
     bool isHash);

@@ -33,18 +33,7 @@ extern "C" {
  * @ingroup mcuxClHmac
  * @{
  */
-
-/**
- * \brief Key type structure for HMAC-SHA256 based keys with variable length.
- *
- */
-extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSha256_variableLength;
-
-/**
- * \brief Key type pointer for HMAC-SHA256 based keys with variable length.
- */
-static const mcuxClKey_Type_t mcuxClKey_Type_HmacSha256_variableLength = &mcuxClKey_TypeDescriptor_HmacSha256_variableLength;
-
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED("Consumed by user / customer. Hence, it is declared but never referenced. ")
 /**
  * @brief Key type structure for HMAC-SHA256 based keys.
  *
@@ -60,12 +49,13 @@ static const mcuxClKey_Type_t mcuxClKey_Type_HmacSha256 = &mcuxClKey_TypeDescrip
  * \brief Key type structure for Sw-HMAC based keys with variable length.
  *
  */
-extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_HmacSw_variableLength;
+extern const mcuxClKey_TypeDescriptor_t mcuxClKey_TypeDescriptor_Hmac_variableLength;
 
 /**
  * \brief Key type pointer for HMAC-SHA256 based keys with variable length.
  */
-static const mcuxClKey_Type_t mcuxClKey_Type_HmacSw_variableLength = &mcuxClKey_TypeDescriptor_HmacSw_variableLength;
+static const mcuxClKey_Type_t mcuxClKey_Type_Hmac_variableLength = &mcuxClKey_TypeDescriptor_Hmac_variableLength;
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED()
 
 /**
  * @}

@@ -32,17 +32,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Copy
     );
 
     MCUX_CSSL_FP_FUNCTION_CALL(result, mcuxCsslParamIntegrity_Validate(chk, 4u, pSrc, pDst, dstLength, length));
-    
+
     if(result != MCUXCSSLPARAMINTEGRITY_CHECK_VALID) {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_Copy, MCUXCSSLMEMORY_STATUS_FAULT);
     }
-    
+
     if((NULL == pSrc) || (NULL == pDst) || (length > dstLength) || (0u == length)) {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxCsslMemory_Copy, MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER);
     }
 
     uint32_t retval = (uint32_t) MCUXCSSLMEMORY_STATUS_FAULT;
-    
+
     const uint32_t nwords = length / 4U;
     const uint32_t success = (uint32_t)MCUXCSSLMEMORY_STATUS_OK ^ (uint32_t)MCUXCSSLMEMORY_STATUS_FAULT;
     uint32_t word = 0U;

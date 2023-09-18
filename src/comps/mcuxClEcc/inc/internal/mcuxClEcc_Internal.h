@@ -272,6 +272,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RecodeAndReorderScalar
     } while (false)
 
 
+
+    #define MCUXCLECC_HANDLE_HW_UNAVAILABLE(retCodeReceived, callerName) do{} while(false)
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

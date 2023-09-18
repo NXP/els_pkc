@@ -20,7 +20,6 @@
 #include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClCipherModes_Wa.h>
-#include <internal/mcuxClCipherModes_Internal_Types.h>
 #include <internal/mcuxClCipherModes_Internal.h>
 
 /* *********************** */

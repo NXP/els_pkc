@@ -49,6 +49,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_init(
     pSession->rtf = MCUXCLSESSION_RTF_UPDATE_FALSE;
     pSession->pRtf = NULL;
 
+
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClSession_init, MCUXCLSESSION_STATUS_OK);
 }
 

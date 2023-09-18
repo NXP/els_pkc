@@ -29,10 +29,10 @@
 
 
 
-#include <internal/mcuxClAeadModes_ELS_Types.h>
+#include <internal/mcuxClAeadModes_Els_Types.h>
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
-volatile uint8_t mcuxClAead_WorkArea[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(1)];
+volatile uint8_t mcuxClAeadModes_WorkArea[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(1)];
 volatile uint8_t mcuxClAead_OneShot[MCUXCLAEADMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClAeadModes_Context_t))];
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()
 

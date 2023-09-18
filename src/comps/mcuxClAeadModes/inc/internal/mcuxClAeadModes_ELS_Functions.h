@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAeadModes_ELS_Functions.h
- *  @brief Internal function declaration for the mcuxClAead component */
+/** @file  mcuxClAeadModes_Els_Functions.h
+ *  @brief Internal function declaration for the mcuxClAeadModes component */
 
 #ifndef MCUXCLAEADMODES_ELS_FUNCTIONS_H_
 #define MCUXCLAEADMODES_ELS_FUNCTIONS_H_
@@ -23,8 +23,8 @@
 extern "C" {
 #endif
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeSkeletonAesCcm)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_SkeletonAesCcm)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
     mcuxClSession_Handle_t session,
     mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pNonce,
@@ -40,8 +40,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesCcm(
     uint32_t options //!< options is a bitmask with one bit reserved for each of the operations
     );
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeEngineAesCcmEls)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls (
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_EngineAesCcmEls)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls (
     mcuxClSession_Handle_t session,
     mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pIn,
@@ -51,8 +51,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesCcmEls 
     uint32_t options  //!< options is a bitmask with one bit reserved for each of the operations
     );
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeSkeletonAesGcm)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_SkeletonAesGcm)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesGcm(
     mcuxClSession_Handle_t session,
     mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pNonce,
@@ -68,8 +68,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeSkeletonAesGcm(
     uint32_t options //!< options is a bitmask with one bit reserved for each of the operations
     );
 
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAead_ModeEngineAesGcmEls)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_ModeEngineAesGcmEls (
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClAeadModes_EngineAesGcmEls)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls (
     mcuxClSession_Handle_t session,
     mcuxClAeadModes_Context_t * const pContext,
     mcuxCl_InputBuffer_t pIn,

@@ -41,7 +41,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_GenerateUPTRT(
     for (uint32_t idx = 0; idx < noOfBuffer; idx++)
     {
         pUPTRT[idx] = (uint16_t) offset;
-        offset += bufferLength;
+        offset += bufferLength; // TODO-9364: Open violaation to INT30-C for rt700 and s540
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClPkc_GenerateUPTRT);
@@ -64,7 +64,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_RandomizeUPTRT(
     {
         MCUX_CSSL_FP_LOOP_ITERATION(Loop,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate));
-        
+
 
         /* Generate a random number in the range [0, idx-1], where idx <= noOfBuffer <= 255. */
         uint32_t random32;

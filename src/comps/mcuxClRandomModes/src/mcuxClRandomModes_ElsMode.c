@@ -145,9 +145,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
     if (requestSizeRemainingBytes > 0u)
     {
         uint8_t requestRemainingBuffer[MCUXCLELS_RNG_DRBG_TEST_EXTRACT_OUTPUT_MIN_SIZE] = {0u};
-
+        
+        MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
         MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_GetRandom2, mcuxClEls_Rng_DrbgRequest_Async(requestRemainingBuffer,
                                                                                      requestSizeMin));
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()   
         if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_DRBG_GetRandom2)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,

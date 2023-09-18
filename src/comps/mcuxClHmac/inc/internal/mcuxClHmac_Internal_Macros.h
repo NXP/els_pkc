@@ -30,5 +30,7 @@
 #define MCUXCLHMAC_INTERNAL_COMPUTE_CPUWORDS(size)  \
     (MCUXCLHMAC_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(size) / (sizeof(uint32_t)))
 
+#define MCUXCLHMAC_MAX(a,b) ((a) > (b) ? (a) : (b))
+
 #endif /* MCUXCLHMAC_INTERNAL_MACROS_H_ */
 

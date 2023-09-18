@@ -33,6 +33,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 #include <internal/mcuxClRsa_TestPrimeCandidate_FUP.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_TestPrimeCandidate)
@@ -49,7 +50,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
     mcuxClRsa_Status_t status = MCUXCLRSA_STATUS_INTERNAL_TESTPRIME_CMP_FAILED;
 
     const uint32_t primeByteLength = keyBitLength/8u/2u;
-    const uint32_t pkcOperandSize = MCUXCLPKC_ROUNDUP_SIZE(primeByteLength);
+    const uint32_t pkcOperandSize = MCUXCLRSA_PKC_ROUNDUP_SIZE(primeByteLength);
 
     /* Backup Ps1 length and UPTRT, resore them when returning */
     uint16_t *bakUPTRT = MCUXCLPKC_GETUPTRT();
@@ -83,7 +84,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
 
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_E] = MCUXCLPKC_PTR2OFFSET(pE->pKeyEntryData);
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_CANDIDATE] = MCUXCLPKC_PTR2OFFSET(pPrimeCandidate->pKeyEntryData);
-    pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_CANDIDATE_64MOST] = MCUXCLPKC_PTR2OFFSET(pPrimeCandidate->pKeyEntryData + pkcOperandSize - MCUXCLPKC_WORDSIZE);
+    pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_CANDIDATE_64MOST] = MCUXCLPKC_PTR2OFFSET(pPrimeCandidate->pKeyEntryData + pkcOperandSize - MCUXCLRSA_PKC_WORDSIZE);
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_NUMTOCOMPARE] = bakUPTRT[uptrtIndexNumToCmp];
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_A0] = bakUPTRT[uptrtIndexA0];
     pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_TESTPRIME_GCD1] = MCUXCLPKC_PTR2OFFSET(pGCD1);
@@ -97,7 +98,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_TestPrimeCandidate(
     MCUXCLPKC_SETUPTRT(pOperands);
 
 	MCUXCLPKC_PS1_SETLENGTH(pkcOperandSize, pkcOperandSize);
-	MCUXCLPKC_PS2_SETLENGTH(0u, MCUXCLPKC_WORDSIZE);
+	MCUXCLPKC_PS2_SETLENGTH(0u, MCUXCLRSA_PKC_WORDSIZE);
 
     do
     {

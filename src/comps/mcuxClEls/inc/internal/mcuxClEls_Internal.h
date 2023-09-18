@@ -47,7 +47,7 @@ do                                                                              
     {                                                                           \
         MCUX_CSSL_FP_FUNCTION_EXIT(funcid, MCUXCLELS_STATUS_SW_INVALID_PARAM);    \
     }                                                                           \
-} while (0)
+} while (false)
 
 #define ELS_CMD_BIG_ENDIAN ((uint8_t) 0x01U)    ///< ELS command option specifying big-endian byte order
 #define ELS_CMD_LITTLE_ENDIAN ((uint8_t) 0x00U) ///< ELS command option specifying little-endian byte order

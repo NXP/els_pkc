@@ -22,6 +22,7 @@
 
 #include <mcuxClMemory.h>
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <mcuxClRandom.h>
 
 #include <internal/mcuxClHash_Internal.h>
@@ -107,6 +108,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssEncode(
    */
   const uint32_t wordSizePkcWa = MCUXCLRSA_INTERNAL_PSSENCODE_MAX_WAPKC_SIZE_WO_MGF1(emLen) / sizeof(uint32_t);
   mcuxCl_Buffer_t pMprim = (mcuxCl_Buffer_t) mcuxClSession_allocateWords_pkcWa(pSession, wordSizePkcWa);
+  if (NULL == pMprim)
+  {
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssEncode, MCUXCLRSA_STATUS_FAULT_ATTACK);
+  }
   /* Pointer to the buffer for the mHash in the M'*/
   mcuxCl_Buffer_t pMHash = pMprim + padding1Length;
   /* Pointer to the buffer for the salt in the M'*/

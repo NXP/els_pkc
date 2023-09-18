@@ -34,6 +34,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_GenerateProbablePrime)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
@@ -66,7 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     * - update session (PKC workarea used...)
     */
 
-    const uint32_t pkcWaSizeWord = (2u * MCUXCLPKC_WORDSIZE) / (sizeof(uint32_t));
+    const uint32_t pkcWaSizeWord = (2u * MCUXCLRSA_PKC_WORDSIZE) / (sizeof(uint32_t));
     uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
     if (NULL == pPkcWorkarea)
     {
@@ -74,7 +75,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     }
 
     uint8_t *pNumToCompare = pPkcWorkarea;
-    uint8_t *pA0 = pPkcWorkarea + MCUXCLPKC_WORDSIZE;
+    uint8_t *pA0 = pPkcWorkarea + MCUXCLRSA_PKC_WORDSIZE;
 
     /* Setup UPTR table */
     const uint32_t cpuWaSizeWord =  MCUXCLRSA_INTERNAL_GENERATEPROBABLEPRIME_WACPU_SIZE_WO_TESTPRIME_AND_MILLERRABIN(keyBitLength/8u/2u) / (sizeof(uint32_t));
@@ -99,12 +100,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_GenerateProbablePrime(
     MCUXCLPKC_WAITFORREADY();
     MCUXCLPKC_SETUPTRT(pOperands);
 
-    MCUXCLPKC_PS1_SETLENGTH(0u, MCUXCLPKC_WORDSIZE);
+    MCUXCLPKC_PS1_SETLENGTH(0u, MCUXCLRSA_PKC_WORDSIZE);
     MCUXCLPKC_FP_CALC_OP1_CONST(MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_NUMTOCOMPARE, 0u);
     MCUXCLPKC_FP_CALC_OP1_CONST(MCUXCLRSA_INTERNAL_UPTRTINDEX_GENPRIME_A0, 0u);
     MCUXCLPKC_WAITFORFINISH();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pNumToCompare + MCUXCLPKC_WORDSIZE - sizeof(numToCompare),
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pNumToCompare + MCUXCLRSA_PKC_WORDSIZE - sizeof(numToCompare),
         numToCompare, sizeof(numToCompare), sizeof(numToCompare)));
 
     MCUXCLMEMORY_FP_MEMORY_COPY(pA0, a0, sizeof(a0));

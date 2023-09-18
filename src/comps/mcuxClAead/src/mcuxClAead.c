@@ -11,8 +11,8 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAead_MultiPart.c
- *  @brief implementation of the multipart functions of the mcuxClAead component */
+/** @file  mcuxClAead.c
+ *  @brief Implementation of the multipart and one shot functions of the mcuxClAead component */
 
 #include <mcuxClAead.h>
 #include <internal/mcuxClAead_Internal_Ctx.h>

@@ -195,25 +195,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Mont_DhKeyAgreement(
     );
 
 
-/**
- * @brief This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.
- *
- * @param[in]     pSession              Handle for the current CL session
- * @param[in/out] mode                  Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input
- * @param[in]     pPrivKey              Pointer to private key input
- *
- * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
- * @retval #MCUXCLECC_STATUS_OK           EdDSA mode descriptor has been initialized successfully
- * @retval #MCUXCLECC_STATUS_FAULT_ATTACK fault attack (unexpected behavior) is detected
- */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_InitPrivKeyInputMode)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInputMode(
-    mcuxClSession_Handle_t pSession,
-    mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
-    const uint8_t *pPrivKey
-    );
-
-
 MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
 /**
  * @brief This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032
@@ -331,6 +312,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     uint32_t inSize,
     const uint8_t *pSignature,
     uint32_t signatureSize
+    );
+
+/**
+ * @brief This function initializes an EdDSA mode descriptor for EdDSA key pair generation with private key input.
+ *
+ * @param[in]     pSession              Handle for the current CL session
+ * @param[in/out] mode                  Pointer to mode descriptor to be initialized for EdDSA key pair generation with private key input
+ * @param[in]     pPrivKey              Pointer to private key input
+ *
+ * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
+ * @retval #MCUXCLECC_STATUS_OK           EdDSA mode descriptor has been initialized successfully
+ * @retval #MCUXCLECC_STATUS_FAULT_ATTACK fault attack (unexpected behavior) is detected
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_InitPrivKeyInputMode)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_InitPrivKeyInputMode(
+    mcuxClSession_Handle_t pSession,
+    mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
+    const uint8_t *pPrivKey
     );
 
 /**

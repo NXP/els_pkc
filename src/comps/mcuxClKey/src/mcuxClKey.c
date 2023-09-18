@@ -36,7 +36,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
     /* Fill key structure */
     mcuxClKey_setTypeDescriptor(key, *type);
     mcuxClKey_setProtectionType(key, mcuxClKey_Protection_None);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("pKeyData can not made const inside of key component as it is possible that the data changes after init due to generation/agreement/derivation of keys.");
     mcuxClKey_setKeyData(key, (mcuxCl_Buffer_t)pKeyData);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER();
     mcuxClKey_setKeyContainerSize(key, keyDataLength);
     mcuxClKey_setKeyContainerUsedSize(key, keyDataLength);
     mcuxClKey_setLoadedKeySlot(key, MCUXCLKEY_INVALID_KEYSLOT);
@@ -50,12 +52,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
         key->type.size = keyDataLength;
     }
 
-    /* key data size validation */
-    if(key->type.size != keyDataLength)
-    {   
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_init, MCUXCLKEY_STATUS_FAILURE); 
+    if(NULL != pKeyData)
+    {
+        /* key data size validation in case of symmetric keys*/
+        if(((key->type.algoId & MCUXCLKEY_ALGO_ID_USAGE_MASK) == MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY) && (key->type.size != keyDataLength))
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_init, MCUXCLKEY_STATUS_FAILURE);
+        }
     }
-
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_init, MCUXCLKEY_STATUS_OK);
 }
 

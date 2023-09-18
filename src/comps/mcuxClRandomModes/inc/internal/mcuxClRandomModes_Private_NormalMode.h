@@ -41,7 +41,6 @@ extern const mcuxClRandom_OperationModeDescriptor_t mcuxClRandomModes_OperationM
 #endif /* MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED */
 
 
-
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_NormalMode_selftestFunction, mcuxClRandom_selftestFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_NormalMode_selftestFunction(mcuxClSession_Handle_t pSession, mcuxClRandom_Mode_t mode);
 

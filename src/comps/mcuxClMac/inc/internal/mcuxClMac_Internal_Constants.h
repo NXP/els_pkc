@@ -20,7 +20,9 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClMacModes_Constants.h>
+#include <internal/mcuxClMacModes_Els_Ctx.h>
 #include <mcuxClHmac_Constants.h>
+#include <internal/mcuxClHmac_Internal_Memory.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,8 +35,17 @@ extern "C" {
 #define MCUXCLMAC_MAX_OUTPUT_SIZE_MACMODES                   (MCUXCLMACMODES_MAX_OUTPUT_SIZE)
 
 #define MCUXCLMAC_MAX_OUTPUT_SIZE                            ((MCUXCLMAC_MAX_OUTPUT_SIZE_HMAC > MCUXCLMAC_MAX_OUTPUT_SIZE_MACMODES) ? MCUXCLMAC_MAX_OUTPUT_SIZE_HMAC : MCUXCLMAC_MAX_OUTPUT_SIZE_MACMODES)
-
 #define MCUXCLMAC_MAX_OUTPUT_SIZE_IN_WORDS                   (MCUXCLMAC_MAX_OUTPUT_SIZE / sizeof(uint32_t))
+
+
+/* Define maximum context size for mcuxClHmac modes */
+#define MCUXCLMAC_MAX_CONTEXT_SIZE_HMAC                       (MCUXCLHMAC_INTERNAL_MAX_CONTEXT_SIZE)
+
+/* Define maximum context size for mcuxClMacModes modes */
+#define MCUXCLMAC_MAX_CONTEXT_SIZE_MACMODES                   (sizeof(mcuxClMacModes_Context_t))
+
+#define MCUXCLMAC_MAX_CONTEXT_SIZE                            ((MCUXCLMAC_MAX_CONTEXT_SIZE_HMAC > MCUXCLMAC_MAX_CONTEXT_SIZE_MACMODES) ? MCUXCLMAC_MAX_CONTEXT_SIZE_HMAC : MCUXCLMAC_MAX_CONTEXT_SIZE_MACMODES)
+#define MCUXCLMAC_MAX_CONTEXT_SIZE_IN_WORDS                   (MCUXCLMAC_MAX_CONTEXT_SIZE / sizeof(uint32_t))
 
 #ifdef __cplusplus
 } /* extern "C" */

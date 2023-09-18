@@ -88,7 +88,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pE
     int32_t bitIndex = (int32_t) bitIndex_MSBitNext;
 
     /* Calculate the number of loop iteration for FP. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("bitIndex is capped at exponent bit length, and Hamming weight hwExp > 0 because exponent is non-zero.")
     MCUX_CSSL_FP_COUNTER_STMT(const uint32_t loopIteration = (bitIndex_MSBitNext + 1u) + (hwExp - 1u));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     const uint32_t iR = (iR_iX_iN_iT >> 24) & 0xFFu;  /* Also used as T1. */
     const uint32_t iX = (iR_iX_iN_iT >> 16) & 0xFFu;

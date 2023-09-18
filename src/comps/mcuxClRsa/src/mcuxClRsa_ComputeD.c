@@ -34,6 +34,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 #include <internal/mcuxClRsa_ComputeD_FUP.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_ComputeD)
@@ -55,14 +56,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      */
     /* Size definitions */
     const uint32_t byteLenPQ = pP->keyEntryLength;  // P and Q have the same byte length
-    const uint32_t primePQAlignLen = MCUXCLPKC_ROUNDUP_SIZE(byteLenPQ);
+    const uint32_t primePQAlignLen = MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenPQ);
 
     const uint32_t keyLen = byteLenPQ * 2u;  // LCM have 2 times length of PQ
-    const uint32_t keyAlignLen = MCUXCLPKC_ROUNDUP_SIZE(keyLen);
+    const uint32_t keyAlignLen = MCUXCLRSA_PKC_ROUNDUP_SIZE(keyLen);
 
     /* Memory layout: | PSub1 (primePQAlignLen) | QSub1 (primePQAlignLen) | nDash (FW) | Lcm (keyAlignLen) | Phi (keyAlignLen) | T (keyAlignLen+FW) */
     uint32_t bufferSizeTotal = (primePQAlignLen * 2u) /* PSub1, QSub1 */ +
-                               (keyAlignLen * 3u) + 2u * MCUXCLPKC_WORDSIZE /* Ndsah+Lcm, Phi, T */;
+                               (keyAlignLen * 3u) + 2u * MCUXCLRSA_PKC_WORDSIZE /* Ndsah+Lcm, Phi, T */;
     uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, bufferSizeTotal / (sizeof(uint32_t)));
     if (NULL == pPkcWorkarea)
     {
@@ -71,7 +72,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
 
     uint8_t *pPSub1 = pPkcWorkarea;
     uint8_t *pQSub1 = pPSub1 + primePQAlignLen;
-    uint8_t *pLcm = pQSub1 + primePQAlignLen + MCUXCLPKC_WORDSIZE /* offset for Ndsah */;
+    uint8_t *pLcm = pQSub1 + primePQAlignLen + MCUXCLRSA_PKC_WORDSIZE /* offset for Ndsah */;
     uint8_t *pPhi = pLcm + keyAlignLen;
     uint8_t *pT = pPhi + keyAlignLen;
 
@@ -131,8 +132,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
                         MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_PHI,
                         MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_QSUB1,
                         MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_T,
-                        MCUXCLPKC_ROUNDUP_SIZE(keyLen),
-                        MCUXCLPKC_ROUNDUP_SIZE(realGcdByteLen));
+                        MCUXCLRSA_PKC_ROUNDUP_SIZE(keyLen),
+                        MCUXCLRSA_PKC_ROUNDUP_SIZE(realGcdByteLen));
 
     /*
      * 4. Compute d := e^(-1) mod lcm(p-1, q-1)
@@ -141,7 +142,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      */
 
     MCUXCLPKC_PS1_SETLENGTH(keyAlignLen, keyAlignLen);
-    const uint32_t eAlignLen = MCUXCLPKC_ROUNDUP_SIZE(pE->keyEntryLength);
+    const uint32_t eAlignLen = MCUXCLRSA_PKC_ROUNDUP_SIZE(pE->keyEntryLength);
     MCUXCLPKC_PS2_SETLENGTH(0, eAlignLen);
     /* Clear the PHI buffer */
     MCUXCLPKC_FP_CALC_OP1_CONST(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_PHI, 0u);

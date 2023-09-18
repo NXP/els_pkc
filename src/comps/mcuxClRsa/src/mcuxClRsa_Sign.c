@@ -27,6 +27,7 @@
 #include <mcuxClMemory.h>
 
 #include <mcuxClRsa.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
@@ -34,6 +35,7 @@
 #include <internal/mcuxClKey_Internal.h>
 #include <mcuxCsslAnalysis.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_sign)
@@ -64,7 +66,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
 
-  MCUXCLPKC_FP_INITIALIZE(pkcStateBackup);
+  MCUXCLPKC_FP_REQUEST_INITIALIZE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
 
   /*****************************************************/
   /* Perform padding operation                         */
@@ -86,17 +88,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
   else
   {
     /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
     mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
-                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
-                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
+                              MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
+                              MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
   }
 
   /* Locate paddedMessage buffer at beginning of PKC WA and update session info */
   uint32_t keyByteLength = keyBitLength / 8u;
-  uint32_t pkcWaUsedByte = (MCUXCLRSA_KEY_PRIVATEPLAIN == pKey->keytype) ? MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength) : MCUXCLPKC_ROUNDUP_SIZE(keyByteLength);
+  uint32_t pkcWaUsedByte = (MCUXCLRSA_KEY_PRIVATEPLAIN == pKey->keytype) ? MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(keyByteLength) : MCUXCLRSA_PKC_ROUNDUP_SIZE(keyByteLength);
   uint32_t pkcWaUsedBackup = mcuxClSession_getUsage_pkcWa(pSession);
   uint8_t * const pPkcWorakarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaUsedByte / (sizeof(uint32_t)));
   if (NULL == pPkcWorakarea)
@@ -123,25 +125,27 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
   if(MCUXCLRSA_STATUS_INVALID_INPUT == retVal_PaddingOperation)
   {
     /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-    mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
     mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
+    mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
     /* Clear pkcWa */
     MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
-                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+                              MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
                               pPaddingMode->EncodeVerify_FunId,
-                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),
+                              MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE,
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
   }
   else if(MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK != retVal_PaddingOperation)
   {
     /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-    mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
     mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
+    mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
     /* Clear pkcWa */
     MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
@@ -174,9 +178,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     else /* Key type has already been tested: any other type here is a fault */
     {
       /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
+      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
       /* Clear pkcWa */
       MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
@@ -188,15 +193,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
     if(MCUXCLRSA_STATUS_INVALID_INPUT == retVal_RsaPrivate)
     {
       /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
+      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
       /* Clear pkcWa */
       MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_sign, MCUXCLRSA_STATUS_INVALID_INPUT,
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+                                MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
                                 pPaddingMode->EncodeVerify_FunId,
                                 MCUX_CSSL_FP_CONDITIONAL((pkcWaUsedByte > keyByteLength),
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)),
@@ -204,15 +210,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privatePlain)),
                                 MCUX_CSSL_FP_CONDITIONAL(((MCUXCLRSA_KEY_PRIVATECRT == pKey->keytype) || (MCUXCLRSA_KEY_PRIVATECRT_DFA == pKey->keytype)),
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privateCRT)),
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),
+                                MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE,
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
     }
     else if(MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retVal_RsaPrivate)
     {
       /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
+      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
       /* Clear pkcWa */
       MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
@@ -226,18 +233,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
       /*****************************************************/
 
       /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-
-      /* Recover session info */
-      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
       mcuxClSession_setUsage_pkcWa(pSession, pkcWaUsedBackup);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_sign, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
+      mcuxClSession_setUsage_cpuWa(pSession, cpuWaUsedBackup);
 
       /* Clear pkcWa */
       MCUXCLMEMORY_FP_MEMORY_CLEAR(pPkcWorakarea,pkcWaTotalSize);
 
       MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_sign, MCUXCLRSA_STATUS_SIGN_OK,
                       MCUXCLRSA_STATUS_FAULT_ATTACK,
-                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+                      MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
                       pPaddingMode->EncodeVerify_FunId,
                       MCUX_CSSL_FP_CONDITIONAL((pkcWaUsedByte > keyByteLength),
                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear)),
@@ -245,7 +251,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_sign(
                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privatePlain)),
                       MCUX_CSSL_FP_CONDITIONAL(((MCUXCLRSA_KEY_PRIVATECRT == pKey->keytype) || (MCUXCLRSA_KEY_PRIVATECRT_DFA == pKey->keytype)),
                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privateCRT)),
-                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize),
+                      MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE,
                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
     }
   }

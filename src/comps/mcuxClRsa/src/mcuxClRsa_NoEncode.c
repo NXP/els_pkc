@@ -32,6 +32,7 @@
 #include <internal/mcuxClRsa_Internal_Functions.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 
 
 /**********************************************************/
@@ -80,7 +81,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_noEncode(
   /* Export message of size BYTE_LENGTH(keyBitLength) from pInput to pOutput in reverse order. */
 
   uint32_t keyByteLength = keyBitLength / 8U; /* keyBitLength is a multiple of 8 */
-  const uint32_t ps1OpLen = MCUXCLPKC_ROUNDUP_SIZE(keyByteLength); /* PS1 length = key byte length rounded up to PKC word size */
+  const uint32_t ps1OpLen = MCUXCLRSA_PKC_ROUNDUP_SIZE(keyByteLength); /* PS1 length = key byte length rounded up to PKC word size */
   MCUXCLPKC_PS1_SETLENGTH(0u, ps1OpLen);
   
   MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(MCUXCLRSA_INTERNAL_UPTRTINDEX_NOENCODE_OUT, (const uint8_t *)pInput, keyByteLength);

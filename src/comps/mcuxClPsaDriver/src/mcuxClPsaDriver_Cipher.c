@@ -22,7 +22,7 @@
 #include <mcuxCsslFlowProtection.h>
 
 #include <internal/mcuxClKey_Internal.h>
-#include <internal/mcuxClCipherModes_Internal_Types.h>
+#include <internal/mcuxClCipherModes_Internal_Types_Els.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
 

@@ -854,7 +854,7 @@ __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
   \param [in]  value  Value to count the leading zeros
   \return             number of leading zeros in value
  */
-__STATIC_FORCEINLINE uint8_t __CLZ(uint32_t value)
+__STATIC_FORCEINLINE uint8_t __CLZ_internal(uint32_t value)
 {
   /* Even though __builtin_clz produces a CLZ instruction on ARM, formally
      __builtin_clz(0) is undefined behaviour, so handle this case specially.
@@ -871,7 +871,7 @@ __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t value)
   }
   return __CLZ32(value);
 }
-
+#define __CLZ __CLZ_internal
 
 //#pragma ghs endnowarning 68
 

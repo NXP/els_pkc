@@ -11,7 +11,7 @@
 /* software.                                                                */
 /*--------------------------------------------------------------------------*/
 
-#include <internal/mcuxClCipherModes_Internal.h>
+#include <internal/mcuxClCipherModes_Helper.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_MemClear)
 void mcuxClCipherModes_MemClear(uint8_t *pDst, uint32_t length)

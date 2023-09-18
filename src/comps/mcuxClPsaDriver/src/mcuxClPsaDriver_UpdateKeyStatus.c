@@ -18,6 +18,7 @@
 #include <mcuxClPsaDriver_Oracle.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
+#include <mcuxCsslAnalysis.h>
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusSuspend(
@@ -68,8 +69,9 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(
     mcuxClKey_Descriptor_t *key_descriptor)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    psa_key_attributes_t *attributes =
-        (psa_key_attributes_t *)key_descriptor->container.pAuxData;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    psa_key_attributes_t *attributes = (psa_key_attributes_t *)key_descriptor->container.pAuxData;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );

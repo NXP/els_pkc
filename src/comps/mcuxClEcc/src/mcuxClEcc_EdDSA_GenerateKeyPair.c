@@ -30,6 +30,7 @@
 #include <internal/mcuxClPkc_Macros.h>
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClPkc_ImportExport.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
@@ -89,6 +90,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
                                         ECC_EDDSA_NO_OF_BUFFERS) );
     if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
     {
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(retSetupEnvironment, mcuxClEcc_EdDSA_GenerateKeyPair_Core);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
@@ -126,7 +128,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_RNG_ERROR);
         }
 
-        MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption, 
+        MCUX_CSSL_FP_BRANCH_POSITIVE(privKeyOption,
                                                    MCUXCLECC_FP_GENKEYPAIR_SECSTRENGTH,
                                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) );
     }
@@ -265,8 +267,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
 
 
     /* Clean up and exit */
-    MCUXCLPKC_FP_DEINITIALIZE(&pCpuWorkarea->pkcStateBackup);
     mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+        mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
+
     mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK,
@@ -294,7 +298,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportLittleEndianFromPkc),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
         /* Step 7 */
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) );
+        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateKeyPair)

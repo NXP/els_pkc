@@ -60,6 +60,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm3_Safo_Hash_PreLoad(uint32_t *wor
                       | MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_FORMAT(CTRL, DATOUT_RES, 0u);
     MCUXCLOSCCASM3_SAFO_SGI_SFR_WRITE(CTRL, sgi_ctrl);
 
+    uint32_t sgi_ctrl2 = MCUXCLOSCCASM3_SAFO_SGI_SFR_READ(CTRL2);
+    sgi_ctrl2 &= ~MCUXCLOSCCASM3_SAFO_SGI_SFR_FIELD_FORMAT(CTRL2, BYTES_ORDER, 1);
+    MCUXCLOSCCASM3_SAFO_SGI_SFR_WRITE(CTRL2, sgi_ctrl2);
+
     //Step3: Load partial Hash
     for(i=0u;i<=7u;i++)
     {

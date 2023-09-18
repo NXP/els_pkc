@@ -31,12 +31,14 @@
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClPkc_ImportExport.h>
+#include <internal/mcuxClPkc_Resource.h>
 
 #include <mcuxClRsa.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
 
 
@@ -127,7 +129,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
-  MCUXCLPKC_FP_INITIALIZE(pPkcStateBackup);
+
+  MCUXCLPKC_FP_REQUEST_INITIALIZE(pSession, pPkcStateBackup, mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
 
   /*
    * 5. Allocate buffers in PKC RAM
@@ -136,20 +139,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    *    Memory layout: | nDash (FW) | P (pkcByteLenPrime) | nDash (FW) | Q (pkcByteLenPrime) | E (pkcByteLenKey) |
    */
   const uint32_t byteLenKey = bitLenKey / 8u;
-  const uint32_t pkcByteLenKey = MCUXCLPKC_ROUNDUP_SIZE(byteLenKey);
+  const uint32_t pkcByteLenKey = MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenKey);
   const uint32_t byteLenPrime = byteLenKey / 2u;
-  const uint32_t pkcByteLenPrime = MCUXCLPKC_ROUNDUP_SIZE(byteLenPrime);
+  const uint32_t pkcByteLenPrime = MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenPrime);
 
   /* Allocate space in session for p, q and e for now */
-  const uint32_t pkcWaSizeWord = (2u * (pkcByteLenPrime + MCUXCLPKC_WORDSIZE) + pkcByteLenKey) / (sizeof(uint32_t));
+  const uint32_t pkcWaSizeWord = (2u * (pkcByteLenPrime + MCUXCLRSA_PKC_WORDSIZE) + pkcByteLenKey) / (sizeof(uint32_t));
   uint8_t * pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
   if (NULL == pPkcWorkarea)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
 
-  uint8_t * pPkcBufferP = pPkcWorkarea + MCUXCLPKC_WORDSIZE; /* offset for NDash */
-  uint8_t * pPkcBufferQ = pPkcBufferP + pkcByteLenPrime + MCUXCLPKC_WORDSIZE; /* offset for NDash */
+  uint8_t * pPkcBufferP = pPkcWorkarea + MCUXCLRSA_PKC_WORDSIZE; /* offset for NDash */
+  uint8_t * pPkcBufferQ = pPkcBufferP + pkcByteLenPrime + MCUXCLRSA_PKC_WORDSIZE; /* offset for NDash */
   uint8_t * pPkcBufferE = pPkcBufferQ + pkcByteLenPrime;
   uint8_t * pPkcBufferD = pPkcBufferE + pkcByteLenKey;
   uint8_t * pPkcBufferN = pPkcBufferD + pkcByteLenKey;
@@ -168,7 +171,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   d.pKeyEntryData = pPkcBufferD;
 
   /* Setup UPTR table. */
-  const uint32_t uptrtSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * (sizeof(uint16_t))) / (sizeof(uint32_t)); 
+  const uint32_t uptrtSizeWord = MCUXCLRSA_ROUND_UP_TO_CPU_WORDSIZE(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * (sizeof(uint16_t))) / (sizeof(uint32_t));
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, uptrtSizeWord);
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
@@ -204,10 +207,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_GenerateProbablePrime_P, mcuxClRsa_GenerateProbablePrime(pSession, &e, &p, bitLenKey));
   if(MCUXCLRSA_STATUS_KEYGENERATION_OK != retVal_GenerateProbablePrime_P)
   {
-    /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pPkcStateBackup);
-    /* Recover session info */
     mcuxClSession_setUsage_pkcWa(pSession, backup_pkcWaUsed);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
+            mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
     mcuxClSession_setUsage_cpuWa(pSession, backup_cpuWaUsed);
 
     if(MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED == retVal_GenerateProbablePrime_P)
@@ -216,10 +219,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
         MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED,
         MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+        MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
+        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
     else
     {
@@ -242,10 +245,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
     MCUX_CSSL_FP_FUNCTION_CALL(retVal_GenerateProbablePrime_Q, mcuxClRsa_GenerateProbablePrime(pSession, &e, &q, bitLenKey));
     if(MCUXCLRSA_STATUS_KEYGENERATION_OK != retVal_GenerateProbablePrime_Q)
     {
-      /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pPkcStateBackup);
-      /* Recover session info */
       mcuxClSession_setUsage_pkcWa(pSession, backup_pkcWaUsed);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
+              mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
       mcuxClSession_setUsage_cpuWa(pSession, backup_cpuWaUsed);
 
       if(MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED == retVal_GenerateProbablePrime_Q)
@@ -254,13 +257,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
           MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED,
           MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+          MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
           loopCounter * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
           (loopCounter - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_TestPQDistance),
           (loopCounter - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_ComputeD),
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
+          MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
       }
       else
       {
@@ -291,14 +294,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
           0,
           MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_P,
           MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_Q,
-          MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_N /* used as a temporary buffer, it is > 2 * MCUXCLPKC_ROUNDUP_SIZE(16) */),
+          MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_N /* used as a temporary buffer, it is > 2 * MCUXCLRSA_PKC_ROUNDUP_SIZE(16) */),
         pkcByteLenPrime));
     if(MCUXCLRSA_STATUS_KEYGENERATION_OK != retVal_TestPQDistance)
     {
-      /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pPkcStateBackup);
-      /* Recover session info */
       mcuxClSession_setUsage_pkcWa(pSession, backup_pkcWaUsed);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
+              mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
       mcuxClSession_setUsage_cpuWa(pSession, backup_cpuWaUsed);
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_ERROR);
@@ -311,7 +314,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
      * Used functions: mcuxClRsa_ComputeD
      * Memory layout: | nDash (FW) | P (pkcByteLenPrime) | nDash (FW) | Q (pkcByteLenPrime) | E (pkcByteLenKey) | D (pkcByteLenKey + FW) |
      */
-    if (NULL == mcuxClSession_allocateWords_pkcWa(pSession, (pkcByteLenKey + MCUXCLPKC_WORDSIZE) / (sizeof(uint32_t))))  // allocate space for the D (additional FW for D is required by mcuxClRsa_ComputeD)
+    if (NULL == mcuxClSession_allocateWords_pkcWa(pSession, (pkcByteLenKey + MCUXCLRSA_PKC_WORDSIZE) / (sizeof(uint32_t))))  // allocate space for the D (additional FW for D is required by mcuxClRsa_ComputeD)
     {
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
     }
@@ -323,7 +326,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
     }
     else
     {
-      mcuxClSession_freeWords_pkcWa(pSession, (pkcByteLenKey + MCUXCLPKC_WORDSIZE) / (sizeof(uint32_t)));  // free up space used for the D
+      mcuxClSession_freeWords_pkcWa(pSession, (pkcByteLenKey + MCUXCLRSA_PKC_WORDSIZE) / (sizeof(uint32_t)));  // free up space used for the D
     }
 
  }while(true);
@@ -335,7 +338,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    *
    * Memory layout: | nDash (FW) | P (pkcByteLenPrime) | nDash (FW) | Q (pkcByteLenPrime) | E (pkcByteLenKey) | D (pkcByteLenKey) | N (pkcByteLenKey) |
    */
-  if (NULL == mcuxClSession_allocateWords_pkcWa(pSession, (pkcByteLenKey - MCUXCLPKC_WORDSIZE) / (sizeof(uint32_t))))  // allocate space for the N and release additional FW need to compute D
+  if (NULL == mcuxClSession_allocateWords_pkcWa(pSession, (pkcByteLenKey - MCUXCLRSA_PKC_WORDSIZE) / (sizeof(uint32_t))))  // allocate space for the N and release additional FW need to compute D
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
@@ -433,10 +436,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
                                             pRsaPrivatePlainKey->pExp1->keyEntryLength));
   if (MCUXCLPKC_STATUS_OK != ret_SecExportD)
   {
-      /* De-initialize PKC */
-      MCUXCLPKC_FP_DEINITIALIZE(pPkcStateBackup);
-      /* Recover session info */
       mcuxClSession_setUsage_pkcWa(pSession, backup_pkcWaUsed);
+      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
+              mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
       mcuxClSession_setUsage_cpuWa(pSession, backup_cpuWaUsed);
 
       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_ERROR);
@@ -482,15 +485,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   }
 
   /* Clear PKC workarea. */
-  uint32_t pkcWaSize = MCUXCLRSA_KEYGENERATION_PLAIN_WAPKC_SIZE(byteLenKey);
+  uint32_t pkcWaSize = MCUXCLRSA_KEYGENERATION_PLAIN_WAPKC_SIZE(bitLenKey);
   MCUXCLPKC_PS1_SETLENGTH(0u, pkcWaSize);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_P] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea);
   MCUXCLPKC_FP_CALC_OP1_CONST(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_P, 0u);
 
-  /* De-initialize PKC */
-  MCUXCLPKC_FP_DEINITIALIZE(pPkcStateBackup);
-  /* Recover session info */
   mcuxClSession_setUsage_pkcWa(pSession, backup_pkcWaUsed);
+  MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
+          mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
   mcuxClSession_setUsage_cpuWa(pSession, backup_cpuWaUsed);
 
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_KeyGeneration_Plain,
@@ -498,7 +501,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
     MCUXCLRSA_STATUS_FAULT_ATTACK,
     MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+    MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
     loopCounter * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
@@ -510,5 +513,5 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportBigEndianFromPkc),
     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
+    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
 }

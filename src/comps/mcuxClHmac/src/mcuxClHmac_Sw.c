@@ -22,6 +22,7 @@
 #include <mcuxClMemory.h>
 #include <mcuxClKey.h>
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClHash_Internal.h>
@@ -101,7 +102,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClHmac_Engine_Init_Sw(
     /********************************************************************/
     /* Initialize a Hash context for multipart within the Hmac context  */
     /********************************************************************/
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     pCtxSw->hashCtx = (mcuxClHash_Context_t) &(pCtxSw->hashContextBuffer); /* The content of the hash context is stored in the Hmac context */
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     MCUX_CSSL_FP_FUNCTION_CALL(result_Hash_init, mcuxClHash_init(
     /* mcuxCLSession_Handle_t session: */ session,

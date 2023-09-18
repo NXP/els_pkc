@@ -23,10 +23,12 @@
 
 #include <mcuxClPkc.h>
 #include <mcuxClRsa.h>
+#include <internal/mcuxClPkc_Resource.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClRsa_Internal_Functions.h>
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 #include <internal/mcuxClKey_Internal.h>
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_verify)
@@ -50,7 +52,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
 
   /* Locate paddedMessage buffer at beginning of PKC WA and update session info */
   const uint32_t modulusByteLength = pKey->pMod1->keyEntryLength;
-  const uint32_t pkcWaSizeWord = MCUXCLPKC_ROUNDUP_SIZE(modulusByteLength) / (sizeof(uint32_t));
+  const uint32_t pkcWaSizeWord = MCUXCLRSA_PKC_ROUNDUP_SIZE(modulusByteLength) / (sizeof(uint32_t));
 
   uint8_t * pPaddedMessage = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
   if (NULL == pPaddedMessage)
@@ -66,7 +68,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_verify, MCUXCLRSA_STATUS_FAULT_ATTACK);
   }
 
-  MCUXCLPKC_FP_INITIALIZE(pkcStateBackup);
+  MCUXCLPKC_FP_REQUEST_INITIALIZE(pSession, pkcStateBackup, mcuxClRsa_verify, MCUXCLRSA_STATUS_FAULT_ATTACK);
 
   /*****************************************************/
   /* Perform RSA_public                                */
@@ -77,21 +79,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
   if(MCUXCLRSA_STATUS_INVALID_INPUT == retVal_RsaPublic)
   {
     /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
     mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_verify, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_verify, MCUXCLRSA_STATUS_INVALID_INPUT,
-                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+                              MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
                               MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_public),
-                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
+                              MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
   }
   else if(MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retVal_RsaPublic)
   {
 
     /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
     mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_verify, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_verify, MCUXCLRSA_STATUS_ERROR);
@@ -123,17 +127,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
     /*****************************************************/
 
     /* De-initialize PKC */
-    MCUXCLPKC_FP_DEINITIALIZE(pkcStateBackup);
-
-    /* Recover session info */
     mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup, mcuxClRsa_verify, MCUXCLRSA_STATUS_FAULT_ATTACK);
+
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_verify, retVal_PaddingOperation,
                     MCUXCLRSA_STATUS_FAULT_ATTACK,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize),
+                    MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_public),
                     pVerifyMode->EncodeVerify_FunId,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize));
+                    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
   }
 }

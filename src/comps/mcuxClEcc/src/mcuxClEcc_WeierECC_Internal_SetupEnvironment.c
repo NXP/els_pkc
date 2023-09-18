@@ -60,6 +60,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_SetupEnvironm
         mcuxClEcc_SetupEnvironment(pSession, &(pWeierDomainParams->common), noOfBuffers) );
     if (MCUXCLECC_STATUS_OK != retSetupEnvironment)
     {
+        MCUXCLECC_HANDLE_HW_UNAVAILABLE(retSetupEnvironment, mcuxClEcc_WeierECC_SetupEnvironment);
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_WeierECC_SetupEnvironment, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 

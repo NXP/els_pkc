@@ -21,9 +21,9 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 #include <mcuxClRsa_Types.h>
-#include <mcuxClPkc_Functions.h>
 #include <mcuxClHash_Types.h>
 #include <mcuxClCore_Buffer.h>
+
 
 
 #ifdef __cplusplus
@@ -104,7 +104,6 @@ struct mcuxClRsa_SignVerifyMode_t
   mcuxClHash_Algo_t              pHashAlgo2;         ///< RFU
   mcuxClRsa_PadVerModeEngine_t   pPaddingFunction;   ///< Pointer to padding functionality.
 };
-
 
 
 #ifdef __cplusplus

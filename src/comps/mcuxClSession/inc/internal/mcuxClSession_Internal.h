@@ -35,16 +35,16 @@ extern "C" {
  **********************************************/
 
 /**
- * \brief Allocate a CPU buffer in the CPU workarea of a session.
+ * @brief Allocate a CPU buffer in the CPU workarea of a session.
  *
  * This function allocates a new CPU buffer in the given \p session,
  * and sets the given \p buffer accordingly.
  *
- * \param  pSession        Session handle.
- * \param  buffer          A pointer to the buffer that we want to allocate.
- * \param  bufferLength    The size of the buffer.
+ * @param  pSession        Session handle.
+ * @param  buffer          A pointer to the buffer that we want to allocate.
+ * @param  bufferLength    The size of the buffer.
  *
- * \return status
+ * @return status
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClSession_allocateCpuBuffer)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_allocateCpuBuffer(
@@ -54,13 +54,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_allocateCpuBuf
 );
 
 /**
- * \brief Free all CPU buffers of a session.
+ * @brief Free all CPU buffers of a session.
  *
  * This function will free all allocated CPU buffers of the given \p session.
  *
- * \param  pSession Session handle.
+ * @param  pSession Session handle.
  *
- * \return status
+ * @return status
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClSession_freeAllCpuBuffers)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSession_Status_t) mcuxClSession_freeAllCpuBuffers(
@@ -283,12 +283,12 @@ static inline void mcuxClSession_setUsage_pkcWa(
 
 
 /**
- * \brief Set the Security options in a Crypto Library session.
+ * @brief Set the Security options in a Crypto Library session.
  *
- * \param  session          Handle for the current CL session.
- * \param  securityOptions  Security options that will be set
+ * @param  session          Handle for the current CL session.
+ * @param  securityOptions  Security options that will be set
  *
- * \return void
+ * @return void
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_setSecurityOptions_Internal)
 static inline void mcuxClSession_setSecurityOptions_Internal(
@@ -302,11 +302,11 @@ static inline void mcuxClSession_setSecurityOptions_Internal(
 }
 
 /**
- * \brief Get the Security options from a Crypto Library session.
+ * @brief Get the Security options from a Crypto Library session.
  *
- * \param  session          Handle for the current CL session.
+ * @param  session          Handle for the current CL session.
  *
- * \return securityOptions  Security options that will be returned
+ * @return securityOptions  Security options that will be returned
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_getSecurityOptions_Internal)
 static inline mcuxClSession_SecurityOptions_t mcuxClSession_getSecurityOptions_Internal(

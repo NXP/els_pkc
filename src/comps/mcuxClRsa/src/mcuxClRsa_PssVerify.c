@@ -23,6 +23,7 @@
 #include <mcuxClMemory.h>
 
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <internal/mcuxClHash_Internal.h>
 #include <mcuxCsslParamIntegrity.h>
 #include <mcuxCsslMemory.h>
@@ -112,6 +113,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
 
   const uint16_t wordSizePkcWa = (uint16_t)(MCUXCLRSA_INTERNAL_PSSVERIFY_MAX_WAPKC_SIZE_WO_MGF1(emLen) / sizeof(uint32_t));
   uint8_t *pPkcWorkarea = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, wordSizePkcWa);
+  if (NULL == pPkcWorkarea)
+  {
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pssVerify, MCUXCLRSA_STATUS_FAULT_ATTACK);
+  }
 
   /*
    * Set buffers in PKC workarea
@@ -167,6 +172,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pssVerify(
   /* Step 3: If BYTE_LENGTH(keyBitLength) < (pHashAlgo->hashSize + saltlabelLength + 2)
   *  return MCUXCLRSA_STATUS_VERIFY_FAILED else continue operation. */
   /* Additional checks on salt-length for FIPS 186-4 compliance */
+  /* The constraint on sLen for FIPS186.5 is always met, so no additional check is needed. In step 10, we check that the zero-padding has the expected length w.r.t. sLen. */
   /* Step 4: Check if the leftmost octet of Em (before endianess switch) has hexadecimal value 0xbc.*/
   if((((1024U == keyBitLength) && (512U == (8U * hLen)) && ((hLen - 2U) < sLen)) || (hLen < sLen))
           || (emLen < (hLen + sLen + 2U)) || (0xbcU != *pEm))

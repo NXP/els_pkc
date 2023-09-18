@@ -33,6 +33,7 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 #include <internal/mcuxClRsa_Internal_Macros.h>
 #include <internal/mcuxClRsa_Internal_MemoryConsumption.h>
+#include <internal/mcuxClRsa_Internal_PkcTypes.h>
 #include <internal/mcuxClRsa_Public_FUP.h>
 
 
@@ -87,12 +88,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   /************************************************************************************************/
 
   /* Prepare buffers in PKC workarea and clear PKC workarea */
-  const uint32_t operandSize = MCUXCLPKC_ROUNDUP_SIZE(byteLenN);
+  const uint32_t operandSize = MCUXCLRSA_PKC_ROUNDUP_SIZE(byteLenN);
   const uint16_t bufferSizeX = (uint16_t)operandSize;
-  const uint16_t bufferSizeR = (uint16_t)operandSize + MCUXCLPKC_WORDSIZE;
-  const uint16_t bufferSizeN = (uint16_t)operandSize + MCUXCLPKC_WORDSIZE; // PKC word in front of the modulus buffer for NDash
-  const uint16_t bufferSizeT1 = (uint16_t)operandSize + MCUXCLPKC_WORDSIZE;
-  const uint16_t bufferSizeT2 = (uint16_t)operandSize + MCUXCLPKC_WORDSIZE;
+  const uint16_t bufferSizeR = (uint16_t)operandSize + MCUXCLRSA_PKC_WORDSIZE;
+  const uint16_t bufferSizeN = (uint16_t)operandSize + MCUXCLRSA_PKC_WORDSIZE; // PKC word in front of the modulus buffer for NDash
+  const uint16_t bufferSizeT1 = (uint16_t)operandSize + MCUXCLRSA_PKC_WORDSIZE;
+  const uint16_t bufferSizeT2 = (uint16_t)operandSize + MCUXCLRSA_PKC_WORDSIZE;
 
   /* Setup session. */
   const uint16_t bufferSizeTotal = bufferSizeX + bufferSizeN + bufferSizeR + bufferSizeT1 + bufferSizeT2;
@@ -115,7 +116,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
 
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_X] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_R] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeX);
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_N] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeX + bufferSizeR + MCUXCLPKC_WORDSIZE /* for NDash stored in the PKC word in front of the modulus */);
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_N] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeX + bufferSizeR + MCUXCLRSA_PKC_WORDSIZE /* for NDash stored in the PKC word in front of the modulus */);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_T1] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeX + bufferSizeR + bufferSizeN);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_T2] = MCUXCLPKC_PTR2OFFSET(pPkcWorkarea + bufferSizeX + bufferSizeR + bufferSizeN + bufferSizeT1);
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_PUBLIC_OUTPUT] = MCUXCLPKC_PTR2OFFSET(pOutput);

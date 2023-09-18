@@ -177,9 +177,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
     /* Call the mcuxClMac_process */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(processResult, processToken, mcuxClMac_process(&session,
-MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
                                                                                   (mcuxClMac_Context_t *) &pClnsMacData->ctx,
-MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
                                                                                   input,
                                                                                   input_length));
 
@@ -193,7 +193,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     uint32_t outputSize = 0u;
 	uint8_t tempMaxMac[MCUXCLMAC_MAX_OUTPUT_SIZE];
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(finishResult, finishToken, mcuxClMac_finish(&session,
+MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
                                                                                (mcuxClMac_Context_t *) &pClnsMacData->ctx,
+MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
                                                                                tempMaxMac,
                                                                                &outputSize
                                                                                ));
@@ -341,20 +343,19 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     if(attributes->core.type == PSA_KEY_TYPE_AES)
     {
+        MCUX_CSSL_ANALYSIS_START_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
         switch(PSA_ALG_FULL_LENGTH_MAC(alg))
         {
             //AES based algorithms and paddings
             case PSA_ALG_CMAC:
                 return mcuxClMac_Mode_CMAC;
-                break;
             case PSA_ALG_CBC_MAC:
                 /* PSA standard does not specify CBC-MAC with padding. ISO Padding Method2 was chosen here because it is the most commonly used padding for CBC-MAC. */
                 return mcuxClMac_Mode_CBCMAC_PaddingISO9797_1_Method2;
-                break;
             default:
                 return NULL;
-                break;
         }
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
     }
     else if(PSA_ALG_IS_HMAC(alg) == true)
     {
@@ -495,10 +496,17 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 		return PSA_ERROR_GENERIC_ERROR;
 	}
 
-	mcuxClMemory_clear((uint8_t *) pClnsMacData,
-					  MCUXCLPSADRIVER_CLNSDATA_MAC_SIZE,
-					  MCUXCLPSADRIVER_CLNSDATA_MAC_SIZE);
-		 
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenClear, mcuxClMemory_clear((uint8_t *)pClnsMacData,
+                                                                       MCUXCLPSADRIVER_CLNSDATA_MAC_SIZE,
+                                                                       MCUXCLPSADRIVER_CLNSDATA_MAC_SIZE));
+
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear) != tokenClear)
+    {
+        return PSA_ERROR_CORRUPTION_DETECTED;
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+	 
     /* Return with success */
     return PSA_SUCCESS;
 }

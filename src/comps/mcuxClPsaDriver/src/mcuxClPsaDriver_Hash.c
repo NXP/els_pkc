@@ -14,6 +14,7 @@
 #include "common.h"
 
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCipherModes.h>
 #include <mcuxClSession.h>
@@ -31,24 +32,21 @@ const mcuxClHash_AlgorithmDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_hash
     psa_algorithm_t alg)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
     switch(alg)
     {
     case PSA_ALG_SHA_224:
         return mcuxClHash_Algorithm_Sha224;
-        break;
     case PSA_ALG_SHA_256:
         return mcuxClHash_Algorithm_Sha256;
-        break;
     case PSA_ALG_SHA_384:
         return mcuxClHash_Algorithm_Sha384;
-        break;
     case PSA_ALG_SHA_512:
         return mcuxClHash_Algorithm_Sha512;
-        break;
     default:
         return NULL;
-        break;
     }
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
 }
 
 

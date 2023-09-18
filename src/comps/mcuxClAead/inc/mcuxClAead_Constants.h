@@ -40,7 +40,6 @@
 #define MCUXCLAEAD_STATUS_OK                 ((mcuxClAead_Status_t) 0x01112E03u)
 #define MCUXCLAEAD_STATUS_NOT_OK             ((mcuxClAead_Status_t) 0x011153FCu)
 
-
 /**@}*/
 
 /**@}*/

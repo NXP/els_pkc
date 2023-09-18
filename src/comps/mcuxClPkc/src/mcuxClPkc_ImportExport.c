@@ -95,11 +95,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 #else
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("use of UNALIGNED keyword")
-    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_EXP36_C, "use of UNALIGNED keyword")
     MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "ptrH32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
     uint32_t UNALIGNED *ptrH32 = (uint32_t UNALIGNED *) & ((uint8_t *) ptr)[length - 4u];
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_EXP36_C)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 #endif
     uint32_t *ptrL32 = ptr;
@@ -113,7 +111,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_SwitchEndianness(uint32_t *ptr, uint
     {
         MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "ptrH32 and ptrL32 will not be dereferenced outside the range [ptr, ptr+length-1] because of the condition (ptrH32 >= ptrL32).")
         uint32_t wordL = *ptrL32;
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("UNALIGNED keyword is used for ptrH32 definition")
         uint32_t wordH = *ptrH32;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
         wordL = MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS(wordL);
         wordH = MCUXCLMEMORY_SWITCH_4BYTE_ENDIANNESS(wordH);
@@ -179,9 +179,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ImportBigEndianToPkc(uint8_t iTarget
     MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT30_C, "modular arithmetic.")
     uint32_t offset = (0u - length) % (sizeof(uint32_t));
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT30_C)
-    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT30_C, "offset in range [0,3], and length <= alignedLength <= PKC PS1LEN.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("offset in range [0,3], and length <= alignedLength <= PKC PS1LEN.")
     uint32_t alignedLength = length + offset;
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT30_C)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUXCLPKC_WAITFORFINISH();
 
@@ -251,12 +251,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClPkc_ExportBigEndianFromPkc(uint8_t * pTa
     const uint16_t * pOperands = MCUXCLPKC_GETUPTRT();
     uint32_t * p32Source = MCUXCLPKC_OFFSET2PTRWORD(pOperands[iSource]);  /* Caller shall provide PKC-word aligned operand iSource. */
 
-    MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT30_C, "modular arithmetic.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("modular arithmetic.")
     uint32_t offset = (0u - length) % (sizeof(uint32_t));
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT30_C)
-    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(CERT_INT30_C, "offset in range [0,3], and length <= alignedLength <= PKC PS1LEN.")
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("offset in range [0,3], and length <= alignedLength <= PKC PS1LEN.")
     uint32_t alignedLength = length + offset;
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(CERT_INT30_C)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUXCLPKC_WAITFORFINISH();
 
@@ -326,9 +326,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportBigEndianT
 
     MCUXCLPKC_WAITFORFINISH();
 
-    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "length <= operandSize = PKC PS1LEN.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("length <= operandSize = PKC PS1LEN.")
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_clear(&pTarget[length], operandSize - length, operandSize - length));
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_CsslMemoryCopy,
         mcuxCsslMemory_Copy(mcuxCsslParamIntegrity_Protect(4u, pSource, pTarget, length, length),
@@ -412,9 +412,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClPkc_Status_t) mcuxClPkc_SecureImportLittleEndi
 
     MCUXCLPKC_WAITFORFINISH();
 
-    MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(INTEGER_OVERFLOW, "length <= operandSize = PKC PS1LEN.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("length <= operandSize = PKC PS1LEN.")
     MCUXCLMEMORY_FP_MEMORY_CLEAR(&pTarget[length], operandSize - length);
-    MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(INTEGER_OVERFLOW)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_CsslMemoryCopy,
         mcuxCsslMemory_Copy(mcuxCsslParamIntegrity_Protect(4u, pSource, pTarget, length, length),
