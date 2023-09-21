@@ -258,10 +258,10 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         /* const mcuxClRsa_Key * const      pKey: */               &public_key,
         /* mcuxCl_InputBuffer_t             pMessageOrDigest: */   input,
         /* const uint32_t                  messageLength: */      messageLength,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("signature will not be modified in verify")
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Const must be discarded due to fixed function API. nxpClRsa_verify does not modify those arguments.")
         /* mcuxCl_Buffer_t                  pSignature: */         (uint8_t *)signature,
+        /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        (mcuxClRsa_SignVerifyMode) pVerifyMode,
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
-        /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        (const mcuxClRsa_SignVerifyMode) pVerifyMode,
         /* const uint32_t                  saltLength: */         saltLength,
         /* uint32_t                        options: */            options,
         /* mcuxCl_Buffer_t                  pOutput: */            NULL));

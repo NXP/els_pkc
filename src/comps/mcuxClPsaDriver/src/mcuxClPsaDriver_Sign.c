@@ -566,8 +566,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         /* const mcuxClRsa_Key * const      pKey: */               &private_key,
         /* mcuxCl_InputBuffer_t             pMessageOrDigest: */   input,
         /* const uint32_t                  messageLength: */      messageLength,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-        /* const mcuxClRsa_SignVerifyMode   pPaddingMode: */       (const mcuxClRsa_SignVerifyMode)pVerifyMode,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded due to fixed function API. nxpClRsa_sign does not modify this array")
+        /* const mcuxClRsa_SignVerifyMode   pPaddingMode: */       (mcuxClRsa_SignVerifyMode)pVerifyMode,
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
         /* const uint32_t                  saltLength: */         saltLength,
         /* uint32_t                        options: */            options,
