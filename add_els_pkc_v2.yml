@@ -1,6 +1,6 @@
 ---
 __variable__:
-  els_pkc_version: 1.5.0
+  els_pkc_version: 1.7.0
 
 component.els_pkc.ui_control:
   section-type: component_support
