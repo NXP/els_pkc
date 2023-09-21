@@ -78,19 +78,19 @@ component.els_pkc.static_lib.rw61x:
     cc-include:
     - repo_relative_path: "./"
     files:
-    - source: static_library/redfinchSdk_sample/libclns.a
+    - source: static_library/rw61x/libclns.a
       compilers: armclang
       hidden: true
       exclude: true
-    - source: static_library/redfinchSdk_sample/libclns.a.libsize
+    - source: static_library/rw61x/libclns.a.libsize
       compilers: armclang
       hidden: true
       exclude: true
-    - source: static_library/redfinchSdk_sample/libclns.a.objsize
+    - source: static_library/rw61x/libclns.a.objsize
       compilers: armclang
       hidden: true
       exclude: true
-    - source: static_library/redfinchSdk_sample/libclns.stripped.a
+    - source: static_library/rw61x/libclns.stripped.a
       compilers: armclang
       hidden: true
       exclude: true
@@ -1858,18 +1858,18 @@ component.els_pkc.platform.rw61x_interface_files:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/redfinchSdk_sample
-    - repo_relative_path: src/platforms/redfinchSdk_sample/inc
+    - repo_relative_path: src/platforms/rw61x
+    - repo_relative_path: src/platforms/rw61x/inc
     files:
-    - source: src/platforms/redfinchSdk_sample/platform_specific_headers.h
-    - source: src/platforms/redfinchSdk_sample/mcuxClConfig.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_css_constants.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_css_design_configuration.h
-    - source: src/platforms/redfinchSdk_sample/inc/ip_platform.h
-    - source: src/platforms/redfinchSdk_sample/mcux_els.c
-    - source: src/platforms/redfinchSdk_sample/mcux_els.h
-    - source: src/platforms/redfinchSdk_sample/mcux_pkc.c
-    - source: src/platforms/redfinchSdk_sample/mcux_pkc.h
+    - source: src/platforms/rw61x/platform_specific_headers.h
+    - source: src/platforms/rw61x/mcuxClConfig.h
+    - source: src/platforms/rw61x/inc/ip_css_constants.h
+    - source: src/platforms/rw61x/inc/ip_css_design_configuration.h
+    - source: src/platforms/rw61x/inc/ip_platform.h
+    - source: src/platforms/rw61x/mcux_els.c
+    - source: src/platforms/rw61x/mcux_els.h
+    - source: src/platforms/rw61x/mcux_pkc.c
+    - source: src/platforms/rw61x/mcux_pkc.h
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
@@ -1893,9 +1893,9 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/redfinchSdk_sample
+    - repo_relative_path: src/platforms/rw61x
     files:
-    - source: src/platforms/redfinchSdk_sample/readme.txt
+    - source: src/platforms/rw61x/readme.txt
       hidden: true
       exclude: true
   belong_to: set.component.els_pkc
@@ -1927,9 +1927,9 @@ component.els_pkc.platform.rw61x:
     project_base_path: component/els_pkc
     cc-include:
     - repo_relative_path: "./"
-    - repo_relative_path: src/platforms/redfinchSdk_sample
+    - repo_relative_path: src/platforms/rw61x
     files:
-    - source: src/platforms/redfinchSdk_sample/readme.txt
+    - source: src/platforms/rw61x/readme.txt
       hidden: true
       exclude: true
   belong_to: set.component.els_pkc
