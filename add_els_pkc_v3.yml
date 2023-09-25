@@ -216,20 +216,21 @@ component.els_pkc.aead_modes:
     - repo_relative_path: src/comps/mcuxClAeadModes/inc
     - repo_relative_path: src/comps/mcuxClAeadModes/inc/internal
     files:
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_AesCcm.c
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_AesGcm.c
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_CcmEngineAes.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_AesCcm.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_AesGcm.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_CcmEngineAes.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Modes.c
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_GcmEngineAes.c
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_MultiPart.c
-    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_ELS_OneShot.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_GcmEngineAes.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Multipart.c
+    - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Oneshot.c
+
     - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes.h
     - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_MemoryConsumption.h
     - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_Modes.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Common_Functions.h
-    - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_ELS_Algorithms.h
-    - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_ELS_Functions.h
-    - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_ELS_Types.h
+    - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Algorithms.h
+    - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Functions.h
+    - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Types.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Internal.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Internal_Constants.h
   belong_to: set.component.els_pkc
@@ -322,8 +323,8 @@ component.els_pkc.cipher_modes:
     - repo_relative_path: src/comps/mcuxClCipherModes/inc
     - repo_relative_path: src/comps/mcuxClCipherModes/inc/internal
     files:
-    - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_ELS_Aes.c
-    - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_ELS_EngineAes.c
+    - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_Aes.c
+    - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_EngineAes.c
     - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Helper.c
     - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Modes.c
 
@@ -2000,9 +2001,9 @@ component.els_pkc.examples:
     - repo_relative_path: examples/mcuxCsslMemory/inc/
     - repo_relative_path: src/comps/mcuxClExample/inc/
     files:
-    - source: examples/mcuxClAeadModes/mcuxClAeadModes_multiPart_ELS_CCM_example.c
-    - source: examples/mcuxClAeadModes/mcuxClAeadModes_oneshot_ELS_CCM_example.c
-    - source: examples/mcuxClAeadModes/mcuxClAeadModes_oneshot_ELS_GCM_example.c
+    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Multipart_Els_Ccm_Example.c
+    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Oneshot_Els_Ccm_Example.c
+    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Oneshot_Els_Gcm_Example.c
     - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Cbc_Els_example.c
     - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Ctr_Els_example.c
     - source: examples/mcuxClCipherModes/mcuxClCipherModes_Multipart_Ecb_Els_example.c
