@@ -67,12 +67,6 @@ bool exec_ctr_drbg(char *data_from,
                    algorithm_result *a_result,
                    const bool cache_enable)
 {
-    /** Initialize ELS, Enable the ELS **/
-    if (!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
-    {
-        PRINTF("[Error] ELS initialization failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
     bool data_from_ram = !strcmp(data_from, "RAM");
 
     mcuxClSession_Descriptor_t sessionDesc;
@@ -137,13 +131,6 @@ bool exec_ctr_drbg(char *data_from,
     if (!mcuxClExample_Session_Clean(session))
     {
         PRINTF("[Error] Session cleaning failed\r\n");
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
-    /** Disable the ELS **/
-    if (!mcuxClExample_Els_Disable())
-    {
-        PRINTF("[Error] Els disable failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 

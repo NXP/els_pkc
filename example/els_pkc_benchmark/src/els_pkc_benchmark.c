@@ -12,6 +12,7 @@
 #include "els_pkc_bm_key_gen.h"
 #include "els_pkc_bm_drbg.h"
 #include "els_pkc_bm_kdf.h"
+#include "els_pkc_bm_dh.h"
 #include "mcux_els.h" // Power Down Wake-up Init
 #include "mcux_pkc.h" // Power Down Wake-up Init
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
@@ -123,6 +124,9 @@ int main(void)
 
     /* Run tests for DSA asymmetric-key cryptographic algorithms */
     run_tests_asymmetric();
+
+    /* Run tests for ECDH algorithms */
+    run_tests_ecdh();
 
     /* Run tests for AES symmetric-key cryptographic algorithms */
     run_tests_symmetric();
