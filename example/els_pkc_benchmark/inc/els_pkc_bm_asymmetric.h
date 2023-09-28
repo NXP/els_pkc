@@ -99,6 +99,7 @@ bool exec_EdDSA_verify_signature_Ed25519(char *data_from, uint32_t m_length, sig
  * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.
  */
 bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint32_t bit_length);
+
 /*!
  * @brief Function executing ECC sign on Weier p-256/384/521.
  *
@@ -120,4 +121,5 @@ bool exec_weier_ecc_verify_signature(char *data_from, uint32_t m_length, uint32_
  * @param bit_length Bit length of algorithm (P and N).
  */
 void test_weier_signature(char *code_from, char *data_from, uint32_t m_length, uint32_t bit_length);
+
 #endif /* _ELS_PKC_BM_ASYMMETRIC_H_ */

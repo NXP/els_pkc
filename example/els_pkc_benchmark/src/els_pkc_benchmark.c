@@ -9,6 +9,7 @@
 #include "els_pkc_bm_asymmetric.h"
 #include "els_pkc_bm_hash.h"
 #include "els_pkc_bm_mac.h"
+#include "els_pkc_bm_key_gen.h"
 #include "els_pkc_bm_drbg.h"
 #include "mcux_els.h" // Power Down Wake-up Init
 #include "mcux_pkc.h" // Power Down Wake-up Init
@@ -95,6 +96,9 @@ int main(void)
     /* Run tests for DRBG algorithms */
     run_tests_drbg();
 
+    /* Run tests for ECC key generation */
+    run_tests_key_gen();
+
     /* Run tests for DSA asymmetric-key cryptographic algorithms */
     run_tests_asymmetric();
 
@@ -106,6 +110,13 @@ int main(void)
 
     /* Run tests for MAC algorithms */
     run_tests_mac();
+
+    /* Disable the ELS */
+    if (!mcuxClExample_Els_Disable())
+    {
+        PRINTF("[Error] Disabling ELS failed\r\n");
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
 
     while (1)
     {

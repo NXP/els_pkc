@@ -97,6 +97,15 @@
         PRINTF("\r\n");                                   \
     } while (0)
 
+#define PRINT_KEY_GEN_RESULT(result)                   \
+    do                                                 \
+    {                                                  \
+        PRINTF("\tCODE: %s", result.code);             \
+        PRINTF("\tDATA: %s", result.data);             \
+        PRINTF("\tKEY-GEN/S: %6.2f", result.signPerS); \
+        PRINTF("\r\n");                                \
+    } while (0)
+
 /*!
  * @brief Value for poll alarm, either 0 or 1.
  *
