@@ -340,7 +340,7 @@ bool exec_hmac(uint32_t block_amount,
         mcuxClKey_init(
             /* mcuxClSession_Handle_t pSession:                */ session,
             /* mcuxClKey_Handle_t key:                         */ key,
-            /* const mcuxClKey_Type* type:                     */ mcuxClKey_Type_HmacSw_variableLength,
+            /* const mcuxClKey_Type* type:                     */ mcuxClKey_Type_Hmac_variableLength,
             /* mcuxCl_Buffer_t pKeyData:                       */
             data_from_ram ? (uint8_t *)s_Key : (uint8_t *)s_KeyFlash,
             /* uint32_t keyDataLength:                        */ data_from_ram ? sizeof(s_Key) : sizeof(s_KeyFlash)));

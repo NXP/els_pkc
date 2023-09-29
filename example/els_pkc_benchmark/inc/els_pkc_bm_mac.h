@@ -13,6 +13,7 @@
 #include <mcuxClHmac.h>     /* Interface to the entire mcuxClHmac component */
 #include <mcuxClAes.h>      /* Interface to AES-related definitions and types */
 #include <mcuxClHash.h>
+#include <mcuxClHashModes.h>
 
 /*******************************************************************************
  * Definitions

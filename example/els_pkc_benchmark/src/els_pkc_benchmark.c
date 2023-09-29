@@ -9,6 +9,7 @@
 #include "els_pkc_bm_asymmetric.h"
 #include "els_pkc_bm_hash.h"
 #include "els_pkc_bm_mac.h"
+#include "els_pkc_bm_drbg.h"
 #include "mcux_els.h" // Power Down Wake-up Init
 #include "mcux_pkc.h" // Power Down Wake-up Init
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
@@ -90,6 +91,9 @@ int main(void)
     PRINTF("   -SHA-512 BLOCK SIZE: 128 BYTE\r\n");
     PRINTF("   -FOR AES-CCM-192 DOING FIRST CBC AND THEN CTR, BECAUSE NO AES-CCM-192 SUPPORTED BY ELS_PKC\r\n");
     PRINTF("\r\n\n");
+
+    /* Run tests for DRBG algorithms */
+    run_tests_drbg();
 
     /* Run tests for DSA asymmetric-key cryptographic algorithms */
     run_tests_asymmetric();
