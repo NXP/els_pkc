@@ -1851,7 +1851,8 @@ component.els_pkc.platform.mcxn:
       - MCXN947
     - component.els_pkc
     - component.els_pkc.random_modes_ctr
-    - component.els_pkc.trng.type_els	
+    - component.els_pkc.trng.type_els
+    - component.els_pkc.oscca_sm3
 component.els_pkc.platform.rw61x_interface_files:
   section-type: component
   contents:

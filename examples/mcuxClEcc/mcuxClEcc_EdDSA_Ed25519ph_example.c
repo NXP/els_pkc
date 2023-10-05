@@ -94,6 +94,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
     return MCUXCLEXAMPLE_STATUS_ERROR;
   }
 
+  (void) pPublicKey;
+
   /* Setup one session to be used by all functions called */
   mcuxClSession_Descriptor_t session;
   /* Allocate and initialize session with pkcWA on the beginning of PKC RAM */

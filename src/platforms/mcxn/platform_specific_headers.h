@@ -19,8 +19,6 @@
  #include "mcuxCsslAnalysis.h"
  
  MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
- #include "MCXN947_cm33_core0.h" 
- #include "system_MCXN947_cm33_core0.h" 
  #include "ip_platform.h" 
  #include "ip_css_constants.h" 
  #include "ip_css_design_configuration.h" 
