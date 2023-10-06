@@ -612,6 +612,7 @@ component.els_pkc.els_header_only:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Aead.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cipher.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Cmac.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_Crc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Ecc.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hash.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Hmac.h
