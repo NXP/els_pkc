@@ -25,6 +25,8 @@
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
 
+#define ELS_KS0            KS[0]         ///compatibility define 
+
 // Define base address of ELS
 #define ELS_SFR_BASE            ELS         ///< base of ELS SFRs
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
