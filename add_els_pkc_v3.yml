@@ -927,6 +927,7 @@ component.els_pkc.hmac:
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Core_Functions_Sw.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Functions.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Macros.h
+    - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Memory.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Types.h
   belong_to: set.component.els_pkc
   section_info:
