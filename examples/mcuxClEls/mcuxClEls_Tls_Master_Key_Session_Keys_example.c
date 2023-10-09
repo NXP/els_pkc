@@ -29,8 +29,8 @@
 
 
 /** Destination buffer to receive the public key of the mcuxClEls_EccKeyGen_Async operation. */
-static mcuxClEls_EccByte_t ecc_public_key_client[MCUXCLELS_ECC_PUBLICKEY_SIZE];
-static mcuxClEls_EccByte_t ecc_public_key_server[MCUXCLELS_ECC_PUBLICKEY_SIZE];
+static uint32_t ecc_public_key_client[MCUXCLELS_ECC_PUBLICKEY_SIZE / sizeof(uint32_t)];
+static uint32_t ecc_public_key_server[MCUXCLELS_ECC_PUBLICKEY_SIZE / sizeof(uint32_t)];
 
 static uint8_t derivation_data[MCUXCLELS_TLS_DERIVATIONDATA_SIZE];
 static uint8_t client_random[MCUXCLELS_TLS_RANDOM_SIZE];
@@ -68,7 +68,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
             keyIdxPrivClient,                               // Keystore index at which the generated private key is stored.
             GenKeyProp,                                     // Set the generated key properties.
             NULL,
-            ecc_public_key_client                           // Output buffer, which the operation will write the public key to.
+			(uint8_t *)ecc_public_key_client                           // Output buffer, which the operation will write the public key to.
             ));
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
@@ -94,7 +94,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
             keyIdxPrivServer,                               // Keystore index at which the generated private key is stored.
             GenKeyProp,                                     // Set the generated key properties.
             NULL,
-            ecc_public_key_server                           // Output buffer, which the operation will write the public key to.
+			(uint8_t *)ecc_public_key_server                           // Output buffer, which the operation will write the public key to.
             ));
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
@@ -121,7 +121,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyExchange_Async(
                                     keyIdxPrivClient,
-                                    ecc_public_key_server,
+									(uint8_t *)ecc_public_key_server,
                                     sharedSecretIdx,
                                     SharedSecretProp));
 
