@@ -2,7 +2,37 @@
 
 __variable__:
   els_pkc_version: 1.7.0
-component.els_pkc.doc:
+# component.els_pkc.doc:
+  # section-type: component
+  # contents:
+    # repo_base_path: components/els_pkc/
+    # project_base_path: component/els_pkc/
+    # cc-include:
+    # - repo_relative_path: "./"
+    # files:
+    # - source: LICENSE.htm
+      # hidden: true
+      # exclude: true
+    # - source: softwareContentRegister.txt
+      # hidden: true
+      # exclude: true
+    # - source: ReleaseNotes.txt
+      # hidden: true
+      # exclude: true
+    # - source: doc/**
+      # hidden: true
+      # exclude: true
+  # belong_to: set.component.els_pkc
+  # section_info:
+    # version: "${els_pkc_version}"
+    # type: software_component
+    # full_name: Component els_pkc.doc
+    # description: Component els_pkc.doc
+    # taxonomy:
+      # belong_to: els_pkc_main
+      # cgroup: doc
+    # display_name: els_pkc.doc
+component.els_pkc.doc.lpc:
   section-type: component
   contents:
     repo_base_path: components/els_pkc/
@@ -19,19 +49,95 @@ component.els_pkc.doc:
     - source: ReleaseNotes.txt
       hidden: true
       exclude: true
-    - source: doc/**
+    - source: doc/lpc/**
       hidden: true
       exclude: true
   belong_to: set.component.els_pkc
   section_info:
     version: "${els_pkc_version}"
     type: software_component
-    full_name: Component els_pkc.doc
-    description: Component els_pkc.doc
+    full_name: Component els_pkc.doc.lpc
+    description: Component els_pkc.doc.lpc
     taxonomy:
       belong_to: els_pkc_main
       cgroup: doc
-    display_name: els_pkc.doc
+    display_name: els_pkc.doc.lpc
+  dependency:
+    allOf:
+    - device:
+      - LPC55S36
+component.els_pkc.doc.mcxn:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc/
+    project_base_path: component/els_pkc/
+    cc-include:
+    - repo_relative_path: "./"
+    files:
+    - source: LICENSE.htm
+      hidden: true
+      exclude: true
+    - source: softwareContentRegister.txt
+      hidden: true
+      exclude: true
+    - source: ReleaseNotes.txt
+      hidden: true
+      exclude: true
+    - source: doc/mcxn/**
+      hidden: true
+      exclude: true
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc.doc.mcxn
+    description: Component els_pkc.doc.mcxn
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: doc
+    display_name: els_pkc.doc.mcxn
+  dependency:
+    allOf:
+    - device:
+      - MCXN546
+      - MCXN547
+      - MCXN946
+      - MCXN947
+component.els_pkc.doc.rw61x:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc/
+    project_base_path: component/els_pkc/
+    cc-include:
+    - repo_relative_path: "./"
+    files:
+    - source: LICENSE.htm
+      hidden: true
+      exclude: true
+    - source: softwareContentRegister.txt
+      hidden: true
+      exclude: true
+    - source: ReleaseNotes.txt
+      hidden: true
+      exclude: true
+    - source: doc/rw61x/**
+      hidden: true
+      exclude: true
+  belong_to: set.component.els_pkc
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc.doc.rw61x
+    description: Component els_pkc.doc.rw61x
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: doc
+    display_name: els_pkc.doc.rw61x
+  dependency:
+    allOf:
+    - device:
+      - RW610
+      - RW612
 component.els_pkc.static_lib.mcxn:
   section-type: component
   contents:
@@ -1777,11 +1883,13 @@ component.els_pkc:
     - anyOf:
         - allOf:
           - component.els_pkc.platform.lpc
+          - component.els_pkc.doc.lpc
           - component.els_pkc.static_lib.lpc
           - device:
              - LPC55S36
         - allOf:
           - component.els_pkc.platform.mcxn
+          - component.els_pkc.doc.mcxn
           - component.els_pkc.static_lib.mcxn
           - device:
              - MCXN546
@@ -1790,6 +1898,7 @@ component.els_pkc:
              - MCXN947
         - allOf:
           - component.els_pkc.platform.rw61x
+          - component.els_pkc.doc.rw61x
           - component.els_pkc.static_lib.rw61x
           - device:
              - RW610
