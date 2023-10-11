@@ -731,11 +731,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
    size_t nonce_length)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    /* Validate state
-    if(operation->nonce_set)
-    {
-        return PSA_ERROR_BAD_STATE;
-    }
     /* Get the correct AEAD mode based on the given algorithm. */
     const mcuxClAead_ModeDescriptor_t * mode = NULL;
     if(1u == operation->is_encrypt)
