@@ -407,7 +407,7 @@ component.els_pkc.data_integrity:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_core
+      cgroup: els_pkc_data_integrity
     display_name: els_pkc.data_integrity
 component.els_pkc.ecc:
   section-type: component
@@ -939,7 +939,7 @@ component.els_pkc.hmac:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_mac
+      cgroup: els_pkc_hmac
     display_name: els_pkc.hmac
   dependency:
     allOf:
