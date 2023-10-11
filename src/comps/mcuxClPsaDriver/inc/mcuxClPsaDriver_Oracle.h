@@ -17,7 +17,7 @@
 #ifndef MCUXCLPSADRIVERORACLE_H_
 #define MCUXCLPSADRIVERORACLE_H_
 
-#include <crypto.h>
+#include <psa/crypto.h>
 #include <mcuxClKey.h>
 #include <mcuxClConfig.h> // Exported features flags header
 

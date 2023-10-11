@@ -41,7 +41,6 @@ extern "C" {
  * @{
  */
 
-extern unsigned int psa_driver_wrapper_get_clns_operation_id(void);
 
 static inline bool key_type_is_raw_bytes( psa_key_type_t type )
 {
@@ -172,7 +171,7 @@ static inline uint8_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectDec(co
 }
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_abort(
-   psa_aead_operation_t *operation);
+   els_pkc_aead_operation_t *operation);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt(
     const psa_key_attributes_t *attributes,
@@ -190,7 +189,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt(
     size_t *plaintext_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    const psa_key_attributes_t *attributes,
    const uint8_t *key_buffer,
    size_t key_buffer_size,
@@ -212,14 +211,14 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt(
     size_t *ciphertext_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    const psa_key_attributes_t *attributes,
    const uint8_t *key_buffer,
    size_t key_buffer_size,
    psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    uint8_t *ciphertext,
    size_t ciphertext_size,
    size_t *ciphertext_length,
@@ -228,26 +227,26 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
    size_t *tag_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_get_tag_len(
-    psa_aead_operation_t *operation,
+    els_pkc_aead_operation_t *operation,
     uint8_t *tag_len);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_lengths(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    size_t ad_length,
    size_t plaintext_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    const uint8_t *nonce,
    size_t nonce_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    const uint8_t *input,
    size_t input_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    uint8_t *plaintext,
    size_t plaintext_size,
    size_t *plaintext_length,
@@ -255,7 +254,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
    size_t tag_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_update(
-   psa_aead_operation_t *operation,
+   els_pkc_aead_operation_t *operation,
    const uint8_t *input,
    size_t input_length,
    uint8_t *output,
@@ -276,24 +275,24 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_encrypt(
     size_t *output_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(
-    psa_cipher_operation_t *operation);
+    els_pkc_cipher_operation_t *operation);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_setup(
-    psa_cipher_operation_t *operation,
+    els_pkc_cipher_operation_t *operation,
     const psa_key_attributes_t * attributes,
     const uint8_t * key_buffer,
     size_t key_buffer_size,
     psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_encrypt_setup(
-    psa_cipher_operation_t *operation,
+    els_pkc_cipher_operation_t *operation,
     const psa_key_attributes_t * attributes,
     const uint8_t * key_buffer,
     size_t key_buffer_size,
     psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_finish(
-    psa_cipher_operation_t *operation,
+    els_pkc_cipher_operation_t *operation,
     uint8_t *output,
     size_t output_size,
     size_t *output_length);
@@ -310,12 +309,12 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt(
     size_t *output_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_set_iv(
-    psa_cipher_operation_t *operation,
+    els_pkc_cipher_operation_t *operation,
     const uint8_t *iv,
     size_t iv_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_update(
-    psa_cipher_operation_t *operation,
+    els_pkc_cipher_operation_t *operation,
     const uint8_t *input,
     size_t input_length,
     uint8_t *output,
@@ -371,11 +370,11 @@ const mcuxClEcc_Weier_DomainParams_t* mcuxClPsaDriver_psa_driver_wrapper_getEccD
     const psa_key_attributes_t *attributes);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_abort(
-    psa_hash_operation_t *operation);
+    els_pkc_hash_operation_t *operation);
     
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_clone(
-    const psa_hash_operation_t *source_operation,
-    psa_hash_operation_t *target_operation);
+    const els_pkc_hash_operation_t *source_operation,
+    els_pkc_hash_operation_t *target_operation);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_compute(
     psa_algorithm_t alg,
@@ -386,7 +385,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_compute(
     size_t *hash_length);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_finish(
-    psa_hash_operation_t *operation,
+    els_pkc_hash_operation_t *operation,
     uint8_t *hash,
     size_t hash_size,
     size_t *hash_length);
@@ -395,11 +394,11 @@ const mcuxClHash_AlgorithmDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_hash
     psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_setup(
-    psa_hash_operation_t *operation,
+    els_pkc_hash_operation_t *operation,
     psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_hash_update(
-    psa_hash_operation_t *operation,
+    els_pkc_hash_operation_t *operation,
     const uint8_t *input,
     size_t input_length);
 
@@ -419,7 +418,7 @@ const mcuxClMac_ModeDescriptor_t * mcuxClPsaDriver_psa_driver_wrapper_mac_getMod
     psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(
-    psa_mac_operation_t *operation,
+    els_pkc_mac_operation_t *operation,
     uint8_t *mac,
     size_t mac_size,
     size_t *mac_length);
@@ -428,15 +427,15 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer(
     const psa_key_attributes_t *attributes,
     const uint8_t *key_buffer,
     size_t key_buffer_size,
-    psa_mac_operation_t *operation,
+    els_pkc_mac_operation_t *operation,
     psa_algorithm_t alg);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(
-    psa_mac_operation_t *operation,
+    els_pkc_mac_operation_t *operation,
     const uint8_t *input,
     size_t input_length);
 		
-psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_abort(psa_mac_operation_t *operation);
+psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_abort(els_pkc_mac_operation_t *operation);
 
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_message(
     const psa_key_attributes_t *attributes,
