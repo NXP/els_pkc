@@ -2211,6 +2211,8 @@ set.component.els_pkc:
           ui_control_default: true
           ui_category: Middleware
       cmsis_pack:
+        scr:
+          - scr.els_pkc
         vendor: NXP
         # supported: false
         pack_root:
@@ -2227,3 +2229,15 @@ set.component.els_pkc:
       - MCXN947
       - RW610
       - RW612
+scr.els_pkc:
+  section-type: scr
+  belong_to: set.component.els_pkc
+  contents:
+    Name: ELS PKC
+    Version: "${els_pkc_version}"
+    license:
+      - license.bsd-3
+    Format: source code
+    Description: ELS PKC crypto library
+    Origin: NXP (BSD-3-Clause)
+    Location: components/els_pkc
