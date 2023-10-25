@@ -187,7 +187,7 @@
 /**
  * PKC workarea size (in bytes) for #mcuxClEcc_WeierECC_GenerateDomainParams for arbitrary lengths of p and n.
  */
-#ifdef MCUXCL_FEATURE_PROJECT_REDFINCH
+#ifdef MCUXCL_FEATURE_PLATFORM_RW61X
 
 #define MCUXCLECC_WEIERECC_GENERATEDOMAINPARAMS_WAPKC_SIZE(pByteLen,nByteLen)  \
     (22u * (MCUXCLECC_ALIGN_SIZE_PKC(MCUXCLECC_MAX(pByteLen,nByteLen)) + MCUXCLECC_PKC_WORDSIZE))
