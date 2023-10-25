@@ -34,6 +34,8 @@ extern "C" {
 #include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 
+#include "els_pkc_crypto_composites.h"
+#include "els_pkc_crypto_primitives.h"
 /**
  * @defgroup mcuxClPsaDriver_Functions mcuxClPsaDriver_Functions
  * @brief Defines all internal functions of @ref mcuxClPsaDriver
