@@ -73,6 +73,8 @@ component.els_pkc.doc.mcxn:
       - MCXN547
       - MCXN946
       - MCXN947
+      - MCXN235
+      - MCXN236
 component.els_pkc.doc.rw61x:
   section-type: component
   contents:
@@ -146,6 +148,8 @@ component.els_pkc.static_lib.mcxn:
       - MCXN547
       - MCXN946
       - MCXN947
+      - MCXN235
+      - MCXN236
 component.els_pkc.static_lib.rw61x:
   section-type: component
   contents:
@@ -1866,6 +1870,8 @@ component.els_pkc:
              - MCXN547
              - MCXN946
              - MCXN947
+             - MCXN235
+             - MCXN236
         - allOf:
           - component.els_pkc.platform.rw61x
           - component.els_pkc.doc.rw61x
@@ -1925,15 +1931,22 @@ component.els_pkc.platform.mcxn:
     display_name: els_pkc_mcxn
   dependency:
     allOf:
-    - device:
-      - MCXN546
-      - MCXN547
-      - MCXN946
-      - MCXN947
     - component.els_pkc
     - component.els_pkc.random_modes_ctr
-    - component.els_pkc.trng.type_els
-    - component.els_pkc.oscca_sm3
+    - anyOf:
+        - allOf:
+          - component.els_pkc.oscca_sm3
+          - component.els_pkc.trng.type_els
+          - device:
+             - MCXN546
+             - MCXN547
+             - MCXN946
+             - MCXN947
+        - allOf:
+          - component.els_pkc.trng.type_els
+          - device:
+             - MCXN235
+             - MCXN236
 component.els_pkc.platform.rw61x_interface_files:
   section-type: component
   contents:
@@ -2306,6 +2319,8 @@ set.component.els_pkc:
       - MCXN547
       - MCXN946
       - MCXN947
+      - MCXN235
+      - MCXN236
       - RW610
       - RW612
 scr.els_pkc:

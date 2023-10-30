@@ -21,6 +21,7 @@
 #include <mcuxClSession.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
+#include <internal/mcuxClOsccaSm3_Internal_sm3.h>
 
 static const uint32_t gkmcuxClOsccaSm3_SM3_IV[8] =  {0xb0fb0e4eU,
                                                     0xe38dee4dU,
