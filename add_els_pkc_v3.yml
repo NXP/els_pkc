@@ -1219,6 +1219,14 @@ component.els_pkc.oscca_pkc:
 component.els_pkc.oscca_sm3:
   section-type: component
   contents:
+    configuration:
+      tools:
+        iar:
+          cx-flags:
+          - "--diag_suppress Pe177"
+        armgcc:
+          cc-flags:
+          - "-Wno-unused-function"
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
     cc-include:
