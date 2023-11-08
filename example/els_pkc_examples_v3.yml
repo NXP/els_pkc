@@ -302,6 +302,18 @@ els_pkc_asymmetric:
                 - --predefine="-D__stack_size__=0x1000"
               cc-flags:
               - "-Wno-tautological-constant-compare"
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
+        mcux:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
     document:
       name: els_pkc_asymmetric
       readme:
