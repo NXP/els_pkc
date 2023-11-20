@@ -191,6 +191,21 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
         /* Get the correct tag length based on the given algorithm. */
         uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
 
+        /*store initial tag*/
+        unsigned char initial_tag[16];
+
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (&initial_tag[0],
+                                                                     &ciphertext[ciphertext_length - tag_length],
+                                                                     tag_length,
+                                                                     tag_length));
+
+        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
+        {
+            return PSA_ERROR_GENERIC_ERROR;
+        }
+
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+
         *plaintext_length = 0u;
 
         /* Do the decryption */
@@ -219,7 +234,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_internal(
         }
 
         /* perform validation of correct ciphered text */
-        status = mcuxClPsaDriver_psa_driver_wrapper_aead_compare_tags( &ciphertext[ciphertext_length - tag_length], tag_for_comparison, tag_length );
+        status = mcuxClPsaDriver_psa_driver_wrapper_aead_compare_tags( initial_tag, tag_for_comparison, tag_length );
 
         if( status != PSA_SUCCESS )
         {
