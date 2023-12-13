@@ -18,8 +18,6 @@
 #ifndef MCUXCLPSADRIVER_INTERNAL_H_
 #define MCUXCLPSADRIVER_INTERNAL_H_
 
-#include <crypto_types.h>
-
 #include <internal/mcuxClHashModes_Internal.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClCipherModes_Internal_Types_Els.h>

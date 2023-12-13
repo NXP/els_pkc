@@ -22,8 +22,6 @@
 extern "C" {
 #endif
 
-#include <crypto_types.h>
-
 #include <mcuxClAeadModes.h>
 #include <mcuxClCipherModes.h>
 #include <mcuxClMacModes.h>
@@ -51,13 +49,13 @@ static inline bool key_type_is_raw_bytes( psa_key_type_t type )
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_aead_doesKeyPolicySupportAlg(const psa_key_attributes_t *attributes, psa_algorithm_t alg)
 {
-    return (PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(policy).MBEDTLS_PRIVATE(alg)) == PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg));
+    return (PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(attributes->core.policy.alg) == PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg));
 }
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_aead_isAlgSupported(const psa_key_attributes_t *attributes)
 {
-    return ((attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(type) == PSA_KEY_TYPE_AES)
-                && (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(policy).MBEDTLS_PRIVATE(alg))));
+    return ((attributes->core.type == PSA_KEY_TYPE_AES)
+                && (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(attributes->core.policy.alg)));
 }
 
 static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectModeEnc(const psa_algorithm_t alg)
@@ -84,10 +82,10 @@ static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectMo
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(const psa_key_attributes_t *attributes)
 {
-    if( PSA_KEY_TYPE_AES == attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(type)
-               && (   PSA_ALG_ECB_NO_PADDING == attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(policy).MBEDTLS_PRIVATE(alg)
-                   || PSA_ALG_CBC_NO_PADDING == attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(policy).MBEDTLS_PRIVATE(alg)
-                   || PSA_ALG_CTR            == attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(policy).MBEDTLS_PRIVATE(alg) ))
+    if( PSA_KEY_TYPE_AES == attributes->core.type
+               && (   PSA_ALG_ECB_NO_PADDING == attributes->core.policy.alg
+                   || PSA_ALG_CBC_NO_PADDING == attributes->core.policy.alg
+                   || PSA_ALG_CTR            == attributes->core.policy.alg ))
     {
         return true;
     }
@@ -97,7 +95,7 @@ static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(cons
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_doesKeyPolicySupportAlg(const psa_key_attributes_t *attributes, psa_algorithm_t alg)
 {
-    return (attributes->MBEDTLS_PRIVATE(core).MBEDTLS_PRIVATE(policy).MBEDTLS_PRIVATE(alg) == alg);
+    return (attributes->core.policy.alg == alg);
 }
 
 static inline uint8_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectEnc(const psa_algorithm_t alg,
