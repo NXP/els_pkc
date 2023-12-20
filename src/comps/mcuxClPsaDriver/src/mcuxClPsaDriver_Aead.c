@@ -29,13 +29,6 @@
 #include <internal/mcuxClPsaDriver_Internal.h>
 
 
-static inline bool mcuxClPsaDriver_psa_driver_wrapper_aead_algNeedsLengthsSet(const psa_algorithm_t alg)
-{
-    return ((PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg) == PSA_ALG_CCM)
-                || (PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg) == PSA_ALG_CCM_STAR_NO_TAG));
-}
-
-
 static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_aead_checkTagLength(const psa_algorithm_t alg)
 {
     uint32_t tag_length = PSA_ALG_AEAD_GET_TAG_LENGTH(alg);
