@@ -383,7 +383,10 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     const mcuxClMac_ModeDescriptor_t * mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
-    if (mode == NULL)
+
+    /*Special case added, where CMAC with key size 192 bits is not supported by ELS, check added to do SW fallback*/
+    if (mode == NULL ||
+        (mcuxClMac_Mode_CMAC == mode && 24u == pKey->location.length))
     {
         return PSA_ERROR_NOT_SUPPORTED;
     }
