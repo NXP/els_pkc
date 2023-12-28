@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# Copyright (c) 2023 NXP.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+#-------------------------------------------------------------------------------
 
 add_library(McuxElsPkc) 
 
@@ -24,6 +29,14 @@ target_include_directories(McuxElsPkc
         # for psa driver wrapper
         ../../../../../../crypto/mbedtls/library
 )
+
+if(CONFIG_BUILD_WITH_TFM)
+    target_compile_options(
+        McuxElsPkc
+        PUBLIC
+            ${COMPILER_CP_FLAG}
+    )
+endif()
 
 if(CONFIG_SOC_SERIES_RW6XX)
 

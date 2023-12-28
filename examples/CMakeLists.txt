@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# Copyright (c) 2023 NXP.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+#-------------------------------------------------------------------------------
 #Description: Component els_pkc_test; user_visible: False
 include_guard(GLOBAL)
 message("component_els_pkc_examples component is included.")
