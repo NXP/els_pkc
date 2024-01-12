@@ -22,7 +22,9 @@ component.els_pkc.doc.lpc:
     - source: doc/lpc/**
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -31,6 +33,7 @@ component.els_pkc.doc.lpc:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: doc
+      csub: doc_lpc
     display_name: els_pkc.doc.lpc
   dependency:
     allOf:
@@ -56,7 +59,9 @@ component.els_pkc.doc.mcxn:
     - source: doc/mcxn/**
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -65,6 +70,7 @@ component.els_pkc.doc.mcxn:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: doc
+      csub: doc_mcxn
     display_name: els_pkc.doc.mcxn
   dependency:
     allOf:
@@ -95,7 +101,9 @@ component.els_pkc.doc.rw61x:
     - source: doc/rw61x/**
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -104,6 +112,7 @@ component.els_pkc.doc.rw61x:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: doc
+      csub: doc_rw61x
     display_name: els_pkc.doc.rw61x
   dependency:
     allOf:
@@ -130,7 +139,9 @@ component.els_pkc.static_lib.mcxn:
     - source: static_library/mcxn/libclns.stripped.a
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -140,6 +151,7 @@ component.els_pkc.static_lib.mcxn:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: static_lib_mcxn
+      csub: mcxn
     display_name: els_pkc static_lib MCXN
   dependency:
     allOf:
@@ -174,7 +186,9 @@ component.els_pkc.static_lib.rw61x:
       compilers: armclang
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -210,7 +224,9 @@ component.els_pkc.static_lib.lpc:
     - source: static_library/lpc/libclns.stripped.a
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -239,7 +255,9 @@ component.els_pkc.common:
     - source: src/comps/common/inc/mcuxClOscca_Memory.h
     - source: src/comps/common/inc/mcuxClOscca_PlatformTypes.h
     - source: src/comps/common/inc/mcuxClOscca_Types.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -271,7 +289,9 @@ component.els_pkc.aead:
     - source: src/comps/mcuxClAead/inc/mcuxClAead_Types.h
     - source: src/comps/mcuxClAead/inc/internal/mcuxClAead_Internal_Ctx.h
     - source: src/comps/mcuxClAead/inc/internal/mcuxClAead_Internal_Descriptor.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -313,7 +333,9 @@ component.els_pkc.aead_modes:
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Types.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Internal.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Internal_Constants.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -345,7 +367,9 @@ component.els_pkc.aes:
     - source: src/comps/mcuxClAes/inc/internal/mcuxClAes_Internal_Constants.h
     - source: src/comps/mcuxClAes/inc/internal/mcuxClAes_Internal_Functions.h
     - source: src/comps/mcuxClAes/inc/internal/mcuxClAes_Wa.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -378,7 +402,9 @@ component.els_pkc.cipher:
     - source: src/comps/mcuxClCipher/inc/internal/mcuxClCipher_Internal_Constants.h
     - source: src/comps/mcuxClCipher/inc/internal/mcuxClCipher_Internal_Functions.h
     - source: src/comps/mcuxClCipher/inc/internal/mcuxClCipher_Internal_Types.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -426,7 +452,9 @@ component.els_pkc.cipher_modes:
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal.h
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Internal_Constants.h
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Wa.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -454,7 +482,9 @@ component.els_pkc.core:
     - source: src/comps/mcuxClCore/inc/mcuxClCore_FunctionIdentifiers.h
     - source: src/comps/mcuxClCore/inc/mcuxClCore_Platform.h
     - source: src/comps/mcuxClCore/inc/mcuxClCore_Toolchain.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -478,7 +508,9 @@ component.els_pkc.data_integrity:
     - source: src/comps/mcuxCsslDataIntegrity/inc/mcuxCsslDataIntegrity_Cfg.h
     - source: src/comps/mcuxCsslDataIntegrity/inc/mcuxCsslDataIntegrity_Impl.h
     - source: src/comps/mcuxCsslDataIntegrity/inc/mcuxCsslDataIntegrity_None.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -659,7 +691,9 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_DecodePoint_FUP.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams.h
     - source: src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierECC_Internal_GenerateDomainParams_FUP.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -703,7 +737,9 @@ component.els_pkc.els_header_only:
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_SfrAccess.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -725,7 +761,9 @@ component.els_pkc.els_common:
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Common.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Common.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -750,7 +788,9 @@ component.els_pkc.standalone_keyManagement:
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -775,7 +815,9 @@ component.els_pkc.standalone_gdet:
     files:
     - source: src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
     - source: src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -808,7 +850,9 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hmac.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Rng.c
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -853,7 +897,9 @@ component.els_pkc.hash:
 
     - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal.h
     - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal_Memory.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -890,7 +936,9 @@ component.els_pkc.hashmodes:
     - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal.h
     - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_els_sha2.h
     - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_Memory.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -926,7 +974,9 @@ component.els_pkc.key:
     - source: src/comps/mcuxClKey/inc/internal/mcuxClKey_Internal.h
     - source: src/comps/mcuxClKey/inc/internal/mcuxClKey_Protection_Internal.h
     - source: src/comps/mcuxClKey/inc/internal/mcuxClKey_Types_Internal.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -964,7 +1014,9 @@ component.els_pkc.mac:
     - source: src/comps/mcuxClMac/inc/internal/mcuxClMac_Ctx.h
     - source: src/comps/mcuxClMac/inc/internal/mcuxClMac_Internal_Types.h
     - source: src/comps/mcuxClMac/inc/internal/mcuxClMac_Internal_Constants.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1010,7 +1062,9 @@ component.els_pkc.hmac:
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Macros.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Memory.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Types.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1057,7 +1111,9 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Types.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Internal_Memory.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Wa.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1114,7 +1170,9 @@ component.els_pkc.math:
     - source: src/comps/mcuxClMath/inc/internal/mcuxClMath_NDash_FUP.h
     - source: src/comps/mcuxClMath/inc/internal/mcuxClMath_QDash_FUP.h
     - source: src/comps/mcuxClMath/inc/internal/mcuxClMath_SecModExp_FUP.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1166,7 +1224,9 @@ component.els_pkc.memory:
     - source: src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Compare_asm.h
     - source: src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Copy_asm.h
     - source: src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_SecureCompare.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1202,7 +1262,9 @@ component.els_pkc.oscca_pkc:
     - source: src/comps/mcuxClOsccaPkc/inc/internal/mcuxClOsccaPkc_Macros.h
     - source: src/comps/mcuxClOsccaPkc/inc/internal/mcuxClOsccaPkc_Operations.h
     - source: src/comps/mcuxClOsccaPkc/inc/internal/mcuxClOsccaPkc_SfrAccess.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1244,7 +1306,9 @@ component.els_pkc.oscca_sm3:
     - source: src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal.h
     - source: src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal_sm3.h
     - source: src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_SfrAccess.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1275,7 +1339,9 @@ component.els_pkc.padding:
     - source: src/comps/mcuxClPadding/inc/internal/mcuxClPadding_Functions_Internal.h
     - source: src/comps/mcuxClPadding/inc/internal/mcuxClPadding_Internal.h
     - source: src/comps/mcuxClPadding/inc/internal/mcuxClPadding_Types_Internal.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1310,7 +1376,9 @@ component.els_pkc.pkc:
     - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_SfrAccess.h
     - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Inline_Functions.h
     - source: src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Resource.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1342,7 +1410,9 @@ component.els_pkc.prng:
     - source: src/comps/mcuxClPrng/inc/internal/mcuxClPrng_Internal_ELS.h
     - source: src/comps/mcuxClPrng/inc/internal/mcuxClPrng_Internal_Functions.h
     - source: src/comps/mcuxClPrng/inc/internal/mcuxClPrng_Internal_Types.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1388,7 +1458,9 @@ component.els_pkc.psa_driver:
     - source: src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Internal.h
     - source: src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Macros.h
     - source: src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Types.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1420,7 +1492,9 @@ component.els_pkc.random:
     - source: src/comps/mcuxClRandom/inc/mcuxClRandom_Types.h
     - source: src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Types.h
     - source: src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Memory.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1471,7 +1545,9 @@ component.els_pkc.random_modes:
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PatchMode.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PrDisabled.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_TestMode.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1504,7 +1580,9 @@ component.els_pkc.random_modes_ctr:
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1589,7 +1667,9 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPQDistance_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPrimeCandidate_FUP.h
     - source: src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_PkcTypes.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1624,7 +1704,9 @@ component.els_pkc.session:
     - source: src/comps/mcuxClSession/inc/mcuxClSession_Types.h
     - source: src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal.h
     - source: src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal_Functions.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1661,7 +1743,9 @@ component.els_pkc.trng:
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Types.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1689,7 +1773,9 @@ component.els_pkc.trng.type_els:
     files:
     - source: src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
     - source: src/comps/mcuxClTrng/src/mcuxClTrng_ELS.c
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1717,7 +1803,9 @@ component.els_pkc.trng.type_rng4:
     - source: src/comps/mcuxClTrng/src/mcuxClTrng_SA_TRNG.c
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1742,7 +1830,9 @@ component.els_pkc.pre_processor:
     files:
     - source: src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslAnalysis.h
     - source: src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslCPreProcessor.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1768,7 +1858,9 @@ component.els_pkc.flow_protection:
     - source: src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_Impl.h
     - source: src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Common.h
     - source: src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Local.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1793,7 +1885,9 @@ component.els_pkc.param_integrity:
     files:
     - source: src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
     - source: src/comps/mcuxCsslParamIntegrity/inc/mcuxCsslParamIntegrity.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1823,7 +1917,9 @@ component.els_pkc.secure_counter:
     - source: src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_Impl.h
     - source: src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_None.h
     - source: src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_SW_Local.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1846,7 +1942,9 @@ component.els_pkc:
     files:
     - source: src/inc/mcuxCl_clns.h
     - source: src/inc/impl/mcuxCl_clns_impl.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1897,7 +1995,9 @@ component.els_pkc.toolchain:
     - repo_relative_path: src/compiler
     files:
     - source: /src/compiler/mcuxClToolchain.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1927,7 +2027,9 @@ component.els_pkc.platform.mcxn:
     - source: src/platforms/mcxn/mcux_els.h
     - source: src/platforms/mcxn/mcux_pkc.c
     - source: src/platforms/mcxn/mcux_pkc.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1974,7 +2076,9 @@ component.els_pkc.platform.rw61x_interface_files:
     - source: src/platforms/rw61x/mcux_els.h
     - source: src/platforms/rw61x/mcux_pkc.c
     - source: src/platforms/rw61x/mcux_pkc.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -1984,6 +2088,7 @@ component.els_pkc.platform.rw61x_interface_files:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_platform
+      csub: rw61x_interface_files
     display_name: els_pkc_rw61x_interface_files
   dependency:
     allOf:
@@ -2002,7 +2107,9 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     - source: src/platforms/rw61x/readme.txt
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -2012,6 +2119,7 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_platform
+      csub: rw61x_clib_gdet_sensor
     display_name: els_pkc_rw61x_minimal_interface
   dependency:
     allOf:
@@ -2035,7 +2143,9 @@ component.els_pkc.platform.rw61x:
     - source: src/platforms/rw61x/readme.txt
       hidden: true
       exclude: true
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -2045,6 +2155,7 @@ component.els_pkc.platform.rw61x:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_platform
+      csub: rw61x
     display_name: els_pkc_rw61x
   dependency:
     allOf:
@@ -2075,7 +2186,9 @@ component.els_pkc.platform.lpc:
     - source: src/platforms/lpc/mcux_els.h
     - source: src/platforms/lpc/mcux_pkc.c
     - source: src/platforms/lpc/mcux_pkc.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -2084,6 +2197,7 @@ component.els_pkc.platform.lpc:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_platform
+      csub: lpc
     display_name: els_pkc_lpc
   dependency:
     allOf:
@@ -2163,7 +2277,9 @@ component.els_pkc.examples:
     - source: src/comps/mcuxClExample/inc/mcuxClExample_RFC3394_Helper.h
     - source: src/comps/mcuxClExample/inc/mcuxClExample_RNG_Helper.h
     - source: src/comps/mcuxClExample/inc/mcuxClExample_Session_Helper.h
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -2202,7 +2318,9 @@ component.els_pkc.examples_rw:
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c
     - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c
     # - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_PTG3_example.c
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -2212,6 +2330,7 @@ component.els_pkc.examples_rw:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_examples
+      csub: rw
     display_name: els_pkc_test_rw
   dependency:
     allOf:
@@ -2266,7 +2385,9 @@ component.els_pkc.psa_driver_examples:
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_truncated_mac_oneshot_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_ecdsa_keygen_oracleMemory_sign_verify_hash_example.c
     - source: examples/mcuxClPsaDriver/mcuxClPsaDriver_ecdsa_keygen_oracleS50_sign_verify_hash_example.c
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     version: "${els_pkc_version}"
     type: software_component
@@ -2276,6 +2397,7 @@ component.els_pkc.psa_driver_examples:
     taxonomy:
       belong_to: els_pkc_main
       cgroup: els_pkc_examples
+      csub: psa_driver_examples
     display_name: els_pkc psa_driver examples
   dependency:
     allOf:
@@ -2289,7 +2411,9 @@ component.els_pkc.psa_driver_examples:
     - component.els_pkc.psa_driver
 set.component.els_pkc:
   section-type: set
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   section_info:
     fixed_id: nxp_els_pkc
     version: "${els_pkc_version}"
@@ -2332,7 +2456,9 @@ set.component.els_pkc:
       - RW612
 scr.els_pkc:
   section-type: scr
-  belong_to: set.component.els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
   contents:
     Name: ELS PKC
     Version: "${els_pkc_version}"
