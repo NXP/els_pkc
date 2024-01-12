@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -233,7 +233,10 @@ static mcuxClEcc_DomainParam_t get_domain_param_by_mode(uint32_t bit_length, boo
                                              .pN   = data_from_ram ? s_BN_P521_N : s_BN_P521_N_Flash,
                                              .misc = mcuxClEcc_DomainParam_misc_Pack(nByteLength, pByteLength)};
     }
-    return (mcuxClEcc_DomainParam_t){.pA = NULL, .pB = NULL, .pG = NULL, .pP = NULL, .pN = NULL, .misc = NULL};
+    
+    mcuxClEcc_DomainParam_t default_return;
+    default_return.pA = NULL;
+    return default_return;
 }
 
 bool exec_ecc_weier_key_gen(char *data_from, uint32_t bit_length)

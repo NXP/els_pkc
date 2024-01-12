@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NxP
+ * Copyright 2024 NXP
  * All rights reserved.
  *
  * SPDx-License-Identifier: BSD-3-Clause
@@ -950,7 +950,10 @@ static mcuxClEcc_DomainParam_t get_domain_param_by_mode(uint32_t bit_length, boo
                                              .pN   = data_from_ram ? s_BN_P521_N : s_BN_P521_N_Flash,
                                              .misc = mcuxClEcc_DomainParam_misc_Pack(nByteLength, pByteLength)};
     }
-    return (mcuxClEcc_DomainParam_t){.pA = NULL, .pB = NULL, .pG = NULL, .pP = NULL, .pN = NULL, .misc = NULL};
+    
+    mcuxClEcc_DomainParam_t default_return;
+    default_return.pA = NULL;
+    return default_return;
 }
 
 static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
@@ -1018,8 +1021,9 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                                                 mcuxClEcc_Sign_Param_optLen_Pack(64U)};
         }
     }
-    return (mcuxClEcc_Sign_Param_t){
-        .curveParam = NULL, .pHash = NULL, .pPrivateKey = NULL, .pSignature = NULL, .optLen = NULL};
+    mcuxClEcc_Sign_Param_t default_return;
+    default_return.pSignature = NULL;
+    return default_return;
 }
 
 bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint32_t bit_length)

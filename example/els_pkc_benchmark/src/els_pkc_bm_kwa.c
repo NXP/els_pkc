@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -48,7 +48,7 @@ bool exec_rfc3394_wrap(char *data_from)
         /*const uint8_t * pInput         */ s_KeyToWrap,         /*  pointer to key to be wrapped */
         /*size_t inputLength,            */ sizeof(s_KeyToWrap), /*  length of key to be wrapped in bytes */
         /*const uint8_t * pKek_in        */ data_from_ram ? s_Kek : s_KekFlash, /*  pointer to key wrapping key */
-        /*mcuxClEls_KeyIndex_t keyIdx    */ NULL,                               /*  keyslot index of key wrapping key */
+        /*mcuxClEls_KeyIndex_t keyIdx    */ 0U,                               /*  keyslot index of key wrapping key */
         /*uint8_t extkey                 */ 1U, /*  0-use key stored internally at keyIdx as wrapping key, 1-use
                                                    external pKek_in as wrapping key */
         /*size_t kekLength               */ data_from_ram ? sizeof(s_Kek) : sizeof(s_KekFlash), /*  length of key
@@ -74,7 +74,7 @@ bool exec_rfc3394_unwrap(char *data_from)
         s_OutputBuffer,                     //< pointer to rfc3394 blob to be wrapped
         sizeof(s_OutputBuffer),             //< length of key the rfc3394 blob in bytes
         data_from_ram ? s_Kek : s_KekFlash, //< pointer to key wrapping key
-        NULL,                               //< keyslot index of key wrapping key
+        0U,                               //< keyslot index of key wrapping key
         1, //< 0-use key stored internally at keyIdx as wrapping key, 1-use external pKek_in as wrapping key
         data_from_ram ? sizeof(s_Kek) : sizeof(s_KekFlash), //< length of key wrapping key in bytes
         outputBuffer //< pointer to output buffer, size has to inputLength - 8 bytes, contents will be
