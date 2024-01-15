@@ -396,7 +396,7 @@ els_pkc_fips_st:
       name: els_pkc_fips_st
       readme:
       - boards/${board}/els_pkc_examples/els_pkc_fips_st/board.readme
-      - components/els_pkc/example/els_pkc_fips_st/els_pkc_fips_st.readme
+      - components/els_pkc/example/fips_self_test/fips_self_test.readme
       category: els_pkc_examples
       brief: This application is executing tests on els_pkc cryptographic algorithms along with the NIST Cryptographic Algorithm Validation Program (CAVP).
     project-root-path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
@@ -419,73 +419,62 @@ els_pkc_fips_st:
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/src/symmetric_key_tests.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/symmetric_key_tests.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/src/asymmetric_key_tests.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/asymmetric_key_tests.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/src/hash_algorithm_tests.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/hash_algorithm_tests.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/src/hmac_test.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/hmac_test.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/fips_self_test_util.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/CBCVarKey128.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/SHA256ShortMsg.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/SHA384ShortMsg.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/SHA512ShortMsg.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/HMAC.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/CMACGenAES256.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/RSASigGen15_186_3.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/fips_self_test/inc/test_vectors/RSASigVer15_186_3.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
           project_path: source
+        - source: boards/${board}/els_pkc_examples/els_pkc_fips_st/pin_mux.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
+          project_path: board
+        - source: boards/${board}/els_pkc_examples/els_pkc_fips_st/pin_mux.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
+          project_path: board
       pinset:
         required: true
         cc-include:
@@ -531,83 +520,63 @@ els_pkc_benchmark:
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_symmetric.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_symmetric.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_asymmetric.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_asymmetric.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_hash.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_hash.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_mac.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_mac.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_drbg.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_drbg.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_kdf.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_kdf.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_dh.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_dh.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_kwa.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_kwa.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_benchmark_utils.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_benchmark_utils.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/src/els_pkc_bm_key_gen.c
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_benchmark/inc/els_pkc_bm_key_gen.h
-          merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
           project_path: source
         - source: boards/${board}/els_pkc_examples/els_pkc_benchmark/pin_mux.c
