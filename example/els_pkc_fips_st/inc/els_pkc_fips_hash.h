@@ -5,12 +5,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _HASH_ALGORITHM_TESTS_H_
-#define _HASH_ALGORITHM_TESTS_H_
-#include "SHA256ShortMsg.h"
-#include "SHA384ShortMsg.h"
-#include "SHA512ShortMsg.h"
-#include "fips_self_test_util.h"
+#ifndef _ELS_PKC_FIPS_HASH_H_
+#define _ELS_PKC_FIPS_HASH_H_
+
+#include "els_pkc_fips_util.h"
 #include <mcuxClHash.h>
 #include <mcuxClHashModes.h>
 
@@ -25,4 +23,4 @@
 #*/
 bool execute_sha_kat(void);
 
-#endif /* _HASH_ALGORITHM_TESTS_H_ */
+#endif /* _ELS_PKC_FIPS_HASH_H_ */

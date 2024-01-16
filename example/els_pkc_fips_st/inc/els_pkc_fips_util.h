@@ -5,11 +5,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _FIPS_SELF_TEST_UTIL_H_
-#define _FIPS_SELF_TEST_UTIL_H_
+#ifndef _ELS_PKC_FIPS_UTIL_H_
+#define _ELS_PKC_FIPS_UTIL_H_
 
 #include "fsl_device_registers.h"
-#include "fips_self_test_util.h"
 #include "fsl_debug_console.h"
 #include <board.h>
 #include <mcuxClAes.h>                      /* Interface to AES-related definitions and types */
@@ -44,4 +43,4 @@
         PRINTF("\r\n");                                                                           \
     } while (0U);
 
-#endif /* _FIPS_SELF_TEST_UTIL_H_ */
+#endif /* _ELS_PKC_FIPS_UTIL_H_ */

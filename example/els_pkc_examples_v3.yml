@@ -396,7 +396,7 @@ els_pkc_fips_st:
       name: els_pkc_fips_st
       readme:
       - boards/${board}/els_pkc_examples/els_pkc_fips_st/board.readme
-      - components/els_pkc/example/fips_self_test/fips_self_test.readme
+      - components/els_pkc/example/els_pkc_fips_st/els_pkc_fips_st.readme
       category: els_pkc_examples
       brief: This application is executing tests on els_pkc cryptographic algorithms along with the NIST Cryptographic Algorithm Validation Program (CAVP).
     project-root-path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
@@ -404,70 +404,73 @@ els_pkc_fips_st:
       demo:
         required: true
         cc-include:
-        - path: boards/${board}/els_pkc_examples/fips_self_test
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - path: boards/${board}/els_pkc_examples/els_pkc_fips_st
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: board
-        - path: components/els_pkc/example/fips_self_test/inc
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - path: components/els_pkc/example/els_pkc_fips_st/inc
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: main
-        - path: components/els_pkc/example/fips_self_test/inc/test_vectors
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - path: components/els_pkc/example/els_pkc_fips_st/inc/test_vectors
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: main
         files:
-        - source: components/els_pkc/example/fips_self_test/src/fips_self_test.c
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_st.c
           merge-to-main: main
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/src/symmetric_key_tests.c
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_symmetric.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/symmetric_key_tests.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_symmetric.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/src/asymmetric_key_tests.c
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_asymmetric.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/asymmetric_key_tests.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_asymmetric.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/src/hash_algorithm_tests.c
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_hash.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/hash_algorithm_tests.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_hash.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/src/hmac_test.c
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_hmac.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/hmac_test.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_hmac.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/fips_self_test_util.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_drbg.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/CBCVarKey128.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_drbg.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/SHA256ShortMsg.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_key_gen.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/SHA384ShortMsg.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_key_gen.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/SHA512ShortMsg.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_kdf.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/HMAC.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_kdf.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/CMACGenAES256.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_ecdh.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/RSASigGen15_186_3.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_ecdh.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/fips_self_test/inc/test_vectors/RSASigVer15_186_3.h
-          package_path: boards/${board}/els_pkc_examples/fips_self_test/${multicore_foldername}
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_util.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
+          project_path: source
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_config.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
         - source: boards/${board}/els_pkc_examples/els_pkc_fips_st/pin_mux.c
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}

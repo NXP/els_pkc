@@ -5,13 +5,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _ASYMMETRIC_KEY_TESTS_H_
-#define _ASYMMETRIC_KEY_TESTS_H_
+#ifndef _ELS_PKC_FIPS_ASYMMETRIC_H_
+#define _ELS_PKC_FIPS_ASYMMETRIC_H_
 
-#include "RSASigGen15_186_3.h"
-#include "RSASigVer15_186_3.h"
-#include "fips_self_test_util.h"
-
+#include "els_pkc_fips_util.h"
 #include <mcuxClRsa.h>
 #include <mcuxClPkc_Types.h>
 
@@ -26,4 +23,4 @@
  */
 bool execute_rsa_kat(void);
 
-#endif /* _ASYMMETRIC_KEY_TESTS_H_ */
+#endif /* _ELS_PKC_FIPS_ASYMMETRIC_H_ */

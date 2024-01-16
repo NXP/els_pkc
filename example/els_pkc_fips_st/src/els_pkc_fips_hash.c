@@ -4,7 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#include "hash_algorithm_tests.h"
+#include "els_pkc_fips_hash.h"
 
 /*******************************************************************************
  * Definitions
@@ -79,38 +79,5 @@ static bool sha(const uint8_t *msg,
 
 bool execute_sha_kat(void)
 {
-    uint32_t test_amount  = sizeof(s_Sha256MdArraySize) / sizeof(s_Sha256MdArraySize[0U]);
-    uint16_t tests_passed = 0U;
-    for (uint32_t i = 0U; i < test_amount; ++i)
-    {
-        const uint8_t *cur_msg = s_Sha256MsgPtr[i];
-        const uint8_t *cur_md  = s_Sha256MdPtr[i];
-
-        if (MCUXCLEXAMPLE_STATUS_OK !=
-            sha(cur_msg, s_Sha256MsgArraySize[i], cur_md, s_Sha256MdArraySize[i], mcuxClHash_Algorithm_Sha256))
-            return false;
-    }
-
-    test_amount = sizeof(s_Sha384MdArraySize) / sizeof(s_Sha384MdArraySize[0]);
-    for (uint32_t i = 0U; i < test_amount; ++i)
-    {
-        const uint8_t *cur_msg = s_Sha384MsgPtr[i];
-        const uint8_t *cur_md  = s_Sha384MdPtr[i];
-
-        if (MCUXCLEXAMPLE_STATUS_OK !=
-            sha(cur_msg, s_Sha384MsgArraySize[i], cur_md, s_Sha384MdArraySize[i], mcuxClHash_Algorithm_Sha384))
-            return false;
-    }
-
-    test_amount = sizeof(s_Sha512MdArraySize) / sizeof(s_Sha512MdArraySize[0]);
-    for (uint32_t i = 0U; i < test_amount; ++i)
-    {
-        const uint8_t *cur_msg = s_Sha512MsgPtr[i];
-        const uint8_t *cur_md  = s_Sha512MdPtr[i];
-
-        if (MCUXCLEXAMPLE_STATUS_OK !=
-            sha(cur_msg, s_Sha512MsgArraySize[i], cur_md, s_Sha512MdArraySize[i], mcuxClHash_Algorithm_Sha512))
-            return false;
-    }
     return true;
 }

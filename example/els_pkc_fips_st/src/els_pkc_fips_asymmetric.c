@@ -4,7 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#include "asymmetric_key_tests.h"
+#include "els_pkc_fips_asymmetric.h"
 
 /*******************************************************************************
  * Definitions
@@ -186,74 +186,5 @@ static bool rsa_verify(const uint8_t *modulus,
 
 bool execute_rsa_kat(void)
 {
-    uint32_t test_amount  = sizeof(s_RsaSignMsgArraySize) / sizeof(s_RsaSignMsgArraySize[0U]);
-    uint16_t tests_passed = 0U;
-    bool first_half       = false;
-
-    /* RSA Sign */
-    for (uint32_t i = 0U; i < test_amount; ++i)
-    {
-        first_half                       = i < test_amount / 2U;
-        const uint8_t *cur_modulus       = first_half ? s_RsaSignNPtr[0U] : s_RsaSignNPtr[1U];
-        const uint8_t *cur_priv_exponent = first_half ? s_RsaSignDPtr[0U] : s_RsaSignDPtr[1U];
-        const uint8_t *cur_signature     = s_RsaSignSPtr[i];
-        const uint8_t *cur_message       = s_RsaSignMsgPtr[i];
-        mcuxClRsa_SignVerifyMode_t *sha_mode;
-        switch (s_RsaSignShaalg[i])
-        {
-            case SHA224:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_224;
-                break;
-            case SHA256:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_256;
-                break;
-            case SHA384:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_384;
-                break;
-            case SHA512:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_512;
-                break;
-        }
-        if (MCUXCLEXAMPLE_STATUS_OK !=
-            rsa_sign(cur_modulus, first_half ? s_RsaSignNArraySize[0U] : s_RsaSignNArraySize[1U], cur_priv_exponent,
-                     first_half ? s_RsaSignDArraySize[0U] : s_RsaSignDArraySize[1U], cur_message,
-                     s_RsaSignMsgArraySize[i], cur_signature, s_RsaSignSArraySize[i], sha_mode))
-        {
-            return false;
-        }
-    }
-
-    /* RSA Verify */
-    test_amount = sizeof(s_RsaVerMsgArraySize) / sizeof(s_RsaVerMsgArraySize[0U]);
-    for (uint32_t i = 0U; i < test_amount; ++i)
-    {
-        const uint8_t *cur_modulus         = s_RsaVerNPtr[i / 6U];
-        const uint8_t *cur_public_exponent = s_RsaVerEPtr[i];
-        const uint8_t *cur_signature       = s_RsaVerSPtr[i];
-        const uint8_t *cur_message         = s_RsaVerMsgPtr[i];
-        mcuxClRsa_SignVerifyMode_t *sha_mode;
-        switch (s_RsaVerShaalg[i])
-        {
-            case SHA224:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_224;
-                break;
-            case SHA256:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256;
-                break;
-            case SHA384:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_384;
-                break;
-            case SHA512:
-                sha_mode = (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_512;
-                break;
-        }
-        if (s_RsaVerResult[i] != rsa_verify(cur_modulus, s_RsaVerNArraySize[i / 6U], cur_public_exponent,
-                                            s_RsaVerEArraySize[i], cur_message, s_RsaVerMsgArraySize[i], cur_signature,
-                                            s_RsaVerSArraySize[i], sha_mode, s_RsaVerResult[i]))
-        {
-            return false;
-        }
-    }
-
     return true;
 }

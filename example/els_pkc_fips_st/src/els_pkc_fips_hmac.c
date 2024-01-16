@@ -4,7 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#include "hmac_test.h"
+#include "els_pkc_fips_hmac.h"
 
 /*******************************************************************************
  * Definitions
@@ -160,37 +160,5 @@ static bool hmac(const uint8_t *plain_key,
 
 bool execute_hmac_kat(void)
 {
-    uint32_t test_amount  = sizeof(s_HmacMsgArraySize) / sizeof(s_HmacMsgArraySize[0U]);
-    uint16_t tests_passed = 0U;
-    for (uint32_t i = 0; i < test_amount; ++i)
-    {
-        const uint8_t *cur_key   = s_HmacKeyPtr[i];
-        const uint8_t *cur_plain = s_HmacMsgPtr[i];
-        const uint8_t *cur_mac   = s_HmacMacPtr[i];
-
-        if (64U == s_HmacMacArraySize[i])
-        {
-            if (MCUXCLEXAMPLE_STATUS_OK == hmac(cur_key, s_HmacKeyArraySize[i], cur_plain, s_HmacMsgArraySize[i],
-                                                cur_mac, s_HmacMacArraySize[i], mcuxClHash_Algorithm_Sha512))
-            {
-                ++tests_passed;
-                PRINTF("HMAC PASSED with key length %d, tests passed == %d of total %d tests\r\n",
-                       s_HmacKeyArraySize[i], tests_passed, test_amount);
-            }
-            else
-            {
-                PRINTF("------------------------\r\n");
-                PRINTF("KAT MAC == \r\n");
-                PRINT_ARRAY(cur_mac, s_HmacMacArraySize[i]);
-                PRINTF("KEY == \r\n");
-                PRINT_ARRAY(cur_key, s_HmacKeyArraySize[i]);
-                PRINTF("MSG == with size == %d\r\n", s_HmacMsgArraySize[i]);
-                PRINT_ARRAY(cur_plain, s_HmacMsgArraySize[i]);
-                PRINTF("------------------------\r\n\n\n");
-                PRINTF("HMAC 512 FAILED\r\n");
-            }
-        }
-    }
-    PRINTF("\r\n");
     return true;
 }

@@ -5,10 +5,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #include "app.h"
-#include "symmetric_key_tests.h"
-#include "asymmetric_key_tests.h"
-#include "hash_algorithm_tests.h"
-#include "hmac_test.h"
+#include "els_pkc_fips_symmetric.h"
+#include "els_pkc_fips_asymmetric.h"
+#include "els_pkc_fips_hash.h"
+#include "els_pkc_fips_hmac.h"
+#include "els_pkc_fips_config.h"
 #include "mcux_els.h" /* Power Down Wake-up Init */
 #include "mcux_pkc.h" /* Power Down Wake-up Init */
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0U)
@@ -30,6 +31,9 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
+/*!
+ * @brief Initialize crypto hardware
+ */
 static inline void CRYPTO_InitHardware(void)
 {
     status_t status;
@@ -46,7 +50,7 @@ static inline void CRYPTO_InitHardware(void)
         return;
     }
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0U)
-    /* Initilize the TRNG driver */
+    /* Initialize the TRNG driver */
     {
         trng_config_t trng_config;
         /* Get default TRNG configs*/
@@ -56,6 +60,21 @@ static inline void CRYPTO_InitHardware(void)
         TRNG_Init(TRNG, &trng_config);
     }
 #endif /* FSL_FEATURE_SOC_TRNG_COUNT */
+}
+
+/*!
+ * @brief Function to execute all KATs based on the user options
+ * defined in the els_pkc_fips_config.h file.
+ */
+static inline void execute_kat()
+{
+    for (size_t i = 0; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0]); ++i)
+    {
+        if (s_UserOptions & s_AlgorithmMappings[i].option)
+        {
+            s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option);
+        }
+    }
 }
 
 /*!
@@ -87,50 +106,7 @@ int main(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Execute CBC KAT */
-    if (!execute_cbc_kat())
-    {
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
-        PRINTF("[Error] CBC KAT failed\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-        return 1;
-    }
-
-    /* Execute SHA KAT */
-    if (!execute_sha_kat())
-    {
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
-        PRINTF("[Error] SHA KAT failed\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-        return 1;
-    }
-
-    /* Execute CMAC KAT */
-    if (!execute_cmac_kat())
-    {
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
-        PRINTF("[Error] CMAC KAT failed\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-        return 1;
-    }
-
-    /* Execute RSA KAT */
-    if (!execute_rsa_kat())
-    {
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
-        PRINTF("[Error] RSA SIGN/VERIFY KAT failed\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-        return 1;
-    }
-
-    /* Execute HMAC KAT */
-    if (0/*execute_hmac_kat()*/)
-    {
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
-        PRINTF("[Error] HMAC KAT failed\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-        return 1;
-    }
+    execute_kat();
 
     /* Disable the ELS */
     if (!mcuxClExample_Els_Disable())
