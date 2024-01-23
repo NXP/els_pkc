@@ -79,5 +79,6 @@ static bool sha(const uint8_t *msg,
 
 bool execute_sha_kat(void)
 {
+    sha(NULL, 0, NULL, 0, mcuxClHash_Algorithm_Sha256);
     return true;
 }

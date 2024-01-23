@@ -160,5 +160,6 @@ static bool hmac(const uint8_t *plain_key,
 
 bool execute_hmac_kat(void)
 {
+    hmac(NULL, 0, NULL, 0, NULL, 0, mcuxClHash_Algorithm_Sha512);
     return true;
 }

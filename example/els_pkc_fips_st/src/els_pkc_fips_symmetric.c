@@ -112,6 +112,7 @@ static bool aes_encrypt(const uint8_t *plain_key,
 
 bool execute_cbc_kat(uint64_t options)
 {
+    aes_encrypt(NULL, 0, NULL, 0, NULL, 0, NULL, 0, true);
     return true;
 }
 
@@ -226,5 +227,6 @@ static bool cmac(const uint8_t *plain_key,
 
 bool execute_cmac_kat(void)
 {
+    cmac(NULL, 0, NULL, 0, NULL, 0);
     return true;
 }
