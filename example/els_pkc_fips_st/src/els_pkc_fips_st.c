@@ -66,7 +66,7 @@ static inline void CRYPTO_InitHardware(void)
  * @brief Function to execute all KATs based on the user options
  * defined in the els_pkc_fips_config.h file.
  */
-static inline void execute_kat()
+static inline void execute_kats()
 {
     for (size_t i = 0; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0]); ++i)
     {
@@ -99,23 +99,18 @@ int main(void)
         return 1;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_wait, token_wait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token_wait || MCUXCLELS_STATUS_OK != result_wait)
-    {
-        return 1;
-    }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    execute_kat();
+    execute_kats();
 
     /* Disable the ELS */
-    if (!mcuxClExample_Els_Disable())
-    {
-        return 1;
-    }
+    mcuxClExample_Els_Disable();
 #if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
     PRINTF("END OF ELS PKC FIPS SELF-TEST\r\n");
 #endif /* SHOW_DEBUG_OUTPUT */
 
-    return 0;
+    while (1)
+        ;
 }

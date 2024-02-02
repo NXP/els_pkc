@@ -184,9 +184,8 @@ static bool rsa_verify(const uint8_t *modulus,
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
-bool execute_rsa_kat(void)
+void execute_rsa_kat(void)
 {
     rsa_sign(NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL);
     rsa_verify(NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0);
-    return true;
 }
