@@ -110,32 +110,6 @@ static bool aes_encrypt(const uint8_t *plain_key,
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
-bool execute_cbc_kat(uint64_t options)
-{
-    aes_encrypt(NULL, 0, NULL, 0, NULL, 0, NULL, 0, true);
-    return true;
-}
-
-bool execute_ecb_kat(uint64_t options)
-{
-    return true;
-}
-
-bool execute_ccm_kat(uint64_t options)
-{
-    return true;
-}
-
-bool execute_gcm_kat(uint64_t options)
-{
-    return true;
-}
-
-bool execute_ctr_kat(uint64_t options)
-{
-    return true;
-}
-
 /*!
  * @brief Execute CMAC decrypt/encrypt, depending on encrypt flag.
  */
@@ -225,8 +199,28 @@ static bool cmac(const uint8_t *plain_key,
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
-bool execute_cmac_kat(void)
+void execute_cbc_kat(uint64_t options, char name[])
+{
+    aes_encrypt(NULL, 0, NULL, 0, NULL, 0, NULL, 0, true);
+}
+
+void execute_ecb_kat(uint64_t options, char name[])
+{
+}
+
+void execute_ccm_kat(uint64_t options, char name[])
+{
+}
+
+void execute_gcm_kat(uint64_t options, char name[])
+{
+}
+
+void execute_ctr_kat(uint64_t options, char name[])
+{
+}
+
+void execute_cmac_kat(uint64_t options, char name[])
 {
     cmac(NULL, 0, NULL, 0, NULL, 0);
-    return true;
 }

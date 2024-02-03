@@ -9,10 +9,8 @@
 #define _ELS_PKC_FIPS_KDF_H_
 
 #include "els_pkc_fips_util.h"
-#include "mcuxClEls_Ecc.h"
-#include "mcuxClEls_Kdf.h"
-#include "mcuxClEls_Cipher.h"
-#include "mcuxClEls_Cmac.h"
+#include <mcuxClEls_Kdf.h>
+#include <mcuxClEls_Cipher.h>
 
 /*******************************************************************************
  * Definitions
@@ -21,8 +19,8 @@
  * @brief Execute KAT for KDF.
  *
  * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-void execute_kdf(uint64_t options);
-
+void execute_kdf_kat(uint64_t options, char name[]);
 
 #endif /* _ELS_PKC_FIPS_KDF_H_ */

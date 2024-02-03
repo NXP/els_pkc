@@ -17,7 +17,8 @@
  * @brief Execute KAT for DRBG.
  *
  * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-void execute_drbg(uint64_t options);
+void execute_drbg_kat(uint64_t options, char name[]);
 
 #endif /* _ELS_PKC_FIPS_DRBG_H_ */

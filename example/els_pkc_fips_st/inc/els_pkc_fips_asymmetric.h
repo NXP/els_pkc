@@ -9,16 +9,41 @@
 #define _ELS_PKC_FIPS_ASYMMETRIC_H_
 
 #include "els_pkc_fips_util.h"
+#include <mcuxClEls_Kdf.h>
+#include <mcuxClEls_Cipher.h>
 #include <mcuxClRsa.h>
 #include <mcuxClPkc_Types.h>
+#include <mcuxClEcc.h>
+#include <mcuxClEcc_ECDSA_Internal.h>
+#include <mcuxClRandomModes.h>
+#include <mcuxClEcc_Functions.h>
+#include <mcuxClRandom.h>
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /*!
- * @brief Execute KAT for RSA RSA PKCSV1.5 sign and verify.
+ * @brief Execute KAT for RSA sign and verify.
  *
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-void execute_rsa_kat(void);
+void execute_rsa_kat(uint64_t options, char name[]);
+
+/*!
+ * @brief Execute KAT for ECDSA Weier sign and verify.
+ *
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
+ */
+void execute_ecdsa_kat(uint64_t options, char name[]);
+
+/*!
+ * @brief Execute KAT for EdD25519 sign and verify.
+ *
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
+ */
+void execute_eddsa_kat(uint64_t options, char name[]);
 
 #endif /* _ELS_PKC_FIPS_ASYMMETRIC_H_ */

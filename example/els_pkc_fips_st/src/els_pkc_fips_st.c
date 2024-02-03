@@ -10,8 +10,8 @@
 #include "els_pkc_fips_hash.h"
 #include "els_pkc_fips_hmac.h"
 #include "els_pkc_fips_config.h"
-#include "mcux_els.h" /* Power Down Wake-up Init */
-#include "mcux_pkc.h" /* Power Down Wake-up Init */
+#include <mcux_els.h> /* Power Down Wake-up Init */
+#include <mcux_pkc.h> /* Power Down Wake-up Init */
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0U)
 #include "fsl_trng.h"
 #endif
@@ -68,11 +68,11 @@ static inline void CRYPTO_InitHardware(void)
  */
 static inline void execute_kats()
 {
-    for (size_t i = 0; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0]); ++i)
+    for (size_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
     {
         if (s_UserOptions & s_AlgorithmMappings[i].option)
         {
-            s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option);
+            s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option, s_AlgorithmMappings[i].name);
         }
     }
 }
@@ -86,18 +86,10 @@ int main(void)
     BOARD_InitHardware();
     CRYPTO_InitHardware();
 
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
     PRINTF("START OF ELS PKC FIPS SELF-TEST\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-
+    
+    /* Enable the ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
-    {
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
-        PRINTF("[Error] Els enable async failed\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
-        return 1;
-    }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_wait, token_wait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
@@ -107,10 +99,8 @@ int main(void)
 
     /* Disable the ELS */
     mcuxClExample_Els_Disable();
-#if defined(SHOW_DEBUG_OUTPUT) && SHOW_DEBUG_OUTPUT == true
     PRINTF("END OF ELS PKC FIPS SELF-TEST\r\n");
-#endif /* SHOW_DEBUG_OUTPUT */
 
-    while (1)
+    while (1U)
         ;
 }

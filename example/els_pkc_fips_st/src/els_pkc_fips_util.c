@@ -21,7 +21,7 @@
  ******************************************************************************/
 
 // clang-format off
-static const mcuxClEls_KeyProp_t keypair_prop = {
+static const mcuxClEls_KeyProp_t s_KeypairProp = {
     .bits = 
     {
         .upprot_priv    = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -30,7 +30,7 @@ static const mcuxClEls_KeyProp_t keypair_prop = {
     }
 };
 
-static const mcuxClEls_KeyProp_t shared_secret_prop = {
+static const mcuxClEls_KeyProp_t s_SharedSecretProp = {
     .bits =
         {
             .upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -40,7 +40,7 @@ static const mcuxClEls_KeyProp_t shared_secret_prop = {
         },
 };
 
-static const mcuxClEls_KeyProp_t wrap_in_key_prop = {
+static const mcuxClEls_KeyProp_t s_WrapInKeyProp = {
     .bits =
         {
             .upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -51,7 +51,7 @@ static const mcuxClEls_KeyProp_t wrap_in_key_prop = {
         },
 };
 
-static const mcuxClEls_KeyProp_t wrap_out_key_prop = {
+static const mcuxClEls_KeyProp_t s_WrapOutKeyProp = {
     .bits =
         {
             .upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -62,7 +62,7 @@ static const mcuxClEls_KeyProp_t wrap_out_key_prop = {
         },
 };
 
-static const uint8_t ckdf_derivation_data_wrap_in[12U] = {
+static const uint8_t s_CkdfDerivationDataWrapIn[12U] = {
         0xC8U, 0xACU, 0x48U, 0x88U, 0xA6U, 0x1BU, 0x3DU, 0x9BU, 0x56U, 0xA9U, 0x75U, 0xE7U,
     };
 
@@ -70,7 +70,7 @@ static const uint8_t ckdf_derivation_data_wrap_out[12] = {
     0x4e, 0x5f, 0x0a, 0x1c, 0x43, 0x37, 0x2c, 0xd0, 0x54, 0x8e, 0x46, 0xc9,
 };
 
-static const mcuxClEls_KeyProp_t mac_key_prop = {
+static const mcuxClEls_KeyProp_t s_MacKeyProp = {
     .bits =
         {
             .upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -81,21 +81,25 @@ static const mcuxClEls_KeyProp_t mac_key_prop = {
         },
 };
 
-static const uint8_t ckdf_derivation_data_mac[12] = {
+static const uint8_t s_CkdfDerivationDataMac[12] = {
     0xea, 0x93, 0x05, 0x7a, 0x50, 0xb6, 0x4d, 0x58, 0x0a, 0xe6, 0x6b, 0x57,
 };
 
 
-static const uint8_t import_die_int_ecdh_sk[32] = {
+static const uint8_t s_ImportDieIntEcdhSk[32] = {
     0x82, 0x9b, 0xb4, 0x4a, 0x3b, 0x6d, 0x73, 0x35, 0x09, 0x5e, 0xd9, 0x8d, 0xf6, 0x09, 0x89, 0x98,
     0xac, 0x63, 0xab, 0x4e, 0x4e, 0x78, 0xf6, 0x0a, 0x70, 0xea, 0x64, 0x92, 0xd4, 0xfc, 0xe4, 0x92,
 };
 
-static const uint8_t import_die_int_ecdh_pk[64] = {
+static const uint8_t s_ImportDieIntEcdhPk[64] = {
     0x8c, 0xe2, 0x3a, 0x89, 0xe7, 0xc5, 0xe9, 0xb1, 0x3e, 0x89, 0xed, 0xdb, 0x69, 0xb9, 0x22, 0xf8,
     0xc2, 0x8f, 0x5d, 0xcc, 0x59, 0x3e, 0x5f, 0x7b, 0x6e, 0x5a, 0x6c, 0xb3, 0x62, 0xc0, 0x17, 0x8a,
     0x2f, 0xda, 0xe8, 0x72, 0x67, 0x7b, 0xdf, 0xfe, 0xdb, 0x4a, 0x6e, 0x39, 0x2a, 0x1b, 0xae, 0xf8,
     0x88, 0x8f, 0xc5, 0x11, 0xc3, 0x67, 0x85, 0x5a, 0xc5, 0x54, 0xbb, 0xeb, 0x19, 0xf6, 0x52, 0x66,
+};
+
+static const char s_NibbleToChar[16] = {
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
 };
 
 // clang-format on
@@ -125,10 +129,6 @@ static const uint8_t import_die_int_ecdh_pk[64] = {
 #define NXP_DIE_INT_IMPORT_KEK_SK  0x7FFF817CU
 #define NXP_DIE_INT_IMPORT_AUTH_SK 0x7FFF817EU
 
-const uint8_t key_blob_magic[7] = {'k', 'e', 'y', 'b', 'l', 'o', 'b'};
-
-const size_t s50_blob_size = 100;
-
 static inline void write_uint32_msb_first(uint8_t *pos, uint32_t data)
 {
     pos[0] = ((data) >> 24) & 0xFF;
@@ -136,10 +136,6 @@ static inline void write_uint32_msb_first(uint8_t *pos, uint32_t data)
     pos[2] = ((data) >> 8) & 0xFF;
     pos[3] = ((data) >> 0) & 0xFF;
 }
-
-static const char nibble_to_char[16] = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
-};
 
 static inline void printf_buffer(const char *name, const unsigned char *buffer, size_t size)
 {
@@ -153,8 +149,8 @@ static inline void printf_buffer(const char *name, const unsigned char *buffer, 
         uint32_t len      = 0;
         for (size_t i = 0; i < block_size; i++)
         {
-            line_buffer[len++] = nibble_to_char[((*pos) & 0xf0) >> 4];
-            line_buffer[len++] = nibble_to_char[(*pos++) & 0x0f];
+            line_buffer[len++] = s_NibbleToChar[((*pos) & 0xf0) >> 4];
+            line_buffer[len++] = s_NibbleToChar[(*pos++) & 0x0f];
         }
         line_buffer[len++] = '\n';
         line_buffer[len++] = '\0';
@@ -229,7 +225,7 @@ static status_t els_generate_keypair(mcuxClEls_KeyIndex_t *dst_key_index, uint8_
     options.bits.kgsrc                  = MCUXCLELS_ECC_OUTPUTKEY_RANDOM;
     options.bits.kgtypedh               = MCUXCLELS_ECC_OUTPUTKEY_KEYEXCHANGE;
 
-    uint32_t keypair_required_keyslots = get_required_keyslots(keypair_prop);
+    uint32_t keypair_required_keyslots = get_required_keyslots(s_KeypairProp);
     *dst_key_index                     = (mcuxClEls_KeyIndex_t)els_get_free_keyslot(keypair_required_keyslots);
 
     if (!(*dst_key_index < MCUXCLELS_KEY_SLOTS))
@@ -240,7 +236,7 @@ static status_t els_generate_keypair(mcuxClEls_KeyIndex_t *dst_key_index, uint8_
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
-        mcuxClEls_EccKeyGen_Async(options, (mcuxClEls_KeyIndex_t)0U, *dst_key_index, keypair_prop, NULL, public_key));
+        mcuxClEls_EccKeyGen_Async(options, (mcuxClEls_KeyIndex_t)0U, *dst_key_index, s_KeypairProp, NULL, public_key));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
         PLOG_ERROR("mcuxClEls_EccKeyGen_Async failed: 0x%08x", result);
@@ -258,6 +254,42 @@ static status_t els_generate_keypair(mcuxClEls_KeyIndex_t *dst_key_index, uint8_
 
     *public_key_size = 64;
     return STATUS_SUCCESS;
+}
+
+status_t els_keygen(mcuxClEls_KeyIndex_t key_index, uint8_t *public_key, size_t *public_key_size)
+{
+    status_t status = STATUS_SUCCESS;
+
+    mcuxClEls_EccKeyGenOption_t key_gen_options;
+    key_gen_options.word.value    = 0u;
+    key_gen_options.bits.kgsign   = MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE;
+    key_gen_options.bits.kgsrc    = MCUXCLELS_ECC_OUTPUTKEY_DETERMINISTIC;
+    key_gen_options.bits.skip_pbk = MCUXCLELS_ECC_GEN_PUBLIC_KEY;
+
+    mcuxClEls_KeyProp_t key_properties;
+    status = els_get_key_properties(key_index, &key_properties);
+    STATUS_SUCCESS_OR_EXIT_MSG("get_key_properties failed: 0x%08x", status);
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
+                                     mcuxClEls_EccKeyGen_Async(key_gen_options, (mcuxClEls_KeyIndex_t)0, key_index,
+                                                               key_properties, NULL, &public_key[0]));
+
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    {
+        PRINTF("Css_EccKeyGen_Async failed: 0x%08lx\r\n", result);
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+    {
+        PRINTF("Css_EccKeyGen_Async WaitForOperation failed: 0x%08lx\r\n", result);
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+exit:
+    return status;
 }
 
 static status_t els_perform_key_agreement(mcuxClEls_KeyIndex_t keypair_index,
@@ -617,7 +649,7 @@ static status_t host_perform_key_agreement(const uint8_t *public_key,
     ret                 = mbedtls_ecp_group_load(&grp, MBEDTLS_ECP_DP_SECP256R1);
     RET_MBEDTLS_SUCCESS_OR_EXIT_MSG("mbedtls_ecp_group_load failed: 0x%08x", ret);
 
-    ret = mbedtls_mpi_read_binary(&dA, import_die_int_ecdh_sk, sizeof(import_die_int_ecdh_sk));
+    ret = mbedtls_mpi_read_binary(&dA, s_ImportDieIntEcdhSk, sizeof(s_ImportDieIntEcdhSk));
     RET_MBEDTLS_SUCCESS_OR_EXIT_MSG("mbedtls_mpi_read_binary failed: 0x%08x", ret);
 
     public_key_compressed[0] = 0x04;
@@ -717,8 +749,8 @@ status_t import_plain_key_into_els(const uint8_t *plain_key,
     STATUS_SUCCESS_OR_EXIT_MSG("perform_key_agreement_host failed: 0x%08x", status);
 
     PLOG_INFO("Deriving wrapping key for import on host...");
-    status = host_derive_key(shared_secret, shared_secret_len, ckdf_derivation_data_wrap_in,
-                             sizeof(ckdf_derivation_data_wrap_in), wrap_in_key_prop.word.value, &key_wrap_in[0],
+    status = host_derive_key(shared_secret, shared_secret_len, s_CkdfDerivationDataWrapIn,
+                             sizeof(s_CkdfDerivationDataWrapIn), s_WrapInKeyProp.word.value, &key_wrap_in[0],
                              &key_wrap_in_size);
     STATUS_SUCCESS_OR_EXIT_MSG("ckdf_host failed: 0x%08x", status);
 
@@ -728,8 +760,8 @@ status_t import_plain_key_into_els(const uint8_t *plain_key,
     STATUS_SUCCESS_OR_EXIT_MSG("create_els_import_keyblob failed: 0x%08x", status);
 
     PLOG_INFO("Calculating shared secret on ELS...");
-    status = els_perform_key_agreement(index_plain, shared_secret_prop, &index_shared_secret, import_die_int_ecdh_pk,
-                                       sizeof(import_die_int_ecdh_pk));
+    status = els_perform_key_agreement(index_plain, s_SharedSecretProp, &index_shared_secret, s_ImportDieIntEcdhPk,
+                                       sizeof(s_ImportDieIntEcdhPk));
     STATUS_SUCCESS_OR_EXIT_MSG("perform_key_agreement failed: 0x%08x", status);
 
     status = els_delete_key(index_plain);
@@ -737,7 +769,7 @@ status_t import_plain_key_into_els(const uint8_t *plain_key,
     index_plain = MCUXCLELS_KEY_SLOTS;
 
     PLOG_INFO("Deriving wrapping key for import on ELS...");
-    status = els_derive_key(index_shared_secret, wrap_in_key_prop, ckdf_derivation_data_wrap_in, &index_unwrap);
+    status = els_derive_key(index_shared_secret, s_WrapInKeyProp, s_CkdfDerivationDataWrapIn, &index_unwrap);
     STATUS_SUCCESS_OR_EXIT_MSG("derive_key failed: 0x%08x", status);
 
     status = els_delete_key(index_shared_secret);

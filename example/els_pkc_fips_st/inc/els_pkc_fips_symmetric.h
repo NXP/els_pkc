@@ -22,50 +22,49 @@
 /*!
  * @brief Execute KAT for CBC encrypt and decrypt.
  *
- * @param options .
- * @retval true if KAT passed.
- * @retval false if KAT fails.
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-bool execute_cbc_kat(uint64_t options);
+void execute_cbc_kat(uint64_t options, char name[]);
 
 /*!
  * @brief Execute KAT for ECB encrypt and decrypt.
  *
- * @retval true if KAT passed.
- * @retval false if KAT fails.
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-bool execute_ecb_kat(uint64_t options);
+void execute_ecb_kat(uint64_t options, char name[]);
 
 /*!
  * @brief Execute KAT for CCM encrypt and decrypt.
  *
- * @retval true if KAT passed.
- * @retval false if KAT fails.
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-bool execute_ccm_kat(uint64_t options);
+void execute_ccm_kat(uint64_t options, char name[]);
 
 /*!
  * @brief Execute KAT for GCM encrypt and decrypt.
  *
- * @retval true if KAT passed.
- * @retval false if KAT fails.
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-bool execute_gcm_kat(uint64_t options);
+void execute_gcm_kat(uint64_t options, char name[]);
 
 /*!
  * @brief Execute KAT for CTR encrypt and decrypt.
  *
- * @retval true if KAT passed.
- * @retval false if KAT fails.
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-bool execute_ctr_kat(uint64_t options);
+void execute_ctr_kat(uint64_t options, char name[]);
 
 /*!
- * @brief Execute KAT for CAMC encrypt and decrypt.
+ * @brief Execute KAT for CMAC encrypt and decrypt.
  *
- * @retval true if KAT passed.
- * @retval false if KAT fails.
+ * @param options Containing which algorithm to execute.
+ * @param name Containing the name of the algorithm.
  */
-bool execute_cmac_kat(void);
+void execute_cmac_kat(uint64_t options, char name[]);
 
 #endif /* _ELS_PKC_FIPS_SYMMETRIC_H_ */

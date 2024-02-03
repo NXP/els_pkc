@@ -140,20 +140,20 @@ static bool drbg_aes_ctr()
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
-void execute_drbg(uint64_t options)
+void execute_drbg_kat(uint64_t options, char name[])
 {
     if ((options & FIPS_ECB_DRBG) || (options & FIPS_ALL_TESTS))
     {
         if (!drbg_aes_ecb())
         {
-            PRINTF("[ERROR] ECB_DRBG KAT FAILED\r\n");
+            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
     if ((options & FIPS_CTR_DRBG) || (options & FIPS_ALL_TESTS))
     {
         if (!drbg_aes_ctr())
         {
-            PRINTF("[ERROR] CTR_DRBG KAT FAILED\r\n");
+            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
 }

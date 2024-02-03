@@ -21,6 +21,9 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
+/*!
+ * @brief Execute Ckdf 800108.
+ */
 static bool ckdf_800108()
 {
     uint8_t plain_key[32U] = {0x9CU, 0xF4U, 0x83U, 0x16U, 0xE4U, 0xEEU, 0x94U, 0x0FU, 0x75U, 0xA0U, 0x8BU,
@@ -85,7 +88,6 @@ static bool ckdf_800108()
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Ckdf_Sp800108_Async) != tokenAsync) ||
         (MCUXCLELS_STATUS_OK_WAIT != resultCkdf))
     {
-        PRINTF("\r\n[Error] ckdf-sp800108 failed\r\n");
         els_delete_key(key_index_derived);
         els_delete_key(key_index);
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -95,14 +97,12 @@ static bool ckdf_800108()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultWait, tokenWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != tokenWait)
     {
-        PRINTF("\r\n[Error] ckdf-sp800108 wait token mismatch\r\n");
         els_delete_key(key_index_derived);
         els_delete_key(key_index);
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     if (MCUXCLELS_STATUS_OK != resultWait)
     {
-        PRINTF("\r\n[Error] ckdf-sp800108 wait failed\r\n");
         els_delete_key(key_index_derived);
         els_delete_key(key_index);
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -150,6 +150,9 @@ static bool ckdf_800108()
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
+/*!
+ * @brief Execute Hkdf rfc5869.
+ */
 static bool hkdf_rfc5869()
 {
     uint8_t plain_key[32U] = {0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU,
@@ -314,20 +317,20 @@ static bool hkdf_rfc5869()
     return MCUXCLEXAMPLE_STATUS_OK;
 }
 
-void execute_kdf(uint64_t options)
+void execute_kdf_kat(uint64_t options, char name[])
 {
     if ((options & FIPS_CKDF) || (options & FIPS_ALL_TESTS))
     {
         if (!ckdf_800108())
         {
-            PRINTF("CKDF Failed\r\n");
+            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
     if ((options & FIPS_HKDF) || (options & FIPS_ALL_TESTS))
     {
         if (!hkdf_rfc5869())
         {
-            PRINTF("HKDF Failed\r\n");
+            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
 }
