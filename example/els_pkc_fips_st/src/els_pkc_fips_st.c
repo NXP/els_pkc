@@ -6,7 +6,8 @@
  */
 #include "app.h"
 #include "els_pkc_fips_symmetric.h"
-#include "els_pkc_fips_asymmetric.h"
+#include "els_pkc_fips_rsa.h"
+#include "els_pkc_fips_ecdsa.h"
 #include "els_pkc_fips_hash.h"
 #include "els_pkc_fips_hmac.h"
 #include "els_pkc_fips_config.h"

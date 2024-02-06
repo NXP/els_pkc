@@ -375,15 +375,15 @@ els_pkc_fips_st:
             __common__:
               __replace__:
                 ad-flags:
-                - __stack_size__=0x1000
-                - __heap_size__=0x1000
+                - __stack_size__=0x4000
+                - __heap_size__=0x8000
         mdk:
           config:
             __common__:
               __replace__:
                 ad-flags:
-                - --predefine="-D__stack_size__=0x1000"
-                - --predefine="-D__heap_size__=0x1000"
+                - --predefine="-D__stack_size__=0x4000"
+                - --predefine="-D__heap_size__=0x8000"
               cc-flags:
               - "-Wno-tautological-constant-compare"
         armgcc:
@@ -391,15 +391,15 @@ els_pkc_fips_st:
             __common__:
               __replace__:
                 ad-flags:
-                - "-Xlinker --defsym=__stack_size__=0x1000"
-                - "-Xlinker --defsym=__heap_size__=0x1000"
+                - "-Xlinker --defsym=__stack_size__=0x4000"
+                - "-Xlinker --defsym=__heap_size__=0x8000"
         mcux:
           config:
             __common__:
               __replace__:
                 ad-flags:
-                - "-Xlinker --defsym=__stack_size__=0x1000"
-                - "-Xlinker --defsym=__heap_size__=0x1000"
+                - "-Xlinker --defsym=__stack_size__=0x4000"
+                - "-Xlinker --defsym=__heap_size__=0x8000"
     document:
       name: els_pkc_fips_st
       readme:
@@ -432,10 +432,16 @@ els_pkc_fips_st:
         - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_symmetric.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_asymmetric.c
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_ecdsa.c
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_asymmetric.h
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_ecdsa.h
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
+          project_path: source
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_rsa.c
+          package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
+          project_path: source
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_rsa.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_hash.c
@@ -496,10 +502,8 @@ els_pkc_fips_st:
           project_path: "${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}"
         files:
         - source: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}/hardware_init.c
-          merge-to-main: sub
           project_path: "${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}"
         - source: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}/app.h
-          merge-to-main: sub
           project_path: "${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}"
 els_pkc_benchmark:
   section-type: application

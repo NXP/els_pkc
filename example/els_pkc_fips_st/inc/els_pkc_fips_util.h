@@ -8,10 +8,10 @@
 #ifndef _ELS_PKC_FIPS_UTIL_H_
 #define _ELS_PKC_FIPS_UTIL_H_
 
+#include "app.h"
 #include <fsl_device_registers.h>
 #include <fsl_debug_console.h>
 #include <board.h>
-#include <app.h>
 #include <mcuxClAes.h>
 #include <mcuxClEls.h>
 #include <mcuxClSession.h>

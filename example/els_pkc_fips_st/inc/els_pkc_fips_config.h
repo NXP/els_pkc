@@ -9,7 +9,8 @@
 #define _ELS_PKC_FIPS_CONFIG_H_
 
 #include "els_pkc_fips_symmetric.h"
-#include "els_pkc_fips_asymmetric.h"
+#include "els_pkc_fips_rsa.h"
+#include "els_pkc_fips_ecdsa.h"
 #include "els_pkc_fips_hmac.h"
 #include "els_pkc_fips_hash.h"
 #include "els_pkc_fips_drbg.h"
@@ -43,6 +44,6 @@ static AlgorithmMapping s_AlgorithmMappings[] = {{FIPS_ECB_DRBG, "ECB_DRBG", exe
                                                  {FIPS_RSA_PSS_3072, "RSA-PSS-3072", execute_rsa_kat},
                                                  {FIPS_RSA_PSS_4096, "RSA-PSS-4096", execute_rsa_kat}};
 
-static uint64_t s_UserOptions = FIPS_ECDH256P;
+static uint64_t s_UserOptions = FIPS_RSA_PKCS15_2048 | FIPS_ECDSA_384P;
 
 #endif /* _ELS_PKC_FIPS_CONFIG_H_ */

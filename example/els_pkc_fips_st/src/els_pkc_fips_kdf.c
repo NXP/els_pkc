@@ -78,7 +78,7 @@ static bool ckdf_800108()
 
     import_plain_key_into_els(plain_key, sizeof(plain_key), plain_key_properties, &key_index);
 
-    uint32_t key_index_derived = els_get_free_keyslot(1U);
+    uint32_t key_index_derived = els_get_free_keyslot(2U);
     els_delete_key(key_index_derived);
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
@@ -240,7 +240,7 @@ static bool hkdf_rfc5869()
 
     import_plain_key_into_els(plain_key, sizeof(plain_key), plain_key_properties, &key_index);
 
-    uint32_t key_index_derived = els_get_free_keyslot(1U);
+    uint32_t key_index_derived = els_get_free_keyslot(2U);
     els_delete_key(key_index_derived);
 
     mcuxClEls_HkdfOption_t options;
