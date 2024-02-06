@@ -16,6 +16,7 @@
 #include "els_pkc_fips_drbg.h"
 #include "els_pkc_fips_kdf.h"
 #include "els_pkc_fips_ecdh.h"
+#include "els_pkc_fips_key_gen.h"
 
 /*******************************************************************************
  * Definitions
@@ -37,6 +38,9 @@ static AlgorithmMapping s_AlgorithmMappings[] = {{FIPS_ECB_DRBG, "ECB_DRBG", exe
                                                  {FIPS_ECDH256P, "ECDH-256P", execute_ecdh_kat},
                                                  {FIPS_ECDH384P, "ECDH-384P", execute_ecdh_kat},
                                                  {FIPS_ECDH521P, "ECDH-521P", execute_ecdh_kat},
+                                                 {FIPS_ECC_KEYGEN_256P, "ECC-KEY-GEN-256P", execute_ecc_keygen_pct},
+                                                 {FIPS_ECC_KEYGEN_384P, "ECC-KEYGEN-384P", execute_ecc_keygen_pct},
+                                                 {FIPS_ECC_KEYGEN_521P, "ECC-KEYGEN-521P", execute_ecc_keygen_pct},
                                                  {FIPS_RSA_PKCS15_2048, "RSA-PKCS15-2048", execute_rsa_kat},
                                                  {FIPS_RSA_PKCS15_3072, "RSA-PKCS15-3072", execute_rsa_kat},
                                                  {FIPS_RSA_PKCS15_4096, "RSA-PKCS15-4096", execute_rsa_kat},

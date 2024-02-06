@@ -9,10 +9,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define WEIER256_BIT_LENGTH (256U)
-#define WEIER384_BIT_LENGTH (384U)
-#define WEIER521_BIT_LENGTH (521U)
-
 #define RSA2048_MODULUS (2048U)
 #define RSA3072_MODULUS (3072U)
 #define RSA4096_MODULUS (4096U)

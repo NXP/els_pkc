@@ -51,54 +51,61 @@
  ******************************************************************************/
 #define MCUX_PKC_MIN(a, b) ((a) < (b) ? (a) : (b))
 
+#define WEIER256_BIT_LENGTH (256U)
+#define WEIER384_BIT_LENGTH (384U)
+#define WEIER521_BIT_LENGTH (521U)
+
 /* Execute all fips self tests */
-#define FIPS_ALL_TESTS (1 << 0)
+#define FIPS_ALL_TESTS (1U << 0U)
 
 /* AES */
-#define FIPS_AES_CBC_128 (1 << 1)
-#define FIPS_AES_CBC_192 (1 << 2)
-#define FIPS_AES_CBC_256 (1 << 3)
-#define FIPS_AES_ECB_128 (1 << 4)
-#define FIPS_AES_ECB_192 (1 << 5)
-#define FIPS_AES_ECB_256 (1 << 6)
-#define FIPS_AES_CTR_128 (1 << 7)
-#define FIPS_AES_CTR_192 (1 << 8)
-#define FIPS_AES_CTR_256 (1 << 9)
-#define FIPS_AES_GCM_128 (1 << 10)
-#define FIPS_AES_GCM_192 (1 << 11)
-#define FIPS_AES_GCM_256 (1 << 12)
-#define FIPS_AES_CCM_128 (1 << 13)
-#define FIPS_AES_CCM_192 (1 << 14)
-#define FIPS_AES_CCM_256 (1 << 15)
+#define FIPS_AES_CBC_128 (1U << 1U)
+#define FIPS_AES_CBC_192 (1U << 2U)
+#define FIPS_AES_CBC_256 (1U << 3U)
+#define FIPS_AES_ECB_128 (1U << 4U)
+#define FIPS_AES_ECB_192 (1U << 5U)
+#define FIPS_AES_ECB_256 (1U << 6U)
+#define FIPS_AES_CTR_128 (1U << 7U)
+#define FIPS_AES_CTR_192 (1U << 8U)
+#define FIPS_AES_CTR_256 (1U << 9U)
+#define FIPS_AES_GCM_128 (1U << 10U)
+#define FIPS_AES_GCM_192 (1U << 11U)
+#define FIPS_AES_GCM_256 (1U << 12U)
+#define FIPS_AES_CCM_128 (1U << 13U)
+#define FIPS_AES_CCM_192 (1U << 14U)
+#define FIPS_AES_CCM_256 (1U << 15U)
 
 /* KDF */
-#define FIPS_CKDF (1 << 16)
-#define FIPS_HKDF (1 << 17)
+#define FIPS_CKDF (1U << 16U)
+#define FIPS_HKDF (1U << 17U)
 
 /* DRBG */
-#define FIPS_CTR_DRBG (1 << 18)
-#define FIPS_ECB_DRBG (1 << 19)
+#define FIPS_CTR_DRBG (1U << 18U)
+#define FIPS_ECB_DRBG (1U << 19U)
 
-/* ECC,ECDH */
-#define FIPS_EDDSA      (1 << 20)
-#define FIPS_ECDSA_256P (1 << 21)
-#define FIPS_ECDSA_384P (1 << 22)
-#define FIPS_ECDSA_521P (1 << 23)
-#define FIPS_ECDH256P   (1 << 24)
-#define FIPS_ECDH384P   (1 << 25)
-#define FIPS_ECDH521P   (1 << 26)
+/* ECC, ECDH */
+#define FIPS_EDDSA           (1U << 20U)
+#define FIPS_ECDSA_256P      (1U << 21U)
+#define FIPS_ECDSA_384P      (1U << 22U)
+#define FIPS_ECDSA_521P      (1U << 23U)
+#define FIPS_ECDH256P        (1U << 24U)
+#define FIPS_ECDH384P        (1U << 25U)
+#define FIPS_ECDH521P        (1U << 26U)
+#define FIPS_ECC_KEYGEN_256P (uint64_t)((uint64_t)1U << (uint64_t)27U)
+#define FIPS_ECC_KEYGEN_384P (uint64_t)((uint64_t)1U << (uint64_t)28U)
+#define FIPS_ECC_KEYGEN_521P (uint64_t)((uint64_t)1U << (uint64_t)29U)
 
 /* RSA */
-#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1 << (uint64_t)27)
-#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1 << (uint64_t)28)
-#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1 << (uint64_t)29)
-#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1 << (uint64_t)30)
-#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1 << (uint64_t)31)
-#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1 << (uint64_t)32)
+#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1U << (uint64_t)30U)
+#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1U << (uint64_t)31U)
+#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1U << (uint64_t)32U)
+#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1U << (uint64_t)33U)
+#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1U << (uint64_t)34U)
+#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1U << (uint64_t)35U)
 
 /* Import blob defines */
-#define STATUS_SUCCESS       0
-#define STATUS_ERROR_GENERIC 1
+#define STATUS_SUCCESS       0U
+#define STATUS_ERROR_GENERIC 1U
 
 #define AES_BLOCK_SIZE      16U
 #define DIE_INT_MK_SK_INDEX 0U
@@ -136,7 +143,7 @@
     }
 
 #define RET_MBEDTLS_SUCCESS_OR_EXIT_MSG(MSG, ...) \
-    if (0 != ret)                                 \
+    if (0U != ret)                                \
     {                                             \
         status = STATUS_ERROR_GENERIC;            \
         PLOG_ERROR(MSG, __VA_ARGS__);             \
