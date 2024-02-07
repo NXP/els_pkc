@@ -197,6 +197,11 @@ static const uint8_t s_EcdsaSign521pKat[132U] = {
     0xE4U, 0x17U, 0x1EU, 0x4CU, 0x65U, 0xADU, 0x00U, 0x85U, 0x08U, 0x62U, 0xD9U, 0x66U, 0xA8U, 0xE0U, 0x14U,
     0x8BU, 0x67U, 0xFAU, 0x55U, 0x53U, 0x57U, 0x3AU, 0x10U, 0x95U, 0x78U, 0x9DU, 0xCAU};
 
+static const uint8_t s_KeyEcdsa256[32U] = {
+    0x2EU, 0x9FU, 0x73U, 0xDFU, 0xCBU, 0xAEU, 0x1AU, 0xD4U, 0xF1U, 0x25U, 0x44U, 0xC4U, 0x52U, 0xDCU, 0x78U, 0x98U,
+    0xB7U, 0x10U, 0x79U, 0x78U, 0x47U, 0x3EU, 0x40U, 0x2BU, 0x66U, 0x5BU, 0xB2U, 0xF5U, 0x2BU, 0xEDU, 0xC2U, 0xD6U,
+};
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -220,17 +225,16 @@ static inline mcuxClRandom_Status_t RNG_Patch_function(mcuxClSession_Handle_t se
  */
 static bool ecdsa_sign_els()
 {
-    uint8_t plain_key[32U] = {
-        0x2EU, 0x9FU, 0x73U, 0xDFU, 0xCBU, 0xAEU, 0x1AU, 0xD4U, 0xF1U, 0x25U, 0x44U, 0xC4U, 0x52U, 0xDCU, 0x78U, 0x98U,
-        0xB7U, 0x10U, 0x79U, 0x78U, 0x47U, 0x3EU, 0x40U, 0x2BU, 0x66U, 0x5BU, 0xB2U, 0xF5U, 0x2BU, 0xEDU, 0xC2U, 0xD6U,
-    };
-
     mcuxClEls_KeyProp_t plain_key_properties = {
         .word = {.value = MCUXCLELS_KEYPROPERTY_VALUE_SECURE | MCUXCLELS_KEYPROPERTY_VALUE_PRIVILEGED |
                           MCUXCLELS_KEYPROPERTY_VALUE_KEY_SIZE_256 | MCUXCLELS_KEYPROPERTY_VALUE_KGSRC}};
 
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
-    import_plain_key_into_els(plain_key, sizeof(plain_key), plain_key_properties, &key_index);
+    if (import_plain_key_into_els(s_KeyEcdsa256, sizeof(s_KeyEcdsa256), plain_key_properties, &key_index) !=
+        STATUS_SUCCESS)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
 
     // For ECC keys that were created from plain key material, there is the
     // neceessity to convert them to a key. Converting to a key also yields the public key.
@@ -240,11 +244,6 @@ static bool ecdsa_sign_els()
     size_t public_key_size  = sizeof(public_key);
     els_keygen(key_index, &public_key[0U], &public_key_size);
 
-    // The key is usable for signing.
-    static uint8_t const ecc_digest[32U] = {0x11U, 0x11U, 0x11U, 0x11U, 0x22U, 0x22U, 0x22U, 0x22U, 0x33U, 0x33U, 0x33U,
-                                            0x33U, 0x44U, 0x44U, 0x44U, 0x44U, 0x55U, 0x55U, 0x55U, 0x55U, 0x66U, 0x66U,
-                                            0x66U, 0x66U, 0x77U, 0x77U, 0x77U, 0x77U, 0x88U, 0x88U, 0x88U, 0x88U};
-
     mcuxClEls_EccSignOption_t sign_options = {0U};
     sign_options.bits.signrtf              = MCUXCLELS_ECC_VALUE_NO_RTF;
     mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE];
@@ -252,12 +251,12 @@ static bool ecdsa_sign_els()
     mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE];
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
-        mcuxClEls_EccSign_Async(          // Perform signature generation.
-            sign_options,                 // Set the prepared configuration.
-            key_index,                    // Set index of private key in keystore.
-            ecc_digest, NULL, (size_t)0U, // Pre-hashed data to sign. Note that inputLength parameter is ignored since
-                                          // pre-hashed data has a fixed length.
-            ecc_signature                 // Output buffer, which the operation will write the signature to.
+        mcuxClEls_EccSign_Async(                     // Perform signature generation.
+            sign_options,                            // Set the prepared configuration.
+            key_index,                               // Set index of private key in keystore.
+            s_MessageDigest32Byte, NULL, (size_t)0U, // Pre-hashed data to sign. Note that inputLength parameter is
+                                                     // ignored since pre-hashed data has a fixed length.
+            ecc_signature                            // Output buffer, which the operation will write the signature to.
             ));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -272,8 +271,6 @@ static bool ecdsa_sign_els()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    PRINT_ARRAY(ecc_signature, sizeof(ecc_signature));
-
     memcpy(&ecc_signature_and_public_key[0U], // Prepare the concatenation of signature and public key: First the
                                               // signature, ...
            &ecc_signature[0U], MCUXCLELS_ECC_SIGNATURE_SIZE);
@@ -284,10 +281,10 @@ static bool ecdsa_sign_els()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
         mcuxClEls_EccVerify_Async(
-            verify_options,               // Set the prepared configuration.
-            ecc_digest, NULL, (size_t)0U, // Pre-hashed data to verify. Note that inputLength parameter is ignored since
-                                          // pre-hashed data has a fixed length.
-            ecc_signature_and_public_key, // Signature of the pre-hashed data
+            verify_options,                          // Set the prepared configuration.
+            s_MessageDigest32Byte, NULL, (size_t)0U, // Pre-hashed data to verify. Note that inputLength parameter is
+                                                     // ignored since pre-hashed data has a fixed length.
+            ecc_signature_and_public_key,            // Signature of the pre-hashed data
             ecc_signature_r // Output buffer, which the operation will write the signature part r to, to allow external
                             // comparison of between given and recalculated r.
             ));
@@ -304,8 +301,6 @@ static bool ecdsa_sign_els()
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    PRINT_ARRAY(ecc_signature_r, sizeof(ecc_signature_r));
 
     mcuxClEls_HwState_t state;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_GetHwState(&state));
@@ -561,17 +556,14 @@ static bool ecdsa_verify(uint32_t bit_length)
 
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token_ecc_point_mult)
     {
-        PRINTF("[Error] ECC Point multiplication token mismatch\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     if (MCUXCLECC_STATUS_INVALID_PARAMS == ret_ecc_point_mult)
     {
-        PRINTF("[Error] ECC Point multiplication invalid params\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     else if (MCUXCLECC_STATUS_OK != ret_ecc_point_mult)
     {
-        PRINTF("[Error] ECC Point multiplication failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
@@ -603,7 +595,6 @@ static bool ecdsa_verify(uint32_t bit_length)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_ecc_verify, token_ecc_verify, mcuxClEcc_Verify(session, &param_verify));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Verify) != token_ecc_verify) || (MCUXCLECC_STATUS_OK != ret_ecc_verify))
     {
-        PRINTF("[Error] ECC-Weier verify failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -791,7 +782,6 @@ static bool Ed25519_verify()
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInit_token) || (MCUXCLKEY_STATUS_OK != keyInit_status))
     {
-        PRINTF("[Error] Public key initialization failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -812,7 +802,6 @@ static bool Ed25519_verify()
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature) != verify_token) ||
         (MCUXCLECC_STATUS_OK != verify_result))
     {
-        PRINTF("[Error] ECC signature verification failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -828,7 +817,10 @@ void execute_ecdsa_kat(uint64_t options, char name[])
 {
     if ((options & FIPS_ECDSA_256P) || (options & FIPS_ALL_TESTS))
     {
-        ecdsa_sign_els();
+        if (!ecdsa_sign_els())
+        {
+            PRINTF("[ERROR] NON DET. %s PCT FAILED\r\n", name);
+        }
         if (!ecdsa_sign(WEIER256_BIT_LENGTH))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);

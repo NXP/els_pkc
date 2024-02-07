@@ -59,49 +59,62 @@
 #define FIPS_ALL_TESTS (1U << 0U)
 
 /* AES */
-#define FIPS_AES_CBC_128 (1U << 1U)
-#define FIPS_AES_CBC_192 (1U << 2U)
-#define FIPS_AES_CBC_256 (1U << 3U)
-#define FIPS_AES_ECB_128 (1U << 4U)
-#define FIPS_AES_ECB_192 (1U << 5U)
-#define FIPS_AES_ECB_256 (1U << 6U)
-#define FIPS_AES_CTR_128 (1U << 7U)
-#define FIPS_AES_CTR_192 (1U << 8U)
-#define FIPS_AES_CTR_256 (1U << 9U)
-#define FIPS_AES_GCM_128 (1U << 10U)
-#define FIPS_AES_GCM_192 (1U << 11U)
-#define FIPS_AES_GCM_256 (1U << 12U)
-#define FIPS_AES_CCM_128 (1U << 13U)
-#define FIPS_AES_CCM_192 (1U << 14U)
-#define FIPS_AES_CCM_256 (1U << 15U)
+#define FIPS_AES_CBC_128  (1U << 1U)
+#define FIPS_AES_CBC_192  (1U << 2U)
+#define FIPS_AES_CBC_256  (1U << 3U)
+#define FIPS_AES_ECB_128  (1U << 4U)
+#define FIPS_AES_ECB_192  (1U << 5U)
+#define FIPS_AES_ECB_256  (1U << 6U)
+#define FIPS_AES_CTR_128  (1U << 7U)
+#define FIPS_AES_CTR_192  (1U << 8U)
+#define FIPS_AES_CTR_256  (1U << 9U)
+#define FIPS_AES_GCM_128  (1U << 10U)
+#define FIPS_AES_GCM_192  (1U << 11U)
+#define FIPS_AES_GCM_256  (1U << 12U)
+#define FIPS_AES_CCM_128  (1U << 13U)
+#define FIPS_AES_CCM_256  (1U << 14U)
+#define FIPS_AES_CMAC_128 (1U << 15U)
+#define FIPS_AES_CMAC_256 (1U << 16U)
 
 /* KDF */
-#define FIPS_CKDF (1U << 16U)
-#define FIPS_HKDF (1U << 17U)
+#define FIPS_CKDF (1U << 17U)
+#define FIPS_HKDF (1U << 18U)
 
 /* DRBG */
-#define FIPS_CTR_DRBG (1U << 18U)
-#define FIPS_ECB_DRBG (1U << 19U)
+#define FIPS_CTR_DRBG (1U << 19U)
+#define FIPS_ECB_DRBG (1U << 20U)
 
 /* ECC, ECDH */
-#define FIPS_EDDSA           (1U << 20U)
-#define FIPS_ECDSA_256P      (1U << 21U)
-#define FIPS_ECDSA_384P      (1U << 22U)
-#define FIPS_ECDSA_521P      (1U << 23U)
-#define FIPS_ECDH256P        (1U << 24U)
-#define FIPS_ECDH384P        (1U << 25U)
-#define FIPS_ECDH521P        (1U << 26U)
-#define FIPS_ECC_KEYGEN_256P (uint64_t)((uint64_t)1U << (uint64_t)27U)
-#define FIPS_ECC_KEYGEN_384P (uint64_t)((uint64_t)1U << (uint64_t)28U)
-#define FIPS_ECC_KEYGEN_521P (uint64_t)((uint64_t)1U << (uint64_t)29U)
+#define FIPS_EDDSA           (1U << 21U)
+#define FIPS_ECDSA_256P      (1U << 22U)
+#define FIPS_ECDSA_384P      (1U << 23U)
+#define FIPS_ECDSA_521P      (1U << 24U)
+#define FIPS_ECDH256P        (1U << 25U)
+#define FIPS_ECDH384P        (uint64_t)((uint64_t)1U << (uint64_t)26U)
+#define FIPS_ECDH521P        (uint64_t)((uint64_t)1U << (uint64_t)27U)
+#define FIPS_ECC_KEYGEN_256P (uint64_t)((uint64_t)1U << (uint64_t)28U)
+#define FIPS_ECC_KEYGEN_384P (uint64_t)((uint64_t)1U << (uint64_t)29U)
+#define FIPS_ECC_KEYGEN_521P (uint64_t)((uint64_t)1U << (uint64_t)30U)
 
 /* RSA */
-#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1U << (uint64_t)30U)
-#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1U << (uint64_t)31U)
-#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1U << (uint64_t)32U)
-#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1U << (uint64_t)33U)
-#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1U << (uint64_t)34U)
-#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1U << (uint64_t)35U)
+#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1U << (uint64_t)31U)
+#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1U << (uint64_t)32U)
+#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1U << (uint64_t)33U)
+#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1U << (uint64_t)34U)
+#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1U << (uint64_t)35U)
+#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1U << (uint64_t)36U)
+
+/* HMAC */
+#define FIPS_HMAC_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)37U)
+#define FIPS_HMAC_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)38U)
+#define FIPS_HMAC_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)39U)
+#define FIPS_HMAC_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)40U)
+
+/* SHA */
+#define FIPS_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)41U)
+#define FIPS_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)42U)
+#define FIPS_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)43U)
+#define FIPS_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)44U)
 
 /* Import blob defines */
 #define STATUS_SUCCESS       0U
@@ -142,19 +155,17 @@
         break;               \
     }
 
-#define RET_MBEDTLS_SUCCESS_OR_EXIT_MSG(MSG, ...) \
-    if (0U != ret)                                \
-    {                                             \
-        status = STATUS_ERROR_GENERIC;            \
-        PLOG_ERROR(MSG, __VA_ARGS__);             \
-        goto exit;                                \
+#define RET_MBEDTLS_SUCCESS_OR_EXIT()  \
+    if (0U != ret)                     \
+    {                                  \
+        status = STATUS_ERROR_GENERIC; \
+        goto exit;                     \
     }
 
-#define STATUS_SUCCESS_OR_EXIT_MSG(MSG, ...) \
-    if (STATUS_SUCCESS != status)            \
-    {                                        \
-        PLOG_ERROR(MSG, __VA_ARGS__);        \
-        goto exit;                           \
+#define STATUS_SUCCESS_OR_EXIT()  \
+    if (STATUS_SUCCESS != status) \
+    {                             \
+        goto exit;                \
     }
 
 #define PRINT_ARRAY(array, array_size)                                                             \

@@ -426,10 +426,10 @@ els_pkc_fips_st:
           merge-to-main: main
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_symmetric.c
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_cipher.c
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_symmetric.h
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_cipher.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_ecdsa.c
@@ -450,10 +450,10 @@ els_pkc_fips_st:
         - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_hash.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_hmac.c
+        - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_mac.c
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
-        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_hmac.h
+        - source: components/els_pkc/example/els_pkc_fips_st/inc/els_pkc_fips_mac.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
           project_path: source
         - source: components/els_pkc/example/els_pkc_fips_st/src/els_pkc_fips_drbg.c

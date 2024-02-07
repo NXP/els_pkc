@@ -18,6 +18,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+
 /* Domain parameters for ECC-Weier */
 static const uint8_t s_BN_P384_P[48U] = {
     0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
@@ -95,14 +96,6 @@ static const uint8_t s_BN_P521_N[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFF
 static bool ecc_weier_key_gen_els()
 {
     uint8_t public_key[64U] = {0U};
-
-    mcuxClEls_KeyProp_t priv_key_properties = {
-        .word = {.value = MCUXCLELS_KEYPROPERTY_VALUE_SECURE | MCUXCLELS_KEYPROPERTY_VALUE_PRIVILEGED |
-                          MCUXCLELS_KEYPROPERTY_VALUE_KEY_SIZE_256 | MCUXCLELS_KEYPROPERTY_VALUE_ECSGN}};
-
-    uint8_t private_key[32U] = {0xE9U, 0x46U, 0xFFU, 0x12U, 0xFFU, 0xB2U, 0xE7U, 0xBAU, 0x2CU, 0x5DU, 0x3AU,
-                                0xAFU, 0x7DU, 0x9AU, 0xEEU, 0xE2U, 0x00U, 0x59U, 0x7AU, 0xABU, 0x20U, 0xCAU,
-                                0xB0U, 0xF9U, 0x6BU, 0xD4U, 0x84U, 0x75U, 0x3DU, 0x78U, 0xFEU, 0xF4U};
 
     const mcuxClEls_KeyProp_t keypair_prop = {.bits = {
                                                   .upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,

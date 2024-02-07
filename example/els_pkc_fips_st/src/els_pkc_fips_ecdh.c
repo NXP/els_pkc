@@ -204,8 +204,11 @@ static bool ecdh_els()
                           MCUXCLELS_KEYPROPERTY_VALUE_KEY_SIZE_256 | MCUXCLELS_KEYPROPERTY_VALUE_ECDH}};
 
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
-    import_plain_key_into_els(s_PrivateKeyInputWeier256Alice, sizeof(s_PrivateKeyInputWeier256Alice),
-                              plain_key_properties, &key_index);
+    if (import_plain_key_into_els(s_PrivateKeyInputWeier256Alice, sizeof(s_PrivateKeyInputWeier256Alice),
+                                  plain_key_properties, &key_index) != STATUS_SUCCESS)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
 
     mcuxClEls_KeyIndex_t index_shared_secret = MCUXCLELS_KEY_SLOTS;
     index_shared_secret                      = els_get_free_keyslot(2U);

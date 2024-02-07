@@ -5,14 +5,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #include "app.h"
-#include "els_pkc_fips_symmetric.h"
-#include "els_pkc_fips_rsa.h"
-#include "els_pkc_fips_ecdsa.h"
-#include "els_pkc_fips_hash.h"
-#include "els_pkc_fips_hmac.h"
 #include "els_pkc_fips_config.h"
-#include <mcux_els.h> /* Power Down Wake-up Init */
-#include <mcux_pkc.h> /* Power Down Wake-up Init */
+#include <mcux_els.h>
+#include <mcux_pkc.h>
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0U)
 #include "fsl_trng.h"
 #endif
@@ -69,7 +64,16 @@ static inline void CRYPTO_InitHardware(void)
  */
 static inline void execute_kats()
 {
-    for (size_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
+    /* Execute all FIPS Self Tests if user has specified */
+    if (s_UserOptions & FIPS_ALL_TESTS)
+    {
+        for (uint32_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
+        {
+            s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option, s_AlgorithmMappings[i].name);
+        }
+        return;
+    }
+    for (uint32_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
     {
         if (s_UserOptions & s_AlgorithmMappings[i].option)
         {
@@ -88,7 +92,7 @@ int main(void)
     CRYPTO_InitHardware();
 
     PRINTF("START OF ELS PKC FIPS SELF-TEST\r\n");
-    
+
     /* Enable the ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
     MCUX_CSSL_FP_FUNCTION_CALL_END();
