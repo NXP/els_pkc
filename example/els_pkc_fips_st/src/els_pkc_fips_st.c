@@ -147,7 +147,12 @@ int main(void)
     CRYPTO_InitHardware();
 
     PRINTF("START OF ELS PKC FIPS SELF-TEST...\r\n");
+
+    /* Print information regarding each algorithm, 
+     * whether it is HW accelerated or not.
+     */
     print_algorithm_infos();
+
     /* Enable the ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
     MCUX_CSSL_FP_FUNCTION_CALL_END();

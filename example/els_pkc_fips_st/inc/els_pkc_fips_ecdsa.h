@@ -9,7 +9,6 @@
 #define _ELS_PKC_FIPS_ECDSA_H_
 
 #include "els_pkc_fips_util.h"
-#include <mcuxClEls_Cipher.h>
 #include <mcuxClPkc_Types.h>
 #include <mcuxClEcc.h>
 #include <mcuxClEcc_ECDSA_Internal.h>

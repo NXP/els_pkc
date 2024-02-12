@@ -77,44 +77,45 @@
 #define FIPS_AES_CMAC_256 (1U << 16U)
 
 /* KDF */
-#define FIPS_CKDF (1U << 17U)
-#define FIPS_HKDF (1U << 18U)
+#define FIPS_CKDF_SP800108 (1U << 17U)
+#define FIPS_HKDF_RFC5869  (1U << 18U)
+#define FIPS_HKDF_SP80056C (1U << 19U)
 
 /* DRBG */
-#define FIPS_CTR_DRBG (1U << 19U)
-#define FIPS_ECB_DRBG (1U << 20U)
+#define FIPS_CTR_DRBG (1U << 20U)
+#define FIPS_ECB_DRBG (1U << 21U)
 
 /* ECC, ECDH */
-#define FIPS_EDDSA           (1U << 21U)
-#define FIPS_ECDSA_256P      (1U << 22U)
-#define FIPS_ECDSA_384P      (1U << 23U)
-#define FIPS_ECDSA_521P      (1U << 24U)
-#define FIPS_ECDH256P        (1U << 25U)
-#define FIPS_ECDH384P        (uint64_t)((uint64_t)1U << (uint64_t)26U)
-#define FIPS_ECDH521P        (uint64_t)((uint64_t)1U << (uint64_t)27U)
-#define FIPS_ECC_KEYGEN_256P (uint64_t)((uint64_t)1U << (uint64_t)28U)
-#define FIPS_ECC_KEYGEN_384P (uint64_t)((uint64_t)1U << (uint64_t)29U)
-#define FIPS_ECC_KEYGEN_521P (uint64_t)((uint64_t)1U << (uint64_t)30U)
+#define FIPS_EDDSA           (1U << 22U)
+#define FIPS_ECDSA_256P      (1U << 23U)
+#define FIPS_ECDSA_384P      (1U << 24U)
+#define FIPS_ECDSA_521P      (1U << 25U)
+#define FIPS_ECDH256P        (uint64_t)((uint64_t)1U << (uint64_t)26U)
+#define FIPS_ECDH384P        (uint64_t)((uint64_t)1U << (uint64_t)27U)
+#define FIPS_ECDH521P        (uint64_t)((uint64_t)1U << (uint64_t)28U)
+#define FIPS_ECC_KEYGEN_256P (uint64_t)((uint64_t)1U << (uint64_t)29U)
+#define FIPS_ECC_KEYGEN_384P (uint64_t)((uint64_t)1U << (uint64_t)30U)
+#define FIPS_ECC_KEYGEN_521P (uint64_t)((uint64_t)1U << (uint64_t)31U)
 
 /* RSA */
-#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1U << (uint64_t)31U)
-#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1U << (uint64_t)32U)
-#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1U << (uint64_t)33U)
-#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1U << (uint64_t)34U)
-#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1U << (uint64_t)35U)
-#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1U << (uint64_t)36U)
+#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1U << (uint64_t)32U)
+#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1U << (uint64_t)33U)
+#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1U << (uint64_t)34U)
+#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1U << (uint64_t)35U)
+#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1U << (uint64_t)36U)
+#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1U << (uint64_t)37U)
 
 /* HMAC */
-#define FIPS_HMAC_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)37U)
-#define FIPS_HMAC_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)38U)
-#define FIPS_HMAC_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)39U)
-#define FIPS_HMAC_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)40U)
+#define FIPS_HMAC_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)38U)
+#define FIPS_HMAC_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)39U)
+#define FIPS_HMAC_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)40U)
+#define FIPS_HMAC_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)41U)
 
 /* SHA */
-#define FIPS_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)41U)
-#define FIPS_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)42U)
-#define FIPS_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)43U)
-#define FIPS_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)44U)
+#define FIPS_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)42U)
+#define FIPS_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)43U)
+#define FIPS_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)44U)
+#define FIPS_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)45U)
 
 /* Import blob defines */
 #define STATUS_SUCCESS       0U

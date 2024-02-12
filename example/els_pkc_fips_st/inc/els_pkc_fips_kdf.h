@@ -9,8 +9,6 @@
 #define _ELS_PKC_FIPS_KDF_H_
 
 #include "els_pkc_fips_util.h"
-#include <mcuxClEls_Kdf.h>
-#include <mcuxClEls_Cipher.h>
 
 /*******************************************************************************
  * Definitions

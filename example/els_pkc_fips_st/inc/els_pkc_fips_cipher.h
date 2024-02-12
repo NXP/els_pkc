@@ -9,9 +9,9 @@
 #define _ELS_PKC_FIPS_CIPHER_H_
 
 #include "els_pkc_fips_util.h"
-#include <mcuxClCipher.h>
 #include <mcuxClCipherModes.h>
 #include <mcuxClAeadModes.h>
+#include <mcuxClCipher.h>
 #include <mcuxClAead.h>
 
 /*******************************************************************************

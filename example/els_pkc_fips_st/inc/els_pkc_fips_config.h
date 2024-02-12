@@ -34,7 +34,9 @@ typedef struct
  */
 static AlgorithmMapping s_AlgorithmMappings[] = {{FIPS_ECB_DRBG, "ECB_DRBG", execute_drbg_kat},
                                                  {FIPS_CTR_DRBG, "CTR_DRBG", execute_drbg_kat},
-                                                 {FIPS_CKDF, "CKDF SP800-108", execute_kdf_kat},
+                                                 {FIPS_CKDF_SP800108, "CKDF-SP800-108", execute_kdf_kat},
+                                                 {FIPS_HKDF_RFC5869, "HKDF-RFC5869", execute_kdf_kat},
+                                                 {FIPS_HKDF_SP80056C, "HKDF-SP800-56C", execute_kdf_kat},
                                                  {FIPS_ECDSA_256P, "ECDSA-256P", execute_ecdsa_kat},
                                                  {FIPS_ECDSA_384P, "ECDSA-384P", execute_ecdsa_kat},
                                                  {FIPS_ECDSA_521P, "ECDSA-521P", execute_ecdsa_kat},
@@ -76,6 +78,10 @@ static AlgorithmMapping s_AlgorithmMappings[] = {{FIPS_ECB_DRBG, "ECB_DRBG", exe
                                                  {FIPS_SHA384, "SHA384", execute_sha_kat},
                                                  {FIPS_SHA512, "SHA512", execute_sha_kat}};
 
-static uint64_t s_UserOptions = FIPS_ALL_TESTS;
+/* Specify here, which algorithm to test. If all should get tested
+ * specify: 'FIPS_ALL_TESTS'. If e.g. only ECB-128 and HMAC-SHA224
+ * then specify: 'FIPS_AES_ECB_128 | FIPS_HMAC_SHA224'.
+ */
+static uint64_t s_UserOptions = FIPS_HKDF_SP80056C;
 
 #endif /* _ELS_PKC_FIPS_CONFIG_H_ */
