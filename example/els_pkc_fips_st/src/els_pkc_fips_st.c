@@ -83,6 +83,61 @@ static inline void execute_kats()
 }
 
 /*!
+ * @brief Print algorithm information, if HW acclereated or
+ * only software implemenatation.
+ */
+static inline void print_algorithm_infos()
+{
+    PRINTF("HW ACCELERATION ALGORITHM INFORMATION:\r\n");
+    PRINTF("    ECB DRBG: ELS\r\n");
+    PRINTF("    CTR DRBG: ELS\r\n");
+    PRINTF("    CKDF SP800-108: ELS\r\n");
+    PRINTF("    HKDF RFC5869: ELS\r\n");
+    PRINTF("    ECDSA NISTP 256: ELS\r\n");
+    PRINTF("    ECDSA NISTP 384: PKC\r\n");
+    PRINTF("    ECDSA NISTP 521: PKC\r\n");
+    PRINTF("    EDDSA ED25519: PKC\r\n");
+    PRINTF("    ECDH NISTP 256: ELS\r\n");
+    PRINTF("    ECDH NISTP 384: PKC\r\n");
+    PRINTF("    ECDH NISTP 521: PKC\r\n");
+    PRINTF("    ECC KEYGEN NISTP 256: ELS\r\n");
+    PRINTF("    ECC KEYGEN NISTP 384: PKC\r\n");
+    PRINTF("    ECC KEYGEN NISTP 521: PKC\r\n");
+    PRINTF("    RSA-PKCS15-2048: PKC\r\n");
+    PRINTF("    RSA-PKCS15-3072: PKC\r\n");
+    PRINTF("    RSA-PKCS15-4096: PKC\r\n");
+    PRINTF("    RSA-PSS-2048: PKC\r\n");
+    PRINTF("    RSA-PSS-3072: PKC\r\n");
+    PRINTF("    RSA-PSS-4096: PKC\r\n");
+    PRINTF("    AES-CCM-128: ELS\r\n");
+    PRINTF("    AES-CCM-256: ELS\r\n");
+    PRINTF("    AES-GCM-128: ELS\r\n");
+    PRINTF("    AES-GCM-192: ELS\r\n");
+    PRINTF("    AES-GCM-256: ELS\r\n");
+    PRINTF("    AES-CTR-128: ELS\r\n");
+    PRINTF("    AES-CTR-192: ELS\r\n");
+    PRINTF("    AES-CTR-256: ELS\r\n");
+    PRINTF("    AES-ECB-128: ELS\r\n");
+    PRINTF("    AES-ECB-192: ELS\r\n");
+    PRINTF("    AES-ECB-256: ELS\r\n");
+    PRINTF("    AES-CBC-128: ELS\r\n");
+    PRINTF("    AES-CBC-192: ELS\r\n");
+    PRINTF("    AES-CBC-256: ELS\r\n");
+    PRINTF("    AES-CMAC-128: ELS\r\n");
+    PRINTF("    AES-CMAC-256: ELS\r\n");
+    PRINTF("    HMAC-SHA224: SOFTWARE IMPLEMENTATION\r\n");
+    PRINTF("    HMAC-SHA256: ELS\r\n");
+    PRINTF("    HMAC-SHA384: SOFTWARE IMPLEMENTATION\r\n");
+    PRINTF("    HMAC-SHA512: SOFTWARE IMPLEMENTATION\r\n");
+    PRINTF("    SHA224: ELS\r\n");
+    PRINTF("    SHA256: ELS\r\n");
+    PRINTF("    SHA384: ELS\r\n");
+    PRINTF("    SHA512: ELS\r\n");
+
+    PRINTF("\r\n");
+}
+
+/*!
  * @brief Main function
  */
 int main(void)
@@ -91,8 +146,8 @@ int main(void)
     BOARD_InitHardware();
     CRYPTO_InitHardware();
 
-    PRINTF("START OF ELS PKC FIPS SELF-TEST\r\n");
-
+    PRINTF("START OF ELS PKC FIPS SELF-TEST...\r\n");
+    print_algorithm_infos();
     /* Enable the ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -104,7 +159,7 @@ int main(void)
 
     /* Disable the ELS */
     mcuxClExample_Els_Disable();
-    PRINTF("END OF ELS PKC FIPS SELF-TEST\r\n");
+    PRINTF("ELS PKC FIPS SELF-TEST FINISHED!\r\n");
 
     while (1U)
         ;
