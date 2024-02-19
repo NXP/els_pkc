@@ -56,66 +56,66 @@
 #define WEIER521_BIT_LENGTH (521U)
 
 /* Execute all fips self tests */
-#define FIPS_ALL_TESTS (1U << 0U)
+#define FIPS_ALL_TESTS (1ULL << 0ULL)
 
 /* AES */
-#define FIPS_AES_CBC_128  (1U << 1U)
-#define FIPS_AES_CBC_192  (1U << 2U)
-#define FIPS_AES_CBC_256  (1U << 3U)
-#define FIPS_AES_ECB_128  (1U << 4U)
-#define FIPS_AES_ECB_192  (1U << 5U)
-#define FIPS_AES_ECB_256  (1U << 6U)
-#define FIPS_AES_CTR_128  (1U << 7U)
-#define FIPS_AES_CTR_192  (1U << 8U)
-#define FIPS_AES_CTR_256  (1U << 9U)
-#define FIPS_AES_GCM_128  (1U << 10U)
-#define FIPS_AES_GCM_192  (1U << 11U)
-#define FIPS_AES_GCM_256  (1U << 12U)
-#define FIPS_AES_CCM_128  (1U << 13U)
-#define FIPS_AES_CCM_256  (1U << 14U)
-#define FIPS_AES_CMAC_128 (1U << 15U)
-#define FIPS_AES_CMAC_256 (1U << 16U)
+#define FIPS_AES_CBC_128  (1ULL << 1ULL)
+#define FIPS_AES_CBC_192  (1ULL << 2ULL)
+#define FIPS_AES_CBC_256  (1ULL << 3ULL)
+#define FIPS_AES_ECB_128  (1ULL << 4ULL)
+#define FIPS_AES_ECB_192  (1ULL << 5ULL)
+#define FIPS_AES_ECB_256  (1ULL << 6ULL)
+#define FIPS_AES_CTR_128  (1ULL << 7ULL)
+#define FIPS_AES_CTR_192  (1ULL << 8ULL)
+#define FIPS_AES_CTR_256  (1ULL << 9ULL)
+#define FIPS_AES_GCM_128  (1ULL << 10ULL)
+#define FIPS_AES_GCM_192  (1ULL << 11ULL)
+#define FIPS_AES_GCM_256  (1ULL << 12ULL)
+#define FIPS_AES_CCM_128  (1ULL << 13ULL)
+#define FIPS_AES_CCM_256  (1ULL << 14ULL)
+#define FIPS_AES_CMAC_128 (1ULL << 15ULL)
+#define FIPS_AES_CMAC_256 (1ULL << 16ULL)
 
 /* KDF */
-#define FIPS_CKDF_SP800108 (1U << 17U)
-#define FIPS_HKDF_RFC5869  (1U << 18U)
-#define FIPS_HKDF_SP80056C (1U << 19U)
+#define FIPS_CKDF_SP800108 (1ULL << 17ULL)
+#define FIPS_HKDF_RFC5869  (1ULL << 18ULL)
+#define FIPS_HKDF_SP80056C (1ULL << 19ULL)
 
 /* DRBG */
-#define FIPS_CTR_DRBG (1U << 20U)
-#define FIPS_ECB_DRBG (1U << 21U)
+#define FIPS_CTR_DRBG (1ULL << 20ULL)
+#define FIPS_ECB_DRBG (1ULL << 21ULL)
 
 /* ECC, ECDH */
-#define FIPS_EDDSA           (1U << 22U)
-#define FIPS_ECDSA_256P      (1U << 23U)
-#define FIPS_ECDSA_384P      (1U << 24U)
-#define FIPS_ECDSA_521P      (1U << 25U)
-#define FIPS_ECDH256P        (uint64_t)((uint64_t)1U << (uint64_t)26U)
-#define FIPS_ECDH384P        (uint64_t)((uint64_t)1U << (uint64_t)27U)
-#define FIPS_ECDH521P        (uint64_t)((uint64_t)1U << (uint64_t)28U)
-#define FIPS_ECC_KEYGEN_256P (uint64_t)((uint64_t)1U << (uint64_t)29U)
-#define FIPS_ECC_KEYGEN_384P (uint64_t)((uint64_t)1U << (uint64_t)30U)
-#define FIPS_ECC_KEYGEN_521P (uint64_t)((uint64_t)1U << (uint64_t)31U)
+#define FIPS_EDDSA           (1ULL << 22ULL)
+#define FIPS_ECDSA_256P      (1ULL << 23ULL)
+#define FIPS_ECDSA_384P      (1ULL << 24ULL)
+#define FIPS_ECDSA_521P      (1ULL << 25ULL)
+#define FIPS_ECDH256P        (1ULL << 26ULL)
+#define FIPS_ECDH384P        (1ULL << 27ULL)
+#define FIPS_ECDH521P        (1ULL << 28ULL)
+#define FIPS_ECC_KEYGEN_256P (1ULL << 29ULL)
+#define FIPS_ECC_KEYGEN_384P (1ULL << 30ULL)
+#define FIPS_ECC_KEYGEN_521P (1ULL << 31ULL)
 
 /* RSA */
-#define FIPS_RSA_PKCS15_2048 (uint64_t)((uint64_t)1U << (uint64_t)32U)
-#define FIPS_RSA_PKCS15_3072 (uint64_t)((uint64_t)1U << (uint64_t)33U)
-#define FIPS_RSA_PKCS15_4096 (uint64_t)((uint64_t)1U << (uint64_t)34U)
-#define FIPS_RSA_PSS_2048    (uint64_t)((uint64_t)1U << (uint64_t)35U)
-#define FIPS_RSA_PSS_3072    (uint64_t)((uint64_t)1U << (uint64_t)36U)
-#define FIPS_RSA_PSS_4096    (uint64_t)((uint64_t)1U << (uint64_t)37U)
+#define FIPS_RSA_PKCS15_2048 (1ULL << 32ULL)
+#define FIPS_RSA_PKCS15_3072 (1ULL << 33ULL)
+#define FIPS_RSA_PKCS15_4096 (1ULL << 34ULL)
+#define FIPS_RSA_PSS_2048    (1ULL << 35ULL)
+#define FIPS_RSA_PSS_3072    (1ULL << 36ULL)
+#define FIPS_RSA_PSS_4096    (1ULL << 37ULL)
 
 /* HMAC */
-#define FIPS_HMAC_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)38U)
-#define FIPS_HMAC_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)39U)
-#define FIPS_HMAC_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)40U)
-#define FIPS_HMAC_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)41U)
+#define FIPS_HMAC_SHA224 (1ULL << 38ULL)
+#define FIPS_HMAC_SHA256 (1ULL << 39ULL)
+#define FIPS_HMAC_SHA384 (1ULL << 40ULL)
+#define FIPS_HMAC_SHA512 (1ULL << 41ULL)
 
 /* SHA */
-#define FIPS_SHA224 (uint64_t)((uint64_t)1U << (uint64_t)42U)
-#define FIPS_SHA256 (uint64_t)((uint64_t)1U << (uint64_t)43U)
-#define FIPS_SHA384 (uint64_t)((uint64_t)1U << (uint64_t)44U)
-#define FIPS_SHA512 (uint64_t)((uint64_t)1U << (uint64_t)45U)
+#define FIPS_SHA224 (1ULL << 42ULL)
+#define FIPS_SHA256 (1ULL << 43ULL)
+#define FIPS_SHA384 (1ULL << 44ULL)
+#define FIPS_SHA512 (1ULL << 45ULL)
 
 /* Import blob defines */
 #define STATUS_SUCCESS       0U
@@ -156,28 +156,21 @@
         break;               \
     }
 
-#define RET_MBEDTLS_SUCCESS_OR_EXIT()  \
-    if (0U != ret)                     \
-    {                                  \
-        status = STATUS_ERROR_GENERIC; \
-        goto exit;                     \
+#define CHECK_MBEDTLS_SUCCESS()                 \
+    if (0 != ret)                               \
+    {                                           \
+        status = (int32_t)STATUS_ERROR_GENERIC; \
     }
 
-#define STATUS_SUCCESS_OR_EXIT()  \
-    if (STATUS_SUCCESS != status) \
-    {                             \
-        goto exit;                \
-    }
-
-#define PRINT_ARRAY(array, array_size)                                                             \
-    do                                                                                             \
-    {                                                                                              \
-        PRINTF("0x");                                                                              \
-        for (uint64_t print_array_index = 0U; print_array_index < array_size; ++print_array_index) \
-        {                                                                                          \
-            PRINTF("%02X", array[print_array_index]);                                              \
-        }                                                                                          \
-        PRINTF("\r\n");                                                                            \
+#define PRINT_ARRAY(array, array_size)                                                               \
+    do                                                                                               \
+    {                                                                                                \
+        PRINTF("0x");                                                                                \
+        for (uint64_t print_array_index = 0U; print_array_index < (array_size); ++print_array_index) \
+        {                                                                                            \
+            PRINTF("%02X", (array[print_array_index]));                                              \
+        }                                                                                            \
+        PRINTF("\r\n");                                                                              \
     } while (0U);
 
 /*!
@@ -199,9 +192,7 @@ status_t import_plain_key_into_els(const uint8_t *plain_key,
  * @brief Execute Ckdf with mbedTLS.
  *
  * @param input_key Input key to derive.
- * @param input_key_size Size of input key.
  * @param derivation_data Derivation data for Ckdf.
- * @param derivation_data_size Size of derivation data.
  * @param key_properties The key properties of the derived key.
  * @param output Output derived key.
  * @param output_size Size of derived output key.
@@ -209,9 +200,7 @@ status_t import_plain_key_into_els(const uint8_t *plain_key,
  * @retval STATUS_ERROR_GENERIC If derivation was unsuccessful.
  */
 status_t host_derive_key(const uint8_t *input_key,
-                         size_t input_key_size,
                          const uint8_t *derivation_data,
-                         size_t derivation_data_size,
                          uint32_t key_properties,
                          uint8_t *output,
                          size_t *output_size);

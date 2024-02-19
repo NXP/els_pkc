@@ -153,6 +153,8 @@ int main(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
+    PRINTF("#END OF BENCHMARK#\r\n");
+
     while (1)
     {
         char ch = GETCHAR();

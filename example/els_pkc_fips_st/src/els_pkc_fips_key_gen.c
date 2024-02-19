@@ -20,22 +20,22 @@
  ******************************************************************************/
 
 /* Domain parameters for ECC-Weier */
-static const uint8_t s_BN_P384_P[48U] = {
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
+static uint8_t s_BN_P384_P[48U] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
 
-static const uint8_t s_BN_P384_A[48U] = {
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
+static uint8_t s_BN_P384_A[48U] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
 
-static const uint8_t s_BN_P384_B[48U] = {
-    0xB3U, 0x31U, 0x2FU, 0xA7U, 0xE2U, 0x3EU, 0xE7U, 0xE4U, 0x98U, 0x8EU, 0x05U, 0x6BU, 0xE3U, 0xF8U, 0x2DU, 0x19U,
-    0x18U, 0x1DU, 0x9CU, 0x6EU, 0xFEU, 0x81U, 0x41U, 0x12U, 0x03U, 0x14U, 0x08U, 0x8FU, 0x50U, 0x13U, 0x87U, 0x5AU,
-    0xC6U, 0x56U, 0x39U, 0x8DU, 0x8AU, 0x2EU, 0xD1U, 0x9DU, 0x2AU, 0x85U, 0xC8U, 0xEDU, 0xD3U, 0xECU, 0x2AU, 0xEFU};
+static uint8_t s_BN_P384_B[48U] = {0xB3U, 0x31U, 0x2FU, 0xA7U, 0xE2U, 0x3EU, 0xE7U, 0xE4U, 0x98U, 0x8EU, 0x05U, 0x6BU,
+                                   0xE3U, 0xF8U, 0x2DU, 0x19U, 0x18U, 0x1DU, 0x9CU, 0x6EU, 0xFEU, 0x81U, 0x41U, 0x12U,
+                                   0x03U, 0x14U, 0x08U, 0x8FU, 0x50U, 0x13U, 0x87U, 0x5AU, 0xC6U, 0x56U, 0x39U, 0x8DU,
+                                   0x8AU, 0x2EU, 0xD1U, 0x9DU, 0x2AU, 0x85U, 0xC8U, 0xEDU, 0xD3U, 0xECU, 0x2AU, 0xEFU};
 
-static const uint8_t s_BN_P384_G[96U] = {
+static uint8_t s_BN_P384_G[96U] = {
     0xAAU, 0x87U, 0xCAU, 0x22U, 0xBEU, 0x8BU, 0x05U, 0x37U, 0x8EU, 0xB1U, 0xC7U, 0x1EU, 0xF3U, 0x20U, 0xADU, 0x74U,
     0x6EU, 0x1DU, 0x3BU, 0x62U, 0x8BU, 0xA7U, 0x9BU, 0x98U, 0x59U, 0xF7U, 0x41U, 0xE0U, 0x82U, 0x54U, 0x2AU, 0x38U,
     0x55U, 0x02U, 0xF2U, 0x5DU, 0xBFU, 0x55U, 0x29U, 0x6CU, 0x3AU, 0x54U, 0x5EU, 0x38U, 0x72U, 0x76U, 0x0AU, 0xB7U,
@@ -43,33 +43,33 @@ static const uint8_t s_BN_P384_G[96U] = {
     0xF8U, 0xF4U, 0x1DU, 0xBDU, 0x28U, 0x9AU, 0x14U, 0x7CU, 0xE9U, 0xDAU, 0x31U, 0x13U, 0xB5U, 0xF0U, 0xB8U, 0xC0U,
     0x0AU, 0x60U, 0xB1U, 0xCEU, 0x1DU, 0x7EU, 0x81U, 0x9DU, 0x7AU, 0x43U, 0x1DU, 0x7CU, 0x90U, 0xEAU, 0x0EU, 0x5FU};
 
-static const uint8_t s_BN_P384_N[48U] = {
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xC7U, 0x63U, 0x4DU, 0x81U, 0xF4U, 0x37U, 0x2DU, 0xDFU,
-    0x58U, 0x1AU, 0x0DU, 0xB2U, 0x48U, 0xB0U, 0xA7U, 0x7AU, 0xECU, 0xECU, 0x19U, 0x6AU, 0xCCU, 0xC5U, 0x29U, 0x73U};
+static uint8_t s_BN_P384_N[48U] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xC7U, 0x63U, 0x4DU, 0x81U, 0xF4U, 0x37U, 0x2DU, 0xDFU, 0x58U, 0x1AU, 0x0DU, 0xB2U,
+                                   0x48U, 0xB0U, 0xA7U, 0x7AU, 0xECU, 0xECU, 0x19U, 0x6AU, 0xCCU, 0xC5U, 0x29U, 0x73U};
 
-static const uint8_t s_BN_P521_P[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
+static uint8_t s_BN_P521_P[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
 
-static const uint8_t s_BN_P521_A[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
+static uint8_t s_BN_P521_A[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
 
-static const uint8_t s_BN_P521_B[66U] = {0x00U, 0x51U, 0x95U, 0x3EU, 0xB9U, 0x61U, 0x8EU, 0x1CU, 0x9AU, 0x1FU, 0x92U,
-                                         0x9AU, 0x21U, 0xA0U, 0xB6U, 0x85U, 0x40U, 0xEEU, 0xA2U, 0xDAU, 0x72U, 0x5BU,
-                                         0x99U, 0xB3U, 0x15U, 0xF3U, 0xB8U, 0xB4U, 0x89U, 0x91U, 0x8EU, 0xF1U, 0x09U,
-                                         0xE1U, 0x56U, 0x19U, 0x39U, 0x51U, 0xECU, 0x7EU, 0x93U, 0x7BU, 0x16U, 0x52U,
-                                         0xC0U, 0xBDU, 0x3BU, 0xB1U, 0xBFU, 0x07U, 0x35U, 0x73U, 0xDFU, 0x88U, 0x3DU,
-                                         0x2CU, 0x34U, 0xF1U, 0xEFU, 0x45U, 0x1FU, 0xD4U, 0x6BU, 0x50U, 0x3FU, 0x00U};
+static uint8_t s_BN_P521_B[66U] = {0x00U, 0x51U, 0x95U, 0x3EU, 0xB9U, 0x61U, 0x8EU, 0x1CU, 0x9AU, 0x1FU, 0x92U,
+                                   0x9AU, 0x21U, 0xA0U, 0xB6U, 0x85U, 0x40U, 0xEEU, 0xA2U, 0xDAU, 0x72U, 0x5BU,
+                                   0x99U, 0xB3U, 0x15U, 0xF3U, 0xB8U, 0xB4U, 0x89U, 0x91U, 0x8EU, 0xF1U, 0x09U,
+                                   0xE1U, 0x56U, 0x19U, 0x39U, 0x51U, 0xECU, 0x7EU, 0x93U, 0x7BU, 0x16U, 0x52U,
+                                   0xC0U, 0xBDU, 0x3BU, 0xB1U, 0xBFU, 0x07U, 0x35U, 0x73U, 0xDFU, 0x88U, 0x3DU,
+                                   0x2CU, 0x34U, 0xF1U, 0xEFU, 0x45U, 0x1FU, 0xD4U, 0x6BU, 0x50U, 0x3FU, 0x00U};
 
-static const uint8_t s_BN_P521_G[2U * 66U] = {
+static uint8_t s_BN_P521_G[2U * 66U] = {
     0x00U, 0xC6U, 0x85U, 0x8EU, 0x06U, 0xB7U, 0x04U, 0x04U, 0xE9U, 0xCDU, 0x9EU, 0x3EU, 0xCBU, 0x66U, 0x23U,
     0x95U, 0xB4U, 0x42U, 0x9CU, 0x64U, 0x81U, 0x39U, 0x05U, 0x3FU, 0xB5U, 0x21U, 0xF8U, 0x28U, 0xAFU, 0x60U,
     0x6BU, 0x4DU, 0x3DU, 0xBAU, 0xA1U, 0x4BU, 0x5EU, 0x77U, 0xEFU, 0xE7U, 0x59U, 0x28U, 0xFEU, 0x1DU, 0xC1U,
@@ -80,27 +80,37 @@ static const uint8_t s_BN_P521_G[2U * 66U] = {
     0xF4U, 0x26U, 0x40U, 0xC5U, 0x50U, 0xB9U, 0x01U, 0x3FU, 0xADU, 0x07U, 0x61U, 0x35U, 0x3CU, 0x70U, 0x86U,
     0xA2U, 0x72U, 0xC2U, 0x40U, 0x88U, 0xBEU, 0x94U, 0x76U, 0x9FU, 0xD1U, 0x66U, 0x50U};
 
-static const uint8_t s_BN_P521_N[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFAU, 0x51U, 0x86U, 0x87U, 0x83U, 0xBFU, 0x2FU, 0x96U, 0x6BU, 0x7FU, 0xCCU,
-                                         0x01U, 0x48U, 0xF7U, 0x09U, 0xA5U, 0xD0U, 0x3BU, 0xB5U, 0xC9U, 0xB8U, 0x89U,
-                                         0x9CU, 0x47U, 0xAEU, 0xBBU, 0x6FU, 0xB7U, 0x1EU, 0x91U, 0x38U, 0x64U, 0x09U};
+static uint8_t s_BN_P521_N[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFAU, 0x51U, 0x86U, 0x87U, 0x83U, 0xBFU, 0x2FU, 0x96U, 0x6BU, 0x7FU, 0xCCU,
+                                   0x01U, 0x48U, 0xF7U, 0x09U, 0xA5U, 0xD0U, 0x3BU, 0xB5U, 0xC9U, 0xB8U, 0x89U,
+                                   0x9CU, 0x47U, 0xAEU, 0xBBU, 0x6FU, 0xB7U, 0x1EU, 0x91U, 0x38U, 0x64U, 0x09U};
 
+static uint8_t s_DigestWeierKeygen[64U] = {
+    0x8DU, 0xE6U, 0xC2U, 0x3DU, 0x6CU, 0xFCU, 0xDEU, 0x8EU, 0x3DU, 0x30U, 0x4FU, 0xEBU, 0x56U, 0x4EU, 0x69U, 0xEFU,
+    0x2EU, 0x6CU, 0xD3U, 0xF4U, 0x62U, 0x2AU, 0x6CU, 0xE5U, 0x49U, 0xA8U, 0x84U, 0xFCU, 0x36U, 0xF7U, 0xACU, 0x59U,
+    0xE8U, 0xE8U, 0xCBU, 0x96U, 0xC9U, 0xBFU, 0x73U, 0x67U, 0xD2U, 0xB9U, 0x0CU, 0x03U, 0x3CU, 0x30U, 0xA1U, 0xA6U,
+    0xB2U, 0x4FU, 0xB3U, 0x79U, 0x80U, 0x2EU, 0xC1U, 0x86U, 0x12U, 0xECU, 0x50U, 0xCCU, 0xACU, 0x20U, 0x48U, 0xECU};
+
+static uint8_t s_DigestELSWeierKeygen[32U] = {
+    0x11U, 0x11U, 0x11U, 0x11U, 0x22U, 0x22U, 0x22U, 0x22U, 0x33U, 0x33U, 0x33U, 0x33U, 0x44U, 0x44U, 0x44U, 0x44U,
+    0x55U, 0x55U, 0x55U, 0x55U, 0x66U, 0x66U, 0x66U, 0x66U, 0x77U, 0x77U, 0x77U, 0x77U, 0x88U, 0x88U, 0x88U, 0x88U};
 /*******************************************************************************
  * Code
  ******************************************************************************/
 /*!
  * @brief Execute ECC key generation pairwise consistency test on ELS.
  */
-static bool ecc_weier_key_gen_els()
+static bool ecc_weier_key_gen_els(void)
 {
+    bool return_status      = true;
     uint8_t public_key[64U] = {0U};
 
     const mcuxClEls_KeyProp_t keypair_prop = {.bits = {
-                                                  .upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
-                                                  .upprot_sec  = MCUXCLELS_KEYPROPERTY_SECURE_TRUE,
-                                                  .ksize       = MCUXCLELS_KEYPROPERTY_KEY_SIZE_256,
+                                                  .upprot_priv = (uint32_t)MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
+                                                  .upprot_sec  = (uint32_t)MCUXCLELS_KEYPROPERTY_SECURE_TRUE,
+                                                  .ksize       = (uint32_t)MCUXCLELS_KEYPROPERTY_KEY_SIZE_256,
                                               }};
     mcuxClEls_EccKeyGenOption_t options    = {0U};
     options.bits.kgsrc                     = MCUXCLELS_ECC_OUTPUTKEY_RANDOM;
@@ -110,7 +120,7 @@ static bool ecc_weier_key_gen_els()
 
     if (!(key_index < MCUXCLELS_KEY_SLOTS))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
@@ -118,72 +128,69 @@ static bool ecc_weier_key_gen_els()
         mcuxClEls_EccKeyGen_Async(options, (mcuxClEls_KeyIndex_t)0U, key_index, keypair_prop, NULL, public_key));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    mcuxClEls_EccSignOption_t sign_options = {0U};
-    mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE];
-    mcuxClEls_EccByte_t ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE + MCUXCLELS_ECC_PUBLICKEY_SIZE];
-    mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE];
-
-    const uint8_t ecc_digest[32U] = {0x11U, 0x11U, 0x11U, 0x11U, 0x22U, 0x22U, 0x22U, 0x22U, 0x33U, 0x33U, 0x33U,
-                                     0x33U, 0x44U, 0x44U, 0x44U, 0x44U, 0x55U, 0x55U, 0x55U, 0x55U, 0x66U, 0x66U,
-                                     0x66U, 0x66U, 0x77U, 0x77U, 0x77U, 0x77U, 0x88U, 0x88U, 0x88U, 0x88U};
+    mcuxClEls_EccSignOption_t sign_options                          = {0U};
+    mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE] = {0U};
+    mcuxClEls_EccByte_t ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE + MCUXCLELS_ECC_PUBLICKEY_SIZE] = {
+        0U};
+    mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE] = {0U};
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
-        mcuxClEls_EccSign_Async(          // Perform signature generation.
-            sign_options,                 // Set the prepared configuration.
-            key_index,                    // Set index of private key in keystore.
-            ecc_digest, NULL, (size_t)0U, // Pre-hashed data to sign. Note that inputLength parameter is ignored since
-                                          // pre-hashed data has a fixed length.
-            ecc_signature                 // Output buffer, which the operation will write the signature to.
+        mcuxClEls_EccSign_Async(                      // Perform signature generation.
+            sign_options,                             // Set the prepared configuration.
+            key_index,                                // Set index of private key in keystore.
+            s_DigestELSWeierKeygen, NULL, (size_t)0U, // Pre-hashed data to sign. Note that inputLength parameter is
+                                                      // ignored since pre-hashed data has a fixed length.
+            ecc_signature                             // Output buffer, which the operation will write the signature to.
             ));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     mcuxClEls_EccVerifyOption_t verify_options = {0U};
 
-    memcpy(&ecc_signature_and_public_key[0U], // Prepare the concatenation of signature and public key: First the
-                                              // signature, ...
-           &ecc_signature[0U], MCUXCLELS_ECC_SIGNATURE_SIZE);
-    memcpy(&ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE], // ... then the public key.
-           &public_key[0U], MCUXCLELS_ECC_PUBLICKEY_SIZE);
+    (void)memcpy(&ecc_signature_and_public_key[0U], // Prepare the concatenation of signature and public key: First the
+                                                    // signature, ...
+                 &ecc_signature[0U], MCUXCLELS_ECC_SIGNATURE_SIZE);
+    (void)memcpy(&ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE], // ... then the public key.
+                 &public_key[0U], MCUXCLELS_ECC_PUBLICKEY_SIZE);
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-        result, token,
-        mcuxClEls_EccVerify_Async(verify_options, ecc_digest, NULL, 0U, ecc_signature_and_public_key, ecc_signature_r));
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
+                                     mcuxClEls_EccVerify_Async(verify_options, s_DigestELSWeierKeygen, NULL, 0U,
+                                                               ecc_signature_and_public_key, ecc_signature_r));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 /*!
@@ -191,6 +198,7 @@ static bool ecc_weier_key_gen_els()
  */
 static bool ecc_weier_key_gen(uint32_t bit_length)
 {
+    bool return_status           = true;
     const uint32_t p_byte_length = (bit_length + 7U) / 8U;
     const uint32_t n_byte_length = (bit_length + 7U) / 8U;
 
@@ -201,11 +209,8 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     mcuxClSession_Handle_t session = &session_desc;
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_KEYGEN_WACPU_SIZE,
                                                   MCUXCLECC_KEYGEN_WAPKC_SIZE_512);
-    const uint8_t digest[64U] = {
-        0x8DU, 0xE6U, 0xC2U, 0x3DU, 0x6CU, 0xFCU, 0xDEU, 0x8EU, 0x3DU, 0x30U, 0x4FU, 0xEBU, 0x56U, 0x4EU, 0x69U, 0xEFU,
-        0x2EU, 0x6CU, 0xD3U, 0xF4U, 0x62U, 0x2AU, 0x6CU, 0xE5U, 0x49U, 0xA8U, 0x84U, 0xFCU, 0x36U, 0xF7U, 0xACU, 0x59U,
-        0xE8U, 0xE8U, 0xCBU, 0x96U, 0xC9U, 0xBFU, 0x73U, 0x67U, 0xD2U, 0xB9U, 0x0CU, 0x03U, 0x3CU, 0x30U, 0xA1U, 0xA6U,
-        0xB2U, 0x4FU, 0xB3U, 0x79U, 0x80U, 0x2EU, 0xC1U, 0x86U, 0x12U, 0xECU, 0x50U, 0xCCU, 0xACU, 0x20U, 0x48U, 0xECU};
+
+    /* Digest to perform ECC sign/verify later on */
 
     /* Initialize the RNG context, with maximum size */
     uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0U};
@@ -227,44 +232,48 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    mcuxClEcc_DomainParam_t domain_params;
+    /* Default domain paramameters initialization */
+    mcuxClEcc_DomainParam_t domain_params =
+        (mcuxClEcc_DomainParam_t){.pA = NULL, .pB = NULL, .pG = NULL, .pP = NULL, .pN = NULL, .misc = 0U};
+
     switch (bit_length)
     {
         case WEIER384_BIT_LENGTH:
-        {
             domain_params =
                 (mcuxClEcc_DomainParam_t){.pA   = s_BN_P384_A,
                                           .pB   = s_BN_P384_B,
                                           .pG   = s_BN_P384_G,
                                           .pP   = s_BN_P384_P,
                                           .pN   = s_BN_P384_N,
-                                          .misc = mcuxClEcc_DomainParam_misc_Pack(p_byte_length, n_byte_length)};
+                                          .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
-        }
         case WEIER521_BIT_LENGTH:
-        {
             domain_params =
                 (mcuxClEcc_DomainParam_t){.pA   = s_BN_P521_A,
                                           .pB   = s_BN_P521_B,
                                           .pG   = s_BN_P521_G,
                                           .pP   = s_BN_P521_P,
                                           .pN   = s_BN_P521_N,
-                                          .misc = mcuxClEcc_DomainParam_misc_Pack(p_byte_length, n_byte_length)};
+                                          .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
-        }
+        default:
+            return_status = false;
+            break;
     }
+
     uint8_t private_key[66U]           = {0U};
     uint8_t public_key[132U]           = {0U};
     mcuxClEcc_KeyGen_Param_t key_param = (mcuxClEcc_KeyGen_Param_t){
         .curveParam = domain_params, .pPrivateKey = private_key, .pPublicKey = public_key, .optLen = 0U};
 
+    /* Execute ECC keygen */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClEcc_KeyGen(session, &key_param));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_KeyGen) != token_enc) || (MCUXCLECC_STATUS_OK != result_enc))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -275,28 +284,22 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     sign_mode.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
 
     sign_parameters = (mcuxClEcc_Sign_Param_t){.curveParam  = domain_params,
-                                               .pHash       = digest,
+                                               .pHash       = s_DigestWeierKeygen,
                                                .pPrivateKey = private_key,
                                                .pSignature  = signature_buffer,
                                                .optLen      = mcuxClEcc_Sign_Param_optLen_Pack(64U),
                                                .pMode       = &sign_mode};
 
+    /* Execute ECC sign operation */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(session, &sign_parameters));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Sign) != sign_token))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
-    if (MCUXCLECC_STATUS_INVALID_PARAMS == sign_result)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    if (MCUXCLECC_STATUS_RNG_ERROR == sign_result)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
+
     if (MCUXCLECC_STATUS_OK != sign_result)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -310,20 +313,19 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
                                                      .pPoint     = domain_params.pG,
                                                      .pResult    = result,
                                                      .optLen     = 0U};
+
+    /* Execute ECC point multiplication */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_ecc_point_mult, token_ecc_point_mult,
                                      mcuxClEcc_PointMult(session, &point_mult_params));
 
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token_ecc_point_mult)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
-    if (MCUXCLECC_STATUS_INVALID_PARAMS == ret_ecc_point_mult)
+
+    if (MCUXCLECC_STATUS_OK != ret_ecc_point_mult)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    else if (MCUXCLECC_STATUS_OK != ret_ecc_point_mult)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -332,39 +334,43 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
 
     param_verify.curveParam = domain_params;
     param_verify.pPrecG     = result;
-    param_verify.pHash      = digest;
+    param_verify.pHash      = s_DigestWeierKeygen;
     param_verify.pPublicKey = public_key;
     param_verify.pSignature = signature_buffer;
     param_verify.pOutputR   = output_R;
     param_verify.optLen     = mcuxClEcc_Sign_Param_optLen_Pack(64U);
 
+    /* Execute ECC verify operation */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_ecc_verify, token_ecc_verify, mcuxClEcc_Verify(session, &param_verify));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Verify) != token_ecc_verify) || (MCUXCLECC_STATUS_OK != ret_ecc_verify))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 void execute_ecc_keygen_pct(uint64_t options, char name[])
 {
-    if ((options & FIPS_ECC_KEYGEN_256P) || (options & FIPS_ALL_TESTS))
+    /* Execute ECC keygen on 256p curve */
+    if ((bool)(options & FIPS_ECC_KEYGEN_256P))
     {
         if (!ecc_weier_key_gen_els())
         {
             PRINTF("[ERROR] %s PCT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_ECC_KEYGEN_384P) || (options & FIPS_ALL_TESTS))
+    /* Execute ECC keygen on 384p curve */
+    if ((bool)(options & FIPS_ECC_KEYGEN_384P))
     {
         if (!ecc_weier_key_gen(WEIER384_BIT_LENGTH))
         {
             PRINTF("[ERROR] %s PCT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_ECC_KEYGEN_521P) || (options & FIPS_ALL_TESTS))
+    /* Execute ECC keygen on 521p curve */
+    if ((bool)(options & FIPS_ECC_KEYGEN_521P))
     {
         if (!ecc_weier_key_gen(WEIER521_BIT_LENGTH))
         {

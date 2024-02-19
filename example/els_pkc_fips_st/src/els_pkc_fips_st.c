@@ -30,21 +30,21 @@
 /*!
  * @brief Initialize crypto hardware
  */
-static inline void CRYPTO_InitHardware(void)
+static void CRYPTO_InitHardware(void)
 {
-    status_t status;
+    status_t status_els;
+    status_t status_pkc;
 
-    status = ELS_PowerDownWakeupInit(ELS);
-    if (status != kStatus_Success)
-    {
-        return;
-    }
+    status_els = ELS_PowerDownWakeupInit(ELS);
+
     /* Enable PKC related clocks and RAM zeroize */
-    status = PKC_PowerDownWakeupInit(PKC);
-    if (status != kStatus_Success)
+    status_pkc = PKC_PowerDownWakeupInit(PKC);
+
+    if (status_els != kStatus_Success || status_pkc != kStatus_Success)
     {
         return;
     }
+
 #if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0U)
     /* Initialize the TRNG driver */
     {
@@ -62,10 +62,10 @@ static inline void CRYPTO_InitHardware(void)
  * @brief Function to execute all KATs based on the user options
  * defined in the els_pkc_fips_config.h file.
  */
-static inline void execute_kats()
+static void execute_kats(void)
 {
     /* Execute all FIPS Self Tests if user has specified */
-    if (s_UserOptions & FIPS_ALL_TESTS)
+    if ((bool)(s_UserOptions & FIPS_ALL_TESTS))
     {
         for (uint32_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
         {
@@ -75,7 +75,7 @@ static inline void execute_kats()
     }
     for (uint32_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
     {
-        if (s_UserOptions & s_AlgorithmMappings[i].option)
+        if ((bool)(s_UserOptions & s_AlgorithmMappings[i].option))
         {
             s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option, s_AlgorithmMappings[i].name);
         }
@@ -86,8 +86,11 @@ static inline void execute_kats()
  * @brief Print algorithm information, if HW acclereated or
  * only software implemenatation.
  */
-static inline void print_algorithm_infos()
+static void print_algorithm_infos(void)
 {
+    /**************************************************************************/
+    /* Print algorithm information of each algorithm, which is tested         */
+    /**************************************************************************/
     PRINTF("HW ACCELERATION ALGORITHM INFORMATION:\r\n");
     PRINTF("    ECB DRBG: ELS\r\n");
     PRINTF("    CTR DRBG: ELS\r\n");
@@ -134,6 +137,7 @@ static inline void print_algorithm_infos()
     PRINTF("    SHA384: ELS\r\n");
     PRINTF("    SHA512: ELS\r\n");
 
+    /* Append new line for next execution */
     PRINTF("\r\n");
 }
 
@@ -148,24 +152,37 @@ int main(void)
 
     PRINTF("START OF ELS PKC FIPS SELF-TEST...\r\n");
 
-    /* Print information regarding each algorithm, 
+    /* Print information regarding each algorithm,
      * whether it is HW accelerated or not.
      */
     print_algorithm_infos();
 
     /* Enable the ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    {
+        PRINTF("ERROR AT ELS INIT\r\n");
+    }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_wait, token_wait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+    {
+        PRINTF("ERROR AT ELS INIT\r\n");
+    }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     execute_kats();
 
     /* Disable the ELS */
-    mcuxClExample_Els_Disable();
-    PRINTF("ELS PKC FIPS SELF-TEST FINISHED!\r\n");
+    if (!mcuxClExample_Els_Disable())
+    {
+        PRINTF("ERROR AT ELS DE-INIT\r\n");
+    }
 
-    while (1U)
-        ;
+    PRINTF("END OF ELS PKC FIPS SELF-TEST\r\n");
+
+    while (true)
+    {
+    }
 }

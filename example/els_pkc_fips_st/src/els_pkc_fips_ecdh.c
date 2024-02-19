@@ -19,22 +19,22 @@
  * Variables
  ******************************************************************************/
 /* Domain parameters for ECC-Weier */
-static const uint8_t s_BN_P384_P[48U] = {
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
+static uint8_t s_BN_P384_P[48U] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
 
-static const uint8_t s_BN_P384_A[48U] = {
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
+static uint8_t s_BN_P384_A[48U] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFEU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
 
-static const uint8_t s_BN_P384_B[48U] = {
-    0xB3U, 0x31U, 0x2FU, 0xA7U, 0xE2U, 0x3EU, 0xE7U, 0xE4U, 0x98U, 0x8EU, 0x05U, 0x6BU, 0xE3U, 0xF8U, 0x2DU, 0x19U,
-    0x18U, 0x1DU, 0x9CU, 0x6EU, 0xFEU, 0x81U, 0x41U, 0x12U, 0x03U, 0x14U, 0x08U, 0x8FU, 0x50U, 0x13U, 0x87U, 0x5AU,
-    0xC6U, 0x56U, 0x39U, 0x8DU, 0x8AU, 0x2EU, 0xD1U, 0x9DU, 0x2AU, 0x85U, 0xC8U, 0xEDU, 0xD3U, 0xECU, 0x2AU, 0xEFU};
+static uint8_t s_BN_P384_B[48U] = {0xB3U, 0x31U, 0x2FU, 0xA7U, 0xE2U, 0x3EU, 0xE7U, 0xE4U, 0x98U, 0x8EU, 0x05U, 0x6BU,
+                                   0xE3U, 0xF8U, 0x2DU, 0x19U, 0x18U, 0x1DU, 0x9CU, 0x6EU, 0xFEU, 0x81U, 0x41U, 0x12U,
+                                   0x03U, 0x14U, 0x08U, 0x8FU, 0x50U, 0x13U, 0x87U, 0x5AU, 0xC6U, 0x56U, 0x39U, 0x8DU,
+                                   0x8AU, 0x2EU, 0xD1U, 0x9DU, 0x2AU, 0x85U, 0xC8U, 0xEDU, 0xD3U, 0xECU, 0x2AU, 0xEFU};
 
-static const uint8_t s_BN_P384_G[96U] = {
+static uint8_t s_BN_P384_G[96U] = {
     0xAAU, 0x87U, 0xCAU, 0x22U, 0xBEU, 0x8BU, 0x05U, 0x37U, 0x8EU, 0xB1U, 0xC7U, 0x1EU, 0xF3U, 0x20U, 0xADU, 0x74U,
     0x6EU, 0x1DU, 0x3BU, 0x62U, 0x8BU, 0xA7U, 0x9BU, 0x98U, 0x59U, 0xF7U, 0x41U, 0xE0U, 0x82U, 0x54U, 0x2AU, 0x38U,
     0x55U, 0x02U, 0xF2U, 0x5DU, 0xBFU, 0x55U, 0x29U, 0x6CU, 0x3AU, 0x54U, 0x5EU, 0x38U, 0x72U, 0x76U, 0x0AU, 0xB7U,
@@ -42,33 +42,33 @@ static const uint8_t s_BN_P384_G[96U] = {
     0xF8U, 0xF4U, 0x1DU, 0xBDU, 0x28U, 0x9AU, 0x14U, 0x7CU, 0xE9U, 0xDAU, 0x31U, 0x13U, 0xB5U, 0xF0U, 0xB8U, 0xC0U,
     0x0AU, 0x60U, 0xB1U, 0xCEU, 0x1DU, 0x7EU, 0x81U, 0x9DU, 0x7AU, 0x43U, 0x1DU, 0x7CU, 0x90U, 0xEAU, 0x0EU, 0x5FU};
 
-static const uint8_t s_BN_P384_N[48U] = {
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xC7U, 0x63U, 0x4DU, 0x81U, 0xF4U, 0x37U, 0x2DU, 0xDFU,
-    0x58U, 0x1AU, 0x0DU, 0xB2U, 0x48U, 0xB0U, 0xA7U, 0x7AU, 0xECU, 0xECU, 0x19U, 0x6AU, 0xCCU, 0xC5U, 0x29U, 0x73U};
+static uint8_t s_BN_P384_N[48U] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xC7U, 0x63U, 0x4DU, 0x81U, 0xF4U, 0x37U, 0x2DU, 0xDFU, 0x58U, 0x1AU, 0x0DU, 0xB2U,
+                                   0x48U, 0xB0U, 0xA7U, 0x7AU, 0xECU, 0xECU, 0x19U, 0x6AU, 0xCCU, 0xC5U, 0x29U, 0x73U};
 
-static const uint8_t s_BN_P521_P[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
+static uint8_t s_BN_P521_P[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
 
-static const uint8_t s_BN_P521_A[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
+static uint8_t s_BN_P521_A[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFCU};
 
-static const uint8_t s_BN_P521_B[66U] = {0x00U, 0x51U, 0x95U, 0x3EU, 0xB9U, 0x61U, 0x8EU, 0x1CU, 0x9AU, 0x1FU, 0x92U,
-                                         0x9AU, 0x21U, 0xA0U, 0xB6U, 0x85U, 0x40U, 0xEEU, 0xA2U, 0xDAU, 0x72U, 0x5BU,
-                                         0x99U, 0xB3U, 0x15U, 0xF3U, 0xB8U, 0xB4U, 0x89U, 0x91U, 0x8EU, 0xF1U, 0x09U,
-                                         0xE1U, 0x56U, 0x19U, 0x39U, 0x51U, 0xECU, 0x7EU, 0x93U, 0x7BU, 0x16U, 0x52U,
-                                         0xC0U, 0xBDU, 0x3BU, 0xB1U, 0xBFU, 0x07U, 0x35U, 0x73U, 0xDFU, 0x88U, 0x3DU,
-                                         0x2CU, 0x34U, 0xF1U, 0xEFU, 0x45U, 0x1FU, 0xD4U, 0x6BU, 0x50U, 0x3FU, 0x00U};
+static uint8_t s_BN_P521_B[66U] = {0x00U, 0x51U, 0x95U, 0x3EU, 0xB9U, 0x61U, 0x8EU, 0x1CU, 0x9AU, 0x1FU, 0x92U,
+                                   0x9AU, 0x21U, 0xA0U, 0xB6U, 0x85U, 0x40U, 0xEEU, 0xA2U, 0xDAU, 0x72U, 0x5BU,
+                                   0x99U, 0xB3U, 0x15U, 0xF3U, 0xB8U, 0xB4U, 0x89U, 0x91U, 0x8EU, 0xF1U, 0x09U,
+                                   0xE1U, 0x56U, 0x19U, 0x39U, 0x51U, 0xECU, 0x7EU, 0x93U, 0x7BU, 0x16U, 0x52U,
+                                   0xC0U, 0xBDU, 0x3BU, 0xB1U, 0xBFU, 0x07U, 0x35U, 0x73U, 0xDFU, 0x88U, 0x3DU,
+                                   0x2CU, 0x34U, 0xF1U, 0xEFU, 0x45U, 0x1FU, 0xD4U, 0x6BU, 0x50U, 0x3FU, 0x00U};
 
-static const uint8_t s_BN_P521_G[2U * 66U] = {
+static uint8_t s_BN_P521_G[2U * 66U] = {
     0x00U, 0xC6U, 0x85U, 0x8EU, 0x06U, 0xB7U, 0x04U, 0x04U, 0xE9U, 0xCDU, 0x9EU, 0x3EU, 0xCBU, 0x66U, 0x23U,
     0x95U, 0xB4U, 0x42U, 0x9CU, 0x64U, 0x81U, 0x39U, 0x05U, 0x3FU, 0xB5U, 0x21U, 0xF8U, 0x28U, 0xAFU, 0x60U,
     0x6BU, 0x4DU, 0x3DU, 0xBAU, 0xA1U, 0x4BU, 0x5EU, 0x77U, 0xEFU, 0xE7U, 0x59U, 0x28U, 0xFEU, 0x1DU, 0xC1U,
@@ -79,24 +79,24 @@ static const uint8_t s_BN_P521_G[2U * 66U] = {
     0xF4U, 0x26U, 0x40U, 0xC5U, 0x50U, 0xB9U, 0x01U, 0x3FU, 0xADU, 0x07U, 0x61U, 0x35U, 0x3CU, 0x70U, 0x86U,
     0xA2U, 0x72U, 0xC2U, 0x40U, 0x88U, 0xBEU, 0x94U, 0x76U, 0x9FU, 0xD1U, 0x66U, 0x50U};
 
-static const uint8_t s_BN_P521_N[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
-                                         0xFAU, 0x51U, 0x86U, 0x87U, 0x83U, 0xBFU, 0x2FU, 0x96U, 0x6BU, 0x7FU, 0xCCU,
-                                         0x01U, 0x48U, 0xF7U, 0x09U, 0xA5U, 0xD0U, 0x3BU, 0xB5U, 0xC9U, 0xB8U, 0x89U,
-                                         0x9CU, 0x47U, 0xAEU, 0xBBU, 0x6FU, 0xB7U, 0x1EU, 0x91U, 0x38U, 0x64U, 0x09U};
+static uint8_t s_BN_P521_N[66U] = {0x01U, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+                                   0xFAU, 0x51U, 0x86U, 0x87U, 0x83U, 0xBFU, 0x2FU, 0x96U, 0x6BU, 0x7FU, 0xCCU,
+                                   0x01U, 0x48U, 0xF7U, 0x09U, 0xA5U, 0xD0U, 0x3BU, 0xB5U, 0xC9U, 0xB8U, 0x89U,
+                                   0x9CU, 0x47U, 0xAEU, 0xBBU, 0x6FU, 0xB7U, 0x1EU, 0x91U, 0x38U, 0x64U, 0x09U};
 
 /* Private key input for ECC-Weier */
-static const uint8_t s_PrivateKeyInputWeier256Bob[32U] = {
+static uint8_t s_PrivateKeyInputWeier256Server[32U] = {
     0xE9U, 0x46U, 0xFFU, 0x12U, 0xFFU, 0xB2U, 0xE7U, 0xBAU, 0x2CU, 0x5DU, 0x3AU, 0xAFU, 0x7DU, 0x9AU, 0xEEU, 0xE2U,
     0x00U, 0x59U, 0x7AU, 0xABU, 0x20U, 0xCAU, 0xB0U, 0xF9U, 0x6BU, 0xD4U, 0x84U, 0x75U, 0x3DU, 0x78U, 0xFEU, 0xF3U};
 
-static const uint8_t s_PrivateKeyInputWeier384Bob[48U] = {
+static uint8_t s_PrivateKeyInputWeier384Server[48U] = {
     0x8EU, 0x49U, 0xBFU, 0x1CU, 0x5DU, 0x9CU, 0xBEU, 0x73U, 0xD5U, 0xD3U, 0xDCU, 0xD7U, 0xBBU, 0x57U, 0x6AU, 0x2BU,
     0xDEU, 0x17U, 0xB1U, 0xAAU, 0xA7U, 0xCCU, 0x31U, 0xD0U, 0x24U, 0x10U, 0xB0U, 0xE6U, 0x9FU, 0xF7U, 0x42U, 0x4BU,
     0xA6U, 0x58U, 0x87U, 0x41U, 0x6AU, 0x04U, 0x14U, 0x43U, 0x4CU, 0x25U, 0x5CU, 0xECU, 0x9DU, 0x84U, 0x36U, 0x88U};
 
-static const uint8_t s_PrivateKeyInputWeier521Bob[66U] = {
+static uint8_t s_PrivateKeyInputWeier521Server[66U] = {
     0x00U, 0xA8U, 0x14U, 0x1AU, 0xE2U, 0xF5U, 0x5FU, 0xFCU, 0x6EU, 0x4AU, 0x39U, 0xF2U, 0x0FU, 0x3DU,
     0x53U, 0x47U, 0x19U, 0xB0U, 0x6BU, 0x32U, 0xC7U, 0xBDU, 0xEAU, 0x46U, 0x40U, 0x58U, 0xE2U, 0xC6U,
     0x73U, 0xD4U, 0xE2U, 0x35U, 0x73U, 0x8FU, 0x0FU, 0x49U, 0x08U, 0x2AU, 0x8FU, 0xE7U, 0xAAU, 0x47U,
@@ -104,13 +104,13 @@ static const uint8_t s_PrivateKeyInputWeier521Bob[66U] = {
     0xA6U, 0x3FU, 0xB3U, 0xCDU, 0x8CU, 0x78U, 0x72U, 0xA9U, 0x4BU, 0x20U};
 
 /* Public key input for ECC-Weier */
-static const uint8_t s_PublicKeyInputWeier256Bob[64U] __attribute__((aligned(4))) = {
+static uint8_t s_PublicKeyInputWeier256Server[64U] __attribute__((aligned(4))) = {
     0x0FU, 0x9AU, 0xD5U, 0x6DU, 0x0FU, 0xE6U, 0x3EU, 0x2DU, 0x30U, 0xDAU, 0x7DU, 0xFDU, 0xBDU, 0x9BU, 0xA3U, 0x6BU,
     0xF5U, 0x5CU, 0xF1U, 0x10U, 0xF7U, 0xACU, 0x21U, 0x22U, 0x02U, 0xF1U, 0x0DU, 0x6AU, 0xA8U, 0x2CU, 0x70U, 0x83U,
     0x97U, 0xFEU, 0x00U, 0x5AU, 0xD7U, 0xF4U, 0x30U, 0x32U, 0x19U, 0xECU, 0x03U, 0x51U, 0x61U, 0x86U, 0x1FU, 0x71U,
     0x4BU, 0xF0U, 0x3FU, 0x53U, 0xA3U, 0xA9U, 0xB6U, 0xC8U, 0x63U, 0xB6U, 0xFBU, 0x8AU, 0x42U, 0x99U, 0xE8U, 0x56U};
 
-static const uint8_t s_PublicKeyInputWeier384Bob[96U] = {
+static uint8_t s_PublicKeyInputWeier384Server[96U] = {
     0x89U, 0xF1U, 0xB7U, 0x32U, 0x2DU, 0x68U, 0xEFU, 0x8AU, 0x73U, 0x17U, 0xB2U, 0x98U, 0x72U, 0xF0U, 0xE1U, 0x10U,
     0x8AU, 0xFFU, 0xF7U, 0x19U, 0x53U, 0x83U, 0x79U, 0x4AU, 0x1CU, 0x94U, 0x08U, 0xA2U, 0x16U, 0xE6U, 0x18U, 0x0AU,
     0xF3U, 0xC3U, 0x7FU, 0x69U, 0x6AU, 0xE8U, 0xCBU, 0xF0U, 0x34U, 0x8DU, 0x14U, 0x8AU, 0x9AU, 0x22U, 0x75U, 0x1DU,
@@ -118,7 +118,7 @@ static const uint8_t s_PublicKeyInputWeier384Bob[96U] = {
     0x53U, 0xB7U, 0x12U, 0x7DU, 0xAAU, 0xDDU, 0xB2U, 0xEEU, 0x0AU, 0x60U, 0x39U, 0xFBU, 0xF0U, 0xE5U, 0x77U, 0x8CU,
     0x76U, 0xD0U, 0x6CU, 0x28U, 0xBBU, 0x66U, 0xEAU, 0xA9U, 0x4EU, 0xA3U, 0x14U, 0x6BU, 0x53U, 0xA6U, 0xA6U, 0x22U};
 
-static const uint8_t s_PublicKeyInputWeier521Bob[132U] = {
+static uint8_t s_PublicKeyInputWeier521Server[132U] = {
     0x00U, 0x4BU, 0x29U, 0xF5U, 0xEFU, 0x68U, 0xBBU, 0x53U, 0x47U, 0xA5U, 0x4AU, 0x76U, 0x6AU, 0x09U, 0x80U,
     0xD6U, 0x1FU, 0x45U, 0xA1U, 0x90U, 0xD8U, 0xBBU, 0x4EU, 0xFDU, 0x88U, 0x90U, 0x5FU, 0xA6U, 0xABU, 0x6AU,
     0x6DU, 0x6BU, 0x5EU, 0xFAU, 0x5BU, 0x3EU, 0xB4U, 0xBCU, 0x4CU, 0xB4U, 0x98U, 0x6BU, 0xF0U, 0xB5U, 0x99U,
@@ -130,16 +130,16 @@ static const uint8_t s_PublicKeyInputWeier521Bob[132U] = {
     0xDDU, 0xCBU, 0x97U, 0xA9U, 0xFAU, 0x1BU, 0x24U, 0x91U, 0x98U, 0xA5U, 0x49U, 0x8EU};
 
 /* Private key input for ECC-Weier */
-static const uint8_t s_PrivateKeyInputWeier256Alice[32U] = {
+static uint8_t s_PrivateKeyInputWeier256Client[32U] = {
     0x10U, 0x69U, 0x26U, 0x12U, 0xAEU, 0xDEU, 0x15U, 0xC2U, 0xC5U, 0x82U, 0x41U, 0x5BU, 0xB8U, 0xDEU, 0xF5U, 0xABU,
     0x6CU, 0xFDU, 0x6CU, 0xD5U, 0x05U, 0x27U, 0x70U, 0xACU, 0xF2U, 0xFAU, 0x71U, 0x3DU, 0x01U, 0xC1U, 0x9DU, 0x43U};
 
-static const uint8_t s_PrivateKeyInputWeier384Alice[48U] = {
+static uint8_t s_PrivateKeyInputWeier384Client[48U] = {
     0xE5U, 0x86U, 0xEEU, 0x87U, 0xCFU, 0x1DU, 0x30U, 0xB3U, 0x5EU, 0xDEU, 0x97U, 0x76U, 0xA0U, 0x5BU, 0x37U, 0xDEU,
     0x57U, 0x4AU, 0x35U, 0x65U, 0x70U, 0x24U, 0x9CU, 0xB0U, 0xBCU, 0x8DU, 0x86U, 0xF8U, 0x90U, 0x87U, 0x9FU, 0xB7U,
     0x7CU, 0x2DU, 0x29U, 0xFEU, 0x08U, 0x30U, 0xA2U, 0x21U, 0x0FU, 0xD0U, 0xF6U, 0x3FU, 0x4BU, 0xE3U, 0xF4U, 0x40U};
 
-static const uint8_t s_PrivateKeyInputWeier521Alice[66U] = {
+static uint8_t s_PrivateKeyInputWeier521Client[66U] = {
     0x00U, 0xE3U, 0xCCU, 0xB7U, 0xDCU, 0x9BU, 0x83U, 0xBFU, 0x33U, 0x1AU, 0x87U, 0x99U, 0x01U, 0xECU,
     0xD0U, 0x20U, 0x09U, 0x7AU, 0x87U, 0x57U, 0x7FU, 0x28U, 0x28U, 0x5AU, 0xE6U, 0x75U, 0x61U, 0xC7U,
     0x09U, 0x53U, 0xDEU, 0x26U, 0x07U, 0x56U, 0xB6U, 0xEEU, 0x1AU, 0x4CU, 0x1FU, 0x1EU, 0x33U, 0xFBU,
@@ -147,13 +147,13 @@ static const uint8_t s_PrivateKeyInputWeier521Alice[66U] = {
     0xFAU, 0x26U, 0x95U, 0xC7U, 0xD8U, 0xFFU, 0x1AU, 0x37U, 0x70U, 0x99U};
 
 /* Public key input for ECC-Weier */
-static const uint8_t s_PublicKeyInputWeier256Alice[64U] __attribute__((aligned(4))) = {
+static uint8_t s_PublicKeyInputWeier256Client[64U] __attribute__((aligned(4))) = {
     0xD5U, 0x76U, 0x7EU, 0xFCU, 0x4CU, 0xE7U, 0x7DU, 0x7AU, 0x0CU, 0xD1U, 0xAAU, 0x6BU, 0x24U, 0xC2U, 0x81U, 0xF8U,
     0x35U, 0x7DU, 0xDCU, 0x0EU, 0x0FU, 0x04U, 0xF4U, 0xADU, 0xE2U, 0x45U, 0x84U, 0xE3U, 0xA5U, 0x26U, 0x08U, 0x10U,
     0xFFU, 0x5AU, 0x47U, 0xB0U, 0x47U, 0x47U, 0xE1U, 0x47U, 0x45U, 0x73U, 0xC6U, 0xBDU, 0xBDU, 0xF4U, 0xD2U, 0x21U,
     0xC6U, 0x0CU, 0x10U, 0x85U, 0x4FU, 0x9AU, 0x8DU, 0xCFU, 0x61U, 0x04U, 0xF0U, 0xF7U, 0x52U, 0xEDU, 0x22U, 0xC9U};
 
-static const uint8_t s_PublicKeyInputWeier384Alice[96U] = {
+static uint8_t s_PublicKeyInputWeier384Client[96U] = {
     0x10U, 0xF9U, 0xF8U, 0xBEU, 0x95U, 0x95U, 0x0EU, 0xF7U, 0x07U, 0x1EU, 0x84U, 0xC8U, 0x06U, 0xB5U, 0x19U, 0x2EU,
     0xA1U, 0x04U, 0x50U, 0x4FU, 0x5CU, 0xADU, 0x82U, 0x2DU, 0x85U, 0x7AU, 0x8EU, 0x9CU, 0x97U, 0x5CU, 0xF9U, 0x12U,
     0xBBU, 0x35U, 0x17U, 0x13U, 0xDEU, 0x77U, 0x64U, 0xEFU, 0xE7U, 0x80U, 0xADU, 0x6AU, 0x52U, 0x1DU, 0xA9U, 0x93U,
@@ -161,7 +161,7 @@ static const uint8_t s_PublicKeyInputWeier384Alice[96U] = {
     0x06U, 0xFAU, 0xF5U, 0x23U, 0xECU, 0x8CU, 0x71U, 0x3FU, 0x7AU, 0xDCU, 0x7EU, 0x86U, 0x03U, 0xBFU, 0xE1U, 0x57U,
     0x8DU, 0x49U, 0x2DU, 0xDBU, 0x49U, 0xD0U, 0xCDU, 0xB8U, 0x51U, 0x07U, 0xD6U, 0xE2U, 0x02U, 0x0FU, 0x7AU, 0x94U};
 
-static const uint8_t s_PublicKeyInputWeier521Alice[132U] = {
+static uint8_t s_PublicKeyInputWeier521Client[132U] = {
     0x00U, 0x4DU, 0xE9U, 0xC6U, 0xAFU, 0x37U, 0xD4U, 0x53U, 0x79U, 0xD8U, 0xACU, 0xE3U, 0xF7U, 0xD0U, 0x73U,
     0xC7U, 0xFBU, 0x7AU, 0xB1U, 0x71U, 0x2FU, 0xA9U, 0xC7U, 0x47U, 0x0CU, 0x06U, 0xD8U, 0xF8U, 0x52U, 0x9DU,
     0x53U, 0xF8U, 0x05U, 0xDFU, 0x43U, 0x8BU, 0x77U, 0x80U, 0x21U, 0x5AU, 0x23U, 0x08U, 0xCDU, 0xD7U, 0x8EU,
@@ -173,183 +173,343 @@ static const uint8_t s_PublicKeyInputWeier521Alice[132U] = {
     0x4AU, 0xC7U, 0x69U, 0x8EU, 0x29U, 0x8CU, 0x40U, 0xF4U, 0xC1U, 0xDDU, 0x0CU, 0xA5U};
 
 /* d_A * Q_B KAT */
-static const uint8_t s_SharedSecretKat384[48U] = {
+static uint8_t s_SharedSecretKat384[48U] = {
     0xADU, 0x33U, 0x08U, 0x83U, 0x7EU, 0x17U, 0xAAU, 0x00U, 0xC1U, 0x1FU, 0x10U, 0xBDU, 0x8CU, 0xC4U, 0x51U, 0xAFU,
     0x92U, 0x46U, 0x01U, 0xBDU, 0xA3U, 0xB7U, 0x1DU, 0x62U, 0xE2U, 0xF6U, 0x64U, 0x1DU, 0x09U, 0x1BU, 0xADU, 0x3CU,
     0xA4U, 0x2AU, 0x64U, 0x1BU, 0x55U, 0x4EU, 0xDFU, 0x8FU, 0x1CU, 0x39U, 0x93U, 0xACU, 0xEDU, 0x1CU, 0xE3U, 0x53U};
 
-static const uint8_t s_SharedSecretKat521[66U] = {
+static uint8_t s_SharedSecretKat521[66U] = {
     0x01U, 0x95U, 0xA9U, 0xC1U, 0x23U, 0x47U, 0x1EU, 0x42U, 0x00U, 0x88U, 0x96U, 0x39U, 0x3CU, 0xD8U,
     0x17U, 0x32U, 0x4DU, 0xEFU, 0xCEU, 0x18U, 0xF1U, 0xB0U, 0x00U, 0x17U, 0xF4U, 0x54U, 0x4BU, 0xC3U,
     0x0FU, 0xAEU, 0xE2U, 0xA8U, 0x7FU, 0x7DU, 0x23U, 0x2BU, 0xE4U, 0x6DU, 0x97U, 0xECU, 0xFEU, 0x94U,
     0x20U, 0x89U, 0xA3U, 0x42U, 0x8BU, 0x3CU, 0xB0U, 0x26U, 0xC6U, 0xA0U, 0x70U, 0x5BU, 0x3FU, 0x7FU,
     0x50U, 0x34U, 0x31U, 0xD9U, 0x86U, 0x1EU, 0x3CU, 0x77U, 0x3AU, 0x0DU};
 
+/* ECDH ELS variables */
+static uint8_t s_AES256OutputKatELSServer[16U] = {0x66U, 0x61U, 0x04U, 0x45U, 0x41U, 0x59U, 0x30U, 0xD2U,
+                                                  0xF3U, 0x46U, 0x33U, 0x9BU, 0x5FU, 0xBFU, 0xC9U, 0xC2U};
+
+static uint8_t s_AES256InputELSServer[16U] = {0x35U, 0xE6U, 0x2CU, 0x18U, 0x02U, 0xCAU, 0x06U, 0x5BU,
+                                              0xCDU, 0x56U, 0x1EU, 0xBFU, 0x9BU, 0xF0U, 0x2DU, 0x00U};
+
+static uint8_t s_AES256OutputKatELSClient[16U] = {0x66U, 0x61U, 0x04U, 0x45U, 0x41U, 0x59U, 0x30U, 0xD2U,
+                                                  0xF3U, 0x46U, 0x33U, 0x9BU, 0x5FU, 0xBFU, 0xC9U, 0xC2U};
+
+static uint8_t s_AES256InputELSClient[16U] = {0x35U, 0xE6U, 0x2CU, 0x18U, 0x02U, 0xCAU, 0x06U, 0x5BU,
+                                              0xCDU, 0x56U, 0x1EU, 0xBFU, 0x9BU, 0xF0U, 0x2DU, 0x00U};
 /*******************************************************************************
  * Code
  ******************************************************************************/
 /*!
- * @brief Execute ECDH on ELS.
+ * @brief Execute ECDH on ELS with Client.
  */
-static bool ecdh_els()
+static bool ecdh_els_client(void)
 {
-    // First Alice private key
+    bool return_status = true;
+    /* Computed shared secret properties */
     const mcuxClEls_KeyProp_t shared_secret_prop = {
-        .bits = {.upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
-                 .upprot_sec  = MCUXCLELS_KEYPROPERTY_SECURE_TRUE,
-                 .uaes        = MCUXCLELS_KEYPROPERTY_AES_TRUE},
+        .bits = {.upprot_priv = (uint32_t)MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
+                 .upprot_sec  = (uint32_t)MCUXCLELS_KEYPROPERTY_SECURE_TRUE,
+                 .uaes        = (uint32_t)MCUXCLELS_KEYPROPERTY_AES_TRUE},
     };
+
+    /* Plain key properties */
     mcuxClEls_KeyProp_t plain_key_properties = {
         .word = {.value = MCUXCLELS_KEYPROPERTY_VALUE_SECURE | MCUXCLELS_KEYPROPERTY_VALUE_PRIVILEGED |
                           MCUXCLELS_KEYPROPERTY_VALUE_KEY_SIZE_256 | MCUXCLELS_KEYPROPERTY_VALUE_ECDH}};
 
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
-    if (import_plain_key_into_els(s_PrivateKeyInputWeier256Alice, sizeof(s_PrivateKeyInputWeier256Alice),
-                                  plain_key_properties, &key_index) != STATUS_SUCCESS)
+
+    /* Import Client private key into els keystore */
+    if (import_plain_key_into_els(s_PrivateKeyInputWeier256Client, sizeof(s_PrivateKeyInputWeier256Client),
+                                  plain_key_properties, &key_index) != (int32_t)STATUS_SUCCESS)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
     mcuxClEls_KeyIndex_t index_shared_secret = MCUXCLELS_KEY_SLOTS;
     index_shared_secret                      = els_get_free_keyslot(2U);
-    els_delete_key(index_shared_secret);
+    if (els_delete_key(index_shared_secret) != (int32_t)STATUS_SUCCESS)
+    {
+        return_status = false;
+    }
 
     if (!(index_shared_secret < MCUXCLELS_KEY_SLOTS))
     {
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
-                                     mcuxClEls_EccKeyExchange_Async(key_index, s_PublicKeyInputWeier256Bob,
+                                     mcuxClEls_EccKeyExchange_Async(key_index, s_PublicKeyInputWeier256Server,
                                                                     index_shared_secret, shared_secret_prop));
-
+    /* Compute keyexchnage */
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyExchange_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    uint8_t aes256_output[16U]     = {0U};
-    uint8_t aes256_output_kat[16U] = {0x66U, 0x61U, 0x04U, 0x45U, 0x41U, 0x59U, 0x30U, 0xD2U,
-                                      0xF3U, 0x46U, 0x33U, 0x9BU, 0x5FU, 0xBFU, 0xC9U, 0xC2U};
-    uint8_t aes256_input[16U]      = {0x35U, 0xE6U, 0x2CU, 0x18U, 0x02U, 0xCAU, 0x06U, 0x5BU,
-                                      0xCDU, 0x56U, 0x1EU, 0xBFU, 0x9BU, 0xF0U, 0x2DU, 0x00U};
+    uint8_t aes256_output[16U] = {0U};
 
+    /* The cipher options for ECB */
     mcuxClEls_CipherOption_t cipher_options_els = {0U};
     cipher_options_els.bits.cphmde              = MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB;
     cipher_options_els.bits.dcrpt               = MCUXCLELS_CIPHER_ENCRYPT;
     cipher_options_els.bits.extkey              = MCUXCLELS_CIPHER_INTERNAL_KEY;
 
+    /* Execute ECB operation with computed shared seceet */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
         mcuxClEls_Cipher_Async(cipher_options_els, (mcuxClEls_KeyIndex_t)index_shared_secret, NULL,
-                               MCUXCLELS_CIPHER_KEY_SIZE_AES_256, aes256_input, sizeof(aes256_input), NULL,
-                               aes256_output));
+                               MCUXCLELS_CIPHER_KEY_SIZE_AES_256, s_AES256InputELSClient,
+                               sizeof(s_AES256InputELSClient), NULL, aes256_output));
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        els_delete_key(index_shared_secret);
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        els_delete_key(index_shared_secret);
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    if (!mcuxClCore_assertEqual(aes256_output, aes256_output_kat, sizeof(aes256_output)))
+
+    /* Compare results */
+    if (!mcuxClCore_assertEqual(aes256_output, s_AES256OutputKatELSClient, sizeof(aes256_output)))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    els_delete_key(index_shared_secret);
-    els_delete_key(key_index);
+    if (els_delete_key(index_shared_secret) != (int32_t)STATUS_SUCCESS)
+    {
+        return_status = false;
+    }
+    if (els_delete_key(key_index) != (int32_t)STATUS_SUCCESS)
+    {
+        return_status = false;
+    }
     key_index = MCUXCLELS_KEY_SLOTS;
+    return return_status;
+}
 
-    // Now same with Bob private key
-    import_plain_key_into_els(s_PrivateKeyInputWeier256Bob, sizeof(s_PrivateKeyInputWeier256Bob), plain_key_properties,
-                              &key_index);
+/*!
+ * @brief Execute ECDH on ELS with Server.
+ */
+static bool ecdh_els_server(void)
+{
+    bool return_status = true;
+    /* Computed shared secret properties */
+    const mcuxClEls_KeyProp_t shared_secret_prop = {
+        .bits = {.upprot_priv = (uint32_t)MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
+                 .upprot_sec  = (uint32_t)MCUXCLELS_KEYPROPERTY_SECURE_TRUE,
+                 .uaes        = (uint32_t)MCUXCLELS_KEYPROPERTY_AES_TRUE},
+    };
 
-    index_shared_secret = MCUXCLELS_KEY_SLOTS;
-    index_shared_secret = els_get_free_keyslot(2U);
-    els_delete_key(index_shared_secret);
+    uint8_t aes256_output[16U] = {0U};
+
+    /* The cipher options for ECB */
+    mcuxClEls_CipherOption_t cipher_options_els = {0U};
+    cipher_options_els.bits.cphmde              = MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB;
+    cipher_options_els.bits.dcrpt               = MCUXCLELS_CIPHER_ENCRYPT;
+    cipher_options_els.bits.extkey              = MCUXCLELS_CIPHER_INTERNAL_KEY;
+
+    /* Plain key properties */
+    mcuxClEls_KeyProp_t plain_key_properties = {
+        .word = {.value = MCUXCLELS_KEYPROPERTY_VALUE_SECURE | MCUXCLELS_KEYPROPERTY_VALUE_PRIVILEGED |
+                          MCUXCLELS_KEYPROPERTY_VALUE_KEY_SIZE_256 | MCUXCLELS_KEYPROPERTY_VALUE_ECDH}};
+
+    mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
+
+    /* Import Server private key into els keystore */
+    if (import_plain_key_into_els(s_PrivateKeyInputWeier256Server, sizeof(s_PrivateKeyInputWeier256Server),
+                                  plain_key_properties, &key_index) != (int32_t)STATUS_SUCCESS)
+    {
+        return_status = false;
+    }
+
+    mcuxClEls_KeyIndex_t index_shared_secret = MCUXCLELS_KEY_SLOTS;
+    index_shared_secret                      = els_get_free_keyslot(2U);
+    if (els_delete_key(index_shared_secret) != (int32_t)STATUS_SUCCESS)
+    {
+        return_status = false;
+    }
 
     if (!(index_shared_secret < MCUXCLELS_KEY_SLOTS))
     {
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
-                                     mcuxClEls_EccKeyExchange_Async(key_index, s_PublicKeyInputWeier256Alice,
+                                     mcuxClEls_EccKeyExchange_Async(key_index, s_PublicKeyInputWeier256Client,
                                                                     index_shared_secret, shared_secret_prop));
-
+    /* Compute keyexchnage */
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyExchange_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    /* Execute ECB operation with computed shared seceet */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
         mcuxClEls_Cipher_Async(cipher_options_els, (mcuxClEls_KeyIndex_t)index_shared_secret, NULL,
-                               MCUXCLELS_CIPHER_KEY_SIZE_AES_256, aes256_input, sizeof(aes256_input), NULL,
-                               aes256_output));
+                               MCUXCLELS_CIPHER_KEY_SIZE_AES_256, s_AES256InputELSServer,
+                               sizeof(s_AES256InputELSServer), NULL, aes256_output));
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        els_delete_key(index_shared_secret);
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        els_delete_key(index_shared_secret);
-        els_delete_key(key_index);
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(aes256_output, aes256_output_kat, sizeof(aes256_output)))
+    /* Compare results */
+    if (!mcuxClCore_assertEqual(aes256_output, s_AES256OutputKatELSServer, sizeof(aes256_output)))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
+}
+
+/*!
+ * @brief Execute ECDH on ELS.
+ */
+static bool ecdh_els(void)
+{
+    bool client_result = ecdh_els_client();
+    bool server_result = ecdh_els_server();
+    if (!client_result || !server_result)
+    {
+        return false;
+    }
+    return true;
+}
+
+/*!
+ * @brief Execute ECDH on Server.
+ */
+static bool ecdh_server(uint32_t bit_length,
+                        mcuxClEcc_DomainParam_t domain_param,
+                        mcuxClSession_Handle_t session,
+                        uint8_t *server_sk,
+                        uint8_t *client_pk,
+                        uint8_t *shared_secret_kat,
+                        uint32_t shared_secret_kat_size)
+{
+    bool return_status = true;
+    /* First with Server private key */
+    uint8_t p_result_server[132U] = {0U};
+
+    /* Default point multiplication paramameters initialization */
+    mcuxClEcc_PointMult_Param_t pointmult_params_server = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
+                                                                                        .pScalar    = server_sk,
+                                                                                        .pPoint     = client_pk,
+                                                                                        .pResult    = p_result_server,
+                                                                                        .optLen     = 0U};
+
+    /* Execute point multiplication operation */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params_server));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
+    {
+        return_status = false;
+    }
+
+    if (MCUXCLECC_STATUS_OK != result)
+    {
+        return_status = false;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /* Check result, depending on input bit length */
+
+    if (!mcuxClCore_assertEqual(pointmult_params_server.pResult, shared_secret_kat, shared_secret_kat_size))
+    {
+        return_status = false;
+    }
+
+    return return_status;
+}
+
+/*!
+ * @brief Execute ECDH on Client.
+ */
+static bool ecdh_client(uint32_t bit_length,
+                        mcuxClEcc_DomainParam_t domain_param,
+                        mcuxClSession_Handle_t session,
+                        uint8_t *client_sk,
+                        uint8_t *server_pk,
+                        uint8_t *shared_secret_kat,
+                        uint32_t shared_secret_kat_size)
+{
+    bool return_status = true;
+    /* Now same with Client private key */
+    uint8_t p_result_client[132U] = {0U};
+
+    /* Default point multiplication paramameters initialization */
+    mcuxClEcc_PointMult_Param_t pointmult_params_client = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
+                                                                                        .pScalar    = client_sk,
+                                                                                        .pPoint     = server_pk,
+                                                                                        .pResult    = p_result_client,
+                                                                                        .optLen     = 0U};
+
+    /* Execute point multiplication operation */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params_client));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
+    {
+        return_status = false;
+    }
+
+    if (MCUXCLECC_STATUS_OK != result)
+    {
+        return_status = false;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    /* Check result, depending on input bit length */
+    if (!mcuxClCore_assertEqual(pointmult_params_client.pResult, shared_secret_kat, shared_secret_kat_size))
+    {
+        return_status = false;
+    }
+
+    return return_status;
 }
 
 /*!
  * @brief Execute ECDH.
  */
-static bool ecdh(uint32_t bit_length)
+static bool ecdh_using_point_mult(uint32_t bit_length,
+                                  uint8_t *client_pk,
+                                  uint8_t *client_sk,
+                                  uint8_t *server_pk,
+                                  uint8_t *server_sk,
+                                  uint8_t *shared_secret_kat,
+                                  uint32_t shared_secret_kat_size)
 {
+    bool return_status           = true;
     const uint32_t p_byte_length = (bit_length + 7U) / 8U;
     const uint32_t n_byte_length = (bit_length + 7U) / 8U;
 
@@ -360,12 +520,14 @@ static bool ecdh(uint32_t bit_length)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_POINTMULT_WACPU_SIZE,
                                                   MCUXCLECC_POINTMULT_WAPKC_SIZE(p_byte_length, n_byte_length));
 
-    mcuxClEcc_DomainParam_t domain_param;
+    /* Default domain paramameters initialization */
+    mcuxClEcc_DomainParam_t domain_params =
+        (mcuxClEcc_DomainParam_t){.pA = NULL, .pB = NULL, .pG = NULL, .pP = NULL, .pN = NULL, .misc = 0U};
+
     switch (bit_length)
     {
         case WEIER384_BIT_LENGTH:
-        {
-            domain_param =
+            domain_params =
                 (mcuxClEcc_DomainParam_t){.pA   = s_BN_P384_A,
                                           .pB   = s_BN_P384_B,
                                           .pG   = s_BN_P384_G,
@@ -373,10 +535,8 @@ static bool ecdh(uint32_t bit_length)
                                           .pN   = s_BN_P384_N,
                                           .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
-        }
         case WEIER521_BIT_LENGTH:
-        {
-            domain_param =
+            domain_params =
                 (mcuxClEcc_DomainParam_t){.pA   = s_BN_P521_A,
                                           .pB   = s_BN_P521_B,
                                           .pG   = s_BN_P521_G,
@@ -384,131 +544,19 @@ static bool ecdh(uint32_t bit_length)
                                           .pN   = s_BN_P521_N,
                                           .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
-        }
+        default:
+            return_status = false;
+            break;
     }
 
-    // First Bob private key
-    uint8_t p_result_bob[132U] = {0U};
-    mcuxClEcc_PointMult_Param_t pointmult_params_bob;
-    switch (bit_length)
-    {
-        case WEIER384_BIT_LENGTH:
-        {
-            pointmult_params_bob = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
-                                                                 .pScalar    = s_PrivateKeyInputWeier384Bob,
-                                                                 .pPoint     = s_PublicKeyInputWeier384Alice,
-                                                                 .pResult    = p_result_bob,
-                                                                 .optLen     = 0U};
-            break;
-        }
-        case WEIER521_BIT_LENGTH:
-        {
-            pointmult_params_bob = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
-                                                                 .pScalar    = s_PrivateKeyInputWeier521Bob,
-                                                                 .pPoint     = s_PublicKeyInputWeier521Alice,
-                                                                 .pResult    = p_result_bob,
-                                                                 .optLen     = 0U};
-            break;
-        }
-    }
+    bool client_result = ecdh_client(bit_length, domain_params, session, client_sk, server_pk, shared_secret_kat,
+                                     shared_secret_kat_size);
+    bool server_result = ecdh_server(bit_length, domain_params, session, server_sk, client_pk, shared_secret_kat,
+                                     shared_secret_kat_size);
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params_bob));
-    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
+    if (!client_result || !server_result)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    if (MCUXCLECC_STATUS_INVALID_PARAMS == result)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    else if (MCUXCLECC_STATUS_OK != result)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    switch (bit_length)
-    {
-        case WEIER384_BIT_LENGTH:
-        {
-            if (!mcuxClCore_assertEqual(pointmult_params_bob.pResult, s_SharedSecretKat384,
-                                        sizeof(s_SharedSecretKat384)))
-            {
-                return MCUXCLEXAMPLE_STATUS_ERROR;
-            }
-            break;
-        }
-        case WEIER521_BIT_LENGTH:
-        {
-            if (!mcuxClCore_assertEqual(pointmult_params_bob.pResult, s_SharedSecretKat521,
-                                        sizeof(s_SharedSecretKat521)))
-            {
-                return MCUXCLEXAMPLE_STATUS_ERROR;
-            }
-            break;
-        }
-    }
-
-    // Now Alice private key
-    uint8_t p_result_alice[132U] = {0U};
-    mcuxClEcc_PointMult_Param_t pointmult_params_alice;
-    switch (bit_length)
-    {
-        case WEIER384_BIT_LENGTH:
-        {
-            pointmult_params_alice = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
-                                                                   .pScalar    = s_PrivateKeyInputWeier384Alice,
-                                                                   .pPoint     = s_PublicKeyInputWeier384Bob,
-                                                                   .pResult    = p_result_alice,
-                                                                   .optLen     = 0U};
-            break;
-        }
-        case WEIER521_BIT_LENGTH:
-        {
-            pointmult_params_alice = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
-                                                                   .pScalar    = s_PrivateKeyInputWeier521Alice,
-                                                                   .pPoint     = s_PublicKeyInputWeier521Bob,
-                                                                   .pResult    = p_result_alice,
-                                                                   .optLen     = 0U};
-            break;
-        }
-    }
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params_alice));
-    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    if (MCUXCLECC_STATUS_INVALID_PARAMS == result)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    else if (MCUXCLECC_STATUS_OK != result)
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    switch (bit_length)
-    {
-        case WEIER384_BIT_LENGTH:
-        {
-            if (!mcuxClCore_assertEqual(pointmult_params_alice.pResult, s_SharedSecretKat384,
-                                        sizeof(s_SharedSecretKat384)))
-            {
-                return MCUXCLEXAMPLE_STATUS_ERROR;
-            }
-            break;
-        }
-        case WEIER521_BIT_LENGTH:
-        {
-            if (!mcuxClCore_assertEqual(pointmult_params_alice.pResult, s_SharedSecretKat521,
-                                        sizeof(s_SharedSecretKat521)))
-            {
-                return MCUXCLEXAMPLE_STATUS_ERROR;
-            }
-            break;
-        }
+        return_status = false;
     }
 
     /**************************************************************************/
@@ -516,30 +564,37 @@ static bool ecdh(uint32_t bit_length)
     /**************************************************************************/
     if (!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 void execute_ecdh_kat(uint64_t options, char name[])
 {
-    if ((options & FIPS_ECDH256P) || (options & FIPS_ALL_TESTS))
+    /* Execute ECDH 256p */
+    if ((bool)(options & FIPS_ECDH256P))
     {
         if (!ecdh_els())
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_ECDH384P) || (options & FIPS_ALL_TESTS))
+    /* Execute ECDH 384p */
+    if ((bool)(options & FIPS_ECDH384P))
     {
-        if (!ecdh(WEIER384_BIT_LENGTH))
+        if (!ecdh_using_point_mult(WEIER384_BIT_LENGTH, s_PublicKeyInputWeier384Client, s_PrivateKeyInputWeier384Client,
+                                   s_PublicKeyInputWeier384Server, s_PrivateKeyInputWeier384Server,
+                                   s_SharedSecretKat384, sizeof(s_SharedSecretKat384)))
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_ECDH521P) || (options & FIPS_ALL_TESTS))
+    /* Execute ECDH 521p */
+    if ((bool)(options & FIPS_ECDH521P))
     {
-        if (!ecdh(WEIER521_BIT_LENGTH))
+        if (!ecdh_using_point_mult(WEIER521_BIT_LENGTH, s_PublicKeyInputWeier521Client, s_PrivateKeyInputWeier521Client,
+                                   s_PublicKeyInputWeier521Server, s_PrivateKeyInputWeier521Server,
+                                   s_SharedSecretKat521, sizeof(s_SharedSecretKat521)))
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }

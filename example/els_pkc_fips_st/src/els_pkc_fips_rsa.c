@@ -20,9 +20,9 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static const uint8_t s_RsaPublicExponent[3U] = {0x01U, 0x00U, 0x01U};
+static uint8_t s_RsaPublicExponent[3U] = {0x01U, 0x00U, 0x01U};
 
-static const uint8_t s_RsaModulus2048[256U] = {
+static uint8_t s_RsaModulus2048[256U] = {
     0x8EU, 0xBCU, 0xC1U, 0xD6U, 0xC4U, 0xF2U, 0x3CU, 0xF8U, 0xD6U, 0xE0U, 0xA5U, 0xEAU, 0xAFU, 0xFAU, 0x56U, 0x20U,
     0x8FU, 0x13U, 0xC0U, 0xC9U, 0x48U, 0xA3U, 0xCFU, 0xF1U, 0x82U, 0x06U, 0xD0U, 0x0AU, 0x40U, 0x17U, 0x2DU, 0x60U,
     0xD4U, 0xE5U, 0xD9U, 0xD8U, 0xDCU, 0x22U, 0xB6U, 0x25U, 0xFBU, 0x38U, 0x1DU, 0x41U, 0xE8U, 0x3AU, 0xA0U, 0x58U,
@@ -40,7 +40,7 @@ static const uint8_t s_RsaModulus2048[256U] = {
     0xCAU, 0x8CU, 0x14U, 0xAEU, 0xF7U, 0x9FU, 0x70U, 0x01U, 0x15U, 0x04U, 0x0CU, 0x6FU, 0x97U, 0x0CU, 0x78U, 0xD4U,
     0x4FU, 0x8BU, 0xE1U, 0x6BU, 0x24U, 0xF1U, 0xEDU, 0x57U, 0xB3U, 0xEEU, 0x60U, 0x21U, 0x02U, 0x5CU, 0xE0U, 0xE9U};
 
-static const uint8_t s_RsaModulus3072[384U] = {
+static uint8_t s_RsaModulus3072[384U] = {
     0xC6U, 0xDFU, 0x6DU, 0xBFU, 0xF7U, 0xEEU, 0xCAU, 0xE7U, 0xA7U, 0xD3U, 0x62U, 0x5AU, 0x0EU, 0x00U, 0x90U, 0x11U,
     0x52U, 0x07U, 0x3EU, 0x78U, 0x17U, 0xDFU, 0xD9U, 0x70U, 0x9AU, 0x13U, 0x45U, 0x71U, 0xDEU, 0x8FU, 0xA1U, 0x25U,
     0xB0U, 0x81U, 0xD7U, 0x9AU, 0x7AU, 0xDDU, 0xE9U, 0x50U, 0xEFU, 0x1AU, 0x07U, 0xBCU, 0x71U, 0xBDU, 0x37U, 0xD8U,
@@ -66,7 +66,7 @@ static const uint8_t s_RsaModulus3072[384U] = {
     0x14U, 0xE5U, 0x13U, 0x69U, 0x16U, 0x4FU, 0x3BU, 0x29U, 0xB3U, 0x38U, 0xF6U, 0xFEU, 0xFFU, 0x8FU, 0x2BU, 0x44U,
     0x03U, 0x38U, 0xA4U, 0xBEU, 0xC9U, 0x63U, 0xB4U, 0x49U, 0xB1U, 0x60U, 0x76U, 0x3EU, 0x85U, 0x5AU, 0x5CU, 0x3BU};
 
-static const uint8_t s_RsaModulus4096[512U] = {
+static uint8_t s_RsaModulus4096[512U] = {
     0xB6U, 0xF5U, 0x7BU, 0x99U, 0xEDU, 0x8AU, 0xE1U, 0xB3U, 0xE6U, 0xF7U, 0x45U, 0x6CU, 0xF4U, 0x69U, 0x7BU, 0x83U,
     0x21U, 0x46U, 0xB2U, 0x1DU, 0x85U, 0x9BU, 0x80U, 0x2DU, 0x70U, 0xB2U, 0x90U, 0xD9U, 0xB0U, 0x46U, 0xC2U, 0x6EU,
     0x41U, 0x71U, 0x19U, 0xC6U, 0x1FU, 0xC2U, 0xD7U, 0x8DU, 0x61U, 0x86U, 0xDDU, 0x9FU, 0x09U, 0x56U, 0x3BU, 0xBBU,
@@ -100,7 +100,7 @@ static const uint8_t s_RsaModulus4096[512U] = {
     0x3DU, 0x71U, 0x65U, 0x1FU, 0x94U, 0xF5U, 0x59U, 0xAFU, 0x60U, 0x06U, 0xAAU, 0x55U, 0x24U, 0x76U, 0xAEU, 0x35U,
     0xCDU, 0x02U, 0x19U, 0xFAU, 0x02U, 0xF7U, 0xC3U, 0xE3U, 0x55U, 0xCEU, 0xB8U, 0x73U, 0x5AU, 0x8BU, 0x11U, 0x95U};
 
-static const uint8_t s_RsaPrivateExponent2048[256U] = {
+static uint8_t s_RsaPrivateExponent2048[256U] = {
     0x3AU, 0xC7U, 0xAFU, 0xB9U, 0x8EU, 0x94U, 0x45U, 0x18U, 0xA2U, 0x80U, 0x93U, 0xC3U, 0x00U, 0x62U, 0x42U, 0x8AU,
     0x98U, 0xF1U, 0x25U, 0x00U, 0x9FU, 0x19U, 0xDAU, 0x9DU, 0xD5U, 0x92U, 0x91U, 0xA4U, 0xCEU, 0xFCU, 0xDCU, 0x72U,
     0x96U, 0x69U, 0xEBU, 0x5AU, 0xDBU, 0x58U, 0xAEU, 0x13U, 0x19U, 0x0FU, 0xE4U, 0x38U, 0x8AU, 0x76U, 0x6EU, 0x26U,
@@ -118,7 +118,7 @@ static const uint8_t s_RsaPrivateExponent2048[256U] = {
     0xA5U, 0x55U, 0x56U, 0x80U, 0x09U, 0x58U, 0x47U, 0xC0U, 0x82U, 0x8BU, 0x5EU, 0x3AU, 0xF7U, 0x49U, 0x37U, 0x8FU,
     0xFDU, 0x62U, 0x6CU, 0x5BU, 0xCBU, 0xBDU, 0x2DU, 0x1DU, 0x81U, 0xFFU, 0x6DU, 0x01U, 0xAAU, 0xB3U, 0xCFU, 0xD3U};
 
-static const uint8_t s_RsaPrivateExponent3072[384U] = {
+static uint8_t s_RsaPrivateExponent3072[384U] = {
     0x01U, 0x74U, 0x9FU, 0x2EU, 0xAEU, 0xD7U, 0x88U, 0xEAU, 0xA5U, 0xCDU, 0x79U, 0x44U, 0x79U, 0x77U, 0xC2U, 0xEBU,
     0x82U, 0xDDU, 0xDAU, 0x0AU, 0x32U, 0x4FU, 0xDEU, 0xC7U, 0xE1U, 0x33U, 0x7AU, 0x3DU, 0xA4U, 0x1DU, 0xB4U, 0x55U,
     0xE7U, 0x48U, 0x7CU, 0x00U, 0x7DU, 0xC7U, 0xB9U, 0x59U, 0x1BU, 0x4CU, 0x3BU, 0x24U, 0x43U, 0x9CU, 0xD9U, 0x42U,
@@ -144,7 +144,7 @@ static const uint8_t s_RsaPrivateExponent3072[384U] = {
     0x3FU, 0xC2U, 0x7DU, 0x41U, 0x04U, 0x6BU, 0xEBU, 0x8AU, 0x22U, 0xDEU, 0x1DU, 0x3CU, 0x16U, 0xC8U, 0x85U, 0x36U,
     0x01U, 0x96U, 0x6FU, 0x1AU, 0x07U, 0x89U, 0xB5U, 0x21U, 0x8BU, 0xF7U, 0xE5U, 0x0AU, 0x55U, 0x09U, 0x17U, 0xE1U};
 
-static const uint8_t s_RsaPrivateExponent4096[512U] = {
+static uint8_t s_RsaPrivateExponent4096[512U] = {
     0x4EU, 0xFBU, 0x27U, 0x39U, 0xFAU, 0x69U, 0x37U, 0x69U, 0x05U, 0xBEU, 0x5EU, 0x1AU, 0x9CU, 0x62U, 0x42U, 0xDFU,
     0x07U, 0x48U, 0xF1U, 0x10U, 0x3CU, 0x82U, 0xB5U, 0xF1U, 0x27U, 0xD2U, 0xF6U, 0x23U, 0xFBU, 0x6CU, 0x78U, 0x77U,
     0xC7U, 0x49U, 0x6FU, 0x62U, 0x6FU, 0x88U, 0x99U, 0xABU, 0xDFU, 0x5BU, 0xACU, 0xA5U, 0x80U, 0x8EU, 0xD8U, 0xE7U,
@@ -178,7 +178,7 @@ static const uint8_t s_RsaPrivateExponent4096[512U] = {
     0x1CU, 0xAEU, 0x29U, 0x39U, 0xB7U, 0xA0U, 0x1EU, 0xF0U, 0x6FU, 0x15U, 0xD0U, 0xA3U, 0x5CU, 0xE3U, 0xB4U, 0x39U,
     0x58U, 0x97U, 0x80U, 0x1FU, 0x34U, 0xA0U, 0x21U, 0x23U, 0xA1U, 0x35U, 0x9CU, 0x9DU, 0xFCU, 0x23U, 0x56U, 0xEBU};
 
-static const uint8_t s_RsaPkcs15SignatureKat2048[256U] = {
+static uint8_t s_RsaPkcs15SignatureKat2048[256U] = {
     0x51U, 0xEBU, 0x9BU, 0xA6U, 0x9DU, 0xB0U, 0xF6U, 0xB0U, 0x69U, 0x16U, 0xF9U, 0x1BU, 0x55U, 0x20U, 0xBEU, 0x26U,
     0x21U, 0x02U, 0x64U, 0x5FU, 0x44U, 0xF7U, 0x90U, 0x8BU, 0x3CU, 0xB2U, 0xAFU, 0x07U, 0xEBU, 0x98U, 0xD4U, 0xF8U,
     0x6DU, 0x9BU, 0x3EU, 0x7CU, 0x6BU, 0x79U, 0xE1U, 0xB1U, 0x9EU, 0x56U, 0x19U, 0x37U, 0x45U, 0x74U, 0xC8U, 0xCAU,
@@ -196,7 +196,7 @@ static const uint8_t s_RsaPkcs15SignatureKat2048[256U] = {
     0x00U, 0xD1U, 0x07U, 0x49U, 0xE6U, 0xB7U, 0x9AU, 0xFDU, 0xA3U, 0x42U, 0x10U, 0x08U, 0xEBU, 0x27U, 0xEDU, 0x2CU,
     0x61U, 0x1FU, 0x91U, 0x1DU, 0xB2U, 0x2EU, 0x5FU, 0x04U, 0x99U, 0x08U, 0x31U, 0xA5U, 0xC7U, 0x87U, 0x01U, 0x5FU};
 
-static const uint8_t s_RsaPkcs15SignatureKat3072[384U] = {
+static uint8_t s_RsaPkcs15SignatureKat3072[384U] = {
     0x7DU, 0xCFU, 0x8DU, 0xA9U, 0x4FU, 0x4EU, 0xE8U, 0xB0U, 0x3EU, 0x89U, 0xB5U, 0xD1U, 0xCCU, 0x20U, 0x96U, 0x41U,
     0x93U, 0x27U, 0x85U, 0x0EU, 0x8EU, 0x8EU, 0xF1U, 0x1AU, 0xCBU, 0xE6U, 0x82U, 0x44U, 0x50U, 0xA7U, 0x0BU, 0x5AU,
     0x6EU, 0x45U, 0x4FU, 0x38U, 0x6CU, 0xE0U, 0x12U, 0x1EU, 0x95U, 0x03U, 0x36U, 0x17U, 0x03U, 0xC5U, 0xA8U, 0x24U,
@@ -222,7 +222,7 @@ static const uint8_t s_RsaPkcs15SignatureKat3072[384U] = {
     0xA4U, 0x94U, 0xFBU, 0x21U, 0x7EU, 0x8AU, 0xB0U, 0x3DU, 0x8CU, 0x1AU, 0x20U, 0x14U, 0xE0U, 0xDEU, 0xBDU, 0xB5U,
     0x2CU, 0x01U, 0x27U, 0x99U, 0x2EU, 0xC3U, 0x7DU, 0xE9U, 0xBAU, 0xE1U, 0xCDU, 0xBDU, 0x6EU, 0xECU, 0x44U, 0x2CU};
 
-static const uint8_t s_RsaPkcs15SignatureKat4096[512U] = {
+static uint8_t s_RsaPkcs15SignatureKat4096[512U] = {
     0x89U, 0x31U, 0x25U, 0x43U, 0x8AU, 0x0DU, 0x1AU, 0x8BU, 0x0FU, 0x8FU, 0xA5U, 0x3BU, 0x9FU, 0xD4U, 0x68U, 0x1BU,
     0x33U, 0x20U, 0xCCU, 0xC0U, 0xC9U, 0x5DU, 0xEAU, 0xDCU, 0xF6U, 0xABU, 0x65U, 0xE1U, 0x57U, 0xB9U, 0xE8U, 0x0EU,
     0x58U, 0x2DU, 0x6AU, 0x9AU, 0xE6U, 0xA6U, 0x93U, 0x17U, 0x40U, 0x56U, 0x3EU, 0x0BU, 0xAAU, 0x5EU, 0x8BU, 0xD9U,
@@ -256,7 +256,7 @@ static const uint8_t s_RsaPkcs15SignatureKat4096[512U] = {
     0xE4U, 0xECU, 0x6DU, 0xA0U, 0xD7U, 0xADU, 0xF0U, 0xEEU, 0xA3U, 0x45U, 0xCFU, 0x9BU, 0x9DU, 0xF3U, 0x23U, 0x7FU,
     0x9FU, 0x5FU, 0x1AU, 0xABU, 0x76U, 0xD7U, 0xF1U, 0x7EU, 0xCDU, 0x05U, 0x5FU, 0x25U, 0xA0U, 0x9EU, 0x74U, 0x34U};
 
-static const uint8_t s_RsaPssSignatureKat2048[256U] = {
+static uint8_t s_RsaPssSignatureKat2048[256U] = {
     0x00U, 0xF8U, 0xD4U, 0x9EU, 0x69U, 0x5FU, 0x1EU, 0xD2U, 0xCCU, 0x7EU, 0xF5U, 0xBCU, 0xC5U, 0xE4U, 0xE4U, 0x99U,
     0x28U, 0x65U, 0xFAU, 0x2FU, 0xE6U, 0x8BU, 0x82U, 0x44U, 0x57U, 0x20U, 0x02U, 0x77U, 0xEBU, 0xADU, 0x8AU, 0x9EU,
     0x8EU, 0x00U, 0xC7U, 0xC5U, 0x51U, 0xD3U, 0x30U, 0xA8U, 0xD9U, 0x81U, 0x31U, 0xAEU, 0xCFU, 0x0BU, 0x66U, 0x42U,
@@ -274,7 +274,7 @@ static const uint8_t s_RsaPssSignatureKat2048[256U] = {
     0x19U, 0x00U, 0x2DU, 0x7AU, 0xBDU, 0xFBU, 0x8BU, 0x26U, 0x4DU, 0xCFU, 0xE5U, 0x72U, 0x49U, 0x5FU, 0xA2U, 0x44U,
     0x23U, 0x5AU, 0xB0U, 0x79U, 0x7EU, 0x7FU, 0x78U, 0xECU, 0x9DU, 0x11U, 0x7CU, 0x89U, 0xD7U, 0xADU, 0x80U, 0xFFU};
 
-static const uint8_t s_RsaPssSignatureKat3072[384U] = {
+static uint8_t s_RsaPssSignatureKat3072[384U] = {
     0x88U, 0x9EU, 0xC1U, 0xE1U, 0xE2U, 0x9FU, 0x44U, 0xB1U, 0x95U, 0xE3U, 0xADU, 0xD1U, 0xDCU, 0xAEU, 0x95U, 0xD8U,
     0x72U, 0xA7U, 0x5EU, 0x58U, 0xCAU, 0x1AU, 0x00U, 0xECU, 0xFEU, 0xFDU, 0x4DU, 0xC5U, 0x5DU, 0x50U, 0x01U, 0x2EU,
     0x0BU, 0xAEU, 0x95U, 0x40U, 0x80U, 0x57U, 0x9DU, 0xE6U, 0x91U, 0x4DU, 0xDBU, 0xBCU, 0xABU, 0x2CU, 0x0EU, 0xBCU,
@@ -300,7 +300,7 @@ static const uint8_t s_RsaPssSignatureKat3072[384U] = {
     0xD7U, 0x71U, 0xB6U, 0x6FU, 0x41U, 0xA9U, 0x5DU, 0x82U, 0xDEU, 0x4CU, 0x12U, 0x77U, 0xFBU, 0x87U, 0x73U, 0x55U,
     0xFFU, 0xCAU, 0x25U, 0x90U, 0x0AU, 0xA9U, 0xE0U, 0x67U, 0x18U, 0x0BU, 0x83U, 0x4AU, 0x80U, 0x50U, 0x27U, 0xD6U};
 
-static const uint8_t s_RsaPssSignatureKat4096[512U] = {
+static uint8_t s_RsaPssSignatureKat4096[512U] = {
     0x38U, 0x21U, 0x8DU, 0xC5U, 0xFEU, 0xF8U, 0x3BU, 0x01U, 0x59U, 0x11U, 0x7DU, 0xC6U, 0x79U, 0xE1U, 0xCEU, 0xD7U,
     0x01U, 0x46U, 0x98U, 0x98U, 0x02U, 0xFEU, 0xB8U, 0x96U, 0xFCU, 0x5DU, 0x70U, 0xEDU, 0x95U, 0x07U, 0x26U, 0xE3U,
     0x1CU, 0xC7U, 0xE0U, 0x4EU, 0xDFU, 0x20U, 0x03U, 0x67U, 0x6BU, 0xBAU, 0x9EU, 0xB5U, 0xF7U, 0x95U, 0x41U, 0xF5U,
@@ -334,14 +334,25 @@ static const uint8_t s_RsaPssSignatureKat4096[512U] = {
     0x7CU, 0xBCU, 0xB5U, 0xEEU, 0xC7U, 0xB6U, 0x53U, 0xE8U, 0x6AU, 0xEFU, 0x6CU, 0x39U, 0x67U, 0x5DU, 0xAEU, 0xECU,
     0x26U, 0x4FU, 0x5AU, 0x25U, 0xE4U, 0x6EU, 0x19U, 0xCFU, 0xD2U, 0xA3U, 0xA4U, 0xF4U, 0xF3U, 0x0CU, 0x09U, 0x00U};
 
+/* Message, which gets signed */
+static uint8_t s_Message[16U] = {0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U, 0xC6U,
+                                 0xC6U, 0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U};
 /*******************************************************************************
  * Code
  ******************************************************************************/
 /*!
  * @brief Execute RSA PKCSV1.5 sign.
  */
-static bool rsa_pkc_v15_sign(const uint32_t modulus_size)
+static bool rsa_pkc_v15_sign(uint8_t *modulus,
+                             uint32_t modulus_size,
+                             uint8_t *message,
+                             uint32_t message_size,
+                             uint8_t *private_exponent,
+                             uint32_t private_exponent_size,
+                             uint8_t *signature_kat,
+                             uint32_t signature_kat_size)
 {
+    bool return_status = true;
     /* Create session handle to be used by mcuxClRsa_sign */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
@@ -349,38 +360,23 @@ static bool rsa_pkc_v15_sign(const uint32_t modulus_size)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_4096_WACPU_SIZE,
                                                   MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE);
 
-    const uint8_t message[16U] = {0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U, 0xC6U,
-                                  0xC6U, 0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U};
-
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PRIVATEPLAIN */
     mcuxClRsa_KeyEntry_t mod1;
-    mod1.keyEntryLength = modulus_size / 8U;
+    mod1.keyEntryLength = modulus_size;
+    mod1.pKeyEntryData  = modulus;
+
     mcuxClRsa_KeyEntry_t exp1;
-    exp1.keyEntryLength = modulus_size / 8U;
-    if (modulus_size == RSA2048_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus2048;
-        exp1.pKeyEntryData = (uint8_t *)s_RsaPrivateExponent2048;
-    }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus3072;
-        exp1.pKeyEntryData = (uint8_t *)s_RsaPrivateExponent3072;
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus4096;
-        exp1.pKeyEntryData = (uint8_t *)s_RsaPrivateExponent4096;
-    }
+    exp1.keyEntryLength = private_exponent_size;
+    exp1.pKeyEntryData  = private_exponent;
 
     const mcuxClRsa_Key private_key = {.keytype = MCUXCLRSA_KEY_PRIVATEPLAIN,
                                        .pMod1   = (mcuxClRsa_KeyEntry_t *)&mod1,
@@ -396,35 +392,18 @@ static bool rsa_pkc_v15_sign(const uint32_t modulus_size)
     uint8_t signature_buffer[512U] = {0U};
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         sign_result, sign_token,
-        mcuxClRsa_sign(session, &private_key, message, sizeof(message),
+        mcuxClRsa_sign(session, &private_key, message, message_size,
                        (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_256, 0U,
                        MCUXCLRSA_OPTION_MESSAGE_PLAIN, signature_buffer));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_result)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (modulus_size == RSA2048_MODULUS)
+    if (!mcuxClCore_assertEqual(signature_buffer, signature_kat, signature_kat_size))
     {
-        if (!mcuxClCore_assertEqual(signature_buffer, s_RsaPkcs15SignatureKat2048, sizeof(s_RsaPkcs15SignatureKat2048)))
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-    }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        if (!mcuxClCore_assertEqual(signature_buffer, s_RsaPkcs15SignatureKat3072, sizeof(s_RsaPkcs15SignatureKat3072)))
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        if (!mcuxClCore_assertEqual(signature_buffer, s_RsaPkcs15SignatureKat4096, sizeof(s_RsaPkcs15SignatureKat4096)))
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
+        return_status = false;
     }
 
     /**************************************************************************/
@@ -433,22 +412,27 @@ static bool rsa_pkc_v15_sign(const uint32_t modulus_size)
     /** Destroy Session and cleanup Session **/
     if (!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 /*!
  * @brief Execute RSA PKCSV1.5 verify.
  */
-static bool rsa_pkc_v15_verify(const uint32_t modulus_size)
+static bool rsa_pkc_v15_verify(uint8_t *modulus,
+                               uint32_t modulus_size,
+                               uint8_t *message,
+                               uint32_t message_size,
+                               uint8_t *public_exponent,
+                               uint32_t public_exponent_size,
+                               uint8_t *signature_kat)
 {
+    bool return_status = true;
     /* Create session handle to be used by verify */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    const uint8_t message[16U]     = {0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U, 0xC6U,
-                                      0xC6U, 0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U};
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_VERIFY_PKCS1V15VERIFY_WACPU_SIZE,
                                                   MCUXCLRSA_VERIFY_4096_WAPKC_SIZE);
 
@@ -457,139 +441,86 @@ static bool rsa_pkc_v15_verify(const uint32_t modulus_size)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PUBLIC */
-
     mcuxClRsa_KeyEntry_t mod1;
-    mod1.keyEntryLength = modulus_size / 8U;
-    if (modulus_size == RSA2048_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus2048;
-    }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus3072;
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus4096;
-    }
+    mod1.keyEntryLength       = modulus_size;
+    mod1.pKeyEntryData        = (uint8_t *)modulus;
+    mcuxClRsa_KeyEntry_t exp1 = {.pKeyEntryData = (uint8_t *)public_exponent, .keyEntryLength = public_exponent_size};
 
-    const mcuxClRsa_KeyEntry_t exp1 = {.pKeyEntryData  = (uint8_t *)s_RsaPublicExponent,
-                                       .keyEntryLength = sizeof(s_RsaPublicExponent)};
-
-    const mcuxClRsa_Key public_key = {.keytype = MCUXCLRSA_KEY_PUBLIC,
-                                      .pMod1   = (mcuxClRsa_KeyEntry_t *)&mod1,
-                                      .pMod2   = NULL,
-                                      .pQInv   = NULL,
-                                      .pExp1   = (mcuxClRsa_KeyEntry_t *)&exp1,
-                                      .pExp2   = NULL,
-                                      .pExp3   = NULL};
+    mcuxClRsa_Key public_key = {.keytype = MCUXCLRSA_KEY_PUBLIC,
+                                .pMod1   = (mcuxClRsa_KeyEntry_t *)&mod1,
+                                .pMod2   = NULL,
+                                .pQInv   = NULL,
+                                .pExp1   = (mcuxClRsa_KeyEntry_t *)&exp1,
+                                .pExp2   = NULL,
+                                .pExp3   = NULL};
 
     /**************************************************************************/
     /* RSA signature verification call                                        */
     /**************************************************************************/
-    if (modulus_size == RSA2048_MODULUS)
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
+        verify_result, verify_token,
+        mcuxClRsa_verify(session, &public_key, message, message_size, (uint8_t *)signature_kat,
+                         (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256, 0U,
+                         MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token || MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-            verify_result, verify_token,
-            mcuxClRsa_verify(session, &public_key, message, sizeof(message), (uint8_t *)s_RsaPkcs15SignatureKat2048,
-                             (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256, 0U,
-                             MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
-        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token ||
-            MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        return_status = false;
     }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-            verify_result, verify_token,
-            mcuxClRsa_verify(session, &public_key, message, sizeof(message), (uint8_t *)s_RsaPkcs15SignatureKat3072,
-                             (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256, 0U,
-                             MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
-        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token ||
-            MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-            verify_result, verify_token,
-            mcuxClRsa_verify(session, &public_key, message, sizeof(message), (uint8_t *)s_RsaPkcs15SignatureKat4096,
-                             (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_PKCS1v15_Sha2_256, 0U,
-                             MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
-        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token ||
-            MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     /**************************************************************************/
     /* Session clean-up                                                       */
     /**************************************************************************/
     /** Destroy Session and cleanup Session **/
     if (!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 /*!
  * @brief Execute RSA PSS sign.
  */
-static bool rsa_pss_sign(const uint32_t modulus_size)
+static bool rsa_pss_sign(uint8_t *modulus,
+                         uint32_t modulus_size,
+                         uint8_t *message,
+                         uint32_t message_size,
+                         uint8_t *private_exponent,
+                         uint32_t private_exponent_size,
+                         uint8_t *signature_kat,
+                         uint32_t signature_kat_size)
 {
+    bool return_status = true;
     /* Create session handle to be used by mcuxClRsa_sign */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE,
                                                   MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE);
-
-    const uint8_t message[16U] = {0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U, 0xC6U,
-                                  0xC6U, 0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U};
-
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PRIVATEPLAIN */
     mcuxClRsa_KeyEntry_t Mod1;
     mcuxClRsa_KeyEntry_t Exp1;
-    Mod1.keyEntryLength = modulus_size / 8U;
-    Exp1.keyEntryLength = modulus_size / 8U;
-    if (modulus_size == RSA2048_MODULUS)
-    {
-        Mod1.pKeyEntryData = (uint8_t *)s_RsaModulus2048;
-        Exp1.pKeyEntryData = (uint8_t *)s_RsaPrivateExponent2048;
-    }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        Mod1.pKeyEntryData = (uint8_t *)s_RsaModulus3072;
-        Exp1.pKeyEntryData = (uint8_t *)s_RsaPrivateExponent3072;
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        Mod1.pKeyEntryData = (uint8_t *)s_RsaModulus4096;
-        Exp1.pKeyEntryData = (uint8_t *)s_RsaPrivateExponent4096;
-    }
+    Mod1.keyEntryLength = modulus_size;
+    Mod1.pKeyEntryData  = modulus;
+
+    Exp1.pKeyEntryData  = private_exponent;
+    Exp1.keyEntryLength = private_exponent_size;
 
     const mcuxClRsa_Key private_key = {.keytype = MCUXCLRSA_KEY_PRIVATEPLAIN,
                                        .pMod1   = (mcuxClRsa_KeyEntry_t *)&Mod1,
@@ -604,35 +535,18 @@ static bool rsa_pss_sign(const uint32_t modulus_size)
     /**************************************************************************/
     uint8_t signature[512U] = {0U};
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token,
-                                     mcuxClRsa_sign(session, &private_key, message, sizeof(message),
+                                     mcuxClRsa_sign(session, &private_key, message, message_size,
                                                     (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_Pss_Sha2_256, 0U,
                                                     MCUXCLRSA_OPTION_MESSAGE_PLAIN, signature));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_result)
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (modulus_size == RSA2048_MODULUS)
+    if (!mcuxClCore_assertEqual(signature, signature_kat, signature_kat_size))
     {
-        if (!mcuxClCore_assertEqual(signature, s_RsaPssSignatureKat2048, sizeof(s_RsaPssSignatureKat2048)))
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-    }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        if (!mcuxClCore_assertEqual(signature, s_RsaPssSignatureKat3072, sizeof(s_RsaPssSignatureKat3072)))
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        if (!mcuxClCore_assertEqual(signature, s_RsaPssSignatureKat4096, sizeof(s_RsaPssSignatureKat4096)))
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
+        return_status = false;
     }
 
     /**************************************************************************/
@@ -641,22 +555,27 @@ static bool rsa_pss_sign(const uint32_t modulus_size)
     /** Destroy Session and cleanup Session **/
     if (!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 /*!
  * @brief Execute RSA PSS verify.
  */
-static bool rsa_pss_verify(const uint32_t modulus_size)
+static bool rsa_pss_verify(uint8_t *modulus,
+                           uint32_t modulus_size,
+                           uint8_t *message,
+                           uint32_t message_size,
+                           uint8_t *public_exponent,
+                           uint32_t public_exponent_size,
+                           uint8_t *signature_kat)
 {
+    bool return_status = true;
     /* Create session handle to be used by verify */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    const uint8_t message[16U]     = {0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U, 0xC6U,
-                                      0xC6U, 0x68U, 0x65U, 0x6CU, 0x6CU, 0x66U, 0x86U, 0x56U};
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE,
                                                   MCUXCLRSA_VERIFY_4096_WAPKC_SIZE);
 
@@ -665,28 +584,16 @@ static bool rsa_pss_verify(const uint32_t modulus_size)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Create key struct of type MCUXCLRSA_KEY_PUBLIC */
     mcuxClRsa_KeyEntry_t mod1;
-    mod1.keyEntryLength = modulus_size / 8U;
-    if (modulus_size == RSA2048_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus2048;
-    }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus3072;
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        mod1.pKeyEntryData = (uint8_t *)s_RsaModulus4096;
-    }
+    mod1.keyEntryLength = modulus_size;
+    mod1.pKeyEntryData  = modulus;
 
-    const mcuxClRsa_KeyEntry_t exp1 = {.pKeyEntryData  = (uint8_t *)s_RsaPublicExponent,
-                                       .keyEntryLength = sizeof(s_RsaPublicExponent)};
+    mcuxClRsa_KeyEntry_t exp1 = {.pKeyEntryData = public_exponent, .keyEntryLength = public_exponent_size};
 
     const mcuxClRsa_Key public_key = {.keytype = MCUXCLRSA_KEY_PUBLIC,
                                       .pMod1   = (mcuxClRsa_KeyEntry_t *)&mod1,
@@ -699,125 +606,116 @@ static bool rsa_pss_verify(const uint32_t modulus_size)
     /**************************************************************************/
     /* RSA signature verification call                                        */
     /**************************************************************************/
-    if (modulus_size == RSA2048_MODULUS)
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token,
+                                     mcuxClRsa_verify(session, &public_key, message, message_size, signature_kat,
+                                                      (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_Pss_Sha2_256,
+                                                      0U, MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token || MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-            verify_result, verify_token,
-            mcuxClRsa_verify(session, &public_key, message, sizeof(message), (uint8_t *)s_RsaPssSignatureKat2048,
-                             (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_Pss_Sha2_256, 0U,
-                             MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
-        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token ||
-            MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
+        return_status = false;
     }
-    if (modulus_size == RSA3072_MODULUS)
-    {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-            verify_result, verify_token,
-            mcuxClRsa_verify(session, &public_key, message, sizeof(message), (uint8_t *)s_RsaPssSignatureKat3072,
-                             (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_Pss_Sha2_256, 0U,
-                             MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
-        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token ||
-            MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-    }
-    if (modulus_size == RSA4096_MODULUS)
-    {
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
-            verify_result, verify_token,
-            mcuxClRsa_verify(session, &public_key, message, sizeof(message), (uint8_t *)s_RsaPssSignatureKat4096,
-                             (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_Pss_Sha2_256, 0U,
-                             MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
-        if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token ||
-            MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
-        MCUX_CSSL_FP_FUNCTION_CALL_END();
-    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     /**************************************************************************/
     /* Session clean-up                                                       */
     /**************************************************************************/
     /** Destroy Session and cleanup Session **/
     if (!mcuxClExample_Session_Clean(session))
     {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
+        return_status = false;
     }
 
-    return MCUXCLEXAMPLE_STATUS_OK;
+    return return_status;
 }
 
 void execute_rsa_kat(uint64_t options, char name[])
 {
-    if ((options & FIPS_RSA_PKCS15_2048) || (options & FIPS_ALL_TESTS))
+    /* Execute RSA PKCS15-2048 KAT */
+    if ((bool)(options & FIPS_RSA_PKCS15_2048))
     {
-        if (!rsa_pkc_v15_sign(RSA2048_MODULUS))
+        if (!rsa_pkc_v15_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                              s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPkcs15SignatureKat2048,
+                              sizeof(s_RsaPkcs15SignatureKat2048)))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pkc_v15_verify(RSA2048_MODULUS))
+        if (!rsa_pkc_v15_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                                s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat2048))
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_RSA_PKCS15_3072) || (options & FIPS_ALL_TESTS))
+    /* Execute RSA PKCS15-3072 KAT */
+    if ((bool)(options & FIPS_RSA_PKCS15_3072))
     {
-        if (!rsa_pkc_v15_sign(RSA3072_MODULUS))
+        if (!rsa_pkc_v15_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                              s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPkcs15SignatureKat3072,
+                              sizeof(s_RsaPkcs15SignatureKat3072)))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pkc_v15_verify(RSA3072_MODULUS))
+        if (!rsa_pkc_v15_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                                s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat3072))
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_RSA_PKCS15_4096) || (options & FIPS_ALL_TESTS))
+    /* Execute RSA PKCS15-4096 KAT */
+    if ((bool)(options & FIPS_RSA_PKCS15_4096))
     {
-        if (!rsa_pkc_v15_sign(RSA4096_MODULUS))
+        if (!rsa_pkc_v15_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                              s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPkcs15SignatureKat4096,
+                              sizeof(s_RsaPkcs15SignatureKat4096)))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pkc_v15_verify(RSA4096_MODULUS))
+        if (!rsa_pkc_v15_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                                s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat4096))
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
     }
-
-    if ((options & FIPS_RSA_PSS_2048) || (options & FIPS_ALL_TESTS))
+    /* Execute RSA PSS-2048 KAT */
+    if ((bool)(options & FIPS_RSA_PSS_2048))
     {
-        if (!rsa_pss_sign(RSA2048_MODULUS))
+        if (!rsa_pss_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                          s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPssSignatureKat2048,
+                          sizeof(s_RsaPssSignatureKat2048)))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pss_verify(RSA2048_MODULUS))
+        if (!rsa_pss_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat2048))
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_RSA_PSS_3072) || (options & FIPS_ALL_TESTS))
+    /* Execute RSA PSS-3072 KAT */
+    if ((bool)(options & FIPS_RSA_PSS_3072))
     {
-        if (!rsa_pss_sign(RSA3072_MODULUS))
+        if (!rsa_pss_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                          s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPssSignatureKat3072,
+                          sizeof(s_RsaPssSignatureKat3072)))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pss_verify(RSA3072_MODULUS))
+        if (!rsa_pss_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat3072))
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
     }
-    if ((options & FIPS_RSA_PSS_4096) || (options & FIPS_ALL_TESTS))
+    /* Execute RSA RSA PSS-4096 KAT */
+    if ((bool)(options & FIPS_RSA_PSS_4096))
     {
-        if (!rsa_pss_sign(RSA4096_MODULUS))
+        if (!rsa_pss_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                          s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPssSignatureKat4096,
+                          sizeof(s_RsaPssSignatureKat4096)))
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pss_verify(RSA4096_MODULUS))
+        if (!rsa_pss_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat4096))
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
