@@ -911,7 +911,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             if(peer_key[0] == 0x04u) {
                 /* format == MBEDTLS_ECP_PF_UNCOMPRESSED */
                 if (peer_key_length != 1u + byteLenP * 2u) {
-                    return MBEDTLS_ERR_ECP_BAD_INPUT_DATA;
+                    return PSA_ERROR_INVALID_ARGUMENT;
                 }
             }
             else if ((peer_key[0] == 0x02u) || (peer_key[0] == 0x03u))

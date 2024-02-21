@@ -18,7 +18,7 @@
 #ifndef MCUXCLPSADRIVER_EXTERNAL_MACRO_WRAPPERS_H_
 #define MCUXCLPSADRIVER_EXTERNAL_MACRO_WRAPPERS_H_
 
-#include <crypto.h>
+#include <psa/crypto.h>
 
 #ifdef __cplusplus
 extern "C" {
