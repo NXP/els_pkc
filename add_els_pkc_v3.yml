@@ -1473,7 +1473,9 @@ component.els_pkc.psa_driver:
     display_name: els_pkc_psa_driver
   dependency:
     allOf:
-    - component.els_pkc.platform.rw61x
+    - anyOf:
+      - component.els_pkc.platform.mcxn
+      - component.els_pkc.platform.rw61x
 component.els_pkc.random:
   section-type: component
   contents:
