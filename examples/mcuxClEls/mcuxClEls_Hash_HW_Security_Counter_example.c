@@ -18,7 +18,7 @@
  * @example mcuxClEls_Hash_HW_Security_Counter_example.c
  * @brief   Example of SHA2-256 hashing using the ELS (CLNS component mcuxClEls)
  */
-#include <niobe4a.h>
+#include <platform_specific_headers.h>
 #include <mcuxClEls.h> // Interface to the entire mcuxClEls component
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
@@ -69,38 +69,33 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
 {
     // Watchdog setup
     // Clear pending errors, otherwise the device will rest itself immediately after enable Code Watchdog
-    if (kCDOG_LockCtrl_Unlock == ((CDOG0->CONTROL & CDOG_CONTROL_LOCK_CTRL_MASK) >> CDOG_CONTROL_LOCK_CTRL_SHIFT))
+    if (kCDOG_LockCtrl_Unlock == ((CDOG->CONTROL & CDOG_CONTROL_LOCK_CTRL_MASK) >> CDOG_CONTROL_LOCK_CTRL_SHIFT))
     {
-        CDOG0->FLAGS = 0;
+        CDOG->FLAGS = 0;
     }
     else
     {
-        CDOG0->FLAGS = 0xFFFFFFFFu;
+        CDOG->FLAGS = 0xFFFFFFFFu;
     }
 
-    CDOG0->RELOAD = 0xFFFFFFFFu;
+    CDOG->RELOAD = 0xFFFFFFFFu;
+
     /* Do not lock the CDOG, so the customer can use it as well after leaving ROM */
-    CDOG0->CONTROL = 
-        CDOG_CONTROL_LOCK_CTRL(kCDOG_LockCtrl_Unlock) | /* Do not take action for the timeout operation because some
-                                                           operation may be time-consuming and
-                                                           the timeout is as expected
-                                                         */
-        CDOG_CONTROL_TIMEOUT_CTRL(kCDOG_FaultCtrl_EnableReset) | /* Enable Reset if the timeout event is triggered  */
-        CDOG_CONTROL_MISCOMPARE_CTRL(
-            kCDOG_FaultCtrl_EnableReset) | /* Enable Reset if the sequence error event is triggered  */
-        CDOG_CONTROL_SEQUENCE_CTRL(
-            kCDOG_FaultCtrl_EnableReset) | /* Enable Reset if the control error event is triggered  */
-        CDOG_CONTROL_CONTROL_CTRL(
-            kCDOG_FaultCtrl_EnableReset) | /* Enable Reset if the state error event is triggered  */
-        CDOG_CONTROL_STATE_CTRL(
-            kCDOG_FaultCtrl_EnableReset) | /* Enable Reset if the address error event is triggered  */
-        CDOG_CONTROL_ADDRESS_CTRL(kCDOG_FaultCtrl_EnableReset) | /* Keep running during interrupts */
-        CDOG_CONTROL_IRQ_PAUSE(
-            kCDOG_IrqPauseCtrl_Run) | /* Halt CDOG timer during debug so we have chance to debug ROM code  */
-        CDOG_CONTROL_DEBUG_HALT_CTRL(kCDOG_DebugHaltCtrl_Pause);
+    CDOG->CONTROL =
+        CDOG_CONTROL_LOCK_CTRL(kCDOG_LockCtrl_Unlock)             | /* Do not take action for the timeout operation because some
+                                                                       operation may be time-consuming and
+                                                                       the timeout is as expected
+                                                                    */
+		CDOG_CONTROL_ADDRESS_CTRL(kCDOG_FaultCtrl_EnableReset)    | /* Disable Reset/Interrupts for address event */
+        CDOG_CONTROL_TIMEOUT_CTRL(kCDOG_FaultCtrl_EnableReset)    | /* Disable Reset/Interrupts for timeout event */
+        CDOG_CONTROL_MISCOMPARE_CTRL(kCDOG_FaultCtrl_EnableReset) | /* Disable Reset/Interrupts for miscompare error event */
+        CDOG_CONTROL_SEQUENCE_CTRL(kCDOG_FaultCtrl_EnableReset)   | /* Disable Reset/Interrupts for sequence error event */
+        CDOG_CONTROL_STATE_CTRL(kCDOG_FaultCtrl_EnableReset)      | /* Disable Reset/Interrupts for state error event */
+        CDOG_CONTROL_IRQ_PAUSE(kCDOG_IrqPauseCtrl_Run)            | /* Halt CDOG timer during IRQ */
+        CDOG_CONTROL_DEBUG_HALT_CTRL(kCDOG_DebugHaltCtrl_Pause);    /* Halt CDOG timer during debug */
 
     // Initialize watchdog with zero.
-    CDOG0->START = 0x0U;
+    CDOG->START = 0x0U;
 
     uint32_t const expectedSc = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async)
                               + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)
@@ -125,7 +120,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
             sha2_256_digest                                             // Output buffer, which the operation will write the hash digest to.
             ));
     // mcuxClEls_Hash_Async is a flow-protected function: Add the protection token to the watchdog
-    CDOG0->ADD = (uint32_t)(token);
+    CDOG->ADD = (uint32_t)(token);
     if (MCUXCLELS_STATUS_OK_WAIT != result) {
         return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Hash_Async operation was started.
     }
@@ -133,7 +128,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
     
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Hash_Async operation to complete.
     // mcuxClEls_WaitForOperation is a flow-protected function: Add the protection token to the watchdog
-    CDOG0->ADD = (uint32_t)(token);
+    CDOG->ADD = (uint32_t)(token);
     if(MCUXCLELS_STATUS_OK != result) {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -154,8 +149,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
     }
 
     // Watchdog assertion
-    CDOG0->STOP = expectedSc;
-    if ((CDOG0->FLAGS & CDOG_FLAGS_MISCOM_FLAG_MASK) >> CDOG_FLAGS_MISCOM_FLAG_SHIFT != 0U)
+    CDOG->STOP = expectedSc;
+    if ((CDOG->FLAGS & CDOG_FLAGS_MISCOM_FLAG_MASK) >> CDOG_FLAGS_MISCOM_FLAG_SHIFT != 0U)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
