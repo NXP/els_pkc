@@ -78,8 +78,8 @@ int main(void)
         PRINTF("fail \r\n");
     }
 
-    PRINTF("Memory data invariant compare:");
-    if (data_invariant_memory_compare() == EXIT_CODE_OK)
+    PRINTF("Memory compare:");
+    if (mcuxCsslMemory_Compare_example() == EXIT_CODE_OK)
     {
         pass++;
         PRINTF("pass \r\n");
@@ -90,8 +90,8 @@ int main(void)
         PRINTF("fail \r\n");
     }
 
-    PRINTF("Memory data invariant copy:");
-    if (data_invariant_memory_compare() == EXIT_CODE_OK)
+    PRINTF("Memory copy:");
+    if (mcuxCsslMemory_Copy_example() == EXIT_CODE_OK)
     {
         pass++;
         PRINTF("pass \r\n");
