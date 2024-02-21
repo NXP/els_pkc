@@ -19,7 +19,7 @@
 #ifndef IP_PLATFORM_H
 #define IP_PLATFORM_H
 
-#include "fsl_device_registers.h"
+#include <MCXN947_cm33_core0.h>
 
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
@@ -40,7 +40,6 @@
 // PKC_RAM base address is not defined in any header file
 #define PKC_RAM_ADDR  ((uint32_t)0x400B3000u)
 #define PKC_WORD_SIZE  8u
-#define PKC_RAM_SIZE  ((uint32_t)0x1000u)
 
 // Define base address of TRNG
 #define TRNG_SFR_BASE           TRNG0       ///< base of TRNG SFRs
@@ -77,13 +76,12 @@
 #define ELS_HW_VERSION_FW_MINOR            4
 #define ELS_HW_VERSION_FW_MAJOR            2
 
-#ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS
+
 /* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from the platform header file
  * Redefine IP_CSS as an extern pointer.
  */
 #undef ELS_SFR_BASE
 extern void * ip_css_base;
 #define ELS_SFR_BASE           ((S50_Type *) ip_css_base)
-#endif /* NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS */
 
 #endif

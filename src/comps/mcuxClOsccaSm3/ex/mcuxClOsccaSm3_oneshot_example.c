@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -17,6 +17,7 @@
 #include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <mcuxClCore_Examples.h>
 #include <mcuxClExample_Session_Helper.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 static const uint8_t data[3] = {
     0x61u, 0x62u, 0x63u
@@ -35,6 +36,12 @@ bool mcuxClOsccaSm3_oneshot_example(void)
     /* Preparation                                                            */
     /**************************************************************************/
 
+    /* Initialize ELS, Enable the ELS */
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
@@ -47,19 +54,20 @@ bool mcuxClOsccaSm3_oneshot_example(void)
 
     uint8_t hash[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3];
     uint32_t hashOutputSize = 0u;
-    const mcuxClHash_Status_t result = mcuxClHash_compute(
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(hc_result, hc_token, mcuxClHash_compute(
     /* mcuxClSession_Handle_t session: */       session,
     /* mcuxClHash_Algo_t algorithm:    */       mcuxClOsccaSm3_Algorithm_Sm3,
     /* mcuxCl_InputBuffer_t pIn:       */       data,
     /* uint32_t inSize:               */       sizeof(data),
     /* mcuxCl_Buffer_t pOut            */       hash,
     /* uint32_t *const pOutSize,      */       &hashOutputSize
-    );
+    ));
 
-    if(MCUXCLHASH_STATUS_OK != result)
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) != hc_token) || (MCUXCLHASH_STATUS_OK != hc_result))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /**************************************************************************/
     /* Verification                                                           */
@@ -69,13 +77,13 @@ bool mcuxClOsccaSm3_oneshot_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    for (size_t i = 0U; i < sizeof(hash); i++)
+
+    // Expect that the resulting hash matches our expected output
+    if (!mcuxClCore_assertEqual(hash, hashExpected, sizeof(hash)))
     {
-        if (hash[i] != hashExpected[i]) // Expect that the resulting hash matches our expected output
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+
     /**************************************************************************/
     /* Destroy the current session                                            */
     /**************************************************************************/
@@ -84,5 +92,12 @@ bool mcuxClOsccaSm3_oneshot_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+
+    /* Disable the ELS */
+    if(!mcuxClExample_Els_Disable())
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     return MCUXCLEXAMPLE_STATUS_OK;
 }

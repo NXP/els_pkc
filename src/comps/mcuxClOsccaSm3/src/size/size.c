@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -28,8 +28,8 @@
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 /* Hash Cpu Workarea size generation */
-volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 3u * MCUXCLOSCCASM3_STATE_SIZE_SM3]; // one additional state for compare
-volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuMax [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 3u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuSm3 [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3 + 2u * MCUXCLOSCCASM3_OUTPUT_SIZE_SM3]; // two additional outputSize for compare
+volatile uint8_t mcuxClOsccaSm3_oneShot_WaCpuMax [MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + 2u * MCUXCLOSCCASM3_STATE_SIZE_SM3 + 2u * MCUXCLOSCCASM3_OUTPUT_SIZE_SM3]; // two additional outputSize for compare
 
 
 volatile uint8_t mcuxClOsccaSm3_process_WaCpuSm3 [MCUXCLOSCCASM3_STATE_SIZE_SM3];
@@ -39,7 +39,7 @@ volatile uint8_t mcuxClOsccaSm3_finish_WaCpuSm3 [2u * MCUXCLOSCCASM3_STATE_SIZE_
 volatile uint8_t mcuxClOsccaSm3_finish_WaCpuMax [2u * MCUXCLOSCCASM3_STATE_SIZE_SM3];
 
 /* Hash multi-part context size generation */
-volatile uint8_t mcuxClOsccaSm3_Ctx_size[mcuxClOscca_alignSize(sizeof(mcuxClHash_ContextDescriptor_t)) + MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + MCUXCLOSCCASM3_STATE_SIZE_SM3];
+volatile uint8_t mcuxClOsccaSm3_Ctx_size[mcuxClOscca_alignSize(sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_CONTEXT_MAX_ALIGNMENT_OFFSET + MCUXCLOSCCASM3_BLOCK_SIZE_SM3 + MCUXCLOSCCASM3_STATE_SIZE_SM3)];
 
 volatile uint8_t mcuxClOsccaSm3_export_import_WaCpu[MCUXCLOSCCASM3_COUNTER_SIZE_SM3 + MCUXCLOSCCASM3_STATE_SIZE_SM3];
 

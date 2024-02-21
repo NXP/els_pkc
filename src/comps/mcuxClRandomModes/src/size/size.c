@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -32,7 +32,7 @@
 /* *** Work area sizes *** */
 /* *********************** */
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
-volatile uint8_t mcuxClRandom_Mode_Descriptor_size[sizeof(mcuxClRandom_ModeDescriptor_t)];
+volatile uint8_t mcuxClRandom_Mode_Descriptor_size[MCUXCLRANDOM_MODE_DESCRIPTOR_SIZE];
 
 #ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
 

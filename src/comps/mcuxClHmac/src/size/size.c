@@ -19,10 +19,10 @@
  */
 
 #include <mcuxClCore_Platform.h>
+#include <mcuxClCore_Macros.h>
 #include <mcuxCsslAnalysis.h>
 
 #include <internal/mcuxClHmac_Internal_Types.h>
-#include <internal/mcuxClHmac_Internal_Macros.h>
 #include <internal/mcuxClHmac_Internal_Memory.h>
 
 /*************************/
@@ -32,9 +32,9 @@
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 /* Context and WA for MAC computation */
-volatile mcuxClHmac_Context_Sw_t mcuxClHmac_Context_Sw;
+volatile mcuxClHmac_Context_Sw_t mcuxClHmac_Context_Sw_size;
 
-volatile mcuxClHmac_Context_Els_t mcuxClHmac_Context_Els;
+volatile mcuxClHmac_Context_Els_t mcuxClHmac_Context_Els_size;
 
 volatile uint8_t mcuxClHmac_Context_Max[MCUXCLHMAC_INTERNAL_MAX_CONTEXT_SIZE];
 
@@ -47,6 +47,6 @@ volatile uint8_t mcuxClHmac_WorkArea_Process[4u];
 
 
 /* Mode-specific structures */
-volatile uint8_t mcuxClHmac_ModeDescriptor[sizeof(mcuxClMac_ModeDescriptor_t) + sizeof(mcuxClHmac_ModeDescriptor_t)];
+volatile uint8_t mcuxClHmac_ModeDescriptor_size[sizeof(mcuxClMac_ModeDescriptor_t) + sizeof(mcuxClHmac_ModeDescriptor_t)];
 
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

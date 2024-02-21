@@ -84,7 +84,7 @@
 /* Definition of ID for CLNS operation */
 #define MCUXCLPSADRIVER_CLNS_OPERATION_ID (4u)
 
-unsigned int psa_driver_wrapper_get_clns_operation_id(void)
+static unsigned int psa_driver_wrapper_get_clns_operation_id(void)
 {
   return MCUXCLPSADRIVER_CLNS_OPERATION_ID;
 }
@@ -1332,7 +1332,11 @@ psa_status_t psa_driver_wrapper_cipher_encrypt_setup(
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
-    status = mcuxClPsaDriver_psa_driver_wrapper_cipher_encrypt_setup(operation,
+    /* Update the operation's status */
+    operation->id = psa_driver_wrapper_get_clns_operation_id();
+    operation->iv_set = 0u;
+
+    status = mcuxClPsaDriver_psa_driver_wrapper_cipher_encrypt_setup(&operation->ctx.els_pkc_driver_ctx,
                                                                     attributes,
                                                                     key_buffer,
                                                                     key_buffer_size,
@@ -1422,7 +1426,11 @@ psa_status_t psa_driver_wrapper_cipher_decrypt_setup(
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
-    status = mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_setup(operation,
+    /* Update the operation's status */
+    operation->id = psa_driver_wrapper_get_clns_operation_id();
+    operation->iv_set = 0u;
+
+    status = mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_setup(&operation->ctx.els_pkc_driver_ctx,
                                                                     attributes,
                                                                     key_buffer,
                                                                     key_buffer_size,
@@ -1512,7 +1520,8 @@ psa_status_t psa_driver_wrapper_cipher_set_iv(
     {
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        return mcuxClPsaDriver_psa_driver_wrapper_cipher_set_iv(operation,
+            operation->iv_set = 1u;
+        return mcuxClPsaDriver_psa_driver_wrapper_cipher_set_iv(&operation->ctx.els_pkc_driver_ctx,
                                                     iv,
                                                     iv_length);
     }
@@ -1558,7 +1567,13 @@ psa_status_t psa_driver_wrapper_cipher_update(
     {
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        return mcuxClPsaDriver_psa_driver_wrapper_cipher_update(operation,
+        /* Check if IV is required and set*/
+        if ((1u == operation->iv_required) && (0u == operation->iv_set))
+        {
+            return (PSA_ERROR_INVALID_ARGUMENT);
+        }
+
+        return mcuxClPsaDriver_psa_driver_wrapper_cipher_update(&operation->ctx.els_pkc_driver_ctx,
                                                 input,
                                                 input_length,
                                                 output,
@@ -1616,7 +1631,13 @@ psa_status_t psa_driver_wrapper_cipher_finish(
 
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        return mcuxClPsaDriver_psa_driver_wrapper_cipher_finish(operation,
+        /* Check if IV is required and set*/
+        if ((1u == operation->iv_required) && (0u == operation->iv_set))
+        {
+            return (PSA_ERROR_INVALID_ARGUMENT);
+        }
+
+        return mcuxClPsaDriver_psa_driver_wrapper_cipher_finish(&operation->ctx.els_pkc_driver_ctx,
                                                     output,
                                                     output_size,
                                                     output_length);
@@ -1663,7 +1684,7 @@ psa_status_t psa_driver_wrapper_cipher_abort(
     {
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        return mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(operation);
+        return mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
     }
 
 
@@ -1753,9 +1774,14 @@ psa_status_t psa_driver_wrapper_hash_setup(
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
 
-    status = mcuxClPsaDriver_psa_driver_wrapper_hash_setup(operation, alg);
+    status = mcuxClPsaDriver_psa_driver_wrapper_hash_setup(&operation->ctx.els_pkc_driver_ctx, alg);
     if(PSA_ERROR_NOT_SUPPORTED != status)
     {
+        if(PSA_SUCCESS == status)
+        {
+            /* Update the operation's status */
+            operation->id = psa_driver_wrapper_get_clns_operation_id();
+        }
         return status;
     }
     else
@@ -1806,8 +1832,11 @@ psa_status_t psa_driver_wrapper_hash_clone(
     {
         /* For algorithms supported by CLNS, add implementation. */
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
-            target_operation->id = MCUXCLPSADRIVER_CLNS_OPERATION_ID;
-            status = mcuxClPsaDriver_psa_driver_wrapper_hash_clone(source_operation, target_operation);
+            status = mcuxClPsaDriver_psa_driver_wrapper_hash_clone(&source_operation->ctx.els_pkc_driver_ctx, &target_operation->ctx.els_pkc_driver_ctx);
+            if(PSA_SUCCESS == status)
+            {
+                target_operation->id = MCUXCLPSADRIVER_CLNS_OPERATION_ID;
+            }
             return status;
 
 #if defined(PSA_CRYPTO_DRIVER_TEST)
@@ -1843,7 +1872,7 @@ psa_status_t psa_driver_wrapper_hash_update(
         /* For algorithms supported by CLNS, add implementation. */
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
 
-            status = mcuxClPsaDriver_psa_driver_wrapper_hash_update(operation, input, input_length);
+            status = mcuxClPsaDriver_psa_driver_wrapper_hash_update(&operation->ctx.els_pkc_driver_ctx, input, input_length);
             return status;
 
 #if defined(PSA_CRYPTO_DRIVER_TEST)
@@ -1878,7 +1907,7 @@ psa_status_t psa_driver_wrapper_hash_finish(
         /* For algorithms supported by CLNS, add implementation. */
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
 
-            status = mcuxClPsaDriver_psa_driver_wrapper_hash_finish(operation, hash, hash_size, hash_length);
+            status = mcuxClPsaDriver_psa_driver_wrapper_hash_finish(&operation->ctx.els_pkc_driver_ctx, hash, hash_size, hash_length);
             return status;
 
 #if defined(PSA_CRYPTO_DRIVER_TEST)
@@ -1911,7 +1940,7 @@ psa_status_t psa_driver_wrapper_hash_abort(
     {
         /* For algorithms supported by CLNS, add implementation. */
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
-            status = mcuxClPsaDriver_psa_driver_wrapper_hash_abort(operation);
+            status = mcuxClPsaDriver_psa_driver_wrapper_hash_abort(&operation->ctx.els_pkc_driver_ctx);
             return status;
 
 #if defined(PSA_CRYPTO_DRIVER_TEST)
@@ -2083,9 +2112,12 @@ psa_status_t psa_driver_wrapper_aead_encrypt_setup(
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION(attributes->core.lifetime);
 
-   // The driver handles multiple storage locations, call it first then default to builtin driver
+    /* Update the operation's status */
+    operation->id = psa_driver_wrapper_get_clns_operation_id();
+
+    // The driver handles multiple storage locations, call it first then default to builtin driver
     status = mcuxClPsaDriver_psa_driver_wrapper_aead_encrypt_setup(
-                         operation, attributes,
+                         &operation->ctx.els_pkc_driver_ctx, attributes,
                          key_buffer, key_buffer_size,
                          alg);
 
@@ -2141,9 +2173,12 @@ psa_status_t psa_driver_wrapper_aead_decrypt_setup(
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION(attributes->core.lifetime);
 
+    /* Update the operation's status */
+    operation->id = psa_driver_wrapper_get_clns_operation_id();
+
     // The driver handles multiple storage locations, call it first then default to builtin driver
     status = mcuxClPsaDriver_psa_driver_wrapper_aead_decrypt_setup(
-                         operation, attributes,
+                         &operation->ctx.els_pkc_driver_ctx, attributes,
                          key_buffer, key_buffer_size,
                          alg);
 
@@ -2206,7 +2241,7 @@ psa_status_t psa_driver_wrapper_aead_set_lengths(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             return mcuxClPsaDriver_psa_driver_wrapper_aead_set_lengths(
-                       operation,
+                       &operation->ctx.els_pkc_driver_ctx,
                        ad_length,
                        plaintext_length);
 
@@ -2244,7 +2279,7 @@ psa_status_t psa_driver_wrapper_aead_set_nonce(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             return mcuxClPsaDriver_psa_driver_wrapper_aead_set_nonce(
-                       operation,
+                       &operation->ctx.els_pkc_driver_ctx,
                        nonce,
                        nonce_length);
 
@@ -2282,7 +2317,7 @@ psa_status_t psa_driver_wrapper_aead_update_ad(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             return mcuxClPsaDriver_psa_driver_wrapper_aead_update_ad(
-                       operation,
+                       &operation->ctx.els_pkc_driver_ctx,
                        input,
                        input_length);
 
@@ -2323,7 +2358,7 @@ psa_status_t psa_driver_wrapper_aead_update(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             return mcuxClPsaDriver_psa_driver_wrapper_aead_update(
-                       operation,
+                       &operation->ctx.els_pkc_driver_ctx,
                        input, input_length,
                        output, output_size,
                        output_length);
@@ -2367,7 +2402,7 @@ psa_status_t psa_driver_wrapper_aead_finish(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             return mcuxClPsaDriver_psa_driver_wrapper_aead_finish(
-                       operation,
+                       &operation->ctx.els_pkc_driver_ctx,
                        ciphertext, ciphertext_size, ciphertext_length,
                        tag, tag_size, tag_length);
 
@@ -2411,7 +2446,7 @@ psa_status_t psa_driver_wrapper_aead_verify(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             return mcuxClPsaDriver_psa_driver_wrapper_aead_verify(
-                       operation,
+                       &operation->ctx.els_pkc_driver_ctx,
                        plaintext, plaintext_size, plaintext_length,
                        tag, tag_length);
 
@@ -2469,7 +2504,7 @@ psa_status_t psa_driver_wrapper_aead_abort(
     switch(operation->id)
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
-            return mcuxClPsaDriver_psa_driver_wrapper_aead_abort(operation);
+            return mcuxClPsaDriver_psa_driver_wrapper_aead_abort(&operation->ctx.els_pkc_driver_ctx);
 
 #if defined(MBEDTLS_PSA_BUILTIN_AEAD)
         case PSA_CRYPTO_MBED_TLS_DRIVER_ID:
@@ -2600,10 +2635,13 @@ psa_status_t psa_driver_wrapper_mac_sign_setup(psa_mac_operation_t *operation,
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
+    /* Update the operation's status */
+    operation->id = psa_driver_wrapper_get_clns_operation_id();
+
     status = mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer(attributes,
                                                               key_buffer,
                                                               key_buffer_size,
-                                                              operation,
+                                                              &operation->ctx.els_pkc_driver_ctx,
                                                               alg);
 
     if (PSA_ERROR_NOT_SUPPORTED != status)
@@ -2689,10 +2727,13 @@ psa_status_t psa_driver_wrapper_mac_verify_setup( psa_mac_operation_t *operation
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
+    /* Update the operation's status */
+    operation->id = psa_driver_wrapper_get_clns_operation_id();
+
     status = mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer(attributes,
                                                               key_buffer,
                                                               key_buffer_size,
-                                                              operation,
+                                                              &operation->ctx.els_pkc_driver_ctx,
                                                               alg);
 
     if (PSA_ERROR_NOT_SUPPORTED != status)
@@ -2777,7 +2818,7 @@ psa_status_t psa_driver_wrapper_mac_update(
     switch( operation->id )
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
-            return mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(operation, input, input_length);
+            return mcuxClPsaDriver_psa_driver_wrapper_mac_updateLayer(&operation->ctx.els_pkc_driver_ctx, input, input_length);
 
 #if defined(MBEDTLS_PSA_BUILTIN_MAC)
         case PSA_CRYPTO_MBED_TLS_DRIVER_ID:
@@ -2817,7 +2858,7 @@ psa_status_t psa_driver_wrapper_mac_sign_finish(
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
         {
             uint8_t macCalc[MCUXCLMAC_MAX_OUTPUT_SIZE];
-            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, mac_size, NULL);
+            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(&operation->ctx.els_pkc_driver_ctx, macCalc, mac_size, NULL);
             if (status == PSA_SUCCESS)
             {
                 for(unsigned int i = 0u; i < mac_size; i++)
@@ -2867,7 +2908,7 @@ psa_status_t psa_driver_wrapper_mac_verify_finish(
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
         {
             uint8_t macCalc[ MCUXCLMAC_MAX_OUTPUT_SIZE];
-            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(operation, macCalc, mac_length, NULL);
+            psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_mac_finalizeLayer(&operation->ctx.els_pkc_driver_ctx, macCalc, mac_length, NULL);
             if (status == PSA_SUCCESS)
             {
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(compare_result, compare_token, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, mac, macCalc, mac_length),
@@ -2918,7 +2959,7 @@ psa_status_t psa_driver_wrapper_mac_abort(
     {
         case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
         {
-            return mcuxClPsaDriver_psa_driver_wrapper_mac_abort(operation);
+            return mcuxClPsaDriver_psa_driver_wrapper_mac_abort(&operation->ctx.els_pkc_driver_ctx);
         }
 #if defined(MBEDTLS_PSA_BUILTIN_MAC)
         case PSA_CRYPTO_MBED_TLS_DRIVER_ID:
@@ -2955,7 +2996,7 @@ psa_status_t psa_driver_get_tag_len( psa_aead_operation_t *operation,
     switch( operation->id )
     {                      
       case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
-            (void)mcuxClPsaDriver_psa_driver_get_tag_len(operation,
+            (void)mcuxClPsaDriver_psa_driver_get_tag_len(&operation->ctx.els_pkc_driver_ctx,
                                                          tag_len);
             return ( PSA_SUCCESS );
 #if defined(PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT)
@@ -2978,60 +3019,6 @@ psa_status_t psa_driver_get_tag_len( psa_aead_operation_t *operation,
 #endif /* defined(MBEDTLS_PSA_BUILTIN_AEAD) */
         default:
             return( PSA_ERROR_INVALID_ARGUMENT );
-    }
-}
-
-/*
- * Key agreement functions  
- */
-psa_status_t psa_driver_wrapper_key_agreement(
-        psa_algorithm_t alg,
-        const psa_key_attributes_t *attributes,
-        const uint8_t *priv_key, size_t priv_key_size,
-        const uint8_t *publ_key, size_t publ_key_size,
-        uint8_t *output, size_t output_size, size_t *output_length )
-{
-    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-
-    psa_key_location_t location =
-            PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
-
-    switch( location )
-    {
-    case PSA_KEY_LOCATION_LOCAL_STORAGE:
-#if defined(PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER)
-        case TFM_BUILTIN_KEY_LOADER_KEY_LOCATION:
-#endif /* defined(PSA_CRYPTO_DRIVER_TFM_BUILTIN_KEY_LOADER) */
-        /* Key is stored in the slot in export representation, so
-         * cycle through all known transparent accelerators */
-#if defined(PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT)
-#if defined(PSA_CRYPTO_DRIVER_CC3XX)
-        status = cc3xx_key_agreement( attributes,
-                                      priv_key,
-                                      priv_key_size,
-                                      publ_key,
-                                      publ_key_size,
-                                      output,
-                                      output_size,
-                                      output_length,
-                                      alg );
-        return( status );
-#endif /* PSA_CRYPTO_DRIVER_CC3XX */
-#endif /* PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT */
-        (void) status;
-        return ( PSA_ERROR_NOT_SUPPORTED );
-    default:
-        /* Key is declared with a lifetime not known to us */
-        (void) priv_key;
-        (void) priv_key_size;
-        (void) publ_key;
-        (void) publ_key_size;
-        (void) output;
-        (void) output_size;
-        (void) output_length;
-        (void) alg;
-
-        return( PSA_ERROR_INVALID_ARGUMENT );
     }
 }
 
@@ -3158,6 +3145,119 @@ psa_status_t psa_driver_wrapper_asymmetric_decrypt(
             (void)output_length;
             return( PSA_ERROR_INVALID_ARGUMENT );
     }
+}
+
+psa_status_t psa_driver_wrapper_key_agreement(
+    const psa_key_attributes_t *attributes,
+    const uint8_t *key_buffer,
+    size_t key_buffer_size,
+    psa_algorithm_t alg,
+    const uint8_t *peer_key,
+    size_t peer_key_length,
+    uint8_t *shared_secret,
+    size_t shared_secret_size,
+    size_t *shared_secret_length
+ )
+{
+    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
+    //psa_key_location_t location =
+    //    PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
+
+    status = mcuxClPsaDriver_psa_driver_wrapper_key_agreement( attributes,
+                                                    key_buffer,
+                                                    key_buffer_size,
+                                                    alg,
+                                                    peer_key,
+                                                    peer_key_length,
+                                                    shared_secret,
+                                                    shared_secret_size,
+                                                    shared_secret_length );
+
+
+
+
+    if (PSA_ERROR_NOT_SUPPORTED != status)
+    {
+        return status;
+    }
+    else
+    {
+        // reset to default
+        status = PSA_ERROR_CORRUPTION_DETECTED;
+    }
+
+    return( status ); /* Mbedtls 3.5 disabled for now as we work with old headers */
+#ifdef MBEDTLS_3_5
+    switch( location )
+    {
+        case PSA_KEY_LOCATION_LOCAL_STORAGE:
+            /* Key is stored in the slot in export representation, so
+             * cycle through all known transparent accelerators */
+#if defined(PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT)
+#if defined(PSA_CRYPTO_DRIVER_TEST)
+            status =
+                mbedtls_test_transparent_key_agreement( attributes,
+                        key_buffer, key_buffer_size, alg, peer_key,
+                        peer_key_length, shared_secret, shared_secret_size,
+                        shared_secret_length );
+            if( status != PSA_ERROR_NOT_SUPPORTED )
+                return( status );
+#endif /* PSA_CRYPTO_DRIVER_TEST */
+#if defined(MBEDTLS_PSA_P256M_DRIVER_ENABLED)
+            if( PSA_KEY_TYPE_IS_ECC( attributes->core.type ) &&
+                PSA_ALG_IS_ECDH(alg) &&
+                PSA_KEY_TYPE_ECC_GET_FAMILY(attributes->core.type) == PSA_ECC_FAMILY_SECP_R1 &&
+                attributes->core.bits == 256 )
+            {
+                status = p256_transparent_key_agreement( attributes,
+                                                         key_buffer,
+                                                         key_buffer_size,
+                                                         alg,
+                                                         peer_key,
+                                                         peer_key_length,
+                                                         shared_secret,
+                                                         shared_secret_size,
+                                                         shared_secret_length );
+                if( status != PSA_ERROR_NOT_SUPPORTED)
+                    return( status );
+            }
+#endif /* MBEDTLS_PSA_P256M_DRIVER_ENABLED */
+#endif /* PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT */
+
+            /* Software Fallback */
+            status = psa_key_agreement_raw_builtin( attributes,
+                                                    key_buffer,
+                                                    key_buffer_size,
+                                                    alg,
+                                                    peer_key,
+                                                    peer_key_length,
+                                                    shared_secret,
+                                                    shared_secret_size,
+                                                    shared_secret_length );
+            return( status );
+#if defined(PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT)
+#if defined(PSA_CRYPTO_DRIVER_TEST)
+        case PSA_CRYPTO_TEST_DRIVER_LOCATION:
+            return( mbedtls_test_opaque_key_agreement( attributes,
+                        key_buffer, key_buffer_size, alg, peer_key,
+                        peer_key_length, shared_secret, shared_secret_size,
+                        shared_secret_length ) );
+#endif /* PSA_CRYPTO_DRIVER_TEST */
+#endif /* PSA_CRYPTO_ACCELERATOR_DRIVER_PRESENT */
+
+        default:
+            (void) attributes;
+            (void) key_buffer;
+            (void) key_buffer_size;
+            (void) peer_key;
+            (void) peer_key_length;
+            (void) shared_secret;
+            (void) shared_secret_size;
+            (void) shared_secret_length;
+            return( PSA_ERROR_NOT_SUPPORTED );
+
+    }
+#endif // MBEDTLS_3_5
 }
 
 #endif /* MBEDTLS_PSA_CRYPTO_C */

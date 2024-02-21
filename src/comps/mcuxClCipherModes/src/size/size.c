@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -18,9 +18,11 @@
  */
 
 #include <mcuxCsslAnalysis.h>
-
-#include <internal/mcuxClCipherModes_Wa.h>
-#include <internal/mcuxClCipherModes_Internal.h>
+#include <mcuxClCore_Macros.h>
+#include <internal/mcuxClAes_Wa.h>
+//#include <internal/mcuxClDes_Wa.h>  // TODO: uncomment
+#include <internal/mcuxClCipherModes_Common_Wa.h>
+#include <internal/mcuxClCipherModes_Common_Helper.h>
 
 /* *********************** */
 /* *** Work area sizes *** */
@@ -28,9 +30,11 @@
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
-volatile uint8_t mcuxClCipherModes_WorkArea_Aes_Els_Oneshot[MCUXCLCIPHERMODES_INTERNAL_ALIGN_SIZE_TO_CPUWORDS(sizeof(mcuxClCipherModes_Context_Aes_Els_t))];  // ELS Oneshot Context needs to be in WA
+#include <internal/mcuxClCipherModes_Els_Types.h>
+volatile uint8_t mcuxClCipherModes_WorkArea_Aes_Els_Oneshot[MCUXCLCORE_ALIGN_TO_CPU_WORDSIZE(sizeof(mcuxClCipherModes_Context_Aes_Els_t))];  // ELS Oneshot Context needs to be in WA
 
 volatile mcuxClCipherModes_Context_Aes_Els_t mcuxClCipherModes_Context_Aes_ELS;
+
 
 
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

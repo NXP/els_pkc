@@ -18,6 +18,7 @@
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClCore_Examples.h>
 #include <mcuxClExample_Session_Helper.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 /* random vector */
 static const uint8_t data1[] = {
@@ -39,6 +40,12 @@ bool mcuxClOsccaSm3_streaming_example(void)
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
+
+    /* Initialize ELS, Enable the ELS */
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
 
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
@@ -114,12 +121,11 @@ bool mcuxClOsccaSm3_streaming_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    for (size_t i = 0U; i < sizeof(hash); i++)
+
+    // Expect that the resulting hash matches our expected output
+    if (!mcuxClCore_assertEqual(hash, hashExpected, sizeof(hash)))
     {
-        if (hash[i] != hashExpected[i]) // Expect that the resulting hash matches our expected output
-        {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
-        }
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /**************************************************************************/
@@ -130,5 +136,12 @@ bool mcuxClOsccaSm3_streaming_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+
+    /* Disable the ELS */
+    if(!mcuxClExample_Els_Disable())
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     return MCUXCLEXAMPLE_STATUS_OK;
 }

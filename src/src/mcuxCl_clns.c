@@ -13,4 +13,4 @@
 
 // Aggregation of CLNS implementation headers for build into binary delivery
 #include <mcuxCl_clns.h>
-#include <impl/mcuxCl_clns_impl.h>
+

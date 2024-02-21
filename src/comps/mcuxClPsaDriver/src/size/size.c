@@ -19,7 +19,7 @@
  */
 
 #include <mcuxCsslAnalysis.h>
-
+#include <psa/crypto_types.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
 #include <internal/mcuxClHashModes_Internal_Memory.h>
 

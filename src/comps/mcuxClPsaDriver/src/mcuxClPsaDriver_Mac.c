@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Confidential. This software is owned or controlled by NXP and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -28,6 +28,13 @@
 #include <internal/mcuxClMac_Internal_Constants.h>
 #include <internal/mcuxClPsaDriver_Functions.h>
 #include <internal/mcuxClPsaDriver_Internal.h>
+#include <internal/mcuxClPsaDriver_ExternalMacroWrappers.h>
+
+#define MCUXCLHMAC_MAC_MAX_CPU_WA_BUFFER_SIZE \
+    (MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT("Fixed values are allowed as macro inputs") \
+    ((MCUXCLHMAC_MAX_CPU_WA_BUFFER_SIZE > MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE) ? MCUXCLHMAC_MAX_CPU_WA_BUFFER_SIZE : MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE) \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT() )
+#define MCUXCLHMAC_MAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS  MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLHMAC_MAC_MAX_CPU_WA_BUFFER_SIZE)
 
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(
         els_pkc_mac_operation_t *operation,
@@ -116,7 +123,6 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_computeLayer(
     size_t *mac_length)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     const mcuxClMac_ModeDescriptor_t * mode;
     mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
     if (mode == NULL)
@@ -129,43 +135,20 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         return PSA_ERROR_INVALID_ARGUMENT;
     }
 
-    // INIT
-    els_pkc_mac_operation_t operation = ELS_PKC_PSA_MAC_OPERATION_INIT;
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClPsaDriver_ClnsData_Mac_t * pClnsMacData = (mcuxClPsaDriver_ClnsData_Mac_t *) operation.clns_data;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
-
-    /* Set alg in clns_data for update and finalize */
-    pClnsMacData->alg = alg;
-
-    /* No support for multipart Hmac */
-    if(PSA_ALG_IS_HMAC(alg) == true)
-    {
-        return PSA_ERROR_NOT_SUPPORTED;
-    }
-
-    mcuxClKey_Descriptor_t * keyDesc = &pClnsMacData->keydesc;
-    psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, keyDesc);
+    mcuxClKey_Descriptor_t key = {0};
+    psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, &key);
     if(PSA_SUCCESS != keyStatus)
     {
         return keyStatus;
     }
-    status = mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(&operation,
-                                                                       keyDesc,
-                                                                       alg);
-    if(PSA_SUCCESS != status)
-    {
-        return status;
-    }
 
-    // UPDATE
-    uint32_t cpuWorkarea[MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
+    uint32_t cpuWorkarea[MCUXCLHMAC_MAC_MAX_CPU_WA_BUFFER_SIZE_IN_WORDS];
     /* Create session */
     mcuxClSession_Descriptor_t session;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(&session,
                                                                     cpuWorkarea,
-                                                                    MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE,
+                                                                    MCUXCLHMAC_MAC_MAX_CPU_WA_BUFFER_SIZE,
                                                                     NULL,
                                                                     0u));
 
@@ -175,46 +158,34 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Call the mcuxClMac_process */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(processResult, processToken, mcuxClMac_process(&session,
-MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-                                                                                  (mcuxClMac_Context_t *) &pClnsMacData->ctx,
-MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
-                                                                                  input,
-                                                                                  input_length));
-
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_process) != processToken) || (MCUXCLMAC_STATUS_OK != processResult))
-    {
-        return PSA_ERROR_GENERIC_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    // FINALIZE
+    /* Call the mcuxClMac_compute function to compute a MAC in one shot. */
     uint32_t outputSize = 0u;
-	uint8_t tempMaxMac[MCUXCLMAC_MAX_OUTPUT_SIZE];
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(finishResult, finishToken, mcuxClMac_finish(&session,
-MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-                                                                               (mcuxClMac_Context_t *) &pClnsMacData->ctx,
-MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
-                                                                               tempMaxMac,
-                                                                               &outputSize
-                                                                               ));
+    uint8_t tempMaxMac[MCUXCLMAC_MAX_OUTPUT_SIZE];
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(computeResult, computeToken, mcuxClMac_compute(
+        &session,
+        &key,
+        mode,
+        input,
+        input_length,
+        tempMaxMac,
+        &outputSize
+    ));
 
-    if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(keyDesc))
+    if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&key))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_finish) != finishToken) || (MCUXCLMAC_STATUS_OK != finishResult))
+    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != computeToken) || (MCUXCLMAC_STATUS_OK != computeResult))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* user should ensure that 0 < mac_size <  MCUXCLMAC_MAX_OUTPUT_SIZE */
-    mcuxClKey_AlgorithmId_t keyAlgorithm = mcuxClKey_getAlgorithm(keyDesc);
+    mcuxClKey_AlgorithmId_t keyAlgorithm = mcuxClKey_getAlgorithm(&key);
     psa_key_type_t keyType = 0u;
-    size_t keySize = mcuxClKey_getSize(keyDesc);
+    size_t keySize = mcuxClKey_getSize(&key);
 
     if(MCUXCLKEY_ALGO_ID_HMAC == keyAlgorithm)
     {
@@ -230,7 +201,7 @@ MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
     }
 
     /* Set the MAC size for the specified algorithm */
-    *mac_length = PSA_MAC_LENGTH(keyType, keySize, alg);
+    *mac_length = MCUXCLPSADRIVER_PSA_MAC_LENGTH(keyType, keySize, alg);
 
     /* Check to ensure that MAC size is not larger than output buffer */
     if(*mac_length > mac_size)
@@ -348,6 +319,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         {
             //AES based algorithms and paddings
             case PSA_ALG_CMAC:
+                /* Special case added, where CMAC with key size 192 bits is not supported by ELS, check added to do SW fallback. */
+                if (192u == attributes->core.bits)
+                {
+                    return NULL;
+                }
                 return mcuxClMac_Mode_CMAC;
             case PSA_ALG_CBC_MAC:
                 /* PSA standard does not specify CBC-MAC with padding. ISO Padding Method2 was chosen here because it is the most commonly used padding for CBC-MAC. */
@@ -383,10 +359,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_mac_setupLayer_internal(
     psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     const mcuxClMac_ModeDescriptor_t * mode = mcuxClPsaDriver_psa_driver_wrapper_mac_getMode(attributes, alg);
-
-    /*Special case added, where CMAC with key size 192 bits is not supported by ELS, check added to do SW fallback*/
-    if (mode == NULL ||
-        (mcuxClMac_Mode_CMAC == mode && 24u == pKey->location.length))
+    if (mode == NULL)
     {
         return PSA_ERROR_NOT_SUPPORTED;
     }

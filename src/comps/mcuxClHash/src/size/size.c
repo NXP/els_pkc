@@ -19,8 +19,6 @@
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
-volatile uint8_t mcuxClHash_compute_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
-volatile uint8_t mcuxClHash_finish_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
 volatile uint8_t mcuxClHash_WaCpuMax [MCUXCLHASH_INTERNAL_WACPU_MAX];
 
 /* Hash multipart context size generation */
