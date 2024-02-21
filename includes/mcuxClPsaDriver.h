@@ -19,7 +19,8 @@
 #define MCUXCLPSADRIVER_H_
 
 
-#include <crypto.h>
+#include <common.h>
+#include <psa/crypto.h>
 #include <psa_crypto_driver_wrappers.h>
 #include <mcuxClConfig.h> // Exported features flags header
 

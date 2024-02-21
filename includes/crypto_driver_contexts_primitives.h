@@ -37,6 +37,7 @@
 
 /* Include the context structure definitions for the Mbed TLS software drivers */
 #include "crypto_builtin_primitives.h"
+#include "els_pkc_crypto_primitives.h"
 
 /* Include CLNS header files */
 #include <mcuxClPsaDriver_MemoryConsumption.h>
@@ -108,24 +109,13 @@ typedef union {
     unsigned dummy; /* Make sure this union is always non-empty */
     mbedtls_psa_hash_operation_t mbedtls_ctx;
 
-#if defined(PSA_CRYPTO_DRIVER_TEST)
-    mbedtls_transparent_test_driver_hash_operation_t test_driver_ctx;
-#endif
-
-    uint8_t clns_data[MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE];
+    els_pkc_hash_operation_t els_pkc_driver_ctx;
 } psa_driver_hash_context_t;
 
 typedef union {
     unsigned dummy; /* Make sure this union is always non-empty */
     mbedtls_psa_cipher_operation_t mbedtls_ctx;
-
-    uint8_t clns_data[MCUXCLPSADRIVER_CLNSDATA_CIPHER_SIZE];
-
-#if defined(PSA_CRYPTO_DRIVER_TEST)
-    mbedtls_transparent_test_driver_cipher_operation_t transparent_test_driver_ctx;
-    mbedtls_opaque_test_driver_cipher_operation_t opaque_test_driver_ctx;
-#endif
-
+    els_pkc_cipher_operation_t els_pkc_driver_ctx;
 } psa_driver_cipher_context_t;
 
 #endif /* PSA_CRYPTO_DRIVER_CONTEXTS_PRIMITIVES_H */
