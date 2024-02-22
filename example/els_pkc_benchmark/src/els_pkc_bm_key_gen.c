@@ -251,7 +251,7 @@ bool exec_ecc_weier_key_gen(char *data_from, uint32_t bit_length)
 
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t pSession = &sessionDesc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(pSession, MCUXCLECC_KEYGEN_WACPU_SIZE(0U),
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(pSession, MCUXCLECC_KEYGEN_WACPU_SIZE,
                                                   MCUXCLECC_KEYGEN_WAPKC_SIZE(pByteLength, nByteLength));
     /* Initialize the RNG context, with maximum size */
     uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0U};

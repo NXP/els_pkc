@@ -8,11 +8,12 @@
 #ifndef _ELS_PKC_BM_DH_H_
 #define _ELS_PKC_BM_DH_H_
 #include "els_pkc_benchmark_utils.h"
-#include <mcuxClEcc_WeierECC.h>
 #include <mcuxClEcc.h>
 #include <mcuxClPkc_Types.h>
 #include <mcuxClRandomModes.h>
-
+#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
+#include <mcuxClEcc_WeierECC.h>
+#endif
 /*******************************************************************************
  * Definitions
  ******************************************************************************/

@@ -18,13 +18,13 @@
  * Variables
  ******************************************************************************/
 /* Key, which is getting wrapped */
-static uint8_t s_KeyToWrap[32U];
+static uint32_t s_KeyToWrap[8U];
 
 /* Key encryption key */
 static uint8_t s_Kek[32U];
 
 /* Output after key RFC-3394 key wrap function */
-static uint8_t s_OutputBuffer[48U];
+static uint32_t s_OutputBuffer[12U];
 
 /* Key, which is getting wrapped stored in flash */
 static const uint8_t s_KeyToWrapFlash[32U];
@@ -45,7 +45,7 @@ bool exec_rfc3394_wrap(char *data_from)
     key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
 
     bool wrap_result = mcuxClExample_rfc3394_wrap(
-        /*const uint8_t * pInput         */ s_KeyToWrap,         /*  pointer to key to be wrapped */
+        /*const uint32_t * pInput         */ s_KeyToWrap,         /*  pointer to key to be wrapped */
         /*size_t inputLength,            */ sizeof(s_KeyToWrap), /*  length of key to be wrapped in bytes */
         /*const uint8_t * pKek_in        */ data_from_ram ? s_Kek : s_KekFlash, /*  pointer to key wrapping key */
         /*mcuxClEls_KeyIndex_t keyIdx    */ 0U,                               /*  keyslot index of key wrapping key */
@@ -54,7 +54,7 @@ bool exec_rfc3394_wrap(char *data_from)
         /*size_t kekLength               */ data_from_ram ? sizeof(s_Kek) : sizeof(s_KekFlash), /*  length of key
                                                                                                    wrapping key in bytes
                                                                                                  */
-        /*uint8_t * pOutput              */ s_OutputBuffer,  /*  pointer to output buffer, size has to be inputLength +
+        /*uint32_t * pOutput              */ s_OutputBuffer,  /*  pointer to output buffer, size has to be inputLength +
                                                               16  bytes */
         /*mcuxClEls_KeyProp_t properties */ key_properties); /*  properties of the key to be wrapped */
     if (!wrap_result)
@@ -68,7 +68,7 @@ bool exec_rfc3394_wrap(char *data_from)
 bool exec_rfc3394_unwrap(char *data_from)
 {
     bool data_from_ram = !strcmp("RAM", data_from);
-    uint8_t outputBuffer[40U];
+    uint32_t outputBuffer[10U];
 
     bool unwrap_result = mcuxClExample_rfc3394_unwrap(
         s_OutputBuffer,                     //< pointer to rfc3394 blob to be wrapped

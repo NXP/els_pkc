@@ -12,10 +12,10 @@
  ******************************************************************************/
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
 #define MAX_CPUWA_SIZE                                                    \
-    MCUXCLEXAMPLE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE, \
+    MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE, \
                       MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE)
 #define MAX_PKCWA_SIZE                                                    \
-    MCUXCLEXAMPLE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE, \
+    MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE, \
                       MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
 #define MESSAGE_SMALL 64U
 #define MESSAGE_LARGE 2048U
@@ -921,7 +921,7 @@ bool exec_EdDSA_verify_signature_Ed25519(char *data_from, uint32_t m_length, sig
 
     return MCUXCLEXAMPLE_STATUS_OK;
 }
-
+#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
 static mcuxClEcc_DomainParam_t get_domain_param_by_mode(uint32_t bit_length, bool data_from_ram)
 {
     const uint32_t pByteLength = (bit_length + 7U) / 8U;
@@ -1041,7 +1041,7 @@ bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint3
     mcuxClSession_Handle_t pSession = &sessionDesc;
 
     /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(pSession, MCUXCLECC_SIGN_WACPU_SIZE(0),
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(pSession, MCUXCLECC_SIGN_WACPU_SIZE,
                                                   MCUXCLECC_SIGN_WAPKC_SIZE(pByteLength, nByteLength));
 
     /* Initialize the RNG context, with maximum size */
@@ -1232,6 +1232,7 @@ void test_weier_signature(char *code_from, char *data_from, uint32_t m_length, u
 
     PRINT_SIGNATURE_RESULT(a_result);
 }
+#endif
 
 void test_ecc_ed25519_signature(char *code_from, char *data_from, uint32_t m_length)
 {
@@ -1266,6 +1267,9 @@ void run_tests_asymmetric(void)
     char code_from[6U];
     strcpy(code_from, BOARD_IS_XIP() ? "FLASH" : "RAM");
 
+    /* Clib removed support of ECC-WEIER-BN256 curve in v1.9.0- Need to ask them
+       to re-add the support and then enable the code.*/
+#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
     PRINTF("ECC-ECDSA-WEIER-P256\r\n");
     test_weier_signature(code_from, "RAM", 64U, WEIER256_BIT_LENGTH);
     test_weier_signature(code_from, "FLASH", 64U, WEIER256_BIT_LENGTH);
@@ -1286,6 +1290,7 @@ void run_tests_asymmetric(void)
     test_weier_signature(code_from, "RAM", 32U, WEIER521_BIT_LENGTH);
     test_weier_signature(code_from, "FLASH", 32U, WEIER521_BIT_LENGTH);
     PRINTF("\r\n");
+#endif
 
     PRINTF("ECC-EDDSA-ED25519:\r\n");
     test_ecc_ed25519_signature(code_from, "RAM", MESSAGE_LARGE);
