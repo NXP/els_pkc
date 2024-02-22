@@ -594,7 +594,7 @@ component.els_pkc.ecc_deterministic:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_ecc
+      cgroup: els_pkc_ecc_deterministic
     display_name: els_pkc.ecc_deterministic
   dependency:
     allOf:
@@ -1115,7 +1115,7 @@ component.els_pkc.key_derivation:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_key
+      cgroup: els_pkc_key_derivation
     display_name: els_pkc.key_derivation
   dependency:
     allOf:
@@ -1979,7 +1979,7 @@ component.els_pkc.random_modes_hmacdrbg:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_random_modes
+      cgroup: els_pkc_random_modes_hmacdrbg
     display_name: els_pkc.random_modes_hmacdrbg
   dependency:
     allOf:
@@ -2103,7 +2103,7 @@ component.els_pkc.rsa_oaep:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_rsa
+      cgroup: els_pkc_rsa_oaep
     display_name: els_pkc.rsa_oaep
   dependency:
     allOf:
@@ -2264,7 +2264,7 @@ component.els_pkc.signature:
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_session
+      cgroup: els_pkc_signature
     display_name: els_pkc.signature
   dependency:
     allOf:
