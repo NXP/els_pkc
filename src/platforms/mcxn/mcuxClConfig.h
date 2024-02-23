@@ -862,5 +862,5 @@
 #define    MCUXCL_FEATURE_RANDOMMODES_CTRDRBG_ELS          1
 #define    MCUXCL_FEATURE_RSA_STRENGTH_CHECK          1
 #define    MCUXCL_FEATURE_TRNG_ELS          1
-#define    MCUXCL_FEATURE_HASH_HW_SM3          1
+//#define    MCUXCL_FEATURE_HASH_HW_SM3          1
 #endif

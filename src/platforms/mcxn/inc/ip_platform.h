@@ -24,6 +24,9 @@
 /* ================================================================================ */
 /* ================             Peripheral declaration             ================ */
 /* ================================================================================ */
+#if (defined(CDOG0))
+#define CDOG CDOG0
+#endif
 
 // Define base address of ELS
 #define ELS_SFR_BASE            ELS         ///< base of ELS SFRs

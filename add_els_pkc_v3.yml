@@ -2616,16 +2616,12 @@ component.els_pkc.platform.mcxn:
     - component.els_pkc.random_modes_ctr
     - anyOf:
         - allOf:
-          - component.els_pkc.oscca_sm3
           - component.els_pkc.trng.type_els
           - device:
              - MCXN546
              - MCXN547
              - MCXN946
              - MCXN947
-        - allOf:
-          - component.els_pkc.trng.type_els
-          - device:
              - MCXN235
              - MCXN236
 component.els_pkc.platform.rw61x_interface_files:
