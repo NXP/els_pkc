@@ -45,17 +45,17 @@ bool exec_rfc3394_wrap(char *data_from)
     key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
 
     bool wrap_result = mcuxClExample_rfc3394_wrap(
-        /*const uint32_t * pInput         */ s_KeyToWrap,         /*  pointer to key to be wrapped */
+        /*const uint32_t * pInput         */ s_KeyToWrap,        /*  pointer to key to be wrapped */
         /*size_t inputLength,            */ sizeof(s_KeyToWrap), /*  length of key to be wrapped in bytes */
         /*const uint8_t * pKek_in        */ data_from_ram ? s_Kek : s_KekFlash, /*  pointer to key wrapping key */
-        /*mcuxClEls_KeyIndex_t keyIdx    */ 0U,                               /*  keyslot index of key wrapping key */
+        /*mcuxClEls_KeyIndex_t keyIdx    */ 0U,                                 /*  keyslot index of key wrapping key */
         /*uint8_t extkey                 */ 1U, /*  0-use key stored internally at keyIdx as wrapping key, 1-use
                                                    external pKek_in as wrapping key */
         /*size_t kekLength               */ data_from_ram ? sizeof(s_Kek) : sizeof(s_KekFlash), /*  length of key
                                                                                                    wrapping key in bytes
                                                                                                  */
-        /*uint32_t * pOutput              */ s_OutputBuffer,  /*  pointer to output buffer, size has to be inputLength +
-                                                              16  bytes */
+        /*uint32_t * pOutput              */ s_OutputBuffer, /*  pointer to output buffer, size has to be inputLength +
+                                                             16  bytes */
         /*mcuxClEls_KeyProp_t properties */ key_properties); /*  properties of the key to be wrapped */
     if (!wrap_result)
     {
@@ -74,7 +74,7 @@ bool exec_rfc3394_unwrap(char *data_from)
         s_OutputBuffer,                     //< pointer to rfc3394 blob to be wrapped
         sizeof(s_OutputBuffer),             //< length of key the rfc3394 blob in bytes
         data_from_ram ? s_Kek : s_KekFlash, //< pointer to key wrapping key
-        0U,                               //< keyslot index of key wrapping key
+        0U,                                 //< keyslot index of key wrapping key
         1, //< 0-use key stored internally at keyIdx as wrapping key, 1-use external pKek_in as wrapping key
         data_from_ram ? sizeof(s_Kek) : sizeof(s_KekFlash), //< length of key wrapping key in bytes
         outputBuffer //< pointer to output buffer, size has to inputLength - 8 bytes, contents will be

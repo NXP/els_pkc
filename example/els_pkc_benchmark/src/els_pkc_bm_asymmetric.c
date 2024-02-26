@@ -11,12 +11,12 @@
  * Definitions
  ******************************************************************************/
 #define RAM_START_ADDRESS MCUXCLPKC_RAM_START_ADDRESS
-#define MAX_CPUWA_SIZE                                                    \
+#define MAX_CPUWA_SIZE                                                 \
     MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE, \
-                      MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE)
-#define MAX_PKCWA_SIZE                                                    \
+                   MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE)
+#define MAX_PKCWA_SIZE                                                 \
     MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE, \
-                      MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
+                   MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
 #define MESSAGE_SMALL 64U
 #define MESSAGE_LARGE 2048U
 
@@ -950,7 +950,7 @@ static mcuxClEcc_DomainParam_t get_domain_param_by_mode(uint32_t bit_length, boo
                                              .pN   = data_from_ram ? s_BN_P521_N : s_BN_P521_N_Flash,
                                              .misc = mcuxClEcc_DomainParam_misc_Pack(nByteLength, pByteLength)};
     }
-    
+
     mcuxClEcc_DomainParam_t default_return;
     default_return.pA = NULL;
     return default_return;
@@ -961,6 +961,8 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                                              bool data_from_ram,
                                              uint32_t m_length)
 {
+    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t descriptor;
+    descriptor.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
     if (data_from_ram)
     {
         switch (bit_length)
@@ -971,24 +973,28 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                     .pHash       = m_length == 32U ? s_MessageDigest32Byte : s_MessageDigest64Byte,
                     .pPrivateKey = s_PrivateKeyInputWeier256,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
-                                                mcuxClEcc_Sign_Param_optLen_Pack(64U)};
+                    .optLen =
+                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
+                    .pMode = &descriptor};
+
             case WEIER384_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32Byte : s_MessageDigest64Byte,
                     .pPrivateKey = s_PrivateKeyInputWeier384,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
-                                                mcuxClEcc_Sign_Param_optLen_Pack(64U)};
+                    .optLen =
+                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
+                    .pMode = &descriptor};
             case WEIER521_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32Byte : s_MessageDigest64Byte,
                     .pPrivateKey = s_PrivateKeyInputWeier521,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
-                                                mcuxClEcc_Sign_Param_optLen_Pack(64U)};
+                    .optLen =
+                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
+                    .pMode = &descriptor};
         }
     }
     else
@@ -1001,24 +1007,27 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                     .pHash       = m_length == 32U ? s_MessageDigest32ByteFlash : s_MessageDigest64ByteFlash,
                     .pPrivateKey = s_PrivateKeyInputWeier256Flash,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
-                                                mcuxClEcc_Sign_Param_optLen_Pack(64U)};
+                    .optLen =
+                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
+                    .pMode = &descriptor};
             case WEIER384_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32ByteFlash : s_MessageDigest64ByteFlash,
                     .pPrivateKey = s_PrivateKeyInputWeier384Flash,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
-                                                mcuxClEcc_Sign_Param_optLen_Pack(64U)};
+                    .optLen =
+                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
+                    .pMode = &descriptor};
             case WEIER521_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32ByteFlash : s_MessageDigest64ByteFlash,
                     .pPrivateKey = s_PrivateKeyInputWeier521Flash,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
-                                                mcuxClEcc_Sign_Param_optLen_Pack(64U)};
+                    .optLen =
+                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
+                    .pMode = &descriptor};
         }
     }
     mcuxClEcc_Sign_Param_t default_return;
@@ -1028,8 +1037,6 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
 
 bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint32_t bit_length)
 {
-    mcuxClEcc_Weier_BasicDomainParams_t EccWeierBasicDomainParams;
-
     const uint32_t pByteLength = (bit_length + 7U) / 8U;
     const uint32_t nByteLength = (bit_length + 7U) / 8U;
     /**************************************************************************/

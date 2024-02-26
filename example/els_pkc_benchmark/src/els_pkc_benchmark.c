@@ -152,7 +152,6 @@ int main(void)
         PRINTF("[Error] Disabling ELS failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-
     PRINTF("#END OF BENCHMARK#\r\n");
 
     while (1)

@@ -13,7 +13,7 @@
 #define WEIER256_BIT_LENGTH (256U)
 #define WEIER384_BIT_LENGTH (384U)
 #define WEIER521_BIT_LENGTH (521U)
-#define MCUX_PKC_MIN(a, b)                        ((a) < (b) ? (a) : (b))
+#define MCUX_PKC_MIN(a, b)  ((a) < (b) ? (a) : (b))
 
 /*******************************************************************************
  * Prototypes
@@ -233,7 +233,7 @@ static mcuxClEcc_DomainParam_t get_domain_param_by_mode(uint32_t bit_length, boo
                                              .pN   = data_from_ram ? s_BN_P521_N : s_BN_P521_N_Flash,
                                              .misc = mcuxClEcc_DomainParam_misc_Pack(nByteLength, pByteLength)};
     }
-    
+
     mcuxClEcc_DomainParam_t default_return;
     default_return.pA = NULL;
     return default_return;

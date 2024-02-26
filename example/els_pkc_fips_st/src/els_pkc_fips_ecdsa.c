@@ -13,12 +13,12 @@
 #define RSA3072_MODULUS (3072U)
 #define RSA4096_MODULUS (4096U)
 
-#define MAX_CPUWA_SIZE                                                    \
+#define MAX_CPUWA_SIZE                                                 \
     MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE, \
-                      MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE)
-#define MAX_PKCWA_SIZE                                                    \
+                   MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE)
+#define MAX_PKCWA_SIZE                                                 \
     MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE, \
-                      MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
+                   MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -135,7 +135,7 @@ static uint8_t s_MessageDigest64Byte[64U] = {
     0xB2U, 0x4FU, 0xB3U, 0x79U, 0x80U, 0x2EU, 0xC1U, 0x86U, 0x12U, 0xECU, 0x50U, 0xCCU, 0xACU, 0x20U, 0x48U, 0xECU};
 
 /* Example value for Sha2-256 message digest used for ECDSA NIST256P */
-static uint8_t s_MessageDigest32Byte[32U] = {
+static uint8_t s_MessageDigest32Byte[32U] __attribute__((__aligned__(4))) = {
     0x44U, 0x2FU, 0x78U, 0xA5U, 0x3BU, 0x61U, 0x88U, 0xA6U, 0xB1U, 0x8AU, 0x22U, 0x5CU, 0x86U, 0xAEU, 0xB9U, 0xC7U,
     0x75U, 0x92U, 0xADU, 0xD0U, 0xD7U, 0x14U, 0xD2U, 0x6FU, 0x8DU, 0x84U, 0xC9U, 0xE4U, 0xF9U, 0xF5U, 0x9AU, 0x77U};
 
@@ -159,7 +159,7 @@ static uint8_t s_EcdsaSign521pKat[132U] = {
     0xE4U, 0x17U, 0x1EU, 0x4CU, 0x65U, 0xADU, 0x00U, 0x85U, 0x08U, 0x62U, 0xD9U, 0x66U, 0xA8U, 0xE0U, 0x14U,
     0x8BU, 0x67U, 0xFAU, 0x55U, 0x53U, 0x57U, 0x3AU, 0x10U, 0x95U, 0x78U, 0x9DU, 0xCAU};
 
-static uint8_t s_KeyEcdsa256[32U] = {
+static uint8_t s_KeyEcdsa256[32U] __attribute__((__aligned__(4))) = {
     0x2EU, 0x9FU, 0x73U, 0xDFU, 0xCBU, 0xAEU, 0x1AU, 0xD4U, 0xF1U, 0x25U, 0x44U, 0xC4U, 0x52U, 0xDCU, 0x78U, 0x98U,
     0xB7U, 0x10U, 0x79U, 0x78U, 0x47U, 0x3EU, 0x40U, 0x2BU, 0x66U, 0x5BU, 0xB2U, 0xF5U, 0x2BU, 0xEDU, 0xC2U, 0xD6U,
 };
@@ -232,12 +232,15 @@ static bool ecdsa_sign_els(void)
         return_status = false;
     }
 
-    mcuxClEls_EccSignOption_t sign_options                          = {0U};
-    sign_options.bits.signrtf                                       = MCUXCLELS_ECC_VALUE_NO_RTF;
-    mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE] = {0U};
+    mcuxClEls_EccSignOption_t sign_options = {0U};
+    sign_options.bits.signrtf              = MCUXCLELS_ECC_VALUE_NO_RTF;
+    sign_options.bits.echashchl            = MCUXCLELS_ECC_HASHED;
+
+    mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE];
     mcuxClEls_EccByte_t ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE + MCUXCLELS_ECC_PUBLICKEY_SIZE] = {
         0U};
     mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE] = {0U};
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
         mcuxClEls_EccSign_Async(              /* Perform signature generation. */
@@ -262,7 +265,7 @@ static bool ecdsa_sign_els(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     (void)memcpy(&ecc_signature_and_public_key[0U], /* Prepare the concatenation of signature and public key: First the
-                                                     signature, ... */
+                                                       signature, ... */
                  &ecc_signature[0U], MCUXCLELS_ECC_SIGNATURE_SIZE);
     (void)memcpy(&ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE], /* ... then the public key. */
                  &public_key[0U], MCUXCLELS_ECC_PUBLICKEY_SIZE);
@@ -291,7 +294,6 @@ static bool ecdsa_sign_els(void)
         return_status = false;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-
     mcuxClEls_HwState_t state;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_GetHwState(&state));
 
