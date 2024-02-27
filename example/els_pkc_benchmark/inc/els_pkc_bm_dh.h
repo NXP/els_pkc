@@ -11,9 +11,7 @@
 #include <mcuxClEcc.h>
 #include <mcuxClPkc_Types.h>
 #include <mcuxClRandomModes.h>
-#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
-#include <mcuxClEcc_Functions.h>
-#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/

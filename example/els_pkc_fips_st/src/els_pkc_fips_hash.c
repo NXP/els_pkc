@@ -95,11 +95,23 @@ static bool sha2(const uint8_t *msg,
     /**************************************************************************/
     /* Session clean-up                                                       */
     /**************************************************************************/
-    /** Destroy Session and cleanup Session **/
-    if (!mcuxClExample_Session_Clean(session))
+    /* Clean-up and destroy the session. */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
+        MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
         return_status = false;
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionDestroy_result, sessionDestroy_token, mcuxClSession_destroy(session));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
+        MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
+    {
+        return_status = false;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     return return_status;
 }
 

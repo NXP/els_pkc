@@ -172,7 +172,7 @@
                     &session, pubKeyHandler, &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,                             \
                     m_length == MESSAGE_SMALL ? s_MessageSmallEccEd25519 : s_MessageLargeEccEd25519,                 \
                     m_length == MESSAGE_SMALL ? sizeof(s_MessageSmallEccEd25519) : sizeof(s_MessageLargeEccEd25519), \
-                    s_SignatureBuffer, sizeof(s_SignatureBuffer)));                                                  \
+                    s_SignatureBuffer, 64U));                                                                        \
             if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature) != verify_token) ||                   \
                 (MCUXCLECC_STATUS_OK != verify_result))                                                              \
             {                                                                                                        \
@@ -190,7 +190,7 @@
                     m_length == MESSAGE_SMALL ? s_MessageSmallEccEd25519Flash : s_MessageLargeEccEd25519Flash,       \
                     m_length == MESSAGE_SMALL ? sizeof(s_MessageSmallEccEd25519Flash) :                              \
                                                 sizeof(s_MessageLargeEccEd25519Flash),                               \
-                    s_SignatureBuffer, sizeof(s_SignatureBuffer)));                                                  \
+                    s_SignatureBuffer, 64U));                                                                        \
             if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature) != verify_token) ||                   \
                 (MCUXCLECC_STATUS_OK != verify_result))                                                              \
             {                                                                                                        \
@@ -201,10 +201,6 @@
         }                                                                                                            \
     } while (0);
 
-#define GENERATE_ECC_SECP_SIGNATURE
-
-#define VERIFY_ECC_SECP_SIGNATURE
-
 /******************************************************************************* \
  * Prototypes                                                                    \
  ******************************************************************************/
@@ -213,7 +209,7 @@
  * Variables
  ******************************************************************************/
 /* Buffer for generated signature */
-static uint8_t s_SignatureBuffer[MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE];
+static uint8_t s_SignatureBuffer[128U];
 
 /* Buffer for generated signature */
 static uint8_t s_SignatureBufferWeier[2U * 66U];
@@ -627,7 +623,6 @@ static const uint8_t s_PublicKeyInputWeier521Flash[132U] = {
     0xD2U, 0x1AU, 0x1EU, 0x82U, 0x8EU, 0x3AU, 0xECU, 0x00U, 0x5EU, 0x0DU, 0x90U, 0x5FU, 0x13U, 0xF5U, 0x50U,
     0xE1U, 0xA1U, 0x95U, 0x6DU, 0x76U, 0x80U, 0xEEU, 0x9AU, 0xC5U, 0x88U, 0xBEU, 0x42U, 0x85U, 0x5CU, 0x15U,
     0xDDU, 0xCBU, 0x97U, 0xA9U, 0xFAU, 0x1BU, 0x24U, 0x91U, 0x98U, 0xA5U, 0x49U, 0x8EU};
-
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -921,7 +916,7 @@ bool exec_EdDSA_verify_signature_Ed25519(char *data_from, uint32_t m_length, sig
 
     return MCUXCLEXAMPLE_STATUS_OK;
 }
-#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
+
 static mcuxClEcc_DomainParam_t get_domain_param_by_mode(uint32_t bit_length, bool data_from_ram)
 {
     const uint32_t pByteLength = (bit_length + 7U) / 8U;
@@ -961,8 +956,6 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                                              bool data_from_ram,
                                              uint32_t m_length)
 {
-    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t descriptor;
-    descriptor.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
     if (data_from_ram)
     {
         switch (bit_length)
@@ -973,9 +966,8 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                     .pHash       = m_length == 32U ? s_MessageDigest32Byte : s_MessageDigest64Byte,
                     .pPrivateKey = s_PrivateKeyInputWeier256,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen =
-                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                    .pMode = &descriptor};
+                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
+                                                     mcuxClEcc_Sign_Param_optLen_Pack(64U)};
 
             case WEIER384_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
@@ -983,18 +975,16 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                     .pHash       = m_length == 32U ? s_MessageDigest32Byte : s_MessageDigest64Byte,
                     .pPrivateKey = s_PrivateKeyInputWeier384,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen =
-                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                    .pMode = &descriptor};
+                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
+                                                     mcuxClEcc_Sign_Param_optLen_Pack(64U)};
             case WEIER521_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32Byte : s_MessageDigest64Byte,
                     .pPrivateKey = s_PrivateKeyInputWeier521,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen =
-                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                    .pMode = &descriptor};
+                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
+                                                     mcuxClEcc_Sign_Param_optLen_Pack(64U)};
         }
     }
     else
@@ -1007,27 +997,24 @@ static mcuxClEcc_Sign_Param_t get_param_sign(uint32_t bit_length,
                     .pHash       = m_length == 32U ? s_MessageDigest32ByteFlash : s_MessageDigest64ByteFlash,
                     .pPrivateKey = s_PrivateKeyInputWeier256Flash,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen =
-                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                    .pMode = &descriptor};
+                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
+                                                     mcuxClEcc_Sign_Param_optLen_Pack(64U)};
             case WEIER384_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32ByteFlash : s_MessageDigest64ByteFlash,
                     .pPrivateKey = s_PrivateKeyInputWeier384Flash,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen =
-                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                    .pMode = &descriptor};
+                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
+                                                     mcuxClEcc_Sign_Param_optLen_Pack(64U)};
             case WEIER521_BIT_LENGTH:
                 return (mcuxClEcc_Sign_Param_t){
                     .curveParam  = domain_params,
                     .pHash       = m_length == 32U ? s_MessageDigest32ByteFlash : s_MessageDigest64ByteFlash,
                     .pPrivateKey = s_PrivateKeyInputWeier521Flash,
                     .pSignature  = s_SignatureBufferWeier,
-                    .optLen =
-                        m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) : mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                    .pMode = &descriptor};
+                    .optLen      = m_length == 32U ? mcuxClEcc_Sign_Param_optLen_Pack(32U) :
+                                                     mcuxClEcc_Sign_Param_optLen_Pack(64U)};
         }
     }
     mcuxClEcc_Sign_Param_t default_return;
@@ -1081,6 +1068,10 @@ bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint3
     /* Generate signature                                                     */
     /**************************************************************************/
     mcuxClEcc_Sign_Param_t parameters = get_param_sign(bit_length, domain_param, data_from_ram, m_length);
+
+    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t descriptor;
+    descriptor.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
+    parameters.pMode          = &descriptor;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(pSession, &parameters));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Sign) != sign_token))
@@ -1239,7 +1230,6 @@ void test_weier_signature(char *code_from, char *data_from, uint32_t m_length, u
 
     PRINT_SIGNATURE_RESULT(a_result);
 }
-#endif
 
 void test_ecc_ed25519_signature(char *code_from, char *data_from, uint32_t m_length)
 {
@@ -1274,9 +1264,6 @@ void run_tests_asymmetric(void)
     char code_from[6U];
     strcpy(code_from, BOARD_IS_XIP() ? "FLASH" : "RAM");
 
-    /* Clib removed support of ECC-WEIER-BN256 curve in v1.9.0- Need to ask them
-       to re-add the support and then enable the code.*/
-#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
     PRINTF("ECC-ECDSA-WEIER-P256\r\n");
     test_weier_signature(code_from, "RAM", 64U, WEIER256_BIT_LENGTH);
     test_weier_signature(code_from, "FLASH", 64U, WEIER256_BIT_LENGTH);
@@ -1297,7 +1284,6 @@ void run_tests_asymmetric(void)
     test_weier_signature(code_from, "RAM", 32U, WEIER521_BIT_LENGTH);
     test_weier_signature(code_from, "FLASH", 32U, WEIER521_BIT_LENGTH);
     PRINTF("\r\n");
-#endif
 
     PRINTF("ECC-EDDSA-ED25519:\r\n");
     test_ecc_ed25519_signature(code_from, "RAM", MESSAGE_LARGE);

@@ -12,10 +12,8 @@
 #include <mcuxClPkc_Types.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
-#ifdef MCUXCL_FEATURE_ECC_WEIER_BN256_CURVES
-#include <mcuxClEcc_Functions.h>
 #include <mcuxClEcc_ECDSA_Internal.h>
-#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/

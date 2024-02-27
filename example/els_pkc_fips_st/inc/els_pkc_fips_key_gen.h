@@ -9,7 +9,6 @@
 #define _ELS_PKC_FIPS_KEY_GEN_H_
 
 #include "els_pkc_fips_util.h"
-#include <mcuxClEcc_Functions.h>
 #include <mcuxClEcc.h>
 #include <mcuxClPkc_Types.h>
 #include <mcuxClEcc_ECDSA_Internal.h>

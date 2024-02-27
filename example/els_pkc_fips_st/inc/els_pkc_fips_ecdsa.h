@@ -13,7 +13,6 @@
 #include <mcuxClEcc.h>
 #include <mcuxClEcc_ECDSA_Internal.h>
 #include <mcuxClRandomModes.h>
-#include <mcuxClEcc_Functions.h>
 #include <mcuxClRandom.h>
 
 /*******************************************************************************

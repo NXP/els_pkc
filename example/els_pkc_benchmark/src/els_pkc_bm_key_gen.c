@@ -201,7 +201,6 @@ static const uint8_t s_BN_P521_N_Flash[66U] = {
     0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFAU, 0x51U, 0x86U, 0x87U, 0x83U, 0xBFU, 0x2FU, 0x96U, 0x6BU,
     0x7FU, 0xCCU, 0x01U, 0x48U, 0xF7U, 0x09U, 0xA5U, 0xD0U, 0x3BU, 0xB5U, 0xC9U, 0xB8U, 0x89U, 0x9CU,
     0x47U, 0xAEU, 0xBBU, 0x6FU, 0xB7U, 0x1EU, 0x91U, 0x38U, 0x64U, 0x09U};
-
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -253,8 +252,9 @@ bool exec_ecc_weier_key_gen(char *data_from, uint32_t bit_length)
     mcuxClSession_Handle_t pSession = &sessionDesc;
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(pSession, MCUXCLECC_KEYGEN_WACPU_SIZE,
                                                   MCUXCLECC_KEYGEN_WAPKC_SIZE(pByteLength, nByteLength));
+
     /* Initialize the RNG context, with maximum size */
-    uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0U};
+    uint8_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE] = {0U};
 
     mcuxClRandom_Mode_t randomMode = NULL;
 
@@ -279,18 +279,69 @@ bool exec_ecc_weier_key_gen(char *data_from, uint32_t bit_length)
 
     mcuxClEcc_DomainParam_t domain_params = get_domain_param_by_mode(bit_length, data_from_ram);
 
-    uint8_t private_key[66U]           = {0U};
-    uint8_t public_key[132U]           = {0U};
-    mcuxClEcc_KeyGen_Param_t key_param = (mcuxClEcc_KeyGen_Param_t){
-        .curveParam = domain_params, .pPrivateKey = private_key, .pPublicKey = public_key, .optLen = 0U};
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClEcc_KeyGen(pSession, &key_param));
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_KeyGen) != token_enc) || (MCUXCLECC_STATUS_OK != result_enc))
+    switch (bit_length)
     {
-        PRINTF("[Error] Ecc-Weier key gen failed\r\n");
+        case WEIER256_BIT_LENGTH:
+        {
+            uint8_t private_key[32U]           = {0U};
+            uint8_t public_key[64U]            = {0U};
+            mcuxClEcc_KeyGen_Param_t key_param = (mcuxClEcc_KeyGen_Param_t){
+                .curveParam = domain_params, .pPrivateKey = private_key, .pPublicKey = public_key, .optLen = 0U};
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClEcc_KeyGen(pSession, &key_param));
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_KeyGen) != token_enc) || (MCUXCLECC_STATUS_OK != result_enc))
+            {
+                PRINTF("[Error] Ecc-Weier key gen failed with code %X\r\n", result_enc);
+                return MCUXCLEXAMPLE_STATUS_ERROR;
+            }
+            MCUX_CSSL_FP_FUNCTION_CALL_END();
+            break;
+        }
+        case WEIER384_BIT_LENGTH:
+        {
+            uint8_t private_key[48U]           = {0U};
+            uint8_t public_key[96U]            = {0U};
+            mcuxClEcc_KeyGen_Param_t key_param = (mcuxClEcc_KeyGen_Param_t){
+                .curveParam = domain_params, .pPrivateKey = private_key, .pPublicKey = public_key, .optLen = 0U};
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClEcc_KeyGen(pSession, &key_param));
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_KeyGen) != token_enc) || (MCUXCLECC_STATUS_OK != result_enc))
+            {
+                PRINTF("[Error] Ecc-Weier key gen failed with code %X\r\n", result_enc);
+                return MCUXCLEXAMPLE_STATUS_ERROR;
+            }
+            MCUX_CSSL_FP_FUNCTION_CALL_END();
+            break;
+        }
+        case WEIER521_BIT_LENGTH:
+        {
+            uint8_t private_key[66U]           = {0U};
+            uint8_t public_key[132U]           = {0U};
+            mcuxClEcc_KeyGen_Param_t key_param = (mcuxClEcc_KeyGen_Param_t){
+                .curveParam = domain_params, .pPrivateKey = private_key, .pPublicKey = public_key, .optLen = 0U};
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClEcc_KeyGen(pSession, &key_param));
+            if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_KeyGen) != token_enc) || (MCUXCLECC_STATUS_OK != result_enc))
+            {
+                PRINTF("[Error] Ecc-Weier key gen failed with code %X\r\n", result_enc);
+                return MCUXCLEXAMPLE_STATUS_ERROR;
+            }
+            MCUX_CSSL_FP_FUNCTION_CALL_END();
+            break;
+        }
+        default:
+            return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(randomUninit_result, randomUninit_token, mcuxClRandom_uninit(pSession));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_uninit) != randomUninit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != randomUninit_result))
+    {
+        PRINTF("[Error] DRBG init failed\r\n");
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+    if (!mcuxClExample_Session_Clean(pSession))
+    {
+        PRINTF("[Error] Session cleaning failed\r\n");
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
 
     return MCUXCLEXAMPLE_STATUS_OK;
 }

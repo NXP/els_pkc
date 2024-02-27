@@ -175,10 +175,12 @@ int main(void)
     execute_kats();
 
     /* Disable the ELS */
-    if (!mcuxClExample_Els_Disable())
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Disable());
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Disable) != token) || (MCUXCLELS_STATUS_OK != result))
     {
         PRINTF("ERROR AT ELS DE-INIT\r\n");
     }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     PRINTF("END OF ELS PKC FIPS SELF-TEST\r\n");
 
