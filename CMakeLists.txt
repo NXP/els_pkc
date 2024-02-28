@@ -67,9 +67,10 @@ if(CONFIG_SOC_SERIES_RW6XX)
     )
 endif()
 
+if(CONFIG_EXPORT_MCUX_ELS_PKC_TARGETS)
 export(TARGETS McuxElsPkc
     FILE "${CMAKE_CURRENT_BINARY_DIR}/McuxElsPkcTargets.cmake"
     NAMESPACE McuxElsPkc::
 )
-
+endif()
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src)
