@@ -2966,6 +2966,33 @@ component.els_pkc.psa_driver_examples:
     - component.els_pkc.memory
     - component.els_pkc
     - component.els_pkc.psa_driver
+container.component.els_pkc.unused_files:
+  section-type: container
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    files:
+    - source: CMakeLists.txt
+      hidden: true
+      exclude: true
+    - source: src/CMakeLists.txt
+      hidden: true
+      exclude: true
+    - source: examples/CMakeLists.txt
+      hidden: true
+      exclude: true 
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    description: ELS_pkc files unused by projects
+    version: "${els_pkc_version}"
+    type: other
+    user_visible: never
+    full_name: ELS_PKC unused files
+    display_name: unused_files
 set.component.els_pkc:
   section-type: set
   belong_to:
