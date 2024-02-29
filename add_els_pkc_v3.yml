@@ -3012,6 +3012,8 @@ set.component.els_pkc:
         cclass: els_pkc
     product:
       kex_package:
+        scr:
+          - scr.els_pkc
         kex_web_ui:
           ui_control: true
           ui_release_specific: true
