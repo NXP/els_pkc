@@ -3049,8 +3049,8 @@ scr.els_pkc:
     Name: ELS PKC
     Version: "${els_pkc_version}"
     license:
-      - license.bsd-3
-    Format: source code
-    Description: ELS PKC crypto library
-    Origin: NXP (BSD-3-Clause)
+      - license.EULA
+    Format: Static library, headers, sources
+    Description: Cryptographic library running on NXP ELS and PKC Crypto Hardware IP
+    Origin: NXP (proprietary)
     Location: components/els_pkc
