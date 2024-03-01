@@ -122,16 +122,12 @@ static uint8_t s_MacKatCmac256[8U] = {0x5DU, 0x00U, 0xFFU, 0xC5U, 0xF8U, 0xCFU, 
 /*!
  * @brief Execute HMAC on ELS.
  */
-static bool hmac_sha_els(const uint8_t *plain_key,
-                         const uint32_t key_size,
-                         const uint8_t *plain_text,
-                         const uint32_t plain_size,
-                         const uint8_t *mac)
+static status_t hmac_sha_els(const uint8_t *plain_key,
+                             const uint32_t key_size,
+                             const uint8_t *plain_text,
+                             const uint32_t plain_size,
+                             const uint8_t *mac)
 {
-    /**************************************************************************/
-    /* HMAC computation                                                       */
-    /**************************************************************************/
-    bool return_status         = true;
     uint8_t result_buffer[32U] = {0U};
     mcuxClEls_HmacOption_t options;
     options.bits.extkey = MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE;
@@ -141,34 +137,33 @@ static bool hmac_sha_els(const uint8_t *plain_key,
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hmac_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    if (!mcuxClCore_assertEqual(result_buffer, mac, 32U))
+    if (!assert_equal(result_buffer, mac, 32U))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute HMAC.
  */
-static bool hmac_sha(uint8_t *plain_key,
-                     const uint8_t *plain_text,
-                     const uint8_t *mac,
-                     const uint32_t mac_size,
-                     mcuxClHash_Algo_t hash_algorithm)
+static status_t hmac_sha(uint8_t *plain_key,
+                         const uint8_t *plain_text,
+                         const uint8_t *mac,
+                         const uint32_t mac_size,
+                         mcuxClHash_Algo_t hash_algorithm)
 {
-    bool return_status = true;
     /* Key buffer for the key in memory. */
     uint32_t key_buffer[142U];
 
@@ -176,16 +171,17 @@ static bool hmac_sha(uint8_t *plain_key,
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
 
-    /* Allocate and initialize session / workarea */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(
-        session, MCUXCLHMAC_MAX_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0U);
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHMAC_MAX_CPU_WA_BUFFER_SIZE, 0U);
 
     /* Initialize the PRNG */
-    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != prngInit_result))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Key setup                                                              */
-    /**************************************************************************/
     /* Create and initialize mcuxClKey_Descriptor_t structure. */
     uint32_t key_desc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t)&key_desc;
@@ -201,7 +197,7 @@ static bool hmac_sha(uint8_t *plain_key,
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInit_token) || (MCUXCLKEY_STATUS_OK != keyInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -211,13 +207,10 @@ static bool hmac_sha(uint8_t *plain_key,
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_loadMemory) != keyLoad_token) ||
         (MCUXCLKEY_STATUS_OK != keyLoad_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Generate an HMAC mode containing the hash algorithm                    */
-    /**************************************************************************/
     uint8_t hmac_mode_desc_buffer[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE];
     mcuxClMac_CustomMode_t mode = (mcuxClMac_CustomMode_t)hmac_mode_desc_buffer;
 
@@ -229,13 +222,10 @@ static bool hmac_sha(uint8_t *plain_key,
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_createHmacMode) != hashCreateMode_token) ||
         (MCUXCLMAC_STATUS_OK != hashCreateMode_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* HMAC computation                                                       */
-    /**************************************************************************/
     uint8_t result_buffer[128U] = {0U};
 
     /* Call the mcuxClMac_compute function to compute a HMAC in one shot. */
@@ -252,23 +242,20 @@ static bool hmac_sha(uint8_t *plain_key,
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != macCompute_token) ||
         (MCUXCLMAC_STATUS_OK != macCompute_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(result_buffer, mac, mac_size))
+    if (!assert_equal(result_buffer, mac, mac_size))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Cleanup                                                                */
-    /**************************************************************************/
     /* Flush the key. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyFlush_result, keyFlush_token, mcuxClKey_flush(session, key));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != keyFlush_token) || (MCUXCLKEY_STATUS_OK != keyFlush_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -277,7 +264,7 @@ static bool hmac_sha(uint8_t *plain_key,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -285,39 +272,39 @@ static bool hmac_sha(uint8_t *plain_key,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute AES-CMAC.
  */
-static bool aes_cmac(mcuxClKey_Type_t key_type,
-                     uint8_t *plain_key,
-                     const uint8_t *plain_text,
-                     const uint8_t *mac,
-                     const uint32_t mac_size)
+static status_t aes_cmac(mcuxClKey_Type_t key_type,
+                         uint8_t *plain_key,
+                         const uint8_t *plain_text,
+                         const uint8_t *mac,
+                         const uint32_t mac_size)
 {
-    bool return_status = true;
     /* Key buffer for the key in memory. */
     uint32_t key_buffer[32U];
 
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
 
-    /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(
-        session, MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0U);
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLMAC_MAX_CPU_WA_BUFFER_SIZE, 0U);
 
     /* Initialize the PRNG */
-    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != prngInit_result))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Key setup                                                              */
-    /**************************************************************************/
     /* Create and initialize mcuxClKey_Descriptor_t structure. */
     uint32_t key_desc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t)&key_desc;
@@ -330,24 +317,21 @@ static bool aes_cmac(mcuxClKey_Type_t key_type,
     /* Key init and load */
     if (key_type == mcuxClKey_Type_Aes128)
     {
-        if (!mcuxClExample_Key_Init_And_Load(session, key, key_type, (mcuxCl_Buffer_t)plain_key, 16U,
-                                             &cmac_key_properties, key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
+        if (cl_key_init_and_load(session, key, key_type, (mcuxCl_Buffer_t)plain_key, 16U, &cmac_key_properties,
+                                 key_buffer, 0U) != STATUS_SUCCESS)
         {
-            return_status = false;
+            return STATUS_ERROR_GENERIC;
         }
     }
     else
     {
-        if (!mcuxClExample_Key_Init_And_Load(session, key, key_type, (mcuxCl_Buffer_t)plain_key, 32U,
-                                             &cmac_key_properties, key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
+        if (cl_key_init_and_load(session, key, key_type, (mcuxCl_Buffer_t)plain_key, 32U, &cmac_key_properties,
+                                 key_buffer, 0U) != STATUS_SUCCESS)
         {
-            return_status = false;
+            return STATUS_ERROR_GENERIC;
         }
     }
 
-    /**************************************************************************/
-    /* MAC Generation                                                          */
-    /**************************************************************************/
     uint32_t result_size       = 0U;
     uint8_t result_buffer[64U] = {0U};
 
@@ -362,24 +346,21 @@ static bool aes_cmac(mcuxClKey_Type_t key_type,
                                          /* uint32_t * const pMacLength:     */ &result_size));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token) || (MCUXCLMAC_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(result_buffer, mac, mac_size))
+    if (!assert_equal(result_buffer, mac, mac_size))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Cleanup                                                                */
-    /**************************************************************************/
     /* Flush the key */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClKey_flush(session, key));
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_flush) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -388,7 +369,7 @@ static bool aes_cmac(mcuxClKey_Type_t key_type,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -396,11 +377,11 @@ static bool aes_cmac(mcuxClKey_Type_t key_type,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_hmac_kat(uint64_t options, char name[])
@@ -408,8 +389,8 @@ void execute_hmac_kat(uint64_t options, char name[])
     /* Execute HMAC SHA224 */
     if ((bool)(options & FIPS_HMAC_SHA224))
     {
-        if (!hmac_sha(s_KeyHmacSha224, s_MsgHmacSha224, s_MacKatHmacSha224, sizeof(s_MacKatHmacSha224),
-                      mcuxClHash_Algorithm_Sha224))
+        if (hmac_sha(s_KeyHmacSha224, s_MsgHmacSha224, s_MacKatHmacSha224, sizeof(s_MacKatHmacSha224),
+                     mcuxClHash_Algorithm_Sha224) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -417,8 +398,8 @@ void execute_hmac_kat(uint64_t options, char name[])
     /* Execute HMAC SHA256 */
     if ((bool)(options & FIPS_HMAC_SHA256))
     {
-        if (!hmac_sha_els(s_KeyHmacSha256, sizeof(s_KeyHmacSha256), s_MsgHmacSha256, sizeof(s_MsgHmacSha256),
-                          s_MacKatHmacSha256))
+        if (hmac_sha_els(s_KeyHmacSha256, sizeof(s_KeyHmacSha256), s_MsgHmacSha256, sizeof(s_MsgHmacSha256),
+                         s_MacKatHmacSha256) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -426,8 +407,8 @@ void execute_hmac_kat(uint64_t options, char name[])
     /* Execute HMAC SHA384 */
     if ((bool)(options & FIPS_HMAC_SHA384))
     {
-        if (!hmac_sha(s_KeyHmacSha384, s_MsgHmacSha384, s_MacKatHmacSha384, sizeof(s_MacKatHmacSha384),
-                      mcuxClHash_Algorithm_Sha384))
+        if (hmac_sha(s_KeyHmacSha384, s_MsgHmacSha384, s_MacKatHmacSha384, sizeof(s_MacKatHmacSha384),
+                     mcuxClHash_Algorithm_Sha384) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -435,8 +416,8 @@ void execute_hmac_kat(uint64_t options, char name[])
     /* Execute HMAC SHA512 */
     if ((bool)(options & FIPS_HMAC_SHA512))
     {
-        if (!hmac_sha(s_KeyHmacSha512, s_MsgHmacSha512, s_MacKatHmacSha512, sizeof(s_MacKatHmacSha512),
-                      mcuxClHash_Algorithm_Sha512))
+        if (hmac_sha(s_KeyHmacSha512, s_MsgHmacSha512, s_MacKatHmacSha512, sizeof(s_MacKatHmacSha512),
+                     mcuxClHash_Algorithm_Sha512) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -445,14 +426,13 @@ void execute_hmac_kat(uint64_t options, char name[])
 
 void execute_cmac_kat(uint64_t options, char name[])
 {
-    /*!
-     * Execute CMAC-128
+    /* Execute CMAC-128
      * Note: No KAT for keysize 192, since no implementation existing.
      */
     if ((bool)(options & FIPS_AES_CMAC_128))
     {
-        if (!aes_cmac(mcuxClKey_Type_Aes128, s_KeyCmac128, s_PlaintextCmac128, s_MacKatCmac128,
-                      sizeof(s_MacKatCmac128)))
+        if (aes_cmac(mcuxClKey_Type_Aes128, s_KeyCmac128, s_PlaintextCmac128, s_MacKatCmac128,
+                     sizeof(s_MacKatCmac128)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -460,8 +440,8 @@ void execute_cmac_kat(uint64_t options, char name[])
     /* Execute CMAC-256 */
     if ((bool)(options & FIPS_AES_CMAC_256))
     {
-        if (!aes_cmac(mcuxClKey_Type_Aes256, s_KeyCmac256, s_PlaintextCmac256, s_MacKatCmac256,
-                      sizeof(s_MacKatCmac256)))
+        if (aes_cmac(mcuxClKey_Type_Aes256, s_KeyCmac256, s_PlaintextCmac256, s_MacKatCmac256,
+                     sizeof(s_MacKatCmac256)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }

@@ -19,6 +19,8 @@
 #define MAX_PKCWA_SIZE                                                 \
     MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE, \
                    MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
+#define ALLOCATE_RNG_CTXT(rng_ctx_length) \
+    (((rng_ctx_length) > 0U) ? (((rng_ctx_length) + sizeof(uint32_t) - 1U) / sizeof(uint32_t)) : 1U)
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -203,40 +205,39 @@ static mcuxClRandom_Status_t RNG_Patch_function(mcuxClSession_Handle_t session,
 }
 
 /*!
- * @brief Execute ECDSA Sign NIST256P on ELS.
+ * @brief Execute ECDSA Sign/Verify NIST256P on ELS.
  */
-static bool ecdsa_sign_els(void)
+static status_t ecdsa_els(void)
 {
-    bool return_status                       = true;
     mcuxClEls_KeyProp_t plain_key_properties = {
         .word = {.value = MCUXCLELS_KEYPROPERTY_VALUE_SECURE | MCUXCLELS_KEYPROPERTY_VALUE_PRIVILEGED |
                           MCUXCLELS_KEYPROPERTY_VALUE_KEY_SIZE_256 | MCUXCLELS_KEYPROPERTY_VALUE_KGSRC}};
 
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
     if (import_plain_key_into_els(s_KeyEcdsa256, sizeof(s_KeyEcdsa256), plain_key_properties, &key_index) !=
-        (int32_t)STATUS_SUCCESS)
+        STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /*!
-     * For ECC keys that were created from plain key material, there is the
+    /* For ECC keys that were created from plain key material, there is the
      * neceessity to convert them to a key. Converting to a key also yields the public key.
      * The conversion can be done either before re-wrapping (when importing the plain key)
      * or after (when importing the blob).
      */
     uint8_t public_key[64U] = {0U};
     size_t public_key_size  = sizeof(public_key);
-    if (els_keygen(key_index, &public_key[0U], &public_key_size) != (int32_t)STATUS_SUCCESS)
+    if (els_keygen(key_index, &public_key[0U], &public_key_size) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     mcuxClEls_EccSignOption_t sign_options = {0U};
     sign_options.bits.signrtf              = MCUXCLELS_ECC_VALUE_NO_RTF;
     sign_options.bits.echashchl            = MCUXCLELS_ECC_HASHED;
 
-    mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE];
+    mcuxClEls_EccByte_t ecc_signature[MCUXCLELS_ECC_SIGNATURE_SIZE] = {0U};
     mcuxClEls_EccByte_t ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE + MCUXCLELS_ECC_PUBLICKEY_SIZE] = {
         0U};
     mcuxClEls_EccByte_t ecc_signature_r[MCUXCLELS_ECC_SIGNATURE_R_SIZE] = {0U};
@@ -253,14 +254,16 @@ static bool ecdsa_sign_els(void)
                                 ));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -284,14 +287,16 @@ static bool ecdsa_sign_els(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     mcuxClEls_HwState_t state;
@@ -300,34 +305,36 @@ static bool ecdsa_sign_els(void)
     /* mcuxClEls_GetHwState is a flow-protected function: Check the protection token and the return value */
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetHwState) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     if (MCUXCLELS_STATUS_ECDSAVFY_OK != state.bits.ecdsavfy)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
-    return return_status;
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute ECC-Weier Sign.
  */
-static bool ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_key, uint8_t *signature)
+static status_t ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_key, uint8_t *signature)
 {
-    bool return_status           = true;
     const uint32_t p_byte_length = (bit_length + 7U) / 8U;
     const uint32_t n_byte_length = (bit_length + 7U) / 8U;
 
-    /**************************************************************************/
-    /* Preparation                                                            */
-    /**************************************************************************/
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
 
-    /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_SIGN_WACPU_SIZE,
-                                                  MCUXCLECC_SIGN_WAPKC_SIZE(p_byte_length, n_byte_length));
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_SIGN_WACPU_SIZE,
+                                    MCUXCLECC_SIGN_WAPKC_SIZE(p_byte_length, n_byte_length));
 
     /* Initialize random patch mode */
     uint32_t custom_mode_desc_bytes[(MCUXCLRANDOMMODES_PATCHMODE_DESCRIPTOR_SIZE + sizeof(uint32_t) - 1U) /
@@ -346,7 +353,7 @@ static bool ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_k
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createPatchMode) != cp_token) ||
         (MCUXCLRANDOM_STATUS_OK != cp_status))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -357,12 +364,9 @@ static bool ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_k
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Generate signature                                                     */
-    /**************************************************************************/
     uint8_t signature_buffer[2U * 66U] = {0U};
 
     /* Default domain paramameters initialization */
@@ -390,8 +394,7 @@ static bool ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_k
                                           .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
         default:
-            return_status = false;
-            break;
+            return STATUS_ERROR_GENERIC;
     }
 
     mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t sign_mode;
@@ -407,30 +410,27 @@ static bool ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_k
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(session, &sign_parameters));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Sign) != sign_token))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     if (MCUXCLECC_STATUS_OK != sign_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Check results */
-    if (!mcuxClCore_assertEqual(signature_buffer, signature, bit_length / 8U * 2U))
+    if (!assert_equal(signature_buffer, signature, bit_length / 8U * 2U))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Clean session                                                          */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -438,28 +438,26 @@ static bool ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *private_k
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    return return_status;
+
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute ECC-Weier Verify.
  */
-static bool ecdsa_verify(uint32_t bit_length, uint8_t *message, uint8_t *public_key, uint8_t *signature)
+static status_t ecdsa_verify(uint32_t bit_length, uint8_t *message, uint8_t *public_key, uint8_t *signature)
 {
-    bool return_status           = true;
     const uint32_t p_byte_length = (bit_length + 7U) / 8U;
     const uint32_t n_byte_length = (bit_length + 7U) / 8U;
 
-    /**************************************************************************/
-    /* Preparation                                                            */
-    /**************************************************************************/
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_VERIFY_WACPU_SIZE,
-                                                  MCUXCLECC_VERIFY_WAPKC_SIZE(p_byte_length, n_byte_length));
+
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_VERIFY_WACPU_SIZE,
+                                    MCUXCLECC_VERIFY_WAPKC_SIZE(p_byte_length, n_byte_length));
 
     /* Default domain paramameters initialization */
     mcuxClEcc_DomainParam_t domain_params =
@@ -486,8 +484,7 @@ static bool ecdsa_verify(uint32_t bit_length, uint8_t *message, uint8_t *public_
                                           .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
         default:
-            return_status = false;
-            break;
+            return STATUS_ERROR_GENERIC;
     }
 
     /* Prepare scalar for point multiplication */
@@ -507,12 +504,12 @@ static bool ecdsa_verify(uint32_t bit_length, uint8_t *message, uint8_t *public_
 
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token_ecc_point_mult)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     if (MCUXCLECC_STATUS_OK != ret_ecc_point_mult)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -531,19 +528,16 @@ static bool ecdsa_verify(uint32_t bit_length, uint8_t *message, uint8_t *public_
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_ecc_verify, token_ecc_verify, mcuxClEcc_Verify(session, &param_verify));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Verify) != token_ecc_verify) || (MCUXCLECC_STATUS_OK != ret_ecc_verify))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Clean session                                                          */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -551,28 +545,43 @@ static bool ecdsa_verify(uint32_t bit_length, uint8_t *message, uint8_t *public_
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
-static bool Ed25519_sign(void)
+static status_t Ed25519_sign(void)
 {
-    bool return_status = true;
     /* Setup one session to be used by all functions called */
     mcuxClSession_Descriptor_t session;
 
-    /* Allocate and initialize PKC workarea */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
+    ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
 
     /* Initialize the RNG context and Initialize the PRNG */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&session, 0U, mcuxClRandomModes_Mode_ELS_Drbg);
+    uint32_t context[ALLOCATE_RNG_CTXT(0U)] = {0U};
+    mcuxClRandom_Context_t pRng_ctx         = (mcuxClRandom_Context_t)context;
 
-    /******************************************/
-    /* Initialize the private key */
-    /******************************************/
+    /* Initialize the RNG context */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token,
+                                     mcuxClRandom_init(&session, pRng_ctx, mcuxClRandomModes_Mode_ELS_Drbg));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != randomInit_result))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+
+    /* Initialize the PRNG */
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(&session));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != prngInit_result))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     /* Allocate space for and initialize private key handle for an Ed25519 private key */
     uint8_t priv_key_desc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t priv_key = (mcuxClKey_Handle_t)&priv_key_desc;
@@ -591,7 +600,7 @@ static bool Ed25519_sign(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != privkeyinit_token) ||
         (MCUXCLKEY_STATUS_OK != privkeyinit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -610,7 +619,7 @@ static bool Ed25519_sign(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != pubkeyinit_token) ||
         (MCUXCLKEY_STATUS_OK != pubkeyinit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -627,13 +636,10 @@ static bool Ed25519_sign(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_InitPrivKeyInputMode) != initmode_token) ||
         (MCUXCLECC_STATUS_OK != initmode_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Key pair generation for EdDSA on Ed25519                               */
-    /**************************************************************************/
     /* Call mcuxClEcc_EdDSA_GenerateKeyPair to derive the public key from the private one. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygen_result, keygen_token,
                                      mcuxClEcc_EdDSA_GenerateKeyPair(
@@ -646,13 +652,10 @@ static bool Ed25519_sign(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateKeyPair) != keygen_token) ||
         (MCUXCLECC_STATUS_OK != keygen_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Ed25519 signature generation                                           */
-    /**************************************************************************/
     uint8_t signature_buffer[64U] = {0U};
     uint32_t signature_size       = 0U;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
@@ -663,24 +666,21 @@ static bool Ed25519_sign(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateSignature) != sign_token) ||
         (MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE != signature_size) || (MCUXCLECC_STATUS_OK != sign_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(signature_buffer, s_SignatureKatEd25519, signature_size))
+    if (!assert_equal(signature_buffer, s_SignatureKatEd25519, signature_size))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /******************************************/
-    /* Clean Up                               */
-    /******************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(&session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -688,25 +688,21 @@ static bool Ed25519_sign(void)
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
-static bool Ed25519_verify(void)
+static status_t Ed25519_verify(void)
 {
-    bool return_status = true;
     /* Setup one session to be used by all functions called */
     mcuxClSession_Descriptor_t session;
 
     /* Allocate and initialize PKC workarea */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
+    ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
 
-    /******************************************/
-    /* Initialize the public key              */
-    /******************************************/
     /* Initialize public key */
     uint8_t pub_key_desc[MCUXCLKEY_DESCRIPTOR_SIZE];
     mcuxClKey_Handle_t pub_key_handler = (mcuxClKey_Handle_t)&pub_key_desc;
@@ -722,13 +718,10 @@ static bool Ed25519_verify(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInit_token) || (MCUXCLKEY_STATUS_OK != keyInit_status))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Ed25519 signature verification                                         */
-    /**************************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         verify_result, verify_token,
         mcuxClEcc_EdDSA_VerifySignature(&session, pub_key_handler, &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
@@ -737,7 +730,7 @@ static bool Ed25519_verify(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_VerifySignature) != verify_token) ||
         (MCUXCLECC_STATUS_OK != verify_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -746,7 +739,7 @@ static bool Ed25519_verify(void)
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -754,11 +747,11 @@ static bool Ed25519_verify(void)
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_ecdsa_kat(uint64_t options, char name[])
@@ -766,7 +759,7 @@ void execute_ecdsa_kat(uint64_t options, char name[])
     /* Execute ECDSA 256p KAT */
     if ((bool)(options & FIPS_ECDSA_256P))
     {
-        if (!ecdsa_sign_els())
+        if (ecdsa_els() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] NON DET. %s PCT FAILED\r\n", name);
         }
@@ -774,11 +767,13 @@ void execute_ecdsa_kat(uint64_t options, char name[])
     /* Execute ECDSA 384p KAT */
     if ((bool)(options & FIPS_ECDSA_384P))
     {
-        if (!ecdsa_sign(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier384, s_EcdsaSign384pKat))
+        if (ecdsa_sign(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier384, s_EcdsaSign384pKat) !=
+            STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!ecdsa_verify(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier384, s_EcdsaSign384pKat))
+        if (ecdsa_verify(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier384, s_EcdsaSign384pKat) !=
+            STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -786,11 +781,13 @@ void execute_ecdsa_kat(uint64_t options, char name[])
     /* Execute ECDSA 521p KAT */
     if ((bool)(options & FIPS_ECDSA_521P))
     {
-        if (!ecdsa_sign(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier521, s_EcdsaSign521pKat))
+        if (ecdsa_sign(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier521, s_EcdsaSign521pKat) !=
+            STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!ecdsa_verify(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier521, s_EcdsaSign521pKat))
+        if (ecdsa_verify(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier521, s_EcdsaSign521pKat) !=
+            STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -799,17 +796,16 @@ void execute_ecdsa_kat(uint64_t options, char name[])
 
 void execute_eddsa_kat(uint64_t options, char name[])
 {
-    /*!
-     *  Execute EDDSA KAT
-     *  Sign and verify operation tested.
+    /* Execute EDDSA KAT.
+     * Sign and verify operation tested.
      */
     if ((bool)(options & FIPS_EDDSA))
     {
-        if (!Ed25519_sign())
+        if (Ed25519_sign() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!Ed25519_verify())
+        if (Ed25519_verify() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }

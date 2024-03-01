@@ -1,5 +1,6 @@
 Overview
 ========
-This application is executing tests on els_pkc cryptographic algorithms w.r.t. the NIST Cryptographic Algorithm Validation Program (CAVP).
-Test vectors are being downloaded from the NIST website and parsed with a custom Python script, which creates the test vectors in C header
-files. These C headers include the test vectors in valid format in order to execute them on the els_pkc library.
+This application is executing tests using els_pkc crypto library on RW61x board w.r.t. the NIST 
+Cryptographic Algorithm Validation Program (CAVP). The user is able to specfiy, which algorithms 
+should get tested - by default all algorithms are tested. The test vectors are specified as 
+global variables in the respective files.

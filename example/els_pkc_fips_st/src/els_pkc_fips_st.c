@@ -69,17 +69,21 @@ static void execute_kats(void)
     {
         for (uint32_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
         {
+            PRINTF("EXECUTING %s SELF-TEST\r\n", s_AlgorithmMappings[i].name);
             s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option, s_AlgorithmMappings[i].name);
         }
+        PRINTF("\r\n");
         return;
     }
     for (uint32_t i = 0U; i < sizeof(s_AlgorithmMappings) / sizeof(s_AlgorithmMappings[0U]); ++i)
     {
         if ((bool)(s_UserOptions & s_AlgorithmMappings[i].option))
         {
+            PRINTF("EXECUTING %s SELF-TEST\r\n", s_AlgorithmMappings[i].name);
             s_AlgorithmMappings[i].executionFunction(s_AlgorithmMappings[i].option, s_AlgorithmMappings[i].name);
         }
     }
+    PRINTF("\r\n");
 }
 
 /*!
@@ -88,9 +92,6 @@ static void execute_kats(void)
  */
 static void print_algorithm_infos(void)
 {
-    /**************************************************************************/
-    /* Print algorithm information of each algorithm, which is tested         */
-    /**************************************************************************/
     PRINTF("HW ACCELERATION ALGORITHM INFORMATION:\r\n");
     PRINTF("    ECB DRBG: ELS\r\n");
     PRINTF("    CTR DRBG: ELS\r\n");
@@ -137,7 +138,6 @@ static void print_algorithm_infos(void)
     PRINTF("    SHA384: ELS\r\n");
     PRINTF("    SHA512: ELS\r\n");
 
-    /* Append new line for next execution */
     PRINTF("\r\n");
 }
 

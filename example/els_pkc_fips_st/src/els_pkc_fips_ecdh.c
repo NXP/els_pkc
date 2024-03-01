@@ -203,9 +203,8 @@ static uint8_t s_AES256InputELSClient[16U] = {0x35U, 0xE6U, 0x2CU, 0x18U, 0x02U,
 /*!
  * @brief Execute ECDH on ELS with Client.
  */
-static bool ecdh_els_client(void)
+static status_t ecdh_els_client(void)
 {
-    bool return_status = true;
     /* Computed shared secret properties */
     const mcuxClEls_KeyProp_t shared_secret_prop = {
         .bits = {.upprot_priv = (uint32_t)MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -222,21 +221,23 @@ static bool ecdh_els_client(void)
 
     /* Import Client private key into els keystore */
     if (import_plain_key_into_els(s_PrivateKeyInputWeier256Client, sizeof(s_PrivateKeyInputWeier256Client),
-                                  plain_key_properties, &key_index) != (int32_t)STATUS_SUCCESS)
+                                  plain_key_properties, &key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     mcuxClEls_KeyIndex_t index_shared_secret = MCUXCLELS_KEY_SLOTS;
     index_shared_secret                      = els_get_free_keyslot(2U);
-    if (els_delete_key(index_shared_secret) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(index_shared_secret) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     if (!(index_shared_secret < MCUXCLELS_KEY_SLOTS))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
@@ -245,14 +246,16 @@ static bool ecdh_els_client(void)
     /* Compute keyexchnage */
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyExchange_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -273,41 +276,46 @@ static bool ecdh_els_client(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(index_shared_secret);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(index_shared_secret);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Compare results */
-    if (!mcuxClCore_assertEqual(aes256_output, s_AES256OutputKatELSClient, sizeof(aes256_output)))
+    if (!assert_equal(aes256_output, s_AES256OutputKatELSClient, sizeof(aes256_output)))
     {
-        return_status = false;
+        (void)els_delete_key(index_shared_secret);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
-    if (els_delete_key(index_shared_secret) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(index_shared_secret) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
-    if (els_delete_key(key_index) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
-    key_index = MCUXCLELS_KEY_SLOTS;
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute ECDH on ELS with Server.
  */
-static bool ecdh_els_server(void)
+static status_t ecdh_els_server(void)
 {
-    bool return_status = true;
     /* Computed shared secret properties */
     const mcuxClEls_KeyProp_t shared_secret_prop = {
         .bits = {.upprot_priv = (uint32_t)MCUXCLELS_KEYPROPERTY_PRIVILEGED_TRUE,
@@ -332,21 +340,23 @@ static bool ecdh_els_server(void)
 
     /* Import Server private key into els keystore */
     if (import_plain_key_into_els(s_PrivateKeyInputWeier256Server, sizeof(s_PrivateKeyInputWeier256Server),
-                                  plain_key_properties, &key_index) != (int32_t)STATUS_SUCCESS)
+                                  plain_key_properties, &key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     mcuxClEls_KeyIndex_t index_shared_secret = MCUXCLELS_KEY_SLOTS;
     index_shared_secret                      = els_get_free_keyslot(2U);
-    if (els_delete_key(index_shared_secret) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(index_shared_secret) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     if (!(index_shared_secret < MCUXCLELS_KEY_SLOTS))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
@@ -355,14 +365,16 @@ static bool ecdh_els_server(void)
     /* Compute keyexchnage */
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyExchange_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -375,150 +387,68 @@ static bool ecdh_els_server(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(index_shared_secret);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(index_shared_secret);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Compare results */
-    if (!mcuxClCore_assertEqual(aes256_output, s_AES256OutputKatELSServer, sizeof(aes256_output)))
+    if (!assert_equal(aes256_output, s_AES256OutputKatELSServer, sizeof(aes256_output)))
     {
-        return_status = false;
+        (void)els_delete_key(index_shared_secret);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
+    }
+    if (els_delete_key(index_shared_secret) != STATUS_SUCCESS)
+    {
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
+    }
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
+    {
+        return STATUS_ERROR_GENERIC;
     }
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute ECDH on ELS.
  */
-static bool ecdh_els(void)
+static status_t ecdh_els(void)
 {
-    bool client_result = ecdh_els_client();
-    bool server_result = ecdh_els_server();
-    if (!client_result || !server_result)
+    status_t client_result = ecdh_els_client();
+    status_t server_result = ecdh_els_server();
+    if (client_result != STATUS_SUCCESS || server_result != STATUS_SUCCESS)
     {
-        return false;
+        return STATUS_ERROR_GENERIC;
     }
-    return true;
+    return STATUS_SUCCESS;
 }
 
 /*!
- * @brief Execute ECDH on Server.
+ * @brief Execute ECDH operation.
  */
-static bool ecdh_server(uint32_t bit_length,
-                        mcuxClEcc_DomainParam_t domain_param,
-                        mcuxClSession_Handle_t session,
-                        uint8_t *server_sk,
-                        uint8_t *client_pk,
-                        uint8_t *shared_secret_kat,
-                        uint32_t shared_secret_kat_size)
+static status_t exec_ecdh(uint32_t bit_length, uint8_t *sk, uint8_t *pk, uint8_t *shared_secret)
 {
-    bool return_status = true;
-    /* First with Server private key */
-    uint8_t p_result_server[132U] = {0U};
-
-    /* Default point multiplication paramameters initialization */
-    mcuxClEcc_PointMult_Param_t pointmult_params_server = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
-                                                                                        .pScalar    = server_sk,
-                                                                                        .pPoint     = client_pk,
-                                                                                        .pResult    = p_result_server,
-                                                                                        .optLen     = 0U};
-
-    /* Execute point multiplication operation */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params_server));
-    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
-    {
-        return_status = false;
-    }
-
-    if (MCUXCLECC_STATUS_OK != result)
-    {
-        return_status = false;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    /* Check result, depending on input bit length */
-
-    if (!mcuxClCore_assertEqual(pointmult_params_server.pResult, shared_secret_kat, shared_secret_kat_size))
-    {
-        return_status = false;
-    }
-
-    return return_status;
-}
-
-/*!
- * @brief Execute ECDH on Client.
- */
-static bool ecdh_client(uint32_t bit_length,
-                        mcuxClEcc_DomainParam_t domain_param,
-                        mcuxClSession_Handle_t session,
-                        uint8_t *client_sk,
-                        uint8_t *server_pk,
-                        uint8_t *shared_secret_kat,
-                        uint32_t shared_secret_kat_size)
-{
-    bool return_status = true;
-    /* Now same with Client private key */
-    uint8_t p_result_client[132U] = {0U};
-
-    /* Default point multiplication paramameters initialization */
-    mcuxClEcc_PointMult_Param_t pointmult_params_client = (mcuxClEcc_PointMult_Param_t){.curveParam = domain_param,
-                                                                                        .pScalar    = client_sk,
-                                                                                        .pPoint     = server_pk,
-                                                                                        .pResult    = p_result_client,
-                                                                                        .optLen     = 0U};
-
-    /* Execute point multiplication operation */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params_client));
-    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
-    {
-        return_status = false;
-    }
-
-    if (MCUXCLECC_STATUS_OK != result)
-    {
-        return_status = false;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    /* Check result, depending on input bit length */
-    if (!mcuxClCore_assertEqual(pointmult_params_client.pResult, shared_secret_kat, shared_secret_kat_size))
-    {
-        return_status = false;
-    }
-
-    return return_status;
-}
-
-/*!
- * @brief Execute ECDH.
- */
-static bool ecdh_using_point_mult(uint32_t bit_length,
-                                  uint8_t *client_pk,
-                                  uint8_t *client_sk,
-                                  uint8_t *server_pk,
-                                  uint8_t *server_sk,
-                                  uint8_t *shared_secret_kat,
-                                  uint32_t shared_secret_kat_size)
-{
-    bool return_status           = true;
     const uint32_t p_byte_length = (bit_length + 7U) / 8U;
     const uint32_t n_byte_length = (bit_length + 7U) / 8U;
 
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
 
-    /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_POINTMULT_WACPU_SIZE,
-                                                  MCUXCLECC_POINTMULT_WAPKC_SIZE(p_byte_length, n_byte_length));
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_POINTMULT_WACPU_SIZE,
+                                    MCUXCLECC_POINTMULT_WAPKC_SIZE(p_byte_length, n_byte_length));
 
     /* Default domain paramameters initialization */
     mcuxClEcc_DomainParam_t domain_params =
@@ -545,29 +475,32 @@ static bool ecdh_using_point_mult(uint32_t bit_length,
                                           .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
         default:
-            return_status = false;
-            break;
+            return STATUS_ERROR_GENERIC;
     }
 
-    bool client_result = ecdh_client(bit_length, domain_params, session, client_sk, server_pk, shared_secret_kat,
-                                     shared_secret_kat_size);
-    bool server_result = ecdh_server(bit_length, domain_params, session, server_sk, client_pk, shared_secret_kat,
-                                     shared_secret_kat_size);
+    /* Default point multiplication paramameters initialization */
+    mcuxClEcc_PointMult_Param_t pointmult_params = (mcuxClEcc_PointMult_Param_t){
+        .curveParam = domain_params, .pScalar = sk, .pPoint = pk, .pResult = shared_secret, .optLen = 0U};
 
-    if (!client_result || !server_result)
+    /* Execute point multiplication operation */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEcc_PointMult(session, &pointmult_params));
+    if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Clean session                                                          */
-    /**************************************************************************/
+    if (MCUXCLECC_STATUS_OK != result)
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -575,11 +508,39 @@ static bool ecdh_using_point_mult(uint32_t bit_length,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
+}
+
+/*!
+ * @brief Execute ECDH KAT.
+ */
+static status_t ecdh_using_point_mult(uint32_t bit_length,
+                                      uint8_t *client_pk,
+                                      uint8_t *client_sk,
+                                      uint8_t *server_pk,
+                                      uint8_t *server_sk,
+                                      uint8_t *shared_secret_kat,
+                                      uint32_t shared_secret_kat_size)
+{
+    uint8_t shared_secret[132U] = {0U};
+    status_t client_result      = exec_ecdh(bit_length, client_sk, server_pk, shared_secret);
+    if ((client_result != STATUS_SUCCESS) || (!assert_equal(shared_secret, shared_secret_kat, shared_secret_kat_size)))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+
+    (void)memset(shared_secret, 0, sizeof(shared_secret));
+    status_t server_result = exec_ecdh(bit_length, server_sk, client_pk, shared_secret);
+    if ((server_result != STATUS_SUCCESS) || (!assert_equal(shared_secret, shared_secret_kat, shared_secret_kat_size)))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+
+    return STATUS_SUCCESS;
 }
 
 void execute_ecdh_kat(uint64_t options, char name[])
@@ -587,7 +548,7 @@ void execute_ecdh_kat(uint64_t options, char name[])
     /* Execute ECDH 256p */
     if ((bool)(options & FIPS_ECDH256P))
     {
-        if (!ecdh_els())
+        if (ecdh_els() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -595,9 +556,9 @@ void execute_ecdh_kat(uint64_t options, char name[])
     /* Execute ECDH 384p */
     if ((bool)(options & FIPS_ECDH384P))
     {
-        if (!ecdh_using_point_mult(WEIER384_BIT_LENGTH, s_PublicKeyInputWeier384Client, s_PrivateKeyInputWeier384Client,
-                                   s_PublicKeyInputWeier384Server, s_PrivateKeyInputWeier384Server,
-                                   s_SharedSecretKat384, sizeof(s_SharedSecretKat384)))
+        if (ecdh_using_point_mult(WEIER384_BIT_LENGTH, s_PublicKeyInputWeier384Client, s_PrivateKeyInputWeier384Client,
+                                  s_PublicKeyInputWeier384Server, s_PrivateKeyInputWeier384Server, s_SharedSecretKat384,
+                                  sizeof(s_SharedSecretKat384)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -605,9 +566,9 @@ void execute_ecdh_kat(uint64_t options, char name[])
     /* Execute ECDH 521p */
     if ((bool)(options & FIPS_ECDH521P))
     {
-        if (!ecdh_using_point_mult(WEIER521_BIT_LENGTH, s_PublicKeyInputWeier521Client, s_PrivateKeyInputWeier521Client,
-                                   s_PublicKeyInputWeier521Server, s_PrivateKeyInputWeier521Server,
-                                   s_SharedSecretKat521, sizeof(s_SharedSecretKat521)))
+        if (ecdh_using_point_mult(WEIER521_BIT_LENGTH, s_PublicKeyInputWeier521Client, s_PrivateKeyInputWeier521Client,
+                                  s_PublicKeyInputWeier521Server, s_PrivateKeyInputWeier521Server, s_SharedSecretKat521,
+                                  sizeof(s_SharedSecretKat521)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }

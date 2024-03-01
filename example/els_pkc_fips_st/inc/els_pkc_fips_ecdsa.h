@@ -12,8 +12,6 @@
 #include <mcuxClPkc_Types.h>
 #include <mcuxClEcc.h>
 #include <mcuxClEcc_ECDSA_Internal.h>
-#include <mcuxClRandomModes.h>
-#include <mcuxClRandom.h>
 
 /*******************************************************************************
  * Definitions

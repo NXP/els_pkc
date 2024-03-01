@@ -102,9 +102,8 @@ static uint8_t s_DigestELSWeierKeygen[32U] __attribute__((__aligned__(4))) = {
 /*!
  * @brief Execute ECC key generation pairwise consistency test on ELS.
  */
-static bool ecc_weier_key_gen_els(void)
+static status_t ecc_weier_key_gen_els(void)
 {
-    bool return_status      = true;
     uint8_t public_key[64U] = {0U};
 
     const mcuxClEls_KeyProp_t keypair_prop = {.bits = {
@@ -120,7 +119,7 @@ static bool ecc_weier_key_gen_els(void)
 
     if (!(key_index < MCUXCLELS_KEY_SLOTS))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
@@ -128,14 +127,14 @@ static bool ecc_weier_key_gen_els(void)
         mcuxClEls_EccKeyGen_Async(options, (mcuxClEls_KeyIndex_t)0U, key_index, keypair_prop, NULL, public_key));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -147,70 +146,65 @@ static bool ecc_weier_key_gen_els(void)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         result, token,
-        mcuxClEls_EccSign_Async(                      // Perform signature generation.
-            sign_options,                             // Set the prepared configuration.
-            key_index,                                // Set index of private key in keystore.
-            s_DigestELSWeierKeygen, NULL, (size_t)0U, // Pre-hashed data to sign. Note that inputLength parameter is
-                                                      // ignored since pre-hashed data has a fixed length.
-            ecc_signature                             // Output buffer, which the operation will write the signature to.
-            ));
+        mcuxClEls_EccSign_Async(sign_options, key_index, s_DigestELSWeierKeygen, NULL, (size_t)0U, ecc_signature));
+
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     mcuxClEls_EccVerifyOption_t verify_options = {0U};
 
-    (void)memcpy(&ecc_signature_and_public_key[0U], // Prepare the concatenation of signature and public key: First the
-                                                    // signature, ...
-                 &ecc_signature[0U], MCUXCLELS_ECC_SIGNATURE_SIZE);
-    (void)memcpy(&ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE], // ... then the public key.
-                 &public_key[0U], MCUXCLELS_ECC_PUBLICKEY_SIZE);
+    (void)memcpy(&ecc_signature_and_public_key[0U], &ecc_signature[0U], MCUXCLELS_ECC_SIGNATURE_SIZE);
+    (void)memcpy(&ecc_signature_and_public_key[MCUXCLELS_ECC_SIGNATURE_SIZE], &public_key[0U],
+                 MCUXCLELS_ECC_PUBLICKEY_SIZE);
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
                                      mcuxClEls_EccVerify_Async(verify_options, s_DigestELSWeierKeygen, NULL, 0U,
                                                                ecc_signature_and_public_key, ecc_signature_r));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute ECC key generation pairwise consistency test.
  */
-static bool ecc_weier_key_gen(uint32_t bit_length)
+static status_t ecc_weier_key_gen(uint32_t bit_length)
 {
-    bool return_status           = true;
     const uint32_t p_byte_length = (bit_length + 7U) / 8U;
     const uint32_t n_byte_length = (bit_length + 7U) / 8U;
 
-    /**************************************************************************/
-    /* Preparation                                                            */
-    /**************************************************************************/
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_KEYGEN_WACPU_SIZE,
-                                                  MCUXCLECC_KEYGEN_WAPKC_SIZE_512);
-
-    /* Digest to perform ECC sign/verify later on */
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_KEYGEN_WACPU_SIZE, MCUXCLECC_KEYGEN_WAPKC_SIZE_512);
 
     /* Initialize the RNG context, with maximum size */
     uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0U};
@@ -232,7 +226,7 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     /* Default domain paramameters initialization */
@@ -260,8 +254,7 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
                                           .misc = mcuxClEcc_DomainParam_misc_Pack(n_byte_length, p_byte_length)};
             break;
         default:
-            return_status = false;
-            break;
+            return STATUS_ERROR_GENERIC;
     }
 
     uint8_t private_key[66U]           = {0U};
@@ -273,7 +266,7 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClEcc_KeyGen(session, &key_param));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_KeyGen) != token_enc) || (MCUXCLECC_STATUS_OK != result_enc))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -294,12 +287,12 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(session, &sign_parameters));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Sign) != sign_token))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     if (MCUXCLECC_STATUS_OK != sign_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -320,12 +313,12 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
 
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointMult) != token_ecc_point_mult)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     if (MCUXCLECC_STATUS_OK != ret_ecc_point_mult)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -344,7 +337,7 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ret_ecc_verify, token_ecc_verify, mcuxClEcc_Verify(session, &param_verify));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Verify) != token_ecc_verify) || (MCUXCLECC_STATUS_OK != ret_ecc_verify))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -353,7 +346,7 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -361,11 +354,11 @@ static bool ecc_weier_key_gen(uint32_t bit_length)
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_ecc_keygen_pct(uint64_t options, char name[])
@@ -373,7 +366,7 @@ void execute_ecc_keygen_pct(uint64_t options, char name[])
     /* Execute ECC keygen on 256p curve */
     if ((bool)(options & FIPS_ECC_KEYGEN_256P))
     {
-        if (!ecc_weier_key_gen_els())
+        if (ecc_weier_key_gen_els() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s PCT FAILED\r\n", name);
         }
@@ -381,7 +374,7 @@ void execute_ecc_keygen_pct(uint64_t options, char name[])
     /* Execute ECC keygen on 384p curve */
     if ((bool)(options & FIPS_ECC_KEYGEN_384P))
     {
-        if (!ecc_weier_key_gen(WEIER384_BIT_LENGTH))
+        if (ecc_weier_key_gen(WEIER384_BIT_LENGTH) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s PCT FAILED\r\n", name);
         }
@@ -389,7 +382,7 @@ void execute_ecc_keygen_pct(uint64_t options, char name[])
     /* Execute ECC keygen on 521p curve */
     if ((bool)(options & FIPS_ECC_KEYGEN_521P))
     {
-        if (!ecc_weier_key_gen(WEIER521_BIT_LENGTH))
+        if (ecc_weier_key_gen(WEIER521_BIT_LENGTH) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s PCT FAILED\r\n", name);
         }

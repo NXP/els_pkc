@@ -343,29 +343,28 @@ static uint8_t s_Message[16U] __attribute__((__aligned__(4))) = {
 /*!
  * @brief Execute RSA PKCSV1.5 sign.
  */
-static bool rsa_pkc_v15_sign(uint8_t *modulus,
-                             uint32_t modulus_size,
-                             uint8_t *message,
-                             uint32_t message_size,
-                             uint8_t *private_exponent,
-                             uint32_t private_exponent_size,
-                             uint8_t *signature_kat,
-                             uint32_t signature_kat_size)
+static status_t rsa_pkc_v15_sign(uint8_t *modulus,
+                                 uint32_t modulus_size,
+                                 uint8_t *message,
+                                 uint32_t message_size,
+                                 uint8_t *private_exponent,
+                                 uint32_t private_exponent_size,
+                                 uint8_t *signature_kat,
+                                 uint32_t signature_kat_size)
 {
-    bool return_status = true;
     /* Create session handle to be used by mcuxClRsa_sign */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
 
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_4096_WACPU_SIZE,
-                                                  MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE);
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PKCS1V15ENCODE_4096_WACPU_SIZE,
+                                    MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE);
 
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -386,9 +385,6 @@ static bool rsa_pkc_v15_sign(uint8_t *modulus,
                                        .pExp2   = NULL,
                                        .pExp3   = NULL};
 
-    /**************************************************************************/
-    /* RSA signature generation call                                          */
-    /**************************************************************************/
     uint8_t signature_buffer[512U] = {0U};
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         sign_result, sign_token,
@@ -397,24 +393,21 @@ static bool rsa_pkc_v15_sign(uint8_t *modulus,
                        MCUXCLRSA_OPTION_MESSAGE_PLAIN, signature_buffer));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(signature_buffer, signature_kat, signature_kat_size))
+    if (!assert_equal(signature_buffer, signature_kat, signature_kat_size))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Session clean-up                                                       */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -422,37 +415,37 @@ static bool rsa_pkc_v15_sign(uint8_t *modulus,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute RSA PKCSV1.5 verify.
  */
-static bool rsa_pkc_v15_verify(uint8_t *modulus,
-                               uint32_t modulus_size,
-                               uint8_t *message,
-                               uint32_t message_size,
-                               uint8_t *public_exponent,
-                               uint32_t public_exponent_size,
-                               uint8_t *signature_kat)
+static status_t rsa_pkc_v15_verify(uint8_t *modulus,
+                                   uint32_t modulus_size,
+                                   uint8_t *message,
+                                   uint32_t message_size,
+                                   uint8_t *public_exponent,
+                                   uint32_t public_exponent_size,
+                                   uint8_t *signature_kat)
 {
-    bool return_status = true;
     /* Create session handle to be used by verify */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_VERIFY_PKCS1V15VERIFY_WACPU_SIZE,
-                                                  MCUXCLRSA_VERIFY_4096_WAPKC_SIZE);
+
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_VERIFY_PKCS1V15VERIFY_WACPU_SIZE,
+                                    MCUXCLRSA_VERIFY_4096_WAPKC_SIZE);
 
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -470,9 +463,6 @@ static bool rsa_pkc_v15_verify(uint8_t *modulus,
                                 .pExp2   = NULL,
                                 .pExp3   = NULL};
 
-    /**************************************************************************/
-    /* RSA signature verification call                                        */
-    /**************************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(
         verify_result, verify_token,
         mcuxClRsa_verify(session, &public_key, message, message_size, (uint8_t *)signature_kat,
@@ -480,19 +470,16 @@ static bool rsa_pkc_v15_verify(uint8_t *modulus,
                          MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token || MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Session clean-up                                                       */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -500,38 +487,38 @@ static bool rsa_pkc_v15_verify(uint8_t *modulus,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute RSA PSS sign.
  */
-static bool rsa_pss_sign(uint8_t *modulus,
-                         uint32_t modulus_size,
-                         uint8_t *message,
-                         uint32_t message_size,
-                         uint8_t *private_exponent,
-                         uint32_t private_exponent_size,
-                         uint8_t *signature_kat,
-                         uint32_t signature_kat_size)
+static status_t rsa_pss_sign(uint8_t *modulus,
+                             uint32_t modulus_size,
+                             uint8_t *message,
+                             uint32_t message_size,
+                             uint8_t *private_exponent,
+                             uint32_t private_exponent_size,
+                             uint8_t *signature_kat,
+                             uint32_t signature_kat_size)
 {
-    bool return_status = true;
     /* Create session handle to be used by mcuxClRsa_sign */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE,
-                                                  MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE);
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE,
+                                    MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE);
+
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -552,9 +539,6 @@ static bool rsa_pss_sign(uint8_t *modulus,
                                        .pExp2   = NULL,
                                        .pExp3   = NULL};
 
-    /**************************************************************************/
-    /* RSA signature generation call                                          */
-    /**************************************************************************/
     uint8_t signature[512U] = {0U};
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token,
                                      mcuxClRsa_sign(session, &private_key, message, message_size,
@@ -562,24 +546,21 @@ static bool rsa_pss_sign(uint8_t *modulus,
                                                     MCUXCLRSA_OPTION_MESSAGE_PLAIN, signature));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(signature, signature_kat, signature_kat_size))
+    if (!assert_equal(signature, signature_kat, signature_kat_size))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Session clean-up                                                       */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -587,37 +568,36 @@ static bool rsa_pss_sign(uint8_t *modulus,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute RSA PSS verify.
  */
-static bool rsa_pss_verify(uint8_t *modulus,
-                           uint32_t modulus_size,
-                           uint8_t *message,
-                           uint32_t message_size,
-                           uint8_t *public_exponent,
-                           uint32_t public_exponent_size,
-                           uint8_t *signature_kat)
+static status_t rsa_pss_verify(uint8_t *modulus,
+                               uint32_t modulus_size,
+                               uint8_t *message,
+                               uint32_t message_size,
+                               uint8_t *public_exponent,
+                               uint32_t public_exponent_size,
+                               uint8_t *signature_kat)
 {
-    bool return_status = true;
     /* Create session handle to be used by verify */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE,
-                                                  MCUXCLRSA_VERIFY_4096_WAPKC_SIZE);
+
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE, MCUXCLRSA_VERIFY_4096_WAPKC_SIZE);
 
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
         (MCUXCLRANDOM_STATUS_OK != prngInit_result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -636,28 +616,22 @@ static bool rsa_pss_verify(uint8_t *modulus,
                                       .pExp2   = NULL,
                                       .pExp3   = NULL};
 
-    /**************************************************************************/
-    /* RSA signature verification call                                        */
-    /**************************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token,
                                      mcuxClRsa_verify(session, &public_key, message, message_size, signature_kat,
                                                       (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_Pss_Sha2_256,
                                                       0U, MCUXCLRSA_OPTION_MESSAGE_PLAIN, NULL));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token || MCUXCLRSA_STATUS_VERIFY_OK != verify_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Session clean-up                                                       */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -665,11 +639,11 @@ static bool rsa_pss_verify(uint8_t *modulus,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_rsa_kat(uint64_t options, char name[])
@@ -677,14 +651,15 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA PKCS15-2048 KAT */
     if ((bool)(options & FIPS_RSA_PKCS15_2048))
     {
-        if (!rsa_pkc_v15_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                              s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPkcs15SignatureKat2048,
-                              sizeof(s_RsaPkcs15SignatureKat2048)))
+        if (rsa_pkc_v15_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                             s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPkcs15SignatureKat2048,
+                             sizeof(s_RsaPkcs15SignatureKat2048)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pkc_v15_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                                s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat2048))
+        if (rsa_pkc_v15_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
+                               s_RsaPkcs15SignatureKat2048) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -692,14 +667,15 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA PKCS15-3072 KAT */
     if ((bool)(options & FIPS_RSA_PKCS15_3072))
     {
-        if (!rsa_pkc_v15_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                              s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPkcs15SignatureKat3072,
-                              sizeof(s_RsaPkcs15SignatureKat3072)))
+        if (rsa_pkc_v15_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                             s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPkcs15SignatureKat3072,
+                             sizeof(s_RsaPkcs15SignatureKat3072)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pkc_v15_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                                s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat3072))
+        if (rsa_pkc_v15_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
+                               s_RsaPkcs15SignatureKat3072) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -707,14 +683,15 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA PKCS15-4096 KAT */
     if ((bool)(options & FIPS_RSA_PKCS15_4096))
     {
-        if (!rsa_pkc_v15_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                              s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPkcs15SignatureKat4096,
-                              sizeof(s_RsaPkcs15SignatureKat4096)))
+        if (rsa_pkc_v15_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                             s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPkcs15SignatureKat4096,
+                             sizeof(s_RsaPkcs15SignatureKat4096)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pkc_v15_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                                s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat4096))
+        if (rsa_pkc_v15_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
+                               s_RsaPkcs15SignatureKat4096) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -722,14 +699,15 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA PSS-2048 KAT */
     if ((bool)(options & FIPS_RSA_PSS_2048))
     {
-        if (!rsa_pss_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                          s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPssSignatureKat2048,
-                          sizeof(s_RsaPssSignatureKat2048)))
+        if (rsa_pss_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                         s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPssSignatureKat2048,
+                         sizeof(s_RsaPssSignatureKat2048)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pss_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat2048))
+        if (rsa_pss_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                           s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
+                           s_RsaPssSignatureKat2048) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -737,14 +715,15 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA PSS-3072 KAT */
     if ((bool)(options & FIPS_RSA_PSS_3072))
     {
-        if (!rsa_pss_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                          s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPssSignatureKat3072,
-                          sizeof(s_RsaPssSignatureKat3072)))
+        if (rsa_pss_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                         s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPssSignatureKat3072,
+                         sizeof(s_RsaPssSignatureKat3072)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pss_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat3072))
+        if (rsa_pss_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                           s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
+                           s_RsaPssSignatureKat3072) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }
@@ -752,14 +731,15 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA RSA PSS-4096 KAT */
     if ((bool)(options & FIPS_RSA_PSS_4096))
     {
-        if (!rsa_pss_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                          s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPssSignatureKat4096,
-                          sizeof(s_RsaPssSignatureKat4096)))
+        if (rsa_pss_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                         s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPssSignatureKat4096,
+                         sizeof(s_RsaPssSignatureKat4096)) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
         }
-        if (!rsa_pss_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat4096))
+        if (rsa_pss_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                           s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
+                           s_RsaPssSignatureKat4096) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
         }

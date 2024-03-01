@@ -25,7 +25,7 @@
 typedef struct
 {
     uint64_t option;
-    char name[50U];
+    char name[25U];
     void (*executionFunction)(uint64_t options, char name[]);
 } AlgorithmMapping;
 

@@ -50,27 +50,27 @@ static uint8_t s_MacKatSha512[64U] = {
 /*!
  * @brief Execute SHA hash algorithm.
  */
-static bool sha2(const uint8_t *msg,
-                 const uint32_t msg_size,
-                 const uint8_t *input_md,
-                 const uint32_t md_size,
-                 mcuxClHash_Algo_t sha_algorithm)
+static status_t sha2(const uint8_t *msg,
+                     const uint32_t msg_size,
+                     const uint8_t *input_md,
+                     const uint32_t md_size,
+                     mcuxClHash_Algo_t sha_algorithm)
 {
-    bool return_status = true;
     /* Initialize session */
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
 
-    /* Allocate and initialize session */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(
-        session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE + MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0U);
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLHASH_MAX_CPU_WA_BUFFER_SIZE, 0U);
 
     /* Initialize the PRNG */
-    MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInit_token) ||
+        (MCUXCLRANDOM_STATUS_OK != prngInit_result))
+    {
+        return STATUS_ERROR_GENERIC;
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /**************************************************************************/
-    /* Hash computation                                                       */
-    /**************************************************************************/
     uint32_t hash_output_size = 0U;
     uint8_t output_md[64U]    = {0U};
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token2,
@@ -83,24 +83,21 @@ static bool sha2(const uint8_t *msg,
                                          /* uint32_t *const pOutSize,       */ &hash_output_size));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_compute) != token2) || (MCUXCLHASH_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(input_md, output_md, md_size))
+    if (!assert_equal(input_md, output_md, md_size))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    /**************************************************************************/
-    /* Session clean-up                                                       */
-    /**************************************************************************/
     /* Clean-up and destroy the session. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sessionCleanup_result, sessionCleanup_token, mcuxClSession_cleanup(session));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != sessionCleanup_token ||
         MCUXCLSESSION_STATUS_OK != sessionCleanup_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -108,11 +105,11 @@ static bool sha2(const uint8_t *msg,
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_destroy) != sessionDestroy_token ||
         MCUXCLSESSION_STATUS_OK != sessionDestroy_result)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_sha_kat(uint64_t options, char name[])
@@ -120,8 +117,8 @@ void execute_sha_kat(uint64_t options, char name[])
     /* Execute SHA224 KAT */
     if ((bool)(options & FIPS_SHA224))
     {
-        if (!sha2(s_MsgSha224, sizeof(s_MsgSha224), s_MacKatSha224, sizeof(s_MacKatSha224),
-                  mcuxClHash_Algorithm_Sha224))
+        if (sha2(s_MsgSha224, sizeof(s_MsgSha224), s_MacKatSha224, sizeof(s_MacKatSha224),
+                 mcuxClHash_Algorithm_Sha224) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -129,8 +126,8 @@ void execute_sha_kat(uint64_t options, char name[])
     /* Execute SHA256 KAT */
     if ((bool)(options & FIPS_SHA256))
     {
-        if (!sha2(s_MsgSha256, sizeof(s_MsgSha256), s_MacKatSha256, sizeof(s_MacKatSha256),
-                  mcuxClHash_Algorithm_Sha256))
+        if (sha2(s_MsgSha256, sizeof(s_MsgSha256), s_MacKatSha256, sizeof(s_MacKatSha256),
+                 mcuxClHash_Algorithm_Sha256) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -138,8 +135,8 @@ void execute_sha_kat(uint64_t options, char name[])
     /* Execute SHA384 KAT */
     if ((bool)(options & FIPS_SHA384))
     {
-        if (!sha2(s_MsgSha384, sizeof(s_MsgSha384), s_MacKatSha384, sizeof(s_MacKatSha384),
-                  mcuxClHash_Algorithm_Sha384))
+        if (sha2(s_MsgSha384, sizeof(s_MsgSha384), s_MacKatSha384, sizeof(s_MacKatSha384),
+                 mcuxClHash_Algorithm_Sha384) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -147,8 +144,8 @@ void execute_sha_kat(uint64_t options, char name[])
     /* Execute SHA512 KAT */
     if ((bool)(options & FIPS_SHA512))
     {
-        if (!sha2(s_MsgSha512, sizeof(s_MsgSha512), s_MacKatSha512, sizeof(s_MacKatSha512),
-                  mcuxClHash_Algorithm_Sha512))
+        if (sha2(s_MsgSha512, sizeof(s_MsgSha512), s_MacKatSha512, sizeof(s_MacKatSha512),
+                 mcuxClHash_Algorithm_Sha512) != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }

@@ -29,6 +29,7 @@ static uint8_t s_DataKeyECBDrbg[32U] = {0x08U, 0x4BU, 0x35U, 0x2FU, 0x38U, 0xABU
 
 static uint8_t s_OutputKATECBDrbg[16U] = {0x28U, 0x9FU, 0x1EU, 0x7AU, 0x01U, 0x0CU, 0x84U, 0x71U,
                                           0xEBU, 0xEEU, 0x52U, 0xDFU, 0xAAU, 0x17U, 0xFEU, 0x03U};
+
 /* CTR-DRBG variables */
 static uint8_t s_EntropyCTRDrbg[32U] = {0x8CU, 0x25U, 0x66U, 0xACU, 0x86U, 0x0FU, 0x23U, 0x2FU, 0xA3U, 0x17U, 0x08U,
                                         0x7FU, 0x84U, 0xF0U, 0x17U, 0x6FU, 0x98U, 0xF5U, 0x7EU, 0xC0U, 0x87U, 0xAEU,
@@ -49,30 +50,28 @@ static uint8_t s_OutputKATCTRDrbg[16U] = {0x81U, 0x6DU, 0xE2U, 0x59U, 0xAFU, 0xF
 /*!
  * @brief Execute ECB_DRBG.
  */
-static bool drbg_aes_ecb(void)
+static status_t drbg_aes_ecb(void)
 {
-    bool return_status = true;
-
     /* Instantiate DRBG with the entropy above */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Rng_DrbgTestInstantiate_Async(s_EntropyECBDrbg));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgTestInstantiate_Async) != token) ||
         (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -84,46 +83,44 @@ static bool drbg_aes_ecb(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgTestAesEcb_Async) != token) ||
         (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Compare results */
-    if (!mcuxClCore_assertEqual(ecb_output, s_OutputKATECBDrbg, sizeof(ecb_output)))
+    if (!assert_equal(ecb_output, s_OutputKATECBDrbg, sizeof(ecb_output)))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute CTR_DRBG.
  */
-static bool drbg_aes_ctr(void)
+static status_t drbg_aes_ctr(void)
 {
-    bool return_status = true;
-
     /* Instantiate DRBG with the entropy above */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Rng_DrbgTestInstantiate_Async(s_EntropyCTRDrbg));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgTestInstantiate_Async) != token) ||
         (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -137,24 +134,24 @@ static bool drbg_aes_ctr(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgTestAesCtr_Async) != token) ||
         (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Compare results */
-    if (!mcuxClCore_assertEqual(ctr_output, s_OutputKATCTRDrbg, sizeof(ctr_output)))
+    if (!assert_equal(ctr_output, s_OutputKATCTRDrbg, sizeof(ctr_output)))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_drbg_kat(uint64_t options, char name[])
@@ -162,7 +159,7 @@ void execute_drbg_kat(uint64_t options, char name[])
     /* Execute ECB_DRBG */
     if ((bool)(options & FIPS_ECB_DRBG))
     {
-        if (!drbg_aes_ecb())
+        if (drbg_aes_ecb() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
@@ -170,7 +167,7 @@ void execute_drbg_kat(uint64_t options, char name[])
     /* Execute CTR_DRBG */
     if ((bool)(options & FIPS_CTR_DRBG))
     {
-        if (!drbg_aes_ctr())
+        if (drbg_aes_ctr() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }

@@ -77,10 +77,8 @@ static uint8_t s_DerivedKeyKatHkdfSp80056c[32U] = {
 /*!
  * @brief Execute Ckdf SP800-108.
  */
-static bool ckdf_sp800108(void)
+static status_t ckdf_sp800108(void)
 {
-    bool return_status = true;
-
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
 
     uint8_t aes256_kat_output[16U] = {0U};
@@ -99,28 +97,29 @@ static bool ckdf_sp800108(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Import plain key into ELS keystore */
     if (import_plain_key_into_els(s_PlainKeyCkdfSp800108, sizeof(s_PlainKeyCkdfSp800108),
-                                  s_PlainKeyPropertiesCkdfSp800108, &key_index) != (int32_t)STATUS_SUCCESS)
+                                  s_PlainKeyPropertiesCkdfSp800108, &key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     uint32_t key_index_derived = els_get_free_keyslot(2U);
-    if (els_delete_key(key_index_derived) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index_derived) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     /* Execute CKDF with ELS */
@@ -131,18 +130,20 @@ static bool ckdf_sp800108(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Ckdf_Sp800108_Async) != tokenAsync) ||
         (MCUXCLELS_STATUS_OK_WAIT != resultCkdf))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultWait, tokenWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != tokenWait)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
     if (MCUXCLELS_STATUS_OK != resultWait)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -162,53 +163,59 @@ static bool ckdf_sp800108(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index_derived);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index_derived);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(aes256_kat_output, aes256_output, 16U))
+    if (!assert_equal(aes256_kat_output, aes256_output, 16U))
     {
-        return_status = false;
+        (void)els_delete_key(key_index_derived);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
-    if (els_delete_key(key_index_derived) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index_derived) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
-    if (els_delete_key(key_index) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute Hkdf rfc5869.
  */
-static bool hkdf_rfc5869(void)
+static status_t hkdf_rfc5869(void)
 {
-    bool return_status = true;
-
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
 
     /* Import plain key into ELS keystore */
     if (import_plain_key_into_els(s_PlainKeyHkdfRfc5869, sizeof(s_PlainKeyHkdfRfc5869), s_PlainKeyPropertiesHkdf,
-                                  &key_index) != (int32_t)STATUS_SUCCESS)
+                                  &key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     uint32_t key_index_derived = els_get_free_keyslot(2U);
-    if (els_delete_key(key_index_derived) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index_derived) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
     mcuxClEls_HkdfOption_t options;
@@ -222,17 +229,20 @@ static bool hkdf_rfc5869(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hkdf_Rfc5869_Async) != tokenAsync) ||
         (MCUXCLELS_STATUS_OK_WAIT != resultCkdf))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultWait, tokenWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != tokenWait)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     if (MCUXCLELS_STATUS_OK != resultWait)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -252,49 +262,54 @@ static bool hkdf_rfc5869(void)
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index_derived);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
     {
-        return_status = false;
+        (void)els_delete_key(key_index_derived);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(s_AES256KATOutputHkdfRfc5869, aes256_output, 16U))
+    if (!assert_equal(s_AES256KATOutputHkdfRfc5869, aes256_output, 16U))
     {
-        return_status = false;
+        (void)els_delete_key(key_index_derived);
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
-    if (els_delete_key(key_index_derived) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index_derived) != STATUS_SUCCESS)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
-    if (els_delete_key(key_index) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 /*!
  * @brief Execute Hkdf SP800-56C.
  */
-static bool hkdf_sp80056c(void)
+static status_t hkdf_sp80056c(void)
 {
-    bool return_status = true;
-
     mcuxClEls_KeyIndex_t key_index = MCUXCLELS_KEY_SLOTS;
 
     uint8_t derived_key[32U] = {0U};
 
     /* Import plain key into ELS keystore */
     if (import_plain_key_into_els(s_PlainKeyHkdfSp80056c, sizeof(s_PlainKeyHkdfSp80056c), s_PlainKeyPropertiesHkdf,
-                                  &key_index) != (int32_t)STATUS_SUCCESS)
+                                  &key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
 
     /* Execute HKDF operation */
@@ -304,51 +319,55 @@ static bool hkdf_sp80056c(void)
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hkdf_Sp80056c_Async) != tokenAsync) ||
         (MCUXCLELS_STATUS_OK_WAIT != resultCkdf))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultWait, tokenWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != tokenWait)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     if (MCUXCLELS_STATUS_OK != resultWait)
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    if (!mcuxClCore_assertEqual(s_DerivedKeyKatHkdfSp80056c, derived_key, 32U))
+    if (!assert_equal(s_DerivedKeyKatHkdfSp80056c, derived_key, 32U))
     {
-        return_status = false;
+        (void)els_delete_key(key_index);
+        return STATUS_ERROR_GENERIC;
     }
 
-    if (els_delete_key(key_index) != (int32_t)STATUS_SUCCESS)
+    if (els_delete_key(key_index) != STATUS_SUCCESS)
     {
-        return_status = false;
+        return STATUS_ERROR_GENERIC;
     }
-    return return_status;
+    return STATUS_SUCCESS;
 }
 
 void execute_kdf_kat(uint64_t options, char name[])
 {
     if ((bool)(options & FIPS_CKDF_SP800108))
     {
-        if (!ckdf_sp800108())
+        if (ckdf_sp800108() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
     if ((bool)(options & FIPS_HKDF_RFC5869))
     {
-        if (!hkdf_rfc5869())
+        if (hkdf_rfc5869() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
     }
     if ((bool)(options & FIPS_HKDF_SP80056C))
     {
-        if (!hkdf_sp80056c())
+        if (hkdf_sp80056c() != STATUS_SUCCESS)
         {
             PRINTF("[ERROR] %s KAT FAILED\r\n", name);
         }
