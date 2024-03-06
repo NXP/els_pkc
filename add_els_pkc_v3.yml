@@ -119,6 +119,43 @@ component.els_pkc.doc.rw61x:
     - device:
       - RW610
       - RW612
+component.els_pkc.doc.mimxrt:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc/
+    project_base_path: component/els_pkc/
+    cc-include:
+    - repo_relative_path: "./"
+    files:
+    - source: LICENSE.htm
+      hidden: true
+      exclude: true
+    - source: softwareContentRegister.txt
+      hidden: true
+      exclude: true
+    - source: ReleaseNotes.txt
+      hidden: true
+      exclude: true
+    - source: doc/mimxrt/**
+      hidden: true
+      exclude: true
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc.doc.mimxrt
+    description: Component els_pkc.doc.mimxrt
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: doc
+      csub: doc_mimxrt
+    display_name: els_pkc.doc.mimxrt
+  dependency:
+    allOf:
+    - device:
+      - MIMXRT798S
 component.els_pkc.static_lib.mcxn:
   section-type: component
   contents:
@@ -241,6 +278,43 @@ component.els_pkc.static_lib.lpc:
     allOf:
     - device:
       - LPC55S36
+component.els_pkc.static_lib.mimxrt:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    files:
+    - source: static_library/mimxrt/libclns.a
+      hidden: true
+      exclude: true
+    - source: static_library/mimxrt/libclns.a.libsize
+      hidden: true
+      exclude: true
+    - source: static_library/mimxrt/libclns.a.objsize
+      hidden: true
+      exclude: true
+    - source: static_library/mimxrt/libclns.stripped.a
+      hidden: true
+      exclude: true
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc static_lib for MIMXRT
+    description: Component els_pkc static_lib MIMXRT
+    user_visible: always
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: static_lib_mimxrt
+    display_name: els_pkc static_lib MIMXRT
+  dependency:
+    allOf:
+    - device:
+      - MIMXRT798S
 component.els_pkc.common:
   section-type: component
   contents:
@@ -1384,7 +1458,37 @@ component.els_pkc.memory:
     - component.els_pkc.secure_counter
     - component.els_pkc.pre_processor
     - component.els_pkc.toolchain
-
+component.els_pkc.oscca:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc.mac_modes
+    description: Component els_pkc.mac_modes
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_mac_modes
+    display_name: els_pkc.mac_modes
+  dependency:
+    allOf:
+    - component.els_pkc.oscca_aeadmodes
+    - component.els_pkc.oscca_ciphermodes
+    - component.els_pkc.oscca_macmodes
+    - component.els_pkc.oscca_randommodes
+    - component.els_pkc.oscca_sm2
+    - component.els_pkc.oscca_sm3
+    - component.els_pkc.oscca_sm4
+    - component.els_pkc.oscca_pkc
+    - component.els_pkc.oscca_safo
+    - component.els_pkc.signature
+    - component.els_pkc.crc
 component.els_pkc.oscca_aeadmodes:
   section-type: component
   contents:
@@ -1672,6 +1776,7 @@ component.els_pkc.oscca_sm2:
   dependency:
     allOf:
     - component.els_pkc.common
+    - component.els_pkc.signature
 component.els_pkc.oscca_sm3:
   section-type: component
   contents:
@@ -2107,7 +2212,7 @@ component.els_pkc.rsa_oaep:
     display_name: els_pkc.rsa_oaep
   dependency:
     allOf:
-    - component.els_pkc.rsa_oaep
+    - component.els_pkc.rsa
 component.els_pkc.rsa:
   section-type: component
   contents:
@@ -2196,6 +2301,7 @@ component.els_pkc.rsa:
     - component.els_pkc.pkc
     - component.els_pkc.toolchain
     - component.els_pkc.buffer
+    - component.els_pkc.rsa_oaep
 component.els_pkc.session:
   section-type: component
   contents:
@@ -2556,6 +2662,13 @@ component.els_pkc:
           - device:
              - RW610
              - RW612
+        - allOf:
+          - component.els_pkc.platform.mimxrt
+          - component.els_pkc.doc.mimxrt
+          - component.els_pkc.static_lib.mimxrt
+          - component.els_pkc.oscca
+          - device:
+             - MIMXRT798S         
 component.els_pkc.toolchain:
   section-type: component
   contents:
@@ -2774,6 +2887,46 @@ component.els_pkc.platform.lpc:
     - component.els_pkc
     - component.els_pkc.standalone_gdet
     # - component.els_pkc.trng.type_els
+component.els_pkc.platform.mimxrt:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/mimxrt
+    - repo_relative_path: src/platforms/mimxrt/inc
+    files:
+    - source: src/platforms/mimxrt/platform_specific_headers.h
+    - source: src/platforms/mimxrt/mcuxClConfig.h
+    - source: src/platforms/mimxrt/inc/ip_css_constants.h
+    - source: src/platforms/mimxrt/inc/ip_css_design_configuration.h
+    - source: src/platforms/mimxrt/inc/ip_platform.h
+    - source: src/platforms/mimxrt/mcux_els.c
+    - source: src/platforms/mimxrt/mcux_els.h
+    - source: src/platforms/mimxrt/mcux_pkc.c
+    - source: src/platforms/mimxrt/mcux_pkc.h
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_mimxrt
+    description: Component els_pkc_mimxrt
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_platform
+      csub: mimxrt
+    display_name: els_pkc_mimxrt
+  dependency:
+    allOf:
+    - device:
+      - MIMXRT798S
+    - component.els_pkc
+    # - component.els_pkc.standalone_gdet
+    - component.els_pkc.glikey
+    - component.els_pkc.trng.type_els
 component.els_pkc.examples:
   section-type: component
   contents:
@@ -3040,6 +3193,7 @@ set.component.els_pkc:
       - MCXN236
       - RW610
       - RW612
+      - MIMXRT798S
 scr.els_pkc:
   section-type: scr
   belong_to:

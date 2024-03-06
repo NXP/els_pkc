@@ -63,8 +63,10 @@
 #define PKC_SFR_SUFFIX_POS      _SHIFT      ///< sfr field name suffix for bit position
 
 // PKC_RAM base address is not defined in any header file
+// Important: this is secure alias of address (bit 23 = 1), for non-secure access use 0x24110000
 #define PKC_RAM_ADDR  ((uint32_t)0x34110000u)
 #define PKC_WORD_SIZE  8u
+#define PKC_RAM_SIZE  ((uint32_t)0x1000u)
 
 // Define base address of TRNG
 #define TRNG_SFR_BASE           TRNG        ///< base of TRNG SFRs
@@ -102,12 +104,16 @@
 // Define SYSCON0 ASSERT PROT Address Register
 #define SYSCON_ASSERT_PROT                 *(volatile uint32_t*) 0x50002B68
 
+/* Important: There are three instance of CDOG IP (CDOG0, CDOG1, CDOG2), we choose CDOG2 here. */
+#define CDOG CDOG2
 
 /* If we are supposed to determine the ELS base address at link time, do not use the definitions from the platform header file
  * Redefine ELS_SFR_BASE as an extern pointer.
  */
 #undef ELS_SFR_BASE
-extern void * ip_css_base;
-#define ELS_SFR_BASE           ((ELS_Type *) ip_css_base)
+/* Important: this is secure alias0 of address (bit 23 = 1), for non-secure or other aliases use one of following:
+ *            ELS_ALIAS1_BASE, ELS_ALIAS2_BASE, ELS_ALIAS3_BASE, ELS_BASE_NS, ELS_ALIAS1_BASE_NS, ELS_ALIAS2_BASE_NS, ELS_ALIAS3_BASE_NS
+ */
+#define ELS_SFR_BASE           ((ELS_Type *) ELS_BASE)
 
 #endif
