@@ -759,38 +759,27 @@ void execute_ecdsa_kat(uint64_t options, char name[])
     /* Execute ECDSA 256p KAT */
     if ((bool)(options & FIPS_ECDSA_256P))
     {
-        if (ecdsa_els() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] NON DET. %s PCT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(ecdsa_els(), name, "PCT");
     }
     /* Execute ECDSA 384p KAT */
     if ((bool)(options & FIPS_ECDSA_384P))
     {
-        if (ecdsa_sign(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier384, s_EcdsaSign384pKat) !=
-            STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (ecdsa_verify(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier384, s_EcdsaSign384pKat) !=
-            STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            ecdsa_sign(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier384, s_EcdsaSign384pKat), name,
+            "SIGN KAT");
+        CHECK_STATUS_AND_LOG(
+            ecdsa_verify(WEIER384_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier384, s_EcdsaSign384pKat),
+            name, "VERIFY KAT");
     }
     /* Execute ECDSA 521p KAT */
     if ((bool)(options & FIPS_ECDSA_521P))
     {
-        if (ecdsa_sign(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier521, s_EcdsaSign521pKat) !=
-            STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (ecdsa_verify(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier521, s_EcdsaSign521pKat) !=
-            STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            ecdsa_sign(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PrivateKeyInputWeier521, s_EcdsaSign521pKat), name,
+            "SIGN KAT");
+        CHECK_STATUS_AND_LOG(
+            ecdsa_verify(WEIER521_BIT_LENGTH, s_MessageDigest64Byte, s_PublicKeyInputWeier521, s_EcdsaSign521pKat),
+            name, "VERIFY KAT");
     }
 }
 
@@ -801,13 +790,7 @@ void execute_eddsa_kat(uint64_t options, char name[])
      */
     if ((bool)(options & FIPS_EDDSA))
     {
-        if (Ed25519_sign() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (Ed25519_verify() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(Ed25519_sign(), name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(Ed25519_verify(), name, "VERIFY KAT");
     }
 }

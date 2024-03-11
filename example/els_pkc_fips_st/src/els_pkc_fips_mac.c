@@ -389,38 +389,30 @@ void execute_hmac_kat(uint64_t options, char name[])
     /* Execute HMAC SHA224 */
     if ((bool)(options & FIPS_HMAC_SHA224))
     {
-        if (hmac_sha(s_KeyHmacSha224, s_MsgHmacSha224, s_MacKatHmacSha224, sizeof(s_MacKatHmacSha224),
-                     mcuxClHash_Algorithm_Sha224) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(hmac_sha(s_KeyHmacSha224, s_MsgHmacSha224, s_MacKatHmacSha224, sizeof(s_MacKatHmacSha224),
+                                      mcuxClHash_Algorithm_Sha224),
+                             name, "KAT");
     }
     /* Execute HMAC SHA256 */
     if ((bool)(options & FIPS_HMAC_SHA256))
     {
-        if (hmac_sha_els(s_KeyHmacSha256, sizeof(s_KeyHmacSha256), s_MsgHmacSha256, sizeof(s_MsgHmacSha256),
-                         s_MacKatHmacSha256) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(hmac_sha_els(s_KeyHmacSha256, sizeof(s_KeyHmacSha256), s_MsgHmacSha256,
+                                          sizeof(s_MsgHmacSha256), s_MacKatHmacSha256),
+                             name, "KAT");
     }
     /* Execute HMAC SHA384 */
     if ((bool)(options & FIPS_HMAC_SHA384))
     {
-        if (hmac_sha(s_KeyHmacSha384, s_MsgHmacSha384, s_MacKatHmacSha384, sizeof(s_MacKatHmacSha384),
-                     mcuxClHash_Algorithm_Sha384) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(hmac_sha(s_KeyHmacSha384, s_MsgHmacSha384, s_MacKatHmacSha384, sizeof(s_MacKatHmacSha384),
+                                      mcuxClHash_Algorithm_Sha384),
+                             name, "KAT");
     }
     /* Execute HMAC SHA512 */
     if ((bool)(options & FIPS_HMAC_SHA512))
     {
-        if (hmac_sha(s_KeyHmacSha512, s_MsgHmacSha512, s_MacKatHmacSha512, sizeof(s_MacKatHmacSha512),
-                     mcuxClHash_Algorithm_Sha512) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(hmac_sha(s_KeyHmacSha512, s_MsgHmacSha512, s_MacKatHmacSha512, sizeof(s_MacKatHmacSha512),
+                                      mcuxClHash_Algorithm_Sha512),
+                             name, "KAT");
     }
 }
 
@@ -431,19 +423,15 @@ void execute_cmac_kat(uint64_t options, char name[])
      */
     if ((bool)(options & FIPS_AES_CMAC_128))
     {
-        if (aes_cmac(mcuxClKey_Type_Aes128, s_KeyCmac128, s_PlaintextCmac128, s_MacKatCmac128,
-                     sizeof(s_MacKatCmac128)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_cmac(mcuxClKey_Type_Aes128, s_KeyCmac128, s_PlaintextCmac128, s_MacKatCmac128, sizeof(s_MacKatCmac128)),
+            name, "KAT");
     }
     /* Execute CMAC-256 */
     if ((bool)(options & FIPS_AES_CMAC_256))
     {
-        if (aes_cmac(mcuxClKey_Type_Aes256, s_KeyCmac256, s_PlaintextCmac256, s_MacKatCmac256,
-                     sizeof(s_MacKatCmac256)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_cmac(mcuxClKey_Type_Aes256, s_KeyCmac256, s_PlaintextCmac256, s_MacKatCmac256, sizeof(s_MacKatCmac256)),
+            name, "KAT");
     }
 }

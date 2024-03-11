@@ -651,97 +651,70 @@ void execute_rsa_kat(uint64_t options, char name[])
     /* Execute RSA PKCS15-2048 KAT */
     if ((bool)(options & FIPS_RSA_PKCS15_2048))
     {
-        if (rsa_pkc_v15_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                             s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPkcs15SignatureKat2048,
-                             sizeof(s_RsaPkcs15SignatureKat2048)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (rsa_pkc_v15_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
-                               s_RsaPkcs15SignatureKat2048) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(rsa_pkc_v15_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                                              s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048),
+                                              s_RsaPkcs15SignatureKat2048, sizeof(s_RsaPkcs15SignatureKat2048)),
+                             name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(
+            rsa_pkc_v15_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat2048),
+            name, "VERIFY KAT");
     }
     /* Execute RSA PKCS15-3072 KAT */
     if ((bool)(options & FIPS_RSA_PKCS15_3072))
     {
-        if (rsa_pkc_v15_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                             s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPkcs15SignatureKat3072,
-                             sizeof(s_RsaPkcs15SignatureKat3072)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (rsa_pkc_v15_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
-                               s_RsaPkcs15SignatureKat3072) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(rsa_pkc_v15_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                                              s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072),
+                                              s_RsaPkcs15SignatureKat3072, sizeof(s_RsaPkcs15SignatureKat3072)),
+                             name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(
+            rsa_pkc_v15_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat3072),
+            name, "VERIFY KAT");
     }
     /* Execute RSA PKCS15-4096 KAT */
     if ((bool)(options & FIPS_RSA_PKCS15_4096))
     {
-        if (rsa_pkc_v15_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                             s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPkcs15SignatureKat4096,
-                             sizeof(s_RsaPkcs15SignatureKat4096)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (rsa_pkc_v15_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
-                               s_RsaPkcs15SignatureKat4096) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(rsa_pkc_v15_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                                              s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096),
+                                              s_RsaPkcs15SignatureKat4096, sizeof(s_RsaPkcs15SignatureKat4096)),
+                             name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(
+            rsa_pkc_v15_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                               s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPkcs15SignatureKat4096),
+            name, "VERIFY KAT");
     }
     /* Execute RSA PSS-2048 KAT */
     if ((bool)(options & FIPS_RSA_PSS_2048))
     {
-        if (rsa_pss_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                         s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048), s_RsaPssSignatureKat2048,
-                         sizeof(s_RsaPssSignatureKat2048)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (rsa_pss_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
-                           s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
-                           s_RsaPssSignatureKat2048) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(rsa_pss_sign(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                                          s_RsaPrivateExponent2048, sizeof(s_RsaPrivateExponent2048),
+                                          s_RsaPssSignatureKat2048, sizeof(s_RsaPssSignatureKat2048)),
+                             name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(rsa_pss_verify(s_RsaModulus2048, sizeof(s_RsaModulus2048), s_Message, sizeof(s_Message),
+                                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat2048),
+                             name, "VERIFY KAT");
     }
     /* Execute RSA PSS-3072 KAT */
     if ((bool)(options & FIPS_RSA_PSS_3072))
     {
-        if (rsa_pss_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                         s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072), s_RsaPssSignatureKat3072,
-                         sizeof(s_RsaPssSignatureKat3072)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (rsa_pss_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
-                           s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
-                           s_RsaPssSignatureKat3072) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(rsa_pss_sign(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                                          s_RsaPrivateExponent3072, sizeof(s_RsaPrivateExponent3072),
+                                          s_RsaPssSignatureKat3072, sizeof(s_RsaPssSignatureKat3072)),
+                             name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(rsa_pss_verify(s_RsaModulus3072, sizeof(s_RsaModulus3072), s_Message, sizeof(s_Message),
+                                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat3072),
+                             name, "VERIFY KAT");
     }
     /* Execute RSA RSA PSS-4096 KAT */
     if ((bool)(options & FIPS_RSA_PSS_4096))
     {
-        if (rsa_pss_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                         s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096), s_RsaPssSignatureKat4096,
-                         sizeof(s_RsaPssSignatureKat4096)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s SIGN KAT FAILED\r\n", name);
-        }
-        if (rsa_pss_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
-                           s_RsaPublicExponent, sizeof(s_RsaPublicExponent),
-                           s_RsaPssSignatureKat4096) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s VERIFY KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(rsa_pss_sign(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                                          s_RsaPrivateExponent4096, sizeof(s_RsaPrivateExponent4096),
+                                          s_RsaPssSignatureKat4096, sizeof(s_RsaPssSignatureKat4096)),
+                             name, "SIGN KAT");
+        CHECK_STATUS_AND_LOG(rsa_pss_verify(s_RsaModulus4096, sizeof(s_RsaModulus4096), s_Message, sizeof(s_Message),
+                                            s_RsaPublicExponent, sizeof(s_RsaPublicExponent), s_RsaPssSignatureKat4096),
+                             name, "VERIFY KAT");
     }
 }

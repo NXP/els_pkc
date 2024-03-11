@@ -318,47 +318,38 @@ void execute_cbc_kat(uint64_t options, char name[])
     /* Execute KAT for CBC-128 */
     if ((bool)(options & FIPS_AES_CBC_128))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_CBC_Enc_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCBC128, sizeof(s_CipherKatCBC128), s_Key128, sizeof(s_Key128), true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_CBC_Dec_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCBC128, sizeof(s_CipherKatCBC128), s_Key128, sizeof(s_Key128),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CBC_Enc_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCBC128, sizeof(s_CipherKatCBC128), s_Key128, sizeof(s_Key128), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CBC_Dec_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCBC128, sizeof(s_CipherKatCBC128), s_Key128, sizeof(s_Key128), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for CBC-192 */
     if ((bool)(options & FIPS_AES_CBC_192))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_CBC_Enc_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCBC192, sizeof(s_CipherKatCBC192), s_Key192, sizeof(s_Key192), true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_CBC_Dec_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCBC192, sizeof(s_CipherKatCBC192), s_Key192, sizeof(s_Key192),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CBC_Enc_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCBC192, sizeof(s_CipherKatCBC192), s_Key192, sizeof(s_Key192), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CBC_Dec_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCBC192, sizeof(s_CipherKatCBC192), s_Key192, sizeof(s_Key192), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for CBC-256 */
     if ((bool)(options & FIPS_AES_CBC_256))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_CBC_Enc_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCBC256, sizeof(s_CipherKatCBC256), s_Key256, sizeof(s_Key256), true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_CBC_Dec_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCBC256, sizeof(s_CipherKatCBC256), s_Key256, sizeof(s_Key256),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CBC_Enc_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCBC256, sizeof(s_CipherKatCBC256), s_Key256, sizeof(s_Key256), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CBC_Dec_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCBC256, sizeof(s_CipherKatCBC256), s_Key256, sizeof(s_Key256), false),
+            name, "DECRYPT KAT");
     }
 }
 
@@ -367,47 +358,38 @@ void execute_ecb_kat(uint64_t options, char name[])
     /* Execute KAT for ECB-128 */
     if ((bool)(options & FIPS_AES_ECB_128))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_ECB_Enc_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatECB128, sizeof(s_CipherKatECB128), s_Key128, sizeof(s_Key128), true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_ECB_Dec_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatECB128, sizeof(s_CipherKatECB128), s_Key128, sizeof(s_Key128),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_ECB_Enc_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatECB128, sizeof(s_CipherKatECB128), s_Key128, sizeof(s_Key128), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_ECB_Dec_NoPadding, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatECB128, sizeof(s_CipherKatECB128), s_Key128, sizeof(s_Key128), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for ECB-192 */
     if ((bool)(options & FIPS_AES_ECB_192))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_ECB_Enc_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatECB192, sizeof(s_CipherKatECB192), s_Key192, sizeof(s_Key192), true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_ECB_Dec_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatECB192, sizeof(s_CipherKatECB192), s_Key192, sizeof(s_Key192),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_ECB_Enc_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatECB192, sizeof(s_CipherKatECB192), s_Key192, sizeof(s_Key192), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_ECB_Dec_NoPadding, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatECB192, sizeof(s_CipherKatECB192), s_Key192, sizeof(s_Key192), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for ECB-256 */
     if ((bool)(options & FIPS_AES_ECB_256))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_ECB_Enc_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatECB256, sizeof(s_CipherKatECB256), s_Key256, sizeof(s_Key256), true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_ECB_Dec_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatECB256, sizeof(s_CipherKatECB256), s_Key256, sizeof(s_Key256),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_ECB_Enc_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatECB256, sizeof(s_CipherKatECB256), s_Key256, sizeof(s_Key256), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_ECB_Dec_NoPadding, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatECB256, sizeof(s_CipherKatECB256), s_Key256, sizeof(s_Key256), false),
+            name, "DECRYPT KAT");
     }
 }
 
@@ -416,50 +398,38 @@ void execute_ctr_kat(uint64_t options, char name[])
     /* Execute KAT for CTR-128 */
     if ((bool)(options & FIPS_AES_CTR_128))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCTR128, sizeof(s_CipherKatCTR128), s_KeyCTR128, sizeof(s_KeyCTR128),
-                      true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCTR128, sizeof(s_CipherKatCTR128), s_KeyCTR128, sizeof(s_KeyCTR128),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCTR128, sizeof(s_CipherKatCTR128), s_KeyCTR128, sizeof(s_KeyCTR128), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCTR128, sizeof(s_CipherKatCTR128), s_KeyCTR128, sizeof(s_KeyCTR128), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for CTR-192 */
     if ((bool)(options & FIPS_AES_CTR_192))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCTR192, sizeof(s_CipherKatCTR192), s_KeyCTR192, sizeof(s_KeyCTR192),
-                      true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCTR192, sizeof(s_CipherKatCTR192), s_KeyCTR192, sizeof(s_KeyCTR192),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCTR192, sizeof(s_CipherKatCTR192), s_KeyCTR192, sizeof(s_KeyCTR192), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCTR192, sizeof(s_CipherKatCTR192), s_KeyCTR192, sizeof(s_KeyCTR192), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for CTR-256 */
     if ((bool)(options & FIPS_AES_CTR_256))
     {
-        if (aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCTR256, sizeof(s_CipherKatCTR256), s_KeyCTR256, sizeof(s_KeyCTR256),
-                      true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                      s_CipherKatCTR256, sizeof(s_CipherKatCTR256), s_KeyCTR256, sizeof(s_KeyCTR256),
-                      false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCTR256, sizeof(s_CipherKatCTR256), s_KeyCTR256, sizeof(s_KeyCTR256), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_crypt(mcuxClCipher_Mode_AES_CTR, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                      s_CipherKatCTR256, sizeof(s_CipherKatCTR256), s_KeyCTR256, sizeof(s_KeyCTR256), false),
+            name, "DECRYPT KAT");
     }
 }
 
@@ -470,34 +440,26 @@ void execute_ccm_kat(uint64_t options, char name[])
      */
     if ((bool)(options & FIPS_AES_CCM_128))
     {
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_CCM_ENC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatCCM128, sizeof(s_CipherKatCCM128), s_Key128, sizeof(s_Key128),
-                           true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_CCM_DEC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatCCM128, sizeof(s_CipherKatCCM128), s_Key128, sizeof(s_Key128),
-                           false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_CCM_ENC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatCCM128, sizeof(s_CipherKatCCM128), s_Key128, sizeof(s_Key128), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_CCM_DEC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatCCM128, sizeof(s_CipherKatCCM128), s_Key128, sizeof(s_Key128), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for CCM-256 */
     if ((bool)(options & FIPS_AES_CCM_256))
     {
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_CCM_ENC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatCCM256, sizeof(s_CipherKatCCM256), s_Key256, sizeof(s_Key256),
-                           true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_CCM_DEC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatCCM256, sizeof(s_CipherKatCCM256), s_Key256, sizeof(s_Key256),
-                           false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_CCM_ENC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatCCM256, sizeof(s_CipherKatCCM256), s_Key256, sizeof(s_Key256), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_CCM_DEC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatCCM256, sizeof(s_CipherKatCCM256), s_Key256, sizeof(s_Key256), false),
+            name, "DECRYPT KAT");
     }
 }
 
@@ -506,49 +468,37 @@ void execute_gcm_kat(uint64_t options, char name[])
     /* Execute KAT for GCM-128 */
     if ((bool)(options & FIPS_AES_GCM_128))
     {
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatGCM128, sizeof(s_CipherKatGCM128), s_Key128, sizeof(s_Key128),
-                           true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_GCM_DEC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatGCM128, sizeof(s_CipherKatGCM128), s_Key128, sizeof(s_Key128),
-                           false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatGCM128, sizeof(s_CipherKatGCM128), s_Key128, sizeof(s_Key128), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_GCM_DEC, mcuxClKey_Type_Aes128, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatGCM128, sizeof(s_CipherKatGCM128), s_Key128, sizeof(s_Key128), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for GCM-192 */
     if ((bool)(options & FIPS_AES_GCM_192))
     {
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatGCM192, sizeof(s_CipherKatGCM192), s_Key192, sizeof(s_Key192),
-                           true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_GCM_DEC, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatGCM192, sizeof(s_CipherKatGCM192), s_Key192, sizeof(s_Key192),
-                           false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatGCM192, sizeof(s_CipherKatGCM192), s_Key192, sizeof(s_Key192), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_GCM_DEC, mcuxClKey_Type_Aes192, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatGCM192, sizeof(s_CipherKatGCM192), s_Key192, sizeof(s_Key192), false),
+            name, "DECRYPT KAT");
     }
     /* Execute KAT for GCM-256 */
     if ((bool)(options & FIPS_AES_GCM_256))
     {
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatGCM256, sizeof(s_CipherKatGCM256), s_Key256, sizeof(s_Key256),
-                           true) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s ENCRYPT KAT FAILED\r\n", name);
-        }
-        if (aes_aead_crypt(mcuxClAead_Mode_AES_GCM_DEC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
-                           s_CipherKatGCM256, sizeof(s_CipherKatGCM256), s_Key256, sizeof(s_Key256),
-                           false) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s DECRYPT KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatGCM256, sizeof(s_CipherKatGCM256), s_Key256, sizeof(s_Key256), true),
+            name, "ENCRYPT KAT");
+        CHECK_STATUS_AND_LOG(
+            aes_aead_crypt(mcuxClAead_Mode_AES_GCM_ENC, mcuxClKey_Type_Aes256, s_PlainText, sizeof(s_PlainText),
+                           s_CipherKatGCM256, sizeof(s_CipherKatGCM256), s_Key256, sizeof(s_Key256), false),
+            name, "DECRYPT KAT");
     }
 }

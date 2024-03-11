@@ -366,25 +366,16 @@ void execute_ecc_keygen_pct(uint64_t options, char name[])
     /* Execute ECC keygen on 256p curve */
     if ((bool)(options & FIPS_ECC_KEYGEN_256P))
     {
-        if (ecc_weier_key_gen_els() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s PCT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(ecc_weier_key_gen_els(), name, "PCT");
     }
     /* Execute ECC keygen on 384p curve */
     if ((bool)(options & FIPS_ECC_KEYGEN_384P))
     {
-        if (ecc_weier_key_gen(WEIER384_BIT_LENGTH) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s PCT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(ecc_weier_key_gen(WEIER384_BIT_LENGTH), name, "PCT");
     }
     /* Execute ECC keygen on 521p curve */
     if ((bool)(options & FIPS_ECC_KEYGEN_521P))
     {
-        if (ecc_weier_key_gen(WEIER521_BIT_LENGTH) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s PCT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(ecc_weier_key_gen(WEIER521_BIT_LENGTH), name, "PCT");
     }
 }

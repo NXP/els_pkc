@@ -126,21 +126,9 @@
 #define MAX_ELS_KEY_SIZE       32U
 #define ELS_WRAP_OVERHEAD      8U
 
-/* Defines for logging */
-#define CHECK_MBEDTLS_SUCCESS()        \
-    if (0 != ret)                      \
-    {                                  \
-        status = STATUS_ERROR_GENERIC; \
-    }
+#define FUNCTION_NAME_MAX_SIZE 50U
 
-#define PRINT_ARRAY(array, array_size)                                                           \
-    PRINTF("0x");                                                                                \
-    for (uint64_t print_array_index = 0U; print_array_index < (array_size); ++print_array_index) \
-    {                                                                                            \
-        PRINTF("%02X", (array[print_array_index]));                                              \
-    }                                                                                            \
-    PRINTF("\r\n");
-
+/* Allocate els_pkc session */
 #define ALLOCATE_AND_INITIALIZE_SESSION(session, cpu_wa_length, pkc_wa_length)                                 \
     uint32_t cpu_wa_buffer[(cpu_wa_length)];                                                                   \
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                          \
@@ -156,6 +144,38 @@
         return STATUS_ERROR_GENERIC;                                                                           \
     }                                                                                                          \
     MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+/* Defines for logging */
+#define CHECK_MBEDTLS_SUCCESS()        \
+    if (0 != ret)                      \
+    {                                  \
+        status = STATUS_ERROR_GENERIC; \
+    }
+
+#define PRINT_ARRAY(array, array_size)                                                           \
+    PRINTF("0x");                                                                                \
+    for (uint64_t print_array_index = 0U; print_array_index < (array_size); ++print_array_index) \
+    {                                                                                            \
+        PRINTF("%02X", (array[print_array_index]));                                              \
+    }                                                                                            \
+    PRINTF("\r\n");
+
+#define CHECK_STATUS_AND_LOG(code, function_name, test_type)                          \
+    if (strlen((function_name)) + strlen((test_type)) + 3U <= FUNCTION_NAME_MAX_SIZE) \
+    {                                                                                 \
+        if ((code) != STATUS_SUCCESS)                                                 \
+        {                                                                             \
+            char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                   \
+            (void)strcpy(tmp, (function_name));                                       \
+            PRINTF("  - [ERROR] %s FAIL\r\n", strcat(strcat(tmp, " "), (test_type))); \
+        }                                                                             \
+        else                                                                          \
+        {                                                                             \
+            char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                   \
+            (void)strcpy(tmp, (function_name));                                       \
+            PRINTF("  - %s SUCCESS\r\n", strcat(strcat(tmp, " "), (test_type)));      \
+        }                                                                             \
+    }
 
 /*!
  * @brief Import plain key into els keystore.

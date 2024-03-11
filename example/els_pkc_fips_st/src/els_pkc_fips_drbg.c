@@ -159,17 +159,11 @@ void execute_drbg_kat(uint64_t options, char name[])
     /* Execute ECB_DRBG */
     if ((bool)(options & FIPS_ECB_DRBG))
     {
-        if (drbg_aes_ecb() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(drbg_aes_ecb(), name, "KAT");
     }
     /* Execute CTR_DRBG */
     if ((bool)(options & FIPS_CTR_DRBG))
     {
-        if (drbg_aes_ctr() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(drbg_aes_ctr(), name, "KAT");
     }
 }

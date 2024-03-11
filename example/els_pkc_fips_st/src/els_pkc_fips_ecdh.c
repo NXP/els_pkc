@@ -548,29 +548,24 @@ void execute_ecdh_kat(uint64_t options, char name[])
     /* Execute ECDH 256p */
     if ((bool)(options & FIPS_ECDH256P))
     {
-        if (ecdh_els() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(ecdh_els(), name, "KAT");
     }
     /* Execute ECDH 384p */
     if ((bool)(options & FIPS_ECDH384P))
     {
-        if (ecdh_using_point_mult(WEIER384_BIT_LENGTH, s_PublicKeyInputWeier384Client, s_PrivateKeyInputWeier384Client,
+        CHECK_STATUS_AND_LOG(
+            ecdh_using_point_mult(WEIER384_BIT_LENGTH, s_PublicKeyInputWeier384Client, s_PrivateKeyInputWeier384Client,
                                   s_PublicKeyInputWeier384Server, s_PrivateKeyInputWeier384Server, s_SharedSecretKat384,
-                                  sizeof(s_SharedSecretKat384)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+                                  sizeof(s_SharedSecretKat384)),
+            name, "KAT");
     }
     /* Execute ECDH 521p */
     if ((bool)(options & FIPS_ECDH521P))
     {
-        if (ecdh_using_point_mult(WEIER521_BIT_LENGTH, s_PublicKeyInputWeier521Client, s_PrivateKeyInputWeier521Client,
+        CHECK_STATUS_AND_LOG(
+            ecdh_using_point_mult(WEIER521_BIT_LENGTH, s_PublicKeyInputWeier521Client, s_PrivateKeyInputWeier521Client,
                                   s_PublicKeyInputWeier521Server, s_PrivateKeyInputWeier521Server, s_SharedSecretKat521,
-                                  sizeof(s_SharedSecretKat521)) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+                                  sizeof(s_SharedSecretKat521)),
+            name, "KAT");
     }
 }

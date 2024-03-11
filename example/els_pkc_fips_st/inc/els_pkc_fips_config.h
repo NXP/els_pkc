@@ -25,7 +25,7 @@
 typedef struct
 {
     uint64_t option;
-    char name[25U];
+    char name[FUNCTION_NAME_MAX_SIZE];
     void (*executionFunction)(uint64_t options, char name[]);
 } AlgorithmMapping;
 
@@ -37,7 +37,7 @@ static AlgorithmMapping s_AlgorithmMappings[] = {{FIPS_ECB_DRBG, "ECB-DRBG", &ex
                                                  {FIPS_CKDF_SP800108, "CKDF-SP800-108", &execute_kdf_kat},
                                                  {FIPS_HKDF_SP80056C, "HKDF-SP800-56C", &execute_kdf_kat},
                                                  {FIPS_HKDF_RFC5869, "HKDF-RFC5869", &execute_kdf_kat},
-                                                 {FIPS_ECDSA_256P, "ECDSA-256P", &execute_ecdsa_kat},
+                                                 {FIPS_ECDSA_256P, "NON-DET ECDSA-256P", &execute_ecdsa_kat},
                                                  {FIPS_ECDSA_384P, "ECDSA-384P", &execute_ecdsa_kat},
                                                  {FIPS_ECDSA_521P, "ECDSA-521P", &execute_ecdsa_kat},
                                                  {FIPS_EDDSA, "ED25519", &execute_eddsa_kat},

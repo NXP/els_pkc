@@ -117,37 +117,29 @@ void execute_sha_kat(uint64_t options, char name[])
     /* Execute SHA224 KAT */
     if ((bool)(options & FIPS_SHA224))
     {
-        if (sha2(s_MsgSha224, sizeof(s_MsgSha224), s_MacKatSha224, sizeof(s_MacKatSha224),
-                 mcuxClHash_Algorithm_Sha224) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            sha2(s_MsgSha224, sizeof(s_MsgSha224), s_MacKatSha224, sizeof(s_MacKatSha224), mcuxClHash_Algorithm_Sha224),
+            name, "KAT");
     }
     /* Execute SHA256 KAT */
     if ((bool)(options & FIPS_SHA256))
     {
-        if (sha2(s_MsgSha256, sizeof(s_MsgSha256), s_MacKatSha256, sizeof(s_MacKatSha256),
-                 mcuxClHash_Algorithm_Sha256) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            sha2(s_MsgSha256, sizeof(s_MsgSha256), s_MacKatSha256, sizeof(s_MacKatSha256), mcuxClHash_Algorithm_Sha256),
+            name, "KAT");
     }
     /* Execute SHA384 KAT */
     if ((bool)(options & FIPS_SHA384))
     {
-        if (sha2(s_MsgSha384, sizeof(s_MsgSha384), s_MacKatSha384, sizeof(s_MacKatSha384),
-                 mcuxClHash_Algorithm_Sha384) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            sha2(s_MsgSha384, sizeof(s_MsgSha384), s_MacKatSha384, sizeof(s_MacKatSha384), mcuxClHash_Algorithm_Sha384),
+            name, "KAT");
     }
     /* Execute SHA512 KAT */
     if ((bool)(options & FIPS_SHA512))
     {
-        if (sha2(s_MsgSha512, sizeof(s_MsgSha512), s_MacKatSha512, sizeof(s_MacKatSha512),
-                 mcuxClHash_Algorithm_Sha512) != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(
+            sha2(s_MsgSha512, sizeof(s_MsgSha512), s_MacKatSha512, sizeof(s_MacKatSha512), mcuxClHash_Algorithm_Sha512),
+            name, "KAT");
     }
 }

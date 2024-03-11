@@ -353,23 +353,14 @@ void execute_kdf_kat(uint64_t options, char name[])
 {
     if ((bool)(options & FIPS_CKDF_SP800108))
     {
-        if (ckdf_sp800108() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(ckdf_sp800108(), name, "KAT");
     }
     if ((bool)(options & FIPS_HKDF_RFC5869))
     {
-        if (hkdf_rfc5869() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(hkdf_rfc5869(), name, "KAT");
     }
     if ((bool)(options & FIPS_HKDF_SP80056C))
     {
-        if (hkdf_sp80056c() != STATUS_SUCCESS)
-        {
-            PRINTF("[ERROR] %s KAT FAILED\r\n", name);
-        }
+        CHECK_STATUS_AND_LOG(hkdf_sp80056c(), name, "KAT");
     }
 }
