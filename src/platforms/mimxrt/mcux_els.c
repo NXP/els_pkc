@@ -6,6 +6,7 @@
  */
 
 #include "mcux_els.h"
+#include "fsl_glikey.h"
 
 /*******************************************************************************
  * Definitions
@@ -17,6 +18,33 @@ static status_t ELS_PRNG_KickOff(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+static status_t GlikeyWriteEnable(GLIKEY_Type *base, uint8_t idx)
+{ 
+    if (kStatus_Success != GLIKEY_StartEnable(base, 2u))
+    {
+        return kStatus_Fail;
+    }
+    if (kStatus_Success != GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP1))
+    {
+        return kStatus_Fail;
+    }
+    if (kStatus_Success != GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP2))
+    {
+        return kStatus_Fail;
+    }
+    if (kStatus_Success != GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP3))
+    {
+        return kStatus_Fail;
+    }
+    if (kStatus_Success != GLIKEY_ContinueEnable(base, GLIKEY_CODEWORD_STEP_EN))
+    {
+        return kStatus_Fail;
+    }
+    
+    return kStatus_Success;
+}
+
 /*!
  * brief ELS Init after power down.
  *
@@ -31,9 +59,45 @@ static status_t ELS_PRNG_KickOff(void);
 status_t ELS_PowerDownWakeupInit(ELS_Type *base)
 {
     status_t status = kStatus_Fail;
+    
+    /* ELS CLK enable */
+    /* SYSCON0->SEC_CLK_CTRL and SYSCON0->SEC_CLK_CTRL_SET are protected by GLIKEY3 (index 2) */
+    if (kStatus_Success != GLIKEY_SyncReset(GLIKEY3))
+    {
+        return kStatus_Fail;
+    }
+
+    /* Move Glikey FSM to write enable */
+    if (kStatus_Success != GlikeyWriteEnable(GLIKEY3, 2u))
+    {
+        return kStatus_Fail;
+    }
 
     /* Enable ELS clock */
+    SYSCON0->SEC_CLK_CTRL |= SYSCON0_SEC_CLK_CTRL_ELS_CLK_EN_MASK;
     CLOCK_EnableClock(kCLOCK_Els);
+    
+    /* End of write enable */
+    GLIKEY_EndOperation(GLIKEY3);
+
+    /* DTRNG CLK enable */
+    /* SYSCON0->SEC_CLK_CTRL is protected by GLIKEY3 (index 1) */
+    if (kStatus_Success != GLIKEY_SyncReset(GLIKEY3))
+    {
+        return kStatus_Fail;
+    }
+
+    /* Move GLIKEY FSM to write enable */
+    if (kStatus_Success != GlikeyWriteEnable(GLIKEY3, 1u))
+    {
+        return kStatus_Fail;
+    }
+
+    /* TRNG enable CLK */
+    SYSCON0->SEC_CLK_CTRL_SET |= SYSCON0_SEC_CLK_CTRL_SET_TRNG_REFCLK_EN_SET_MASK;
+
+    /* End of write enable */
+    GLIKEY_EndOperation(GLIKEY3);
     
     /* Enable ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
