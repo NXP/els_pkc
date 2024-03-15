@@ -1377,7 +1377,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         // 2 * MCUXCLPKC_WORDSIZE).
         const size_t bufferSizeT1 =
             sz_max(sz_max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(bytelen_e + 1u), pkc_operand_size + MCUXCLPKC_WORDSIZE),
-                   2 * MCUXCLPKC_WORDSIZE);
+                   2u * MCUXCLPKC_WORDSIZE);
 
         // iT2 (bits 8~15): index of temp2 (PKC operand).
         // Its size shall be at least max(lenN + MCUXCLPKC_WORDSIZE, 2u * MCUXCLPKC_WORDSIZE).

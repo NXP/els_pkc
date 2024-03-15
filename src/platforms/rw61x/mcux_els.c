@@ -114,7 +114,7 @@ static status_t ELS_PRNG_KickOff(void)
                 break;
             }   
             /* Found free key slot */
-            else if(key_properties.bits.kactv == 0u)
+            if(key_properties.bits.kactv == 0u)
             {
                 break; 
             }
