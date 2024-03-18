@@ -16,9 +16,7 @@
 #define MAX_CPUWA_SIZE                                                 \
     MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE, \
                    MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE)
-#define MAX_PKCWA_SIZE                                                 \
-    MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE, \
-                   MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE)
+
 #define ALLOCATE_RNG_CTXT(rng_ctx_length) \
     (((rng_ctx_length) > 0U) ? (((rng_ctx_length) + sizeof(uint32_t) - 1U) / sizeof(uint32_t)) : 1U)
 /*******************************************************************************
@@ -557,7 +555,7 @@ static status_t Ed25519_sign(void)
     /* Setup one session to be used by all functions called */
     mcuxClSession_Descriptor_t session;
 
-    ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
+    ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WAPKC_SIZE);
 
     /* Initialize the RNG context and Initialize the PRNG */
     uint32_t context[ALLOCATE_RNG_CTXT(0U)] = {0U};
@@ -701,7 +699,7 @@ static status_t Ed25519_verify(void)
     mcuxClSession_Descriptor_t session;
 
     /* Allocate and initialize PKC workarea */
-    ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MAX_PKCWA_SIZE);
+    ALLOCATE_AND_INITIALIZE_SESSION(&session, MAX_CPUWA_SIZE, MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WAPKC_SIZE);
 
     /* Initialize public key */
     uint8_t pub_key_desc[MCUXCLKEY_DESCRIPTOR_SIZE];
