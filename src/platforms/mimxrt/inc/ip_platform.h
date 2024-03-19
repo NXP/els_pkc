@@ -116,4 +116,15 @@
  */
 #define ELS_SFR_BASE           ((ELS_Type *) ELS_BASE)
 
+/* Use non-cached section to load PKC FUP and const variables to avoid placing 
+ * it in a code PSRAM which is not accesible to ELS and PKC (only via alias)
+ */
+#ifndef CSS_CONST_SEGMENT_SECTION
+#define CSS_CONST_SEGMENT_SECTION "NonCacheable.init"
+#endif
+#ifndef MCUX_OBFUSCATED_FUP_SEGMENT
+#define MCUX_OBFUSCATED_FUP_SEGMENT "NonCacheable.init"
+#endif
+
+
 #endif
