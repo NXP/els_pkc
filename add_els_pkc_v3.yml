@@ -1469,13 +1469,13 @@ component.els_pkc.oscca:
   section_info:
     version: "${els_pkc_version}"
     type: software_component
-    full_name: Component els_pkc.mac_modes
-    description: Component els_pkc.mac_modes
+    full_name: Component els_pkc.oscca
+    description: Component els_pkc.oscca
     user_visible: never
     taxonomy:
       belong_to: els_pkc_main
-      cgroup: els_pkc_mac_modes
-    display_name: els_pkc.mac_modes
+      cgroup: els_pkc_oscca
+    display_name: els_pkc.oscca
   dependency:
     allOf:
     - component.els_pkc.oscca_aeadmodes
