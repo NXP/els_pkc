@@ -2301,7 +2301,7 @@ component.els_pkc.rsa:
     - component.els_pkc.pkc
     - component.els_pkc.toolchain
     - component.els_pkc.buffer
-    - component.els_pkc.rsa_oaep
+
 component.els_pkc.session:
   section-type: component
   contents:
@@ -2667,8 +2667,9 @@ component.els_pkc:
           - component.els_pkc.doc.mimxrt
           - component.els_pkc.static_lib.mimxrt
           - component.els_pkc.oscca
+          - component.els_pkc.rsa_oaep
           - device:
-             - MIMXRT798S         
+             - MIMXRT798S
 component.els_pkc.toolchain:
   section-type: component
   contents:
