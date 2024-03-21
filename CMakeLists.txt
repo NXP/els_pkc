@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# Copyright (c) 2023 NXP.
+# Copyright (c) 2023-2024 NXP.
 # SPDX-License-Identifier: BSD-3-Clause
 #
 #-------------------------------------------------------------------------------
@@ -44,6 +44,7 @@ if(CONFIG_SOC_SERIES_RW6XX)
         McuxElsPkc 
         PUBLIC
             CPU_RW612ETA1I
+            CPU_RW612ETA2I
     ) 
 
     target_include_directories(McuxElsPkc
