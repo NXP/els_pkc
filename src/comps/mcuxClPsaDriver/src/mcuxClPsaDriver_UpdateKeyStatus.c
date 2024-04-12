@@ -28,7 +28,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(key_descriptor);
 
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
+        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
@@ -46,7 +46,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(
     psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(key_descriptor);
 
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
+        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
@@ -66,7 +66,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(key_descriptor);
 
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
+        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
