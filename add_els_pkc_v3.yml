@@ -324,7 +324,7 @@ component.els_pkc.common:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/common/inc
     files:
-    - source: src/comps/common/src/mcuxClOscca_CommonOperations.c    
+    - source: src/comps/common/src/mcuxClOscca_CommonOperations.c
     - source: src/comps/common/inc/mcuxClOscca_FunctionIdentifiers.h
     - source: src/comps/common/inc/mcuxClOscca_Memory.h
     - source: src/comps/common/inc/mcuxClOscca_PlatformTypes.h
@@ -357,12 +357,12 @@ component.els_pkc.aead:
     - repo_relative_path: src/comps/mcuxClAead/inc/internal
     files:
     - source: src/comps/mcuxClAead/src/mcuxClAead.c
-    
+
     - source: src/comps/mcuxClAead/inc/mcuxClAead.h
     - source: src/comps/mcuxClAead/inc/mcuxClAead_Constants.h
     - source: src/comps/mcuxClAead/inc/mcuxClAead_Functions.h
     - source: src/comps/mcuxClAead/inc/mcuxClAead_Types.h
-    
+
     - source: src/comps/mcuxClAead/inc/internal/mcuxClAead_Ctx.h
     - source: src/comps/mcuxClAead/inc/internal/mcuxClAead_Descriptor.h
     - source: src/comps/mcuxClAead/inc/internal/mcuxClAead_Internal_Functions.h
@@ -381,6 +381,7 @@ component.els_pkc.aead:
     display_name: els_pkc.aead
   dependency:
     allOf:
+    - component.els_pkc.aes
     - component.els_pkc.session
     - component.els_pkc.els
     - component.els_pkc.buffer
@@ -608,7 +609,7 @@ component.els_pkc.core:
       belong_to: els_pkc_main
       cgroup: els_pkc_core
     display_name: els_pkc.core
-    
+
 component.els_pkc.crc:
   section-type: component
   contents:
@@ -1203,7 +1204,7 @@ component.els_pkc.key:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxClKey/inc
     - repo_relative_path: src/comps/mcuxClKey/inc/internal
-    files:    
+    files:
     - source: src/comps/mcuxClKey/src/mcuxClKey.c
     - source: src/comps/mcuxClKey/src/mcuxClKey_Protection.c
     - source: src/comps/mcuxClKey/inc/mcuxClKey.h
@@ -1286,7 +1287,7 @@ component.els_pkc.mac_modes:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxClMacModes/inc/
     - repo_relative_path: src/comps/mcuxClMacModes/inc/internal
-    files:   
+    files:
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Common.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Common_Modes.c
     - source: src/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cbcmac.c
@@ -1422,7 +1423,7 @@ component.els_pkc.memory:
     - source: src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Internal.h
     - source: src/comps/mcuxClMemory/inc/internal/mcuxClMemory_SetSecure_Internal.h
     - source: src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Set_Internal.h
-    
+
     - source: src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Clear.c
     - source: src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Compare.c
     - source: src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Copy.c
@@ -1605,7 +1606,7 @@ component.els_pkc.oscca_macmodes:
     display_name: els_pkc.oscca_macmodes
   dependency:
     allOf:
-    - component.els_pkc.common     
+    - component.els_pkc.common
 component.els_pkc.oscca_pkc:
   section-type: component
   contents:
@@ -2932,109 +2933,12 @@ component.els_pkc.platform.mimxrt:
     # - component.els_pkc.standalone_gdet
     - component.els_pkc.glikey
     - component.els_pkc.trng.type_els
+
 component.els_pkc.examples:
   section-type: component
   contents:
     repo_base_path: components/els_pkc
     project_base_path: component/els_pkc
-    cc-include:
-    - repo_relative_path: "./"
-    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
-    - repo_relative_path: examples/mcuxCsslMemory/inc/
-    - repo_relative_path: src/comps/mcuxClExample/inc/
-    - repo_relative_path: src/comps/mcuxClBuffer/inc/
-    files:
-    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Els_Ccm_Aes128_Multipart_example.c
-    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Els_Ccm_Aes128_Oneshot_example.c
-    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example.c
-
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Cbc_Aes128_Multipart_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Cbc_Aes128_Oneshot_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Cbc_Aes128_Oneshot_PaddingZero_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ctr_Aes128_Multipart_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ctr_Aes128_Oneshot_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Multipart_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Multipart_PaddingPKCS7_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingPKCS7_example.c
-    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingZero_example.c
-
-    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519ctx_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519ph_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_MontDH_Curve25519_example.c
-    - source: examples/mcuxClEcc/mcuxClEcc_MontDH_Curve448_example.c
-
-    - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Common_Get_Info_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Ecc_Keygen_Sign_Verify_example.c
-
-    - source: examples/mcuxClEls/mcuxClEls_Hash_HW_Security_Counter_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha224_One_Block_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha256_One_Block_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha384_One_Block_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha512_One_Block_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Rng_Prng_Get_Random_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Tls_Master_Key_Session_Keys_example.c
-
-
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha1_longMsgOneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha1_oneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha1_streaming_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha224_oneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_longMsgOneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_oneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_streaming_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha384_oneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_224_oneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_256_oneshot_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_256_streaming_example.c
-    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_oneshot_example.c
-
-    - source: examples/mcuxClHmac/mcuxClHmac_Els_Oneshot_External_Key_example.c
-    - source: examples/mcuxClHmac/mcuxClHmac_Sw_Multipart_example.c
-    - source: examples/mcuxClHmac/mcuxClHmac_Sw_Oneshot_example.c
-
-    - source: examples/mcuxClKey/mcuxClKey_example.c
-
-    - source: examples/mcuxClMacModes/mcuxClMacModes_Els_Cbcmac_Aes128_Oneshot_example.c
-    - source: examples/mcuxClMacModes/mcuxClMacModes_Els_Cbcmac_Aes256_Multipart_PaddingZero_example.c
-    - source: examples/mcuxClMacModes/mcuxClMacModes_Els_Cmac_Aes128_Oneshot_example.c
-
-    - source: examples/mcuxClRandom/mcuxClRandom_PRNG_Patch_example.c
-
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_Different_Sessions_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_ELS_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c
-    - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c
-
-    - source: examples/mcuxClRsa/mcuxClRsa_sign_NoEncode_example.c
-    - source: examples/mcuxClRsa/mcuxClRsa_sign_pss_sha2_256_example.c
-    - source: examples/mcuxClRsa/mcuxClRsa_verify_NoVerify_example.c
-    - source: examples/mcuxClRsa/mcuxClRsa_verify_pssverify_sha2_256_example.c
-
-
-    - source: examples/mcuxCsslFlowProtection/mcuxCsslFlowProtection_example.c
-    - source: examples/mcuxCsslFlowProtection/inc/mcuxCsslExamples.h
-
-    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Clear_example.c
-    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Compare_example.c
-    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Copy_example.c
-    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Set_example.c
-    - source: examples/mcuxCsslMemory/inc/mcuxCsslMemory_Examples.h
-
-    - source: src/comps/mcuxClExample/inc/mcuxClExample_ELS_Helper.h
-    - source: src/comps/mcuxClExample/inc/mcuxClExample_ELS_Key_Helper.h
-    - source: src/comps/mcuxClExample/inc/mcuxClExample_Key_Helper.h
-    - source: src/comps/mcuxClExample/inc/mcuxClExample_RFC3394_Helper.h
-    - source: src/comps/mcuxClExample/inc/mcuxClExample_RNG_Helper.h
-    - source: src/comps/mcuxClExample/inc/mcuxClExample_Session_Helper.h
   belong_to:
     kex_package: set.component.els_pkc
     cmsis_pack: set.device.${platform_devices_soc_name}
@@ -3055,7 +2959,496 @@ component.els_pkc.examples:
     - component.els_pkc.memory
     - component.els_pkc.els
     - component.els_pkc.pkc
+    - component.els_pkc.random_modes
     - component.els_pkc
+    - component.els_pkc.examples_aead
+    - component.els_pkc.examples_cipher_modes
+    - component.els_pkc.examples_ecc
+    - component.els_pkc.examples_els
+    - component.els_pkc.examples_hash_modes
+    - component.els_pkc.examples_hmac
+    - component.els_pkc.examples_key
+    - component.els_pkc.examples_mac_modes
+    - component.els_pkc.examples_rsa
+    - component.els_pkc.examples_flow_protection
+    - anyOf:
+        - allOf:
+          - component.els_pkc.examples_random_modes
+          - device:
+            - MCXN546
+            - MCXN547
+            - MCXN946
+            - MCXN947
+            - MCXN235
+            - MCXN236
+            - RW610
+            - RW612
+            - MIMXRT798S
+        - device:
+          - LPC55S36
+
+component.els_pkc.examples_memory:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Clear_example.c
+    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Compare_example.c
+    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Copy_example.c
+    - source: examples/mcuxCsslMemory/mcuxCsslMemory_Set_example.c
+    - source: examples/mcuxCsslMemory/inc/mcuxCsslMemory_Examples.h
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_memory
+    display_name: els_pkc_test_memory
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_flow_protection:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxCsslFlowProtection/mcuxCsslFlowProtection_example.c
+    - source: examples/mcuxCsslFlowProtection/inc/mcuxCsslExamples.h
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_flow_protection
+    display_name: els_pkc_test_flow_protection
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_rsa:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClRsa/mcuxClRsa_sign_NoEncode_example.c
+    - source: examples/mcuxClRsa/mcuxClRsa_sign_pss_sha2_256_example.c
+    - source: examples/mcuxClRsa/mcuxClRsa_verify_NoVerify_example.c
+    - source: examples/mcuxClRsa/mcuxClRsa_verify_pssverify_sha2_256_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_rsa
+    display_name: els_pkc_test_rsa
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_random_modes:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG3_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_DRG4_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_CtrDrbg_AES256_ELS_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_Different_Sessions_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_random_modes
+    display_name: els_pkc_test_random_modes
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_mac_modes:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClMacModes/mcuxClMacModes_Els_Cbcmac_Aes128_Oneshot_example.c
+    - source: examples/mcuxClMacModes/mcuxClMacModes_Els_Cbcmac_Aes256_Multipart_PaddingZero_example.c
+    - source: examples/mcuxClMacModes/mcuxClMacModes_Els_Cmac_Aes128_Oneshot_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_mac_modes
+    display_name: els_pkc_test_mac_modes
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+    - component.els_pkc.mac
+
+component.els_pkc.examples_key:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClKey/mcuxClKey_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_key
+    display_name: els_pkc_test_key
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+
+component.els_pkc.examples_hmac:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClHmac/mcuxClHmac_Els_Oneshot_External_Key_example.c
+    - source: examples/mcuxClHmac/mcuxClHmac_Sw_Multipart_example.c
+    - source: examples/mcuxClHmac/mcuxClHmac_Sw_Oneshot_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_hmac
+    display_name: els_pkc_test_hmac
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_hash_modes:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha1_longMsgOneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha1_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha1_streaming_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha224_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_longMsgOneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha256_streaming_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha384_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_224_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_256_oneshot_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_256_streaming_example.c
+    - source: examples/mcuxClHashModes/mcuxClHashModes_sha512_oneshot_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_hash_modes
+    display_name: els_pkc_test_hash_modes
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_els:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Common_Get_Info_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Ecc_Keygen_Sign_Verify_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Hash_HW_Security_Counter_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha224_One_Block_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha256_One_Block_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha384_One_Block_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Hash_Sha512_One_Block_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Rng_Prng_Get_Random_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Tls_Master_Key_Session_Keys_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Common_Get_Info_example.c
+    - source: examples/mcuxClEls/mcuxClEls_Ecc_Keygen_Sign_Verify_example.c
+    - source: examples/mcuxClRandomModes/mcuxClRandomModes_ELS_example.c
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_ELS_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_ELS_Key_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_Key_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_RFC3394_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_RNG_Helper.h
+    - source: src/comps/mcuxClExample/inc/mcuxClExample_Session_Helper.h
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_els
+    display_name: els_pkc_test_els
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_ecc:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519ctx_example.c
+    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519ph_example.c
+    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_Ed25519_example.c
+    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c
+    - source: examples/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
+    - source: examples/mcuxClEcc/mcuxClEcc_MontDH_Curve25519_example.c
+    - source: examples/mcuxClEcc/mcuxClEcc_MontDH_Curve448_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_ecc
+    display_name: els_pkc_test_ecc
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+
+component.els_pkc.examples_aead:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Els_Ccm_Aes128_Multipart_example.c
+    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Els_Ccm_Aes128_Oneshot_example.c
+    - source: examples/mcuxClAeadModes/mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_aead
+    display_name: els_pkc_test_aead
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
+    - component.els_pkc.padding
+
+component.els_pkc.examples_cipher_modes:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: examples/mcuxCsslFlowProtection/inc/
+    - repo_relative_path: examples/mcuxCsslMemory/inc/
+    - repo_relative_path: src/comps/mcuxClExample/inc/
+    - repo_relative_path: src/comps/mcuxClBuffer/inc/
+    files:
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Cbc_Aes128_Multipart_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Cbc_Aes128_Oneshot_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Cbc_Aes128_Oneshot_PaddingZero_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ctr_Aes128_Multipart_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ctr_Aes128_Oneshot_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Multipart_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Multipart_PaddingPKCS7_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingPKCS7_example.c
+    - source: examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingZero_example.c
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: Component els_pkc_test
+    description: Component els_pkc_test
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_examples_cipher
+    display_name: els_pkc_test_cipher
+  dependency:
+    allOf:
+    - component.els_pkc.flow_protection
+    - component.els_pkc.session
+    - component.els_pkc.memory
+    - component.els_pkc.els
 
 component.els_pkc.psa_driver_examples:
   section-type: component
@@ -3124,6 +3517,7 @@ component.els_pkc.psa_driver_examples:
     - component.els_pkc.memory
     - component.els_pkc
     - component.els_pkc.psa_driver
+
 container.component.els_pkc.unused_files:
   section-type: container
   contents:
@@ -3140,7 +3534,7 @@ container.component.els_pkc.unused_files:
       exclude: true
     - source: examples/CMakeLists.txt
       hidden: true
-      exclude: true 
+      exclude: true
   belong_to:
     kex_package: set.component.els_pkc
     cmsis_pack: set.device.${platform_devices_soc_name}

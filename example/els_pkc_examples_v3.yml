@@ -136,10 +136,10 @@ els_pkc_common:
         - source: components/els_pkc/example/els_pkc_common/els_pkc_common.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_common/${multicore_foldername}
           project_path: main
-        - source: boards/${board}/els_pkc_examples/els_pkc_common/${multicore_foldername}/pin_mux.c
+        - source: boards/${board}/els_pkc_examples/els_pkc_common/pin_mux.c
           package_path: boards/${board}/els_pkc_examples/els_pkc_common/${multicore_foldername}
           project_path: board
-        - source: boards/${board}/els_pkc_examples/els_pkc_common/${multicore_foldername}/pin_mux.h
+        - source: boards/${board}/els_pkc_examples/els_pkc_common/pin_mux.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_common/${multicore_foldername}
           project_path: board
       pinset:
@@ -193,10 +193,10 @@ els_symmetric:
         - source: components/els_pkc/example/els_symmetric/els_symmetric.h
           package_path: boards/${board}/els_pkc_examples/els_symmetric/${multicore_foldername}
           project_path: main
-        - source: boards/${board}/els_pkc_examples/els_symmetric/${multicore_foldername}/pin_mux.c
+        - source: boards/${board}/els_pkc_examples/els_symmetric/pin_mux.c
           package_path: boards/${board}/els_pkc_examples/els_symmetric/${multicore_foldername}
           project_path: board
-        - source: boards/${board}/els_pkc_examples/els_symmetric/${multicore_foldername}/pin_mux.h
+        - source: boards/${board}/els_pkc_examples/els_symmetric/pin_mux.h
           package_path: boards/${board}/els_pkc_examples/els_symmetric/${multicore_foldername}
           project_path: board
       pinset:
@@ -259,10 +259,10 @@ els_hash:
         - source: components/els_pkc/example/els_hash/els_hash.h
           package_path: boards/${board}/els_pkc_examples/els_hash/${multicore_foldername}
           project_path: main
-        - source: boards/${board}/els_pkc_examples/els_hash/${multicore_foldername}/pin_mux.c
+        - source: boards/${board}/els_pkc_examples/els_hash/pin_mux.c
           package_path: boards/${board}/els_pkc_examples/els_hash/${multicore_foldername}
           project_path: board
-        - source: boards/${board}/els_pkc_examples/els_hash/${multicore_foldername}/pin_mux.h
+        - source: boards/${board}/els_pkc_examples/els_hash/pin_mux.h
           package_path: boards/${board}/els_pkc_examples/els_hash/${multicore_foldername}
           project_path: board
       pinset:
@@ -337,10 +337,10 @@ els_pkc_asymmetric:
         - source: components/els_pkc/example/els_pkc_asymmetric/els_pkc_asymmetric.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_asymmetric/${multicore_foldername}
           project_path: main
-        - source: boards/${board}/els_pkc_examples/els_pkc_asymmetric/${multicore_foldername}/pin_mux.c
+        - source: boards/${board}/els_pkc_examples/els_pkc_asymmetric/pin_mux.c
           package_path: boards/${board}/els_pkc_examples/els_pkc_asymmetric/${multicore_foldername}
           project_path: board
-        - source: boards/${board}/els_pkc_examples/els_pkc_asymmetric/${multicore_foldername}/pin_mux.h
+        - source: boards/${board}/els_pkc_examples/els_pkc_asymmetric/pin_mux.h
           package_path: boards/${board}/els_pkc_examples/els_pkc_asymmetric/${multicore_foldername}
           project_path: board
       pinset:
