@@ -2971,6 +2971,7 @@ component.els_pkc.examples:
     - component.els_pkc.examples_mac_modes
     - component.els_pkc.examples_rsa
     - component.els_pkc.examples_flow_protection
+    - component.els_pkc.examples_memory
     - anyOf:
         - allOf:
           - component.els_pkc.examples_random_modes
