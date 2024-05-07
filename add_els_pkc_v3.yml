@@ -828,6 +828,11 @@ component.els_pkc.ecc:
     - component.els_pkc.key
     - component.els_pkc.els
     - component.els_pkc.buffer
+    - anyOf:
+        - allOf:
+          - component.els_pkc.ecc_deterministic
+          - device:
+             - MIMXRT798S
 component.els_pkc.els_header_only:
   section-type: component
   contents:
@@ -2021,6 +2026,7 @@ component.els_pkc.psa_driver:
     - anyOf:
       - component.els_pkc.platform.mcxn
       - component.els_pkc.platform.rw61x
+      - component.els_pkc.platform.mimxrt
 component.els_pkc.random:
   section-type: component
   contents:
@@ -2142,6 +2148,12 @@ component.els_pkc.random_modes:
     - component.els_pkc.aes
     - component.els_pkc.trng
     - component.els_pkc.buffer
+    - anyOf:
+        - allOf:
+          - component.els_pkc.random_modes_hmacdrbg
+          - component.els_pkc.random_modes_ctr
+          - device:
+             - MIMXRT798S
 component.els_pkc.random_modes_ctr:
   section-type: component
   contents:
