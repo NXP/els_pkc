@@ -29,7 +29,7 @@
  * Prototypes
  ******************************************************************************/
 static status_t ELS_PRNG_KickOff(void);
-static status_t ELS_check_key(uint8_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp);
+static status_t ELS_check_key(mcuxClEls_KeyIndex_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -135,7 +135,7 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
     return kStatus_Success;
 }
 
-static status_t ELS_check_key(uint8_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp)
+static status_t ELS_check_key(mcuxClEls_KeyIndex_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp)
 {
     /* Check if ELS required keys are available in ELS keystore */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token,
