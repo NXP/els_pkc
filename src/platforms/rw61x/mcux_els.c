@@ -1,5 +1,5 @@
 /*
- *     Copyright 2021 - 2023 NXP
+ *     Copyright 2021 - 2024 NXP
  *     All rights reserved.
  *
  *     SPDX-License-Identifier: BSD-3-Clause
@@ -8,15 +8,28 @@
 #include "mcux_els.h"
 #include <mcuxClEls.h>              /* Interface to the entire nxpClEls component */
 #include <mcuxCsslFlowProtection.h> /* Code flow protection */
-
+#include "fsl_ocotp.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define ELS_OTP_DTRNG_CFG_31_0_FUSE_IDX (128u)
+#define ELS_DTRNG_CFG_SIZE_IN_WORD      (21)
+#define ELS_DTRNG_CFG_SIZE_IN_BYTE      (ELS_DTRNG_CFG_SIZE_IN_WORD * 4)
+
+#define IS_OCOTP_CLK_ENABLED() (bool)((CLKCTL0->PSCCTL1 & CLKCTL0_PSCCTL1_OTP_MASK) >> CLKCTL0_PSCCTL1_OTP_SHIFT)
+
+typedef struct els_dtrng_cfg
+{
+    uint8_t configData[84];
+} els_dtrng_cfg_t;
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 static status_t ELS_PRNG_KickOff(void);
 static status_t ELS_check_key(mcuxClEls_KeyIndex_t keyIdx, mcuxClEls_KeyProp_t *pKeyProp);
+static status_t get_dtrng_config_data(els_dtrng_cfg_t *dtrngConfig);
+static status_t els_dtrng_cfg_load(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -48,14 +61,14 @@ status_t ELS_PowerDownWakeupInit(ELS_Type *base)
     /* Initialize ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
 
-    /* mcuxClCss_Enable_Async is a flow-protected function: Check the protection token and the return value */
+    /* mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value */
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
         status = kStatus_Fail;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Wait for the mcuxClCss_Enable_Async operation to complete. */
+    /* Wait for the mcuxClEls_Enable_Async operation to complete. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
     /* mcuxClCss_WaitForOperation is a flow-protected function: Check the protection token and the return value */
@@ -65,7 +78,14 @@ status_t ELS_PowerDownWakeupInit(ELS_Type *base)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    /* Reload DTRNG configuration from OTP-Fuses */
     if (status != kStatus_Fail)
+    {
+        /* Load DTRNG configs*/
+        status = els_dtrng_cfg_load();
+    }
+
+    if (status == kStatus_Success)
     {
         /* Kick-off ELS PRNG */
         status = ELS_PRNG_KickOff();
@@ -153,6 +173,79 @@ static status_t ELS_PRNG_KickOff(void)
     else
     {
         status = kStatus_Success;
+    }
+    return status;
+}
+
+static status_t get_dtrng_config_data(els_dtrng_cfg_t *dtrngConfig)
+{
+    assert(dtrngConfig);
+    status_t status;
+    bool ocotp_init_status = IS_OCOTP_CLK_ENABLED();
+
+    if (ocotp_init_status == false)
+    {
+        /* Init OCOTP*/
+        status = OCOTP_OtpInit();
+    }
+    else
+    {
+        status = kStatus_Success;
+    }
+
+    /* Read the DTRNG configs from otpfuses*/
+    if (status == kStatus_Success)
+    {
+        uint32_t fuseIdxStart = ELS_OTP_DTRNG_CFG_31_0_FUSE_IDX;
+        for (int i = 0; i < (ELS_DTRNG_CFG_SIZE_IN_BYTE / 4); i++)
+        {
+            status = OCOTP_OtpFuseRead(fuseIdxStart, (uint32_t *)(&dtrngConfig->configData[4 * i]));
+            assert(status == kStatus_Success);
+            ++fuseIdxStart;
+        }
+
+        /* if ocotp "was"  initialized before, skip deinit*/
+        if (ocotp_init_status == false)
+        {
+            /* De-init OCOTP*/
+            status = OCOTP_OtpDeinit();
+            assert(status == kStatus_Success);
+        }
+    }
+
+    return status;
+}
+
+static status_t els_dtrng_cfg_load(void)
+{
+    status_t status;
+    els_dtrng_cfg_t dtrng_cfgs;
+
+    /* Read the dtrng configs from otp*/
+    status = get_dtrng_config_data(&dtrng_cfgs);
+
+    if (status == kStatus_Success)
+    {
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Rng_Dtrng_ConfigLoad_Async(dtrng_cfgs.configData));
+
+        /* mcuxClEls_Rng_Dtrng_ConfigLoad_Async is a flow-protected function: Check the protection token and the return
+         * value */
+        if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_Dtrng_ConfigLoad_Async) != token) ||
+            (MCUXCLELS_STATUS_OK_WAIT != result))
+        {
+            status = kStatus_Fail;
+        }
+        MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+        /* Wait for the mcuxClEls_Rng_Dtrng_ConfigLoad_Async operation to complete. */
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+
+        /* mcuxClCss_WaitForOperation is a flow-protected function: Check the protection token and the return value */
+        if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+        {
+            status = kStatus_Fail;
+        }
+        MCUX_CSSL_FP_FUNCTION_CALL_END();
     }
     return status;
 }

@@ -851,6 +851,7 @@ component.els_pkc.els_header_only:
     - source: src/comps/mcuxClEls/inc/mcuxClEls_mapping.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Rng.h
     - source: src/comps/mcuxClEls/inc/mcuxClEls_Types.h
+    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
     - source: src/comps/mcuxClEls/inc/internal/mcuxClEls_SfrAccess.h
@@ -897,33 +898,6 @@ component.els_pkc.els_common:
   dependency:
     allOf:
     - component.els_pkc.core
-component.els_pkc.standalone_keyManagement:
-  section-type: component
-  contents:
-    repo_base_path: components/els_pkc
-    project_base_path: component/els_pkc
-    cc-include:
-    - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEls/inc/
-    files:
-    - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
-    - source: src/comps/mcuxClEls/inc/mcuxClEls_KeyManagement.h
-  belong_to:
-    kex_package: set.component.els_pkc
-    cmsis_pack: set.device.${platform_devices_soc_name}
-  section_info:
-    version: "${els_pkc_version}"
-    type: software_component
-    full_name: Component els_pkc standalone_keyManagement
-    description: Component els_pkc standalone_keyManagement
-    user_visible: never
-    taxonomy:
-      belong_to: els_pkc_main
-      cgroup: els_pkc_standalone_keyManagement
-    display_name: els_pkc.standalone_keyMgmt
-  dependency:
-    allOf:
-    - component.els_pkc.memory
 component.els_pkc.standalone_gdet:
   section-type: component
   contents:
@@ -970,6 +944,7 @@ component.els_pkc.els:
     - source: src/comps/mcuxClEls/src/mcuxClEls_Hmac.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
     - source: src/comps/mcuxClEls/src/mcuxClEls_Rng.c
+    - source: src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
   belong_to:
     kex_package: set.component.els_pkc
     cmsis_pack: set.device.${platform_devices_soc_name}
@@ -987,7 +962,6 @@ component.els_pkc.els:
     allOf:
     - component.els_pkc.els_header_only
     - component.els_pkc.els_common
-    - component.els_pkc.standalone_keyManagement
     - component.els_pkc.hash
     - component.els_pkc.core
     - component.els_pkc.session
@@ -2739,7 +2713,7 @@ component.els_pkc.platform.mcxn:
              - MCXN947
              - MCXN235
              - MCXN236
-component.els_pkc.platform.rw61x_interface_files:
+component.els_pkc.platform.rw61x_inf_header_only:
   section-type: component
   contents:
     repo_base_path: components/els_pkc
@@ -2754,6 +2728,34 @@ component.els_pkc.platform.rw61x_interface_files:
     - source: src/platforms/rw61x/inc/ip_css_constants.h
     - source: src/platforms/rw61x/inc/ip_css_design_configuration.h
     - source: src/platforms/rw61x/inc/ip_platform.h
+  belong_to:
+    kex_package: set.component.els_pkc
+    cmsis_pack: set.device.${platform_devices_soc_name}
+  section_info:
+    version: "${els_pkc_version}"
+    type: software_component
+    full_name: els_pkc_rw61x_inf_header_only
+    description: Component els_pkc for RW61x header inf files
+    user_visible: never
+    taxonomy:
+      belong_to: els_pkc_main
+      cgroup: els_pkc_platform
+      csub: rw61x_inf_header_only
+    display_name: els_pkc_rw61x_inf_header_only
+  dependency:
+    allOf:
+    - device:
+      - RW610
+      - RW612
+component.els_pkc.platform.rw61x_interface_files:
+  section-type: component
+  contents:
+    repo_base_path: components/els_pkc
+    project_base_path: component/els_pkc
+    cc-include:
+    - repo_relative_path: "./"
+    - repo_relative_path: src/platforms/rw61x
+    files:
     - source: src/platforms/rw61x/mcux_els.c
     - source: src/platforms/rw61x/mcux_els.h
     - source: src/platforms/rw61x/mcux_pkc.c
@@ -2774,6 +2776,7 @@ component.els_pkc.platform.rw61x_interface_files:
     display_name: els_pkc_rw61x_interface_files
   dependency:
     allOf:
+    - component.els_pkc.platform.rw61x_inf_header_only
     - device:
       - RW610
       - RW612
@@ -2810,9 +2813,9 @@ component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor:
       - RW612
     - component.els_pkc.els_header_only
     - component.els_pkc.els_common
-    - component.els_pkc.standalone_keyManagement
+    - component.els_pkc.memory
     - component.els_pkc.standalone_gdet
-    - component.els_pkc.platform.rw61x_interface_files
+    - component.els_pkc.platform.rw61x_inf_header_only
     - component.els_pkc.buffer
 component.els_pkc.platform.rw61x:
   section-type: component
