@@ -2680,6 +2680,7 @@ component.els_pkc:
           - component.els_pkc.doc.mimxrt
           - component.els_pkc.static_lib.mimxrt
           - component.els_pkc.oscca
+          - component.els_pkc.key_derivation
           - device:
              - MIMXRT798S         
 component.els_pkc.toolchain:
