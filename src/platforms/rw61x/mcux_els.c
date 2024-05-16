@@ -103,7 +103,7 @@ static status_t ELS_PRNG_KickOff(void)
         for (keyIdx = 0; keyIdx < MCUXCLELS_KEY_SLOTS; keyIdx++)
         {
             /* find a free key slot in ELS keystore */
-            status = ELS_check_key((uint8_t)keyIdx, &key_properties);
+            status = ELS_check_key(keyIdx, &key_properties);
             if (status != kStatus_Success)
             {
                 status = kStatus_SlotUnavailable;
