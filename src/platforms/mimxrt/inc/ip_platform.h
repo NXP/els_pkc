@@ -52,9 +52,6 @@
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          ELS_        ///< sfr field name prefix
 
-// Workaround (RT700 platform header has a bug and defines ELS_KS0 as ELS_K0, but ELS_KS1 etc. are correct)
-#define ELS_KS0                 ELS_K0
-
 // Define base address of PKC
 #define PKC_SFR_BASE            PKC         ///< base of PKC SFRs
 #define PKC_SFR_NAME(sfr)       PKC_ ## sfr ///< full name of SFR

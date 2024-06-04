@@ -21,7 +21,7 @@ static status_t ELS_PRNG_KickOff(void);
 
 static status_t GlikeyWriteEnable(GLIKEY_Type *base, uint8_t idx)
 { 
-    if (kStatus_Success != GLIKEY_StartEnable(base, 2u))
+    if (kStatus_Success != GLIKEY_StartEnable(base, idx))
     {
         return kStatus_Fail;
     }
@@ -74,7 +74,6 @@ status_t ELS_PowerDownWakeupInit(ELS_Type *base)
     }
 
     /* Enable ELS clock */
-    SYSCON0->SEC_CLK_CTRL |= SYSCON0_SEC_CLK_CTRL_ELS_CLK_EN_MASK;
     CLOCK_EnableClock(kCLOCK_Els);
     
     /* End of write enable */
