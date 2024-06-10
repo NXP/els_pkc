@@ -63,6 +63,7 @@ if(CONFIG_SOC_SERIES_RW6XX)
 
     target_sources(McuxElsPkc
         PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/../../devices/RW612/drivers/fsl_ocotp.c
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/mcux_els.c
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/mcux_pkc.c
     )
