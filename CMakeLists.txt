@@ -4,6 +4,9 @@
 #
 #-------------------------------------------------------------------------------
 
+# set path of crypto modules in zephyre subsystem
+set(NXP_MODULE_CRYPTO_PATH ${ZEPHYR_HAL_NXP_MODULE_DIR}/../../crypto)
+
 add_library(McuxElsPkc) 
 
 target_compile_options(
@@ -22,12 +25,12 @@ target_link_options(
 target_include_directories(McuxElsPkc
     PRIVATE
         # SDK driver header files
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../drivers/common
+        ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/drivers/common
         # psa/crypto.h and psa/crypto_types.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../crypto/mbedtls/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../crypto/mbedtls/include/psa
+        ${NXP_MODULE_CRYPTO_PATH}/mbedtls/include
+        ${NXP_MODULE_CRYPTO_PATH}/mbedtls/include/psa
         # for psa driver wrapper
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../crypto/mbedtls/library
+        ${NXP_MODULE_CRYPTO_PATH}/mbedtls/library
 )
 
 if(CONFIG_BUILD_WITH_TFM)
@@ -57,13 +60,13 @@ if(CONFIG_SOC_SERIES_RW6XX)
         PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/inc
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../devices/RW612
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../devices/RW612/drivers
+            ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612
+            ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612/drivers
     )
 
     target_sources(McuxElsPkc
         PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../devices/RW612/drivers/fsl_ocotp.c
+            ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612/drivers/fsl_ocotp.c
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/mcux_els.c
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/mcux_pkc.c
     )
