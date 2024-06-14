@@ -155,6 +155,8 @@ component.els_pkc.doc.mimxrt:
   dependency:
     allOf:
     - device:
+      - MIMXRT735S
+      - MIMXRT758S
       - MIMXRT798S
 component.els_pkc.static_lib.mcxn:
   section-type: component
@@ -314,6 +316,8 @@ component.els_pkc.static_lib.mimxrt:
   dependency:
     allOf:
     - device:
+      - MIMXRT735S
+      - MIMXRT758S
       - MIMXRT798S
 component.els_pkc.common:
   section-type: component
@@ -833,6 +837,8 @@ component.els_pkc.ecc:
         - allOf:
           - component.els_pkc.ecc_deterministic
           - device:
+             - MIMXRT735S
+             - MIMXRT758S
              - MIMXRT798S
 component.els_pkc.els_header_only:
   section-type: component
@@ -2154,6 +2160,8 @@ component.els_pkc.random_modes:
           - component.els_pkc.random_modes_hmacdrbg
           - component.els_pkc.random_modes_ctr
           - device:
+             - MIMXRT735S
+             - MIMXRT758S
              - MIMXRT798S
 component.els_pkc.random_modes_ctr:
   section-type: component
@@ -2682,6 +2690,8 @@ component.els_pkc:
           - component.els_pkc.oscca
           - component.els_pkc.key_derivation
           - device:
+             - MIMXRT735S
+             - MIMXRT758S
              - MIMXRT798S         
 component.els_pkc.toolchain:
   section-type: component
@@ -2940,6 +2950,8 @@ component.els_pkc.platform.mimxrt:
   dependency:
     allOf:
     - device:
+      - MIMXRT735S
+      - MIMXRT758S
       - MIMXRT798S
     - component.els_pkc
     # - component.els_pkc.standalone_gdet
@@ -2996,6 +3008,8 @@ component.els_pkc.examples:
             - MCXN236
             - RW610
             - RW612
+            - MIMXRT735S
+            - MIMXRT758S
             - MIMXRT798S
         - device:
           - LPC55S36
@@ -3605,6 +3619,8 @@ set.component.els_pkc:
       - MCXN236
       - RW610
       - RW612
+      - MIMXRT735S
+      - MIMXRT758S
       - MIMXRT798S
 scr.els_pkc:
   section-type: scr
