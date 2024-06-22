@@ -364,7 +364,8 @@ config MCUX_COMPONENT_component.els_pkc
     if MCUX_COMPONENT_component.els_pkc
       choice
         prompt "Component component.els_pkc anyOf 1"
-        default MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1
+        # Uncomment default cause there is only one option for one device
+        # default MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1
         config MCUX_COMPONENT_MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1"
             select MCUX_COMPONENT_component.els_pkc.platform.lpc
@@ -409,7 +410,7 @@ config MCUX_COMPONENT_component.els_pkc.platform.mcxn
     if MCUX_COMPONENT_component.els_pkc.platform.mcxn
       choice
         prompt "Component component.els_pkc.platform.mcxn anyOf 1"
-        default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1
+        # default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1
         config MCUX_COMPONENT_MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1"
             select MCUX_COMPONENT_component.els_pkc.trng.type_els
@@ -480,7 +481,7 @@ config MCUX_COMPONENT_component.els_pkc.examples
     if MCUX_COMPONENT_component.els_pkc.examples
       choice
         prompt "Component component.els_pkc.examples anyOf 1"
-        default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
+        # default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
         config MCUX_COMPONENT_MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1"
             select MCUX_COMPONENT_component.els_pkc.examples_random_modes
