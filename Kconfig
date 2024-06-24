@@ -247,11 +247,11 @@ config MCUX_COMPONENT_component.els_pkc.psa_driver
         default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.psa_driver_DEPEND_ANYOF_OPTION_1
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.psa_driver_DEPEND_ANYOF_OPTION_1
           bool "Select MCUX_COMPONENT_component.els_pkc.platform.mcxn"
-          select MCUX_COMPONENT_MCUX_COMPONENT_component.els_pkc.platform.mcxn
+          select MCUX_COMPONENT_component.els_pkc.platform.mcxn
         
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.psa_driver_DEPEND_ANYOF_OPTION_2
           bool "Select MCUX_COMPONENT_component.els_pkc.platform.rw61x"
-          select MCUX_COMPONENT_MCUX_COMPONENT_component.els_pkc.platform.rw61x
+          select MCUX_COMPONENT_component.els_pkc.platform.rw61x
         
       endchoice
     endif
