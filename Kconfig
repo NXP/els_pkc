@@ -1,20 +1,4 @@
 menu "ELS PKC"
-config MCUX_COMPONENT_component.els_pkc.doc.lpc
-    bool "Component component.els_pkc.doc.lpc"
-    depends on MCUX_HW_DEVICE_LPC55S36
-    
-config MCUX_COMPONENT_component.els_pkc.doc.mcxn
-    bool "Component component.els_pkc.doc.mcxn"
-    depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
-    
-config MCUX_COMPONENT_component.els_pkc.doc.rw61x
-    bool "Component component.els_pkc.doc.rw61x"
-    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
-    
-config MCUX_COMPONENT_component.els_pkc.doc.mimxrt
-    bool "Component component.els_pkc.doc.mimxrt"
-    depends on MCUX_HW_DEVICE_MIMXRT798S
-    
 config MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
     bool "Component component.els_pkc.static_lib.mcxn"
     depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
@@ -369,28 +353,24 @@ config MCUX_COMPONENT_component.els_pkc
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1"
             select MCUX_COMPONENT_component.els_pkc.platform.lpc
-            select MCUX_COMPONENT_component.els_pkc.doc.lpc
             select MCUX_COMPONENT_component.els_pkc.static_lib.lpc
             depends on MCUX_HW_DEVICE_LPC55S36
             
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_2
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_2"
             select MCUX_COMPONENT_component.els_pkc.platform.mcxn
-            select MCUX_COMPONENT_component.els_pkc.doc.mcxn
             select MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
             depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
             
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3"
             select MCUX_COMPONENT_component.els_pkc.platform.rw61x
-            select MCUX_COMPONENT_component.els_pkc.doc.rw61x
             select MCUX_COMPONENT_component.els_pkc.static_lib.rw61x
             depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
             
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_4
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_4"
             select MCUX_COMPONENT_component.els_pkc.platform.mimxrt
-            select MCUX_COMPONENT_component.els_pkc.doc.mimxrt
             select MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt
             select MCUX_COMPONENT_component.els_pkc.oscca
             select MCUX_COMPONENT_component.els_pkc.rsa_oaep
