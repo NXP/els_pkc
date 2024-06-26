@@ -1351,6 +1351,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only)
         INCLUDES ./
                  src/platforms/rw61x
                  src/platforms/rw61x/inc
+                 includes/
+                 includes/platforms/rw61x
     )
 endif()
 
@@ -1360,26 +1362,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files)
                 src/platforms/rw61x/mcux_els.h
                 src/platforms/rw61x/mcux_pkc.c
                 src/platforms/rw61x/mcux_pkc.h
-    )
-    mcux_add_include(
-        INCLUDES ./
-                 src/platforms/rw61x
-    )
-endif()
-
-if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor)
-    mcux_add_source(
-        SOURCES src/platforms/rw61x/readme.txt
-    )
-    mcux_add_include(
-        INCLUDES ./
-                 src/platforms/rw61x
-    )
-endif()
-
-if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x)
-    mcux_add_source(
-        SOURCES src/platforms/rw61x/readme.txt
     )
     mcux_add_include(
         INCLUDES ./
