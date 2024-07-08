@@ -6,10 +6,11 @@
 **     Compilers:           GNU C Compiler
 **                          IAR ANSI C/C++ Compiler for ARM
 **                          Keil ARM C/C++ Compiler
+**                          MCUXpresso Compiler
 **
-**     Reference manual:    IMXRT700RM Rev.1, 10/2023
+**     Reference manual:    iMXRT700RM Rev.1, 06/2023
 **     Version:             rev. 1.0, 2022-08-01
-**     Build:               b231031
+**     Build:               b231008
 **
 **     Abstract:
 **         Provides a system configuration function and a global variable that
@@ -43,7 +44,7 @@
  */
 
 #ifndef _SYSTEM_MIMXRT798S_cm33_core0_H_
-#define _SYSTEM_MIMXRT798S_cm33_core0_H_         /**< Symbol preventing repeated inclusion */
+#define _SYSTEM_MIMXRT798S_cm33_core0_H_ /**< Symbol preventing repeated inclusion */
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,16 +52,31 @@ extern "C" {
 
 #include <stdint.h>
 
-
-#define DEFAULT_SYSTEM_CLOCK           64000000u           /* Default System clock value */
+#define DEFAULT_SYSTEM_CLOCK 12000000u /* Default System clock value */
 #ifndef CLK_XTAL_OSC_CLK
-#define CLK_XTAL_OSC_CLK               24000000u           /* Default XTAL OSC clock */
+#define CLK_XTAL_OSC_CLK 24000000u     /* Default XTAL OSC clock */
 #endif
-#define CLK_RTC_32K_CLK   32768u   /* RTC oscillator 32 kHz (32k_clk) */
-#define CLK_LPOSC_1MHZ    1000000u /* Low power oscillator 1 MHz (1m_lposc) */
+#ifndef CLK_EXT_CLKIN
+#define CLK_EXT_CLKIN 0u /* Default external CLKIN pin clock */
+#endif
+#define CLK_OSC_CLK \
+    ((CLKCTL2->SYSOSCBYPASS == 0U) ? CLK_XTAL_OSC_CLK : ((CLKCTL2->SYSOSCBYPASS == 1U) ? CLK_EXT_CLKIN : 0U))
 
+#define CLK_RTC_32K_CLK  32768u         /* RTC oscillator 32 kHz (32k_clk) */
+#define CLK_LPOSC_1MHZ   1000000u       /* Low power oscillator 1 MHz (1m_lposc) */
+#define CLK_FRO1_MAX_CLK 192000000u     /* FRO1 max clock frequency (fro1) */
 
+#define STARTUP_XSPI_CACHE_POLICY_NON_CACHEABLE 0U
+#define STARTUP_XSPI_CACHE_POLICY_WRITE_TRHOUGH 1U
+#define STARTUP_XSPI_CACHE_POLICY_WRITE_BACK    2U
 
+#ifndef STARTUP_XSPI0_CACHE_POLICY
+#define STARTUP_XSPI0_CACHE_POLICY STARTUP_XSPI_CACHE_POLICY_WRITE_BACK
+#endif
+
+#ifndef STARTUP_XSPI1_CACHE_POLICY
+#define STARTUP_XSPI1_CACHE_POLICY STARTUP_XSPI_CACHE_POLICY_WRITE_BACK
+#endif
 
 /**
  * @brief System clock frequency (core clock)
@@ -80,7 +96,7 @@ extern uint32_t SystemCoreClock;
  * microcontroller device. For systems with variable clock speed it also updates
  * the variable SystemCoreClock. SystemInit is called from startup_device file.
  */
-void SystemInit (void);
+void SystemInit(void);
 
 /**
  * @brief Updates the SystemCoreClock variable.
@@ -89,7 +105,7 @@ void SystemInit (void);
  * execution. SystemCoreClockUpdate() evaluates the clock register settings and calculates
  * the current core clock.
  */
-void SystemCoreClockUpdate (void);
+void SystemCoreClockUpdate(void);
 
 /**
  * @brief SystemInit function hook.
@@ -101,10 +117,10 @@ void SystemCoreClockUpdate (void);
  * NOTE: No global r/w variables can be used in this hook function because the
  * initialization of these variables happens after this function.
  */
-void SystemInitHook (void);
+void SystemInitHook(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* _SYSTEM_MIMXRT798S_cm33_core0_H_ */
+#endif /* _SYSTEM_MIMXRT798S_cm33_core0_H_ */

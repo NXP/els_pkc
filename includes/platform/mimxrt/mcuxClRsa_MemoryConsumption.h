@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -223,27 +223,9 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-
-#if defined(MCUXCL_FEATURE_PLATFORM_RW61X) || defined(MCUXCL_FEATURE_PLATFORM_MCXN)
-
-#define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (632u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (760u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (888u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
-
-#elif defined(MCUXCL_FEATURE_PLATFORM_MIMXRT)
- 
 #define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (376u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
 #define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (376u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
 #define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (376u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
-
-#else
-
-#define MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE    (56u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Crt function for 4096-bit keys
-
-#endif
-
 #define MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE : \
@@ -268,27 +250,9 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-
-#if defined(MCUXCL_FEATURE_PLATFORM_RW61X) || defined(MCUXCL_FEATURE_PLATFORM_MCXN)
-
-#define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (620u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE    (748u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE    (876u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
-
-#elif defined(MCUXCL_FEATURE_PLATFORM_MIMXRT)
-
 #define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (364u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
 #define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE    (364u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
 #define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE    (364u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
-
-#else
-
-#define MCUXCLRSA_KEYGENERATION_PLAIN_2048_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 2048-bit keys
-#define MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 3072-bit keys
-#define MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE    (44u) ///< Definition of CPU workarea size (in bytes) for the mcuxClRsa_KeyGeneration_Plain function for 4096-bit keys
-
-#endif
-
 #define MCUXCLRSA_KEYGENERATION_PLAIN_WACPU_SIZE(keyBitLength) \
     ((3072u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_PLAIN_4096_WACPU_SIZE : \
     ((2048u < (keyBitLength)) ? MCUXCLRSA_KEYGENERATION_PLAIN_3072_WACPU_SIZE : \

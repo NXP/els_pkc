@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -223,6 +223,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_flush(
  * @retval #MCUXCLKEY_STATUS_ERROR  on unsuccessful operation
  * @retval #MCUXCLKEY_STATUS_OK     on successful operation
  */
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("Definition is provided assuming library is built properly")
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_derivation)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivation(
     mcuxClSession_Handle_t pSession,
@@ -232,6 +233,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivation(
     uint32_t numberOfInputs,
     mcuxClKey_Handle_t derivedKey
 );
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 #endif /* MCUXCL_FEATURE_KEY_DERIVATION */
 
 /**
@@ -283,6 +285,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_setKeyproperties(
  *
  * @attention This function uses DRBG and PRNG which have to be initialized prior to calling the function.
  */
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("Definition is provided assuming library is built properly")
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_generate_keypair)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_generate_keypair(
     mcuxClSession_Handle_t pSession,
@@ -290,6 +293,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_generate_keypair(
     mcuxClKey_Handle_t privKey,
     mcuxClKey_Handle_t pubKey
 ); /* generate a fresh new key (pair) */
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 #endif /* MCUXCL_FEATURE_KEY_GENERATION */
 
 
@@ -312,6 +316,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_generate_keypair(
  *
  * @return status
  */
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("Definition is provided assuming library is built properly")
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_agreement)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_agreement(
     mcuxClSession_Handle_t pSession,
@@ -323,14 +328,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_agreement(
     uint8_t * pOut,
     uint32_t * const pOutLength
 ); /* determine a shared key on based on public and private inputs */
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 
 #ifdef MCUXCL_FEATURE_KEY_SELFTEST
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("Definition is provided assuming library is built properly")
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_agreement_selftest)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_agreement_selftest(
     mcuxClSession_Handle_t session,
     mcuxClKey_Agreement_t agreement,
     mcuxClKey_Test_t test
 );
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 #endif /* MCUXCL_FEATURE_KEY_SELFTEST */
 
 #endif /* MCUXCL_FEATURE_KEY_AGREEMENT */

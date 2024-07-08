@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023 NXP                                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  ip_platform.h
@@ -93,10 +93,10 @@
 
 // ELS version
 #define ELS_HW_VERSION_REVISION            0
-#define ELS_HW_VERSION_MINOR               16
+#define ELS_HW_VERSION_MINOR               10
 #define ELS_HW_VERSION_MAJOR               3
 #define ELS_HW_VERSION_FW_REVISION         0
-#define ELS_HW_VERSION_FW_MINOR            8
+#define ELS_HW_VERSION_FW_MINOR            10
 #define ELS_HW_VERSION_FW_MAJOR            2
 
 // Define SYSCON0 ASSERT PROT Address Register

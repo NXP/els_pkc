@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -36,23 +36,6 @@
 #define MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS (MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE))
 #endif
 
-#ifdef MCUXCL_FEATURE_PLATFORM_LPC
-
-#define MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE                      (4u)
-
-#define MCUXCLRANDOMMODES_INIT_WACPU_SIZE                             (4u)
-#define MCUXCLRANDOMMODES_RESEED_WACPU_SIZE                           (4u)
-#define MCUXCLRANDOMMODES_GENERATE_WACPU_SIZE                         (4u)
-#define MCUXCLRANDOMMODES_SELFTEST_WACPU_SIZE                         (4u)
-#define MCUXCLRANDOMMODES_UNINIT_WACPU_SIZE                           (0u)
-#define MCUXCLRANDOMMODES_CHECKSECURITYSTRENGTH_WACPU_SIZE            (0u)
-#define MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE                           (0u)
-#define MCUXCLRANDOMMODES_NCGENERATE_WACPU_SIZE                       (0u)
-#define MCUXCLRANDOMMODES_CREATEPATCHMODE_WACPU_SIZE                  (0u)
-#define MCUXCLRANDOMMODES_CREATETESTMODEFROMNORMALMODE_WACPU_SIZE     (0u)
-
-#else
-
 #define MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE                      (324u)
 
 #define MCUXCLRANDOMMODES_INIT_WACPU_SIZE                             (312u)
@@ -65,8 +48,6 @@
 #define MCUXCLRANDOMMODES_NCGENERATE_WACPU_SIZE                       (0u)
 #define MCUXCLRANDOMMODES_CREATEPATCHMODE_WACPU_SIZE                  (0u)
 #define MCUXCLRANDOMMODES_CREATETESTMODEFROMNORMALMODE_WACPU_SIZE     (0u)
-
-#endif
 
 #ifdef MCUXCL_FEATURE_RANDOMMODES_CTRDRBG
 

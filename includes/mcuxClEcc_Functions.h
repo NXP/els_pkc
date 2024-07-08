@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,8 +21,7 @@
 #define MCUXCLECC_FUNCTIONS_H_
 
 
-#include <stdint.h>
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <mcuxClSession.h>
 #include <mcuxClBuffer.h>
 #include <mcuxCsslFlowProtection.h>
@@ -363,9 +362,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateProtocol
  * This function generates an ECDSA protocol descriptor to perform deterministic ECDSA signature generation
  * based on a given HMAC mode.
  *
- * @param[in]  pSession                               Handle for the current CL session.
- * @param[out] pDeterministicECDSAProtocolDescriptor  Pointer to output determinstic ECDSA protocol descriptor.
- * @param[in]  hmacMode                               pointer to HMAC mode.
+ * @param[in]  pSession             Handle for the current CL session.
+ * @param[out] pProtocolDescriptor  Pointer to output deterministic ECDSA protocol descriptor.
+ * @param[in]  hmacMode             pointer to HMAC mode.
  *
  *
  * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
@@ -373,12 +372,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateProtocol
  * @retval #MCUXCLECC_STATUS_INVALID_PARAMS  if the input parameters are invalid.
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK    if a fault attack (unexpected behavior) is detected.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor(
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("Definition is provided assuming library is built properly")
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic(
     mcuxClSession_Handle_t session,
-    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t * const pDeterministicECDSAProtocolDescriptor,
+    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t * const pProtocolDescriptor,
     mcuxClMac_Mode_t hmacMode
     );
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
+#define mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic ///< @deprecated Please use mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic instead
 #endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
 
 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2024 NXP                                                       */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -11,13 +11,14 @@
 /* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.h
+/** @file  mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.h
 *  @brief defines FUP programs byte arrays
 */
-#ifndef MCUXCLECC_EDDSA_INTERNAL_CALCHASHMODN_FUP_H_
-#define MCUXCLECC_EDDSA_INTERNAL_CALCHASHMODN_FUP_H_
+#ifndef MCUXCLECC_ECDSA_INTERNAL_BLINDEDSECRETKEYGEN_FUP_H_
+#define MCUXCLECC_ECDSA_INTERNAL_BLINDEDSECRETKEYGEN_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_EdDSA_Internal_CalcHashModN_ModN[7];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_ECDSA_BlindedEphemeralKeyGen_Deterministic_BlindK_CheckZeroK[10];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_ECDSA_BlindedEphemeralKeyGen_Deterministic_CheckNSmallerK[6];
 
-#endif /* MCUXCLECC_EDDSA_INTERNAL_CALCHASHMODN_FUP*/ 
+#endif /* MCUXCLECC_ECDSA_INTERNAL_BLINDEDSECRETKEYGEN_FUP*/ 
