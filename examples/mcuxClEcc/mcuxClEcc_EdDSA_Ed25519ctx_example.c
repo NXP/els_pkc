@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -33,10 +33,11 @@
 
 #include <mcuxClExample_ELS_Helper.h>
 
-#define MAX_CPUWA_SIZE MCUXCLCORE_MAX(MCUXCLCORE_MAX(\
-                                        MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE,\
-                                        MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE),\
-                                        MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE)
+#define MAX_CPUWA_SIZE MCUXCLCORE_MAX(MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE,                                  \
+                                        MCUXCLCORE_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE,                   \
+                                        MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WACPU_SIZE,  \
+                                        MCUXCLCORE_MAX(MCUXCLECC_EDDSA_GENERATESIGNATURE_ED25519_WACPU_SIZE,\
+                                        MCUXCLECC_EDDSA_VERIFYSIGNATURE_ED25519_WACPU_SIZE))))
 
 #define MAX_PKCWA_SIZE MCUXCLCORE_MAX(MCUXCLCORE_MAX(\
                                         MCUXCLECC_EDDSA_GENERATEKEYPAIR_ED25519_WAPKC_SIZE,\

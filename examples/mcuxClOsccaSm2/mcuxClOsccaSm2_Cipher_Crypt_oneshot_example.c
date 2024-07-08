@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,6 +21,7 @@
  ******************************************************************************/
 #include <mcuxClSession.h>
 #include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClKey.h>
 #include <mcuxClOsccaSm2.h>
 #include <mcuxClOsccaSm3.h>
@@ -29,12 +30,11 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClExample_Session_Helper.h>
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 #if MCUXCL_FEATURE_RANDOMMODES_OSCCA_TRNG == 1
 #include <mcuxClOsccaRandomModes.h>
 #else
-#include <mcuxClRandomModes.h>
 #include <mcuxClMemory.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #endif
@@ -128,16 +128,15 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
     /**************************************************************************/
 
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-
     /* Setup one session to be used by all functions called */
     mcuxClSession_Descriptor_t session;
     //Allocate and initialize session with pkcWA on the beginning of PKC RAM
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MCUXCLOSCCASM2_CIPHER_ENCDEC_SIZEOF_WA_CPU(MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP),
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCASM2_CIPHER_ENCDEC_SIZEOF_WA_CPU(MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP), MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE),
                                                            MCUXCLOSCCASM2_CIPHER_ENCDEC_SIZEOF_WA_PKC(MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP, MCUXCLOSCCASM2_SM2P256_SIZE_BASEPOINTORDER));
     #if MCUXCL_FEATURE_RANDOMMODES_OSCCA_TRNG == 1
         /* Initialize the RNG context */
@@ -320,16 +319,11 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    
+
     return MCUXCLEXAMPLE_STATUS_OK;
-}
-bool nxpClOsccaSm2_Cipher_Crypt_oneshot_example(void)
-{
-    bool result = mcuxClOsccaSm2_Cipher_Crypt_oneshot_example();
-    return result;
 }

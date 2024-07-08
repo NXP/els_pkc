@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -22,13 +22,14 @@
 #include <stdbool.h>  // bool type for the example's return code
 #include <stddef.h>
 #include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClOsccaRandomModes.h>
 #include <mcuxClSession.h>
 #include <mcuxClExample_Session_Helper.h>
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 /** Performs an example usage of the mcuxClOsccaRandomModes component with OSCCA mode.
  * @retval true  The example code completed successfully
@@ -39,12 +40,11 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-
     /* Buffers to store the generated random values in. */
     uint8_t rng_buffer[41u];
     uint8_t rng_buffer1[3u];
@@ -53,13 +53,13 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
 
     mcuxClSession_Descriptor_t session;
     //Allocate and initialize session
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MCUXCLOSCCARANDOMMODES_OSCCARNG_SELFTEST_CPU_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCARANDOMMODES_OSCCARNG_SELFTEST_CPU_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE), 0u);
 
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInitRet, prngInitToken, mcuxClRandom_ncInit(&session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncInit) != prngInitToken) || (MCUXCLRANDOM_STATUS_OK != prngInitRet))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
@@ -71,7 +71,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
                                                    mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_selftest) != randomSelfToken) || (MCUXCLRANDOM_STATUS_OK != randomSelfRet))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -89,7 +89,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
                                                   mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != InitToken) || (MCUXCLRANDOM_STATUS_OK != randomInitRet))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -105,7 +105,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
                                                   3u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != randomGenToken) || (MCUXCLRANDOM_STATUS_OK != randomGenRet))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -117,7 +117,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
                                                   4u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != randomGenToken2) || (MCUXCLRANDOM_STATUS_OK != randomGenRet2))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -129,7 +129,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
                                                   5u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != randomGenToken3) || (MCUXCLRANDOM_STATUS_OK != randomGenRet3))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -141,7 +141,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
                                                   41u));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != randomGenToken4) || (MCUXCLRANDOM_STATUS_OK != randomGenRet4))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -150,7 +150,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomUninitresult, token6, mcuxClRandom_uninit(&session));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_uninit) != token6) || (MCUXCLRANDOM_STATUS_OK != randomUninitresult))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -161,19 +161,14 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(&session))
     {
-        return false;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    return true;
-}
-bool nxpClOsccaRandomModes_OsccaTrng_example(void)
-{
-    bool result = mcuxClOsccaRandomModes_OsccaTrng_example();
-    return result;
+    return MCUXCLEXAMPLE_STATUS_OK;
 }

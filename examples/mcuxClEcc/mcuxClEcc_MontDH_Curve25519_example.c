@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -28,23 +28,19 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClCore_Macros.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 
 #include <mcuxClExample_ELS_Helper.h>
 
-#if MCUXCLECC_MONTDH_GENERATEKEYPAIR_CURVE25519_WACPU_SIZE >= MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE
-    #define MAX_CPUWA_SIZE MCUXCLECC_MONTDH_GENERATEKEYPAIR_CURVE25519_WACPU_SIZE
-#else
-    #define MAX_CPUWA_SIZE MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE
-#endif
+#define MAX_CPUWA_SIZE MCUXCLCORE_MAX(MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE,\
+                       MCUXCLCORE_MAX(MCUXCLRANDOMMODES_INIT_WACPU_SIZE,\
+                       MCUXCLCORE_MAX(MCUXCLECC_MONTDH_GENERATEKEYPAIR_CURVE25519_WACPU_SIZE, \
+                                     MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE)))
 
-#if MCUXCLECC_MONTDH_GENERATEKEYPAIR_CURVE25519_WAPKC_SIZE >= MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE
-    #define MAX_PKCWA_SIZE MCUXCLECC_MONTDH_GENERATEKEYPAIR_CURVE25519_WAPKC_SIZE
-#else
-    #define MAX_PKCWA_SIZE MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE
-#endif
-
+#define MAX_PKCWA_SIZE MCUXCLCORE_MAX(MCUXCLECC_MONTDH_GENERATEKEYPAIR_CURVE25519_WAPKC_SIZE, \
+                                        MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE)
 
 MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_MontDH_Curve25519_example)
 {
