@@ -3,9 +3,6 @@ CLNS SDK (1.10.0_RT700) Release Notes
 - Release: RT700SDK_EAR
 - Version: SDK_1.10.0_RT700
 - Date:    2024-07-02
-- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
-- Compiler: IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM
---- Test Target: HAPS80 (RT700-EMU-BOM1.57-L4.19 bitfile)
 
 --- CLNS memory consumption: delivery/mimxrt_release/static_library/mimxrt/libclns.a
 TEXT RO RW ZI TOTAL_CONSUMPTION

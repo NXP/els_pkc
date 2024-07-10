@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=../../bin/generator/sdk_generator/data/sdk_data_schema/v3/software_set_and_project_schema.json
 
 __variable__:
-  els_pkc_version: 1.9.0
+  els_pkc_version: 1.10.0
 component.els_pkc.doc.lpc:
   section-type: component
   contents:
@@ -2888,6 +2888,7 @@ component.els_pkc.platform.mimxrt:
     - repo_relative_path: "./"
     - repo_relative_path: src/platforms/mimxrt
     - repo_relative_path: src/platforms/mimxrt/inc
+    - repo_relative_path: includes/platform/mimxrt
     files:
     - source: src/platforms/mimxrt/platform_specific_headers.h
     - source: src/platforms/mimxrt/mcuxClConfig.h
