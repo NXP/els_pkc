@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClKey_Derivation_PBKDF2.c
@@ -92,12 +92,14 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
     }
 
     /* Process the salt. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("hmacContext is initialized mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
     MCUX_CSSL_FP_FUNCTION_CALL(process_result1, mcuxClMac_process(
             pSession,
             hmacContext,
             salt.input,
             salt.size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
     if(MCUXCLMAC_STATUS_OK != process_result1)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivation_pbkdf2_computeHmac, MCUXCLKEY_STATUS_FAULT_ATTACK);
@@ -105,12 +107,14 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
 
     /* Process the input */
     MCUXCLBUFFER_INIT_RO(pIndexBuf, pSession, pIndex, sizeof(uint32_t));
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("hmacContext is initialized mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
     MCUX_CSSL_FP_FUNCTION_CALL(process_result2, mcuxClMac_process(
             pSession,
             hmacContext,
             pIndexBuf,
             sizeof(uint32_t)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
     if(MCUXCLMAC_STATUS_OK != process_result2)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivation_pbkdf2_computeHmac, MCUXCLKEY_STATUS_FAULT_ATTACK);
@@ -120,12 +124,14 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
 
     /* Create the digest. */
     MCUXCLBUFFER_INIT(pOutputBuf, pSession, pOutput, sizeof(uint32_t));
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("hmacContext is initialized mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
     MCUX_CSSL_FP_FUNCTION_CALL(finish_result, mcuxClMac_finish(
             pSession,
             hmacContext,
             pOutputBuf,
             &outSize
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
     if(MCUXCLMAC_STATUS_OK != finish_result)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivation_pbkdf2_computeHmac, MCUXCLKEY_STATUS_FAULT_ATTACK);
@@ -142,7 +148,9 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_Derivation_ModeConstructor_PBKDF2)
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_Derivation_ModeConstructor_PBKDF2(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClKey_DerivationMode_t * pDerivationMode,
     const mcuxClKey_DerivationAlgorithmDescriptor_t * derivationAlgorithm,
     mcuxClMac_Mode_t macMode,

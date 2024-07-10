@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -164,7 +164,7 @@ typedef struct
 {
     mcuxClEcc_DomainParam_t curveParam;  ///< [in] structure of InputBuffers for curve parameters and length of parameters.
     mcuxCl_InputBuffer_t pPrecG;      ///< [in] InputBuffer for octet string of pre-computed point of base point G, which is of the same format as base point G.
-                                     ///<      It is calculated as (2 ^ (nByteLength * 4)) * G.
+                                     ///<      It is calculated as (2 ^ (byteLenN * 4)) * G.
     mcuxCl_InputBuffer_t pHash;       ///< [in] InputBuffer for string of message digest (hash), of which the length is byteLenHash (in optLen).
     mcuxCl_InputBuffer_t pSignature;  ///< [in] InputBuffer for to octet string of signature R and S. Each of R and S is a Big-endian octet string of the exact length curveParam.byteLenN.
                                      ///<      The string of R is followed by the string of S.

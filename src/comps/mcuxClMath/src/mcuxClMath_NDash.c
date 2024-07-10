@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -57,6 +57,8 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt((uint32_t) iN_iT, 0, pOperands, 2u, &backupPtrUptrt));
 
     const uint16_t offsetN = pOperands[NDASH_N];
+    /* ASSERT: operand N (length >= MCUXCLPKC_WORDSIZE) is within PKC workarea, and 1 PKC word is reserved before N. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(offsetN, MCUXCLPKC_RAM_OFFSET_MIN + MCUXCLPKC_WORDSIZE, MCUXCLPKC_RAM_OFFSET_MAX - MCUXCLPKC_WORDSIZE)
 
     /* WAITFORREADY in mcuxClMath_InitLocalUptrt(...). */
     pOperands[NDASH_NDASH] = (uint16_t) (offsetN - MCUXCLPKC_WORDSIZE);

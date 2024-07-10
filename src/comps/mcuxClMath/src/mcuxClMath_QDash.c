@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -104,6 +104,8 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 
     MCUX_CSSL_FP_COUNTER_STMT(
         const uint32_t leadingZeroLength = mcuxClMath_CountLeadingZerosWord((uint32_t) length);            \
+        /* ASSERT: number of leading zeros of nonzero length (u16 casted to u32) is in range [16,31]. */  \
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(leadingZeroLength, 16u, 31u)                         \
         const uint32_t leadingZeroExponent = leadingZeroLength - 3u;  /* exponent = length * 8. */        \
         /* "-1" to skip the first nonzero bit. */                                                         \
         const uint32_t lterationsSquareMultiply = ((sizeof(uint32_t)) * 8u) - leadingZeroExponent - 1u; )

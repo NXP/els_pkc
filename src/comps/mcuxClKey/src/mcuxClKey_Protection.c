@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClKey_Protection.c
@@ -51,9 +51,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(mcuxC
 
     mcuxClEls_KeyIndex_t key_idx_sk     = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(mcuxClKey_getParentKey(key));
     mcuxClEls_KeyIndex_t key_idx_mack   = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(key);
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Auxularity data is properly aligned with key_properties type structure")
     mcuxClEls_KeyProp_t  key_properties = *((mcuxClEls_KeyProp_t*) mcuxClKey_getAuxData(key));
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
     MCUX_CSSL_FP_FUNCTION_CALL(resultCkdf, mcuxClEls_Ckdf_Sp800108_Async(
                                  key_idx_sk,

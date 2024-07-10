@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -47,13 +47,16 @@ MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comment
  * in mixing extended homogeneous with homogeneous coordinates as suggested in Section 4.3 of https://eprint.iacr.org/2008/522.pdf.
  *
  * Input:
- *  - pSession          Handle for the current CL session
- *  - pDomainParams     Pointer to ECC common domain parameters structure
- *  - iScalar Pointer   table index of secret scalar lambda
- *  - scalarBitLength   Bit length of the scalar; must coincide with the bit length of n
- *  - pMixedPointAddFct Curve dependent function to perform mixed point addition on twisted Edwards curve
- *  - pPointDoubleFct   Curve dependent function to perform point doubling on twisted Edwards curve
- *  - pPtrSelectFctFP   Function to select pre-computed point to be added
+ *  - pSession              Handle for the current CL session
+ *  - pDomainParams         Pointer to ECC common domain parameters structure
+ *  - iScalar Pointer       table index of secret scalar lambda
+ *  - scalarBitLength       Bit length of the scalar; must coincide with the bit length of n
+ *  - mixedPointAddFct      Curve dependent function to perform mixed point addition on twisted Edwards curve
+ *  - mixedPointAddFctFPId  FP ID of the function mixedPointAddFct
+ *  - pointDoubleFct        Curve dependent function to perform point doubling on twisted Edwards curve
+ *  - pointDoubleFctFPId    FP ID of the function pointDoubleFct
+ *  - ptrSelectFct          Function to select accumulated ladder points
+ *  - ptrSelectFctFPId      FP ID of the function ptrSelectFct
  *
  * Prerequisites:
  *  - Buffer buf(iScalar) contains the secret scalar lambda of bit length scalarBitLength
@@ -74,9 +77,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
     mcuxClEcc_CommonDomainParams_t *pDomainParams,
     uint8_t iScalar,
     uint32_t scalarBitLength,
-    const mcuxClEcc_TwEd_MixedPointAddFunction_FP_t *pMixedPointAddFctFP,
-    const mcuxClEcc_TwEd_PointDoubleFunction_FP_t *pPointDoubleFctFP,
-    const mcuxClEcc_TwEd_PtrSelectFunction_FP_t *pPtrSelectFctFP
+    mcuxClEcc_TwEd_MixedPointAddFunction_t mixedPointAddFct,
+    uint32_t mixedPointAddFctFPId,
+    mcuxClEcc_TwEd_PointDoubleFunction_t pointDoubleFct,
+    uint32_t pointDoubleFctFPId,
+    mcuxClEcc_TwEd_PtrSelectFunction_t ptrSelectFct,
+    uint32_t ptrSelectFctFPId
     )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_TwEd_FixScalarMult);
@@ -144,12 +150,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
 
     /*
      * Step 5: For i from (scalarBitLength - 4) down to 0:
-     *          - Call point doubling routine defined by pPointDoubleFct to compute P = 2*P
+     *          - Call point doubling routine defined by pointDoubleFct to compute P = 2*P
      *          - Get digit (i3 i2 i1 i0)_2 at offset i in buf(iScalar), and set PP = P_((i3 i2 i1)_2 ^ (i0 i0 i0)_2 ^ (1 1 1)_2)
-     *          - Call pointer selection routine specified by pPtrSelectFct to set TWED_PP_VX0 to the buffer storing the X-coordinate of PP and
+     *          - Call pointer selection routine specified by ptrSelectFct to set TWED_PP_VX0 to the buffer storing the X-coordinate of PP and
      *             - if i0 = 1, set TWED_PP_VY0 and TWED_PP_VT0 to the buffers storing the Y- and T-coordinates of PP.
      *             - if i0 = 0, set TWED_PP_VY0 and TWED_PP_VT0 to buffers ECC_T2 and ECC_T3 and store the negative Y- and T-coordinates of PP in buffers ECC_T2 and ECC_T3.
-     *          - Call mixed point addition routine defined by pMixedPointAddFct to compute P = P + PP.
+     *          - Call mixed point addition routine defined by mixedPointAddFct to compute P = P + PP.
      */
     uint32_t currentDigitBitIndex = scalarBitLength; /* scalarBitLength is multiple of MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE, so index can be unsigned. */
     uint32_t currentScalarWord = 0u;
@@ -170,28 +176,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
             MCUX_CSSL_FP_BRANCH_POSITIVE(ifInWhile);
         }
 
-        /* Call point doubling routine defined by pPointDoubleFct to compute P = 2*P */
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_DoubleFct, pPointDoubleFctFP->pPointDoubleFct());
+        /* Call point doubling routine defined by pointDoubleFct to compute P = 2*P */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(pointDoubleFct());
 
-        /* Call pointer selection routine specified by pPtrSelectFct to set TWED_PP_VX0, TWED_PP_VY0 and TWED_PP_VT0
+        /* Call pointer selection routine specified by ptrSelectFct to set TWED_PP_VX0, TWED_PP_VY0 and TWED_PP_VT0
          * to the buffers storing the X-, Y- and T-coordinates of PP. */
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PtrSelectFct, pPtrSelectFctFP->pPtrSelectFct(pSession, currentScalarWord, currentDigitInWordIndex));
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(ptrSelectFct(pSession, currentScalarWord, currentDigitInWordIndex));
 
-        /* Call mixed point addition routine defined by pMixedPointAddFct to compute P = P + PP. */
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_MixedAddFct, pMixedPointAddFctFP->pMixedPointAddFct());
-
-        if((MCUXCLECC_STATUS_OK != ret_DoubleFct) || (MCUXCLECC_STATUS_OK != ret_PtrSelectFct) || (MCUXCLECC_STATUS_OK != ret_MixedAddFct))
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_TwEd_FixScalarMult, MCUXCLECC_STATUS_FAULT_ATTACK);
-        }
+        /* Call mixed point addition routine defined by mixedPointAddFct to compute P = P + PP. */
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(mixedPointAddFct());
 
         /* FP balancing for the loop iteration */
         MCUX_CSSL_FP_LOOP_ITERATION(whileLoop,
             MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(ifInWhile,
                                               (currentDigitBitIndex == (scalarBitLength - 1u)) || (currentDigitInWordIndex == (32u - MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE))),
-            pPointDoubleFctFP->pointDoubleFct_FP_FuncId,
-            pPtrSelectFctFP->ptrSelectFct_FP_FuncId,
-            pMixedPointAddFctFP->mixedPointAddFct_FP_FuncId
+            pointDoubleFctFPId,
+            ptrSelectFctFPId,
+            mixedPointAddFctFPId
             );
     }
 

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2018-2023 NXP                                                  */
+/* Copyright 2018-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /*
@@ -27,6 +27,7 @@
 #include <mcuxClOsccaPkc.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslSecureCounter.h>
+#include <mcuxCsslAnalysis.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <internal/mcuxClOsccaSm2_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
@@ -307,7 +308,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm2_EccImportInputPointWithInit(
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm2_Import(TI_v, &pP[byteCountP], byteCountP, bufferSize));
     /* Y*Z^3*R */
-    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(iP, 0u, TI_indexmax,)
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(iP, 0u, TI_indexmax)
     MCUXCLOSCCAPKC_FXIMC1_MMUL(iP+1u, TI_v, TI_u, TI_modulus);
 
     /* Z = 1 in MR */

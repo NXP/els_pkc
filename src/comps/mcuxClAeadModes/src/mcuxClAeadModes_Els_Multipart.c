@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAeadModes_Els_Multipart.c
@@ -50,15 +50,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_init(
             - all other arguments
             - unused arguments = NULL/0
     */
+    if(adataLength > (UINT32_MAX - inLength))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_init, MCUXCLAEAD_STATUS_ERROR);
+    }
+
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAeadModes_Context_t * pCtx = (mcuxClAeadModes_Context_t * ) pContext;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
     pCtx->common.mode = mode;
     pCtx->key = key;
     pCtx->dataLength = inLength;
     pCtx->aadLength = adataLength;
     pCtx->tagLength = tagLength;
     pCtx->processedDataLength = 0u;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pCtx->common.mode->algorithm->pSkeleton(
@@ -112,10 +120,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process(
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAeadModes_Context_t * pCtx = (mcuxClAeadModes_Context_t * ) pContext;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
+    if(inLength > (UINT32_MAX - pCtx->processedDataLength))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_process, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pCtx->aadLength, 0u, UINT32_MAX - pCtx->dataLength, MCUXCLAEAD_STATUS_ERROR)
     if((pCtx->processedDataLength < pCtx->aadLength) ||
        ((pCtx->processedDataLength + inLength) > (pCtx->aadLength + pCtx->dataLength)))
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     {
-         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_process, MCUXCLAEAD_STATUS_ERROR);
+         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_process, MCUXCLAEAD_STATUS_ERROR);
     }
 
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
@@ -167,7 +184,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_process_adata(
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAeadModes_Context_t * pCtx = (mcuxClAeadModes_Context_t * ) pContext;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
+    if(adataLength > (UINT32_MAX - pCtx->processedDataLength))
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_process_adata, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
     if((pCtx->processedDataLength + adataLength) > pCtx->aadLength)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_process_adata, MCUXCLAEAD_STATUS_ERROR);
     }
@@ -222,7 +249,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_finish(
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAeadModes_Context_t * pCtx = (mcuxClAeadModes_Context_t * ) pContext;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pCtx->aadLength, 0u, UINT32_MAX - pCtx->dataLength, MCUXCLAEAD_STATUS_ERROR)
     if(pCtx->processedDataLength != (pCtx->dataLength + pCtx->aadLength))
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_finish, MCUXCLAEAD_STATUS_ERROR);
     }
@@ -278,7 +309,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_verify(
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAeadModes_Context_t * pCtx = (mcuxClAeadModes_Context_t * ) pContext;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pCtx->aadLength, 0u, UINT32_MAX - pCtx->dataLength, MCUXCLAEAD_STATUS_ERROR)
     if(pCtx->processedDataLength != pCtx->dataLength + pCtx->aadLength)
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_verify, MCUXCLAEAD_STATUS_ERROR);
     }

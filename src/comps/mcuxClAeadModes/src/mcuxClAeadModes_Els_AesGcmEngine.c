@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAeadModes_Els_AesGcmEngine.c
@@ -78,7 +78,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
     elsOptions.word.value = 0u;
     elsOptions.bits.dcrpt  = (uint8_t)pContext->common.mode->algorithm->direction;
     elsOptions.bits.acpsie = (uint8_t)MCUXCLELS_AEAD_STATE_IN_ENABLE;
-    elsOptions.bits.lastinit = (uint8_t)MCUXCLELS_AEAD_LASTINIT_FALSE;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
+    elsOptions.bits.lastinit = MCUXCLELS_AEAD_LASTINIT_FALSE;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     if (MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(pContext->key))
     {
@@ -110,7 +112,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
             if (MCUXCLELS_STATUS_OK_WAIT != retInit)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async));
             }
             MCUX_CSSL_FP_FUNCTION_CALL(ivWaitRet, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
@@ -119,13 +122,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (MCUXCLELS_STATUS_OK != addressComparisonResult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
         }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
             if (MCUXCLELS_STATUS_OK != ivWaitRet)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
             }
         }
         else
@@ -139,7 +148,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
             if((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL)
             {
                 /* Enable lastinit for final partial init */
-                elsOptions.bits.lastinit = (uint8_t)MCUXCLELS_AEAD_LASTINIT_TRUE;
+                MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
+                elsOptions.bits.lastinit = MCUXCLELS_AEAD_LASTINIT_TRUE;
+                MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
             }
 
             MCUX_CSSL_FP_FUNCTION_CALL(retInitPartial, mcuxClEls_Aead_PartialInit_Async(elsOptions,
@@ -152,14 +163,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
             if(MCUXCLELS_STATUS_OK_WAIT != retInitPartial)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async));
             }
 
             MCUX_CSSL_FP_FUNCTION_CALL(ivWaitRet, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
             if (MCUXCLELS_STATUS_OK != ivWaitRet)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
             }
 
 
@@ -168,7 +182,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (MCUXCLELS_STATUS_OK != addressComparisonResult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
         }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
         }
@@ -186,14 +203,35 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (ret_updateAad != MCUXCLELS_STATUS_OK_WAIT)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async));
         }
 
         MCUX_CSSL_FP_FUNCTION_CALL(aadWait, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
         if (aadWait != MCUXCLELS_STATUS_OK)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesGcm, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         }
 
 
@@ -202,7 +240,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (MCUXCLELS_STATUS_OK != addressComparisonResult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
         }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
     }
@@ -227,14 +277,43 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (ret_updateData != MCUXCLELS_STATUS_OK_WAIT)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AAD) == MCUXCLAEADMODES_ENGINE_OPTION_AAD),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateData_Async));
         }
 
         MCUX_CSSL_FP_FUNCTION_CALL(waitData, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
         if (waitData != MCUXCLELS_STATUS_OK)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AAD) == MCUXCLAEADMODES_ENGINE_OPTION_AAD),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateData_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         }
 
 #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
@@ -242,7 +321,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (MCUXCLELS_STATUS_OK != addressComparisonResult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AAD) == MCUXCLAEADMODES_ENGINE_OPTION_AAD),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateData_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
         }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
@@ -261,14 +356,51 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (ret_finish != MCUXCLELS_STATUS_OK_WAIT)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AAD) == MCUXCLAEADMODES_ENGINE_OPTION_AAD),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL((0u != (options & MCUXCLAEADMODES_ENGINE_OPTION_DATA_MASK)),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateData_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Finalize_Async));
         }
 
         MCUX_CSSL_FP_FUNCTION_CALL(waitFinish, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
         if (waitFinish != MCUXCLELS_STATUS_OK)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AAD) == MCUXCLAEADMODES_ENGINE_OPTION_AAD),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL((0u != (options & MCUXCLAEADMODES_ENGINE_OPTION_DATA_MASK)),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateData_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Finalize_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         }
 
 #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
@@ -276,7 +408,27 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesGcmEls
 
         if (MCUXCLELS_STATUS_OK != addressComparisonResult)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesGcmEls, MCUXCLAEAD_STATUS_ERROR,
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_MASK) == MCUXCLAEADMODES_ENGINE_OPTION_IV_FINAL),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Init_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_START)
+                                 || ((options & MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT) == MCUXCLAEADMODES_ENGINE_OPTION_IV_PARTIAL_CONT),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_PartialInit_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AAD) == MCUXCLAEADMODES_ENGINE_OPTION_AAD),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateAad_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_CONDITIONAL((0u != (options & MCUXCLAEADMODES_ENGINE_OPTION_DATA_MASK)),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_UpdateData_Async),
+                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Aead_Finalize_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
         }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 

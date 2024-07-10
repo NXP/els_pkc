@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -27,6 +27,21 @@
 
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+
+/**
+ * @brief Common scalar multiplication functions for MontDH curves
+*/
+static const mcuxClEcc_ScalarMultFunctions_t mcuxClEcc_MontDH_ScalarMultFunctions =
+{
+  .secFixScalarMultFct = NULL,
+  .secFixScalarMultFctFPId = 0u,
+  .secVarScalarMultFct = NULL,
+  .secVarScalarMultFctFPId = 0u,
+  .plainFixScalarMultFct = NULL,
+  .plainFixScalarMultFctFPId = 0u,
+  .plainVarScalarMultFct = NULL,
+  .plainVarScalarMultFctFPId = 0u
+};
 
 
 /**********************************************************/
@@ -105,10 +120,7 @@ const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve25519 _
     .common.pGy = (uint8_t *) &pCurve25519_PointGY,
     .common.pPrecPoints = NULL,
     .common.pLadderConst = (uint8_t *) &pCurve25519_LadderConst,
-    .common.pSecFixScalarMultFctFP = NULL,
-    .common.pSecVarScalarMultFctFP = NULL,
-    .common.pPlainFixScalarMultFctFP = NULL,
-    .common.pPlainVarScalarMultFctFP = NULL,
+    .common.pScalarMultFunctions = &mcuxClEcc_MontDH_ScalarMultFunctions,
     .c = 3u,
     .t = 254u
 };
@@ -206,19 +218,31 @@ const mcuxClEcc_MontDH_DomainParams_t mcuxClEcc_MontDH_DomainParams_Curve448 __a
     .common.pGy = (uint8_t *) &pCurve448_PointGY,
     .common.pPrecPoints = NULL,
     .common.pLadderConst = (uint8_t *) &pCurve448_LadderConst,
-    .common.pSecFixScalarMultFctFP = NULL,
-    .common.pSecVarScalarMultFctFP = NULL,
-    .common.pPlainFixScalarMultFctFP = NULL,
-    .common.pPlainVarScalarMultFctFP = NULL,
+    .common.pScalarMultFunctions = &mcuxClEcc_MontDH_ScalarMultFunctions,
     .c = 2u,
     .t = 447u
 };
 
 
+/**
+ * @brief Common scalar multiplication functions for Weierstrass curves
+*/
+const mcuxClEcc_ScalarMultFunctions_t mcuxClEcc_Weier_ScalarMultFunctions =
+{
+  .secFixScalarMultFct = NULL,
+  .secFixScalarMultFctFPId = 0u,
+  .secVarScalarMultFct = NULL,
+  .secVarScalarMultFctFPId = 0u,
+  .plainFixScalarMultFct = NULL,
+  .plainFixScalarMultFctFPId = 0u,
+  .plainVarScalarMultFct = NULL,
+  .plainVarScalarMultFctFPId = 0u
+};
 
 /**********************************************************/
 /* Weierstrass curve domain parameters                    */
 /**********************************************************/
+
 
 /**********************************************************/
 /* secp192r1 Curve parameters (LE)                        */
@@ -401,6 +425,7 @@ static const uint8_t SECP224R1_PRECG[MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP * 
     0x82u, 0xAEu, 0x7Au, 0xD7u, 0x81u, 0x5Bu, 0x8Cu, 0x33u,
     0xD4u, 0xF6u, 0x16u, 0x69u
 };
+
 const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp224r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP224R1_SIZE_PRIMEP,
@@ -415,10 +440,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224r1 __at
   .common.pGy = (uint8_t *) &SECP224R1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP224R1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp192r1"))) =
@@ -435,10 +457,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192r1 __at
   .common.pGy = (uint8_t *) &SECP192R1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP192R1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -536,6 +555,7 @@ static const uint8_t SECP256R1_PRECG[MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP * 
     0xF7u, 0xAFu, 0x4Au, 0x3Au, 0x95u, 0x9Du, 0x2Eu, 0xE1u,
     0xEEu, 0x31u, 0x41u, 0x83u, 0xABu, 0x25u, 0x48u, 0x2Du
 };
+
 const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256r1 __attribute__((section(".rodata.curve.mcuxClEcc_Weier_secp256r1"))) =
 {
   .common.byteLenP = MCUXCLECC_WEIERECC_SECP256R1_SIZE_PRIMEP,
@@ -550,10 +570,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256r1 __at
   .common.pGy = (uint8_t *) &SECP256R1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP256R1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -658,10 +675,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp384r1 __at
   .common.pGy = (uint8_t *) &SECP384R1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP384R1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -824,10 +838,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp521r1 __at
   .common.pGy = (uint8_t *) &SECP521R1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP521R1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 
@@ -931,10 +942,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp160k1 __at
   .common.pGy = (uint8_t *) &SECP160k1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP160k1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1037,10 +1045,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp192k1 __at
   .common.pGy = (uint8_t *) &SECP192K1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP192K1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1153,10 +1158,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp224k1 __at
   .common.pGy = (uint8_t *) &SECP224K1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP224K1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1269,10 +1271,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_secp256k1 __at
   .common.pGy = (uint8_t *) &SECP256K1_GY,
   .common.pPrecPoints = (uint8_t *) &SECP256K1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 
@@ -1376,10 +1375,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160r
   .common.pGy = (uint8_t *) &brainpoolP160r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP160r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1482,10 +1478,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192r
   .common.pGy = (uint8_t *) &brainpoolP192r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP192r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1598,10 +1591,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224r
   .common.pGy = (uint8_t *) &brainpoolP224r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP224r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1714,10 +1704,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256r
   .common.pGy = (uint8_t *) &brainpoolP256r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP256r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1840,10 +1827,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320r
   .common.pGy = (uint8_t *) &brainpoolP320r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP320r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -1976,10 +1960,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384r
   .common.pGy = (uint8_t *) &brainpoolP384r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP384r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2132,10 +2113,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512r
   .common.pGy = (uint8_t *) &brainpoolP512r1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP512r1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 
@@ -2201,10 +2179,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP160t
   .common.pGy = (uint8_t *) &brainpoolP160t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP160t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2269,10 +2244,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP192t
   .common.pGy = (uint8_t *) &brainpoolP192t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP192t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2343,10 +2315,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP224t
   .common.pGy = (uint8_t *) &brainpoolP224t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP224t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2417,10 +2386,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP256t
   .common.pGy = (uint8_t *) &brainpoolP256t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP256t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2497,10 +2463,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP320t
   .common.pGy = (uint8_t *) &brainpoolP320t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP320t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2583,10 +2546,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP384t
   .common.pGy = (uint8_t *) &brainpoolP384t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP384t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 /**********************************************************/
@@ -2681,10 +2641,7 @@ const mcuxClEcc_Weier_DomainParams_t mcuxClEcc_Weier_DomainParams_brainpoolP512t
   .common.pGy = (uint8_t *) &brainpoolP512t1_GY,
   .common.pPrecPoints = (uint8_t *) &brainpoolP512t1_PRECG,
   .common.pLadderConst = NULL,
-  .common.pSecFixScalarMultFctFP = NULL,
-  .common.pSecVarScalarMultFctFP = NULL,
-  .common.pPlainFixScalarMultFctFP = NULL,
-  .common.pPlainVarScalarMultFctFP = NULL
+  .common.pScalarMultFunctions = &mcuxClEcc_Weier_ScalarMultFunctions
 };
 
 
@@ -2796,17 +2753,18 @@ static const uint32_t pEd25519_dom2Prefix[8u] __attribute__ ((aligned (4))) __at
 };
 
 
-/* MISRA Ex. 20 - Rule 5.1 */
-static const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainVarScalarMult_FP = {
-    .pScalarMultFct = mcuxClEcc_TwEd_PlainVarScalarMult,
-    .scalarMultFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainVarScalarMult),
-};
 
 
-/* MISRA Ex. 20 - Rule 5.1 */
-static const mcuxClEcc_ScalarMultFunction_FP_t mcuxClEcc_TwEd_PlainFixScalarMult25519_FP = {
-    .pScalarMultFct = mcuxClEcc_TwEd_PlainFixScalarMult25519,
-    .scalarMultFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainFixScalarMult25519),
+static const mcuxClEcc_ScalarMultFunctions_t mcuxClEcc_TwEd_ScalarMultFunctions25519 =
+{
+  .secFixScalarMultFct = mcuxClEcc_TwEd_PlainFixScalarMult25519,
+  .secFixScalarMultFctFPId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainFixScalarMult25519),
+  .secVarScalarMultFct = mcuxClEcc_TwEd_PlainVarScalarMult,
+  .secVarScalarMultFctFPId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainVarScalarMult),
+  .plainFixScalarMultFct = mcuxClEcc_TwEd_PlainFixScalarMult25519,
+  .plainFixScalarMultFctFPId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainFixScalarMult25519),
+  .plainVarScalarMultFct = mcuxClEcc_TwEd_PlainVarScalarMult,
+  .plainVarScalarMultFctFPId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainVarScalarMult)
 };
 
 const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 __attribute__((section(".rodata.curve.mcuxClEcc_EdDSA_Ed25519"))) =
@@ -2823,10 +2781,7 @@ const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519 __attr
   .common.pGy = (uint8_t *) &pEd25519_PointGY,
   .common.pPrecPoints = (uint8_t *) &pEd25519_PrecPoints,
   .common.pLadderConst = (uint8_t *) &pEd25519_LADDER_CONST,
-  .common.pSecFixScalarMultFctFP = &mcuxClEcc_TwEd_PlainFixScalarMult25519_FP,
-  .common.pSecVarScalarMultFctFP = &mcuxClEcc_TwEd_PlainVarScalarMult_FP,
-  .common.pPlainFixScalarMultFctFP = &mcuxClEcc_TwEd_PlainFixScalarMult25519_FP,
-  .common.pPlainVarScalarMultFctFP = &mcuxClEcc_TwEd_PlainVarScalarMult_FP,
+  .common.pScalarMultFunctions = &mcuxClEcc_TwEd_ScalarMultFunctions25519,
   .b = 256u,
   .c = 3u,
   .t = 254u,

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaMacModes.c
@@ -66,15 +66,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_init(
 
   pCtx->pKey = (mcuxClKey_Descriptor_t *) key;
 
-  MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgo->engineInit(session, pCtx));
-  if (MCUXCLMAC_STATUS_OK != result)
+  MCUX_CSSL_FP_FUNCTION_CALL(result1, pAlgo->engineInit(session, pCtx));
+  if (MCUXCLMAC_STATUS_OK != result1)
   {
     MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaMacModes_Context_t));
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_init, result,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_init, result1,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
   }
 
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_init, result);
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_init, result1);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaMacModes_process, mcuxClMac_ProcessFunc_t)
@@ -91,14 +91,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_process(
 
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_process, pAlgo->protectionToken_engineUpdate);
 
-  MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgo->engineUpdate(session, pCtx, pIn, inLength));
-  if (MCUXCLMAC_STATUS_OK != result)
+  MCUX_CSSL_FP_FUNCTION_CALL(result2, pAlgo->engineUpdate(session, pCtx, pIn, inLength));
+  if (MCUXCLMAC_STATUS_OK != result2)
   {
     MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaMacModes_Context_t));
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_process, result,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_process, result2,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
   }
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_process, result);
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_process, result2);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaMacModes_finish, mcuxClMac_FinishFunc_t)
@@ -116,8 +116,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_finish(
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_finish, pAlgo->protectionToken_engineFinalize,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
 
-  MCUX_CSSL_FP_FUNCTION_CALL(result, pAlgo->engineFinalize(session, pCtx, pMac, pMacLength));
+  MCUX_CSSL_FP_FUNCTION_CALL(result3, pAlgo->engineFinalize(session, pCtx, pMac, pMacLength));
 
   MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaMacModes_Context_t));
-  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_finish, result);
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_finish, result3);
 }

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -20,7 +20,7 @@
 #ifndef MCUXCLECC_INTERNAL_H_
 #define MCUXCLECC_INTERNAL_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <mcuxClSession.h>
 #include <mcuxClCore_Macros.h>
 #include <mcuxClBuffer.h>
@@ -92,11 +92,18 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_ScalarMultFu
     uint32_t scalarBitLength,                      ///< Bit length of the scalar
     uint32_t options                               ///< Parameter to pass options
     ));
-typedef struct
+
+typedef struct mcuxClEcc_ScalarMultFunctions
 {
-    mcuxClEcc_ScalarMultFunction_t pScalarMultFct;   ///< scalar multiplication function pointer
-    uint32_t scalarMultFct_FP_FuncId;               ///< FP ID of the function
-} mcuxClEcc_ScalarMultFunction_FP_t;
+    mcuxClEcc_ScalarMultFunction_t secFixScalarMultFct;    ///< Pointer to secure scalar multiplication function that shall be used to perform a scalar multiplication lambda*G for secret scalar lambda in {1,...,n-1} and base point G
+    uint32_t secFixScalarMultFctFPId;                     ///< FP ID of the secFixScalarMultFct function   
+    mcuxClEcc_ScalarMultFunction_t secVarScalarMultFct;    ///< Pointer to secure scalar multiplication function that shall be used to perform a scalar multiplication lambad*P for secret scalar lambda in {1,...,n-1} and arbitrary point P on the curve
+    uint32_t secVarScalarMultFctFPId;                     ///< FP ID of the secVarScalarMultFct function
+    mcuxClEcc_ScalarMultFunction_t plainFixScalarMultFct;  ///< Pointer to plain scalar multiplication function that shall be used to perform a scalar multiplication lambda*G for non-secret scalar lambda in {1,...,n-1} and base point G
+    uint32_t plainFixScalarMultFctFPId;                   ///< FP ID of the plainFixScalarMultFctFPId function
+    mcuxClEcc_ScalarMultFunction_t plainVarScalarMultFct;  ///< Pointer to plain scalar multiplication function that shall be used to perform a scalar multiplication lambda*G for non-secret scalar lambda in {1,...,n-1} and arbitrary point P on the curve
+    uint32_t plainVarScalarMultFctFPId;                   ///< FP ID of the plainVarScalarMultFct function
+} mcuxClEcc_ScalarMultFunctions_t;
 
 /**
  * Common part of domain parameter structure, shared by all ECC functions.
@@ -115,10 +122,7 @@ struct mcuxClEcc_CommonDomainParams
     uint8_t *pGy;            ///< Pointer to y-coordinate Gy of base point G
     uint8_t *pPrecPoints;    ///< Pointer to pre-computed points for fixed base point scalar multiplication (2^(byteLenN * 4) * G for Weierstrass curves, used in ECDSA signature verification; reserved for other curves)
     uint8_t *pLadderConst;   ///< Pointer to pre-computed Montgomery ladder constant (in little endian format, used for Montgomery and Twisted Edwards curves)
-    const mcuxClEcc_ScalarMultFunction_FP_t *pSecFixScalarMultFctFP;    ///< Pointer to secure scalar multiplication function and FP ID that shall be used to perform a scalar multiplication lambda*G for secret scalar lambda in {1,...,n-1} and base point G
-    const mcuxClEcc_ScalarMultFunction_FP_t *pSecVarScalarMultFctFP;    ///< Pointer to secure scalar multiplication function and FP ID that shall be used to perform a scalar multiplication lambad*P for secret scalar lambda in {1,...,n-1} and arbitrary point P on the curve
-    const mcuxClEcc_ScalarMultFunction_FP_t *pPlainFixScalarMultFctFP;  ///< Pointer to plain scalar multiplication function and FP ID that shall be used to perform a scalar multiplication lambda*G for non-secret scalar lambda in {1,...,n-1} and base point G
-    const mcuxClEcc_ScalarMultFunction_FP_t *pPlainVarScalarMultFctFP;  ///< Pointer to plain scalar multiplication function and FP ID that shall be used to perform a scalar multiplication lambda*G for non-secret scalar lambda in {1,...,n-1} and arbitrary point P on the curve
+    const mcuxClEcc_ScalarMultFunctions_t *pScalarMultFunctions;  ///< Pointer to struct that contains scalar multiplication function pointers
 };
 
 

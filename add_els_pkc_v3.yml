@@ -127,7 +127,7 @@ component.els_pkc.doc.mimxrt:
     cc-include:
     - repo_relative_path: "./"
     files:
-    - source: LICENSE.htm
+    - source: LA_OPT_Online_Code_Hosting.htm
       hidden: true
       exclude: true
     - source: softwareContentRegister.txt
@@ -297,9 +297,9 @@ component.els_pkc.static_lib.mimxrt:
     - source: static_library/mimxrt/libclns.a.objsize
       hidden: true
       exclude: true
-    - source: static_library/mimxrt/libclns.stripped.a
-      hidden: true
-      exclude: true
+    # - source: static_library/mimxrt/libclns.stripped.a
+    #   hidden: true
+    #   exclude: true
   belong_to:
     kex_package: set.component.els_pkc
     cmsis_pack: set.device.${platform_devices_soc_name}
@@ -407,7 +407,7 @@ component.els_pkc.aead_modes:
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Multipart.c
     - source: src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Oneshot.c
     - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes.h
-    - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_MemoryConsumption.h
     - source: src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_Modes.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Common.h
     - source: src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Common_Constants.h
@@ -559,7 +559,7 @@ component.els_pkc.cipher_modes:
     - source: src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_Aes_Internal.c
 
     - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes.h
-    - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
     - source: src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_Modes.h
 
     - source: src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Common.h
@@ -648,36 +648,6 @@ component.els_pkc.crc:
     - component.els_pkc.flow_protection
     - component.els_pkc.data_integrity
     - component.els_pkc.toolchain
-component.els_pkc.ecc_deterministic:
-  section-type: component
-  contents:
-    repo_base_path: components/els_pkc
-    project_base_path: component/els_pkc
-    cc-include:
-    - repo_relative_path: "./"
-    - repo_relative_path: src/comps/mcuxClEcc/inc/
-    - repo_relative_path: src/comps/mcuxClEcc/inc/internal
-    files:
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen.c
-    - source: src/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.c
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.h
-  belong_to:
-    kex_package: set.component.els_pkc
-    cmsis_pack: set.device.${platform_devices_soc_name}
-  section_info:
-    version: "${els_pkc_version}"
-    type: software_component
-    full_name: Component els_pkc.ecc_deterministic
-    description: Component els_pkc.ecc_deterministic
-    user_visible: never
-    taxonomy:
-      belong_to: els_pkc_main
-      cgroup: els_pkc_ecc_deterministic
-    display_name: els_pkc.ecc_deterministic
-  dependency:
-    allOf:
-    - component.els_pkc.ecc_deterministic
 component.els_pkc.ecc:
   section-type: component
   contents:
@@ -689,6 +659,9 @@ component.els_pkc.ecc:
     - repo_relative_path: src/comps/mcuxClEcc/inc/internal
     files:
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_Constants.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_GenerateProtocolDescriptor.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen.c
+    - source: src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.c
     - source: src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignature.c
@@ -759,6 +732,7 @@ component.els_pkc.ecc:
 
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Constants.h
+    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_GenerateSignature_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.h
@@ -769,7 +743,7 @@ component.els_pkc.ecc:
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_PointComparison_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_SetupEnvironment_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_KeyTypes.h
-    - source: src/comps/mcuxClEcc/inc/mcuxClEcc_MemoryConsumption.h
+    # - source: src/comps/mcuxClEcc/inc/mcuxClEcc_MemoryConsumption.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_MontDhX_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.h
     - source: src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.h
@@ -833,13 +807,6 @@ component.els_pkc.ecc:
     - component.els_pkc.key
     - component.els_pkc.els
     - component.els_pkc.buffer
-    - anyOf:
-        - allOf:
-          - component.els_pkc.ecc_deterministic
-          - device:
-             - MIMXRT735S
-             - MIMXRT758S
-             - MIMXRT798S
 component.els_pkc.els_header_only:
   section-type: component
   contents:
@@ -1056,7 +1023,7 @@ component.els_pkc.hash:
     - source: src/comps/mcuxClHash/inc/mcuxClHash.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_Constants.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_Functions.h
-    - source: src/comps/mcuxClHash/inc/mcuxClHash_MemoryConsumption.h
+    # - source: src/comps/mcuxClHash/inc/mcuxClHash_MemoryConsumption.h
     - source: src/comps/mcuxClHash/inc/mcuxClHash_Types.h
 
     - source: src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal.h
@@ -1097,7 +1064,7 @@ component.els_pkc.hashmodes:
     - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_Algorithms.h
     - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_Constants.h
     - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_Functions.h
-    - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClHashModes/inc/mcuxClHashModes_MemoryConsumption.h
     - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_c_sha1.h
     - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_els_sha2.h
     - source: src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal.h
@@ -1141,7 +1108,7 @@ component.els_pkc.hmac:
     - source: src/comps/mcuxClHmac/inc/mcuxClHmac_Constants.h
     - source: src/comps/mcuxClHmac/inc/mcuxClHmac_Functions.h
     - source: src/comps/mcuxClHmac/inc/mcuxClHmac_KeyTypes.h
-    - source: src/comps/mcuxClHmac/inc/mcuxClHmac_MemoryConsumption.h
+    # - source: src/comps/mcuxClHmac/inc/mcuxClHmac_MemoryConsumption.h
     - source: src/comps/mcuxClHmac/inc/mcuxClHmac_Modes.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Core_Functions_Els.h
     - source: src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Core_Functions_Sw.h
@@ -1221,7 +1188,7 @@ component.els_pkc.key:
     - source: src/comps/mcuxClKey/inc/mcuxClKey.h
     - source: src/comps/mcuxClKey/inc/mcuxClKey_Constants.h
     - source: src/comps/mcuxClKey/inc/mcuxClKey_Functions.h
-    - source: src/comps/mcuxClKey/inc/mcuxClKey_MemoryConsumption.h
+    # - source: src/comps/mcuxClKey/inc/mcuxClKey_MemoryConsumption.h
     - source: src/comps/mcuxClKey/inc/mcuxClKey_ProtectionMechanisms.h
     - source: src/comps/mcuxClKey/inc/mcuxClKey_Types.h
     - source: src/comps/mcuxClKey/inc/internal/mcuxClKey_Functions_Internal.h
@@ -1307,7 +1274,7 @@ component.els_pkc.mac_modes:
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes.h
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_Constants.h
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_Functions.h
-    - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_MemoryConsumption.h
     - source: src/comps/mcuxClMacModes/inc/mcuxClMacModes_Modes.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Common_Algorithms.h
     - source: src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Common_Constants.h
@@ -1519,7 +1486,7 @@ component.els_pkc.oscca_aeadmodes:
     - source: src/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4_Multipart.c
     - source: src/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4_OneShot.c
     - source: src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes.h
-    - source: src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes_MemoryConsumption.h
     - source: src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes_Modes.h
     - source: src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Algorithms.h
     - source: src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Functions.h
@@ -1555,7 +1522,7 @@ component.els_pkc.oscca_ciphermodes:
     - source: src/comps/mcuxClOsccaCipherModes/src/mcuxClOsccaCipherModes_SM4_Crypt_Internal.c
     - source: src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes.h
     - source: src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes_Constants.h
-    - source: src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes_MemoryConsumption.h
     - source: src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Algorithms.h
     - source: src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Internal_Functions.h
     - source: src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Internal_Types.h
@@ -1594,7 +1561,7 @@ component.els_pkc.oscca_macmodes:
     - source: src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes.h
     - source: src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_Constants.h
     - source: src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_KeyTypes.h
-    - source: src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_MemoryConsumption.h
     - source: src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_Modes.h
     - source: src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_Algorithms.h
     - source: src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_Ctx.h
@@ -1665,7 +1632,7 @@ component.els_pkc.oscca_randommodes:
     - source: src/comps/mcuxClOsccaRandomModes/src/mcuxClOsccaRandomModes_OsccaMode.c
     - source: src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes.h
     - source: src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes_Constants.h
-    - source: src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes_MemoryConsumption.h
     - source: src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_Private_RNG.h
     - source: src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_Private_Types.h
     - source: src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_SfrAccess.h
@@ -1757,7 +1724,7 @@ component.els_pkc.oscca_sm2:
     - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_Functions.h
     - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_FUP.h
     - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_KeyTypes.h
-    - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_MemoryConsumption.h
+    # - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_MemoryConsumption.h
     - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_ModeConstants.h
     - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_SelfTest.h
     - source: src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_Types.h
@@ -1812,7 +1779,7 @@ component.els_pkc.oscca_sm3:
     - source: src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3.h
     - source: src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_Algorithms.h
     - source: src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_Constants.h
-    - source: src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_MemoryConsumption.h
+    # - source: src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_MemoryConsumption.h
     - source: src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Core_sm3.h
     - source: src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal.h
     - source: src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal_sm3.h
@@ -2124,7 +2091,7 @@ component.els_pkc.random_modes:
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Constants.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Functions_PatchMode.h
     - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Functions_TestMode.h
-    - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_MemoryConsumption.h
+    # - source: src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_MemoryConsumption.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Internal_SizeDefinitions.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_CtrDrbg.h
     - source: src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_CtrDrbg_BlockCipher.h
@@ -2280,7 +2247,7 @@ component.els_pkc.rsa:
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_Constants.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_Functions.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_KeyGeneration_Crt_FUP.h
-    - source: src/comps/mcuxClRsa/inc/mcuxClRsa_MemoryConsumption.h
+    # - source: src/comps/mcuxClRsa/inc/mcuxClRsa_MemoryConsumption.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_MillerRabinTest_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_PrivateCrt_FUP.h
     - source: src/comps/mcuxClRsa/inc/mcuxClRsa_RemoveBlinding_FUP.h
@@ -2336,7 +2303,7 @@ component.els_pkc.session:
     - source: src/comps/mcuxClSession/src/mcuxClSession.c
     - source: src/comps/mcuxClSession/inc/mcuxClSession.h
     - source: src/comps/mcuxClSession/inc/mcuxClSession_Functions.h
-    - source: src/comps/mcuxClSession/inc/mcuxClSession_MemoryConsumption.h
+    # - source: src/comps/mcuxClSession/inc/mcuxClSession_MemoryConsumption.h
     - source: src/comps/mcuxClSession/inc/mcuxClSession_Types.h
     - source: src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal.h
     - source: src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal_EntryExit.h
@@ -2377,7 +2344,7 @@ component.els_pkc.signature:
     - source: src/comps/mcuxClSignature/inc/mcuxClSignature.h
     - source: src/comps/mcuxClSignature/inc/mcuxClSignature_Constants.h
     - source: src/comps/mcuxClSignature/inc/mcuxClSignature_Functions.h
-    - source: src/comps/mcuxClSignature/inc/mcuxClSignature_MemoryConsumption.h
+    # - source: src/comps/mcuxClSignature/inc/mcuxClSignature_MemoryConsumption.h
     - source: src/comps/mcuxClSignature/inc/mcuxClSignature_Types.h
     - source: src/comps/mcuxClSignature/inc/internal/mcuxClSignature_Internal.h
   belong_to:
@@ -2414,9 +2381,9 @@ component.els_pkc.trng:
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Constants.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Functions.h
-    - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
+    # - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
     - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Types.h
-    - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
+    # - source: src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
   belong_to:
     kex_package: set.component.els_pkc
     cmsis_pack: set.device.${platform_devices_soc_name}
@@ -2583,7 +2550,8 @@ component.els_pkc.param_integrity:
     - repo_relative_path: "./"
     - repo_relative_path: src/comps/mcuxCsslParamIntegrity/inc
     files:
-    - source: src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
+    # - source: src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
+    - source: src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity32.c
     - source: src/comps/mcuxCsslParamIntegrity/inc/mcuxCsslParamIntegrity.h
   belong_to:
     kex_package: set.component.els_pkc
@@ -2930,6 +2898,24 @@ component.els_pkc.platform.mimxrt:
     - source: src/platforms/mimxrt/mcux_els.h
     - source: src/platforms/mimxrt/mcux_pkc.c
     - source: src/platforms/mimxrt/mcux_pkc.h
+    - source: includes/platform/mimxrt/mcuxClAeadModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClCipherModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClEcc_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClHashModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClHash_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClHmac_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClKey_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClMacModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClOsccaAeadModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClOsccaCipherModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClOsccaMacModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClOsccaRandomModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClOsccaSm2_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClOsccaSm3_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClRandomModes_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClRsa_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClSession_MemoryConsumption.h
+    - source: includes/platform/mimxrt/mcuxClSignature_MemoryConsumption.h
     configuration:
       cc-define:
         CSS_CONST_SEGMENT_SECTION: '"NonCacheable.init"'
@@ -3322,7 +3308,7 @@ component.els_pkc.examples_els:
     - source: examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c
     - source: examples/mcuxClEls/mcuxClEls_Common_Get_Info_example.c
     - source: examples/mcuxClEls/mcuxClEls_Ecc_Keygen_Sign_Verify_example.c
-    - source: examples/mcuxClEls/mcuxClEls_Hash_HW_Security_Counter_example.c
+    # - source: examples/mcuxClEls/mcuxClEls_Hash_HW_Security_Counter_example.c
     - source: examples/mcuxClEls/mcuxClEls_Hash_Sha224_One_Block_example.c
     - source: examples/mcuxClEls/mcuxClEls_Hash_Sha256_One_Block_example.c
     - source: examples/mcuxClEls/mcuxClEls_Hash_Sha384_One_Block_example.c

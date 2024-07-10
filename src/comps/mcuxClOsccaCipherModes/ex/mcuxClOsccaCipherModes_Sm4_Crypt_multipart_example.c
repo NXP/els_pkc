@@ -1,18 +1,17 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClCore_Examples.h> // Defines and assertions for examples
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCipher.h> // Interface to the entire mcuxClOscca_Cipher component
 #include <mcuxClOsccaCipherModes.h> // Interface to the entire mcuxClOscca_Cipher component
@@ -20,6 +19,7 @@
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxClOsccaSm4.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClToolchain.h> // memory segment definitions
@@ -27,6 +27,7 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 /**
  * @brief Cryptographic Keys
@@ -64,8 +65,7 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_multipart_example(void)
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -75,7 +75,7 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_multipart_example(void)
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
     {
-        MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLOSCCACIPHER_SM4_PROCESS_CPU_WA_BUFFER_SIZE, 0u);
+        MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCACIPHER_SM4_PROCESS_CPU_WA_BUFFER_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE), 0u);
     }
 
     /* Initlize the prng */
@@ -85,7 +85,7 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_multipart_example(void)
     mcuxClSession_Descriptor_t sessionDesc2;
     mcuxClSession_Handle_t session2 = &sessionDesc2;
     {
-        MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session2, MCUXCLOSCCACIPHER_SM4_PROCESS_CPU_WA_BUFFER_SIZE, 0u);
+        MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session2, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCACIPHER_SM4_PROCESS_CPU_WA_BUFFER_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE), 0u);
     }
 
     /* Initlize the prng */
@@ -352,12 +352,7 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_multipart_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    if(!mcuxClExample_Session_Clean(session2))
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

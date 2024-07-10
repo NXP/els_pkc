@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClKey_Derivation_NIST_SP800_108.c
@@ -42,7 +42,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_Derivation_ModeConstructor_NIST_SP800_108)
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_Derivation_ModeConstructor_NIST_SP800_108(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   mcuxClKey_DerivationMode_t * pDerivationMode,
   const mcuxClKey_DerivationAlgorithmDescriptor_t * derivationAlgorithm,
   mcuxClMac_Mode_t macMode,
@@ -192,7 +194,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         if (MCUXCLKEY_DERIVATION_OPTIONS_NIST_SP800_108_MODE_DOUBLE_PIPELINE == mode)
         {
             /* Init Mac context */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by trusted source mcuxClMac_init")
             MCUX_CSSL_FP_FUNCTION_CALL(MacInit, mcuxClMac_init(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 derivationKey,
@@ -206,7 +210,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
             if (1u == i)
             {
                 /* Process the label */
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                 MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_label, mcuxClMac_process(
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                     pSession,
                     pMacContext,
                     inputs[0].input,
@@ -222,7 +228,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
                     /* Process the fixed 0-byte */
                     inputData[0u]= 0u;
                     MCUXCLBUFFER_INIT_RO(pInBuf, pSession, inputData, 1u);
+                    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                     MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_0, mcuxClMac_process(
+                    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                         pSession,
                         pMacContext,
                         pInBuf,
@@ -235,7 +243,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
                 }
 
                 /* Process the context */
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                 MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_context, mcuxClMac_process(
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                     pSession,
                     pMacContext,
                     inputs[1].input,
@@ -248,7 +258,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
 
                 /* Process [L]2 */
                 MCUXCLBUFFER_INIT_RO(pLBuf, pSession, pL, sizeOfEncodedOutputSize);
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                 MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_l, mcuxClMac_process(
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                     pSession,
                     pMacContext,
                     pLBuf,
@@ -263,7 +275,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
             else
             {
                 /* Process A(i-1) */
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                 MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_AMinusOne, mcuxClMac_process(
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                     pSession,
                     pMacContext,
                     pMacRetInBuf,
@@ -275,7 +289,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
                 }
             }
 
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
             MCUX_CSSL_FP_FUNCTION_CALL(MacFinalize, mcuxClMac_finish(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 pMacRetOutBuf,
@@ -299,7 +315,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         }
 
         /* Init Mac context */
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by trusted source mcuxClMac_init")
         MCUX_CSSL_FP_FUNCTION_CALL(MacInit, mcuxClMac_init(
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
             pSession,
             pMacContext,
             derivationKey,
@@ -317,7 +335,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
             if(1u != i)
             {
                 MCUXCLBUFFER_INIT_RO(pMacInBuf, pSession, pMac + offset - derivationMode->macMode->common.macByteSize, derivationMode->macMode->common.macByteSize);
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                 MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_KiMinusOne, mcuxClMac_process(
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                     pSession,
                     pMacContext,
                     pMacInBuf,
@@ -330,7 +350,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
             }
             else
             {
+                MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
                 MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_KiMinusOne, mcuxClMac_process(
+                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                     pSession,
                     pMacContext,
                     inputs[2].input,
@@ -347,7 +369,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         }
         else if (MCUXCLKEY_DERIVATION_OPTIONS_NIST_SP800_108_MODE_DOUBLE_PIPELINE == mode) /* Process A(i) for Double-Pipline mode */
         {
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
             MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_Ai, mcuxClMac_process(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 pMacRetInBuf,
@@ -389,7 +413,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
             }
 
             MCUXCLBUFFER_INIT_RO(pIBuf, pSession, pI, counterByteLen);
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
             MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_i, mcuxClMac_process(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 pIBuf,
@@ -406,7 +432,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         }
 
         /* Process the label */
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
         MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_label, mcuxClMac_process(
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
             pSession,
             pMacContext,
             inputs[0].input,
@@ -422,7 +450,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
             /* Process the fixed 0-byte */
             inputData[0u]= 0u;
             MCUXCLBUFFER_INIT_RO(pInBuf, pSession, inputData, 1u);
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
             MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_0, mcuxClMac_process(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 pInBuf,
@@ -436,7 +466,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         }
 
         /* Process the context */
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
         MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_context, mcuxClMac_process(
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
             pSession,
             pMacContext,
             inputs[1].input,
@@ -449,7 +481,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
 
         /* Process [L]2 */
         MCUXCLBUFFER_INIT_RO(pLBuf, pSession, pL, sizeOfEncodedOutputSize);
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
         MCUX_CSSL_FP_FUNCTION_CALL(MacProcessInput_l, mcuxClMac_process(
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
             pSession,
             pMacContext,
             pLBuf,
@@ -463,7 +497,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         if (i != nOfIterations)
         {
             /* Generate Mac output */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
             MCUX_CSSL_FP_FUNCTION_CALL(MacFinalize, mcuxClMac_finish(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 pOutBuf,
@@ -478,7 +514,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_NIST_
         {
             /* Handle the last iteration, which might involve a needed output smaller than the MAC output size.
                Use a buffer on stack to generate the last MAC, and copy only the needed amount of bytes to the pMac buffer. */
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("pMacContext is initialized by mcuxClMac_init and processed by mcuxClMac_process which are both trusted functions")
             MCUX_CSSL_FP_FUNCTION_CALL(MacFinalize, mcuxClMac_finish(
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
                 pSession,
                 pMacContext,
                 pMacRetOutBuf,

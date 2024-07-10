@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
@@ -124,7 +124,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_Sha2
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_Els_Sha2_Prepare_Truncated);
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Start setting initial options for ELS hash: Warmup parameters */
     pHashOptions->bits.hashoe = MCUXCLELS_HASH_OUTPUT_ENABLE;
@@ -201,7 +203,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
          && ((uint32_t) pIn < ((uint32_t) MCUXCLPKC_RAM_START_ADDRESS + MCUXCLPKC_RAM_SIZE));
 #endif
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     if (0u < sizeOfFullBlocks)
     {
@@ -313,19 +317,26 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_Els_oneShot_Sha2_Padding);
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(sizeOfFullBlocks, 0u, inSize, MCUXCLHASH_STATUS_FAILURE);
     size_t posdst = inSize - sizeOfFullBlocks;
     size_t buflen = algorithm->blockSize;
 
     /* Copy the data to the buffer in the workspace. */
     MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF(shablock, &pIn[sizeOfFullBlocks], posdst, buflen);
 
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->blockSize, MCUXCLHASH_BLOCK_SIZE_SHA_224, MCUXCLHASH_BLOCK_SIZE_MAX, MCUXCLHASH_STATUS_FAILURE);
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(posdst, 0u, (algorithm->blockSize-1u), MCUXCLHASH_STATUS_FAILURE);
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(buflen, MCUXCLHASH_BLOCK_SIZE_SHA_224, MCUXCLHASH_BLOCK_SIZE_MAX, MCUXCLHASH_STATUS_FAILURE);
     buflen -= posdst;
 
     /* add first byte of the padding: (remaining) < (block length) so there is space in the buffer */
     shablock[posdst] = 0x80u;
     posdst += 1u;
+
     buflen -= 1u;
 
     /* Process partial padded block if needed */
@@ -360,11 +371,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
     MCUXCLMEMORY_FP_MEMORY_SET(&shablock[posdst], 0x00, buflen);
     posdst = algorithm->blockSize;
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("posdst-4 is always bigger than 1.");
-    shablock[--posdst] = (uint8_t)(inSize <<  3u);
-    shablock[--posdst] = (uint8_t)(inSize >>  5u);
-    shablock[--posdst] = (uint8_t)(inSize >> 13u);
-    shablock[--posdst] = (uint8_t)(inSize >> 21u);
-    shablock[posdst - 1u] = (uint8_t)(inSize >> 29u);
+    shablock[--posdst] = (uint8_t)((inSize <<  3u) & 0xFFu);
+    shablock[--posdst] = (uint8_t)((inSize >>  5u) & 0xFFu);
+    shablock[--posdst] = (uint8_t)((inSize >> 13u) & 0xFFu);
+    shablock[--posdst] = (uint8_t)((inSize >> 21u) & 0xFFu);
+    shablock[posdst - 1u] = (uint8_t)((inSize >> 29u) & 0xFFu);
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     /* Set output options */
@@ -394,12 +405,20 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_Els_oneShot_Sha2);
 
+    /* Check on outSize */
+    if((UINT32_MAX - *pOutSize) < algorithm->hashSize)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_oneShot_Sha2, MCUXCLHASH_STATUS_INVALID_PARAMS);
+    }
+
     /**************************************************************************************
      * Step 1: Set ELS options for initialization, continuation from external state, or from
      * internal state
      **************************************************************************************/
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Start setting initial options for ELS hash */
     mcuxClEls_HashOption_t hashOptions = algorithmDetails->hashOptions;
@@ -413,12 +432,15 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_oneShot_Sha2, MCUXCLHASH_STATUS_FAULT_ATTACK);
     }
 
-    size_t const sizeOfFullBlocks = (inSize / algorithm->blockSize) * algorithm->blockSize;
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->blockSize, MCUXCLHASH_BLOCK_SIZE_SHA_224, MCUXCLHASH_BLOCK_SIZE_SHA_512, MCUXCLHASH_STATUS_FAILURE);
+    size_t const numberOfFullBlocks = (inSize / algorithm->blockSize);
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(numberOfFullBlocks, 0u, (UINT32_MAX / MCUXCLHASH_BLOCK_SIZE_SHA_224), MCUXCLHASH_STATUS_FAILURE);
+    size_t const sizeOfFullBlocks = numberOfFullBlocks * algorithm->blockSize;
 
     /**************************************************************************************
      * Step 2: Process full blocks of input data
      **************************************************************************************/
-
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(resultHandleFullBlocks, mcuxClHashModes_Els_oneShot_Sha2_FullBlocks(
                     session,
                     algorithm,
@@ -427,6 +449,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
                     sizeOfFullBlocks,
                     &hashOptions,
                     NULL)); /* Parameter not needed for non-truncated modes. */
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
     if (MCUXCLHASH_STATUS_OK != resultHandleFullBlocks)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_oneShot_Sha2, resultHandleFullBlocks,
@@ -448,6 +471,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_oneShot_Sha2, MCUXCLHASH_STATUS_FAILURE);
     }
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
     MCUX_CSSL_FP_FUNCTION_CALL(resultHandlePadding, mcuxClHashModes_Els_oneShot_Sha2_Padding(
                     session,
                     algorithm,
@@ -457,6 +481,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
                     &hashOptions,
                     NULL,   /* Parameter not needed for non-truncated modes. */
                     shablock));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
     if (MCUXCLHASH_STATUS_OK != resultHandlePadding)
     {
         /* Free workarea (shablock) and exit */
@@ -525,7 +550,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
     MCUX_CSSL_FP_COUNTER_STMT(scBalance += (algorithmDetails->protection_token_dma_protection));
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Flow protections checks the result modulo 2^32 so that a potential overflow does not change the result")
     MCUX_CSSL_FP_COUNTER_STMT(scBalance += MCUX_CSSL_FP_CONDITIONAL((MCUXCLSESSION_RTF_UPDATE_TRUE == session->rtf), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)));
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     /* Set expectations and exit */
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_oneShot_Sha2, MCUXCLHASH_STATUS_OK,
@@ -546,7 +573,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_Els_oneShot_Sha2_Truncated);
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /**************************************************************************************
      * Step 1: Prepare the ELS to accept a custom IV for truncated SHA-512/224, SHA512/256
@@ -695,6 +724,82 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_oneS
                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy));
 }
 
+
+static uint32_t getProcessContextBuffer_token(mcuxClHash_Context_t context,
+                                              uint32_t inSize)
+{
+    const mcuxClHash_AlgorithmDescriptor_t * algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    const size_t algoBlockSize = algorithm->blockSize;
+    /* When some data is in context and new data from input can fill entire context */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("does not wrap since unprocessedLength in context does not exceed algorithm block size")
+    bool isBlockProcessedFromContext = (0u != context->unprocessedLength) && (inSize >= (algoBlockSize - context->unprocessedLength));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Flow protections checks the result modulo 2^32 so that a potential overflow does not change the result")
+    #ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+        return MCUX_CSSL_FP_CONDITIONAL(isBlockProcessedFromContext,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+            algorithmDetails->protection_token_els_core,
+            algorithmDetails->protection_token_dma_protection);
+    #else
+        return MCUX_CSSL_FP_CONDITIONAL(isBlockProcessedFromContext,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+            algorithmDetails->protection_token_els_core);
+    #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+}
+
+
+static uint32_t getProcessNewInput_token(mcuxClHash_Context_t context,
+                                        mcuxCl_InputBuffer_t pIn,
+                                        uint32_t inSize)
+{
+    const mcuxClHash_AlgorithmDescriptor_t * algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Flow protections checks the result modulo 2^32 so that a potential overflow does not change the result")
+#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
+    const bool isInputInPKC =
+        (((uint32_t) pIn + inSize) > (uint32_t) MCUXCLPKC_RAM_START_ADDRESS)
+        && ((uint32_t) pIn < ((uint32_t) MCUXCLPKC_RAM_START_ADDRESS + MCUXCLPKC_RAM_SIZE));
+    const size_t algoBlockSize = context->algo->blockSize;
+    uint32_t unprocessedInputLength = inSize;
+    /* When some data is in context and new data from input can fill entire context */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("unprocessedLength in context does not exceed algorithm block size")
+    uint32_t unprocessedEmptyLength = algoBlockSize - context->unprocessedLength;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    if((0u != context->unprocessedLength) && (inSize >= unprocessedEmptyLength))
+    {
+        unprocessedInputLength -= unprocessedEmptyLength;
+    }
+    /* The amount of unprocessed data that fills complete blocks */
+    uint32_t unprocessedCompleteInputBlocks = unprocessedInputLength / algoBlockSize;
+
+    uint32_t processNewInput_token =  MCUX_CSSL_FP_CONDITIONAL(false != isInputInPKC,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                algorithmDetails->protection_token_els_core)
+                                        * unprocessedCompleteInputBlocks
+                                        + MCUX_CSSL_FP_CONDITIONAL(false == isInputInPKC, algorithmDetails->protection_token_els_core);
+#else
+    (void) pIn;     /* Unused parameter */
+    (void) inSize;     /* Unused parameter */
+    uint32_t processNewInput_token = algorithmDetails->protection_token_els_core;
+#endif
+
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+        processNewInput_token += (MCUX_CSSL_FP_CONDITIONAL(NULL != algorithmDetails->dmaProtection,
+            algorithmDetails->protection_token_dma_protection));
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+    return processNewInput_token;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+}
+
+
 /**
  * @brief Processing of full blocks via ELS
  *
@@ -719,14 +824,17 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
     /**************************************************************************************
      * Step 1: Gather information
      **************************************************************************************/
-
     const mcuxClHash_AlgorithmDescriptor_t * algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const size_t algoBlockSize = context->algo->blockSize;
-    /* Total length of data to be processed */
-    size_t unprocessedTotalLength = context->unprocessedLength + inSize;
-    /* The amount of unprocessed data that fills complete blocks */
-    size_t  unprocessedCompleteBlockLength = (unprocessedTotalLength / algoBlockSize) * algoBlockSize;
+    uint32_t unprocessedInputLength = inSize;
+    /* When some data is in context and new data from input can fill entire context */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("does not wrap since unprocessedLength in context does not exceed algorithm block size")
+    bool isBlockProcessedFromContext = (0u != context->unprocessedLength) && (inSize >= (algoBlockSize - context->unprocessedLength));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+
     /* Pointer to unprocessed data buffer */
     uint8_t *pUnprocessed = (uint8_t *)mcuxClHash_getUnprocessedPtr(context);
     /* Input pointer that changes throughout the function */
@@ -743,44 +851,22 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
     /**************************************************************************************
      * Step 2: Prepare Flow Protection Balancing
      **************************************************************************************/
+    MCUX_CSSL_FP_COUNTER_STMT(uint32_t processContextBuffer_token = getProcessContextBuffer_token(context, inSize));
 
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    MCUX_CSSL_FP_COUNTER_STMT(uint32_t processContextBuffer_token =
-                                MCUX_CSSL_FP_CONDITIONAL(((0u != unprocessedCompleteBlockLength) && (0u != context->unprocessedLength)),
-                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                                                        algorithmDetails->protection_token_els_core,
-                                                        algorithmDetails->protection_token_dma_protection));
-#else
-    MCUX_CSSL_FP_COUNTER_STMT(uint32_t processContextBuffer_token =
-                                MCUX_CSSL_FP_CONDITIONAL(((0u != unprocessedCompleteBlockLength) && (0u != context->unprocessedLength)),
-                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                                                        algorithmDetails->protection_token_els_core));
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
-
-#ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
-    MCUX_CSSL_FP_COUNTER_STMT(uint32_t processNewInput_token =  MCUX_CSSL_FP_CONDITIONAL(false != isInputInPKC,       \
-                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),                      \
-                                                algorithmDetails->protection_token_els_core)                        \
-                                          * unprocessedCompleteBlockLength / algoBlockSize                          \
-                                          + MCUX_CSSL_FP_CONDITIONAL(false == isInputInPKC, algorithmDetails->protection_token_els_core));
-#else
-    MCUX_CSSL_FP_COUNTER_STMT(uint32_t processNewInput_token = algorithmDetails->protection_token_els_core);
-#endif
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-    MCUX_CSSL_FP_COUNTER_STMT(processNewInput_token += algorithmDetails->protection_token_dma_protection);
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+    MCUX_CSSL_FP_COUNTER_STMT(uint32_t processNewInput_token = getProcessNewInput_token(context, pIn, inSize));
 
     /**************************************************************************************
      * Step 3: Process context buffer
      **************************************************************************************/
 
     /* The first block can either be completely in `pInput`, or partially in the context buffer. */
-    if((0u != unprocessedCompleteBlockLength) && (0u != context->unprocessedLength))
+    if(isBlockProcessedFromContext)
     {
         /* There is some data in the context buffer. Append enough data from `pInput` to complete a block. */
+        uint32_t contextEmptyLength = algoBlockSize - context->unprocessedLength;
         MCUXCLMEMORY_FP_MEMORY_COPY(pUnprocessed + context->unprocessedLength,
                                     pInput,
-                                    algoBlockSize - context->unprocessedLength);
+                                    contextEmptyLength);
         MCUX_CSSL_FP_FUNCTION_CALL(resultElsCore, algorithmDetails->els_core(pHashOptions->word.value,
                                     pUnprocessed,
                                     algoBlockSize,
@@ -809,19 +895,18 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
         pHashOptions->bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
         pHashOptions->bits.hashld = MCUXCLELS_HASH_LOAD_DISABLE;
 
-        pInput += algoBlockSize - context->unprocessedLength;
         context->unprocessedLength = 0u;
-
-        unprocessedCompleteBlockLength -= algoBlockSize;
-        unprocessedTotalLength -= algoBlockSize;
+        pInput += contextEmptyLength;
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("will not wrap since isBlockProcessedFromContext flag implies inSize >= (algoBlockSize - context->unprocessedLength)")
+        unprocessedInputLength -= contextEmptyLength;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     }
 
     /**************************************************************************************
      * Step 4: Process new input
      **************************************************************************************/
-
-    /* Remove impact of step 4 early, to simplify FP handling. */
-    MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_CONDITIONAL((0u != unprocessedCompleteBlockLength), processNewInput_token));
+    /* The amount of unprocessed data that fills complete blocks */
+    uint32_t unprocessedCompleteBlockLength = (unprocessedInputLength / algoBlockSize) * algoBlockSize;
 
     /* At this point, there is no more data in the context buffer, so remaining blocks can be processed in bulk directly from pIn */
     if (0u != unprocessedCompleteBlockLength)
@@ -899,24 +984,27 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
         pHashOptions->bits.hashld = MCUXCLELS_HASH_LOAD_DISABLE;
 
         pInput += unprocessedCompleteBlockLength;
-        unprocessedTotalLength -= unprocessedCompleteBlockLength;
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("does not wrap since unprocessedCompleteBlockLength = (unprocessedInputLength / algoBlockSize) * algoBlockSize")
+        unprocessedInputLength -= unprocessedCompleteBlockLength;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     }
 
     /**************************************************************************************
      * Step 5: Store incomplete blocks and exit
      **************************************************************************************/
-    if(0u < unprocessedTotalLength)
+    if(0u < unprocessedInputLength)
     {
         /* Append data from `pInput` to accumulation buffer. */
         MCUXCLMEMORY_FP_MEMORY_COPY(pUnprocessed + context->unprocessedLength,
-                                                                    pInput,
-                                                                    (unprocessedTotalLength - context->unprocessedLength));
-        context->unprocessedLength = unprocessedTotalLength;
+                                        pInput,
+                                        unprocessedInputLength);
+        context->unprocessedLength += unprocessedInputLength;
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_process_Sha2_FullBlocks, MCUXCLHASH_STATUS_OK,
         processContextBuffer_token,
-        MCUX_CSSL_FP_CONDITIONAL((0u < unprocessedTotalLength),
+        MCUX_CSSL_FP_CONDITIONAL((0u != unprocessedCompleteBlockLength), processNewInput_token),
+        MCUX_CSSL_FP_CONDITIONAL((0u < unprocessedInputLength),
                     (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))));
 }
 
@@ -936,7 +1024,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
      **************************************************************************************/
 
     const mcuxClHash_AlgorithmDescriptor_t * algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Pointer to the buffer where the state is stored. Either it ends up in the work area, or in the state buffer of the context */
     uint8_t *partialdigest = (uint8_t *)mcuxClHash_getStatePtr(context);
@@ -986,12 +1076,31 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_process_Sha2, MCUXCLHASH_STATUS_FAULT_ATTACK);
     }
 
-    /* Compute counter increase, considering the amount of unprocessed data now and at the end of this function. */
-    uint32_t counterIncrease = (inSize + context->unprocessedLength) - ( (inSize + context->unprocessedLength) % algorithm->blockSize);
-    mcuxClHash_processedLength_add(context->processedLength, counterIncrease);
+    /* Perform update of context->processedLength such that special case of
+       overflowed inSize + context->unprocessedLength is handled
+       but no uint64_t variable is needed */
+    uint32_t inputToProcess = inSize;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("does not wrap since unprocessedLength in context does not exceed algorithm block size")
+    uint32_t emptyUnprocessed = algorithm->blockSize - context->unprocessedLength;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    
+    if((0u != context->unprocessedLength) && (inputToProcess >= emptyUnprocessed))
+    {
+        /* Block from context will be processed */
+        mcuxClHash_processedLength_add(context->processedLength, algorithm->blockSize);
+        inputToProcess -= emptyUnprocessed;
+    }
+
+    /* Only full blocks from input will be processed */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("does not wrap since algorithm->blockSize is at least MCUXCLHASH_BLOCK_SIZE_SHA_224")
+    inputToProcess = inputToProcess & ~((uint32_t)algorithm->blockSize - 1u);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    mcuxClHash_processedLength_add(context->processedLength, inputToProcess);
 
     /* Verify that the processed length will not exceed the algorithm's maximum allowed length. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Does not wrap since counterSize is at least  MCUXCLHASH_COUNTER_SIZE_SHA_224, does not overflow since context->processedLength[] overflow is handled")
     uint8_t counterHighestByte = ((uint8_t *) context->processedLength)[algorithm->counterSize - 1u];
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     if(0u != (counterHighestByte & algorithm->processedLengthCheckMask))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_process_Sha2, MCUXCLHASH_STATUS_FULL,
@@ -1005,21 +1114,21 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_proc
      * Step 3: Handle full blocks of input
      **************************************************************************************/
 
-        MCUX_CSSL_FP_FUNCTION_CALL(resultFullBlocks, mcuxClHashModes_Els_process_Sha2_FullBlocks(
-                context,
-                &hashOptions,
-                pIn,
-                inSize
-        ));
-        if (MCUXCLHASH_STATUS_OK != resultFullBlocks)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_process_Sha2, resultFullBlocks,
-                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
-                MCUX_CSSL_FP_CONDITIONAL((0 == processedLengthNotZero) && (NULL != algorithmDetails->standardIV),
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated))
-                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT(),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_process_Sha2_FullBlocks));
-        }
+    MCUX_CSSL_FP_FUNCTION_CALL(resultFullBlocks, mcuxClHashModes_Els_process_Sha2_FullBlocks(
+            context,
+            &hashOptions,
+            pIn,
+            inSize
+    ));
+    if (MCUXCLHASH_STATUS_OK != resultFullBlocks)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_process_Sha2, resultFullBlocks,
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+            MCUX_CSSL_FP_CONDITIONAL((0 == processedLengthNotZero) && (NULL != algorithmDetails->standardIV),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated))
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT(),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_process_Sha2_FullBlocks));
+    }
 
     /**************************************************************************************
      * Step 5: Exit
@@ -1054,11 +1163,14 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
 	MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_Els_finish_Sha2_Padding);
 
 	const mcuxClHash_AlgorithmDescriptor_t *algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 	uint8_t *shablock = (uint8_t *)mcuxClHash_getUnprocessedPtr(context);
 	uint8_t *partialdigest = (uint8_t *)mcuxClHash_getStatePtr(context);
 
     size_t posdst, buflen;
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(context->unprocessedLength, 0u, (MCUXCLHASH_BLOCK_SIZE_SHA_512 - 1u), MCUXCLHASH_STATUS_FAILURE);
     buflen = algorithm->blockSize - context->unprocessedLength;
     posdst  = context->unprocessedLength;
 
@@ -1070,6 +1182,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
     // add first byte of the padding: (remaining) < (block length) so there is space in the buffer
     shablock[posdst] = 0x80u;
     posdst += 1u;
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(buflen, 1u, algorithm->blockSize, MCUXCLHASH_STATUS_FAILURE);
     buflen -= 1u;
 
     /* Process partial padded block if needed */
@@ -1116,6 +1229,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
 
     mcuxClHash_processedLength_add(context->processedLength, context->unprocessedLength);
 
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->counterSize, MCUXCLHASH_COUNTER_SIZE_SHA_224, MCUXCLHASH_COUNTER_SIZE_SHA_512, MCUXCLHASH_STATUS_FAILURE);
     uint8_t counterHighestByte = ((uint8_t *) context->processedLength)[algorithm->counterSize - 1u];
     if(0u != (counterHighestByte & algorithm->processedLengthCheckMask))
     {
@@ -1131,6 +1245,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
     mcuxClHash_processedLength_toBits(context->processedLength);
     for(uint32_t i = 0u; i < algorithm->counterSize; ++i)
     {
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(i, MCUXCLHASH_COUNTER_SIZE_SHA_224, MCUXCLHASH_COUNTER_SIZE_SHA_512, MCUXCLHASH_STATUS_FAILURE);
         shablock[algorithm->blockSize - i - 1u] = ((uint8_t*)context->processedLength)[i];
     }
 
@@ -1191,6 +1306,66 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
 				dma_token);
 }
 
+/**
+ * @brief Function checks if valid state is loaded and if not loads state from context
+ * 
+ * @param[in]       session
+ * @param[in]       context
+ * @param[in/out]   hashOptions
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHashModes_Els_loadState_Sha2)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_loadState_Sha2 (
+                        mcuxClSession_Handle_t session,
+                        mcuxClHash_Context_t context,
+                        mcuxClEls_HashOption_t *hashOptions)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_Els_loadState_Sha2);
+
+    const mcuxClHash_AlgorithmDescriptor_t *algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+    /* Pointer to the buffer where the state is stored in the state buffer of the context */
+    uint8_t *partialdigest = (uint8_t *)mcuxClHash_getStatePtr(context);
+
+    /* Set hash init/load flags depending on whether there is a valid state to load or not */
+    int32_t processedLengthNotZero = mcuxClHash_processedLength_cmp(context->processedLength, 0u);
+    if(0 != processedLengthNotZero)
+    {
+        /* There is already a valid state in the context -> load state from context */
+        hashOptions->bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
+        hashOptions->bits.hashld  = MCUXCLELS_HASH_LOAD_ENABLE;
+    }
+    else if(NULL != algorithmDetails->standardIV)
+    {
+        /* Else and if truncated, do ELS warmup and load custom IV into context */
+        MCUX_CSSL_FP_FUNCTION_CALL(resultElsPrepare, mcuxClHashModes_Els_Sha2_Prepare_Truncated(
+            session,
+            algorithm,
+            hashOptions,
+            partialdigest
+        ));
+        if (MCUXCLHASH_STATUS_OK != resultElsPrepare)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_loadState_Sha2, resultElsPrepare,
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated));
+        }
+    }
+    else
+    {
+        /* Intentionally left empty */
+    }
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_loadState_Sha2, MCUXCLHASH_STATUS_OK
+        ,MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+        MCUX_CSSL_FP_CONDITIONAL((0 == processedLengthNotZero) && (NULL != algorithmDetails->standardIV),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated))
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    );
+}
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHashModes_Els_finish_Sha2, mcuxClHash_AlgoSkeleton_Finish_t)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_finish_Sha2 (
                         mcuxClSession_Handle_t session,
@@ -1210,12 +1385,17 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, MCUXCLHASH_STATUS_INVALID_PARAMS);
     }
 
-    /* Pointer to the buffer where the state is stored in the state buffer of the context */
-    uint8_t *partialdigest = (uint8_t *)mcuxClHash_getStatePtr(context);
-
     /* Start setting initial options for ELS hash */
     const mcuxClHash_AlgorithmDescriptor_t *algorithm = context->algo;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClHashModes_Internal_AlgorithmDescriptor_t *algorithmDetails = (const mcuxClHashModes_Internal_AlgorithmDescriptor_t *) algorithm->pAlgorithmDetails;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+    /* Check on outSize */
+    if((UINT32_MAX - *pOutSize) < algorithm->hashSize)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, MCUXCLHASH_STATUS_INVALID_PARAMS);
+    }
 
     mcuxClEls_HashOption_t hashOptions = algorithmDetails->hashOptions;
     hashOptions.bits.hashoe = MCUXCLELS_HASH_OUTPUT_ENABLE;
@@ -1236,32 +1416,15 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
      * Step 2: Load state (partial digest), if data had been processed before
      **************************************************************************************/
 
-    /* Set hash init/load flags depending on whether there is a valid state to load or not */
-    int32_t processedLengthNotZero = mcuxClHash_processedLength_cmp(context->processedLength, 0u);
-    if(0 != processedLengthNotZero)
+    MCUX_CSSL_FP_FUNCTION_CALL(resultLoadState, mcuxClHashModes_Els_loadState_Sha2 (
+                                session,
+                                context,
+                                &hashOptions));
+
+    if(MCUXCLHASH_STATUS_OK != resultLoadState)
     {
-        /* There is already a valid state in the context -> load state from context */
-        hashOptions.bits.hashini = MCUXCLELS_HASH_INIT_DISABLE;
-        hashOptions.bits.hashld  = MCUXCLELS_HASH_LOAD_ENABLE;
-    }
-    else if(NULL != algorithmDetails->standardIV)
-    {
-        /* Else and if truncated, do ELS warmup and load custom IV into context */
-        MCUX_CSSL_FP_FUNCTION_CALL(resultElsPrepare, mcuxClHashModes_Els_Sha2_Prepare_Truncated(
-                session,
-                algorithm,
-                &hashOptions,
-                partialdigest
-        ));
-        if (MCUXCLHASH_STATUS_OK != resultElsPrepare)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, resultElsPrepare,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated));
-        }
-    }
-    else
-    {
-        /* Intentionally left empty */
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, resultLoadState,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_loadState_Sha2));
     }
 
     /**************************************************************************************
@@ -1269,10 +1432,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
      **************************************************************************************/
 
     /* Buffer in CPU WA to store the digest and RTF output in the finalization phase */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithmDetails->rtfSize, 0u, MCUXCLELS_HASH_RTF_OUTPUT_SIZE, MCUXCLHASH_STATUS_FAILURE);
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->stateSize, MCUXCLHASH_STATE_SIZE_SHA_224, MCUXCLHASH_STATE_SIZE_SHA_512, MCUXCLHASH_STATUS_FAILURE);
     uint8_t *pOutput = (uint8_t *) mcuxClSession_allocateWords_cpuWa(session, (algorithm->stateSize + algorithmDetails->rtfSize) / sizeof(uint32_t));
     if(NULL == pOutput)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, MCUXCLHASH_STATUS_FAILURE);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, MCUXCLHASH_STATUS_FAILURE,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_loadState_Sha2));
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL(resultPadding, mcuxClHashModes_Els_finish_Sha2_Padding(
@@ -1286,10 +1452,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
         mcuxClSession_freeWords_cpuWa(session, (algorithm->stateSize + algorithmDetails->rtfSize) / sizeof(uint32_t));
 
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, resultPadding,
-                    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
-                    MCUX_CSSL_FP_CONDITIONAL((0 == processedLengthNotZero) && (NULL != algorithmDetails->standardIV),
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated)),
-                    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_loadState_Sha2),
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_finish_Sha2_Padding));
     }
 
@@ -1306,10 +1469,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
             mcuxClSession_freeWords_cpuWa(session, (algorithm->stateSize + algorithmDetails->rtfSize) / sizeof(uint32_t));
 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, MCUXCLHASH_STATUS_INVALID_PARAMS,
-                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
-                MCUX_CSSL_FP_CONDITIONAL((0 == processedLengthNotZero) && (NULL != algorithmDetails->standardIV),
-                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated)),
-                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_loadState_Sha2),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_finish_Sha2_Padding));
         }
         else
@@ -1338,10 +1498,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_Els_fini
     MCUX_CSSL_FP_COUNTER_STMT(rtfSC = MCUX_CSSL_FP_CONDITIONAL((MCUXCLSESSION_RTF_UPDATE_TRUE == session->rtf),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)));
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_Els_finish_Sha2, MCUXCLHASH_STATUS_OK,
-                            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
-                            MCUX_CSSL_FP_CONDITIONAL((0 == processedLengthNotZero) && (NULL != algorithmDetails->standardIV),
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_Sha2_Prepare_Truncated)),
-                            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_loadState_Sha2),
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHashModes_Els_finish_Sha2_Padding),
                             rtfSC,
                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),

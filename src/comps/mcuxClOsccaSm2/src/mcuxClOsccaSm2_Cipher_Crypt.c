@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaSm2_Cipher_Crypt.c
@@ -482,10 +482,24 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
         mcuxClSession_freeWords_cpuWa(session, MCUXCLOSCCASM2_CIPHER_ENCDEC_FIXED_SIZEOF_WA_CPU / sizeof(uint32_t));
     }
 
-    if ((steps == MCUXCLCIPHER_OPTION_ONESHOT) || (steps == MCUXCLCIPHER_OPTION_FINISH))
+    if (steps == MCUXCLCIPHER_OPTION_ONESHOT)
     {
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedByte / sizeof(uint32_t));
     }
+    if (steps == MCUXCLCIPHER_OPTION_FINISH)
+    {
+        /* Free pCtx->pEncDecCtx allocated in INIT stage */
+        mcuxClSession_freeWords_cpuWa(session, MCUXCLOSCCASM2_ENC_DEC_CTX_SIZE(pSm2DomainParams->p.wNumBytes) / sizeof(uint32_t));
+        if(MCUXCLOSCCASM2_DECRYPT == pAlgo->direction)
+        {
+            /* Free the pC1Buffer allocated in INIT stage */
+            mcuxClSession_freeWords_cpuWa(session,
+                            ((uint32_t)pSm2DomainParams->p.wNumBytes * 2u +
+                            MCUXCLOSCCASM2_ENCDEC_FORMAT_INDICATOR_SIZE +
+                            MCUXCLOSCCA_SIZE_ALIGN_OFFSET) / sizeof(uint32_t));
+        }
+    }
+
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Core, MCUXCLCIPHER_STATUS_OK,
         MCUX_CSSL_FP_CONDITIONAL(steps != MCUXCLCIPHER_OPTION_INIT,

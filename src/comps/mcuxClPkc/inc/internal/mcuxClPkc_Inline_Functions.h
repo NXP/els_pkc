@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -43,7 +43,7 @@ static inline void mcuxClPkc_inline_setUptrt(const uint16_t * pUptrt)
     uint32_t uptrtAddr = (uint32_t) pUptrt;
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_11_4)
 
-    MCUXCLPKC_SFR_WRITE(UPTRT, uptrtAddr);
+    MCUXCLPKC_SFR_WRITE(UPTRT, MCUXCL_HW_DMA_WORKAROUND(uptrtAddr));
 }
 
 /** Inline function to get the address of UPTRT (Universal pointer FUP table). */

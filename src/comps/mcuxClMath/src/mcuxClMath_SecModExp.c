@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -269,7 +269,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMath_SecModExp, MCUXCLMATH_STATUS_ERROR);
         }
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("pkcLenExpPlus is in range [8u, MCUXCLPKC_RAM_SIZE], pkcLenExpPlus - 1u won't wrap")
         pA1[pkcLenExpPlus - 1u] &= 0x7Fu;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     }  /* Scope of pBufA1. */
 
     /* Blinded exponent A0 = expA = exp + expB < 256^pkcLenExpPlus. */
@@ -351,7 +353,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModExp(
                             mcuxClMath_SecModExp_Fup_ExactDivideLoop_LEN);
 
         ofsV1_ofsV0 += (((uint32_t) MCUXCLPKC_WORDSIZE << 16u) + MCUXCLPKC_WORDSIZE);
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("remainLength is in range [8u, MCUXCLPKC_RAM_SIZE], pkcLenExpPlus - MCUXCLPKC_WORDSIZE won't wrap")
         remainLength -= MCUXCLPKC_WORDSIZE;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+
     } while(0u != remainLength);
 
     /* Set PS2_LEN = pkcLenExpPlus to calculate q */

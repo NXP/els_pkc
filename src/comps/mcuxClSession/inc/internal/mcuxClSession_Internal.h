@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -25,6 +25,9 @@
 #include <mcuxClSession_Types.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
+#if defined(__COVERITY__)
+#include <internal/mcuxClPkc_Macros.h>
+#endif /* defined(__COVERITY__) */
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,11 +60,8 @@ static inline uint32_t* mcuxClSession_allocateWords_cpuWa(
     MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(wordsToAllocate, 0u, (UINT32_MAX >> 2u) - usedWords, NULL)
     const uint32_t expectedUsed = usedWords + wordsToAllocate;
 
-    /* TODO: CLNS-5886 [DEV][Session] enable size checking when allocating buffers */
-#if 0  /* checking disabled before all components/tests allocate workarea properly */
     if (expectedUsed <= pSession->cpuWa.size)
     {
-#endif
         pCpuBuffer = & (pSession->cpuWa.buffer[usedWords]);
         pSession->cpuWa.used = expectedUsed;
 
@@ -69,9 +69,7 @@ static inline uint32_t* mcuxClSession_allocateWords_cpuWa(
         {
             pSession->cpuWa.dirty = expectedUsed;
         }
-#if 0
     }
-#endif
 
     return pCpuBuffer;
 }
@@ -106,11 +104,8 @@ static inline uint32_t* mcuxClSession_allocateWords_pkcWa(
     MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(wordsToAllocate, 0u, MCUXCLPKC_RAM_SIZE - usedWords, NULL)
     const uint32_t expectedUsed = usedWords + wordsToAllocate;
 
-    /* TODO: CLNS-5886 [DEV][Session] enable size checking when allocating buffers */
-#if 0  /* checking disabled before all components/tests allocate workarea properly */
     if (expectedUsed <= pSession->pkcWa.size)
     {
-#endif
         pPkcBuffer = & (pSession->pkcWa.buffer[usedWords]);
         pSession->pkcWa.used = expectedUsed;
 
@@ -118,9 +113,7 @@ static inline uint32_t* mcuxClSession_allocateWords_pkcWa(
         {
             pSession->pkcWa.dirty = expectedUsed;
         }
-#if 0
     }
-#endif
 
     return pPkcBuffer;
 }

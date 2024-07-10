@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -20,7 +20,7 @@
 #ifndef MCUXCLECC_WEIER_INTERNAL_FP_H_
 #define MCUXCLECC_WEIER_INTERNAL_FP_H_
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 
 
 /**********************************************************/
@@ -96,31 +96,12 @@
     MCUXCLPKC_FP_CALLED_IMPORTBIGENDIANTOPKC_BUFFEROFFSET,  \
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR)
 
-#ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
-#define MCUXCLECC_FP_SIGN_LOOP_R_1_DETERMINISTIC  \
+#define MCUXCLECC_FP_SIGN_LOOP_R_1  \
     MCUXCLECC_FP_SIGN_LOOP_R_0,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_DeterministicECDSA_BlindedSecretKeyGen)
+    pParam->pMode->pBlindedEphemeralKeyGenFct_FP_FuncId
 
-#define MCUXCLECC_FP_SIGN_LOOP_R_DETERMINISTIC  \
-    MCUXCLECC_FP_SIGN_LOOP_R_1_DETERMINISTIC,  \
-    MCUXCLPKC_FP_CALLED_CALC_MC1_MM,  \
-    MCUXCLPKC_FP_CALLED_CALC_MC1_MM,  \
-    MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult),  \
-    MCUXCLPKC_FP_CALLED_CALC_OP1_LSB0s,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_SecurePointMult),  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_PointCheckAffineNR),  \
-    MCUXCLPKC_FP_CALLED_CALC_MC1_MS
-#endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
-
-#define MCUXCLECC_FP_SIGN_LOOP_R_1_RANDOMIZED  \
-    MCUXCLECC_FP_SIGN_LOOP_R_0,  \
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits)
-
-#define MCUXCLECC_FP_SIGN_LOOP_R_RANDOMIZED  \
-    MCUXCLECC_FP_SIGN_LOOP_R_1_RANDOMIZED,  \
+#define MCUXCLECC_FP_SIGN_LOOP_R  \
+    MCUXCLECC_FP_SIGN_LOOP_R_1,  \
     MCUXCLPKC_FP_CALLED_CALC_MC1_MM,  \
     MCUXCLPKC_FP_CALLED_CALC_MC1_MM,  \
     MCUXCLPKC_FP_CALLED_CALC_OP1_NEG,  \

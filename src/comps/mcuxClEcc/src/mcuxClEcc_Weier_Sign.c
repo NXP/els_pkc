@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -151,63 +151,28 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Sign(
         /* k = k0 * k1 mod n, where k0 is a 64-bit odd number     */
         /**********************************************************/
 
-        if(MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED == pParam->pMode->generateOption)
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_BlindedSecretKeyGen, pParam->pMode->pBlindedEphemeralKeyGenFct(pSession, pParam));
+        if (MCUXCLECC_STATUS_OK != ret_BlindedSecretKeyGen)
         {
-            MCUX_CSSL_FP_FUNCTION_CALL(ret_BlindedSecretKeyGen_Random, mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits(pSession, byteLenN));
-            if (MCUXCLECC_STATUS_OK != ret_BlindedSecretKeyGen_Random)
+            if ( (MCUXCLECC_STATUS_RNG_ERROR == ret_BlindedSecretKeyGen)
+                && (0u == fail_r) && (0u == fail_s) )
             {
-                if ( (MCUXCLECC_STATUS_RNG_ERROR == ret_BlindedSecretKeyGen_Random)
-                    && (0u == fail_r) && (0u == fail_s) )
-                {
-                    mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-                    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
-                        mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
+                mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
+                MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
+                    mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
 
-                    mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+                mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_RNG_ERROR,
-                        MCUXCLECC_FP_SIGN_BEFORE_LOOP,
-                        MCUXCLECC_FP_SIGN_LOOP_R_1_RANDOMIZED,
-                        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
-                }
-
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_RNG_ERROR,
+                    MCUXCLECC_FP_SIGN_BEFORE_LOOP,
+                    MCUXCLECC_FP_SIGN_LOOP_R_1,
+                    MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
             }
-            MCUX_CSSL_FP_LOOP_ITERATION(MainLoop_R,
-            MCUXCLECC_FP_SIGN_LOOP_R_RANDOMIZED );
-        }
-#ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
-        else if(MCUXCLECC_ECDSA_SIGNATURE_GENERATE_DETERMINISTIC == pParam->pMode->generateOption)
-        {
-            MCUX_CSSL_FP_FUNCTION_CALL(ret_BlindedSecretKeyGen_Deterministic, mcuxClEcc_DeterministicECDSA_BlindedSecretKeyGen(pSession, byteLenN, pParam));
-            if (MCUXCLECC_STATUS_OK != ret_BlindedSecretKeyGen_Deterministic)
-            {
-                if ( (MCUXCLECC_STATUS_RNG_ERROR == ret_BlindedSecretKeyGen_Deterministic)
-                    && (0u == fail_r) && (0u == fail_s) )
-                {
-                    mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
-                    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
-                        mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
 
-                    mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
-
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_RNG_ERROR,
-                        MCUXCLECC_FP_SIGN_BEFORE_LOOP,
-                        MCUXCLECC_FP_SIGN_LOOP_R_1_DETERMINISTIC,
-                        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
-                }
-
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
-            }
-            MCUX_CSSL_FP_LOOP_ITERATION(MainLoop_R,
-            MCUXCLECC_FP_SIGN_LOOP_R_DETERMINISTIC );
-
-        }
-#endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
-        else
-        {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Sign, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
+        MCUX_CSSL_FP_LOOP_ITERATION(MainLoop_R, MCUXCLECC_FP_SIGN_LOOP_R );
+
 
         /**********************************************************/
         /* Calculate Q = k1 * (k0 * G)                            */

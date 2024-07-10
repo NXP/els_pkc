@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAeadModes_Els_AesCcm.c
@@ -108,17 +108,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
    const mcuxClAeadModes_AlgorithmDescriptor_t* const pAlgo = pContext->common.mode->algorithm;
 
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_SkeletonAesCcm,
-        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_INIT)),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-            pAlgo->protection_token_engine,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
-        )
-    );
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_SkeletonAesCcm);
 
 
 
@@ -142,16 +132,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
         MCUXCLMEMORY_FP_MEMORY_SET(pContext->partialData, 0u, MCUXCLAES_BLOCK_SIZE);
 
 
-        //Determine whether the nonceLength is less than MCUXCLAES_BLOCK_SIZE -1 to prevent memory overflow later
-        if(nonceLength > MCUXCLAES_BLOCK_SIZE - 1u)
+        //Check tagLength and nonceLength to prevent integer wrap from the following subtractions
+        if((tagLength < 2u) || (nonceLength > MCUXCLAES_BLOCK_SIZE - 2u))
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
         }
 
         // Get length of auth field from parameter
         uint8_t t = (uint8_t)((tagLength - 2u) / 2u);
         // Get q-1 from parameter
-        uint8_t q = (uint8_t)(15u - nonceLength);
+        uint8_t q = (uint8_t)(MCUXCLAES_BLOCK_SIZE - 1u - nonceLength);
         // Assemble the flags byte for B0
         // --------------------------------------------
         // |     7    |   6   |    5..3     |   2..0  |
@@ -190,7 +180,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
         if(MCUXCLAEAD_STATUS_OK != authRet)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR,
+                                          2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                          pAlgo->protection_token_engine);
         }
 
         // Formatting of the associated data
@@ -271,8 +264,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
     uint32_t forthAadFpFlag = 0u;
     uint32_t fifthAadFpFlag = 0u;
 
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pContext->partialDataLength, 0u, MCUXCLAES_BLOCK_SIZE, MCUXCLAEAD_STATUS_ERROR)
+
     if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS_AAD))
     {
+            if ((adataLength > (UINT32_MAX - pContext->partialDataLength))
+            || (adataLength > (UINT32_MAX - pContext->processedDataLength)))
+            {
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR,
+                         MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT), 3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine));
+            }
+
             uint32_t lenToCopy = adataLength;
             // adataLength is the length of AAD for this AAD process call
             if(0u != lenToCopy)
@@ -299,7 +303,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                     if(MCUXCLAEAD_STATUS_OK != aadAuthRet)
                     {
-                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR,
+                           MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT), 3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine),
+                           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                           pAlgo->protection_token_engine);
                     }
 
                     if(lenToCopy >= MCUXCLAES_BLOCK_SIZE)
@@ -317,11 +326,17 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                         if(MCUXCLAEAD_STATUS_OK != aadBlkAuthRet)
                         {
-                            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR,
+                                    MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT), 3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                              3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                              pAlgo->protection_token_engine),
+                                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                              2u * pAlgo->protection_token_engine);
                         }
                         pAad += adataBlocks * MCUXCLAES_BLOCK_SIZE;
 
-                        lenToCopy -= (adataBlocks * MCUXCLAES_BLOCK_SIZE);
+                        // Remaining lenToCopy is equal to lenToCopy & (MCUXCLAES_BLOCK_SIZE - 1u)
+                        lenToCopy &= (MCUXCLAES_BLOCK_SIZE - 1u);
                     }
 
                     if(0u != lenToCopy)
@@ -364,7 +379,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                 if(MCUXCLAEAD_STATUS_OK != aadPadAuthRet)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                            MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine
+                            ),
+                            MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                                MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                                MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                            ),
+                            MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                            pAlgo->protection_token_engine);
                 }
                 pContext->partialDataLength = 0u;
             }
@@ -391,13 +419,32 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
     if ((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS))
     {
+        if ((inLength > (UINT32_MAX - pContext->partialDataLength))
+        || (inLength > (UINT32_MAX - pContext->processedDataLength))
+        || (*pOutLength > (UINT32_MAX - pContext->partialDataLength - inLength)))
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                    MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                            3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                            3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                            pAlgo->protection_token_engine,
+                            MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                            ),
+                            MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                            MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)));
+        }
+
         if(0u != inLength)
         {
             uint8_t const* pInput = (uint8_t const*)pIn;
             if((pContext->partialDataLength + inLength) >= MCUXCLAES_BLOCK_SIZE)
             {
-                 mainProFpFlag = 1u;
-                 MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[pContext->partialDataLength],pInput,MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
+                mainProFpFlag = 1u;
+                MCUXCLMEMORY_FP_MEMORY_COPY(&pContext->partialData[pContext->partialDataLength],pInput,MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
                 pInput += MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength;
                 inLength -= (MCUXCLAES_BLOCK_SIZE - pContext->partialDataLength);
                 //update processed input data length to processedDataLength
@@ -415,7 +462,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                 if(MCUXCLAEAD_STATUS_OK != inAeadRet)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                        MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                            3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                            3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                            pAlgo->protection_token_engine,
+                            MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                            ),
+                            MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                            MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                        pAlgo->protection_token_engine);
                 }
 
                 pOutput +=  MCUXCLAES_BLOCK_SIZE;
@@ -437,15 +498,35 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                     if(MCUXCLAEAD_STATUS_OK != inBlkAeadRet)
                     {
-                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                            MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                            2u * pAlgo->protection_token_engine);
                     }
 
                     pInput += inputBlocks * MCUXCLAES_BLOCK_SIZE;
-                    inLength -= inputBlocks * MCUXCLAES_BLOCK_SIZE;
+                    // Remaining inLength is equal to inLength  & (MCUXCLAES_BLOCK_SIZE - 1u)
+                    inLength &= (MCUXCLAES_BLOCK_SIZE - 1u);
                     //update processed input data length to processedDataLength
+
+                    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("inLength > (UINT32_MAX - pContext->processedDataLength) was checked")
                     pContext->processedDataLength += inputBlocks * MCUXCLAES_BLOCK_SIZE;
+                    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
                     pOutput += inputBlocks * MCUXCLAES_BLOCK_SIZE;
+                    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("(*pOutLength > (UINT32_MAX - pContext->partialDataLength - inLength)) was checked")
                     *pOutLength += inputBlocks * MCUXCLAES_BLOCK_SIZE;
+                    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
                 }
 
                 if(0u != inLength)
@@ -471,6 +552,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
         //Check if we done all input data and if we have some remaining data in buffer, this is for
         //the last input data block processing, add zero padding and calc final tag
+
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pContext->aadLength, 0u, UINT32_MAX - pContext->dataLength, MCUXCLAEAD_STATUS_ERROR)
         if((pContext->processedDataLength == pContext->dataLength + pContext->aadLength) && (0u != pContext->partialDataLength))
         {
             if(pContext->partialDataLength < MCUXCLAES_BLOCK_SIZE)
@@ -480,7 +563,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
             }
             else
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                    MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)),
+                    MCUX_CSSL_FP_CONDITIONAL((mainProFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondProFpFlag == 1u),pAlgo->protection_token_engine),
+                                MCUX_CSSL_FP_CONDITIONAL((thirdProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))),
+                    MCUX_CSSL_FP_CONDITIONAL((forthProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)));
             }
             //This last block length less then MCUXCLAES_BLOCK_SIZE, so can't directly write result to pOut
             //&pContext->state[16] have not been used, so can re-write it to store the CTR result
@@ -495,7 +595,26 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
             if(MCUXCLAEAD_STATUS_OK != inPaddEncRet)
             {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                    MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)),
+                    MCUX_CSSL_FP_CONDITIONAL((mainProFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondProFpFlag == 1u),pAlgo->protection_token_engine),
+                                MCUX_CSSL_FP_CONDITIONAL((thirdProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))),
+                    MCUX_CSSL_FP_CONDITIONAL((forthProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                    pAlgo->protection_token_engine);
             }
 
             /* Copy the padding to the output and update pOutLength accordingly. */
@@ -521,7 +640,28 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                 if(MCUXCLAEAD_STATUS_OK != inPaddAuthRet)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                        MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)),
+                        MCUX_CSSL_FP_CONDITIONAL((mainProFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondProFpFlag == 1u),pAlgo->protection_token_engine),
+                                MCUX_CSSL_FP_CONDITIONAL((thirdProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))),
+                        MCUX_CSSL_FP_CONDITIONAL((forthProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                        pAlgo->protection_token_engine,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                        pAlgo->protection_token_engine);
                 }
              }
             else
@@ -540,7 +680,29 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
                 if(MCUXCLAEAD_STATUS_OK != inPaddAuthRet)
                 {
-                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                        MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine)),
+                        MCUX_CSSL_FP_CONDITIONAL((mainProFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondProFpFlag == 1u),pAlgo->protection_token_engine),
+                                MCUX_CSSL_FP_CONDITIONAL((thirdProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))),
+                        MCUX_CSSL_FP_CONDITIONAL((forthProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                        pAlgo->protection_token_engine,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                        pAlgo->protection_token_engine,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
                 }
             }
             pContext->partialDataLength = 0u;
@@ -561,7 +723,30 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
         if (0u != pContext->partialDataLength)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                               pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine),
+                                MCUX_CSSL_FP_CONDITIONAL((mainProFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                               pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((secondProFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))),
+                                MCUX_CSSL_FP_CONDITIONAL((forthProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((mainFinFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                pAlgo->protection_token_engine,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                                MCUX_CSSL_FP_CONDITIONAL((MCUXCLELS_AEAD_DECRYPT == pAlgo->direction),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set))))
+                );
         }
 
         //reset counter value to 'zero' (leaving the other fields intact)
@@ -579,7 +764,32 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
         if(MCUXCLAEAD_STATUS_OK != finalTagEncRet)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR);
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_SkeletonAesCcm, MCUXCLAEAD_STATUS_ERROR, 
+                MCUX_CSSL_FP_CONDITIONAL((options == MCUXCLAEADMODES_OPTION_ONESHOT),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                pAlgo->protection_token_engine,
+                                MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                               pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdAadFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((forthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
+                                ),
+                                MCUX_CSSL_FP_CONDITIONAL((mainAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((fifthAadFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                           pAlgo->protection_token_engine),
+                                MCUX_CSSL_FP_CONDITIONAL((mainProFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                               pAlgo->protection_token_engine,
+                                               MCUX_CSSL_FP_CONDITIONAL((secondProFpFlag == 1u),pAlgo->protection_token_engine),
+                                               MCUX_CSSL_FP_CONDITIONAL((thirdProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))),
+                                MCUX_CSSL_FP_CONDITIONAL((forthProFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
+                                MCUX_CSSL_FP_CONDITIONAL((mainFinFpFlag == 1u),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+                                                pAlgo->protection_token_engine,
+                                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                                                pAlgo->protection_token_engine,
+                                                MCUX_CSSL_FP_CONDITIONAL((MCUXCLELS_AEAD_DECRYPT == pAlgo->direction),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set)))),
+
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                pAlgo->protection_token_engine);
         }
     }
 
@@ -629,6 +839,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_SkeletonAesCcm(
 
     /* Exit and balance the flow protection. */
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_SkeletonAesCcm, status, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_INIT)),
+            3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
+            3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+            pAlgo->protection_token_engine
+        ),
         MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLAEADMODES_OPTION_ONESHOT) || (options == MCUXCLAEADMODES_OPTION_PROCESS_AAD))),
             MCUX_CSSL_FP_CONDITIONAL((secondAadFpFlag == 1u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                                                              pAlgo->protection_token_engine,

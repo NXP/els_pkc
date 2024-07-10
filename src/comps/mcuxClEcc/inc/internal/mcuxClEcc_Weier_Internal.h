@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,8 +21,7 @@
 #define MCUXCLECC_WEIER_INTERNAL_H_
 
 
-#include <stdbool.h>
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <mcuxClMemory.h>
 #include <mcuxClKey_Types.h>
 #include <mcuxClMac.h>
@@ -47,6 +46,11 @@ struct mcuxClEcc_Weier_DomainParams
 {
     mcuxClEcc_CommonDomainParams_t common;  ///< structure containing pointers and lengths for common ECC parameters (see Common ECC Domain parameters)
 };
+
+/**
+ * @brief Common scalar multiplication functions for Weierstrass curves
+*/
+extern const mcuxClEcc_ScalarMultFunctions_t mcuxClEcc_Weier_ScalarMultFunctions;
 
 
 /**********************************************************/
@@ -114,15 +118,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits(
     mcuxClSession_Handle_t pSession,
-    uint32_t nByteLength);
+    uint32_t byteLenN);
 
-#ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_DeterministicECDSA_BlindedSecretKeyGen)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_DeterministicECDSA_BlindedSecretKeyGen(
-    mcuxClSession_Handle_t pSession,
-    uint32_t nByteLength,
-    const mcuxClEcc_Sign_Param_t * pParam);
-#endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
 
 
 

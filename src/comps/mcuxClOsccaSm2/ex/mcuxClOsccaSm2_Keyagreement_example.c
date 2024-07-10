@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,6 +21,7 @@
  ******************************************************************************/
 #include <mcuxClSession.h>
 #include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClKey.h>
 #include <mcuxClOsccaSm2.h>
 #include <mcuxClOsccaSm3.h>
@@ -28,12 +29,11 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClExample_Session_Helper.h>
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 #if MCUXCL_FEATURE_RANDOMMODES_OSCCA_TRNG == 1
 #include <mcuxClOsccaRandomModes.h>
 #else
-#include <mcuxClRandomModes.h>
 #include <mcuxClMemory.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #endif
@@ -44,7 +44,7 @@
 /**
  * @brief Maximum of the CPU workarea
  */
-#define SIZE_WA_CPU  MCUXCLOSCCASM2_KEYAGREEMENT_SIZEOF_WA_CPU
+#define SIZE_WA_CPU  MCUXCLCORE_MAX(MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, MCUXCLOSCCASM2_KEYAGREEMENT_SIZEOF_WA_CPU)
 /**
  * @def SIZE_WA_PKC
  * @brief Maximum of the pkc workarea
@@ -154,8 +154,7 @@ bool mcuxClOsccaSm2_Keyagreement_example(void)
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
     /**************************************************************************/
-
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -313,7 +312,7 @@ bool mcuxClOsccaSm2_Keyagreement_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

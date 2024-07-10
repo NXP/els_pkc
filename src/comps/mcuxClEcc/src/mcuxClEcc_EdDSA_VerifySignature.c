@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -143,7 +143,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
 
     /* Calculate P1 = S * G */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_plainFixScalarMult,
-        pDomainParams->common.pPlainFixScalarMultFctFP->pScalarMultFct(
+        pDomainParams->common.pScalarMultFunctions->plainFixScalarMultFct(
             session,
             (mcuxClEcc_CommonDomainParams_t *)&pDomainParams->common,
             ECC_S0,
@@ -245,7 +245,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
             MCUXCLPKC_FP_CALLED_IMPORTLITTLEENDIANTOPKC_BUFFEROFFSET,        /* Step 3 */
             MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),            /* Step 4 */
-            pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
+            pDomainParams->common.pScalarMultFunctions->plainFixScalarMultFctFPId,
             3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 5 */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),     /* Step 6 */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
@@ -268,7 +268,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
      */
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_plainVarScalarMult,
-        pDomainParams->common.pPlainVarScalarMultFctFP->pScalarMultFct(
+        pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFct(
             session,
             &pDomainParams->common,
             ECC_S0,
@@ -355,7 +355,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
 
         /* Compute h*R' */
         MCUX_CSSL_FP_FUNCTION_CALL(ret2_plainVarScalarMult,
-        pDomainParams->common.pPlainVarScalarMultFctFP->pScalarMultFct(
+        pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFct(
             session,
             &pDomainParams->common,
             ECC_S1,
@@ -399,12 +399,12 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
                 MCUXCLPKC_FP_CALLED_IMPORTLITTLEENDIANTOPKC_BUFFEROFFSET,        /* Step 3 */
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),            /* Step 4 */
-                pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
+                pDomainParams->common.pScalarMultFunctions->plainFixScalarMultFctFPId,
                 3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 5 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),     /* Step 6 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
                 pDomainParams->pDecodePoint_FP_FuncId,                          /* Step 7 */
-                pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId, /* Step 8 */
+                pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId, /* Step 8 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),                  /* Step 9 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),                  /* Step 10 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
@@ -414,7 +414,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,                              /* Step 12a */
                 MCUXCLPKC_FP_CALLED_CALC_OP1_ADD_CONST,
-                pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId,
+                pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId,
                 3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 12b */
                 pDomainParams->pDecodePoint_FP_FuncId);                         /* Step 12c */
         }
@@ -434,7 +434,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         */
 
         MCUX_CSSL_FP_FUNCTION_CALL(ret3_plainVarScalarMult,
-        pDomainParams->common.pPlainVarScalarMultFctFP->pScalarMultFct(
+        pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFct(
             session,
             &pDomainParams->common,
             ECC_S1,
@@ -471,12 +471,12 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
                 MCUXCLPKC_FP_CALLED_IMPORTLITTLEENDIANTOPKC_BUFFEROFFSET,        /* Step 3 */
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),            /* Step 4 */
-                pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
+                pDomainParams->common.pScalarMultFunctions->plainFixScalarMultFctFPId,
                 3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 5 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),     /* Step 6 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
                 pDomainParams->pDecodePoint_FP_FuncId,                          /* Step 7 */
-                pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId, /* Step 8 */
+                pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId, /* Step 8 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),                  /* Step 9 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),                  /* Step 10 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
@@ -486,10 +486,10 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,                              /* Step 12a */
                 MCUXCLPKC_FP_CALLED_CALC_OP1_ADD_CONST,
-                pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId,
+                pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId,
                 3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,                      /* Step 12b */
                 pDomainParams->pDecodePoint_FP_FuncId,                          /* Step 12c */
-                pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId, /* Step 12d */
+                pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId, /* Step 12d */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup));                 /* Step 12e */
         }
 
@@ -497,13 +497,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
             /* Step 12a */
             MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
             MCUXCLPKC_FP_CALLED_CALC_OP1_ADD_CONST,
-            pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId,
+            pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId,
             /* Step 12b */
             3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
             /* Step 12c */
             pDomainParams->pDecodePoint_FP_FuncId,
             /* Step 12d */
-            pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId,
+            pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId,
             /* Step 12e */
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) );
     }
@@ -527,7 +527,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
         /* Step 4 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),
-        pDomainParams->common.pPlainFixScalarMultFctFP->scalarMultFct_FP_FuncId,
+        pDomainParams->common.pScalarMultFunctions->plainFixScalarMultFctFPId,
         /* Step 5 */
         3u * MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
         /* Step 6 */
@@ -536,7 +536,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         /* Step 7 */
         pDomainParams->pDecodePoint_FP_FuncId,
         /* Step 8 */
-        pDomainParams->common.pPlainVarScalarMultFctFP->scalarMultFct_FP_FuncId,
+        pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId,
         /* Step 9 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
         /* Step 10 */

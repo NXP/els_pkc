@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #ifndef COMPILER_TOOLCHAIN_H_
@@ -16,9 +16,9 @@
 
 /* for armclang */
 #if defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-    #define CSS_IDATA_SEGMENT __attribute__((section(CSS_IDATA_SEGMENT)))
-    #define CSS_CONST_SEGMENT __attribute__((section(CSS_CONST_SEGMENT_SECTION)))
-    #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section(MCUX_OBFUSCATED_FUP_SEGMENT)))
+    #define CSS_IDATA_SEGMENT __attribute__((section("CSS_IDATA_SEGMENT")))
+    #define CSS_CONST_SEGMENT __attribute__((section("CSS_CONST_SEGMENT")))
+    #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section("MCUX_OBFUSCATED_FUP_SEGMENT")))
     #define UNUSED_PARAM __attribute__((unused))
     /*  
         Use of UNALIGNED on ARMCLANG
@@ -50,9 +50,9 @@
 
 /* for armcc compiler */
 #elif defined ( __CC_ARM )
-    #define CSS_IDATA_SEGMENT __attribute__((section(CSS_IDATA_SEGMENT)))
-    #define CSS_CONST_SEGMENT __attribute__((section(CSS_CONST_SEGMENT_SECTION)))
-    #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section(MCUX_OBFUSCATED_FUP_SEGMENT)))
+    #define CSS_IDATA_SEGMENT __attribute__((section("CSS_IDATA_SEGMENT")))
+    #define CSS_CONST_SEGMENT __attribute__((section("CSS_CONST_SEGMENT")))
+    #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section("MCUX_OBFUSCATED_FUP_SEGMENT")))
     #define UNUSED_PARAM __attribute__((unused))
     #define UNALIGNED __packed
     /* Macro for alligning buffers to cpu word */
@@ -70,9 +70,9 @@
 
 /* for iar compiler */
 #elif defined ( __ICCARM__ )
-    #define CSS_IDATA_SEGMENT __attribute__((section(CSS_IDATA_SEGMENT)))
-    #define CSS_CONST_SEGMENT __attribute__((section(CSS_CONST_SEGMENT_SECTION)))
-    #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section(MCUX_OBFUSCATED_FUP_SEGMENT)))
+    #define CSS_IDATA_SEGMENT __attribute__((section("CSS_IDATA_SEGMENT")))
+    #define CSS_CONST_SEGMENT __attribute__((section("CSS_CONST_SEGMENT")))
+    #define MCUX_FUP_ATTRIBUTE __attribute__((aligned(4))) __attribute__((section(".mcux_obfuscated_fup_segment")))
     #define UNUSED_PARAM __attribute__((unused))
     #define UNALIGNED __packed
     /* Macro for alligning buffers to cpu word */

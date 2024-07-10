@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -27,6 +27,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
+#include <mcuxClRandomModes.h>
 #include <mcuxClBuffer.h>
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <mcuxClCore_Examples.h>
@@ -137,7 +138,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_pss_sha2_256_example)
     mcuxClSession_Handle_t session = &sessionDesc;
 
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session,
-                                                 MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE,
+                                                 MCUXCLEXAMPLE_MAX_WA(MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE),
                                                  MCUXCLRSA_SIGN_PLAIN_2048_WAPKC_SIZE);
 
     /* Initialize the PRNG */

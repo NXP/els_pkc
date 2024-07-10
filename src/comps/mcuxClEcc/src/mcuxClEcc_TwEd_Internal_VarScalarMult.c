@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -51,7 +51,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
     uint8_t iScalar,
     uint32_t scalarBitLength,
     uint32_t options,
-    const mcuxClEcc_TwEd_PtrSelectFunction_FP_t *pPtrSelectFctFP
+    mcuxClEcc_TwEd_PtrSelectFunction_t ptrSelectFct,
+    uint32_t ptrSelectFctFPId
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_TwEd_VarScalarMult);
@@ -77,7 +78,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
 
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
     /* Step 3: Perform ladder loop to calculate YZ-coordinates for the resulting point according to Algorithms 4 and 5 in https://ieeexplore.ieee.org/document/6550581
-     * For the pointer selection, the function specified by pPtrSelectFctFP is used.
+     * For the pointer selection, the function specified by ptrSelectFct is used.
      */
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
     uint32_t i = scalarBitLength;
@@ -98,11 +99,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
             currentScalarWord = pScalar[currentScalarWordIndex];
             MCUX_CSSL_FP_BRANCH_POSITIVE(ifInWhile);
         }
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_PtrSelectFct, pPtrSelectFctFP->pPtrSelectFct(pSession, currentScalarWord, (uint8_t)currentScalarBitInWord));
-        if(MCUXCLECC_STATUS_OK != ret_PtrSelectFct)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_TwEd_VarScalarMult, MCUXCLECC_STATUS_FAULT_ATTACK);
-        }
+        MCUX_CSSL_FP_FUNCTION_CALL_VOID(ptrSelectFct(pSession, currentScalarWord, (uint8_t)currentScalarBitInWord));
 
         /* Perform the ladder step to calculate (VY2:VZ2) = (VY1:VZ1) + (VY2:VZ2) and (VY1:VZ1) = 2*(VY1:VZ1) */
         MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_VarScalarMult_YZMontLadder_LadderStep, mcuxClEcc_FUP_VarScalarMult_YZMontLadder_LadderStep_LEN);
@@ -110,7 +107,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
         /* FP balancing for the loop iteration */
         MCUX_CSSL_FP_LOOP_ITERATION(whileLoop,
             MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(ifInWhile, (i == (scalarBitLength - 1u)) || ((i % 32u) == 31u)),
-            pPtrSelectFctFP->ptrSelectFct_FP_FuncId,
+            ptrSelectFctFPId,
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)
             );
     }
