@@ -271,6 +271,23 @@ psa_status_t mcuxClPsaDriver_Oracle_generate_s50_random_key(
     mcuxClEls_KeyIndex_t *key_index_private_key);
 
 
+/**
+ * @brief Oracle function for determine the size required for a key buffer for a key to be generated within ELS slot.
+ *
+ * The size of the data required to store a key is not necessarily the same as the size of the date supplied when
+ * importing a key.
+ *
+ * @param[in] attributes defines the attributes associated with the input buffer
+ * @param[out] key_buffer_length is the required number of bytes required as key_buffer
+ *
+ * @retval PSA_SUCCESS                          The operation was succesful
+ * @retval PSA_ERROR_NOT_SUPPORTED              The lifetime is not supported, meaning that fallback functions will be
+ * executed by Oracle
+ * @retval PSA_ERROR_INSUFFICIENT_MEMORY        The key_buffer size is not enough to include data to be stored
+ */
+psa_status_t mcuxClPsaDriver_Oracle_GetKeyBufferSize(const psa_key_attributes_t *attributes,
+                                                     size_t *key_buffer_length);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
