@@ -225,21 +225,6 @@ config MCUX_COMPONENT_component.els_pkc.psa_driver
     bool "Component component.els_pkc.psa_driver"
     select MCUX_COMPONENT_component.els_pkc.buffer
     
-    if MCUX_COMPONENT_component.els_pkc.psa_driver
-      choice
-        prompt "Component component.els_pkc.psa_driver anyOf 1"
-        default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.psa_driver_DEPEND_ANYOF_OPTION_1
-        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.psa_driver_DEPEND_ANYOF_OPTION_1
-          bool "Select MCUX_COMPONENT_component.els_pkc.platform.mcxn"
-          select MCUX_COMPONENT_component.els_pkc.platform.mcxn
-        
-        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.psa_driver_DEPEND_ANYOF_OPTION_2
-          bool "Select MCUX_COMPONENT_component.els_pkc.platform.rw61x"
-          select MCUX_COMPONENT_component.els_pkc.platform.rw61x
-        
-      endchoice
-    endif
-    
 config MCUX_COMPONENT_component.els_pkc.random
     bool "Component component.els_pkc.random"
     select MCUX_COMPONENT_component.els_pkc.flow_protection
@@ -385,6 +370,7 @@ config MCUX_COMPONENT_component.els_pkc.toolchain
     endif
 config MCUX_COMPONENT_component.els_pkc.platform.mcxn
     bool "Component component.els_pkc.platform.mcxn"
+    default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && (MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236))
     select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
     
     if MCUX_COMPONENT_component.els_pkc.platform.mcxn
@@ -420,6 +406,7 @@ config MCUX_COMPONENT_component.els_pkc.platform.rw61x_standalone_clib_gdet_sens
     
 config MCUX_COMPONENT_component.els_pkc.platform.rw61x
     bool "Component component.els_pkc.platform.rw61x"
+    default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && (MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612))
     select MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files
     select MCUX_COMPONENT_component.els_pkc.trng.type_rng4
     select MCUX_COMPONENT_component.els_pkc.standalone_gdet
