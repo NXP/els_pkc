@@ -1,12 +1,84 @@
+#---------------------------------------------
+# Copyright 2024 NXP.
+# SPDX-License-Identifier: BSD-3-Clause
+#---------------------------------------------
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.rw61x)
+    mcux_add_source(
+        SOURCES
+                doc/rw61x_release/html/*.*
+                doc/rw61x_release/html/search/*.*
+                LICENSE.htm
+                softwareContentRegister.txt
+                ReleaseNotes.txt
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+
+    mcux_add_include(
+        INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.lpc)
+    mcux_add_source(
+        SOURCES
+                doc/lpc_release/html/*.*
+                doc/lpc_release/html/search/*.*
+                LICENSE.htm
+                softwareContentRegister.txt
+                ReleaseNotes.txt
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mcxn)
+    mcux_add_source(
+        SOURCES
+                doc/mcxn_release/html/*.*
+                doc/mcxn_release/html/search/*.*
+                LICENSE.htm
+                softwareContentRegister.txt
+                ReleaseNotes.txt
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mimxrt)
+    mcux_add_source(
+        SOURCES
+                doc/mimxrt_release/html/*.*
+                doc/mimxrt_release/html/search/*.*
+                LICENSE.htm
+                softwareContentRegister.txt
+                ReleaseNotes.txt
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.mcxn)
     mcux_add_source(
         SOURCES static_library/mcxn/libclns.a
                 static_library/mcxn/libclns.a.libsize
                 static_library/mcxn/libclns.a.objsize
                 static_library/mcxn/libclns.stripped.a
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -16,9 +88,11 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.rw61x)
                 static_library/rw61x/libclns.a.libsize
                 static_library/rw61x/libclns.a.objsize
                 static_library/rw61x/libclns.stripped.a
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -28,9 +102,11 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.lpc)
                 static_library/lpc/libclns.a.libsize
                 static_library/lpc/libclns.a.objsize
                 static_library/lpc/libclns.stripped.a
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -40,9 +116,11 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt)
                 static_library/mimxrt/libclns.a.libsize
                 static_library/mimxrt/libclns.a.objsize
                 static_library/mimxrt/libclns.stripped.a
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
+        BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -53,10 +131,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.common)
                 src/comps/common/inc/mcuxClOscca_Memory.h
                 src/comps/common/inc/mcuxClOscca_PlatformTypes.h
                 src/comps/common/inc/mcuxClOscca_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/common/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -70,11 +150,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.aead)
                 src/comps/mcuxClAead/inc/internal/mcuxClAead_Ctx.h
                 src/comps/mcuxClAead/inc/internal/mcuxClAead_Descriptor.h
                 src/comps/mcuxClAead/inc/internal/mcuxClAead_Internal_Functions.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClAead/inc
                  src/comps/mcuxClAead/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -96,11 +178,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.aead_modes)
                 src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Algorithms.h
                 src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Functions.h
                 src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Els_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClAeadModes/inc
                  src/comps/mcuxClAeadModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -115,11 +199,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.aes)
                 src/comps/mcuxClAes/inc/internal/mcuxClAes_Internal_Constants.h
                 src/comps/mcuxClAes/inc/internal/mcuxClAes_Internal_Functions.h
                 src/comps/mcuxClAes/inc/internal/mcuxClAes_Wa.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClAes/inc
                  src/comps/mcuxClAes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -133,11 +219,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.buffer)
                 src/comps/mcuxClBuffer/inc/mcuxClBuffer_Pointer.h
                 src/comps/mcuxClBuffer/inc/internal/mcuxClBuffer_Internal.h
                 src/comps/mcuxClBuffer/inc/internal/mcuxClBuffer_Internal_Pointer.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClBuffer/inc
                  src/comps/mcuxClBuffer/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -152,11 +240,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.cipher)
                 src/comps/mcuxClCipher/inc/internal/mcuxClCipher_Internal_Constants.h
                 src/comps/mcuxClCipher/inc/internal/mcuxClCipher_Internal_Functions.h
                 src/comps/mcuxClCipher/inc/internal/mcuxClCipher_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClCipher/inc
                  src/comps/mcuxClCipher/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -177,11 +267,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.cipher_modes)
                 src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Els_Algorithms.h
                 src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Els_Functions.h
                 src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Els_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClCipherModes/inc
                  src/comps/mcuxClCipherModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -192,10 +284,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.core)
                 src/comps/mcuxClCore/inc/mcuxClCore_Macros.h
                 src/comps/mcuxClCore/inc/mcuxClCore_Platform.h
                 src/comps/mcuxClCore/inc/mcuxClCore_Toolchain.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClCore/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -206,11 +300,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.crc)
                 src/comps/mcuxClCrc/inc/mcuxClCrc.h
                 src/comps/mcuxClCrc/inc/internal/mcuxClCrc_Internal_Constants.h
                 src/comps/mcuxClCrc/inc/internal/mcuxClCrc_Internal_Functions.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClCrc/inc
                  src/comps/mcuxClCrc/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -220,11 +316,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc_deterministic)
                 src/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.c
                 src/comps/mcuxClEcc/inc/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClEcc/inc/
                  src/comps/mcuxClEcc/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -351,11 +449,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FP.h
                 src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FUP.h
                 src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_PkcWaLayout.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClEcc/inc/
                  src/comps/mcuxClEcc/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -377,11 +477,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.els_header_only)
                 src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal.h
                 src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_mapping.h
                 src/comps/mcuxClEls/inc/internal/mcuxClEls_SfrAccess.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClEls/inc
                  src/comps/mcuxClEls/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -390,11 +492,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.els_common)
         SOURCES src/comps/mcuxClEls/src/mcuxClEls_Common.c
                 src/comps/mcuxClEls/inc/mcuxClEls_Common.h
                 src/comps/mcuxClEls/inc/internal/mcuxClEls_Internal_Common.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClEls/inc
                  src/comps/mcuxClEls/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -402,10 +506,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.standalone_gdet)
     mcux_add_source(
         SOURCES src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
                 src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClEls/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -420,6 +526,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.els)
                 src/comps/mcuxClEls/src/mcuxClEls_Kdf.c
                 src/comps/mcuxClEls/src/mcuxClEls_Rng.c
                 src/comps/mcuxClEls/src/mcuxClEls_KeyManagement.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -431,11 +538,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.glikey)
         SOURCES src/comps/mcuxClGlikey/src/mcuxClGlikey.c
                 src/comps/mcuxClGlikey/inc/mcuxClGlikey.h
                 src/comps/mcuxClGlikey/inc/internal/mcuxClGlikey_SfrAccess.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClGlikey/inc
                  src/comps/mcuxClGlikey/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -452,11 +561,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hash)
                 src/comps/mcuxClHash/inc/mcuxClHash_Types.h
                 src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal.h
                 src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal_Memory.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClHash/inc
                  src/comps/mcuxClHash/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -476,11 +587,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hashmodes)
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_els_sha2.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_Memory.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClHashModes/inc
                  src/comps/mcuxClHashModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -503,11 +616,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hmac)
                 src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Functions.h
                 src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Memory.h
                 src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClHmac/inc/
                  src/comps/mcuxClHmac/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -527,11 +642,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.key_derivation)
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_NIST_SP800_56C.h
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_PBKDF2.h
                 src/comps/mcuxClKey/inc/internal/mcuxClKey_DerivationAlgorithms_NIST_SP800_108_Internal.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClKey/inc
                  src/comps/mcuxClKey/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -549,11 +666,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.key)
                 src/comps/mcuxClKey/inc/internal/mcuxClKey_Internal.h
                 src/comps/mcuxClKey/inc/internal/mcuxClKey_Protection_Internal.h
                 src/comps/mcuxClKey/inc/internal/mcuxClKey_Types_Internal.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClKey/inc
                  src/comps/mcuxClKey/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -568,11 +687,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.mac)
                 src/comps/mcuxClMac/inc/internal/mcuxClMac_Internal_Constants.h
                 src/comps/mcuxClMac/inc/internal/mcuxClMac_Internal_Functions.h
                 src/comps/mcuxClMac/inc/internal/mcuxClMac_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClMac/inc/
                  src/comps/mcuxClMac/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -598,11 +719,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.mac_modes)
                 src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Cmac.h
                 src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Ctx.h
                 src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Els_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClMacModes/inc/
                  src/comps/mcuxClMacModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -641,11 +764,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.math)
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_NDash_FUP.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_QDash_FUP.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_SecModExp_FUP.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClMath/inc/
                  src/comps/mcuxClMath/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -690,6 +815,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.memory)
                 src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Compare_asm.h
                 src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Copy_asm.h
                 src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_SecureCompare.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -697,6 +823,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.memory)
                  src/comps/mcuxClMemory/inc/internal
                  src/comps/mcuxCsslMemory/inc
                  src/comps/mcuxCsslMemory/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -718,11 +845,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_aeadmodes)
                 src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Algorithms.h
                 src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Functions.h
                 src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaAeadModes/inc
                  src/comps/mcuxClOsccaAeadModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -737,11 +866,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_ciphermodes)
                 src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Algorithms.h
                 src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Internal_Functions.h
                 src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaCipherModes/inc
                  src/comps/mcuxClOsccaCipherModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -764,11 +895,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_macmodes)
                 src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_SM4_CBCMAC.h
                 src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_SM4_CMAC.h
                 src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaMacModes/inc
                  src/comps/mcuxClOsccaMacModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -782,11 +915,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_pkc)
                 src/comps/mcuxClOsccaPkc/inc/internal/mcuxClOsccaPkc_Macros.h
                 src/comps/mcuxClOsccaPkc/inc/internal/mcuxClOsccaPkc_Operations.h
                 src/comps/mcuxClOsccaPkc/inc/internal/mcuxClOsccaPkc_SfrAccess.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaPkc/inc
                  src/comps/mcuxClOsccaPkc/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -799,11 +934,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_randommodes)
                 src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_Private_RNG.h
                 src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_Private_Types.h
                 src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_SfrAccess.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaRandomModes/inc
                  src/comps/mcuxClOsccaRandomModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -818,10 +955,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_safo)
                 src/comps/mcuxClOsccaSafo/inc/mcuxClOsccaSafo_Sfr_RegBank.h
                 src/comps/mcuxClOsccaSafo/inc/mcuxClOsccaSafo_Sfr_Status.h
                 src/comps/mcuxClOsccaSafo/inc/mcuxClOsccaSafo_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaSafo/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -870,11 +1009,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_sm2)
                 src/comps/mcuxClOsccaSm2/inc/internal/mcuxClOsccaSm2_Internal_Helper.h
                 src/comps/mcuxClOsccaSm2/inc/internal/mcuxClOsccaSm2_Internal_PkcWaLayout.h
                 src/comps/mcuxClOsccaSm2/inc/internal/mcuxClOsccaSm2_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaSm2/inc
                  src/comps/mcuxClOsccaSm2/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -889,11 +1030,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_sm3)
                 src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Core_sm3.h
                 src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal.h
                 src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal_sm3.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaSm3/inc
                  src/comps/mcuxClOsccaSm3/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -908,11 +1051,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_sm4)
                 src/comps/mcuxClOsccaSm4/inc/internal/mcuxClOsccaSm4_Internal.h
                 src/comps/mcuxClOsccaSm4/inc/internal/mcuxClOsccaSm4_Internal_Constants.h
                 src/comps/mcuxClOsccaSm4/inc/internal/mcuxClOsccaSm4_Internal_Functions.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClOsccaSm4/inc
                  src/comps/mcuxClOsccaSm4/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -925,11 +1070,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.padding)
                 src/comps/mcuxClPadding/inc/internal/mcuxClPadding_Functions_Internal.h
                 src/comps/mcuxClPadding/inc/internal/mcuxClPadding_Internal.h
                 src/comps/mcuxClPadding/inc/internal/mcuxClPadding_Types_Internal.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClPadding/inc/
                  src/comps/mcuxClPadding/inc/internal/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -949,11 +1096,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.pkc)
                 src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Operations.h
                 src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Resource.h
                 src/comps/mcuxClPkc/inc/internal/mcuxClPkc_SfrAccess.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClPkc/inc
                  src/comps/mcuxClPkc/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -965,11 +1114,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.prng)
                 src/comps/mcuxClPrng/inc/internal/mcuxClPrng_Internal_ELS.h
                 src/comps/mcuxClPrng/inc/internal/mcuxClPrng_Internal_Functions.h
                 src/comps/mcuxClPrng/inc/internal/mcuxClPrng_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClPrng/inc
                  src/comps/mcuxClPrng/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -995,11 +1146,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.psa_driver)
                 src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Functions.h
                 src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Internal.h
                 src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClPsaDriver/inc
                  src/comps/mcuxClPsaDriver/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1014,11 +1167,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.random)
                 src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Functions.h
                 src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Memory.h
                 src/comps/mcuxClRandom/inc/internal/mcuxClRandom_Internal_Types.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClRandom/inc
                  src/comps/mcuxClRandom/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1027,10 +1182,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.random_modes_hmacdrbg)
         SOURCES src/comps/mcuxClRandomModes/src/mcuxClRandomModes_HmacDrbg.c
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Internal_HmacDrbg_Functions.h
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_HmacDrbg.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClRandomModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1053,11 +1210,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.random_modes)
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PatchMode.h
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_PrDisabled.h
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_TestMode.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClRandomModes/inc
                  src/comps/mcuxClRandomModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1067,11 +1226,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.random_modes_ctr)
                 src/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
                 src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
                 src/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClRandomModes/inc
                  src/comps/mcuxClRandomModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1087,11 +1248,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.rsa_oaep)
                 src/comps/mcuxClRsa/src/mcuxClRsa_Util_Encrypt.c
                 src/comps/mcuxClRsa/inc/mcuxClRsa_KeyTypes.h
                 src/comps/mcuxClRsa/inc/mcuxClRsa_ModeConstructors.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClRsa/inc
                  src/comps/mcuxClRsa/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1153,11 +1316,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.rsa)
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_RemoveBlinding_FUP.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPQDistance_FUP.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_TestPrimeCandidate_FUP.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClRsa/inc
                  src/comps/mcuxClRsa/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1172,11 +1337,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.session)
                 src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal_EntryExit.h
                 src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal_EntryExit_RegularReturn.h
                 src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal_Functions.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClSession/inc
                  src/comps/mcuxClSession/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1189,11 +1356,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.signature)
                 src/comps/mcuxClSignature/inc/mcuxClSignature_MemoryConsumption.h
                 src/comps/mcuxClSignature/inc/mcuxClSignature_Types.h
                 src/comps/mcuxClSignature/inc/internal/mcuxClSignature_Internal.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClSignature/inc
                  src/comps/mcuxClSignature/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1205,11 +1374,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.trng)
                 src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
                 src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_Types.h
                 src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClTrng/inc
                  src/comps/mcuxClTrng/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1217,9 +1388,11 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.trng.type_els)
     mcux_add_source(
         SOURCES src/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
                 src/comps/mcuxClTrng/src/mcuxClTrng_ELS.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1228,11 +1401,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.trng.type_rng4)
         SOURCES src/comps/mcuxClTrng/src/mcuxClTrng_SA_TRNG.c
                 src/comps/mcuxClTrng/inc/internal/mcuxClTrng_SfrAccess.h
                 src/comps/mcuxClTrng/inc/internal/mcuxClTrng_Internal_SA_TRNG.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxClTrng/inc
                  src/comps/mcuxClTrng/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1240,10 +1415,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.pre_processor)
     mcux_add_source(
         SOURCES src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslAnalysis.h
                 src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslCPreProcessor.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxCsslCPreProcessor/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1253,10 +1430,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.data_integrity)
                 src/comps/mcuxCsslDataIntegrity/inc/mcuxCsslDataIntegrity_Cfg.h
                 src/comps/mcuxCsslDataIntegrity/inc/mcuxCsslDataIntegrity_Impl.h
                 src/comps/mcuxCsslDataIntegrity/inc/mcuxCsslDataIntegrity_None.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxCsslDataIntegrity/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1268,10 +1447,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.flow_protection)
                 src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_Impl.h
                 src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Common.h
                 src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Local.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxCsslFlowProtection/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1279,10 +1460,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.param_integrity)
     mcux_add_source(
         SOURCES src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
                 src/comps/mcuxCsslParamIntegrity/inc/mcuxCsslParamIntegrity.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxCsslParamIntegrity/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1293,30 +1476,36 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.secure_counter)
                 src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_Impl.h
                 src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_None.h
                 src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_SW_Local.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/comps/mcuxCsslSecureCounter/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_component.els_pkc)
     mcux_add_source(
         SOURCES src/inc/mcuxCl_clns.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.toolchain)
     mcux_add_source(
         SOURCES /src/compiler/mcuxClToolchain.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/compiler
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1331,11 +1520,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mcxn)
                 src/platforms/mcxn/mcux_els.h
                 src/platforms/mcxn/mcux_pkc.c
                 src/platforms/mcxn/mcux_pkc.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/mcxn
                  src/platforms/mcxn/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1346,13 +1537,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only)
                 src/platforms/rw61x/inc/ip_css_constants.h
                 src/platforms/rw61x/inc/ip_css_design_configuration.h
                 src/platforms/rw61x/inc/ip_platform.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/rw61x
                  src/platforms/rw61x/inc
-                 includes/
-                 includes/platforms/rw61x
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1362,10 +1553,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files)
                 src/platforms/rw61x/mcux_els.h
                 src/platforms/rw61x/mcux_pkc.c
                 src/platforms/rw61x/mcux_pkc.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/rw61x
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1380,11 +1573,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.lpc)
                 src/platforms/lpc/mcux_els.h
                 src/platforms/lpc/mcux_pkc.c
                 src/platforms/lpc/mcux_pkc.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/lpc
                  src/platforms/lpc/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1399,11 +1594,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mimxrt)
                 src/platforms/mimxrt/mcux_els.h
                 src/platforms/mimxrt/mcux_pkc.c
                 src/platforms/mimxrt/mcux_pkc.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/mimxrt
                  src/platforms/mimxrt/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1417,6 +1614,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_memory)
                 examples/mcuxCsslMemory/mcuxCsslMemory_Copy_example.c
                 examples/mcuxCsslMemory/mcuxCsslMemory_Set_example.c
                 examples/mcuxCsslMemory/inc/mcuxCsslMemory_Examples.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1424,6 +1622,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_memory)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1431,6 +1630,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_flow_protection)
     mcux_add_source(
         SOURCES examples/mcuxCsslFlowProtection/mcuxCsslFlowProtection_example.c
                 examples/mcuxCsslFlowProtection/inc/mcuxCsslExamples.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1438,6 +1638,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_flow_protection)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1447,6 +1648,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_rsa)
                 examples/mcuxClRsa/mcuxClRsa_sign_pss_sha2_256_example.c
                 examples/mcuxClRsa/mcuxClRsa_verify_NoVerify_example.c
                 examples/mcuxClRsa/mcuxClRsa_verify_pssverify_sha2_256_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1454,6 +1656,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_rsa)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1465,6 +1668,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_random_modes)
                 examples/mcuxClRandomModes/mcuxClRandomModes_Different_Sessions_example.c
                 examples/mcuxClRandomModes/mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example.c
                 examples/mcuxClRandomModes/mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1472,6 +1676,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_random_modes)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1480,6 +1685,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_mac_modes)
         SOURCES examples/mcuxClMacModes/mcuxClMacModes_Els_Cbcmac_Aes128_Oneshot_example.c
                 examples/mcuxClMacModes/mcuxClMacModes_Els_Cbcmac_Aes256_Multipart_PaddingZero_example.c
                 examples/mcuxClMacModes/mcuxClMacModes_Els_Cmac_Aes128_Oneshot_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1487,12 +1693,14 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_mac_modes)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_key)
     mcux_add_source(
         SOURCES examples/mcuxClKey/mcuxClKey_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1500,6 +1708,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_key)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1508,6 +1717,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_hmac)
         SOURCES examples/mcuxClHmac/mcuxClHmac_Els_Oneshot_External_Key_example.c
                 examples/mcuxClHmac/mcuxClHmac_Sw_Multipart_example.c
                 examples/mcuxClHmac/mcuxClHmac_Sw_Oneshot_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1515,6 +1725,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_hmac)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1532,6 +1743,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_hash_modes)
                 examples/mcuxClHashModes/mcuxClHashModes_sha512_256_oneshot_example.c
                 examples/mcuxClHashModes/mcuxClHashModes_sha512_256_streaming_example.c
                 examples/mcuxClHashModes/mcuxClHashModes_sha512_oneshot_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1539,6 +1751,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_hash_modes)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1566,6 +1779,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_els)
                 src/comps/mcuxClExample/inc/mcuxClExample_RFC3394_Helper.h
                 src/comps/mcuxClExample/inc/mcuxClExample_RNG_Helper.h
                 src/comps/mcuxClExample/inc/mcuxClExample_Session_Helper.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1573,6 +1787,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_els)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1585,6 +1800,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_ecc)
                 examples/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
                 examples/mcuxClEcc/mcuxClEcc_MontDH_Curve25519_example.c
                 examples/mcuxClEcc/mcuxClEcc_MontDH_Curve448_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1592,6 +1808,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_ecc)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1600,6 +1817,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_aead)
         SOURCES examples/mcuxClAeadModes/mcuxClAeadModes_Els_Ccm_Aes128_Multipart_example.c
                 examples/mcuxClAeadModes/mcuxClAeadModes_Els_Ccm_Aes128_Oneshot_example.c
                 examples/mcuxClAeadModes/mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1607,6 +1825,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_aead)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1622,6 +1841,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_cipher_modes)
                 examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_example.c
                 examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingPKCS7_example.c
                 examples/mcuxClCipherModes/mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingZero_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
@@ -1629,6 +1849,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_cipher_modes)
                  examples/mcuxCsslMemory/inc/
                  src/comps/mcuxClExample/inc/
                  src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
 
@@ -1668,9 +1889,11 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.psa_driver_examples)
                 examples/mcuxClPsaDriver/mcuxClPsaDriver_sha384_oneshot_example.c
                 examples/mcuxClPsaDriver/mcuxClPsaDriver_sha512_oneshot_example.c
                 examples/mcuxClPsaDriver/mcuxClPsaDriver_truncated_mac_oneshot_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  examples/mcuxCsslFlowProtection/inc
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
