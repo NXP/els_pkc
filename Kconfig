@@ -224,7 +224,8 @@ config MCUX_COMPONENT_component.els_pkc.prng
 config MCUX_COMPONENT_component.els_pkc.psa_driver
     bool "Component component.els_pkc.psa_driver"
     select MCUX_COMPONENT_component.els_pkc.buffer
-    
+    select MCUX_COMPONENT_component.els_pkc
+
 config MCUX_COMPONENT_component.els_pkc.random
     bool "Component component.els_pkc.random"
     select MCUX_COMPONENT_component.els_pkc.flow_protection
@@ -349,8 +350,8 @@ config MCUX_COMPONENT_component.els_pkc
             
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3"
-            select MCUX_COMPONENT_component.els_pkc.platform.rw61x
             select MCUX_COMPONENT_component.els_pkc.static_lib.rw61x
+            select MCUX_COMPONENT_component.els_pkc.platform.rw61x
             depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
             
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_4
