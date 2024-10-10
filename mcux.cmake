@@ -1142,6 +1142,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.psa_driver)
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_Constants.h
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_MemoryConsumption.h
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_Oracle.h
+                src/comps/mcuxClPsaDriver/inc/els_pkc_crypto_primitives.h
+                src/comps/mcuxClPsaDriver/inc/els_pkc_crypto_composites.h
                 src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_ExternalMacroWrappers.h
                 src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Functions.h
                 src/comps/mcuxClPsaDriver/inc/internal/mcuxClPsaDriver_Internal.h
