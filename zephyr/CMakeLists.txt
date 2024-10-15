@@ -33,7 +33,6 @@ if(${MCUX_DEVICE} MATCHES "RW61")
   zephyr_include_directories(${ELS_PKC_PATH}/src/comps/mcuxClEls/inc)
 
   if(NOT CONFIG_MCUX_ELS_PKC AND NOT CONFIG_BUILD_WITH_TFM)
-    zephyr_sources(${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612/drivers/fsl_ocotp.c)
     zephyr_sources(${ELS_PKC_PATH}/src/comps/mcuxClEls/src/mcuxClEls_Common.c)
     zephyr_sources(${ELS_PKC_PATH}/src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c)
   endif()
