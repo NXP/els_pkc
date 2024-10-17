@@ -149,63 +149,74 @@ $(document).ready(function(){initNavTree('a01684.html',''); initResizable(); });
 <div class="line">    (void)session;</div>
 <div class="line">    (void)pCustomCtx;</div>
 <div class="line">    uint32_t indexRandomData = 0u;</div>
-<div class="line"> </div>
 <div class="line">    <span class="keywordflow">for</span> (uint32_t i = 0u; i &lt; outLength; i++)</div>
 <div class="line">    {</div>
 <div class="line">        pOut[i] = randomData[indexRandomData];</div>
-<div class="line">        indexRandomData = (indexRandomData + 1u) % <span class="keyword">sizeof</span>(randomData);</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW(<span class="stringliteral">&quot;indexRandomData can never be equal to UINT32_MAX because sizeof(randomData) is 32.&quot;</span>)</div>
+<div class="line">        indexRandomData = (indexRandomData + 1u) % sizeof(randomData);</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> <a id="a0" name="a0"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a>;</div>
+<div class="line">    return <a id="a0" name="a0"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a id="a1" name="a1"></a><a class="code hl_function" href="a00335.html#ab09e85d093559e1dc243cbaf655e92f2">mcuxClOsccaRandomModes_PatchMode_OsccaRng_example</a>(<span class="keywordtype">void</span>)</div>
+<div class="line">MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaRandomModes_PatchMode_OsccaRng_example)</div>
 <div class="line">{</div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* Preparation                                                            */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Els_Init(<a id="a2" name="a2"></a><a class="code hl_define" href="a01029.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a>))</div>
+<div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Els_Init(<a id="a1" name="a1"></a><a class="code hl_define" href="a01029.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a>))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a id="_a3" name="_a3"></a><a class="code hl_struct" href="a01637.html">mcuxClSession_Descriptor_t</a> sessionDesc;</div>
+<div class="line">    <a id="_a2" name="_a2"></a><a class="code hl_struct" href="a01637.html">mcuxClSession_Descriptor_t</a> sessionDesc;</div>
 <div class="line">    <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session = &amp;sessionDesc;</div>
 <div class="line">    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="a01637.html">mcuxClSession_Descriptor_t</a>), 0u);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Fill mode descriptor with the relevant data */</span></div>
 <div class="line">    uint32_t customModeDescBytes[(MCUXCLRANDOMMODES_PATCHMODE_DESCRIPTOR_SIZE + <span class="keyword">sizeof</span>(uint32_t) - 1U)/<span class="keyword">sizeof</span>(uint32_t)];</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line">    <a class="code hl_typedef" href="a01164.html#gadcfae984a95f3e98617ca5fb9767f5cd">mcuxClRandom_ModeDescriptor_t</a> *mcuxClRandomModes_Mode_Custom = (<a class="code hl_typedef" href="a01164.html#gadcfae984a95f3e98617ca5fb9767f5cd">mcuxClRandom_ModeDescriptor_t</a> *) customModeDescBytes;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* RANDOM Patch Mode creation, use custom function RNG_Patch_function     */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
-<div class="line">    <a id="a4" name="a4"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(cp_status, cp_token, mcuxClRandomModes_createPatchMode(</div>
-<div class="line">                                        mcuxClRandomModes_Mode_Custom,</div>
-<div class="line">                                        (mcuxClRandomModes_CustomGenerateAlgorithm_t)RNG_Patch_function,</div>
-<div class="line">                                        NULL,</div>
-<div class="line">                                        128U</div>
-<div class="line">                                   ));</div>
+<div class="line">    <a id="a3" name="a3"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(cp_status, cp_token, mcuxClRandomModes_createPatchMode(</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;mcuxClRandomModes_Mode_Custom has the correct type (<a class="code hl_typedef" href="a01164.html#gadcfae984a95f3e98617ca5fb9767f5cd">mcuxClRandom_ModeDescriptor_t</a>), the cast was valid.&quot;)</div>
+<div class="line">        mcuxClRandomModes_Mode_Custom,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
+<div class="line">        (mcuxClRandomModes_CustomGenerateAlgorithm_t)RNG_Patch_function,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()</div>
+<div class="line">        NULL,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()</div>
+<div class="line">        128U</div>
+<div class="line">    ));</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>((<a id="a5" name="a5"></a><a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(mcuxClRandomModes_createPatchMode) != cp_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != cp_status))</div>
+<div class="line">    if((<a id="a4" name="a4"></a><a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(mcuxClRandomModes_createPatchMode) != cp_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != cp_status))</div>
 <div class="line">    {</div>
 <div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
-<div class="line">    <a id="a6" name="a6"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line">    <a id="a5" name="a5"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* patch mode initialization                                              */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    uint32_t ctx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];</div>
-<div class="line">    <a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a> rngContextPatched = (<a id="a7" name="a7"></a><a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>)ctx;</div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(ri_status, init_token, <a id="a8" name="a8"></a><a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>(</div>
-<div class="line">                                        session,</div>
-<div class="line">                                        rngContextPatched,</div>
-<div class="line">                                        mcuxClRandomModes_Mode_Custom</div>
-<div class="line">                                   ));</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a> rngContextPatched = (<a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>)ctx;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(ri_status, init_token, <a id="a6" name="a6"></a><a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>(</div>
+<div class="line">        session,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;rngContextPatched has the correct type (<a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>), the cast was valid.&quot;)</div>
+<div class="line">        rngContextPatched,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
+<div class="line">        mcuxClRandomModes_Mode_Custom</div>
+<div class="line">    ));</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>) != init_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != ri_status))</div>
+<div class="line">    if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>) != init_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != ri_status))</div>
 <div class="line">    {</div>
 <div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
@@ -219,12 +230,14 @@ $(document).ready(function(){initNavTree('a01684.html',''); initResizable(); });
 <div class="line">    uint8_t drbg_buffer2[<span class="keyword">sizeof</span>(randomData) + 16u];</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Generate random values of smaller amount than the size of prepared random data array. */</span></div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(rg1_status, generate1_token, <a id="a9" name="a9"></a><a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS(<span class="stringliteral">&quot;Address of drbg_buffer1 is for internal use only and does not escape&quot;</span>)</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(rg1_status, generate1_token, <a id="a7" name="a7"></a><a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
 <div class="line">                                        session,</div>
 <div class="line">                                        drbg_buffer1,</div>
-<div class="line">                                        <span class="keyword">sizeof</span>(drbg_buffer1)));</div>
+<div class="line">                                        sizeof(drbg_buffer1)));</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>) != generate1_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != rg1_status))</div>
+<div class="line">    if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>) != generate1_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != rg1_status))</div>
 <div class="line">    {</div>
 <div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
@@ -237,12 +250,14 @@ $(document).ready(function(){initNavTree('a01684.html',''); initResizable(); });
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Generate random values of larger amount than the size of prepared random data array. */</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS(<span class="stringliteral">&quot;Address of drbg_buffer2 is for internal use only and does not escape&quot;</span>)</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(rg2_status, generate2_token, <a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
 <div class="line">                                        session,</div>
 <div class="line">                                        drbg_buffer2,</div>
-<div class="line">                                        <span class="keyword">sizeof</span>(drbg_buffer2)));</div>
+<div class="line">                                        sizeof(drbg_buffer2)));</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>) != generate2_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != rg2_status))</div>
+<div class="line">    if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>) != generate2_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != rg2_status))</div>
 <div class="line">    {</div>
 <div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
@@ -263,7 +278,7 @@ $(document).ready(function(){initNavTree('a01684.html',''); initResizable(); });
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Random uninit. */</span></div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(ru_status, uninit_token, <a id="a10" name="a10"></a><a class="code hl_function" href="a01163.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a>(session));</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(ru_status, uninit_token, <a id="a8" name="a8"></a><a class="code hl_function" href="a01163.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a>(session));</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a>) != uninit_token) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != ru_status))</div>
 <div class="line">    {</div>
@@ -283,7 +298,6 @@ $(document).ready(function(){initNavTree('a01684.html',''); initResizable(); });
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_OK;</div>
 <div class="line">}</div>
-<div class="ttc" id="aa00335_html_ab09e85d093559e1dc243cbaf655e92f2"><div class="ttname"><a href="a00335.html#ab09e85d093559e1dc243cbaf655e92f2">mcuxClOsccaRandomModes_PatchMode_OsccaRng_example</a></div><div class="ttdeci">bool mcuxClOsccaRandomModes_PatchMode_OsccaRng_example(void)</div><div class="ttdoc">Performs an example usage of the mcuxClRandom and mcuxClOsccaRandomModes components with patch mode.</div><div class="ttdef"><b>Definition</b> mcuxClOsccaRandomModes_PatchMode_OsccaRng_example.c:63</div></div>
 <div class="ttc" id="aa00416_html"><div class="ttname"><a href="a00416.html">mcuxClCore_FunctionIdentifiers.h</a></div><div class="ttdoc">Definition of function identifiers for the flow protection mechanism.</div></div>
 <div class="ttc" id="aa00671_html"><div class="ttname"><a href="a00671.html">mcuxClOsccaRandomModes.h</a></div><div class="ttdoc">Top level header of mcuxClOsccaRandomModes component.</div></div>
 <div class="ttc" id="aa00767_html"><div class="ttname"><a href="a00767.html">mcuxClRandom.h</a></div><div class="ttdoc">Top level header of mcuxClRandom component.</div></div>

@@ -23,7 +23,7 @@
 #include <mcuxClExample_RNG_Helper.h>
 
 /* random vector */
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_IMPLICIT_CAST_FROM_CHAR()
+MCUX_CSSL_ANALYSIS_START_PATTERN_IMPLICIT_CAST_FROM_CHAR()
 static const uint8_t data1[] = {
    'a', 'b', 'c', 'd', 'b', 'c', 'd', 'e', 'c', 'd', 'e', 'f', 'd', 'e', 'f', 'g',
    'e', 'f', 'g', 'h', 'f', 'g', 'h', 'i', 'g', 'h', 'i', 'j', 'h', 'i', 'j', 'k',
@@ -33,7 +33,7 @@ static const uint8_t data1[] = {
 static const uint8_t data2[] = {
    'x'
 };
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_IMPLICIT_CAST_FROM_CHAR()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_IMPLICIT_CAST_FROM_CHAR()
 
 static const uint8_t hashExpected[MCUXCLHASH_OUTPUT_SIZE_SHA_1] = {
    0x27u, 0x53u, 0x18u, 0x60u, 0xccu, 0x07u, 0x0bu, 0x04u, 0x5eu, 0x85u, 0x54u, 0x25u, 0x0cu, 0xbdu, 0x67u, 0xcbu, 0x80u, 0x3au, 0x79u, 0x77u
@@ -68,14 +68,18 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha1_streaming_example)
     MCUXCLBUFFER_INIT_RW(hashBuf, session, hash, sizeof(hash));
 
     uint32_t context[MCUXCLHASH_CONTEXT_SIZE_SHA_1_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClHash_Context_t pContext = (mcuxClHash_Context_t) context;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUXCLBUFFER_INIT_RO(dataBuf1, session, data1, sizeof(data1));
     MCUXCLBUFFER_INIT_RO(dataBuf2, session, data2, sizeof(data2));
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result1, token1, mcuxClHash_init(
     /* mcuxCLSession_Handle_t session: */ session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pContext points to an object of the right type, the cast was valid.")
     /* mcuxClHash_Context_t context:   */ pContext,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClHash_Algo_t  algo:        */ mcuxClHash_Algorithm_Sha1
     ));
     // mcuxClHash_init is a flow-protected function: Check the protection token and the return value

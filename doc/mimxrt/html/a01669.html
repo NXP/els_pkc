@@ -160,10 +160,12 @@ $(document).ready(function(){initNavTree('a01669.html',''); initResizable(); });
 <div class="line">        }</div>
 <div class="line">        <a id="a5" name="a5"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
-<div class="line">        indexRandomData = (indexRandomData + 1u) % <span class="keyword">sizeof</span>(randomData);</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP(<span class="stringliteral">&quot;The indexRandomData can&#39;t exceed UINT32_MAX because is modulo sizeof(randomData)&quot;</span>)</div>
+<div class="line">        indexRandomData = (indexRandomData + 1u) % sizeof(randomData);</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> <a id="a6" name="a6"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a>;</div>
+<div class="line">    return <a id="a6" name="a6"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example)</div>
@@ -183,10 +185,15 @@ $(document).ready(function(){initNavTree('a01669.html',''); initResizable(); });
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* RANDOM Patch Mode creation, use custom function RNG_Patch_function     */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
+<div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(cp_status, cp_token, mcuxClRandomModes_createPatchMode(</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;mcuxClRandomModes_Mode_Custom has compatible type and cast was valid&quot;</span>)</div>
 <div class="line">                                        mcuxClRandomModes_Mode_Custom,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">                                        (mcuxClRandomModes_CustomGenerateAlgorithm_t)RNG_Patch_function,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">                                        NULL,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">                                        256U</div>
 <div class="line">                                   ));</div>
 <div class="line"> </div>
@@ -199,10 +206,12 @@ $(document).ready(function(){initNavTree('a01669.html',''); initResizable(); });
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* patch mode initialization                                              */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
-<div class="line">    uint32_t* rngContextPatched = NULL;</div>
+<div class="line">    <a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a> rngContextPatched = NULL;</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(ri_status, init_token, <a id="a8" name="a8"></a><a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>(</div>
 <div class="line">                                        session,</div>
-<div class="line">                                        (<a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>)rngContextPatched,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER(<span class="stringliteral">&quot;NULL arguments are not dereferenced in custom mode&quot;</span>)</div>
+<div class="line">                                        rngContextPatched,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()</div>
 <div class="line">                                        mcuxClRandomModes_Mode_Custom</div>
 <div class="line">                                   ));</div>
 <div class="line"> </div>

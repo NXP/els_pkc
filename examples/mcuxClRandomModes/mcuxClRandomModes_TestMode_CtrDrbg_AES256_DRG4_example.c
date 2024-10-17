@@ -81,7 +81,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example)
     /* known entropy and nonce input for later DRBG instantiation             */
     /**************************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(cp_status, cp_token, mcuxClRandomModes_createTestFromNormalMode(
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pTestModeDesc has compatible type and cast was valid")
                                         pTestModeDesc,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                         mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG4,
                                         entropyAndNonceInputInit
                                    ));
@@ -96,10 +98,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_TestMode_CtrDrbg_AES256_DRG4_example)
     /* Test mode initialization with known entropy and nonce input            */
     /**************************************************************************/
     uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0};
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ri_status, init_token, mcuxClRandom_init(
                                         session,
-                                        (mcuxClRandom_Context_t)context,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+                                        pRng_ctx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                         pTestModeDesc
                                    ));
 

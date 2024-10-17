@@ -4,7 +4,7 @@ var files_dup =
     [ "platform", "dir_dc0d5cf89cffc2a09430f9942ae4ccc9.html", "dir_dc0d5cf89cffc2a09430f9942ae4ccc9" ],
     [ "mcuxCl_clns.h", "a00830.html", "a00830" ],
     [ "mcuxClAead.h", "a00350.html", null ],
-    [ "mcuxClAead_Constants.h", "a00359.html", null ],
+    [ "mcuxClAead_Constants.h", "a00359.html", "a00359" ],
     [ "mcuxClAead_Functions.h", "a00362.html", "a00362" ],
     [ "mcuxClAead_Types.h", "a00365.html", "a00365" ],
     [ "mcuxClAeadModes.h", "a00353_source.html", null ],

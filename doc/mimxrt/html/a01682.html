@@ -133,13 +133,13 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line"><span class="preprocessor">#include &lt;mcuxClCore_Examples.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;mcuxClExample_ELS_Helper.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a id="a0" name="a0"></a><a class="code hl_function" href="a00329.html#a93b32f0bc52581e55293b641686c4a39">mcuxClOsccaRandomModes_OsccaTrng_example</a>(<span class="keywordtype">void</span>)</div>
+<div class="line">MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaRandomModes_OsccaTrng_example)</div>
 <div class="line">{</div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* Preparation                                                            */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Els_Init(<a id="a1" name="a1"></a><a class="code hl_define" href="a01029.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a>))</div>
+<div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Els_Init(<a id="a0" name="a0"></a><a class="code hl_define" href="a01029.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a>))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
@@ -149,22 +149,22 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line">    uint8_t rng_buffer2[4u];</div>
 <div class="line">    uint8_t rng_buffer3[5u];</div>
 <div class="line"> </div>
-<div class="line">    <a id="_a2" name="_a2"></a><a class="code hl_struct" href="a01637.html">mcuxClSession_Descriptor_t</a> session;</div>
+<div class="line">    <a id="_a1" name="_a1"></a><a class="code hl_struct" href="a01637.html">mcuxClSession_Descriptor_t</a> session;</div>
 <div class="line">    <span class="comment">//Allocate and initialize session</span></div>
 <div class="line">    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&amp;session, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCARANDOMMODES_OSCCARNG_SELFTEST_CPU_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE), 0u);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Initialize the PRNG */</span></div>
-<div class="line">    <a id="a3" name="a3"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(prngInitRet, prngInitToken, <a id="a4" name="a4"></a><a class="code hl_function" href="a01163.html#ga4522b9cfa28cb224b653003d481d7100">mcuxClRandom_ncInit</a>(&amp;session));</div>
-<div class="line">    <span class="keywordflow">if</span>((<a id="a5" name="a5"></a><a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga4522b9cfa28cb224b653003d481d7100">mcuxClRandom_ncInit</a>) != prngInitToken) || (<a id="a6" name="a6"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != prngInitRet))</div>
+<div class="line">    <a id="a2" name="a2"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(prngInitRet, prngInitToken, <a id="a3" name="a3"></a><a class="code hl_function" href="a01163.html#ga4522b9cfa28cb224b653003d481d7100">mcuxClRandom_ncInit</a>(&amp;session));</div>
+<div class="line">    <span class="keywordflow">if</span>((<a id="a4" name="a4"></a><a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga4522b9cfa28cb224b653003d481d7100">mcuxClRandom_ncInit</a>) != prngInitToken) || (<a id="a5" name="a5"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != prngInitRet))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
-<div class="line">    <a id="a7" name="a7"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line">    <a id="a6" name="a6"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* selftest                                                               */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomSelfRet, randomSelfToken, <a id="a8" name="a8"></a><a class="code hl_function" href="a01163.html#ga4c882c0d6b1e1bba418934c44acc873c">mcuxClRandom_selftest</a>(</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomSelfRet, randomSelfToken, <a id="a7" name="a7"></a><a class="code hl_function" href="a01163.html#ga4c882c0d6b1e1bba418934c44acc873c">mcuxClRandom_selftest</a>(</div>
 <div class="line">                                                   &amp;session,</div>
 <div class="line">                                                   mcuxClOsccaRandomModes_Mode_TRNG));</div>
 <div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga4c882c0d6b1e1bba418934c44acc873c">mcuxClRandom_selftest</a>) != randomSelfToken) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != randomSelfRet))</div>
@@ -179,11 +179,16 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* We need a context for OSCCA Rng. */</span></div>
 <div class="line">    uint32_t ctx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];</div>
-<div class="line">    <a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a> pCtx = (<a id="a9" name="a9"></a><a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>)ctx;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a> pCtx = (<a id="a8" name="a8"></a><a class="code hl_typedef" href="a01164.html#gac2ce3a52788240794afde522cfad65c5">mcuxClRandom_Context_t</a>)ctx;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line"> </div>
 <div class="line">    <span class="comment">/* Initialize the Random session with OSCCA TRNG mode. */</span></div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomInitRet, InitToken, <a id="a10" name="a10"></a><a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>(</div>
-<div class="line">                                                  &amp;session,</div>
-<div class="line">                                                  pCtx,</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomInitRet, InitToken, <a id="a9" name="a9"></a><a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>(</div>
+<div class="line">        &amp;session,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;pCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.&quot;</span>)</div>
+<div class="line">        pCtx,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">                                                  mcuxClOsccaRandomModes_Mode_TRNG));</div>
 <div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga989cf9033b30c383d1548037f2ec8bc9">mcuxClRandom_init</a>) != InitToken) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != randomInitRet))</div>
 <div class="line">    {</div>
@@ -197,7 +202,8 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Generate random values of smaller amount than one word size. */</span></div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomGenRet, randomGenToken, <a id="a11" name="a11"></a><a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS(<span class="stringliteral">&quot;Address of rng_buffer1 is for internal use only and does not escape&quot;</span>)</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomGenRet, randomGenToken, <a id="a10" name="a10"></a><a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
 <div class="line">                                                  &amp;session,</div>
 <div class="line">                                                  rng_buffer1,</div>
 <div class="line">                                                  3u));</div>
@@ -205,10 +211,12 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Generate random values of multiple of word size. */</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS(<span class="stringliteral">&quot;Address of rng_buffer2 is for internal use only and does not escape&quot;</span>)</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomGenRet2, randomGenToken2, <a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
 <div class="line">                                                  &amp;session,</div>
 <div class="line">                                                  rng_buffer2,</div>
@@ -217,10 +225,12 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Generate random values of larger amount than but not multiple of one word size. */</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS(<span class="stringliteral">&quot;Address of rng_buffer3 is for internal use only and does not escape&quot;</span>)</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomGenRet3, randomGenToken3, <a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
 <div class="line">                                                  &amp;session,</div>
 <div class="line">                                                  rng_buffer3,</div>
@@ -229,10 +239,12 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Generate random values of larger amount than but not multiple of one word size. */</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS(<span class="stringliteral">&quot;Address of rng_buffer is for internal use only and does not escape&quot;</span>)</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomGenRet4, randomGenToken4, <a class="code hl_function" href="a01163.html#ga8abb91a3866764d86635358085f406ba">mcuxClRandom_generate</a>(</div>
 <div class="line">                                                  &amp;session,</div>
 <div class="line">                                                  rng_buffer,</div>
@@ -241,11 +253,12 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Random uninit. */</span></div>
-<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomUninitresult, token6, <a id="a12" name="a12"></a><a class="code hl_function" href="a01163.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a>(&amp;session));</div>
+<div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(randomUninitresult, token6, <a id="a11" name="a11"></a><a class="code hl_function" href="a01163.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a>(&amp;session));</div>
 <div class="line">    <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01163.html#ga92889d1e06ba33656278bd2a4110be99">mcuxClRandom_uninit</a>) != token6) || (<a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a> != randomUninitresult))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
@@ -268,7 +281,6 @@ $(document).ready(function(){initNavTree('a01682.html',''); initResizable(); });
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_OK;</div>
 <div class="line">}</div>
-<div class="ttc" id="aa00329_html_a93b32f0bc52581e55293b641686c4a39"><div class="ttname"><a href="a00329.html#a93b32f0bc52581e55293b641686c4a39">mcuxClOsccaRandomModes_OsccaTrng_example</a></div><div class="ttdeci">bool mcuxClOsccaRandomModes_OsccaTrng_example(void)</div><div class="ttdoc">Performs an example usage of the mcuxClOsccaRandomModes component with OSCCA mode.</div><div class="ttdef"><b>Definition</b> mcuxClOsccaRandomModes_OsccaTrng_example.c:37</div></div>
 <div class="ttc" id="aa00671_html"><div class="ttname"><a href="a00671.html">mcuxClOsccaRandomModes.h</a></div><div class="ttdoc">Top level header of mcuxClOsccaRandomModes component.</div></div>
 <div class="ttc" id="aa00737_html"><div class="ttname"><a href="a00737.html">mcuxClOscca_FunctionIdentifiers.h</a></div><div class="ttdoc">Definition of function identifiers for the flow protection mechanism.</div></div>
 <div class="ttc" id="aa00767_html"><div class="ttname"><a href="a00767.html">mcuxClRandom.h</a></div><div class="ttdoc">Top level header of mcuxClRandom component.</div></div>

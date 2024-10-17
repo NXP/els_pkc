@@ -155,8 +155,10 @@ $(document).ready(function(){initNavTree('a01649.html',''); initResizable(); });
 <div class="line">    KeyGenOptions.<a class="code hl_variable" href="a01489.html#afbe9bcb038588cfd04433a0be6bf15a7">bits</a>.<a id="a9" name="a9"></a><a class="code hl_variable" href="a01489.html#ade3f3190f07c3a1b8a5948988d3b85d5">kgtypedh</a> = <a id="a10" name="a10"></a><a class="code hl_define" href="a01047.html#gabc39d5811bcaba4278e1f9c4874527ae">MCUXCLELS_ECC_OUTPUTKEY_KEYEXCHANGE</a>; <span class="comment">//Key will be used for Key Exchange</span></div>
 <div class="line"> </div>
 <div class="line">    <a id="_a11" name="_a11"></a><a class="code hl_union" href="a01585.html">mcuxClEls_KeyProp_t</a> GenKeyProp = {0};</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line">    GenKeyProp.<a id="a12" name="a12"></a><a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a id="a13" name="a13"></a><a class="code hl_variable" href="a01585.html#a50d3bbaabf919fab908e2ae83fe5a5ab">upprot_priv</a> = <a id="a14" name="a14"></a><a class="code hl_define" href="a01083.html#gaa613ab074bf3fc6b9f90a69f505d2e28">MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE</a>; <span class="comment">// Configure that user access rights: non-privileged access</span></div>
 <div class="line">    GenKeyProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a id="a15" name="a15"></a><a class="code hl_variable" href="a01585.html#a0d130be83d337e7a5d9ef56f4a92f3a0">upprot_sec</a> = <a id="a16" name="a16"></a><a class="code hl_define" href="a01083.html#ga2088d83e8ab366a72075f52e3ca352ad">MCUXCLELS_KEYPROPERTY_SECURE_TRUE</a>;       <span class="comment">// Configure that user access rights: secure access</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_typedef" href="a01085.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> keyIdxPrivClient = 0u;  <span class="comment">// Set keystore index at which mcuxClEls_EccKeyGen_Async is storing the private key.</span></div>
 <div class="line"> </div>
@@ -165,7 +167,9 @@ $(document).ready(function(){initNavTree('a01649.html',''); initResizable(); });
 <div class="line">            (<a class="code hl_typedef" href="a01085.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>) 0U,                       <span class="comment">// This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.</span></div>
 <div class="line">            keyIdxPrivClient,                               <span class="comment">// Keystore index at which the generated private key is stored.</span></div>
 <div class="line">            GenKeyProp,                                     <span class="comment">// Set the generated key properties.</span></div>
+<div class="line">            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">            NULL,</div>
+<div class="line">            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">            ecc_public_key_client                           <span class="comment">// Output buffer, which the operation will write the public key to.</span></div>
 <div class="line">            ));</div>
 <div class="line">    <span class="comment">// mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value</span></div>
@@ -191,7 +195,9 @@ $(document).ready(function(){initNavTree('a01649.html',''); initResizable(); });
 <div class="line">            (<a class="code hl_typedef" href="a01085.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a>) 0U,                       <span class="comment">// This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.</span></div>
 <div class="line">            keyIdxPrivServer,                               <span class="comment">// Keystore index at which the generated private key is stored.</span></div>
 <div class="line">            GenKeyProp,                                     <span class="comment">// Set the generated key properties.</span></div>
+<div class="line">            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">            NULL,</div>
+<div class="line">            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">            ecc_public_key_server                           <span class="comment">// Output buffer, which the operation will write the public key to.</span></div>
 <div class="line">            ));</div>
 <div class="line">    <span class="comment">// mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value</span></div>
@@ -213,9 +219,11 @@ $(document).ready(function(){initNavTree('a01649.html',''); initResizable(); });
 <div class="line">    <a class="code hl_typedef" href="a01085.html#ga769227492b28ef0d58a94b202113cee8">mcuxClEls_KeyIndex_t</a> sharedSecretIdx = 10U; <span class="comment">// Set shared key index</span></div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_union" href="a01585.html">mcuxClEls_KeyProp_t</a> SharedSecretProp = {0};                           <span class="comment">// Initialize a new configuration for the mcuxClEls_EccKeyExchange_Async generated key properties.</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line">    SharedSecretProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a class="code hl_variable" href="a01585.html#a50d3bbaabf919fab908e2ae83fe5a5ab">upprot_priv</a> = <a class="code hl_define" href="a01083.html#gaa613ab074bf3fc6b9f90a69f505d2e28">MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE</a>; <span class="comment">// Configure that user access rights: non-privileged access</span></div>
 <div class="line">    SharedSecretProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a class="code hl_variable" href="a01585.html#a0d130be83d337e7a5d9ef56f4a92f3a0">upprot_sec</a> = <a class="code hl_define" href="a01083.html#ga2088d83e8ab366a72075f52e3ca352ad">MCUXCLELS_KEYPROPERTY_SECURE_TRUE</a>;       <span class="comment">// Configure that user access rights: secure access</span></div>
 <div class="line">    SharedSecretProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.utlpsms = <a id="a25" name="a25"></a><a class="code hl_define" href="a01083.html#gafb78c8a3541eb87092a513461fd77b16">MCUXCLELS_KEYPROPERTY_TLS_PREMASTER_SECRET_TRUE</a>; <span class="comment">//Shared Secret is used as pre-master secret for TLS</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(result, token, <a id="a26" name="a26"></a><a class="code hl_function" href="a01051.html#ga39d6102bd9c792eb5a2e33af1f1830c3">mcuxClEls_EccKeyExchange_Async</a>(</div>
 <div class="line">                                    keyIdxPrivClient,</div>
@@ -330,9 +338,11 @@ $(document).ready(function(){initNavTree('a01649.html',''); initResizable(); });
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_union" href="a01585.html">mcuxClEls_KeyProp_t</a> tlsMasterKeyProp = {0};</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line">    tlsMasterKeyProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a class="code hl_variable" href="a01585.html#a50d3bbaabf919fab908e2ae83fe5a5ab">upprot_priv</a> = <a class="code hl_define" href="a01083.html#gaa613ab074bf3fc6b9f90a69f505d2e28">MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE</a>; <span class="comment">// Configure that user access rights: non-privileged access</span></div>
 <div class="line">    tlsMasterKeyProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a class="code hl_variable" href="a01585.html#a0d130be83d337e7a5d9ef56f4a92f3a0">upprot_sec</a> = <a class="code hl_define" href="a01083.html#ga2088d83e8ab366a72075f52e3ca352ad">MCUXCLELS_KEYPROPERTY_SECURE_TRUE</a>;       <span class="comment">// Configure that user access rights: secure access</span></div>
 <div class="line">    tlsMasterKeyProp.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a id="a32" name="a32"></a><a class="code hl_variable" href="a01585.html#a5f7b5dc8e882536c83ff87ac246ca6ed">utlsms</a> = <a id="a33" name="a33"></a><a class="code hl_define" href="a01083.html#ga821ec254e0847c27f58345e3be802768">MCUXCLELS_KEYPROPERTY_TLS_MASTER_SECRET_TRUE</a>;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line">    <span class="comment">//Generate TLS master key</span></div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(result, token, <a id="a34" name="a34"></a><a class="code hl_function" href="a01069.html#gac8b832b6cfa9c2b15b51be04ab349ae6">mcuxClEls_TlsGenerateMasterKeyFromPreMasterKey_Async</a>(</div>
 <div class="line">                 derivation_data,  </div>

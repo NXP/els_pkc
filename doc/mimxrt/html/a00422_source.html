@@ -130,12 +130,24 @@ $(document).ready(function(){initNavTree('a00422_source.html',''); initResizable
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;mcuxClConfig.h&gt;</span> <span class="comment">// Exported features flags header</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#define MCUXCL_HW_DMA_WORKAROUND(addr) \</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER(&quot;Convert pointer to address for bitwise operations needed in mapping calculations.&quot;</span>) \</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>(((uint32_t)(addr) &lt; 0x00780000u) ? ((uint32_t)(addr) | 0x20000000u) : (uint32_t)(addr)) \</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#endif </span><span class="comment">/* MCUXCLCORE_PLATFORM_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#define MCUXCL_MSDK_REG_SECURE_ADDR(x) \</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER(&quot;Convert pointer to address for bitwise operations needed in bit masking.&quot;</span>) \</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  ((uint32_t)(x) | (0x1UL &lt;&lt; 28)) \</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#define MCUXCL_MSDK_REG_NONSECURE_ADDR(x) \</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER(&quot;Convert pointer to address for bitwise operations needed in bit masking.&quot;</span>) \</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  ((uint32_t)(x) &amp; ~(0x1UL &lt;&lt; 28)) \</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#define MCUXCL_HW_DMA_WORKAROUND(addr) \</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER(&quot;Convert pointer to address for bitwise operations needed in mapping calculations.&quot;</span>) \</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  (((uint32_t)(MCUXCL_MSDK_REG_NONSECURE_ADDR(addr)) &lt; 0x00780000u) ? ((uint32_t)(addr) | 0x20000000u) : (uint32_t)(addr)) \</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif </span><span class="comment">/* MCUXCLCORE_PLATFORM_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

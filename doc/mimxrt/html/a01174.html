@@ -126,6 +126,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga08dff8d41898b3f372ceab1038205b51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01174.html#ga08dff8d41898b3f372ceab1038205b51">mcuxClRsa_KeyGeneration_Plain</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> type, <a class="el" href="a01109.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a> protection, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey, uint8_t *pPrivData, uint32_t *const pPrivDataLength, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey, uint8_t *pPubData, uint32_t *const pPubDataLength)</td></tr>
 <tr class="memdesc:ga08dff8d41898b3f372ceab1038205b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA key generation of private plain key operation.  <br /></td></tr>
 <tr class="separator:ga08dff8d41898b3f372ceab1038205b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab5c522ac1a222f9ba3a35b7ea3eb09ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01174.html#gab5c522ac1a222f9ba3a35b7ea3eb09ff">mcuxClRsa_KeyGeneration_Init</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> type, uint32_t *byteLenE)</td></tr>
+<tr class="memdesc:gab5c522ac1a222f9ba3a35b7ea3eb09ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA key generation initialization.  <br /></td></tr>
+<tr class="separator:gab5c522ac1a222f9ba3a35b7ea3eb09ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98470880f4ff6f4902fe9e7ff18c6d2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01174.html#ga98470880f4ff6f4902fe9e7ff18c6d2f">mcuxClRsa_KeyGeneration_StorePrivateCRT</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint8_t *pPrivData, uint32_t *const pPrivDataLength, uint32_t byteLenPrime)</td></tr>
+<tr class="memdesc:ga98470880f4ff6f4902fe9e7ff18c6d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store RSA Private CRT key.  <br /></td></tr>
+<tr class="separator:ga98470880f4ff6f4902fe9e7ff18c6d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12c097aa84888010faa640afa6ce8382"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01174.html#ga12c097aa84888010faa640afa6ce8382">mcuxClRsa_KeyGeneration_StorePrivatePlain</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, uint8_t *pPrivData, uint32_t *const pPrivDataLength, uint8_t *pPubData, uint32_t dLen)</td></tr>
+<tr class="memdesc:ga12c097aa84888010faa640afa6ce8382"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store RSA Prviate Plain key.  <br /></td></tr>
+<tr class="separator:ga12c097aa84888010faa640afa6ce8382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Defines all functions of <a class="el" href="a01170.html">mcuxClRsa</a>. </p>
@@ -658,6 +667,186 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section attention"><dt>Attention</dt><dd>This function uses DRBG and PRNG which have to be initialized prior to calling the function. </dd></dl>
+
+</div>
+</div>
+<a id="gab5c522ac1a222f9ba3a35b7ea3eb09ff" name="gab5c522ac1a222f9ba3a35b7ea3eb09ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab5c522ac1a222f9ba3a35b7ea3eb09ff">&#9670;&#160;</a></span>mcuxClRsa_KeyGeneration_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a> mcuxClRsa_KeyGeneration_Init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>byteLenE</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RSA key generation initialization. </p>
+<p>This function checks key type, checks entropy provided by RNG and check if E is FIPS compliant.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Type of the key </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">byteLenE</td><td>Pointer to variable where length of E shall be stored</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status of the mcuxClRsa_KeyGeneration_Init operation. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49" title="Key operation successful.">MCUXCLKEY_STATUS_OK</a></td><td>Initialization operation executed successfully. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01179.html#ga14e28c4e4b6a325ddd1f038b5274ccec" title="Input data cannot be processed.">MCUXCLRSA_STATUS_INVALID_INPUT</a></td><td>E is not valid </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga98470880f4ff6f4902fe9e7ff18c6d2f" name="ga98470880f4ff6f4902fe9e7ff18c6d2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga98470880f4ff6f4902fe9e7ff18c6d2f">&#9670;&#160;</a></span>mcuxClRsa_KeyGeneration_StorePrivateCRT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a> mcuxClRsa_KeyGeneration_StorePrivateCRT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pPrivData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *const&#160;</td>
+          <td class="paramname"><em>pPrivDataLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>byteLenPrime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Store RSA Private CRT key. </p>
+<p>Store RSA private CRT key (p, q, qInv, dp, dq) to the buffer pointed by pPrivData. pPrivData buffer for storing RSA key (<a class="el" href="a01629.html" title="Structure type for Rsa key, specifying key type and key entries.">mcuxClRsa_Key</a> data type, i.e.: key type and key entries) followed by the key data, i.e.: p, q, qInv, dp, dq. Key entries stored in big-endian byte order (copy with reverse order).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPrivData</td><td>Pointer to buffer where RSA CRT key will be stored </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivDataLength</td><td>Pointer to variable where length of pPrivData shall be stored </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">byteLenPrime</td><td>Length of prime</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status of the mcuxClRsa_KeyGeneration_Init operation. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49" title="Key operation successful.">MCUXCLKEY_STATUS_OK</a></td><td>Initialization operation executed successfully. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01179.html#gac062bb04172f071a8595aa39bef80edc" title="Error occurred during RSA operation.">MCUXCLRSA_STATUS_ERROR</a></td><td>Error occured during export </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga12c097aa84888010faa640afa6ce8382" name="ga12c097aa84888010faa640afa6ce8382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga12c097aa84888010faa640afa6ce8382">&#9670;&#160;</a></span>mcuxClRsa_KeyGeneration_StorePrivatePlain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a> mcuxClRsa_KeyGeneration_StorePrivatePlain </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
+          <td class="paramname"><em>pSession</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pPrivData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *const&#160;</td>
+          <td class="paramname"><em>pPrivDataLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pPubData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dLen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Store RSA Prviate Plain key. </p>
+<p>Store RSA private plain key (d, n) to the buffer pointed by pPrivData. pPrivData buffer for storing RSA key (<a class="el" href="a01629.html" title="Structure type for Rsa key, specifying key type and key entries.">mcuxClRsa_Key</a> data type, i.e.: key type and key entries) followed by the key data, i.e.: n, d. Key entries stored in big-endian byte order (copy with reverse order).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pSession</td><td>Handle for the current CL session. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivData</td><td>Pointer to the buffer where the generated private plain key data needs to be stored </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pPrivDataLength</td><td>Pointer to variable where length of pPrivData shall be stored </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPubData</td><td>Pointer to buffer where RSA public key is stored </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dLen</td><td>Length of private exponent</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status of the mcuxClRsa_KeyGeneration_Init operation. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49" title="Key operation successful.">MCUXCLKEY_STATUS_OK</a></td><td>Initialization operation executed successfully. </td></tr>
+    <tr><td class="paramname"><a class="el" href="a01179.html#gac062bb04172f071a8595aa39bef80edc" title="Error occurred during RSA operation.">MCUXCLRSA_STATUS_ERROR</a></td><td>Error occured during export </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

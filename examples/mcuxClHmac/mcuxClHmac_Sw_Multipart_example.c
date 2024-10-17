@@ -89,15 +89,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Multipart_example)
 
     /* Create and initialize mcuxClKey_Descriptor_t structure. */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyInit_result, keyInit_token, mcuxClKey_init(
         /* mcuxClSession_Handle_t pSession:                */  session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
         /* mcuxClKey_Handle_t key:                         */  key,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
         /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
-        /* mcuxCl_Buffer_t pKeyData:                       */  (uint8_t *) hmac_key,
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+        /* const uint8_t * pKeyData:                      */  hmac_key,
         /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInit_token) || (MCUXCLKEY_STATUS_OK != keyInit_result))
@@ -110,12 +112,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Multipart_example)
     /* Generate an HMAC mode containing the hash algorithm                    */
     /**************************************************************************/
 
-    ALIGNED uint8_t hmacModeDescBuffer[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE];
+    uint32_t hmacModeDescBuffer[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_CustomMode_t mode = (mcuxClMac_CustomMode_t) hmacModeDescBuffer;
-
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(hashCreateMode_result, hashCreateMode_token, mcuxClHmac_createHmacMode(
-    /* mcuxClMac_CustomMode_t mode:       */ mode,
-    /* mcuxClHash_Algo_t hashAlgorithm:   */ mcuxClHash_Algorithm_Sha256)
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer mode is of the right type (mcuxClMac_CustomMode_t)")
+        /* mcuxClMac_CustomMode_t mode:       */ mode,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+        /* mcuxClHash_Algo_t hashAlgorithm:   */ mcuxClHash_Algorithm_Sha256)
     );
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_createHmacMode) != hashCreateMode_token) || (MCUXCLMAC_STATUS_OK != hashCreateMode_result))
@@ -137,12 +142,16 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Multipart_example)
     MCUXCLBUFFER_INIT_RO(inputBuf1, session, hmac_input_part1, sizeof(hmac_input_part1));
     MCUXCLBUFFER_INIT_RO(inputBuf2, session, hmac_input_part2, sizeof(hmac_input_part2));
 
-    ALIGNED uint8_t ctxBuf[MCUXCLHMAC_CONTEXT_SIZE_SW];
+    uint32_t ctxBuf[MCUXCLHMAC_CONTEXT_SIZE_SW_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_Context_t * ctx = (mcuxClMac_Context_t *) ctxBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(mi_status, mi_token, mcuxClMac_init(
         /* mcuxClSession_Handle_t session:       */ session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid.")
         /* mcuxClMac_Context_t * const pContext: */ ctx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
         /* const mcuxClKey_Handle_t key:         */ key,
         /* mcuxClMac_Mode_t mode:                */ mode)
     );
@@ -153,7 +162,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Multipart_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-      MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(mp1_status, mp1_token, mcuxClMac_process(
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(mp1_status, mp1_token, mcuxClMac_process(
         /* mcuxClSession_Handle_t session:       */ session,
         /* mcuxClMac_Context_t * const pContext: */ ctx,
         /* mcuxCl_InputBuffer_t pIn:             */ inputBuf1,
@@ -166,7 +176,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Multipart_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-      MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(mp2_status, mp2_token, mcuxClMac_process(
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(mp2_status, mp2_token, mcuxClMac_process(
         /* mcuxClSession_Handle_t session:       */ session,
         /* mcuxClMac_Context_t * const pContext: */ ctx,
         /* mcuxCl_InputBuffer_t pIn:             */ inputBuf2,
@@ -178,6 +189,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Sw_Multipart_example)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
+
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(mf_status, mf_token, mcuxClMac_finish(
         /* mcuxClSession_Handle_t session:       */ session,

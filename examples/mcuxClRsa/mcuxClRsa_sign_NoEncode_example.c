@@ -166,32 +166,36 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_sign_NoEncode_example)
 
     /* Create key struct of type MCUXCLRSA_KEY_PRIVATEPLAIN */
     const mcuxClRsa_KeyEntry_t Mod1 = {
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                        .pKeyEntryData = (uint8_t *)modulus,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
                        .keyEntryLength = RSA_KEY_BYTE_LENGTH };
 
     const mcuxClRsa_KeyEntry_t Exp1 = {
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                        .pKeyEntryData = (uint8_t *)d,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
                        .keyEntryLength = sizeof(d) };
 
     const mcuxClRsa_Key private_key = {
                                      .keytype = MCUXCLRSA_KEY_PRIVATEPLAIN,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer Mod1 is of the right type (mcuxClRsa_KeyEntry_t)")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                                      .pMod1 = (mcuxClRsa_KeyEntry_t *)&Mod1,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                      .pMod2 = NULL,
                                      .pQInv = NULL,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                                      .pExp1 = (mcuxClRsa_KeyEntry_t *)&Exp1,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                                      .pExp2 = NULL,
                                      .pExp3 = NULL };
 
     /* Prepare buffer to store the result */
-    ALIGNED uint8_t signature[RSA_KEY_BYTE_LENGTH];
+    ALIGNED uint8_t signature[RSA_KEY_BYTE_LENGTH] = {0};
 
     /**************************************************************************/
     /* RSA signature generation call                                          */
@@ -199,17 +203,21 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
     MCUXCLBUFFER_INIT_RO(messageBuf, session, message, RSA_KEY_BYTE_LENGTH);
     MCUXCLBUFFER_INIT(signatureBuf, session, signature, RSA_KEY_BYTE_LENGTH);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer mcuxClRsa_Mode_Sign_NoEncode is of the right type (mcuxClRsa_SignVerifyMode_t)")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments (private_key.pMod2) are not dereferenced during signature generation")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_status, sign_token, mcuxClRsa_sign(
                 /* mcuxClSession_Handle_t           pSession: */           session,
                 /* const mcuxClRsa_Key * const      pKey: */               &private_key,
                 /* mcuxCl_InputBuffer_t             pMessageOrDigest: */   messageBuf,
                 /* const uint32_t                  messageLength: */      RSA_KEY_BYTE_LENGTH,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                 /* const mcuxClRsa_SignVerifyMode   pPaddingMode: */       (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Sign_NoEncode,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
                 /* const uint32_t                  saltLength: */         0u,
                 /* uint32_t                        options: */            0u,
                 /* mcuxCl_Buffer_t                  pSignature: */         signatureBuf));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
     if(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_sign) != sign_token || MCUXCLRSA_STATUS_SIGN_OK != sign_status)
     {

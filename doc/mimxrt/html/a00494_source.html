@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('a00494_source.html',''); initResizable
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> mcuxClExample_Key_Init_And_Load(<a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession,</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                                                  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pKey,</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                                                  <a class="code hl_typedef" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> type,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                                  uint8_t * pData,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                                  <span class="keyword">const</span> uint8_t * pData,</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                                  uint32_t keyDataLength,</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                                                  <a class="code hl_union" href="a01585.html">mcuxClEls_KeyProp_t</a> * key_properties,</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                                                  uint32_t * dst,</div>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('a00494_source.html',''); initResizable
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="comment">/* mcuxClSession_Handle_t session         */</span> pSession,</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="comment">/* mcuxClKey_Handle_t key                 */</span> pKey,</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="comment">/* mcuxClKey_Type_t type                  */</span> type,</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="comment">/* uint8_t * pKeyData                    */</span> pData,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="comment">/* const uint8_t * pKeyData              */</span> pData,</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="comment">/* uint32_t keyDataLength                */</span> keyDataLength)</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    );</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>

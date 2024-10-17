@@ -160,13 +160,17 @@ $(document).ready(function(){initNavTree('a01653.html',''); initResizable(); });
 <div class="line">    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(&amp;session, 0u, mcuxClRandomModes_Mode_ELS_Drbg);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Prepare input for Alice key generation */</span></div>
-<div class="line">    <a id="a2" name="a2"></a><a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t alicePrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];</div>
-<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> alicePrivKeyHandler = (<a id="a3" name="a3"></a><a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;alicePrivKeyDesc;</div>
-<div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t alicePrivKeyBuffer[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIVATEKEY]={0};</div>
+<div class="line">    uint32_t alicePrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> alicePrivKeyHandler = (<a id="a2" name="a2"></a><a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) alicePrivKeyDesc;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a id="a3" name="a3"></a><a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t alicePrivKeyBuffer[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIVATEKEY]={0};</div>
 <div class="line"> </div>
 <div class="line">    <a id="a4" name="a4"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(aliceprivkeyinit_result, aliceprivkeyinit_token, <a id="a5" name="a5"></a><a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> &amp;session,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;alicePrivKeyHandler has compatible type and cast was valid&quot;</span>)</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Handle_t key                 */</span> alicePrivKeyHandler,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Type_t type                  */</span> <a id="a6" name="a6"></a><a class="code hl_variable" href="a01000.html#gaf640a4f562824d3fa8af985512740cfe">mcuxClKey_Type_Ecc_MontDH_Curve25519_PrivateKey</a>,</div>
 <div class="line">    <span class="comment">/* const uint8_t * pKeyData              */</span> alicePrivKeyBuffer,</div>
 <div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIVATEKEY));</div>
@@ -176,13 +180,17 @@ $(document).ready(function(){initNavTree('a01653.html',''); initResizable(); });
 <div class="line">    }</div>
 <div class="line">    <a id="a9" name="a9"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t alicePubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];</div>
-<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> alicePubKeyHandler = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;alicePubKeyDesc;</div>
+<div class="line">    uint32_t alicePubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> alicePubKeyHandler = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) alicePubKeyDesc;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t alicePubKeyBuffer[MCUXCLECC_MONTDH_CURVE25519_SIZE_PUBLICKEY]={0};</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(alicepubkeyinit_result, alicepubkeyinit_token, <a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> &amp;session,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;alicePubKeyHandler has compatible type and cast was valid&quot;</span>)</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Handle_t key                 */</span> alicePubKeyHandler,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Type_t type                  */</span> <a id="a10" name="a10"></a><a class="code hl_variable" href="a01000.html#ga666db96dc971469de39a10f95b83796b">mcuxClKey_Type_Ecc_MontDH_Curve25519_PublicKey</a>,</div>
 <div class="line">    <span class="comment">/* const uint8_t * pKeyData              */</span> alicePubKeyBuffer,</div>
 <div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> MCUXCLECC_MONTDH_CURVE25519_SIZE_PUBLICKEY));</div>
@@ -193,13 +201,18 @@ $(document).ready(function(){initNavTree('a01653.html',''); initResizable(); });
 <div class="line">    <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Prepare input for Bob key generation */</span></div>
-<div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t bobPrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];</div>
-<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> bobPrivKeyHandler = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;bobPrivKeyDesc;</div>
+<div class="line">    uint32_t bobPrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> bobPrivKeyHandler = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) bobPrivKeyDesc;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t bobPrivKeyBuffer[MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIVATEKEY]={0};</div>
+<div class="line"> </div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(bobprivkeyinit_result, bobprivkeyinit_token, <a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> &amp;session,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;bobPrivKeyHandler has compatible type and cast was valid&quot;</span>)</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Handle_t key                 */</span> bobPrivKeyHandler,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Type_t type                  */</span> <a class="code hl_variable" href="a01000.html#gaf640a4f562824d3fa8af985512740cfe">mcuxClKey_Type_Ecc_MontDH_Curve25519_PrivateKey</a>,</div>
 <div class="line">    <span class="comment">/* const uint8_t * pKeyData              */</span> bobPrivKeyBuffer,</div>
 <div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> MCUXCLECC_MONTDH_CURVE25519_SIZE_PRIVATEKEY));</div>
@@ -209,13 +222,17 @@ $(document).ready(function(){initNavTree('a01653.html',''); initResizable(); });
 <div class="line">    }</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t bobPubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];</div>
-<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> bobPubKeyHandler = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;bobPubKeyDesc;</div>
+<div class="line">    uint32_t bobPubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> bobPubKeyHandler = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) bobPubKeyDesc;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t bobPubKeyBuffer[MCUXCLECC_MONTDH_CURVE25519_SIZE_PUBLICKEY]={0};</div>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(bobpubkeyinit_result, bobpubkeyinit_token, <a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> &amp;session,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;bobPubKeyHandler has compatible type and cast was valid&quot;</span>)</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Handle_t key                 */</span> bobPubKeyHandler,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Type_t type                  */</span> <a class="code hl_variable" href="a01000.html#ga666db96dc971469de39a10f95b83796b">mcuxClKey_Type_Ecc_MontDH_Curve25519_PublicKey</a>,</div>
 <div class="line">    <span class="comment">/* const uint8_t * pKeyData              */</span> bobPubKeyBuffer,</div>
 <div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> MCUXCLECC_MONTDH_CURVE25519_SIZE_PUBLICKEY));</div>

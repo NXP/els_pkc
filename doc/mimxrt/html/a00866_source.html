@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('a00866_source.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <a href="a00866.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*--------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/* Copyright 2020-2023 NXP                                                  */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/* Copyright 2020-2024 NXP                                                  */</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*                                                                          */</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/* NXP Proprietary. This software is owned or controlled by NXP and may     */</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/* only be used strictly in accordance with the applicable license terms.   */</span></div>
@@ -232,30 +232,34 @@ $(document).ready(function(){initNavTree('a00866_source.html',''); initResizable
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="preprocessor">    MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED_IMPL(result, token, call)</span></div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span> </div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno"><a class="line" href="a01211.html#ga260f6caaf5d3f526e664835f6889fec5">  436</a></span><span class="preprocessor">#define MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL() \</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="preprocessor">} while (false)</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span> </div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno"><a class="line" href="a01211.html#ga8f9fbedb24cf72ef01632cc7a2df1f91">  450</a></span><span class="preprocessor">#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL(token, call)   \</span></div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="preprocessor">do                                                                  \</span></div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="preprocessor">{                                                                   \</span></div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="preprocessor">    MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED_IMPL(token, call)</span></div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span> </div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno"><a class="line" href="a01211.html#gae44806e59bfa6e136c7df9c641809621">  461</a></span><span class="preprocessor">#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL() \</span></div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="preprocessor">} while (false)</span></div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span> </div>
-<div class="line"><a id="l00484" name="l00484"></a><span class="lineno"><a class="line" href="a01210.html#ga391e0f29868a1dd17bd0d23a4737c129">  484</a></span><span class="preprocessor">#define MCUX_CSSL_FP_ASSERT_IMPL(...) \</span></div>
-<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span><span class="preprocessor">  if (MCUX_CSSL_SC_CHECK_PASSED != \</span></div>
-<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span><span class="preprocessor">        MCUX_CSSL_SC_CHECK(MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__))) \</span></div>
-<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span><span class="preprocessor">  { \</span></div>
-<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span><span class="preprocessor">    MCUX_CSSL_FP_ASSERT_CALLBACK(); \</span></div>
-<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span><span class="preprocessor">  } \</span></div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span><span class="preprocessor">  else if (MCUX_CSSL_SC_CHECK_PASSED != \</span></div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span><span class="preprocessor">        MCUX_CSSL_SC_CHECK(MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__))) \</span></div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="preprocessor">  { \</span></div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span><span class="preprocessor">    MCUX_CSSL_FP_ASSERT_CALLBACK(); \</span></div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="preprocessor">  } \</span></div>
-<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="preprocessor">  else {</span><span class="comment">/*empty*/</span><span class="preprocessor">}</span></div>
-<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span> </div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="preprocessor">#endif </span><span class="comment">/* MCUX_CSSL_FLOW_PROTECTION_SECURE_COUNTER_LOCAL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="preprocessor">MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="preprocessor">} while (false) \</span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="preprocessor">MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno"><a class="line" href="a01211.html#ga8f9fbedb24cf72ef01632cc7a2df1f91">  452</a></span><span class="preprocessor">#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL(token, call)   \</span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="preprocessor">do                                                                  \</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="preprocessor">{                                                                   \</span></div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="preprocessor">    MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED_IMPL(token, call)</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno"><a class="line" href="a01211.html#gae44806e59bfa6e136c7df9c641809621">  463</a></span><span class="preprocessor">#define MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL() \</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="preprocessor">MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span><span class="preprocessor">} while (false) \</span></div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="preprocessor">MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span> </div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno"><a class="line" href="a01210.html#ga391e0f29868a1dd17bd0d23a4737c129">  488</a></span><span class="preprocessor">#define MCUX_CSSL_FP_ASSERT_IMPL(...) \</span></div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span><span class="preprocessor">  if (MCUX_CSSL_SC_CHECK_PASSED != \</span></div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span><span class="preprocessor">        MCUX_CSSL_SC_CHECK(MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__))) \</span></div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span><span class="preprocessor">  { \</span></div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="preprocessor">    MCUX_CSSL_FP_ASSERT_CALLBACK(); \</span></div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span><span class="preprocessor">  } \</span></div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="preprocessor">  else if (MCUX_CSSL_SC_CHECK_PASSED != \</span></div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="preprocessor">        MCUX_CSSL_SC_CHECK(MCUX_CSSL_FP_EXPECTATIONS(__VA_ARGS__))) \</span></div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span><span class="preprocessor">  { \</span></div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="preprocessor">    MCUX_CSSL_FP_ASSERT_CALLBACK(); \</span></div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span><span class="preprocessor">  } \</span></div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span><span class="preprocessor">  else {</span><span class="comment">/*empty*/</span><span class="preprocessor">}</span></div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span> </div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span><span class="preprocessor">#endif </span><span class="comment">/* MCUX_CSSL_FLOW_PROTECTION_SECURE_COUNTER_LOCAL_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aa00836_html"><div class="ttname"><a href="a00836.html">mcuxCsslCPreProcessor.h</a></div><div class="ttdoc">The default implementation is based on standard C preprocessor functionality.</div></div>
 <div class="ttc" id="aa00893_html"><div class="ttname"><a href="a00893.html">mcuxCsslSecureCounter.h</a></div><div class="ttdoc">Provides the API for the CSSL secure counter mechanism.</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('a01641.html',''); initResizable(); });
 <div class="line">    (void) revision;</div>
 <div class="line">    (void) minor;</div>
 <div class="line">    (void) major;</div>
-<div class="line"><span class="preprocessor">#if MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0</span></div>
+<div class="line"><span class="preprocessor">#if !defined(MCUXCL_FEATURE_ELS_GET_FW_VERSION) || MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0</span></div>
 <div class="line">    uint32_t level = hw_version.<a class="code hl_variable" href="a01381.html#af71561a374dbdd315dc11d4eaffeb3a6">bits</a>.<a id="a11" name="a11"></a><a class="code hl_variable" href="a01381.html#a362c318252fad3db6e55fde7dac2572f">level</a>;                                              <span class="comment">// Release level version</span></div>
 <div class="line">    (void) level;</div>
 <div class="line"><span class="preprocessor">#else </span><span class="comment">/* MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0 */</span><span class="preprocessor"></span></div>

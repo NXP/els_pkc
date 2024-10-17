@@ -48,6 +48,17 @@
  */
 #define BYTELENGTH_M  (128U)
 
+/* Create buffers for private and public key */
+static const uint8_t pSm2PrivateKey[MCUXCLOSCCASM2_SM2P256_SIZE_BASEPOINTORDER] = {
+    0x19, 0x42, 0x14, 0xC1, 0xD9, 0x6F, 0x8F, 0x47, 0x46, 0x89, 0xC2, 0xC4, 0x5F, 0x75, 0x5D, 0x8C,
+    0x7F, 0xCE, 0x7B, 0x70, 0x99, 0xCC, 0x18, 0x6F, 0x4A, 0x61, 0x40, 0x64, 0xC7, 0x5F, 0x42, 0xAF};
+
+static const uint8_t pSm2PublicKey[MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP * 2] = {
+    0xF2, 0x27, 0xA6, 0xE8, 0x30, 0x92, 0x0E, 0x1D, 0xF8, 0xA3, 0x41, 0x03, 0x33, 0xED, 0x32, 0xC7,
+    0x55, 0x6F, 0x80, 0x7C, 0x71, 0xCD, 0x2E, 0x68, 0x51, 0xBD, 0xD1, 0x19, 0x7A, 0x43, 0x49, 0xEA,
+    0x03, 0x04, 0x4E, 0x76, 0xB3, 0xD1, 0x0C, 0x61, 0xC2, 0x66, 0x94, 0xF4, 0xC9, 0xD0, 0x12, 0x1F,
+    0xD7, 0x8A, 0xB1, 0x2A, 0x06, 0x28, 0x96, 0xD8, 0xBE, 0xB6, 0xD6, 0x7C, 0x59, 0x5C, 0x4C, 0xE3};
+
 /**
  * @def pMessage
  * @brief Test vector: 128-byte message to be encrypted or signed
@@ -122,7 +133,7 @@ static const uint8_t pCipher_SM2[] = {
  * @warning
  *   none
  */
-bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm2_Cipher_Crypt_oneshot_example)
 {
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
@@ -142,10 +153,16 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
         /* Initialize the RNG context */
         /* We need a context for OSCCA Rng. */
         uint32_t rngCtx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         mcuxClRandom_Context_t pRngCtx = (mcuxClRandom_Context_t)rngCtx;
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                   pRngCtx,
-                                                                   mcuxClOsccaRandomModes_Mode_TRNG));
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(
+                                                                &session,
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+                                                                pRngCtx,
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+                                                                mcuxClOsccaRandomModes_Mode_TRNG));
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
         {
             return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -192,14 +209,18 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     /****************************************************************/
     /* Initialize SM2 private key */
     uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) privKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_pirv_ki, token_pirv_ki, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("privKey has the correct type (mcuxClKey_Handle_t), the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ privKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Std_Private,
-      /* const uint8_t * pKeyData              */ pPrivateKey,
-      /* uint32_t keyDataLength                */ sizeof(pPrivateKey)
+      /* const uint8_t * pKeyData              */ pSm2PrivateKey,
+      /* uint32_t keyDataLength                */ sizeof(pSm2PrivateKey)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != token_pirv_ki) || (MCUXCLKEY_STATUS_OK != result_pirv_ki))
@@ -210,14 +231,18 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
 
     /* Initialize SM2 public key */
     uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_pub_ki, token_pub_ki, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pubKey has the correct type (mcuxClKey_Handle_t), the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ pubKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Std_Public,
-      /* const uint8_t * pKeyData              */ pPublicKey,
-      /* uint32_t keyDataLength                */ sizeof(pPublicKey)
+      /* const uint8_t * pKeyData              */ pSm2PublicKey,
+      /* uint32_t keyDataLength                */ sizeof(pSm2PublicKey)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != token_pub_ki) || (MCUXCLKEY_STATUS_OK != result_pub_ki))
@@ -232,6 +257,8 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     uint8_t msg_dec[BYTELENGTH_M];
     uint32_t msg_dec_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of mcg_dec is for internal use only and does not escape")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec, token_dec, mcuxClCipher_crypt(
     /* mcuxClSession_Handle_t session, */ &session,
     /* mcuxClKey_Handle_t key,         */ privKey,
@@ -243,6 +270,8 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     /* uint8_t * const pOut,          */ msg_dec,
     /* uint32_t * const pOutLength    */ &msg_dec_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_dec) || (MCUXCLCIPHER_STATUS_OK != result_dec))
     {
@@ -250,7 +279,12 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting decrypted msg matches our expected output
+    /* Check that the resultingdecrypted msg size and data match the expectation */
+    if(BYTELENGTH_M != msg_dec_size)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(msg_dec, pMessage_SM2, msg_dec_size))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -262,6 +296,7 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     uint8_t msg_enc[BYTELENGTH_M + 2 * MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP + 1U + MCUXCLOSCCASM3_OUTPUT_SIZE_SM3];
     uint32_t msg_enc_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClCipher_crypt(
     /* mcuxClSession_Handle_t session, */ &session,
     /* mcuxClKey_Handle_t key,         */ pubKey,
@@ -273,6 +308,7 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     /* uint8_t * const pOut,          */ msg_enc,
     /* uint32_t * const pOutLength    */ &msg_enc_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) || (MCUXCLCIPHER_STATUS_OK != result_enc))
     {
@@ -286,6 +322,7 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     uint8_t msg_dec2[BYTELENGTH_M];
     uint32_t msg_dec_size2 = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec2, token_dec2, mcuxClCipher_crypt(
     /* mcuxClSession_Handle_t session, */ &session,
     /* mcuxClKey_Handle_t key,         */ privKey,
@@ -297,6 +334,7 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     /* uint8_t * const pOut,          */ msg_dec2,
     /* uint32_t * const pOutLength    */ &msg_dec_size2
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_dec2) || (MCUXCLCIPHER_STATUS_OK != result_dec2))
     {
@@ -304,7 +342,12 @@ bool mcuxClOsccaSm2_Cipher_Crypt_oneshot_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting decrypted msg matches our initial message
+    /* Check that the resultingdecrypted msg size and data match the expectation */
+    if(BYTELENGTH_M != msg_dec_size2)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(msg_dec2, pMessage_SM2, msg_dec_size2))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

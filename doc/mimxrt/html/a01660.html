@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('a01660.html',''); initResizable(); });
 <p>Example for the mcuxClKey component.</p>
 <p>Example for the mcuxClKey component</p>
 <div class="fragment"><div class="line"><span class="comment">/*--------------------------------------------------------------------------*/</span></div>
-<div class="line"><span class="comment">/* Copyright 2021-2023 NXP                                                  */</span></div>
+<div class="line"><span class="comment">/* Copyright 2021-2024 NXP                                                  */</span></div>
 <div class="line"><span class="comment">/*                                                                          */</span></div>
 <div class="line"><span class="comment">/* NXP Proprietary. This software is owned or controlled by NXP and may     */</span></div>
 <div class="line"><span class="comment">/* only be used strictly in accordance with the applicable license terms.   */</span></div>
@@ -155,28 +155,36 @@ $(document).ready(function(){initNavTree('a01660.html',''); initResizable(); });
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Create and initialize mcuxClKey_Descriptor_t structure. */</span></div>
 <div class="line">    uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
-<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key = (<a id="a3" name="a3"></a><a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;keyDesc;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) keyDesc;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Set key properties. */</span></div>
-<div class="line">    <a id="_a4" name="_a4"></a><a class="code hl_union" href="a01585.html">mcuxClEls_KeyProp_t</a> key_properties;</div>
+<div class="line">    <a id="_a3" name="_a3"></a><a class="code hl_union" href="a01585.html">mcuxClEls_KeyProp_t</a> key_properties;</div>
 <div class="line"> </div>
-<div class="line">    key_properties.<a id="a5" name="a5"></a><a class="code hl_variable" href="a01585.html#ad63814693ed1cdb8d9b63bc20ec12996">word</a>.<a id="a6" name="a6"></a><a class="code hl_variable" href="a01585.html#af184a952f255348629f27f24c0fd0bd9">value</a> = 0u;</div>
-<div class="line">    key_properties.<a id="a7" name="a7"></a><a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a id="a8" name="a8"></a><a class="code hl_variable" href="a01585.html#a49806c0136f41b701675799cb69d34d5">ksize</a> = <a id="a9" name="a9"></a><a class="code hl_define" href="a01083.html#ga4cacf5225b1aa96c74f05b111cfd0298">MCUXCLELS_KEYPROPERTY_KEY_SIZE_128</a>;</div>
-<div class="line">    key_properties.<a class="code hl_variable" href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">bits</a>.<a id="a10" name="a10"></a><a class="code hl_variable" href="a01585.html#ad0617bc9eea63043b1faf5fe9814ba97">kactv</a> = <a id="a11" name="a11"></a><a class="code hl_define" href="a01083.html#ga80e7d70c48a472dba6067d6b8e97bb68">MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE</a>;</div>
+<div class="line">    key_properties.word.value = 0u;</div>
+<div class="line">    key_properties.bits.ksize = <a id="a4" name="a4"></a><a class="code hl_define" href="a01083.html#ga4cacf5225b1aa96c74f05b111cfd0298">MCUXCLELS_KEYPROPERTY_KEY_SIZE_128</a>;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()</div>
+<div class="line">    key_properties.bits.kactv = <a id="a5" name="a5"></a><a class="code hl_define" href="a01083.html#ga80e7d70c48a472dba6067d6b8e97bb68">MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE</a>;</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Key buffer for the key in memory. */</span></div>
 <div class="line">    uint32_t key_buffer[<a class="code hl_define" href="a00977.html#ga82f8be599a040e7a44d1c4a78513b643">MCUXCLAES_AES128_KEY_SIZE_IN_WORDS</a>];</div>
 <div class="line">    <span class="comment">//Initializes a key handle, Set key properties and Load key.</span></div>
-<div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Key_Init_And_Load(&amp;session,</div>
+<div class="line"> </div>
+<div class="line">    if(!mcuxClExample_Key_Init_And_Load(&amp;session,</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;The pointer key points to an <span class="keywordtype">object</span> of the right type, the cast was valid.&quot;)</div>
 <div class="line">                                       key,</div>
-<div class="line">                                       <a id="a12" name="a12"></a><a class="code hl_variable" href="a00978.html#ga8f0a74b8ec63f9bcfff2723f37602d0d">mcuxClKey_Type_Aes128</a>,</div>
-<div class="line">                                       (uint8_t *) <a class="code hl_variable" href="a00002.html#af381139a6e72029d4fa91365ecd128dc">aes128_key</a>,</div>
-<div class="line">                                       <span class="keyword">sizeof</span>(<a class="code hl_variable" href="a00002.html#af381139a6e72029d4fa91365ecd128dc">aes128_key</a>),</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
+<div class="line">                                       <a id="a6" name="a6"></a><a class="code hl_variable" href="a00978.html#ga8f0a74b8ec63f9bcfff2723f37602d0d">mcuxClKey_Type_Aes128</a>,</div>
+<div class="line">                                       (const uint8_t*) <a class="code hl_variable" href="a00002.html#af381139a6e72029d4fa91365ecd128dc">aes128_key</a>,</div>
+<div class="line">                                       sizeof(<a class="code hl_variable" href="a00002.html#af381139a6e72029d4fa91365ecd128dc">aes128_key</a>),</div>
 <div class="line">                                       &amp;key_properties,</div>
 <div class="line">                                       key_buffer, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
+<div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* The key could now be used for a cryptographic operation.               */</span></div>
@@ -188,15 +196,15 @@ $(document).ready(function(){initNavTree('a01660.html',''); initResizable(); });
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Flush the key. */</span></div>
-<div class="line">    <a id="a13" name="a13"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(resultFlush, tokenFlush, <a id="a14" name="a14"></a><a class="code hl_function" href="a01107.html#ga60a86766cba40477651948cfa55eb7cd">mcuxClKey_flush</a>(</div>
+<div class="line">    <a id="a7" name="a7"></a><a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(resultFlush, tokenFlush, <a id="a8" name="a8"></a><a class="code hl_function" href="a01107.html#ga60a86766cba40477651948cfa55eb7cd">mcuxClKey_flush</a>(</div>
 <div class="line">                                                                 &amp;session,</div>
 <div class="line">                                                                 key));</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>((<a id="a15" name="a15"></a><a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01107.html#ga60a86766cba40477651948cfa55eb7cd">mcuxClKey_flush</a>) != tokenFlush) || (<a id="a16" name="a16"></a><a class="code hl_define" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a> != resultFlush))</div>
+<div class="line">    <span class="keywordflow">if</span>((<a id="a9" name="a9"></a><a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01107.html#ga60a86766cba40477651948cfa55eb7cd">mcuxClKey_flush</a>) != tokenFlush) || (<a id="a10" name="a10"></a><a class="code hl_define" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a> != resultFlush))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
-<div class="line">    <a id="a17" name="a17"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line">    <a id="a11" name="a11"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span>(!mcuxClExample_Session_Clean(&amp;session))</div>
 <div class="line">    {</div>
@@ -222,11 +230,6 @@ $(document).ready(function(){initNavTree('a01660.html',''); initResizable(); });
 <div class="ttc" id="aa01202_html_gac16ad6597579a02a30ada37f86f216d5"><div class="ttname"><a href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALLED(...)</div><div class="ttdoc">Expectation of a called function.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:735</div></div>
 <div class="ttc" id="aa01202_html_gac4362de43d0e67ba6fac0057eb38008d"><div class="ttname"><a href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALL_END(...)</div><div class="ttdoc">End a function call section started by MCUX_CSSL_FP_FUNCTION_CALL_BEGIN.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:616</div></div>
 <div class="ttc" id="aa01585_html"><div class="ttname"><a href="a01585.html">mcuxClEls_KeyProp_t</a></div><div class="ttdoc">Type for ELS key store key properties.</div><div class="ttdef"><b>Definition</b> mcuxClEls_Types.h:226</div></div>
-<div class="ttc" id="aa01585_html_a49806c0136f41b701675799cb69d34d5"><div class="ttname"><a href="a01585.html#a49806c0136f41b701675799cb69d34d5">mcuxClEls_KeyProp_t::ksize</a></div><div class="ttdeci">uint32_t ksize</div><div class="ttdoc">Key size.</div><div class="ttdef"><b>Definition</b> mcuxClEls_Types.h:237</div></div>
-<div class="ttc" id="aa01585_html_a974a373c61096ba3e081b42ad0b7e964"><div class="ttname"><a href="a01585.html#a974a373c61096ba3e081b42ad0b7e964">mcuxClEls_KeyProp_t::bits</a></div><div class="ttdeci">struct mcuxClEls_KeyProp_t::@41 bits</div><div class="ttdoc">Access mcuxClEls_KeyProp_t bit-wise.</div></div>
-<div class="ttc" id="aa01585_html_ad0617bc9eea63043b1faf5fe9814ba97"><div class="ttname"><a href="a01585.html#ad0617bc9eea63043b1faf5fe9814ba97">mcuxClEls_KeyProp_t::kactv</a></div><div class="ttdeci">uint32_t kactv</div><div class="ttdoc">Status flag to indicate whether the key slot contains an active key or not.</div><div class="ttdef"><b>Definition</b> mcuxClEls_Types.h:240</div></div>
-<div class="ttc" id="aa01585_html_ad63814693ed1cdb8d9b63bc20ec12996"><div class="ttname"><a href="a01585.html#ad63814693ed1cdb8d9b63bc20ec12996">mcuxClEls_KeyProp_t::word</a></div><div class="ttdeci">struct mcuxClEls_KeyProp_t::@40 word</div><div class="ttdoc">Access mcuxClEls_KeyProp_t word-wise.</div></div>
-<div class="ttc" id="aa01585_html_af184a952f255348629f27f24c0fd0bd9"><div class="ttname"><a href="a01585.html#af184a952f255348629f27f24c0fd0bd9">mcuxClEls_KeyProp_t::value</a></div><div class="ttdeci">uint32_t value</div><div class="ttdoc">Accesses the bit field as a full word; initialize with a combination of constants from MCUXCLELS_KEYP...</div><div class="ttdef"><b>Definition</b> mcuxClEls_Types.h:229</div></div>
 <div class="ttc" id="aa01637_html"><div class="ttname"><a href="a01637.html">mcuxClSession_Descriptor</a></div><div class="ttdoc">Structure for mcuxClSession Descriptor.</div><div class="ttdef"><b>Definition</b> mcuxClSession_Types.h:121</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->

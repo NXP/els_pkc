@@ -1,4 +1,4 @@
 var a00332 =
 [
-    [ "mcuxClOsccaRandomModes_TrngMode_OsccaRng_example", "a00332.html#a4ed7d0578932bb21d9120a5ba23e39ad", null ]
+    [ "MCUXCLEXAMPLE_FUNCTION", "a00332.html#a733a57ca14d8c28268bdaf4499e4845f", null ]
 ];

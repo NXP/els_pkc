@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('a00362_source.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <a href="a00362.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*--------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/* Copyright 2020-2023 NXP                                                  */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/* Copyright 2020-2024 NXP                                                  */</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*                                                                          */</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/* NXP Proprietary. This software is owned or controlled by NXP and may     */</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/* only be used strictly in accordance with the applicable license terms.   */</span></div>
@@ -132,77 +132,77 @@ $(document).ready(function(){initNavTree('a00362_source.html',''); initResizable
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00973.html#gad0713168358588f9550468bf1ef7cfbb">mcuxClAead_crypt</a>)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="a00973.html#gad0713168358588f9550468bf1ef7cfbb">   79</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00973.html#gad0713168358588f9550468bf1ef7cfbb">mcuxClAead_crypt</a>(</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key,</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_typedef" href="a00975.html#ga8084949e97b9ab9cd35ac041b8bbea0a">mcuxClAead_Mode_t</a> mode,</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pNonce,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  uint32_t nonceLength,</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pIn,</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  uint32_t inLength,</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pAdata,</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  uint32_t adataLength,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  uint32_t * const pOutLength,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pTag,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  uint32_t tagLength</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#gaeb2451aba7d135f7af05e94f9b095fae">mcuxClAead_init</a>)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="a00974.html#gaeb2451aba7d135f7af05e94f9b095fae">  125</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#gaeb2451aba7d135f7af05e94f9b095fae">mcuxClAead_init</a>(</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key,</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_typedef" href="a00975.html#ga8084949e97b9ab9cd35ac041b8bbea0a">mcuxClAead_Mode_t</a> mode,</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pNonce,</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  uint32_t nonceLength,</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  uint32_t inLength,</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  uint32_t adataLength,</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  uint32_t tagLength</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>); <span class="comment">/* init encrypt */</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#gaa4af5201aaf549186bf80cbf4284f3d1">mcuxClAead_process</a>)</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="a00974.html#gaa4af5201aaf549186bf80cbf4284f3d1">  160</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#gaa4af5201aaf549186bf80cbf4284f3d1">mcuxClAead_process</a>(</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pIn,</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  uint32_t inLength,</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  uint32_t * const pOutLength</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>); <span class="comment">/* update */</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#ga40cbd731ba8874d971213fa03605736d">mcuxClAead_process_adata</a>)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="a00974.html#ga40cbd731ba8874d971213fa03605736d">  187</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#ga40cbd731ba8874d971213fa03605736d">mcuxClAead_process_adata</a>(</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pAdata,</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  uint32_t adataLength</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>); <span class="comment">/* update associated data */</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">mcuxClAead_finish</a>)</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="a00974.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">  217</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">mcuxClAead_finish</a>(</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  uint32_t * const pOutLength,</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pTag</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>); <span class="comment">/* finalize encrypt/decrypt + output tag */</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#gafb82bc41120d69281d0fbb719fb35d9d">mcuxClAead_verify</a>)</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="a00974.html#gafb82bc41120d69281d0fbb719fb35d9d">  250</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#gafb82bc41120d69281d0fbb719fb35d9d">mcuxClAead_verify</a>(</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pTag,</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  uint32_t * const pOutLength</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>); <span class="comment">/* finalize decrypt + compare tag */</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="preprocessor">#endif </span><span class="comment">/* MCUXCLAEAD_FUNCTION_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00973.html#gad0713168358588f9550468bf1ef7cfbb">mcuxClAead_crypt</a>)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="a00973.html#gad0713168358588f9550468bf1ef7cfbb">   81</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00973.html#gad0713168358588f9550468bf1ef7cfbb">mcuxClAead_crypt</a>(</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <a class="code hl_typedef" href="a00975.html#ga8084949e97b9ab9cd35ac041b8bbea0a">mcuxClAead_Mode_t</a> mode,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pNonce,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  uint32_t nonceLength,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pIn,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  uint32_t inLength,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pAdata,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  uint32_t adataLength,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  uint32_t * const pOutLength,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pTag,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  uint32_t tagLength</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#gaeb2451aba7d135f7af05e94f9b095fae">mcuxClAead_init</a>)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="a00974.html#gaeb2451aba7d135f7af05e94f9b095fae">  127</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#gaeb2451aba7d135f7af05e94f9b095fae">mcuxClAead_init</a>(</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key,</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_typedef" href="a00975.html#ga8084949e97b9ab9cd35ac041b8bbea0a">mcuxClAead_Mode_t</a> mode,</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pNonce,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  uint32_t nonceLength,</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  uint32_t inLength,</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  uint32_t adataLength,</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  uint32_t tagLength</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>); <span class="comment">/* init encrypt */</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#gaa4af5201aaf549186bf80cbf4284f3d1">mcuxClAead_process</a>)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="a00974.html#gaa4af5201aaf549186bf80cbf4284f3d1">  162</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#gaa4af5201aaf549186bf80cbf4284f3d1">mcuxClAead_process</a>(</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pIn,</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  uint32_t inLength,</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  uint32_t * const pOutLength</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>); <span class="comment">/* update */</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#ga40cbd731ba8874d971213fa03605736d">mcuxClAead_process_adata</a>)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="a00974.html#ga40cbd731ba8874d971213fa03605736d">  189</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#ga40cbd731ba8874d971213fa03605736d">mcuxClAead_process_adata</a>(</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pAdata,</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  uint32_t adataLength</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>); <span class="comment">/* update associated data */</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">mcuxClAead_finish</a>)</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="a00974.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">  219</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba">mcuxClAead_finish</a>(</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  uint32_t * const pOutLength,</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pTag</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>); <span class="comment">/* finalize encrypt/decrypt + output tag */</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(<a class="code hl_function" href="a00974.html#gafb82bc41120d69281d0fbb719fb35d9d">mcuxClAead_verify</a>)</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="a00974.html#gafb82bc41120d69281d0fbb719fb35d9d">  252</a></span><a class="code hl_define" href="a01202.html#ga6cb5dab960bed02a02ad907bd2a54a4b">MCUX_CSSL_FP_PROTECTED_TYPE</a>(<a class="code hl_typedef" href="a00975.html#ga1497c344a218545c5980a407e7c9194d">mcuxClAead_Status_t</a>)  <a class="code hl_function" href="a00974.html#gafb82bc41120d69281d0fbb719fb35d9d">mcuxClAead_verify</a>(</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <a class="code hl_typedef" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> session,</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <a class="code hl_typedef" href="a00975.html#gaf67b42507181f9793498bfaaab35a48a">mcuxClAead_Context_t</a> * const pContext,</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a> pTag,</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <a class="code hl_typedef" href="a00987.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb">mcuxCl_Buffer_t</a> pOut,</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  uint32_t * const pOutLength</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>); <span class="comment">/* finalize decrypt + compare tag */</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="preprocessor">#endif </span><span class="comment">/* MCUXCLAEAD_FUNCTION_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aa00365_html"><div class="ttname"><a href="a00365.html">mcuxClAead_Types.h</a></div><div class="ttdoc">Type definitions for the mcuxClAead component.</div></div>
 <div class="ttc" id="aa00380_html"><div class="ttname"><a href="a00380.html">mcuxClBuffer.h</a></div><div class="ttdoc">Provides the API for the CL buffer types.</div></div>
 <div class="ttc" id="aa00548_html"><div class="ttname"><a href="a00548.html">mcuxClKey.h</a></div><div class="ttdoc">Top-level include file for the mcuxClKey component.</div></div>

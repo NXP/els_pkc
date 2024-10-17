@@ -232,65 +232,65 @@ $(document).ready(function(){initNavTree('a00683_source.html',''); initResizable
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_loadKey(uint32_t offset, uint32_t key);</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM4</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_incrementData)</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_incrementData(uint32_t offset, uint32_t length);</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="preprocessor">#define MCUXCLOSCCASAFO_DRV_BYTE_ORDER_LE (MCUXCLOSCCASAFO_SFR_CTRL2_BYTES_ORDER)</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="preprocessor">#define MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE (0u)</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_setByteOrder)</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>uint32_t mcuxClOsccaSafo_Drv_setByteOrder(uint32_t mode);</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM4</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_enableXorWrite)</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>uint32_t mcuxClOsccaSafo_Drv_enableXorWrite(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_disableXorWrite)</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_disableXorWrite(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_load)</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_load(uint32_t offset, uint32_t <a class="code hl_variable" href="a00083.html#a66f605b5d05f113d85c146f44d6ecc26">data</a>);</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM3</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_loadFifo)</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_loadFifo(uint32_t <a class="code hl_variable" href="a00083.html#a66f605b5d05f113d85c146f44d6ecc26">data</a>);</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM4</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_dataOut_res)</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>uint32_t mcuxClOsccaSafo_Drv_dataOut_res(uint32_t mode);</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_enableOutputToKey)</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>uint32_t mcuxClOsccaSafo_Drv_enableOutputToKey(uint32_t keyIndex);</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_disableOutputToKey)</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_disableOutputToKey(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_triggerOutput)</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_triggerOutput(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_store)</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>uint32_t mcuxClOsccaSafo_Drv_store(uint32_t offset);</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_storeInput)</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>uint32_t mcuxClOsccaSafo_Drv_storeInput(uint32_t offset);</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_incrementData)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_incrementData(uint32_t offset, uint32_t length);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="preprocessor">#define MCUXCLOSCCASAFO_DRV_BYTE_ORDER_LE (MCUXCLOSCCASAFO_SFR_CTRL2_BYTES_ORDER)</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="preprocessor">#define MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE (0u)</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_setByteOrder)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>uint32_t mcuxClOsccaSafo_Drv_setByteOrder(uint32_t mode);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM4</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_enableXorWrite)</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>uint32_t mcuxClOsccaSafo_Drv_enableXorWrite(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_disableXorWrite)</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_disableXorWrite(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_load)</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_load(uint32_t offset, uint32_t <a class="code hl_variable" href="a00083.html#a66f605b5d05f113d85c146f44d6ecc26">data</a>);</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM3</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_loadFifo)</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_loadFifo(uint32_t <a class="code hl_variable" href="a00083.html#a66f605b5d05f113d85c146f44d6ecc26">data</a>);</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="preprocessor">#ifdef MCUXCL_FEATURE_HW_SAFO_SM4</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_dataOut_res)</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>uint32_t mcuxClOsccaSafo_Drv_dataOut_res(uint32_t mode);</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_enableOutputToKey)</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>uint32_t mcuxClOsccaSafo_Drv_enableOutputToKey(uint32_t keyIndex);</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_disableOutputToKey)</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_disableOutputToKey(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_triggerOutput)</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span><span class="keywordtype">void</span> mcuxClOsccaSafo_Drv_triggerOutput(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_store)</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>uint32_t mcuxClOsccaSafo_Drv_store(uint32_t offset);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_storeInput)</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>uint32_t mcuxClOsccaSafo_Drv_storeInput(uint32_t offset);</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_storeKey)</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>uint32_t mcuxClOsccaSafo_Drv_storeKey(uint32_t offset);</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_isStatusError)</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="keywordtype">bool</span> mcuxClOsccaSafo_Drv_isStatusError(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span> </div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_storeKey)</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>uint32_t mcuxClOsccaSafo_Drv_storeKey(uint32_t offset);</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><a class="code hl_define" href="a01202.html#ga21e1a3f12fd2772ca92216b888b3bdff">MCUX_CSSL_FP_FUNCTION_DECL</a>(mcuxClOsccaSafo_Drv_isStatusError)</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="keywordtype">bool</span> mcuxClOsccaSafo_Drv_isStatusError(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span> </div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span> </div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="preprocessor">#endif </span><span class="comment">/* MCUXCLOSCCASAFO_FUNCTIONS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="preprocessor">#endif </span><span class="comment">/* MCUXCLOSCCASAFO_FUNCTIONS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aa00083_html_a66f605b5d05f113d85c146f44d6ecc26"><div class="ttname"><a href="a00083.html#a66f605b5d05f113d85c146f44d6ecc26">data</a></div><div class="ttdeci">static const uint8_t data[]</div><div class="ttdoc">Example data buffer.</div><div class="ttdef"><b>Definition</b> mcuxClCrc_Crc16_example.c:35</div></div>
 <div class="ttc" id="aa00698_html"><div class="ttname"><a href="a00698.html">mcuxClOsccaSafo_Types.h</a></div><div class="ttdoc">Type and associated constant definitions of the mcuxClOsccaSafo component.</div></div>
 <div class="ttc" id="aa00851_html"><div class="ttname"><a href="a00851.html">mcuxCsslFlowProtection.h</a></div><div class="ttdoc">Provides the API for the CSSL flow protection mechanism.</div></div>

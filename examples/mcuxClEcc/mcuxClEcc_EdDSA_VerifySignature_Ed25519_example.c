@@ -93,12 +93,16 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_VerifySignature_Ed25519_example)
     /******************************************/
 
     /* Initialize public key */
-    ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
+    uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyInit_status, keyInit_token, mcuxClKey_init(
         /* mcuxClSession_Handle_t session         */ &session,
-        /* mcuxClKey_Handle_t key                 */ pubKeyHandler,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey is of the right type (mcuxClKey_Handle_t)")
+        /* mcuxClKey_Handle_t key                 */ pubKey,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
         /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Pub,
         /* const uint8_t * pKeyData              */ pPublicKey,
         /* uint32_t keyDataLength                */ sizeof(pPublicKey))
@@ -121,7 +125,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_VerifySignature_Ed25519_example)
     /* Call mcuxClEcc_EdDSA_VerifySignature to verify the signature */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClEcc_EdDSA_VerifySignature(
     /* mcuxClSession_Handle_t pSession                        */ &session,
-    /* mcuxClKey_Handle_t pubKey                              */ pubKeyHandler,
+    /* mcuxClKey_Handle_t pubKey                              */ pubKey,
     /* const mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t*   */ &mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor,
     /* mcuxCl_InputBuffer_t pIn                               */ buffIn,
     /* uint32_t inSize                                       */ sizeof(pIn),

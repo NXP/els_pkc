@@ -29,7 +29,7 @@
 
 
 /** Pre-hashed data to be signed */
-static uint32_t const ecc_digest[MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256 / sizeof(uint32_t)] CSS_CONST_SEGMENT = {0x11111111u,
+static uint32_t const ecc_digest[MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256 / sizeof(uint32_t)] = {0x11111111u,
                                                                                           0x22222222u,
                                                                                           0x33333333u,
                                                                                           0x44444444u,
@@ -72,11 +72,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     KeyGenOptions.bits.kgsign_rnd = MCUXCLELS_ECC_NO_RANDOM_DATA;         // Configure that no external random data is provided
     
     mcuxClEls_KeyProp_t GenKeyProp = {0};                                 // Initialize a new configuration for the mcuxClEls_EccKeyGen_Async generated key properties.
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     GenKeyProp.bits.upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE; // Configure that user access rights: non-privileged access
     GenKeyProp.bits.upprot_sec = MCUXCLELS_KEYPROPERTY_SECURE_TRUE;       // Configure that user access rights: non-secure access
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     mcuxClEls_KeyIndex_t keyIdx = 10u;  // Set keystore index at which mcuxClEls_EccKeyGen_Async is storing the private key.
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyGen_Async( // Perform key generation.
             KeyGenOptions,                                  // Set the prepared configuration.
             (mcuxClEls_KeyIndex_t) 0U,                       // This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.
@@ -85,6 +88,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
             NULL,                                           // No random data is provided
             (uint8_t *) ecc_public_key                      // Output buffer, which the operation will write the public key to.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -103,12 +107,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
     /* Sign message digest */
     mcuxClEls_EccSignOption_t SignOptions = {0}; // Initialize a new configuration for the planned mcuxClEls_EccSign_Async operation.
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccSign_Async(// Perform signature generation.
             SignOptions,                                                  // Set the prepared configuration.
             keyIdx,                                                       // Set index of private key in keystore.
             (const uint8_t *) ecc_digest, NULL, (size_t) 0U,              // Pre-hashed data to sign. Note that inputLength parameter is ignored since pre-hashed data has a fixed length.
             (uint8_t *)ecc_signature                                                 // Output buffer, which the operation will write the signature to.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_EccSign_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -135,12 +141,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Keygen_Sign_Verify_example)
 
     mcuxClEls_EccVerifyOption_t VerifyOptions = {0}; // Initialize a new configuration for the planned mcuxClEls_EccVerify_Async operation.
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccVerify_Async(// Perform signature verification.
             VerifyOptions,                                                  // Set the prepared configuration.
             (const uint8_t *) ecc_digest, NULL, (size_t) 0U,                // Pre-hashed data to verify. Note that inputLength parameter is ignored since pre-hashed data has a fixed length.
             (const uint8_t *)ecc_signature_and_public_key,                  // Concatenation of signature of the pre-hashed data and public key used
             (uint8_t *)ecc_signature_r                                      // Output buffer, which the operation will write the signature part r to, to allow external comparison of between given and recalculated r.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_EccVerify_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {

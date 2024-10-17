@@ -42,7 +42,7 @@ static const uint8_t sm4CbcMacPtxt[] = { 0x0D, 0x43, 0x46, 0x88, 0x01, 0x80, 0x8
 static const uint8_t sm4CbcMacResult[] = { 0xF1, 0x33, 0x9F, 0x63, 0x93, 0x4E, 0x72, 0xE4,
                                            0xA7, 0x8F, 0x04, 0x7D, 0x9A, 0x9E, 0x7C, 0xCA };
 
-bool mcuxClOsccaMacModes_CBCMAC_Multipart_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaMacModes_CBCMAC_Multipart_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -61,11 +61,15 @@ bool mcuxClOsccaMacModes_CBCMAC_Multipart_example(void)
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki, token_ki, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4CbcMacKey,
       /* uint32_t keyDataLength                */ sizeof(sm4CbcMacKey)
@@ -79,7 +83,9 @@ bool mcuxClOsccaMacModes_CBCMAC_Multipart_example(void)
 
     /* Create a buffer for the context */
     uint32_t ctxBuf[0x6D]; //MCUXCLOSCCAMACMODES_CTX_SIZE_IN_WORDS
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_Context_t * const pCtx = (mcuxClMac_Context_t *) ctxBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Declare message buffer and size. */
     uint8_t cbcmacData[sizeof(sm4CbcMacResult)];
@@ -91,7 +97,9 @@ bool mcuxClOsccaMacModes_CBCMAC_Multipart_example(void)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_init, token_init, mcuxClMac_init(
     /* mcuxClSession_Handle_t session,          */ session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid., the cast was valid.")
     /* mcuxClMac_Context_t * const pContext,    */ pCtx,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Handle_t key,                  */ key,
     /* mcuxClMac_Mode_t mode,                   */ mcuxClOsccaMac_Mode_CBCMAC_NoPadding
     ));
@@ -151,7 +159,12 @@ bool mcuxClOsccaMacModes_CBCMAC_Multipart_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting encrypted msg matches our expected initial message
+    /* Check that the resulting mac size and data match the expectation */
+    if(MCUXCLOSCCASM4_CBCMAC_OUTPUT_SIZE != cbcmac_data_size)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(cbcmacData, sm4CbcMacResult, cbcmac_data_size))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

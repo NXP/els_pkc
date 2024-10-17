@@ -65,10 +65,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     /**************************************************************************/
 
     /* Initialize the Random session with ELS mode. */
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInitresult, token, mcuxClRandom_init(
-                                                  session,
-                                                  context,
-                                                  mcuxClRandomModes_Mode_ELS_Drbg));
+        session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL argument (context) is not dereferenced with mode mcuxClRandomModes_Mode_ELS_Drbg")
+        context,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
+        mcuxClRandomModes_Mode_ELS_Drbg));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != token) || (MCUXCLRANDOM_STATUS_OK != randomInitresult))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -81,10 +84,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     /**************************************************************************/
 
     /* Generate random values of smaller amount than one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of drbg_buffer1 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult1, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer1,
                                                   sizeof(drbg_buffer1)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult1))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -93,10 +99,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of multiple of word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of drbg_buffer1 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult2, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer2,
                                                   sizeof(drbg_buffer2)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult2))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -105,10 +114,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of larger amount than but not multiple of one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of drbg_buffer1 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult3, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer3,
                                                   sizeof(drbg_buffer3)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult3))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

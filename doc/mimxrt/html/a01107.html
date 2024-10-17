@@ -117,9 +117,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gab177d067c754ceccca8b90c47f2e74b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key, <a class="el" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a> type, const uint8_t *pKeyData, uint32_t keyDataLength)</td></tr>
 <tr class="memdesc:gab177d067c754ceccca8b90c47f2e74b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a key handle.  <br /></td></tr>
 <tr class="separator:gab177d067c754ceccca8b90c47f2e74b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadac5d6a29e1a0dba2b418b98e4ccd0ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01107.html#gadac5d6a29e1a0dba2b418b98e4ccd0ee">mcuxClKey_linkKeyPair</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey)</td></tr>
-<tr class="memdesc:gadac5d6a29e1a0dba2b418b98e4ccd0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Establishes a key pair link between a private and public key handle.  <br /></td></tr>
-<tr class="separator:gadac5d6a29e1a0dba2b418b98e4ccd0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf504f15369b7930024ef4ee38b9b3a87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01107.html#gaf504f15369b7930024ef4ee38b9b3a87">mcuxClKey_linkKeyPair</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey)</td></tr>
+<tr class="memdesc:gaf504f15369b7930024ef4ee38b9b3a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Establishes a key pair link between a private and public key handle.  <br /></td></tr>
+<tr class="separator:gaf504f15369b7930024ef4ee38b9b3a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga90ba1a7dd130f260f5e47f5b78881bd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01107.html#ga90ba1a7dd130f260f5e47f5b78881bd6">mcuxClKey_setProtection</a> (<a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a> pSession, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> key, <a class="el" href="a01109.html#gab16fa58359f9994921f5d4a58c597c66">mcuxClKey_Protection_t</a> protection, uint8_t *pAuxData, <a class="el" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> parentKey)</td></tr>
 <tr class="memdesc:ga90ba1a7dd130f260f5e47f5b78881bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures they protection mechanism for to the given key handle.  <br /></td></tr>
 <tr class="separator:ga90ba1a7dd130f260f5e47f5b78881bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,19 +203,19 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01657.html#a6">mcuxClEcc_EdDSA_Ed25519_example.c</a>, <a class="el" href="a01655.html#a8">mcuxClEcc_EdDSA_Ed25519ctx_example.c</a>, <a class="el" href="a01656.html#a8">mcuxClEcc_EdDSA_Ed25519ph_example.c</a>, <a class="el" href="a01658.html#a8">mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c</a>, <a class="el" href="a01659.html#a7">mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c</a>, <a class="el" href="a01653.html#a5">mcuxClEcc_MontDH_Curve25519_example.c</a>, <a class="el" href="a01654.html#a5">mcuxClEcc_MontDH_Curve448_example.c</a>, <a class="el" href="a01677.html#a17">mcuxClRsa_Cipher_Crypt_RSAES_OAEP_1000b_example.c</a>, <a class="el" href="a01675.html#a16">mcuxClRsa_Cipher_Crypt_RSAES_OAEP_example.c</a>, and <a class="el" href="a01676.html#a18">mcuxClRsa_Cipher_Crypt_RSAES_PKCS1_v1_5_example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01657.html#a5">mcuxClEcc_EdDSA_Ed25519_example.c</a>, <a class="el" href="a01655.html#a7">mcuxClEcc_EdDSA_Ed25519ctx_example.c</a>, <a class="el" href="a01656.html#a7">mcuxClEcc_EdDSA_Ed25519ph_example.c</a>, <a class="el" href="a01658.html#a7">mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example.c</a>, <a class="el" href="a01659.html#a6">mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c</a>, <a class="el" href="a01653.html#a5">mcuxClEcc_MontDH_Curve25519_example.c</a>, <a class="el" href="a01654.html#a5">mcuxClEcc_MontDH_Curve448_example.c</a>, <a class="el" href="a01677.html#a16">mcuxClRsa_Cipher_Crypt_RSAES_OAEP_1000b_example.c</a>, <a class="el" href="a01675.html#a15">mcuxClRsa_Cipher_Crypt_RSAES_OAEP_example.c</a>, and <a class="el" href="a01676.html#a17">mcuxClRsa_Cipher_Crypt_RSAES_PKCS1_v1_5_example.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="gadac5d6a29e1a0dba2b418b98e4ccd0ee" name="gadac5d6a29e1a0dba2b418b98e4ccd0ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadac5d6a29e1a0dba2b418b98e4ccd0ee">&#9670;&#160;</a></span>mcuxClKey_linkKeyPair()</h2>
+<a id="gaf504f15369b7930024ef4ee38b9b3a87" name="gaf504f15369b7930024ef4ee38b9b3a87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf504f15369b7930024ef4ee38b9b3a87">&#9670;&#160;</a></span>mcuxClKey_linkKeyPair()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a> mcuxClKey_linkKeyPair </td>
+          <td class="memname">void mcuxClKey_linkKeyPair </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a>&#160;</td>
           <td class="paramname"><em>pSession</em>, </td>
@@ -249,14 +249,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An error code that can be any error code in <a class="el" href="a01103.html">MCUXCLKEY_STATUS_</a>, see individual documentation for more information </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname"><a class="el" href="a01103.html#gaad298a05e6e023bc251b91ad5173ac59" title="Error occured during Key operation.">MCUXCLKEY_STATUS_ERROR</a></td><td>on unsuccessful operation </td></tr>
-    <tr><td class="paramname"><a class="el" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49" title="Key operation successful.">MCUXCLKEY_STATUS_OK</a></td><td>on successful operation </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -472,7 +465,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01660.html#a14">mcuxClKey_example.c</a>, and <a class="el" href="a01662.html#a26">mcuxClMacModes_Els_Cmac_Aes128_Oneshot_Example.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="a01660.html#a8">mcuxClKey_example.c</a>, and <a class="el" href="a01662.html#a26">mcuxClMacModes_Els_Cmac_Aes128_Oneshot_Example.c</a>.</dd>
 </dl>
 
 </div>

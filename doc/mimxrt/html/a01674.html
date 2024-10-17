@@ -250,32 +250,36 @@ $(document).ready(function(){initNavTree('a01674.html',''); initResizable(); });
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Create key struct of type MCUXCLRSA_KEY_PRIVATEPLAIN */</span></div>
 <div class="line">    <span class="keyword">const</span> <a id="_a15" name="_a15"></a><a class="code hl_struct" href="a01625.html">mcuxClRsa_KeyEntry_t</a> Mod1 = {</div>
-<div class="line">MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
 <div class="line">                       .pKeyEntryData = (uint8_t *)<a class="code hl_variable" href="a00230.html#a8acdb3e7615724fbf65a4c5277499610">modulus</a>,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
 <div class="line">                       .keyEntryLength = <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a> };</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> <a class="code hl_struct" href="a01625.html">mcuxClRsa_KeyEntry_t</a> Exp1 = {</div>
-<div class="line">MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
 <div class="line">                       .pKeyEntryData = (uint8_t *)<a class="code hl_variable" href="a00239.html#a5422e9a0ba871050035dc4fe7ccb410e">d</a>,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
 <div class="line">                       .keyEntryLength = <span class="keyword">sizeof</span>(<a class="code hl_variable" href="a00239.html#a5422e9a0ba871050035dc4fe7ccb410e">d</a>) };</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> <a id="_a16" name="_a16"></a><a class="code hl_struct" href="a01629.html">mcuxClRsa_Key</a> private_key = {</div>
 <div class="line">                                     .<a id="a17" name="a17"></a><a class="code hl_variable" href="a01629.html#a8d0791ef8960a4316931f55f5848c3fa">keytype</a> = <a id="a18" name="a18"></a><a class="code hl_define" href="a01180.html#ga16c4298a66c8a1a7c2e18aca938442a6">MCUXCLRSA_KEY_PRIVATEPLAIN</a>,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;The pointer Mod1 is of the right type (mcuxClRsa_KeyEntry_t)&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(&quot;Required by API function&quot;)</div>
 <div class="line">                                     .pMod1 = (<a class="code hl_struct" href="a01625.html">mcuxClRsa_KeyEntry_t</a> *)&amp;Mod1,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">                                     .pMod2 = NULL,</div>
 <div class="line">                                     .pQInv = NULL,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(&quot;Required by API function&quot;)</div>
 <div class="line">                                     .pExp1 = (<a class="code hl_struct" href="a01625.html">mcuxClRsa_KeyEntry_t</a> *)&amp;Exp1,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line">                                     .pExp2 = NULL,</div>
 <div class="line">                                     .pExp3 = NULL };</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Prepare buffer to store the result */</span></div>
-<div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t <a id="a19" name="a19"></a><a class="code hl_variable" href="a00230.html#a2c972bfe89a797257554b9833f2159aa">signature</a>[<a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>];</div>
+<div class="line">    <a class="code hl_variable" href="a00038.html#a50f5a7db5e88cbafe5ddc9e6109b2f17">ALIGNED</a> uint8_t <a id="a19" name="a19"></a><a class="code hl_variable" href="a00230.html#a2c972bfe89a797257554b9833f2159aa">signature</a>[<a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>] = {0};</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* RSA signature generation call                                          */</span></div>
@@ -283,19 +287,23 @@ $(document).ready(function(){initNavTree('a01674.html',''); initResizable(); });
 <div class="line"> </div>
 <div class="line">    <a id="a20" name="a20"></a><a class="code hl_define" href="a00982.html#gaa0ed06160ed0bb21bbef3def4479d9ce">MCUXCLBUFFER_INIT_RO</a>(messageBuf, session, <a class="code hl_variable" href="a00230.html#ab0252338b733b2996b353f6f43a971f6">message</a>, <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>);</div>
 <div class="line">    <a id="a21" name="a21"></a><a class="code hl_define" href="a00982.html#ga00af3c9893f4c59ec8ac0675c8332da3">MCUXCLBUFFER_INIT</a>(signatureBuf, session, <a class="code hl_variable" href="a00230.html#a2c972bfe89a797257554b9833f2159aa">signature</a>, <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>);</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(<span class="stringliteral">&quot;The pointer mcuxClRsa_Mode_Sign_NoEncode is of the right type (mcuxClRsa_SignVerifyMode_t)&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER(&quot;NULL arguments (private_key.pMod2) are not dereferenced during <a class="code hl_variable" href="a00230.html#a2c972bfe89a797257554b9833f2159aa">signature</a> generation&quot;)</div>
 <div class="line">    <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(sign_status, sign_token, <a id="a22" name="a22"></a><a class="code hl_function" href="a01174.html#gaea19a43d7a52c159675d93d8e7d6ec51">mcuxClRsa_sign</a>(</div>
 <div class="line">                <span class="comment">/* mcuxClSession_Handle_t           pSession: */</span>           session,</div>
 <div class="line">                <span class="comment">/* const mcuxClRsa_Key * const      pKey: */</span>               &amp;private_key,</div>
 <div class="line">                <span class="comment">/* mcuxCl_InputBuffer_t             pMessageOrDigest: */</span>   messageBuf,</div>
 <div class="line">                <span class="comment">/* const uint32_t                  messageLength: */</span>      <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API function&quot;</span>)</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(&quot;Required by API function&quot;)</div>
 <div class="line">                <span class="comment">/* const mcuxClRsa_SignVerifyMode   pPaddingMode: */</span>       (<a class="code hl_typedef" href="a01182.html#gabe334b37ac763b3943364b26e130d0df">mcuxClRsa_SignVerifyMode_t</a> *)&amp;<a id="a23" name="a23"></a><a class="code hl_variable" href="a01172.html#ga4459d773156bf4ac906a1416dd4ed4f4">mcuxClRsa_Mode_Sign_NoEncode</a>,</div>
-<div class="line">MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
 <div class="line">                <span class="comment">/* const uint32_t                  saltLength: */</span>         0u,</div>
 <div class="line">                <span class="comment">/* uint32_t                        options: */</span>            0u,</div>
 <div class="line">                <span class="comment">/* mcuxCl_Buffer_t                  pSignature: */</span>         signatureBuf));</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span>(<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01174.html#gaea19a43d7a52c159675d93d8e7d6ec51">mcuxClRsa_sign</a>) != sign_token || <a id="a24" name="a24"></a><a class="code hl_define" href="a01179.html#gac7719ba5cbecc181bef2b21dca99fdf3">MCUXCLRSA_STATUS_SIGN_OK</a> != sign_status)</div>
+<div class="line">    if(<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01174.html#gaea19a43d7a52c159675d93d8e7d6ec51">mcuxClRsa_sign</a>) != sign_token || <a id="a24" name="a24"></a><a class="code hl_define" href="a01179.html#gac7719ba5cbecc181bef2b21dca99fdf3">MCUXCLRSA_STATUS_SIGN_OK</a> != sign_status)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
@@ -356,8 +364,8 @@ $(document).ready(function(){initNavTree('a01674.html',''); initResizable(); });
 <div class="ttc" id="aa01202_html_ga8a9b1ebbc02c8195618a339aa8e0003d"><div class="ttname"><a href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(...)</div><div class="ttdoc">Call a flow protected function and check the protection token.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:581</div></div>
 <div class="ttc" id="aa01202_html_gac16ad6597579a02a30ada37f86f216d5"><div class="ttname"><a href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALLED(...)</div><div class="ttdoc">Expectation of a called function.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:735</div></div>
 <div class="ttc" id="aa01202_html_gac4362de43d0e67ba6fac0057eb38008d"><div class="ttname"><a href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALL_END(...)</div><div class="ttdoc">End a function call section started by MCUX_CSSL_FP_FUNCTION_CALL_BEGIN.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:616</div></div>
-<div class="ttc" id="aa01260_html_ga48b4346142911ddd75ac4bb4575b4a44"><div class="ttname"><a href="a01260.html#ga48b4346142911ddd75ac4bb4575b4a44">MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE</a></div><div class="ttdeci">#define MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE</div><div class="ttdoc">Definition of PKC workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys.</div><div class="ttdef"><b>Definition</b> mcuxClRsa_MemoryConsumption.h:146</div></div>
-<div class="ttc" id="aa01260_html_ga62affe57ed8b934c432d1e4957ca2b96"><div class="ttname"><a href="a01260.html#ga62affe57ed8b934c432d1e4957ca2b96">MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE</a></div><div class="ttdeci">#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE</div><div class="ttdoc">Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using...</div><div class="ttdef"><b>Definition</b> mcuxClRsa_MemoryConsumption.h:103</div></div>
+<div class="ttc" id="aa01260_html_ga48b4346142911ddd75ac4bb4575b4a44"><div class="ttname"><a href="a01260.html#ga48b4346142911ddd75ac4bb4575b4a44">MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE</a></div><div class="ttdeci">#define MCUXCLRSA_SIGN_PLAIN_1024_WAPKC_SIZE</div><div class="ttdoc">Definition of PKC workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys.</div><div class="ttdef"><b>Definition</b> mcuxClRsa_MemoryConsumption.h:147</div></div>
+<div class="ttc" id="aa01260_html_ga62affe57ed8b934c432d1e4957ca2b96"><div class="ttname"><a href="a01260.html#ga62affe57ed8b934c432d1e4957ca2b96">MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE</a></div><div class="ttdeci">#define MCUXCLRSA_SIGN_PLAIN_NOENCODE_1024_WACPU_SIZE</div><div class="ttdoc">Definition of CPU workarea size for the mcuxClRsa_sign function for 1024-bit private plain keys using...</div><div class="ttdef"><b>Definition</b> mcuxClRsa_MemoryConsumption.h:104</div></div>
 <div class="ttc" id="aa01312_html_ga951990ff5179cd6fce7310de16002b20"><div class="ttname"><a href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a></div><div class="ttdeci">#define MCUXCLRANDOM_STATUS_OK</div><div class="ttdoc">Random function returned successfully.</div><div class="ttdef"><b>Definition</b> mcuxClRandom_Constants.h:46</div></div>
 <div class="ttc" id="aa01625_html"><div class="ttname"><a href="a01625.html">mcuxClRsa_KeyEntry_t</a></div><div class="ttdoc">Structure type for Rsa key entries, specifying key entry length and data.</div><div class="ttdef"><b>Definition</b> mcuxClRsa_Types.h:130</div></div>
 <div class="ttc" id="aa01629_html"><div class="ttname"><a href="a01629.html">mcuxClRsa_Key</a></div><div class="ttdoc">Structure type for Rsa key, specifying key type and key entries.</div><div class="ttdef"><b>Definition</b> mcuxClRsa_Types.h:145</div></div>

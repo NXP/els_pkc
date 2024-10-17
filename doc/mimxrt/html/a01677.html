@@ -224,86 +224,119 @@ $(document).ready(function(){initNavTree('a01677.html',''); initResizable(); });
 <div class="line"><span class="comment">  /**************************************************************************/</span></div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">/* Allocation of key data buffers, which contain RSA key parameters */</span></div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(<span class="stringliteral">&quot;Required by API, elements are not modified in executed scenario&quot;</span>)</div>
 <div class="line">  <a id="_a12" name="_a12"></a><a class="code hl_struct" href="a01617.html">mcuxClRsa_KeyData_Plain_t</a> privKeyStruct = {</div>
 <div class="line">                              .<a id="a13" name="a13"></a><a class="code hl_variable" href="a01617.html#a798649c6e3c165274a9681595b18c2df">modulus</a>.<a id="a14" name="a14"></a><a class="code hl_variable" href="a01625.html#a1f5a90f95105b9abaf31a7997a2fb24e">pKeyEntryData</a> = (uint8_t*)<a class="code hl_variable" href="a00230.html#a8acdb3e7615724fbf65a4c5277499610">modulus</a>,</div>
 <div class="line">                              .<a class="code hl_variable" href="a00230.html#a8acdb3e7615724fbf65a4c5277499610">modulus</a>.keyEntryLength = <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>,</div>
 <div class="line">                              .exponent.pKeyEntryData = (uint8_t*)privExp,</div>
 <div class="line">                              .exponent.keyEntryLength = <span class="keyword">sizeof</span>(privExp)</div>
 <div class="line">  };</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
 <div class="line"> </div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST(&quot;Required by API, elements are not modified in executed scenario&quot;)</div>
 <div class="line">  <a class="code hl_struct" href="a01617.html">mcuxClRsa_KeyData_Plain_t</a> pubKeyStruct = {</div>
 <div class="line">                              .<a class="code hl_variable" href="a01617.html#a798649c6e3c165274a9681595b18c2df">modulus</a>.<a class="code hl_variable" href="a01625.html#a1f5a90f95105b9abaf31a7997a2fb24e">pKeyEntryData</a> = (uint8_t*)<a class="code hl_variable" href="a00230.html#a8acdb3e7615724fbf65a4c5277499610">modulus</a>,</div>
 <div class="line">                              .<a class="code hl_variable" href="a00230.html#a8acdb3e7615724fbf65a4c5277499610">modulus</a>.keyEntryLength = <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>,</div>
 <div class="line">                              .exponent.pKeyEntryData = (uint8_t*)pubExp,</div>
 <div class="line">                              .exponent.keyEntryLength = <span class="keyword">sizeof</span>(pubExp)</div>
 <div class="line">  };</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">/* Initialize RSA private plain key type descriptor */</span></div>
 <div class="line">  uint32_t keyTypeDesc_RsaPrivatePlain_1000[MCUXCLKEY_TYPEDESCRIPTOR_SIZE_IN_WORDS];</div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_typedef" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a> kt_priv_status = mcuxClRsa_PrivatePlain_KeyType_ModeConstructor(</div>
-<div class="line">    <span class="comment">/* mcuxClKey_TypeDescriptor_t * pKeyType */</span> (<a class="code hl_typedef" href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> *) &amp;keyTypeDesc_RsaPrivatePlain_1000,</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">  <a class="code hl_typedef" href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> *pKeyTypeDesc_RsaPrivatePlain_1000 = (<a class="code hl_typedef" href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> *) keyTypeDesc_RsaPrivatePlain_1000;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line"> </div>
+<div class="line">  <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(kt_priv_status, kt_priv_token, mcuxClRsa_PrivatePlain_KeyType_ModeConstructor(</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;The pointer pKeyTypeDesc_RsaPrivatePlain_1000 points to an <span class="keywordtype">object</span> of the right type, the cast was valid.&quot;)</div>
+<div class="line">    <span class="comment">/* mcuxClKey_TypeDescriptor_t * pKeyType */</span> pKeyTypeDesc_RsaPrivatePlain_1000,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Size_t keySize              */</span> <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a></div>
-<div class="line">    );</div>
-<div class="line">  <span class="keywordflow">if</span> (<a id="a15" name="a15"></a><a class="code hl_define" href="a01179.html#ga27536f048ce37687e3faf44063590820">MCUXCLRSA_STATUS_OK</a> != kt_priv_status)</div>
+<div class="line">    ));</div>
+<div class="line">  if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(mcuxClRsa_PrivatePlain_KeyType_ModeConstructor) != kt_priv_token) || (<a id="a15" name="a15"></a><a class="code hl_define" href="a01179.html#ga27536f048ce37687e3faf44063590820">MCUXCLRSA_STATUS_OK</a> != kt_priv_status))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
+<div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">  }</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">/* Initialize RSA private key */</span></div>
 <div class="line">  uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
-<div class="line">  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey = (<a id="a16" name="a16"></a><a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;privKeyDesc;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> privKey = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) privKeyDesc;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_typedef" href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a> ki_priv_status = <a id="a17" name="a17"></a><a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
+<div class="line">  uint32_t sizeOfPrivKey = (uint32_t)sizeof(privKeyStruct);</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(keyInitPriv_result, keyInitPriv_token, <a id="a16" name="a16"></a><a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> session,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;The pointer privKey points to an <span class="keywordtype">object</span> of the right type, the cast was valid.&quot;)</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Handle_t key                 */</span> privKey,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Type_t type                  */</span> (<a class="code hl_typedef" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a>) &amp;keyTypeDesc_RsaPrivatePlain_1000,</div>
 <div class="line">    <span class="comment">/* uint8_t * pKeyData                    */</span> (uint8_t *) &amp;privKeyStruct,</div>
-<div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> <span class="keyword">sizeof</span>(privKeyStruct)</div>
-<div class="line">  );</div>
-<div class="line"> </div>
-<div class="line">  <span class="keywordflow">if</span> (<a id="a18" name="a18"></a><a class="code hl_define" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a> != ki_priv_status)</div>
+<div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> sizeOfPrivKey</div>
+<div class="line">  ));</div>
+<div class="line">  if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>) != keyInitPriv_token) || (<a id="a17" name="a17"></a><a class="code hl_define" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a> != keyInitPriv_result))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
+<div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">  }</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">/* Initialize RSA private plain key type descriptor */</span></div>
 <div class="line">  uint32_t keyTypeDesc_RsaPublic_1000[MCUXCLKEY_TYPEDESCRIPTOR_SIZE_IN_WORDS];</div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_typedef" href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a> kt_pub_status = mcuxClRsa_Public_KeyType_ModeConstructor(</div>
-<div class="line">    <span class="comment">/* mcuxClKey_TypeDescriptor_t * pKeyType */</span> (<a class="code hl_typedef" href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> *) &amp;keyTypeDesc_RsaPublic_1000,</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">  <a class="code hl_typedef" href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> *pkeyTypeDesc_RsaPublic_1000 = (<a class="code hl_typedef" href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a> *) keyTypeDesc_RsaPublic_1000;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line"> </div>
+<div class="line">  <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(kt_pub_status, kt_pub_token, mcuxClRsa_Public_KeyType_ModeConstructor(</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;The pointer pkeyTypeDesc_RsaPublic_1000 points to an <span class="keywordtype">object</span> of the right type, the cast was valid.&quot;)</div>
+<div class="line">    <span class="comment">/* mcuxClKey_TypeDescriptor_t * pKeyType */</span> pkeyTypeDesc_RsaPublic_1000,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Size_t keySize              */</span> <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a></div>
-<div class="line">    );</div>
-<div class="line">  <span class="keywordflow">if</span> (<a class="code hl_define" href="a01179.html#ga27536f048ce37687e3faf44063590820">MCUXCLRSA_STATUS_OK</a> != kt_pub_status)</div>
+<div class="line">    ));</div>
+<div class="line">  if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(mcuxClRsa_Public_KeyType_ModeConstructor) != kt_pub_token) || (<a class="code hl_define" href="a01179.html#ga27536f048ce37687e3faf44063590820">MCUXCLRSA_STATUS_OK</a> != kt_pub_status))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
+<div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">  }</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line"> </div>
 <div class="line">  <span class="comment">/* Initialize RSA public key */</span></div>
 <div class="line">  uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];</div>
-<div class="line">  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) &amp;pubKeyDesc;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
+<div class="line">  <a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a> pubKey = (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>) pubKeyDesc;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_typedef" href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a> ki_pub_status = <a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
+<div class="line">  uint32_t sizeOfPubKey = (uint32_t)sizeof(pubKeyStruct);</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(keyInitPub_result, keyInitPub_token, <a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> session,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;The pointer pubKey is of the right type (<a class="code hl_typedef" href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a>)&quot;)</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Handle_t key                 */</span> pubKey,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
 <div class="line">    <span class="comment">/* mcuxClKey_Type_t type                  */</span> (<a class="code hl_typedef" href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a>) &amp;keyTypeDesc_RsaPublic_1000,</div>
 <div class="line">    <span class="comment">/* uint8_t * pKeyData                    */</span> (uint8_t *) &amp;pubKeyStruct,</div>
-<div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> <span class="keyword">sizeof</span>(pubKeyStruct)</div>
-<div class="line">  );</div>
-<div class="line"> </div>
-<div class="line">  <span class="keywordflow">if</span> (<a class="code hl_define" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a> != ki_pub_status)</div>
+<div class="line">    <span class="comment">/* uint32_t keyDataLength                */</span> sizeOfPubKey</div>
+<div class="line">  ));</div>
+<div class="line">  if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a>) != keyInitPub_token) || (<a class="code hl_define" href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a> != keyInitPub_result))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
+<div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">  }</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">  /**************************************************************************/</span></div>
 <div class="line">  <span class="comment">/* Preparation: setup RSA OAEP encrypt mode with SHA-256                  */</span></div>
 <div class="line"><span class="comment">  /**************************************************************************/</span></div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">/* Fill mode descriptor with the relevant data for the selected padding and hash algorithms */</span></div>
-<div class="line">  uint8_t cipherModeBytes[MCUXCLRSA_CIPHER_MODE_SIZE];</div>
+<div class="line">  uint32_t cipherModeBytes[MCUXCLRSA_CIPHER_MODE_SIZE_IN_WORD];</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line">  <a class="code hl_typedef" href="a00992.html#gaa9586d961025bb80660a563be606451e">mcuxClCipher_ModeDescriptor_t</a> *pCipherMode = (<a class="code hl_typedef" href="a00992.html#gaa9586d961025bb80660a563be606451e">mcuxClCipher_ModeDescriptor_t</a> *) cipherModeBytes;</div>
+<div class="line">  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()</div>
 <div class="line"> </div>
 <div class="line">  mcuxClRsa_CipherModeConstructor_RSAES_OAEP_Encrypt(</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE(&quot;The pointer pCipherMode points to an <span class="keywordtype">object</span> of the right type, the cast was valid.&quot;)</div>
 <div class="line">    <span class="comment">/* mcuxClCipher_ModeDescriptor_t * pCipherMode: */</span> pCipherMode,</div>
-<div class="line">    <span class="comment">/* mcuxClHash_Algo_t hashAlgorithm: */</span> <a id="a19" name="a19"></a><a class="code hl_variable" href="a01094.html#ga672407195f718d55fcee73d1dfb7c623">mcuxClHash_Algorithm_Sha256</a></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()</div>
+<div class="line">    <span class="comment">/* mcuxClHash_Algo_t hashAlgorithm: */</span> <a id="a18" name="a18"></a><a class="code hl_variable" href="a01094.html#ga672407195f718d55fcee73d1dfb7c623">mcuxClHash_Algorithm_Sha256</a></div>
 <div class="line">    );</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">  /**************************************************************************/</span></div>
@@ -313,24 +346,28 @@ $(document).ready(function(){initNavTree('a01677.html',''); initResizable(); });
 <div class="line">  uint8_t encryptedData[<a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>];</div>
 <div class="line">  uint32_t encryptedSize = 0u;</div>
 <div class="line"> </div>
-<div class="line">  <a id="a20" name="a20"></a><a class="code hl_define" href="a00982.html#gaa0ed06160ed0bb21bbef3def4479d9ce">MCUXCLBUFFER_INIT_RO</a>(plainDataBuf, session, <a class="code hl_variable" href="a00242.html#a14472c16b147e4a7281810b47521bec4">plainData</a>, <a class="code hl_define" href="a00242.html#adbaaf9a59a07e0efac736a15c6ac4317">INPUT_MESSAGE_LENGTH</a>);</div>
-<div class="line">  <a id="a21" name="a21"></a><a class="code hl_define" href="a00982.html#ga00af3c9893f4c59ec8ac0675c8332da3">MCUXCLBUFFER_INIT</a>(encryptedDataBuf, session, encryptedData, <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>);</div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_typedef" href="a00992.html#gadcf65a3850bca1bd4059213edf23df4f">mcuxClCipher_Status_t</a> e_status = <a id="a22" name="a22"></a><a class="code hl_function" href="a00407.html#a3bc78aed20c4d8fcf8606d46dd27bf12">mcuxClCipher_crypt</a>(</div>
+<div class="line">  uint32_t sizeOfPlainData = (uint32_t)sizeof(<a class="code hl_variable" href="a00242.html#a14472c16b147e4a7281810b47521bec4">plainData</a>);</div>
+<div class="line">  <a id="a19" name="a19"></a><a class="code hl_define" href="a00982.html#gaa0ed06160ed0bb21bbef3def4479d9ce">MCUXCLBUFFER_INIT_RO</a>(plainDataBuf, session, <a class="code hl_variable" href="a00242.html#a14472c16b147e4a7281810b47521bec4">plainData</a>, <a class="code hl_define" href="a00242.html#adbaaf9a59a07e0efac736a15c6ac4317">INPUT_MESSAGE_LENGTH</a>);</div>
+<div class="line">  <a id="a20" name="a20"></a><a class="code hl_define" href="a00982.html#ga00af3c9893f4c59ec8ac0675c8332da3">MCUXCLBUFFER_INIT</a>(encryptedDataBuf, session, encryptedData, <a class="code hl_define" href="a00230.html#a682e80cec7574ae978654511689ad090">RSA_KEY_BYTE_LENGTH</a>);</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(encrypt_result, encrypt_token, <a id="a21" name="a21"></a><a class="code hl_function" href="a00407.html#a3bc78aed20c4d8fcf8606d46dd27bf12">mcuxClCipher_crypt</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session          */</span> session,</div>
 <div class="line">    <span class="comment">/* const mcuxClKey_Handle_t key            */</span> pubKey,</div>
 <div class="line">    <span class="comment">/* mcuxClCipher_Mode_t mode                */</span> pCipherMode,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">    <span class="comment">/* mcuxCl_InputBuffer_t pIv                */</span> NULL, <span class="comment">/* label for OAEP decoding, set to NULL if no label is provided */</span></div>
-<div class="line">    <span class="comment">/* uint32_t ivLength                      */</span> <a id="a23" name="a23"></a><a class="code hl_define" href="a00242.html#a21c97b52635afc6dfb2b352eaf19fbdf">RSA_OAEP_LABEL_LENGTH</a>, <span class="comment">/* label length */</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()</div>
+<div class="line">    <span class="comment">/* uint32_t ivLength                      */</span> (uint32_t)<a id="a22" name="a22"></a><a class="code hl_define" href="a00242.html#a21c97b52635afc6dfb2b352eaf19fbdf">RSA_OAEP_LABEL_LENGTH</a>, <span class="comment">/* label length */</span></div>
 <div class="line">    <span class="comment">/* mcuxCl_InputBuffer_t pIn                */</span> plainDataBuf,</div>
-<div class="line">    <span class="comment">/* uint32_t inLength                      */</span> <span class="keyword">sizeof</span>(<a class="code hl_variable" href="a00242.html#a14472c16b147e4a7281810b47521bec4">plainData</a>),</div>
+<div class="line">    <span class="comment">/* uint32_t inLength                      */</span> sizeOfPlainData,</div>
 <div class="line">    <span class="comment">/* mcuxCl_Buffer_t pOut                    */</span> encryptedDataBuf,</div>
 <div class="line">    <span class="comment">/* uint32_t * const pOutLength            */</span> &amp;encryptedSize</div>
-<div class="line">  );</div>
-<div class="line"> </div>
-<div class="line">  <span class="keywordflow">if</span>(MCUXCLCIPHER_STATUS_OK != e_status)</div>
+<div class="line">  ));</div>
+<div class="line">  if((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a00407.html#a3bc78aed20c4d8fcf8606d46dd27bf12">mcuxClCipher_crypt</a>) != encrypt_token) || (MCUXCLCIPHER_STATUS_OK != encrypt_result))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
+<div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">  }</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line"> </div>
 <div class="line">  <span class="keywordflow">if</span>(encryptedSize != <span class="keyword">sizeof</span>(encryptedData))</div>
 <div class="line">  {</div>
 <div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
@@ -352,22 +389,25 @@ $(document).ready(function(){initNavTree('a01677.html',''); initResizable(); });
 <div class="line">  uint32_t decryptedSize = 0u;</div>
 <div class="line">  uint8_t decryptedData[<a class="code hl_define" href="a00242.html#adbaaf9a59a07e0efac736a15c6ac4317">INPUT_MESSAGE_LENGTH</a>];</div>
 <div class="line">  <a class="code hl_define" href="a00982.html#ga00af3c9893f4c59ec8ac0675c8332da3">MCUXCLBUFFER_INIT</a>(decryptedDataBuf, session, decryptedData, <a class="code hl_define" href="a00242.html#adbaaf9a59a07e0efac736a15c6ac4317">INPUT_MESSAGE_LENGTH</a>);</div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_typedef" href="a00992.html#gadcf65a3850bca1bd4059213edf23df4f">mcuxClCipher_Status_t</a> d_status = <a class="code hl_function" href="a00407.html#a3bc78aed20c4d8fcf8606d46dd27bf12">mcuxClCipher_crypt</a>(</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a>(decrypt_result, decrypt_token, <a class="code hl_function" href="a00407.html#a3bc78aed20c4d8fcf8606d46dd27bf12">mcuxClCipher_crypt</a>(</div>
 <div class="line">    <span class="comment">/* mcuxClSession_Handle_t session         */</span> session,</div>
 <div class="line">    <span class="comment">/* const mcuxClKey_Handle_t key           */</span> privKey,</div>
 <div class="line">    <span class="comment">/* mcuxClCipher_Mode_t mode               */</span> pCipherMode,</div>
+<div class="line">    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()</div>
 <div class="line">    <span class="comment">/* mcuxCl_InputBuffer_t pIv               */</span> NULL, <span class="comment">/* label for OAEP decoding, set to NULL if no label is provided */</span></div>
-<div class="line">    <span class="comment">/* uint32_t ivLength                     */</span> <a class="code hl_define" href="a00242.html#a21c97b52635afc6dfb2b352eaf19fbdf">RSA_OAEP_LABEL_LENGTH</a>, <span class="comment">/* label length */</span></div>
+<div class="line">    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()</div>
+<div class="line">    <span class="comment">/* uint32_t ivLength                     */</span> (uint32_t)<a class="code hl_define" href="a00242.html#a21c97b52635afc6dfb2b352eaf19fbdf">RSA_OAEP_LABEL_LENGTH</a>, <span class="comment">/* label length */</span></div>
 <div class="line">    <span class="comment">/* mcuxCl_InputBuffer_t pIn               */</span> (<a class="code hl_typedef" href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a>)encryptedDataBuf,</div>
 <div class="line">    <span class="comment">/* uint32_t inLength                     */</span> encryptedSize,</div>
 <div class="line">    <span class="comment">/* mcuxCl_Buffer_t pOut                   */</span> decryptedDataBuf,</div>
 <div class="line">    <span class="comment">/* uint32_t * const pOutLength           */</span> &amp;decryptedSize</div>
-<div class="line">  );</div>
-<div class="line"> </div>
-<div class="line">  <span class="keywordflow">if</span>(MCUXCLCIPHER_STATUS_OK != d_status)</div>
+<div class="line">  ));</div>
+<div class="line">  <span class="keywordflow">if</span>((<a class="code hl_define" href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a>(<a class="code hl_function" href="a00407.html#a3bc78aed20c4d8fcf8606d46dd27bf12">mcuxClCipher_crypt</a>) != decrypt_token) || (MCUXCLCIPHER_STATUS_OK != decrypt_result))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
+<div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">  }</div>
+<div class="line">  <a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line"> </div>
 <div class="line">  <span class="keywordflow">if</span>(decryptedSize != <span class="keyword">sizeof</span>(decryptedData))</div>
 <div class="line">  {</div>
 <div class="line">    <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
@@ -418,18 +458,15 @@ $(document).ready(function(){initNavTree('a01677.html',''); initResizable(); });
 <div class="ttc" id="aa00982_html_gaa0ed06160ed0bb21bbef3def4479d9ce"><div class="ttname"><a href="a00982.html#gaa0ed06160ed0bb21bbef3def4479d9ce">MCUXCLBUFFER_INIT_RO</a></div><div class="ttdeci">#define MCUXCLBUFFER_INIT_RO(name, info, ptr, size)</div><div class="ttdoc">Initialize an input buffer (mcuxCl_InputBuffer_t) with plain CPU handling.</div><div class="ttdef"><b>Definition</b> mcuxClBuffer.h:88</div></div>
 <div class="ttc" id="aa00987_html_ga43ce32df6cc1da1a27607535551aba6c"><div class="ttname"><a href="a00987.html#ga43ce32df6cc1da1a27607535551aba6c">mcuxCl_InputBuffer_t</a></div><div class="ttdeci">const uint8_t * mcuxCl_InputBuffer_t</div><div class="ttdoc">Input buffer type.</div><div class="ttdef"><b>Definition</b> mcuxClBuffer_Pointer.h:46</div></div>
 <div class="ttc" id="aa00992_html_gaa9586d961025bb80660a563be606451e"><div class="ttname"><a href="a00992.html#gaa9586d961025bb80660a563be606451e">mcuxClCipher_ModeDescriptor_t</a></div><div class="ttdeci">struct mcuxClCipher_ModeDescriptor mcuxClCipher_ModeDescriptor_t</div><div class="ttdoc">Cipher mode/algorithm descriptor type.</div><div class="ttdef"><b>Definition</b> mcuxClCipher_Types.h:54</div></div>
-<div class="ttc" id="aa00992_html_gadcf65a3850bca1bd4059213edf23df4f"><div class="ttname"><a href="a00992.html#gadcf65a3850bca1bd4059213edf23df4f">mcuxClCipher_Status_t</a></div><div class="ttdeci">uint32_t mcuxClCipher_Status_t</div><div class="ttdoc">Cipher status code.</div><div class="ttdef"><b>Definition</b> mcuxClCipher_Types.h:108</div></div>
 <div class="ttc" id="aa01029_html_gac02fc8694aa89061b1eb47bad8fca21d"><div class="ttname"><a href="a01029.html#gac02fc8694aa89061b1eb47bad8fca21d">MCUXCLELS_RESET_DO_NOT_CANCEL</a></div><div class="ttdeci">#define MCUXCLELS_RESET_DO_NOT_CANCEL</div><div class="ttdoc">Set this option at mcuxClEls_ResetOption_t to abort the requested command if another ELS operation is...</div><div class="ttdef"><b>Definition</b> mcuxClEls_Common.h:119</div></div>
 <div class="ttc" id="aa01094_html_ga672407195f718d55fcee73d1dfb7c623"><div class="ttname"><a href="a01094.html#ga672407195f718d55fcee73d1dfb7c623">mcuxClHash_Algorithm_Sha256</a></div><div class="ttdeci">static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha256</div><div class="ttdoc">Sha-256 algorithm Sha-256 hash calculation using the Hash functionality of ELS, it supports RTF.</div><div class="ttdef"><b>Definition</b> mcuxClHashModes_Algorithms.h:121</div></div>
 <div class="ttc" id="aa01103_html_ga3cac3b08cb53d2949698e19319010c49"><div class="ttname"><a href="a01103.html#ga3cac3b08cb53d2949698e19319010c49">MCUXCLKEY_STATUS_OK</a></div><div class="ttdeci">#define MCUXCLKEY_STATUS_OK</div><div class="ttdoc">Key operation successful.</div><div class="ttdef"><b>Definition</b> mcuxClKey_Constants.h:39</div></div>
 <div class="ttc" id="aa01107_html_gab177d067c754ceccca8b90c47f2e74b8"><div class="ttname"><a href="a01107.html#gab177d067c754ceccca8b90c47f2e74b8">mcuxClKey_init</a></div><div class="ttdeci">mcuxClKey_Status_t mcuxClKey_init(mcuxClSession_Handle_t pSession, mcuxClKey_Handle_t key, mcuxClKey_Type_t type, const uint8_t *pKeyData, uint32_t keyDataLength)</div><div class="ttdoc">Initializes a key handle.</div></div>
 <div class="ttc" id="aa01109_html_ga9ea75aa8fe6ddb914d91b170bb5d8be5"><div class="ttname"><a href="a01109.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5">mcuxClKey_Type_t</a></div><div class="ttdeci">const mcuxClKey_TypeDescriptor_t * mcuxClKey_Type_t</div><div class="ttdoc">Key type handle type.</div><div class="ttdef"><b>Definition</b> mcuxClKey_Types.h:111</div></div>
-<div class="ttc" id="aa01109_html_gaa19905c3963849a56ee26a9b0e5013f5"><div class="ttname"><a href="a01109.html#gaa19905c3963849a56ee26a9b0e5013f5">mcuxClKey_Status_t</a></div><div class="ttdeci">uint32_t mcuxClKey_Status_t</div><div class="ttdoc">Type for Key component error codes.</div><div class="ttdef"><b>Definition</b> mcuxClKey_Types.h:47</div></div>
 <div class="ttc" id="aa01109_html_gae9a4d21e5a5239fd0ef48978a3774a89"><div class="ttname"><a href="a01109.html#gae9a4d21e5a5239fd0ef48978a3774a89">mcuxClKey_TypeDescriptor_t</a></div><div class="ttdeci">struct mcuxClKey_TypeDescriptor mcuxClKey_TypeDescriptor_t</div><div class="ttdoc">Key type descriptor type.</div><div class="ttdef"><b>Definition</b> mcuxClKey_Types.h:104</div></div>
 <div class="ttc" id="aa01109_html_gafe84fa2aa66094f542164e0627a54c5d"><div class="ttname"><a href="a01109.html#gafe84fa2aa66094f542164e0627a54c5d">mcuxClKey_Handle_t</a></div><div class="ttdeci">mcuxClKey_Descriptor_t *const mcuxClKey_Handle_t</div><div class="ttdoc">Key handle type.</div><div class="ttdef"><b>Definition</b> mcuxClKey_Types.h:88</div></div>
 <div class="ttc" id="aa01163_html_ga4522b9cfa28cb224b653003d481d7100"><div class="ttname"><a href="a01163.html#ga4522b9cfa28cb224b653003d481d7100">mcuxClRandom_ncInit</a></div><div class="ttdeci">mcuxClRandom_Status_t mcuxClRandom_ncInit(mcuxClSession_Handle_t pSession)</div><div class="ttdoc">Non-cryptographic PRNG initialization function.</div></div>
 <div class="ttc" id="aa01179_html_ga27536f048ce37687e3faf44063590820"><div class="ttname"><a href="a01179.html#ga27536f048ce37687e3faf44063590820">MCUXCLRSA_STATUS_OK</a></div><div class="ttdeci">#define MCUXCLRSA_STATUS_OK</div><div class="ttdoc">RSA operation was successful.</div><div class="ttdef"><b>Definition</b> mcuxClRsa_Types.h:54</div></div>
-<div class="ttc" id="aa01182_html_gab654093108d59a4690e464f314356e69"><div class="ttname"><a href="a01182.html#gab654093108d59a4690e464f314356e69">mcuxClRsa_Status_t</a></div><div class="ttdeci">uint32_t mcuxClRsa_Status_t</div><div class="ttdoc">Type for RSA status codes.</div><div class="ttdef"><b>Definition</b> mcuxClRsa_Types.h:116</div></div>
 <div class="ttc" id="aa01188_html_ga17fd337618b05459b4a343393e099b56"><div class="ttname"><a href="a01188.html#ga17fd337618b05459b4a343393e099b56">mcuxClSession_Handle_t</a></div><div class="ttdeci">mcuxClSession_Descriptor_t *const mcuxClSession_Handle_t</div><div class="ttdoc">Type for mcuxClSession Handle.</div><div class="ttdef"><b>Definition</b> mcuxClSession_Types.h:113</div></div>
 <div class="ttc" id="aa01202_html_ga8a9b1ebbc02c8195618a339aa8e0003d"><div class="ttname"><a href="a01202.html#ga8a9b1ebbc02c8195618a339aa8e0003d">MCUX_CSSL_FP_FUNCTION_CALL_BEGIN</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(...)</div><div class="ttdoc">Call a flow protected function and check the protection token.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:581</div></div>
 <div class="ttc" id="aa01202_html_gac16ad6597579a02a30ada37f86f216d5"><div class="ttname"><a href="a01202.html#gac16ad6597579a02a30ada37f86f216d5">MCUX_CSSL_FP_FUNCTION_CALLED</a></div><div class="ttdeci">#define MCUX_CSSL_FP_FUNCTION_CALLED(...)</div><div class="ttdoc">Expectation of a called function.</div><div class="ttdef"><b>Definition</b> mcuxCsslFlowProtection.h:735</div></div>

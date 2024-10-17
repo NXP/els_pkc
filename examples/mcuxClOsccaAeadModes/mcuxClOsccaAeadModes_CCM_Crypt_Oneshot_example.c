@@ -73,7 +73,7 @@ static const uint8_t sm4CcmCipher[] = { 0x48, 0xAF, 0x93, 0x50, 0x1F, 0xA6, 0x2A
 static const uint8_t sm4CcmTag[] = { 0x16, 0x84, 0x2D, 0x4F, 0xA1, 0x86, 0xF5, 0x6A,
                                      0xB3, 0x32, 0x56, 0x97, 0x1F, 0xA1, 0x10, 0xF4};
 
-bool mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example)
 {
 
     /** Initialize ELS, Enable the ELS **/
@@ -90,11 +90,15 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example(void)
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki, token_ki, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4CcmKey,
       /* uint32_t keyDataLength                */ sizeof(sm4CcmKey)
@@ -115,21 +119,23 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example(void)
 
     uint8_t msg_tag[sizeof(sm4CcmTag)];
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClAead_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_ENC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
-    /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
-    /* mcuxCl_InputBuffer_t pIn,       */ sm4CcmPtxt,
-    /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
-    /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
-    /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
-    /* mcuxCl_Buffer_t pOut,           */ msg_enc,
-    /* uint32_t * const pOutSize      */ &msg_enc_size,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag,
-    /* uint32_t tagSize               */ sizeof(sm4CcmTag)
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_ENC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
+      /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
+      /* mcuxCl_InputBuffer_t pIn,       */ sm4CcmPtxt,
+      /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
+      /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
+      /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
+      /* mcuxCl_Buffer_t pOut,           */ msg_enc,
+      /* uint32_t * const pOutSize      */ &msg_enc_size,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag,
+      /* uint32_t tagSize               */ sizeof(sm4CcmTag)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_enc) || (MCUXCLAEAD_STATUS_OK != result_enc))
     {
@@ -137,13 +143,18 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting encrypted msg matches our expected output
+     /* Check that the resulting encrypted message size and data match the expectation */
+    if(sizeof(msg_enc) != msg_enc_size)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(msg_enc, sm4CcmCipher, sizeof(msg_enc)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    // Expect that the resulting authentication tag matches our expected output
+    /* Check that the resulting authentication tag matches our expected output */
     if (!mcuxClCore_assertEqual(msg_tag, sm4CcmTag, sizeof(sm4CcmTag)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -157,21 +168,23 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example(void)
     uint8_t msg_dec[sizeof(sm4CcmPtxt)] = {0u};
     uint32_t msg_dec_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Addresses of msg_enc, msg_dec are for internal use only and do not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec, token_dec, mcuxClAead_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_DEC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
-    /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
-    /* uint32_t inSize,               */ msg_enc_size,
-    /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
-    /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
-    /* mcuxCl_Buffer_t pOut,           */ msg_dec,
-    /* uint32_t * const pOutSize      */ &msg_dec_size,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag,
-    /* uint32_t tagSize               */ sizeof(sm4CcmTag)
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_DEC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
+      /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
+      /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
+      /* uint32_t inSize,               */ msg_enc_size,
+      /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
+      /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
+      /* mcuxCl_Buffer_t pOut,           */ msg_dec,
+      /* uint32_t * const pOutSize      */ &msg_dec_size,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag,
+      /* uint32_t tagSize               */ sizeof(sm4CcmTag)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_dec) || (MCUXCLAEAD_STATUS_OK != result_dec))
     {
@@ -179,7 +192,12 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Oneshot_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting decrypted msg matches our initial message
+     /* Check that the resulting decrypted message size and data match the expectation */
+    if(sizeof(msg_dec) != msg_dec_size)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(msg_dec, sm4CcmPtxt, msg_dec_size))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

@@ -52,7 +52,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     (void) revision;
     (void) minor;
     (void) major;
-#if MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0
+#if !defined(MCUXCL_FEATURE_ELS_GET_FW_VERSION) || MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0
     uint32_t level = hw_version.bits.level;                                              // Release level version
     (void) level;
 #else /* MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0 */

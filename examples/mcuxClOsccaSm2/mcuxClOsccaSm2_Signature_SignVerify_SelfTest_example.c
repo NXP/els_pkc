@@ -69,7 +69,7 @@
  * @warning
  *   none
  */
-bool mcuxClOsccaSm2_Signature_SignVerify_SelfTest_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm2_Signature_SignVerify_SelfTest_example)
 {
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
@@ -91,10 +91,16 @@ bool mcuxClOsccaSm2_Signature_SignVerify_SelfTest_example(void)
         /* Initialize the RNG context */
         /* We need a context for OSCCA Rng. */
         uint32_t rngCtx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         mcuxClRandom_Context_t pRngCtx = (mcuxClRandom_Context_t)rngCtx;
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                                   pRngCtx,
-                                                                   mcuxClOsccaRandomModes_Mode_TRNG));
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(
+                                                                  &session,
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+                                                                  pRngCtx,
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+                                                                  mcuxClOsccaRandomModes_Mode_TRNG));
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
         {
             return MCUXCLEXAMPLE_STATUS_ERROR;

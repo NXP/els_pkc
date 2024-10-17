@@ -157,10 +157,13 @@ $(document).ready(function(){initNavTree('a01663.html',''); initResizable(); });
 <div class="line">          <span class="keywordflow">return</span> <a id="a4" name="a4"></a><a class="code hl_define" href="a01312.html#ga6d4a0c17c9ec70556936f749305dace8">MCUXCLRANDOM_STATUS_FAULT_ATTACK</a>;</div>
 <div class="line">        }</div>
 <div class="line">        <a id="a5" name="a5"></a><a class="code hl_define" href="a01202.html#gac4362de43d0e67ba6fac0057eb38008d">MCUX_CSSL_FP_FUNCTION_CALL_END</a>();</div>
+<div class="line"> </div>
+<div class="line">        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT30_C, <span class="stringliteral">&quot;modular arithmetic.&quot;</span>)</div>
 <div class="line">        *pIndexRandomData = (*pIndexRandomData + 1u) % <span class="keyword">sizeof</span>(randomData);</div>
+<div class="line">        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT30_C)</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> <a id="a6" name="a6"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a>;  </div>
+<div class="line">    <span class="keywordflow">return</span> <a id="a6" name="a6"></a><a class="code hl_define" href="a01312.html#ga951990ff5179cd6fce7310de16002b20">MCUXCLRANDOM_STATUS_OK</a>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">MCUXCLEXAMPLE_FUNCTION(mcuxClRandom_PRNG_Patch_example)</div>
@@ -251,7 +254,7 @@ $(document).ready(function(){initNavTree('a01663.html',''); initResizable(); });
 <div class="line">      <span class="keywordflow">return</span> MCUXCLEXAMPLE_STATUS_ERROR;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    </div>
+<div class="line"> </div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>
 <div class="line">    <span class="comment">/* Return to PRNG in normal mode                                          */</span></div>
 <div class="line"><span class="comment">    /**************************************************************************/</span></div>

@@ -154,64 +154,82 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_Cipher_Crypt_RSAES_OAEP_example)
   /**************************************************************************/
 
   /* Allocation of key data buffers, which contain RSA key parameters */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API, elements are not modified in executed scenario")
   mcuxClRsa_KeyData_Plain_t privKeyStruct = {
                               .modulus.pKeyEntryData = (uint8_t*)modulus,
                               .modulus.keyEntryLength = RSA_KEY_BYTE_LENGTH,
                               .exponent.pKeyEntryData = (uint8_t*)privExp,
                               .exponent.keyEntryLength = sizeof(privExp)
   };
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API, elements are not modified in executed scenario")
   mcuxClRsa_KeyData_Plain_t pubKeyStruct = {
                               .modulus.pKeyEntryData = (uint8_t*)modulus,
                               .modulus.keyEntryLength = RSA_KEY_BYTE_LENGTH,
                               .exponent.pKeyEntryData = (uint8_t*)pubExp,
                               .exponent.keyEntryLength = sizeof(pubExp)
   };
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
   /* Initialize RSA private key */
   uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-  mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) privKeyDesc;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
-  const mcuxClKey_Status_t ki_priv_status = mcuxClKey_init(
+  uint32_t sizeOfPrivKey = (uint32_t)sizeof(privKeyStruct);
+  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyInitPriv_result, keyInitPriv_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey points to an object of the right type, the cast was valid.")
     /* mcuxClKey_Handle_t key                 */ privKey,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Rsa_PrivatePlain_2048,
     /* uint8_t * pKeyData                    */ (uint8_t *) &privKeyStruct,
-    /* uint32_t keyDataLength                */ sizeof(privKeyStruct)
-  );
-
-  if (MCUXCLKEY_STATUS_OK != ki_priv_status)
+    /* uint32_t keyDataLength                */ sizeOfPrivKey
+  ));
+  if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInitPriv_token) || (MCUXCLKEY_STATUS_OK != keyInitPriv_result))
   {
-    return MCUXCLEXAMPLE_STATUS_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
+  MCUX_CSSL_FP_FUNCTION_CALL_END();
 
   /* Initialize RSA public key */
   uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-  mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
-  const mcuxClKey_Status_t ki_pub_status = mcuxClKey_init(
+  uint32_t sizeOfPubKey = (uint32_t)sizeof(pubKeyStruct);
+  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keyInitPub_result, keyInitPub_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey is of the right type (mcuxClKey_Handle_t)")
     /* mcuxClKey_Handle_t key                 */ pubKey,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Rsa_Public_2048,
     /* uint8_t * pKeyData                    */ (uint8_t *) &pubKeyStruct,
-    /* uint32_t keyDataLength                */ sizeof(pubKeyStruct)
-  );
-
-  if (MCUXCLKEY_STATUS_OK != ki_pub_status)
+    /* uint32_t keyDataLength                */ sizeOfPubKey
+  ));
+  if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != keyInitPub_token) || (MCUXCLKEY_STATUS_OK != keyInitPub_result))
   {
-    return MCUXCLEXAMPLE_STATUS_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
+  MCUX_CSSL_FP_FUNCTION_CALL_END();
 
   /**************************************************************************/
   /* Preparation: setup RSA OAEP encrypt mode with SHA-256                  */
   /**************************************************************************/
 
   /* Fill mode descriptor with the relevant data for the selected padding and hash algorithms */
-  uint8_t cipherModeBytes[MCUXCLRSA_CIPHER_MODE_SIZE];
+  uint32_t cipherModeBytes[MCUXCLRSA_CIPHER_MODE_SIZE_IN_WORD];
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClCipher_ModeDescriptor_t *pCipherMode = (mcuxClCipher_ModeDescriptor_t *) cipherModeBytes;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
   mcuxClRsa_CipherModeConstructor_RSAES_OAEP_Encrypt(
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pCipherMode points to an object of the right type, the cast was valid.")
     /* mcuxClCipher_ModeDescriptor_t * pCipherMode: */ pCipherMode,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClHash_Algo_t hashAlgorithm: */ mcuxClHash_Algorithm_Sha256
     );
 
@@ -224,22 +242,26 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_Cipher_Crypt_RSAES_OAEP_example)
 
   MCUXCLBUFFER_INIT_RO(plainDataBuf, session, plainData, INPUT_MESSAGE_LENGTH);
   MCUXCLBUFFER_INIT(encryptedDataBuf, session, encryptedData, RSA_KEY_BYTE_LENGTH);
-  const mcuxClCipher_Status_t e_status = mcuxClCipher_crypt(
+  uint32_t sizeOfPlainData = (uint32_t)sizeof(plainData);
+  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(encrypt_result, encrypt_token, mcuxClCipher_crypt(
     /* mcuxClSession_Handle_t session          */ session,
     /* const mcuxClKey_Handle_t key            */ pubKey,
     /* mcuxClCipher_Mode_t mode                */ pCipherMode,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     /* mcuxCl_InputBuffer_t pIv                */ NULL, /* label for OAEP decoding, set to NULL if no label is provided */
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     /* uint32_t ivLength                      */ RSA_OAEP_LABEL_LENGTH, /* label length */
     /* mcuxCl_InputBuffer_t pIn                */ plainDataBuf,
-    /* uint32_t inLength                      */ sizeof(plainData),
+    /* uint32_t inLength                      */ sizeOfPlainData,
     /* mcuxCl_Buffer_t pOut                    */ encryptedDataBuf,
     /* uint32_t * const pOutLength            */ &encryptedSize
-  );
-
-  if(MCUXCLCIPHER_STATUS_OK != e_status)
+  ));
+  if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != encrypt_token) || (MCUXCLCIPHER_STATUS_OK != encrypt_result))
   {
-    return MCUXCLEXAMPLE_STATUS_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
+  MCUX_CSSL_FP_FUNCTION_CALL_END();
+
   if(encryptedSize != sizeof(encryptedData))
   {
     return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -261,22 +283,25 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_Cipher_Crypt_RSAES_OAEP_example)
   uint32_t decryptedSize = 0u;
   uint8_t decryptedData[INPUT_MESSAGE_LENGTH];
   MCUXCLBUFFER_INIT(decryptedDataBuf, session, decryptedData, INPUT_MESSAGE_LENGTH);
-  const mcuxClCipher_Status_t d_status = mcuxClCipher_crypt(
+  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(decrypt_result, decrypt_token, mcuxClCipher_crypt(
     /* mcuxClSession_Handle_t session         */ session,
     /* const mcuxClKey_Handle_t key           */ privKey,
     /* mcuxClCipher_Mode_t mode               */ pCipherMode,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     /* mcuxCl_InputBuffer_t pIv               */ NULL, /* label for OAEP decoding, set to NULL if no label is provided */
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     /* uint32_t ivLength                     */ RSA_OAEP_LABEL_LENGTH, /* label length */
     /* mcuxCl_InputBuffer_t pIn               */ (mcuxCl_InputBuffer_t)encryptedDataBuf,
     /* uint32_t inLength                     */ encryptedSize,
     /* mcuxCl_Buffer_t pOut                   */ decryptedDataBuf,
     /* uint32_t * const pOutLength           */ &decryptedSize
-  );
-
-  if(MCUXCLCIPHER_STATUS_OK != d_status)
+  ));
+  if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != decrypt_token) || (MCUXCLCIPHER_STATUS_OK != decrypt_result))
   {
-    return MCUXCLEXAMPLE_STATUS_ERROR;
+      return MCUXCLEXAMPLE_STATUS_ERROR;
   }
+  MCUX_CSSL_FP_FUNCTION_CALL_END();
+
   if(decryptedSize != sizeof(decryptedData))
   {
     return MCUXCLEXAMPLE_STATUS_ERROR;

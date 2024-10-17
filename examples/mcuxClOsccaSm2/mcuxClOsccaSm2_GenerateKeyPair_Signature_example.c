@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file:   mcuxClOsccaSm2_GenerateKeyPair_Signature_example.c
- * @brief:  Example OSCCA SM2 key generation, include SM2 key pair generation,
+ * @file    mcuxClOsccaSm2_GenerateKeyPair_Signature_example.c
+ * @brief   Example OSCCA SM2 key generation, include SM2 key pair generation,
  *          SM2 sign and verify.
  */
 
@@ -84,7 +84,7 @@ static const uint8_t pDigest_SM2[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3] =
  * Local and global function declarations
  ******************************************************************************/
 /**
- * @brief:  Example OSCCA SM2 key generation, include SM2 key pair generation,
+ * @brief   Example OSCCA SM2 key generation, include SM2 key pair generation,
  *          SM2 sign and verify.
  *
  * @return
@@ -103,7 +103,7 @@ static const uint8_t pDigest_SM2[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3] =
  * @warning
  *   none
  */
-bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm2_GenerateKeyPair_Signature_example)
 {
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
@@ -122,9 +122,15 @@ bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
     /* Initialize the RNG context */
     /* We need a context for OSCCA Rng. */
     uint32_t rngCtx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRandom_Context_t pRngCtx = (mcuxClRandom_Context_t)rngCtx;
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(
+                                                               &session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
                                                                pRngCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                                                mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
@@ -173,12 +179,16 @@ bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
     /****************************************************************/
     /* Allocate space for and initialize private key handle for SM2 private key */
     uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) privKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     uint8_t pPrivKeyData[MCUXCLOSCCASM2_SM2P256_SIZE_PRIVATEKEY];
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_priv_result, ki_priv_token, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ privKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Std_Private,
       /* const uint8_t * pKeyData              */ pPrivKeyData,
       /* uint32_t keyDataLength                */ MCUXCLOSCCASM2_SM2P256_SIZE_PRIVATEKEY
@@ -192,12 +202,16 @@ bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
 
     /* Allocate space for and initialize private key handle for SM2 public key */
     uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     uint8_t pPubKeyData[MCUXCLOSCCASM2_SM2P256_SIZE_PUBLICKEY];
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_pub_result, ki_pub_token, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ pubKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Std_Public,
       /* const uint8_t * pKeyData              */ pPubKeyData,
       /* uint32_t keyDataLength                */ MCUXCLOSCCASM2_SM2P256_SIZE_PUBLICKEY
@@ -213,10 +227,14 @@ bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
     /* Key pair generation for SM2 key Pair                                   */
     /**************************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(gkp_result, gkp_token, mcuxClKey_generate_keypair(
-      /* mcuxClSession_Handle_t pSession:   */ &session,
-      /* mcuxClKey_Generation_t generation: */ mcuxClKey_Generation_SM2,
-      /* mcuxClKey_Handle_t privKey:        */ privKey,
-      /* mcuxClKey_Handle_t pubKey:         */ pubKey
+      /* mcuxClSession_Handle_t pSession    */ &session,
+      /* mcuxClKey_Generation_t generation  */ mcuxClKey_Generation_SM2,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t privKey         */ privKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t pubKey          */ pubKey
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     ));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_generate_keypair) != gkp_token) || (MCUXCLKEY_STATUS_OK != gkp_result))
     {
@@ -230,13 +248,15 @@ bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
     uint8_t signature[MCUXCLOSCCASM2_SM2P256_SIZE_SIGNATURE];
     uint32_t signatureSize = 0;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ss_result, ss_token, mcuxClSignature_sign(
-      /* mcuxClSession_Handle_t session:   */ &session,
-      /* mcuxClKey_Handle_t key:           */ privKey,
-      /* mcuxClSignature_Mode_t mode:      */ mcuxClSignature_Mode_SM2,
-      /* mcuxCl_InputBuffer_t pIn:         */ pDigest_SM2,
-      /* uint32_t inSize:                 */ sizeof(pDigest_SM2),
-      /* mcuxCl_Buffer_t pSignature:       */ signature,
-      /* uint32_t * const pSignatureSize: */ &signatureSize
+      /* mcuxClSession_Handle_t session    */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t privKey        */ privKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClSignature_Mode_t mode       */ mcuxClSignature_Mode_SM2,
+      /* mcuxCl_InputBuffer_t pIn          */ pDigest_SM2,
+      /* uint32_t inSize                  */ sizeof(pDigest_SM2),
+      /* mcuxCl_Buffer_t pSignature        */ signature,
+      /* uint32_t * const pSignatureSize  */ &signatureSize
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSignature_sign) != ss_token) || (MCUXCLSIGNATURE_STATUS_OK != ss_result))
@@ -249,13 +269,15 @@ bool mcuxClOsccaSm2_GenerateKeyPair_Signature_example(void)
     /* OSCCA SM2 signature verification                             */
     /****************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sv_result, sv_token, mcuxClSignature_verify(
-      /* mcuxClSession_Handle_t session:  */ &session,
-      /* mcuxClKey_Handle_t key:          */ pubKey,
-      /* mcuxClSignature_Mode_t mode:     */ mcuxClSignature_Mode_SM2,
-      /* mcuxCl_InputBuffer_t pIn:        */ pDigest_SM2,
-      /* uint32_t inSize:                */ sizeof(pDigest_SM2),
-      /* mcuxCl_InputBuffer_t pSignature: */ signature,
-      /* uint32_t signatureSize:         */ signatureSize
+      /* mcuxClSession_Handle_t session   */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t pubKey        */ pubKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClSignature_Mode_t mode      */ mcuxClSignature_Mode_SM2,
+      /* mcuxCl_InputBuffer_t pIn         */ pDigest_SM2,
+      /* uint32_t inSize                 */ sizeof(pDigest_SM2),
+      /* mcuxCl_InputBuffer_t pSignature  */ signature,
+      /* uint32_t signatureSize          */ signatureSize
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSignature_verify) != sv_token) || (MCUXCLSIGNATURE_STATUS_OK != sv_result))

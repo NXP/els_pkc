@@ -245,7 +245,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">adataLength</td><td>Number of bytes of associated data in the <code>adata</code> buffer. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Pointer to the output buffer where the authenticated encrypted data needs to be written. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">pOutLength</td><td>Will be incremented by the number of bytes of authenticated encrypted data that have been written to the <code>out</code> buffer. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pTag</td><td>Pointer to the output buffer where the tag needs to be written. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pTag</td><td>In case of encrypt pointer to the output buffer where the tag needs to be written. In case of decrypt pointer to the input buffer where the refence tag is stored. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">tagLength</td><td>Number of bytes of tag data that will be written to the <code>tag</code> buffer. </td></tr>
   </table>
   </dd>
