@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2022, 2024 NXP                                            */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -185,7 +185,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_ncInit(
 /**
  * @brief Non-cryptographic PRNG data generation function.
  *
- * This function generates non-cryptographic random data
+ * This function generates non-cryptographic random data.
+ * mcuxClRandom_ncGenerate should only be used for applications with low quality requirements
+ * for the random numbers, e.g. countermeasures like randomization or masking, or filling
+ * buffers with random numbers. It MUST not be used for any crypto operation, e.g. key
+ * generation or nonce generation. If in doubt don’t use it!
  *
  * @param [in]     pSession  Handle for the current CL session.
  * @param [out]    pOut      Buffer in which the generated random data must be

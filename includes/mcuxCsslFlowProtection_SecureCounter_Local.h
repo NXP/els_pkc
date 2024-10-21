@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -434,7 +434,9 @@ do                                                                  \
  * \ingroup csslFpCntFunction
  */
 #define MCUX_CSSL_FP_FUNCTION_CALL_END_IMPL() \
-} while (false)
+MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \
+} while (false) \
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
 /**
  * \def MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN_IMPL
@@ -459,7 +461,9 @@ do                                                                  \
  * \ingroup csslFpCntFunction
  */
 #define MCUX_CSSL_FP_FUNCTION_CALL_VOID_END_IMPL() \
-} while (false)
+MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION() \
+} while (false) \
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
 /**
  * @def MCUX_CSSL_FP_ASSERT_IMPL

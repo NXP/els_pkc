@@ -38,7 +38,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClExample_Key_Init_And_Load)
 static inline bool mcuxClExample_Key_Init_And_Load(mcuxClSession_Handle_t pSession,
                                                   mcuxClKey_Handle_t pKey,
                                                   mcuxClKey_Type_t type,
-                                                  uint8_t * pData,
+                                                  const uint8_t * pData,
                                                   uint32_t keyDataLength,
                                                   mcuxClEls_KeyProp_t * key_properties,
                                                   uint32_t * dst,
@@ -49,7 +49,7 @@ static inline bool mcuxClExample_Key_Init_And_Load(mcuxClSession_Handle_t pSessi
         /* mcuxClSession_Handle_t session         */ pSession,
         /* mcuxClKey_Handle_t key                 */ pKey,
         /* mcuxClKey_Type_t type                  */ type,
-        /* uint8_t * pKeyData                    */ pData,
+        /* const uint8_t * pKeyData              */ pData,
         /* uint32_t keyDataLength                */ keyDataLength)
     );
 

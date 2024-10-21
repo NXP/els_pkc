@@ -21,16 +21,17 @@
 #include <mcuxClKey.h>
 #include <mcuxClCipher.h>
 #include <mcuxClCipherModes.h>
-#include <mcuxClHash.h>    
+#include <mcuxClHash.h>
 
 typedef struct {
-    uint8_t clns_data[MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE];
+    uint32_t clns_data[MCUXCLPSADRIVER_CLNSDATA_HASH_SIZE / sizeof(uint32_t)];
 } els_pkc_hash_operation_t;
 
 typedef struct {
+    uint32_t clns_data[MCUXCLPSADRIVER_CLNSDATA_CIPHER_SIZE / sizeof(uint32_t)];
+
     uint16_t iv_required;
     uint16_t default_iv_length;
-    uint8_t clns_data[MCUXCLPSADRIVER_CLNSDATA_CIPHER_SIZE];
 } els_pkc_transparent_cipher_operation_t,els_pkc_opaque_cipher_operation_t,els_pkc_cipher_operation_t;
-    
+
 #endif /* ELS_PKC_CRYPTO_PRIMITIVES_H */

@@ -48,7 +48,7 @@
 #define GLIKEY5_NUM_IDX         16  ///< Number of addressable indexes for GLIKEY instance 5
 
 // Define base address of ELS
-#define ELS_SFR_BASE            ELS         ///< base of ELS SFRs
+#define ELS_SFR_BASE            ELS_NS      ///< base of ELS SFRs
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          ELS_        ///< sfr field name prefix
 

@@ -202,8 +202,9 @@ typedef struct
 
 // TODO CLNS-6135: remove those definitions
 #define MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE (sizeof(mcuxClRsa_KeyData_Plain_t)) ///< Size of mcuxClRsa_KeyData_Plain_t
+#define MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE_IN_WORDS MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE)
 #define MCUXCLRSA_KEYSTRUCT_CRT_SIZE (sizeof(mcuxClRsa_KeyData_Crt_t)) ///< Size of mcuxClRsa_KeyData_Crt_t
-
+#define MCUXCLRSA_KEYSTRUCT_CRT_SIZE_IN_WORDS MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRSA_KEYSTRUCT_CRT_SIZE)
 /**
  * @}
  */ /* mcuxClRsa_KeyTypes */

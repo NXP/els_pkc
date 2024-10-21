@@ -92,17 +92,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
  * @param[in,out]  privKey     Key handle of private key
  * @param[in,out]  pubKey      Key handle of public key
  *
- * @if (MCUXCL_FEATURE_CSSL_FP_USE_SECURE_COUNTER && MCUXCL_FEATURE_CSSL_SC_USE_SW_LOCAL)
- *  @return A code-flow protected error code (see @ref mcuxCsslFlowProtection). The error code can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
- * @else
- *  @return An error code that can be any error code in @ref MCUXCLKEY_STATUS_, see individual documentation for more information
- * @endif
- *
- * @retval #MCUXCLKEY_STATUS_ERROR  on unsuccessful operation
- * @retval #MCUXCLKEY_STATUS_OK     on successful operation
+ * @return void
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClKey_linkKeyPair)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_linkKeyPair(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClKey_linkKeyPair(
     mcuxClSession_Handle_t pSession,
     mcuxClKey_Handle_t privKey,
     mcuxClKey_Handle_t pubKey

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2016, 2021, 2023 NXP                                           */
+/* Copyright 2016, 2021, 2023-2024 NXP                                      */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -29,23 +29,27 @@
 extern "C" {
 #endif
 
-#define MCUXCLOSCCA_SIZE_ALIGN_OFFSET  (sizeof(size_t) - 1U)
+#define MCUXCLOSCCA_SIZE_ALIGN_OFFSET  (sizeof(uint32_t) - 1U)
 
 #define mcuxClOscca_alignAddress(address) \
-  ((uint8_t *)( (((size_t)(address)) + (sizeof(size_t) - 1U)) \
-      & ((size_t)(~(sizeof(size_t) - 1U))) ))
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("The resulting address is carefully calculated, the cast to a pointer-type is safe.") \
+  ((uint8_t *)( (((uint32_t)(address)) + (sizeof(uint32_t) - 1U)) \
+      & ((uint32_t)(~(sizeof(uint32_t) - 1U))) )) \
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
 
 #define mcuxClOscca_alignSize(size) \
-    ((size_t)(((size_t)(size)) + (sizeof(size_t) - 1U)) \
-        & ((size_t)(~(sizeof(size_t) - 1U))) )
+    ((uint32_t)(((uint32_t)(size)) + (sizeof(uint32_t) - 1U)) \
+        & ((uint32_t)(~(sizeof(uint32_t) - 1U))) )
 
 #define mcuxClOscca_alignAddressWithOffset(address, offset) \
-  ((uint8_t *)( (((size_t)(address) + (size_t)(offset)) + (sizeof(size_t) - 1U)) \
-      & ((size_t)(~(sizeof(size_t) - 1U))) ))
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("The resulting address is carefully calculated, the cast to a pointer-type is safe.") \
+  ((uint8_t *)( (((uint32_t)(address) + (uint32_t)(offset)) + (sizeof(uint32_t) - 1U)) \
+      & ((uint32_t)(~(sizeof(uint32_t) - 1U))) )) \
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
 
 #define mcuxClOscca_alignAddressToBoundary(address, boundary) \
-  ((uint8_t *)( (((size_t)(address)) + (boundary - 1U)) \
-      & ((size_t)(~(boundary - 1U))) ))
+  ((uint8_t *)( (((uint32_t)(address)) + (boundary - 1U)) \
+      & ((uint32_t)(~(boundary - 1U))) ))
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClOscca_FastSecureXor)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_FastSecureXor(void *pTgt,

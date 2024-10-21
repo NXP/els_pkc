@@ -35,12 +35,17 @@
 
 #define MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_RNG(pSession, rngCtxLength, mode)                                               \
     uint32_t context[MCUXCLEXAMPLE_ALLOCATE_RNG_CTXT(rngCtxLength)] = {0};                                                    \
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()                                                             \
     mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;                                                         \
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()                                                              \
                                                                                                                              \
     /* Initialize the RNG context */                                                                                         \
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(pSession,                          \
-                                                                                          pRng_ctx,                          \
-                                                                                          mode));                            \
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(                                   \
+        pSession,                                                                                                            \
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRng_ctx has the correct type and the cast was safe and valid.") \
+        pRng_ctx,                                                                                                            \
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()                                                               \
+        mode));                                                                                                              \
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))  \
     {                                                                                                                        \
         return MCUXCLEXAMPLE_STATUS_ERROR;                                                                                    \

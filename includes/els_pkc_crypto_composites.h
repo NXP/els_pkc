@@ -24,12 +24,14 @@
 #include <mcuxClAead.h>
 
 typedef struct {
-    uint8_t clns_data[MCUXCLPSADRIVER_CLNSDATA_MAC_SIZE];
+    uint32_t clns_data[MCUXCLPSADRIVER_CLNSDATA_MAC_SIZE / sizeof(uint32_t)];
 } els_pkc_transparent_mac_operation_t,els_pkc_opaque_mac_operation_t,els_pkc_mac_operation_t;
 
-#define ELS_PKC_PSA_MAC_OPERATION_INIT { { 0 } }
+#define ELS_PKC_PSA_MAC_OPERATION_INIT { .clns_data={ 0u } }
 
 typedef struct {
+    uint32_t clns_data[MCUXCLPSADRIVER_CLNSDATA_AEAD_SIZE / sizeof(uint32_t)];
+
     psa_algorithm_t alg;
     psa_key_type_t key_type;
     uint8_t is_encrypt;
@@ -40,9 +42,8 @@ typedef struct {
     uint32_t body_remaining;
     uint32_t nonce_set;
 
-    uint8_t clns_data[MCUXCLPSADRIVER_CLNSDATA_AEAD_SIZE];
 } els_pkc_transparent_aead_operation_t,els_pkc_opaque_aead_operation_t,els_pkc_aead_operation_t;
 
-#define ELS_PKC_PSA_AEAD_OPERATION_INIT { 0, 0, 0, 0, 0, 0, 0, 0, { 0 } }
+#define ELS_PKC_PSA_AEAD_OPERATION_INIT { .clns_data={ 0u }, .alg=0u, .key_type=0u, .is_encrypt=0u, .tag_length=0u, .body_started=0u, .ad_remaining=0u, .body_remaining=0u, .nonce_set=0u }
 
 #endif /* ELS_PKC_CRYPTO_COMPOSITES_H */

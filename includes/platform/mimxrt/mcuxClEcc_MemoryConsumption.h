@@ -205,7 +205,9 @@
  * @brief Define for the EdDSA key pair generation descriptor size.
  * @{
  */
-#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE    8u  ///< EdDSA key pair generation descriptor size.
+#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE    8u  ///< EdDSA key pair generation descriptor size in bytes.
+#define MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE_IN_WORDS MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE ) ///< EdDSA key pair generation descriptor size in words.
+
 /**
  * @}
  */  /* MCUXCLECC_EDDSA_GENKEYPAIR_DESC_SIZE_ */
@@ -219,6 +221,8 @@
 
 #define MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE_PROTOCOL_DESCRIPTOR(contextLen) \
     (MCUXCLECC_EDDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE + MCUXCLECC_EDDSA_SIZE_HASH_PREFIX(MCUXCLECC_EDDSA_ED25519_DOMPREFIXLEN, (contextLen)))  ///< Byte length of an Ed25519 signature protocol descriptor.
+#define MCUXCLECC_EDDSA_ED25519_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE_IN_WORD(contextLen) \
+        MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE_PROTOCOL_DESCRIPTOR(contextLen))
 
 
 /**
@@ -233,7 +237,8 @@
  * @brief Define for the ECDSA signature protocol descriptor size.
  * @{
  */
-#define MCUXCLECC_ECDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE 12u  ///< ECDSA signature generation descriptor size.
+#define MCUXCLECC_ECDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE 16u  ///< ECDSA signature generation descriptor size in bytes.
+#define MCUXCLECC_ECDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE_IN_WORDS MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLECC_ECDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE) ///< ECDSA signature generation descriptor size in words.
 /**
  * @}
  */  /* MCUXCLECC_EDDSA_SIGNATURE_PROTOCOL_DESC_SIZE_ */
