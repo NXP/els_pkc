@@ -1,28 +1,24 @@
-CLNS SDK (1.10.0_RT700) Release Notes
+CLNS SDK (2.0.0_preview) Release Notes
 
-- Release: RT700SDK_EAR
-- Version: SDK_1.10.0_RT700
-- Date:    2024-07-02
-
---- CLNS memory consumption: delivery/mimxrt_release/static_library/mimxrt/libclns.a
-TEXT RO RW ZI TOTAL_CONSUMPTION
-129410 23832 0 0 153242
+- Release: SDK_V2.0.0_preview
+- Version: SDK_V2.0.0_preview
+- Date:    2024-10-15
+- Link to Nexus RepositoryManager: https://nl-nxrm.sw.nxp.com/service/rest/repository/browse/cccs-releases-raw/
+- Compiler: IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM
+--- Test Target: FPGAv2 Cosim (RT700, Nirvana, Redfinch)
 
 --- New Features 
-   - Coverity (MISRA/CERT-C) violation reduction
-   - Improved code coverage (of code shared with ROM deliverable)
+   - Coverity (MISRA/CERT-C) violations resolved
+   - Improved code coverage
    - Updated file structure (platform specific files are now located in platform specific folders, instead of manually merged with feature flags)
-   - Memory aliasing workaround (translate addresses in 0x0000 0000-0x0078 0000 range to 0x20.. .... address range when passed to HW IPs)
+   - Memory aliasing workaround improvements (translate addresses in 0x0000 0000-0x0078 0000 range to 0x20.. .... address range when passed to HW IPs)
    - Switched to Online_Code_Hosting License (removes clause 2.2/2.3 distinction as it allows distribution by default, even in source; still requires use in combination with NXP product)
+   - AEAD oneshot decrypt operation (nxpClAead_crypt) outputs correct plaintext size
+   - AEAD oneshot decrypt operation (nxpClAead_crypt) verifies the tag instead of producing one
 
 --- Known Issues Limitations:
-   - Coverity (MISRA/CERT-C) violations; Will be resolved in next release
-   - AEAD oneshot decrypt operation (nxpClAead_crypt) produces full output block, instead of removing the padding; Will be resolved in next release; Workaround: allocate block-aligned output buffer
-   - AEAD oneshot decrypt operation (nxpClAead_crypt) produces a tag as output, instead as taking it as reference input to validate the computed one; Will be resolved in next release; Workaround: provide a buffer for the tag output and compare it against the reference
-   - Test failures when using data located in aliased memory; to be analyzed, can be test issue or missing CL adaptation for the memory aliasing:
-      - HKDF tests
-      - PUK import tests
-      - EcVfy tests (internal_pub_key_interrupts_L2, els_shaDirect_224_and_els_eccVerify_L2)
-      - EcKxch tests (external_pub_key_interrupts, internal_pub_key_interrupts)
-      - Hash RTF tests
-      - Some issues impacting communication (UART), preventing a proper FULL scope run
+   - Test failures for NIST SP800-108 KDF with HMAC_SHA1 on RT700
+   - Test failures for RSA encryption padding on RT700
+   - Not tested on Niobe4a
+   - Only daily test scope executed for Nirvana, Redfinch and RT700
+   - EdDSA verify bug still present!
