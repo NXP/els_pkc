@@ -56,9 +56,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Set
     uint32_t wordVal = ((uint32_t)val << 24) | ((uint32_t)val << 16) | ((uint32_t)val << 8) | (uint32_t)val;
     const uint32_t cpuWordSize = sizeof(uint32_t);
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_VOID()
     volatile uint8_t *p8Dst = (volatile uint8_t *) pDst; // needs to be aligned
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_VOID()
 
 
     MCUX_CSSL_ANALYSIS_START_PATTERN_SC_CAST_POINTERS()

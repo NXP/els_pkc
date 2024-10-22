@@ -91,16 +91,18 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Els_Oneshot_External_Key_example)
 
     /* Create and initialize mcuxClKey_Descriptor_t structure. */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClKey_init(
-        /* mcuxClSession_Handle_t pSession:                */  session,
-        /* mcuxClKey_Handle_t key:                         */  key,
-        /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
-        /* uint8_t * pKeyData:                            */  (uint8_t *) hmac_key,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
-        /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
+      /* mcuxClSession_Handle_t pSession:                */  session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key:                         */  key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
+      /* const uint8_t * pKeyData:                      */  hmac_key,
+      /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
@@ -132,6 +134,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
     /* Call the mcuxClMac_compute function to compute a HMAC in one shot. */
     uint32_t result_size = 0u;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of tempIn is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMac_compute(
         /* mcuxClSession_Handle_t session:  */ session,
         /* const mcuxClKey_Handle_t key:    */ key,
@@ -141,6 +144,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
         /* mcuxCl_Buffer_t pMac:            */ result_buffer,
         /* uint32_t * const pMacLength:    */ &result_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token) || (MCUXCLMAC_STATUS_OK != result))
     {

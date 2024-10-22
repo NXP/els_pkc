@@ -21,11 +21,10 @@
 #include <internal/mcuxClPkc_FupMacros.h>
 #include <internal/mcuxClRsa_MillerRabinTest_FUP.h>
 
+/*
+ * FUP to do Montgoery reduction and check the result
+ */
 MCUX_CSSL_ANALYSIS_START_PATTERN_FUP_PROGRAM()
 const mcuxClPkc_FUPEntry_t mcuxClRsa_MillerRabinTest_ReducAndCheck_FUP[4] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0xaau,0x2fu,0x08u,0x77u},{0xc0u,0x33u,0x02u,0x02u,0x00u,0x03u},{0xc0u,0x2au,0x00u,0x03u,0x00u,0x03u},{0x40u,0x1bu,0x03u,0x03u,0x09u,0x02u}};
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_FUP_PROGRAM()
 
-
-/*
- * FUP to do Montgoery reduction and check the result
- */

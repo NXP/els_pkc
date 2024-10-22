@@ -145,7 +145,6 @@ static inline void mcuxClHashModes_internal_c_genericSwitchEndiannessOfBufferWor
 
 
 
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

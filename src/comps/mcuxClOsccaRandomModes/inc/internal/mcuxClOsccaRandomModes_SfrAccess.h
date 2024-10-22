@@ -51,28 +51,41 @@
 /**********************************************************/
 
 /** Read from TRNG0 SFR */
-#define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_READ(sfr)  (TRNG_SFR_BASE->TRNG_SFR_NAME(sfr))
+#define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_READ(sfr) \
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("TRNG base and SFR addresses will always be 32-bit aligned.") \
+    (TRNG_SFR_BASE->TRNG_SFR_NAME(sfr)) \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Write to TRNG0 SFR */
 #define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_WRITE(sfr, value)  \
-    do{ TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) = (value); } while(false)
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("TRNG base and SFR addresses will always be 32-bit aligned.") \
+    do{ TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) = (value); } while(false) \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Read from TRNG0 SFR bit field */
 #define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_BITREAD(sfr, bit)  \
-    ((TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) & MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit)) >> MCUXCLOSCCARANDOMMODES_SFR_BITPOS(sfr, bit))
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("TRNG base and SFR addresses will always be 32-bit aligned.") \
+    ((TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) & MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit)) >> MCUXCLOSCCARANDOMMODES_SFR_BITPOS(sfr, bit)) \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Set bit field of TRNG0 SFR (read-modify-write) */
 #define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_BITSET(sfr, bit)  \
-    do{ TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) |= MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit); } while(false)
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("TRNG base and SFR addresses will always be 32-bit aligned.") \
+    do{ TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) |= MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit); } while(false) \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Clear bit field of TRNG0 SFR (read-modify-write) */
 #define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_BITCLEAR(sfr, bit)  \
-    do{ TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) &= (~ (uint32_t) MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit)); } while(false)
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("TRNG base and SFR addresses will always be 32-bit aligned.") \
+    do{ TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) &= (~ (uint32_t) MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit)); } while(false) \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
 /** Set value of multi-bit field of TRNG0 SFR (read-modify-write) */
 #define MCUXCLOSCCARANDOMMODES_TRNG0_SFR_BITVALSET(sfr, bit, val)  \
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("TRNG base and SFR addresses will always be 32-bit aligned.") \
     do{ uint32_t temp = TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) & (~ (uint32_t) MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit)); \
         TRNG_SFR_BASE->TRNG_SFR_NAME(sfr) = (((val) << MCUXCLOSCCARANDOMMODES_SFR_BITPOS(sfr, bit)) & MCUXCLOSCCARANDOMMODES_SFR_BITMSK(sfr, bit)) | temp; \
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER() \
     } while(false)
 
 

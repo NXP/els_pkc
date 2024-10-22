@@ -93,6 +93,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
   /*****************************************************/
 
   /* Length of the encoded message. */
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(keyBitLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
   const uint32_t keyByteLength = (keyBitLength + 7u) / 8u; /* byte length, rounded up */
   const uint32_t emLen = keyByteLength;
 
@@ -111,7 +112,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
   /* Perform pkcs1v15Encode                            */
   /*****************************************************/
   MCUXCLBUFFER_INIT(pPkcWorkareaBuf, pSession, pPkcWorkarea, wopkcByteLenEm);
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_FP_FUNCTION_CALL(encode_result, mcuxClRsa_pkcs1v15Encode_sign(pSession,
                                                                    pInput,
                                                                    inputLength,
@@ -123,7 +124,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
                                                                    options,
                                                                    pPkcWorkareaBuf,
                                                                    NULL));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT() 
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
   if(MCUXCLRSA_STATUS_INTERNAL_ENCODE_OK != encode_result)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Verify, MCUXCLRSA_STATUS_ERROR);
@@ -133,11 +134,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
   /* Compare results                                   */
   /*****************************************************/
 
-  /* TODO CLNS-9051: use mcuxClMemory_compare_secure_int for all cases.
-   * mcuxClMemory_compare_secure_int should call the CSSL comparison for ARM platforms, to ensure the behavior is unchanged.
-   * Then verifyStatus1 shall be inizialied to FA.
-   */
-  mcuxClRsa_Status_t verifyStatus1 = MCUXCLRSA_STATUS_VERIFY_OK;
+  mcuxClRsa_Status_t verifyStatus1 = MCUXCLRSA_STATUS_FAULT_ATTACK;
   MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare(
     mcuxCsslParamIntegrity_Protect(3u, pPkcWorkarea, pVerificationInput, emLen),
       pPkcWorkarea,
@@ -150,6 +147,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Verify(
     if(MCUXCSSLMEMORY_STATUS_NOT_EQUAL == compare_result)
     {
       verifyStatus1 = MCUXCLRSA_STATUS_VERIFY_FAILED;
+    }
+    else
+    {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Verify, MCUXCLRSA_STATUS_ERROR);
+    }
+  } else {
+    if(MCUXCSSLMEMORY_STATUS_NOT_EQUAL != compare_result)
+    {
+      verifyStatus1 = MCUXCLRSA_STATUS_VERIFY_OK;
     }
     else
     {

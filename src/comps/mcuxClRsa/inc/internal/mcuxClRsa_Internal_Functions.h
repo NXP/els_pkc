@@ -266,6 +266,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   mcuxCl_Buffer_t             pOutput
 );
 
+/**
+ * @brief Function calculation modulo from the CRT key
+ *
+ * \param[in]      pKey           Pointer to key structure of type @ref mcuxClRsa_Key
+ * \param[in/out]  pKeyBitLength  Pointer to return key bit lenght
+ *
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_Calc_Modlen_From_CRTkey)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClRsa_Calc_Modlen_From_CRTkey(
+                        const mcuxClRsa_Key * const pKey,
+                        uint32_t *pKeyBitLength);
+
+
 
 /**
  * @brief No encoding message operation for signature
@@ -1540,6 +1553,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_decrypt(
 );
 #endif /* MCUXCL_FEATURE_CIPHER_RSA_DECRYPT  */
 
+/** Inline function for proper type casts*/
+
+/**
+ * @brief Cast a pointer to word-aligned data to a pointer to the mcuxClRsa_Key type.
+ *
+ * @param pKey    The pointer to cast to a proper key RSA handle. Must be aligned.
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_castToRsaKey)
+static inline mcuxClRsa_Key* mcuxClRsa_castToRsaKey(uint32_t *pKey)
+{
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    return (mcuxClRsa_Key *) pKey;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+}
 
 /**
  * @}

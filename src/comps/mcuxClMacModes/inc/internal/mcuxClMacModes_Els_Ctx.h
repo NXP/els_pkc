@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -40,11 +40,11 @@ typedef struct mcuxClMacModes_Context
 {
   mcuxClMac_Context_t common;                             ///< Common part of the context, for all modes
   mcuxClKey_Descriptor_t * key;                           ///< Key descriptor of the key to be used
-  uint32_t blockBuffer[MCUXCLAES_BLOCK_SIZE_IN_WORDS];  ///< Not yet processed input data from the input stream
+  uint32_t blockBuffer[MCUXCLAES_BLOCK_SIZE_IN_WORDS];    ///< Not yet processed input data from the input stream
   uint32_t blockBufferUsed;                              ///< Used bytes in blockBuffer
-  uint32_t state[MCUXCLAES_BLOCK_SIZE_IN_WORDS];        ///< state/intermediate result of the mac operation
+  uint32_t state[MCUXCLAES_BLOCK_SIZE_IN_WORDS];          ///< state/intermediate result of the mac operation
   mcuxClEls_CmacOption_t cmac_options;                    ///< Cmac ELS options to be used
-  uint32_t totalInput;                                  ///< Total input length
+  uint32_t totalInput;                                   ///< Total input length, only needed fro
 } mcuxClMacModes_Context_t;
 
 

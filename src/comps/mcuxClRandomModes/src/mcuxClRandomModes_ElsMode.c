@@ -22,8 +22,10 @@
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <internal/mcuxClRandom_Internal_Types.h>
+#include <internal/mcuxClRandom_Internal_Memory.h>
 #include <internal/mcuxClRandomModes_Private_Drbg.h>
 #include <internal/mcuxClEls_Internal.h>
+
 
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_ElsMode_init)
@@ -230,19 +232,15 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
         }
 
         /* Copy the remaining bytes from the buffer to output. */
-        for(uint32_t i = 0u; i < requestSizeRemainingBytes; i++)
-        {
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("requestSizeFullWordsBytes + i is limited by outLength and does not overflow")
-            pOut[requestSizeFullWordsBytes + i] = requestRemainingBuffer[i];
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
-        }
+        MCUXCLRANDOM_SECURECOPY(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK, &pOut[requestSizeFullWordsBytes], requestRemainingBuffer, requestSizeRemainingBytes);
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_ElsMode_generate_fullWords),
         MCUX_CSSL_FP_CONDITIONAL((requestSizeRemainingBytes > 0u),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)));
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+            MCUXCLRANDOM_FP_CALLED_SECURECOPY));
 }
 
 

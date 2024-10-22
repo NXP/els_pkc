@@ -64,13 +64,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_MontDH_Curve448_example)
 #endif /* MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256 && MCUXCL_FEATURE_RANDOMMODES_CTRDRBG && MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED && MCUXCL_FEATURE_RANDOMMODES_NORMALMODE */
 
     /* Prepare input for Alice key generation */
-    ALIGNED uint8_t alicePrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t alicePrivKeyHandler = (mcuxClKey_Handle_t) &alicePrivKeyDesc;
+    uint32_t alicePrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t alicePrivKeyHandler = (mcuxClKey_Handle_t) alicePrivKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     ALIGNED uint8_t alicePrivKeyBuffer[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIVATEKEY]={0};
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(aliceprivkeyinit_result, aliceprivkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer alicePrivKeyHandler is of the right type (mcuxClKey_Handle_t)")
     /* mcuxClKey_Handle_t key                 */ alicePrivKeyHandler,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Ecc_MontDH_Curve448_PrivateKey,
     /* const uint8_t * pKeyData              */ alicePrivKeyBuffer,
     /* uint32_t keyDataLength                */ MCUXCLECC_MONTDH_CURVE448_SIZE_PRIVATEKEY));
@@ -80,13 +84,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_MontDH_Curve448_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    ALIGNED uint8_t alicePubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t alicePubKeyHandler = (mcuxClKey_Handle_t) &alicePubKeyDesc;
+    uint32_t alicePubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t alicePubKeyHandler = (mcuxClKey_Handle_t) alicePubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     ALIGNED uint8_t alicePubKeyBuffer[MCUXCLECC_MONTDH_CURVE448_SIZE_PUBLICKEY]={0};
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(alicepubkeyinit_result, alicepubkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer alicePubKeyHandler is of the right type (mcuxClKey_Handle_t)")
     /* mcuxClKey_Handle_t key                 */ alicePubKeyHandler,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Ecc_MontDH_Curve448_PublicKey,
     /* const uint8_t * pKeyData              */ alicePubKeyBuffer,
     /* uint32_t keyDataLength                */ MCUXCLECC_MONTDH_CURVE448_SIZE_PUBLICKEY));
@@ -97,13 +105,18 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_MontDH_Curve448_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Prepare input for Bob key generation */
-    ALIGNED uint8_t bobPrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t bobPrivKeyHandler = (mcuxClKey_Handle_t) &bobPrivKeyDesc;
+    uint32_t bobPrivKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t bobPrivKeyHandler = (mcuxClKey_Handle_t) bobPrivKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     ALIGNED uint8_t bobPrivKeyBuffer[MCUXCLECC_MONTDH_CURVE448_SIZE_PRIVATEKEY]={0};
+
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(bobprivkeyinit_result, bobprivkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer bobPrivKeyHandler is of the right type (mcuxClKey_Handle_t)")
     /* mcuxClKey_Handle_t key                 */ bobPrivKeyHandler,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Ecc_MontDH_Curve448_PrivateKey,
     /* const uint8_t * pKeyData              */ bobPrivKeyBuffer,
     /* uint32_t keyDataLength                */ MCUXCLECC_MONTDH_CURVE448_SIZE_PRIVATEKEY));
@@ -113,13 +126,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_MontDH_Curve448_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    ALIGNED uint8_t bobPubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t bobPubKeyHandler = (mcuxClKey_Handle_t) &bobPubKeyDesc;
+    uint32_t bobPubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t bobPubKeyHandler = (mcuxClKey_Handle_t) bobPubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     ALIGNED uint8_t bobPubKeyBuffer[MCUXCLECC_MONTDH_CURVE448_SIZE_PUBLICKEY]={0};
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(bobpubkeyinit_result, bobpubkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("bobPubKeyHandler has compatible type and cast was valid")
     /* mcuxClKey_Handle_t key                 */ bobPubKeyHandler,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Ecc_MontDH_Curve448_PublicKey,
     /* const uint8_t * pKeyData              */ bobPubKeyBuffer,
     /* uint32_t keyDataLength                */ MCUXCLECC_MONTDH_CURVE448_SIZE_PUBLICKEY));

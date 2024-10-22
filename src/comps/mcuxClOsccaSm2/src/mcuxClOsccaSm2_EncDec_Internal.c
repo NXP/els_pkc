@@ -210,10 +210,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Encrypt_Internal_Init, MCUXCLOSCCASM2_STATUS_FAILURE);
     }
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the external parameter to internal context structure.")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     mcuxClOsccaSm2_Internal_EncDecCtx_t* pCtx = (mcuxClOsccaSm2_Internal_EncDecCtx_t*)pParams->pEncDecCtx;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
-    uint8_t *pY2 = (uint8_t *)mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
+    uint8_t *pY2 = mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
 
     /*
      * cpu workarea layout for STATE_INIT
@@ -292,10 +292,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Encrypt_Internal_Final, MCUXCLOSCCASM2_STATUS_FAILURE);
     }
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the external parameter to internal context structure.")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     mcuxClOsccaSm2_Internal_EncDecCtx_t* pCtx = (mcuxClOsccaSm2_Internal_EncDecCtx_t*)pParams->pEncDecCtx;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
-    uint8_t *pY2 = (uint8_t *)mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
+    uint8_t *pY2 = mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
     if (MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_FINALIZE == (pParams->options & MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_FINALIZE))
     {
         uint8_t* pC3 = (uint8_t*)pPkcWa;
@@ -471,10 +471,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Decrypt_Internal_Init, MCUXCLOSCCASM2_STATUS_FAULT_ATTACK);
     }
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the external parameter to internal context structure.")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     mcuxClOsccaSm2_Internal_EncDecCtx_t* pCtx = (mcuxClOsccaSm2_Internal_EncDecCtx_t*)pParams->pEncDecCtx;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
-    uint8_t *pY2 = (uint8_t *)mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
+    uint8_t *pY2 = mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
     /*
      * cpu workarea layout for STATE_INIT
      * X2
@@ -557,10 +557,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
     uint8_t *pC3Local = pPkcWa;
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the external parameter to internal context structure.")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     mcuxClOsccaSm2_Internal_EncDecCtx_t* pCtx = (mcuxClOsccaSm2_Internal_EncDecCtx_t*)pParams->pEncDecCtx;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
-    uint8_t *pY2 = (uint8_t *)mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
+
+    uint8_t *pY2 = mcuxClOscca_alignAddressWithOffset(pParams->pEncDecCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
     if (MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_FINALIZE == (pParams->options & MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_FINALIZE))
     {
         /*****************************************************************************/

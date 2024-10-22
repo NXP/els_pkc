@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022, 2024 NXP                                                 */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -34,18 +34,20 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaMacModes_SM4_Gen_K1K2(uint8_t *outp
     uint8_t mask;
     uint8_t i;
 
-    for(i = 0u; i <= MCUXCLOSCCASM4_BLOCK_SIZE - 1u; i++)
+    for(i = 0U; i <= MCUXCLOSCCASM4_BLOCK_SIZE - 1U; i++)
     {
-        output[i] = input[i] << 1u;
-        uint8_t carryBit = input[i+1u] & 0x80u;
-        if((i < MCUXCLOSCCASM4_BLOCK_SIZE - 1u) && (carryBit != 0u))
+        output[i] = (uint8_t)((input[i] << 1) & 0xffU);
+        uint8_t carryBit = input[i+1U] & 0x80U;
+        if((i < MCUXCLOSCCASM4_BLOCK_SIZE - 1U) && (carryBit != 0U))
         {
-           output[i] = output[i] | 0x01u;
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_FALSE_POSITIVE_INTEGER_CONVERSION_MISINTERPRETS_DATA("A logical OR-operation with two values of the same width does not misinterpret or wrap data.")
+            output[i] = output[i] | (uint8_t)0x01U;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_FALSE_POSITIVE_INTEGER_CONVERSION_MISINTERPRETS_DATA()
         }
     }
 
-    mask = ((input[0u] >> 7u) != 0u) ? 0xffu : 0x00u;
-    output[ MCUXCLOSCCASM4_BLOCK_SIZE - 1u ] ^= 0x87u & mask;
+    mask = ((input[0u] >> 7U) != 0U) ? 0xffU : 0x00U;
+    output[ MCUXCLOSCCASM4_BLOCK_SIZE - 1U] ^= 0x87U & mask;
 
     MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClOsccaMacModes_SM4_Gen_K1K2);
 }

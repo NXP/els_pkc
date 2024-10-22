@@ -94,9 +94,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_EccInit(
 
     /* Generate the pointer table. */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaPkc_GeneratePointerTable(pOperands + noOfVirtuals, pFx, bufferSize, (uint8_t) noOfBuffers));
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("PKC operand table initialize in mcuxClOsccaPkc_GeneratePointerTable properly.")
-    pOperands[TI_modulus] = (uint16_t) (pOperands[TI_modulusf] + pkcWordSize);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP_AND_CONVERSION("PKC operand table was initialized in mcuxClOsccaPkc_GeneratePointerTable properly, and the addition with the word size cannot wrap.")
+    pOperands[TI_modulus] = pOperands[TI_modulusf] + (uint16_t)pkcWordSize;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP_AND_CONVERSION()
     MCUXCLOSCCAPKC_PS2_SETLENGTH(0u, bufferSize);
     MCUXCLOSCCAPKC_FXIOP2_XOR(TI_const0, TI_const0, TI_const0);
 
@@ -134,9 +134,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOsccaSm2_EccPrepareParameters(mcuxClOscc
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaPkc_ComputeQSquared(MCUXCLOSCCAPKC_PKCPACKARGS(TI_q2, TI_modulus, TI_s, TI_v), TI_moduluss));
 
     /* Reserve a pkc word for ndash */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("PKC operand table has initialized properly before.")
-    pOperands[TI_n] = pOperands[TI_nf] + MCUXCLOSCCAPKC_WORD_SIZE;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP_AND_CONVERSION("PKC operand table was initialized properly, and the addition with the word size cannot wrap.")
+    pOperands[TI_n] = (pOperands[TI_nf] + MCUXCLOSCCAPKC_WORD_SIZE);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP_AND_CONVERSION()
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm2_Import(TI_n, pDomainParameters->n.pMPInt,
             pDomainParameters->n.wNumBytes, operandSize));
     /* compute the ndash for later use*/

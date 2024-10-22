@@ -80,6 +80,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha256_Sha_Direct_One_Block_example)
     hash_options.bits.hashoe = MCUXCLELS_HASH_OUTPUT_ENABLE; // Configure the mcuxClEls_Hash_ShaDirect operation so that the hash digest is moved into memory at the end of the operation.
     hash_options.bits.hashmd = MCUXCLELS_HASH_MODE_SHA_256;  // Configure the mcuxClEls_Hash_Async operation so that the Sha2-256 algorithm is used.
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Hash_ShaDirect( // Perform the hashing.
             hash_options,                                                   // Set the prepared configuration.
             sha256_padded_input, sizeof(sha256_padded_input),               // Set the data to be hashed. Note that this data's length is a multiple of the block length, so no padding is required
@@ -87,6 +88,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha256_Sha_Direct_One_Block_example)
             NULL,                                                           // A callback function can be provided to perform the data loading into the Sha core. If not set, a CPU copy will be used.
             NULL                                                            // An pointer can be provided which will be forwarded to the callback function.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_Hash_ShaDirect is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hash_ShaDirect) != token) || (MCUXCLELS_STATUS_OK != result))
     {

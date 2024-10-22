@@ -94,7 +94,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_RecodeAndReorderScalar
      *
      * This is all done by mcuxClEcc_InterleaveScalar.
      */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("max value returned from the 'mcuxClMath_CountLeadingZerosWord' is 31, cannot wrap")
     uint32_t fLog = 32u - mcuxClMath_CountLeadingZerosWord((uint32_t) f) - 1u;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     MCUXCLECC_FP_INTERLEAVESCALAR(scalarIndex, scalarBitLength, fLog);
 
     /* Step 5:

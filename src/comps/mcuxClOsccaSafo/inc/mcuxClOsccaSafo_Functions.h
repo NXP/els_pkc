@@ -245,8 +245,9 @@ void mcuxClOsccaSafo_Drv_loadKey(uint32_t offset, uint32_t key);
  *
  * Increments data in DATIN register bank by one.
  *
- * @param[in]  offset   Offset with respect to SAFO->DATIN0A
- * @param[in]  length   Size of data on which increment shall be applied
+ * @param[in]  offset   Offset of a DATIN register bank with respect to SAFO->DATIN0A.
+ * @param[in]  length   Size of data on which increment shall be applied. Must be a non-zero multiple
+ *                      of the word-size, with a maximum of 16.
  *
  * @return void
  */

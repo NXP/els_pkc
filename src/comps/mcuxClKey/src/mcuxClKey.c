@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -67,7 +67,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_init(
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_linkKeyPair)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_linkKeyPair(
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClKey_linkKeyPair(
     mcuxClSession_Handle_t pSession UNUSED_PARAM,
     mcuxClKey_Handle_t privKey,
     mcuxClKey_Handle_t pubKey)
@@ -78,7 +78,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_linkKeyPair(
     mcuxClKey_setLinkedData(privKey, (void *) pubKey);
     mcuxClKey_setLinkedData(pubKey, (void *) privKey);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_linkKeyPair, MCUXCLKEY_STATUS_OK);
+    MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClKey_linkKeyPair);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_setProtection)

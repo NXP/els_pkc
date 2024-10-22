@@ -57,10 +57,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_init(
   mcuxClMac_Context_t * const pContext,
   mcuxClKey_Handle_t key)
 {
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   mcuxClOsccaMacModes_Context_t * const pCtx = (mcuxClOsccaMacModes_Context_t *) pContext;
   mcuxClOsccaMacModes_Algorithm_t pAlgo = (mcuxClOsccaMacModes_Algorithm_t) pCtx->common.pMode->common.pAlgorithm;
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_init, pAlgo->protectionToken_engineInit);
 
@@ -84,10 +84,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_process(
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength)
 {
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   mcuxClOsccaMacModes_Context_t * const pCtx = (mcuxClOsccaMacModes_Context_t *) pContext;
   mcuxClOsccaMacModes_Algorithm_t pAlgo = (mcuxClOsccaMacModes_Algorithm_t) pCtx->common.pMode->common.pAlgorithm;
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_process, pAlgo->protectionToken_engineUpdate);
 
@@ -108,10 +108,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_finish(
   mcuxCl_Buffer_t pMac,
   uint32_t * const pMacLength)
 {
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   mcuxClOsccaMacModes_Context_t * const pCtx = (mcuxClOsccaMacModes_Context_t *) pContext;
   mcuxClOsccaMacModes_Algorithm_t pAlgo = (mcuxClOsccaMacModes_Algorithm_t) pCtx->common.pMode->common.pAlgorithm;
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_finish, pAlgo->protectionToken_engineFinalize,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));

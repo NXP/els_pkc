@@ -27,7 +27,6 @@
 #include <mcuxClEls.h>
 
 #include <internal/mcuxClEls_Internal.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 
 #define RANDOM_BIT_ARRAY_SIZE 4U
 
@@ -74,7 +73,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
     /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
      * reseed the DRBG and reset the counter after the upcoming ELS operation. */
     uint32_t counter_increase = MCUXCLELS_RNG_DRBG_DRBGREQUEST_INCREASE(outputLength);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Overflow handled in interrupt handler")
     mcuxClEls_rng_drbg_block_counter += counter_increase;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 #endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
 

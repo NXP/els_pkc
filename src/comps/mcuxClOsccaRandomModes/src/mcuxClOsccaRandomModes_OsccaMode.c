@@ -69,9 +69,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaRandomModes_ROtrng_init);
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     mcuxClOsccaRandomModes_Context_RNG_t* pRngCtx = (mcuxClOsccaRandomModes_Context_RNG_t*) context;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
 
     /* Clear whole ctx buffer */
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx is a pointer with right type.")
@@ -107,21 +107,23 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaRandomModes_ROtrng_PokerTest);
     mcuxClRandom_Status_t ret = MCUXCLRANDOM_STATUS_ERROR;
-    uint32_t freCount[4] = {0u, 0u, 0u, 0u};
-    uint32_t freCountSum = 0u;
+    uint32_t freCount[4] = {0U, 0U, 0U, 0U};
+    uint32_t freCountSum = 0U;
 
-    for (uint32_t i = 0u; i < length; i++)
+    for (uint32_t i = 0U; i < length; i++)
     {
-        for (uint32_t j = 0u; j < 4U; j++) /* 4 2-bit in one byte*/
+        for (uint32_t j = 0U; j < 4U; j++) /* 4 2-bit in one byte*/
         {
-            uint8_t ni = (pWaCPU[i] >> (j << 1u)) & 0x03U; /* get every 2 bits in workArea[i] */
-            MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(freCount[ni], 0u, MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN * 4u, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_FALSE_POSITIVE_INTEGER_CONVERSION_MISINTERPRETS_DATA("No data is lost, none of the involved operations can overflow the unsigned 8-bit range.")
+            uint8_t ni = (uint8_t)((pWaCPU[i] >> (j << 1)) & 0x03U); /* get every 2 bits in workArea[i] */
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_FALSE_POSITIVE_INTEGER_CONVERSION_MISINTERPRETS_DATA()
+            MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(freCount[ni], 0U, MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN * 4u, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
             freCount[ni]++;
         }
     }
 
-    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(freCountSum, 0u, (MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN * 4u) * (MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN * 4u) * 4u, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
-    for (uint32_t i = 0u; i < 4U; i++)
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(freCountSum, 0U, (MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN * 4u) * (MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN * 4u) * 4u, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    for (uint32_t i = 0U; i < 4U; i++)
     {
         freCountSum += freCount[i] * freCount[i];
     }
@@ -167,11 +169,10 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaRandomModes_ROtrng_PowerOnTest);
     mcuxClRandom_Status_t ret = MCUXCLRANDOM_STATUS_ERROR;
-    uint32_t failCnt;
+    uint32_t failCnt = 0u;
     uint8_t pWaCPU[MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN];
     MCUXCLMEMORY_FP_MEMORY_CLEAR(pWaCPU, MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN);
     /* acquire loopCnt*10000 bits of random numbers and divide them into loopCnt groups */
-    failCnt = 0u;
     for (uint32_t i = 0; i < loopCnt; i++)
     {
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of pWaCPU is not reused outside of mcuxClRandom_generate function")
@@ -185,7 +186,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
         MCUX_CSSL_FP_FUNCTION_CALL(RngSelfPokerRet, mcuxClOsccaRandomModes_ROtrng_PokerTest(pWaCPU, MCUXCLOSCCARANDOMMODES_SELFTEST_POWERON_LEN, MCUXCLOSCCARANDOMMODES_FAIL_LIMIT_FOR_10000BITS));
         if (MCUXCLRANDOM_STATUS_OK != RngSelfPokerRet)
         {
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive; failCnt is initialized to zero, and loopCnt and failCnt have the same data size.")
             failCnt++;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
         }
     }
 
@@ -347,8 +350,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
     pRngCtx->writeOff = wtOffset;
     pRngCtx->entIdx = entIdx & MCUXCLOSCCARANDOMMODES_RNG_INDEXOFLASTENTREGISTER;
 
-    MCUX_CSSL_DI_EXPUNGE(sumOfRandomGenerateParams, unalignHeadBys);
-
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaRandomModes_ROtrng_generate_head, MCUXCLRANDOM_STATUS_OK);
 }
 
@@ -410,8 +411,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
     pRngCtx->readOff = rdOffset;
     pRngCtx->writeOff = wtOffset;
     pRngCtx->entIdx = entIdx & MCUXCLOSCCARANDOMMODES_RNG_INDEXOFLASTENTREGISTER;
-
-    MCUX_CSSL_DI_EXPUNGE(sumOfRandomGenerateParams, genRandomWords * sizeof(uint32_t));
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaRandomModes_ROtrng_generate_words, MCUXCLRANDOM_STATUS_OK);
 }
@@ -483,8 +482,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
     pRngCtx->writeOff = wtOffset;
     pRngCtx->entIdx = entIdx & MCUXCLOSCCARANDOMMODES_RNG_INDEXOFLASTENTREGISTER;
 
-    MCUX_CSSL_DI_EXPUNGE(sumOfRandomGenerateParams, unalignTailBytes);
-
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaRandomModes_ROtrng_generate_tail, MCUXCLRANDOM_STATUS_OK);
 }
 
@@ -497,9 +494,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
     uint32_t              outLength)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaRandomModes_ROtrng_generate);
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     mcuxClOsccaRandomModes_Context_RNG_t* pRngCtx = (mcuxClOsccaRandomModes_Context_RNG_t*) context;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_ALIGNED_TYPE()
     uint32_t genRandomBytes = 0u;
     uint32_t outLenExpected = outLength;
     uint32_t unalignHeadBytes = 0u;
@@ -549,7 +546,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClOsccaRandomModes
 
     if (genRandomBytes == outLenExpected)
     {
-        MCUX_CSSL_DI_EXPUNGE(sumOfRandomGenerateParams, (uint32_t)pSession + (uint32_t)pOut);
         MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaRandomModes_ROtrng_generate, MCUXCLRANDOM_STATUS_OK,
             MCUXCLRANDOM_STATUS_FAULT_ATTACK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaRandomModes_ROtrng_generate_head),

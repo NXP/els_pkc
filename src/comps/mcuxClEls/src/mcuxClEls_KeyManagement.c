@@ -57,7 +57,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelet
 
     /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
      * reseed the DRBG and reset the counter after the upcoming ELS operation. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Overflow handled in interrupt handler")
     mcuxClEls_rng_drbg_block_counter += drbg_counter_increase;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUX_CSSL_FP_EXPECT(MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetKeyProperties));
 #endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */

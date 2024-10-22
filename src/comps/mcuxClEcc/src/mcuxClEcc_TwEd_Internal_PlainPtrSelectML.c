@@ -63,10 +63,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_TwEd_PlainPtrSelectML(
      *         pOperands[TWED_VZ2] = pOperands[TWED_ML_Z2];
      *     };
      */
-    uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
-    uint32_t *pOperands32 = (uint32_t *) pOperands;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    uint32_t *pOperands32 = MCUXCLPKC_GETUPTRT32();
     uint32_t offsets_VY1_VZ1 = pOperands32[(TWED_ML_Y1 / 2u) + b];
     uint32_t offsets_VY2_VZ2 = pOperands32[(TWED_ML_Y2 / 2u) - b];
 

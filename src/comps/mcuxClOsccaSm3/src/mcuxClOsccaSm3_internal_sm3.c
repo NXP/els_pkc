@@ -147,11 +147,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     }
 
     /* Perform padding by adding data counter - length is added from end of the array; byte-length is converted to bit-length */
-    accumulationBuffByte[0u] = (uint8_t)(inSize <<  3u);
-    accumulationBuffByte[1u] = (uint8_t)(inSize >>  5u);
-    accumulationBuffByte[2u] = (uint8_t)(inSize >> 13u);
-    accumulationBuffByte[3u] = (uint8_t)(inSize >> 21u);
-    accumulationBuffByte[4u] = (uint8_t)(inSize >> 29u);
+    accumulationBuffByte[0u] = (uint8_t)((inSize <<  3u) & 0xffU);
+    accumulationBuffByte[1u] = (uint8_t)((inSize >>  5u) & 0xffU);
+    accumulationBuffByte[2u] = (uint8_t)((inSize >> 13u) & 0xffU);
+    accumulationBuffByte[3u] = (uint8_t)((inSize >> 21u) & 0xffU);
+    accumulationBuffByte[4u] = (uint8_t)((inSize >> 29u) & 0xffU);
 
     /* Process the data in the accumulation buffer */
     /* Return code will be handled by Exit-Gate functionality within processMessageBlock */

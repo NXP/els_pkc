@@ -80,18 +80,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Proce
     }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_ProcessBlocks, MCUXCLMAC_STATUS_OK,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
       MCUX_CSSL_FP_CONDITIONAL(NULL != pOut, MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN));
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 }
 
 
 /*
  * @brief Function will process full blocks as part of oneshot CMAC processing
- * 
+ *
  * @param[in/out]   pContext      pointer to context
  * @param[in]       completeLen   length of data part which forms full blocks
  * @param[in]       remainingLen  length of data not aligned to full blocks
@@ -290,11 +290,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
   size_t remainingLength = inLength;
   size_t alreadyProcessedBytes = 0;
 
-  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(UINT32_MAX - inLength, pContext->blockBufferUsed, UINT32_MAX, MCUXCLMAC_STATUS_ERROR)
-  //check if there are "old" bytes to process
-  if((pContext->blockBufferUsed > 0U) && ((pContext->blockBufferUsed + inLength) > MCUXCLAES_BLOCK_SIZE))
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pContext->blockBufferUsed, 0u, MCUXCLAES_BLOCK_SIZE - 1u, MCUXCLMAC_STATUS_FAULT_ATTACK)
+
+  /* Check if there are bytes to process in the blockBuffer, and if the combination with the input size forms more than a block of data.
+    * If yes, process this block.
+    * Note: For CMAC last block handling, we need to make sure that the last block is not processed yet. */
+  if((pContext->blockBufferUsed > 0U) && (inLength > (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed)))
   {
-    //copy new input data
+    /* Copy new input data to the context blockBuffer */
     MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed, pIn, MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
     //perform cmac operation
     MCUX_CSSL_FP_FUNCTION_CALL(processFBResult, mcuxClMacModes_Engine_CMAC_ProcessBlocks(
@@ -312,9 +315,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
     //update options for the next operations
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("remainingLength >= (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed)")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, remainingLength=inLength is known to be greater than MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed.")
     remainingLength -= (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     alreadyProcessedBytes = (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
   }
 

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -50,6 +50,35 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_generate_interna
     mcuxClSession_Handle_t pSession,
     mcuxCl_Buffer_t        pOut,
     uint32_t              outLength);
+
+
+/* Inline functions for proper type casts */
+
+/**
+ * @brief Cast a pointer to word-aligned data to a pointer to the mcuxClRandom_ModeDescriptor_t type.
+ *
+ * @param pModeDescr    The pointer to cast to a proper mode descriptor type. Must be aligned.
+*/
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_castToModeDescriptor)
+static inline mcuxClRandom_ModeDescriptor_t* mcuxClRandom_castToModeDescriptor(uint32_t* pModeDescr)
+{
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  return (mcuxClRandom_ModeDescriptor_t *) pModeDescr;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+}
+
+/**
+ * @brief Cast a pointer to word-aligned data to the mcuxClRandom_Context_t type.
+ *
+ * @param pCtx    The pointer to cast to a proper context pointer type. Must be aligned.
+*/
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_castToContext)
+static inline mcuxClRandom_Context_t mcuxClRandom_castToContext(uint32_t* pCtx)
+{
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  return (mcuxClRandom_Context_t) pCtx;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+}
 
 
 #ifdef __cplusplus

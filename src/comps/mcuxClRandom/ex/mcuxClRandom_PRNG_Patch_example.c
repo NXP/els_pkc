@@ -55,10 +55,13 @@ static mcuxClRandom_Status_t prngPatchFunction(
           return MCUXCLRANDOM_STATUS_FAULT_ATTACK;
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT30_C, "modular arithmetic.")
         *pIndexRandomData = (*pIndexRandomData + 1u) % sizeof(randomData);
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT30_C)
     }
 
-    return MCUXCLRANDOM_STATUS_OK;  
+    return MCUXCLRANDOM_STATUS_OK;
 }
 
 /** Performs an example usage of the mcuxClRandom component
@@ -153,7 +156,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandom_PRNG_Patch_example)
       return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    
+
     /**************************************************************************/
     /* Return to PRNG in normal mode                                          */
     /**************************************************************************/

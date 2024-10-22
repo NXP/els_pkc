@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -43,13 +43,6 @@
 #include <internal/mcuxClRsa_Internal_Types.h>
 
 
-#ifdef MCUXCL_FEATURE_RSA_STRENGTH_CHECK
-#define MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength)
-#else
-#define MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH  (0u)
-#endif
-
-
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_KeyGeneration_Plain)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   mcuxClSession_Handle_t pSession,
@@ -64,70 +57,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_KeyGeneration_Plain);
 
-  /*
-   * 1. Check the key type, i.e.:
-   * - algorithm IDs
-   * - key sizes (it should be 1024, 2048, 3072, 4096, 6144 or 8192).
-   *
-   * If did not pass verification, function returns MCUXCLRSA_STATUS_INVALID_INPUT error.
-   *
-   */
-  const uint32_t bitLenKey = type->size;
-  if(((MCUXCLKEY_ALGO_ID_RSA | MCUXCLKEY_ALGO_ID_KEY_PAIR) != type->algoId)
-       || ((MCUXCLKEY_SIZE_2048 != bitLenKey)
-            && (MCUXCLKEY_SIZE_3072 != bitLenKey)
-            && (MCUXCLKEY_SIZE_4096 != bitLenKey)
-            ))
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
+  uint32_t byteLenE = 0u;
+  MCUX_CSSL_FP_FUNCTION_CALL(retVal_KeyGenInit, mcuxClRsa_KeyGeneration_Init(
+    pSession,
+    type,
+    &byteLenE));
 
-  /*
-   * 2. Check entropy provided by RNG
-   *    If the RNG does not provide an appropriate level of entropy (security strength)
-   *    for the given key size, this function returns MCUXCLRSA_STATUS_RNG_ERROR error.
-   */
-  // TODO CLNS-6350 - this check is disabled by default for S5xy for now. Align with SA whether this would be needed.
-#ifdef MCUXCL_FEATURE_RSA_STRENGTH_CHECK
-  uint32_t securityStrength = MCUXCLRSA_GET_MINIMUM_SECURITY_STRENGTH(bitLenKey);
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, securityStrength));
-  if(MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
+  if(MCUXCLRSA_STATUS_OK != retVal_KeyGenInit)
   {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_RNG_ERROR,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength));
-  }
-#endif
-
-  /*
-   * 3. Check if E is FIPS compliant, i.e., is odd values in the range 2^16 < e < 2^256,
-   *    determine the length without leading zeros.
-   *    If did not pass verification, function returns MCUXCLRSA_STATUS_INVALID_INPUT error.
-   */
-  mcuxClRsa_KeyEntry_t * pPublicExponent = (mcuxClRsa_KeyEntry_t *) type->info;
-  uint32_t byteLenE;
-  MCUX_CSSL_FP_FUNCTION_CALL(retVal_VerifyE, mcuxClRsa_VerifyE(pPublicExponent, &byteLenE));
-  if(MCUXCLRSA_STATUS_KEYGENERATION_OK != retVal_VerifyE)
-  {
-#if defined(MCUXCL_FEATURE_RSA_STRENGTH_CHECK)
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_INVALID_INPUT,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_checkSecurityStrength),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE));
-#else
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_INVALID_INPUT,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE));
-#endif
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, retVal_KeyGenInit,
+      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_KeyGeneration_Init));
   }
 
   /* 4. Initialize PKC. */
-  uint32_t cpuWaSizeWord = MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(sizeof(mcuxClPkc_State_t));
-  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-  mcuxClPkc_State_t * pPkcStateBackup = (mcuxClPkc_State_t *) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
-  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
-  if (NULL == pPkcStateBackup)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
-  }
-
+  mcuxClPkc_State_t pkcStateBackup;
+  mcuxClPkc_State_t *pPkcStateBackup = &pkcStateBackup;
   MCUXCLPKC_FP_REQUEST_INITIALIZE(pSession, pPkcStateBackup, mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
 
   /*
@@ -136,6 +80,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    *    - they are be stored in little-endian byte order
    *    Memory layout: | nDash (FW) | P (pkcByteLenPrime) | nDash (FW) | Q (pkcByteLenPrime) | E (pkcByteLenKey) |
    */
+  const uint32_t bitLenKey = type->size;
   const uint32_t byteLenKey = bitLenKey / 8u;
   const uint32_t pkcByteLenKey = MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(byteLenKey);
   const uint32_t byteLenPrime = byteLenKey / 2u;
@@ -170,7 +115,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
 
   /* Setup UPTR table. */
   const uint32_t uptrtSizeWord = MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRSA_INTERNAL_KEYGENERATION_PLAIN_UPTRT_SIZE * (sizeof(uint16_t)));
-  cpuWaSizeWord += uptrtSizeWord;
+  uint32_t cpuWaSizeWord = uptrtSizeWord;
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("16-bit UPTRT table is assigned in CPU workarea")
   uint16_t * pOperands = (uint16_t *) mcuxClSession_allocateWords_cpuWa(pSession, uptrtSizeWord);
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
@@ -193,6 +138,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    *  Used functions: mcuxClPkc_ImportBigEndianToPkc
    */
   MCUXCLPKC_PS1_SETLENGTH(pkcByteLenPrime, pkcByteLenPrime);
+  mcuxClRsa_KeyEntry_t * pPublicExponent = (mcuxClRsa_KeyEntry_t *) type->info;
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(pPublicExponent->keyEntryLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(byteLenE, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
   uint32_t leadingZerosE = pPublicExponent->keyEntryLength - byteLenE;
   MCUXCLPKC_FP_IMPORTBIGENDIANTOPKC(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_E, pPublicExponent->pKeyEntryData + leadingZerosE, byteLenE);
 
@@ -212,27 +160,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
 
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
-    if(MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED == retVal_GenerateProbablePrime_P)
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain,
-        MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED,
-        MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
-        MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
-        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
-    }
-    else
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, retVal_GenerateProbablePrime_P);
-    }
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain,
+      retVal_GenerateProbablePrime_P,
+      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_KeyGeneration_Init),
+      MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
+      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
+      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
+      MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
   }
 
-  uint32_t loopCounter = 0;
+  MCUX_CSSL_FP_COUNTER_STMT(uint32_t loopCounter = 0;)
 
   do{
-    ++loopCounter;
+    MCUX_CSSL_FP_COUNTER_STMT(++loopCounter;)
 
     /*
      * 8. Generate prime q.
@@ -250,24 +190,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
 
       mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
-      if(MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED == retVal_GenerateProbablePrime_Q)
-      {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain,
-          MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED,
-          MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH,
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
-          MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
-          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
-          loopCounter * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
-          (loopCounter - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_TestPQDistance),
-          (loopCounter - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_ComputeD),
-          MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
-      }
-      else
-      {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, retVal_GenerateProbablePrime_Q);
-      }
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain,
+        retVal_GenerateProbablePrime_Q,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_KeyGeneration_Init),
+        MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
+        loopCounter * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
+        (loopCounter - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_TestPQDistance),
+        (loopCounter - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_ComputeD),
+        MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);
     }
 
     /*
@@ -357,6 +289,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    * Used functions: mcuxClPkc_ExportBigEndianFromPkc (to export n and e).
    */
   MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
   mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) pPubData;
   pRsaPubKey->keytype = MCUXCLRSA_KEY_PUBLIC;
   *pPubDataLength = sizeof(mcuxClRsa_Key);
@@ -367,83 +300,50 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   pRsaPubKey->pQInv = NULL;
 
   pRsaPubKey->pExp1 = (mcuxClRsa_KeyEntry_t *) (pPubData + *pPubDataLength);
-  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
   *pPubDataLength += sizeof(mcuxClRsa_KeyEntry_t);
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
   pRsaPubKey->pExp2 = NULL;
   pRsaPubKey->pExp3 = NULL;
 
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type")
   pRsaPubKey->pMod1->pKeyEntryData = pPubData + *pPubDataLength;
   pRsaPubKey->pMod1->keyEntryLength = byteLenKey;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(
     pRsaPubKey->pMod1->pKeyEntryData,
     MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_N,
     pRsaPubKey->pMod1->keyEntryLength);
   *pPubDataLength += pRsaPubKey->pMod1->keyEntryLength;
 
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type")
   pRsaPubKey->pExp1->pKeyEntryData = pPubData + *pPubDataLength;
   pRsaPubKey->pExp1->keyEntryLength = e.keyEntryLength;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(
     pRsaPubKey->pExp1->pKeyEntryData,
     MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_E,
     pRsaPubKey->pExp1->keyEntryLength);
   *pPubDataLength += pRsaPubKey->pExp1->keyEntryLength;
 
-  /*
-   * 13. Write RSA plain key (d, n) to the buffer pointed by pPrivData.
-   *     This buffer contains RSA key (mcuxClRsa_Key data type, i.e.: key type and key entries)
-   *     followed by the key data, i.e.: n, d.
-   *     Key entries stored in big-endian byte order (copy with reverse order).
-   *
-   * Used functions: mcuxClPkc_ExportBigEndianFromPkc (to export n);
-   *                 mcuxClPkc_SecureExportBigEndianFromPkc (to export d).
-   */
-  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-  mcuxClRsa_Key *pRsaPrivatePlainKey = (mcuxClRsa_Key *) pPrivData;
-  pRsaPrivatePlainKey->keytype = MCUXCLRSA_KEY_PRIVATEPLAIN;
-  *pPrivDataLength = sizeof(mcuxClRsa_Key);
 
-  pRsaPrivatePlainKey->pMod1 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
-  *pPrivDataLength += sizeof(mcuxClRsa_KeyEntry_t);
-  pRsaPrivatePlainKey->pMod2 = NULL;
-  pRsaPrivatePlainKey->pQInv = NULL;
+  MCUX_CSSL_FP_FUNCTION_CALL(retVal_storePlain, mcuxClRsa_KeyGeneration_StorePrivatePlain(
+    pSession,
+    pPrivData,
+    pPrivDataLength,
+    pPubData,
+    d.keyEntryLength));
 
-  pRsaPrivatePlainKey->pExp1 = (mcuxClRsa_KeyEntry_t *) (pPrivData + *pPrivDataLength);
-  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
-
-  *pPrivDataLength += sizeof(mcuxClRsa_KeyEntry_t);
-  pRsaPrivatePlainKey->pExp2 = NULL;
-  pRsaPrivatePlainKey->pExp3 = NULL;
-
-  pRsaPrivatePlainKey->pMod1->pKeyEntryData = pPrivData + *pPrivDataLength;
-  pRsaPrivatePlainKey->pMod1->keyEntryLength = byteLenKey;
-  MCUXCLMEMORY_FP_MEMORY_COPY(
-      pRsaPrivatePlainKey->pMod1->pKeyEntryData,
-      pRsaPubKey->pMod1->pKeyEntryData,
-      pRsaPrivatePlainKey->pMod1->keyEntryLength);
-
-  *pPrivDataLength += pRsaPrivatePlainKey->pMod1->keyEntryLength;
-
-  pRsaPrivatePlainKey->pExp1->pKeyEntryData = pPrivData + *pPrivDataLength;
-  pRsaPrivatePlainKey->pExp1->keyEntryLength = d.keyEntryLength;
-  MCUXCLPKC_PS1_SETLENGTH(0u, pkcByteLenKey); /* set operand len for mcuxClPkc_SecureExportBigEndianFromPkc */
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_SecExportD,
-      mcuxClPkc_SecureExportBigEndianFromPkc(pSession,
-                                            pRsaPrivatePlainKey->pExp1->pKeyEntryData,
-                                            MCUXCLPKC_PACKARGS2(MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_D,
-                                                               MCUXCLRSA_INTERNAL_UPTRTINDEX_KEYGENERATION_PLAIN_N /* used as a temp */),
-                                            pRsaPrivatePlainKey->pExp1->keyEntryLength));
-  if (MCUXCLPKC_STATUS_OK != ret_SecExportD)
+  if (MCUXCLRSA_STATUS_OK != retVal_storePlain)
   {
-      mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord + 2u * pkcByteLenKey / sizeof(uint32_t));
-      MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
-              mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
+    mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord + 2u * pkcByteLenKey / sizeof(uint32_t));
+    MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pPkcStateBackup,
+            mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
 
-      mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
-
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_ERROR);
+    mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, retVal_storePlain);
   }
-  *pPrivDataLength += pRsaPrivatePlainKey->pExp1->keyEntryLength;
 
   /*
    * 14. Initialization of key handles for public and private key
@@ -477,11 +377,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   mcuxClKey_setLoadedKeySlot(pPrivKey, 0u);
 
   /* Create link between private and public key handles */
-  MCUX_CSSL_FP_FUNCTION_CALL(ret_linkKeyPair, mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
-  if (MCUXCLKEY_STATUS_OK != ret_linkKeyPair)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_KeyGeneration_Plain, MCUXCLRSA_STATUS_FAULT_ATTACK);
-  }
+  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
 
   /* Clear PKC workarea. */
   uint32_t pkcWaSize = MCUXCLRSA_KEYGENERATION_PLAIN_WAPKC_SIZE(bitLenKey);
@@ -498,8 +394,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRsa_KeyGeneration_Plain,
     MCUXCLRSA_STATUS_KEYGENERATION_OK,
     MCUXCLRSA_STATUS_FAULT_ATTACK,
-    MCUXCLRSA_KEYGEN_PLAIN_FP_SECSTRENGTH,
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_VerifyE),
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_KeyGeneration_Init),
     MCUXCLPKC_FP_CALLED_REQUEST_INITIALIZE,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ImportBigEndianToPkc),
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_GenerateProbablePrime),
@@ -508,8 +403,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
     loopCounter * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_ComputeD),
     MCUXCLPKC_FP_CALLED_CALC_MC1_PM,
     2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_ExportBigEndianFromPkc),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureExportBigEndianFromPkc),
+    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_KeyGeneration_StorePrivatePlain),
     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_linkKeyPair),
     MCUXCLPKC_FP_CALLED_DEINITIALIZE_RELEASE);

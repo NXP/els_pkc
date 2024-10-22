@@ -54,29 +54,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_public(
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
-
-  if(NULL == pKey->pMod1->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
   const uint8_t* const pExp = pKey->pExp1->pKeyEntryData;
-  if(NULL == pExp)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
-
   /************************************************************************************************/
   /* Check that modulus is odd and that 64 < pKey->pMod1->keyEntryLength < 512 or 1024;           */
   /* otherwise return MCUXCLRSA_STATUS_INVALID_INPUT.                                              */
   /************************************************************************************************/
   const uint32_t byteLenN = pKey->pMod1->keyEntryLength;
 
-  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_public, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(byteLenN, 64U, MCUXCLRSA_MAX_MODLEN, MCUXCLRSA_STATUS_INVALID_INPUT)
 
   if(0U == (pKey->pMod1->pKeyEntryData[byteLenN - 1U] & 0x01U))
   {

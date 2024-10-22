@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -79,9 +79,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
-    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea = mcuxClEcc_castToEccCpuWorkarea(mcuxClSession_getCpuWaBuffer(pSession));
+
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) (privKey->type.info);
 
     MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
@@ -187,16 +186,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
     /* V1 = V0 for Ed25519 (64/128-bit PkcWord) and Ed448 (128-bit PkcWord); */
     /*    = V0 + 64-bit for Ed448 (64-bit PkcWord).                          */
     /* ps, PKC will ignore non-aligned part of offsets.                      */
-    pOperands[ECC_V0] = (uint16_t) (offsetS3 - (b/8u));
-    pOperands[ECC_V1] = (uint16_t) (offsetS3 - (t/8u));
+    pOperands[ECC_V0] = (uint16_t) ((offsetS3 - (b/8u)) & 0xffffU);
+    pOperands[ECC_V1] = (uint16_t) ((offsetS3 - (t/8u)) & 0xffffU);
     /* V2/V3/V4 are shift/rotate amounts used in FUP program below. */
     /* V2 = 2 (Ed25519); 9 (Ed448). */
     /* V3 = -252 \equiv  4 (Ed25519);                */
     /*      -446 \equiv  2 (Ed448, 64-bit PkcWord)   */
     /*               or 66 (Ed448, 128-bit PkcWord). */
-    pOperands[ECC_V2] = (uint16_t) (b - t);
-    pOperands[ECC_V3] = (uint16_t) (c - 1u - t);
-    pOperands[ECC_V4] = (uint16_t) c;
+    pOperands[ECC_V2] = (uint16_t) ((b - t) & 0xffffU);
+    pOperands[ECC_V3] = (uint16_t) ((c - 1u - t) & 0xffffU);
+    pOperands[ECC_V4] = (uint16_t) (c & 0xffffU);
     uint32_t keyLengthPkc = MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(keyLength);
     MCUXCLPKC_PS2_SETLENGTH(0u, keyLengthPkc);
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_EdDSA_GenerateKeyPair_Prepare_S,
@@ -233,13 +232,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
     /* Derive the encoding Q_enc of Q and store it in buffer ECC_COORD02.
      *
      * NOTE: PS2 lengths are still set to (0u, keyLengthPkc) */
-    MCUXCLPKC_FP_CALC_OP2_CONST(ECC_COORD02, 0u);                    /* Clear keyLengthPkc bytes of buffer ECC_COORD02 */
-    MCUXCLPKC_FP_CALC_OP1_OR_CONST(ECC_COORD02, ECC_COORD01, 0u);    /* Copy operandSize < keyLengthPkc bytes of the y-coordinate from ECC_COORD01 to ECC_COORD02 */
-    uint8_t *pQX = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD00]);
-    uint8_t *pQEncLsbXByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD02])[keyLength - 1u];
-    MCUXCLPKC_WAITFORFINISH();
-    uint8_t lsbX = (*pQX) & 0x01u;
-    *pQEncLsbXByte |= (lsbX << 7u);
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_EdDSA_EncodePoint(keyLength));
 
 
     /*
@@ -268,12 +261,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
     MCUXCLPKC_FP_EXPORTLITTLEENDIANFROMPKC(pubKey->container.pData, ECC_COORD02, keyLength);
 
     /* Create link between private and public key handles */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_linkKeyPair, mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
-    if (MCUXCLKEY_STATUS_OK != ret_linkKeyPair)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateKeyPair_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
-
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClKey_linkKeyPair(pSession, privKey, pubKey));
 
     /* Clean up and exit */
     mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
@@ -294,6 +282,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
         /* Step 5 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_BlindedScalarMult),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_EncodePoint),
         MCUX_CSSL_FP_CONDITIONAL((MCUXCLECC_STATUS_NEUTRAL_POINT == ret_BlindedScalarMult),
             MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
             MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
@@ -326,7 +315,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     /* mcuxClKey_Handle_t privKey                                */ privKey,
     /* mcuxClKey_Handle_t privKey                                */ pubKey));
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair, keygen_result, MCUXCLECC_STATUS_FAULT_ATTACK,
-                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateKeyPair_Core));
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_EdDSA_GenerateKeyPair,
+        keygen_result,
+        MCUXCLECC_STATUS_RNG_ERROR == keygen_result ? MCUXCLECC_STATUS_RNG_ERROR : MCUXCLECC_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateKeyPair_Core));
 }
 

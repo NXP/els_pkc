@@ -34,7 +34,9 @@ mcuxClRsa_Status_Protected_t mcuxClRsa_VerifyE(mcuxClRsa_KeyEntry_t *pE, uint32_
   uint32_t eLength = pE->keyEntryLength;
   while(eLength > 0u)
   {
+     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("'eLength = pE->keyEntryLength', so result won't wrap")
      if(0u != pE->pKeyEntryData[pE->keyEntryLength - eLength])
+     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
      {
        break;
      }

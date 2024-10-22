@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -149,7 +149,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_EngineCcm 
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_EngineCcm, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_EngineCcm, MCUXCLAEAD_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_ScheduleSM4Key),
         MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLOSCCAAEADMODES_ENGINE_OPTION_ENC) == MCUXCLOSCCAAEADMODES_ENGINE_OPTION_ENC)
                                 && (MCUXCLOSCCASM4_DECRYPT == pCtx->direction),

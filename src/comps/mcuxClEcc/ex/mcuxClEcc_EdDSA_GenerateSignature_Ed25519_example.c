@@ -105,13 +105,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example)
     /******************************************/
 
     /* Allocate space for and initialize private key handle for an Ed25519 private key */
-    ALIGNED uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
+    uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) privKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     ALIGNED uint8_t pPrivKeyData[MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA];
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey is of the right type (mcuxClKey_Handle_t)")
     /* mcuxClKey_Handle_t key                 */ privKey,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Priv,
     /* uint8_t * pKeyData                    */ pPrivKeyData,
     /* uint32_t keyDataLength                */ sizeof(pPrivKeyData)));
@@ -124,16 +128,20 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example)
 
 
     /* Allocate space for and initialize public key handle for an Ed25519 public key */
-    ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
+    uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     ALIGNED uint8_t pPubKeyData[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY];
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
     /* mcuxClSession_Handle_t session         */ &session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey is of the right type (mcuxClKey_Handle_t)")
     /* mcuxClKey_Handle_t key                 */ pubKey,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Pub,
     /* uint8_t * pKeyData                    */ pPubKeyData,
-    /* uint32_t keyDataLength                */ sizeof(pPubKeyData)));
+    /* uint32_t keyDataLength                */ (uint32_t)sizeof(pPubKeyData)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != pubkeyinit_token) || (MCUXCLKEY_STATUS_OK != pubkeyinit_result))
     {
@@ -142,10 +150,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Allocate space for and initialize EdDSA key pair generation descriptor for private key input */
-    ALIGNED uint8_t privKeyInputDescriptor[MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE];
+    uint32_t privKeyInputDescriptor[MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE_IN_WORDS];
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(initmode_result, initmode_token, mcuxClEcc_EdDSA_InitPrivKeyInputMode(
     /* mcuxClSession_Handle_t pSession                   */ &session,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     /* mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode */ (mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *) &privKeyInputDescriptor,
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     /* const uint8_t *pPrivKey                          */ pPrivKeyInput));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_InitPrivKeyInputMode) != initmode_token) || (MCUXCLECC_STATUS_OK != initmode_result))
@@ -161,7 +171,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_GenerateSignature_Ed25519_example)
     /* Call mcuxClEcc_EdDSA_GenerateKeyPair to derive the public key from the private one. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygen_result, keygen_token, mcuxClEcc_EdDSA_GenerateKeyPair(
     /*  mcuxClSession_Handle_t pSession                          */ &session,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     /*  const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode  */ (mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *) &privKeyInputDescriptor,
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     /*  mcuxClKey_Handle_t privKey                               */ privKey,
     /*  mcuxClKey_Handle_t pubKey                                */ pubKey));
 

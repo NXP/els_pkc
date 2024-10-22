@@ -28,22 +28,23 @@
 #include <internal/mcuxClKey_Internal.h>
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <internal/mcuxClMac_Internal_Constants.h>
+#include <internal/mcuxClMac_Internal_Functions.h>
 #include <internal/mcuxClHmac_Internal_Types.h>
 
 
 /**
  * @brief Simple unsecure xor of two buffers of the same size.
- * 
+ *
  * @param[out]  pDst        Destination buffer
  * @param[in]   pSrc1       First source buffer
  * @param[in]   pSrc2       Second source buffer
  * @param[in]   length      Byte length of source and destination
- * 
+ *
  * @details There are no length checks in place. Ensure no buffer is shorter than length
  */
 static inline void mcuxClKey_derivation_xor_buffers(uint8_t* pDst, const uint8_t* pSrc1, const uint8_t* pSrc2, uint32_t length)
 {
-    for(uint32_t i = 0u; i < length; i++)
+    for(uint32_t i = 0U; i < length; i++)
     {
         pDst[i] = pSrc1[i] ^ pSrc2[i];
     }
@@ -51,15 +52,15 @@ static inline void mcuxClKey_derivation_xor_buffers(uint8_t* pDst, const uint8_t
 
 /**
  * @brief Computes a HMAC digest using the mcuxClMac API
- * 
- * @param[in]   pSession 
+ *
+ * @param[in]   pSession
  * @param[in]   hmacMode    Mac mode to be used, must be an Hmac mode
  * @param[in]   hmacKey     Key to be used for the Hmac computation
  * @param[in]   salt        The salt will form the first part of the input for the Hmac computation
  * @param[in]   pIndex      pIndex will form the second part of the input for the Hmac computation. Must be 4 Byte in size.
  * @param[out]  pOutput     Output buffer to store the computed digest. Must be large enough to hold a digest according to hmacMode.
- * 
- * @details 
+ *
+ * @details
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_derivation_pbkdf2_computeHmac)
 static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivation_pbkdf2_computeHmac(
@@ -73,9 +74,7 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_derivation_pbkdf2_computeHmac);
     /* Allocate space for the MAC context. */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClMac_Context_t *hmacContext =  (mcuxClMac_Context_t *) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLHMAC_MAX_CONTEXT_SIZE_IN_WORDS);
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    mcuxClMac_Context_t * hmacContext = mcuxClMac_castToMacContext(mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLHMAC_MAX_CONTEXT_SIZE_IN_WORDS));
     if(NULL == hmacContext)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivation_pbkdf2_computeHmac, MCUXCLKEY_STATUS_ERROR);
@@ -120,7 +119,7 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivation_pbkdf2_computeHmac, MCUXCLKEY_STATUS_FAULT_ATTACK);
     }
 
-    uint32_t outSize = 0u;
+    uint32_t outSize = 0U;
 
     /* Create the digest. */
     MCUXCLBUFFER_INIT(pOutputBuf, pSession, pOutput, sizeof(uint32_t));
@@ -142,7 +141,7 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivati
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivation_pbkdf2_computeHmac, MCUXCLKEY_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_init),
-        2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_process),
+        2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_process),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_finish));
 }
 
@@ -165,17 +164,58 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_Derivation_ModeConstructor_PBKDF2, MCUXCLKEY_STATUS_OK);
 }
 
+/**
+ * @brief Input arguments validation for PBKDF2 Key Derivation engine
+ *
+ * @param[in]   derivationMode      Mode that specifies algorithm details
+ * @param[in]   numberOfInputs      Number of inputs, expected to be 1
+ * @param[out]  derivedKey          Key handle to receive resulting key
+ *
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_derivationEngine_PBKDF2_ValidateInput, mcuxClKey_DerivationEngine_t)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_PBKDF2_ValidateInput(
+    mcuxClKey_Derivation_t derivationMode,
+    uint32_t numberOfInputs,
+    mcuxClKey_Handle_t derivedKey)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_derivationEngine_PBKDF2_ValidateInput);
+
+    /* Salt is required */
+    if(1U != numberOfInputs)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2_ValidateInput, MCUXCLKEY_STATUS_INVALID_INPUT);
+    }
+
+    /* Requested key size shall not be 0 or larger than the available buffer space. */
+    if((derivedKey->type.size == 0U) || (derivedKey->type.size > derivedKey->container.length))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2_ValidateInput, MCUXCLKEY_STATUS_ERROR);
+    }
+
+    /* HMAC mode needs to be provided */
+    if((NULL == derivationMode->macMode) || (NULL == derivationMode->macMode->pCustom))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2_ValidateInput, MCUXCLKEY_STATUS_INVALID_INPUT);
+    }
+
+    /* Salt shall to be at least 8 Bytes. Not enforced */
+    /* Iteration count shall be at least 1000. Not enforced */
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2_ValidateInput, MCUXCLKEY_STATUS_OK);
+}
 
 /**
  * @brief Top-level function of the implementation of PBKDF2 Key Derivation
- * 
+ *
  * @param[in]   pSession
  * @param[in]   derivationMode      Mode that specifies algorithm details
  * @param[in]   derivationKey       Key handle holding the source key
  * @param[in]   inputs              Array holding information about the salt to be used
  * @param[in]   numberOfInputs      Number of inputs, expected to be 1
  * @param[out]  derivedKey          Key handle to receive resulting key
- * 
+ *
+ * @return status
  */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClKey_derivationEngine_PBKDF2, mcuxClKey_DerivationEngine_t)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngine_PBKDF2(
@@ -188,22 +228,15 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClKey_derivationEngine_PBKDF2);
 
-    /* Salt is required */
-    if(1u != numberOfInputs)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, MCUXCLKEY_STATUS_INVALID_INPUT);
-    }
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_validateInput, mcuxClKey_derivationEngine_PBKDF2_ValidateInput(
+        derivationMode,
+        numberOfInputs,
+        derivedKey));
 
-    /* Requested key size shall not be 0 or larger than the available buffer space. */
-    if((derivedKey->type.size == 0u) || (derivedKey->type.size > derivedKey->container.length))
+    if(MCUXCLKEY_STATUS_OK != ret_validateInput)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, MCUXCLKEY_STATUS_ERROR);
-    }
-
-    /* HMAC mode needs to be provided */
-    if((NULL == derivationMode->macMode) || (NULL == derivationMode->macMode->pCustom))
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, MCUXCLKEY_STATUS_INVALID_INPUT);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, ret_validateInput,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_derivationEngine_PBKDF2_ValidateInput));
     }
 
     /* Salt shall to be at least 8 Bytes. Not enforced */
@@ -227,10 +260,12 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
     uint32_t numberOfBlocks = derivedKey->type.size / macByteSize;
     uint32_t outputBytesLastBlock = derivedKey->type.size % macByteSize;
 
-    if(outputBytesLastBlock != 0u)
+    if(outputBytesLastBlock != 0U)
     {
         /* Increase the number of iterations to also handle the last "incomplete" output block */
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("numberOfBlocks cannot be equal to UINT32_MAX, as macByteSize is always bigger than 1.")
         numberOfBlocks++;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     }
     else
     {
@@ -246,7 +281,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
     }
 
     /* Allocate space for big endian counter value */
-    uint8_t *pBigEndianI = (uint8_t *)mcuxClSession_allocateWords_cpuWa(pSession, 1u);
+    uint8_t *pBigEndianI = (uint8_t *)mcuxClSession_allocateWords_cpuWa(pSession, 1U);
     if(NULL == pBigEndianI)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, MCUXCLKEY_STATUS_ERROR);
@@ -261,7 +296,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
 
     uint8_t* pOutputKey = derivedKey->container.pData;
     /* Compute T_i blocks */
-    for(size_t i = 1u; i <= numberOfBlocks; i++)
+    for(size_t i = 1U; i <= numberOfBlocks; i++)
     {
         /* Compute U_1 */
         mcuxClMemory_StoreBigEndian32(pBigEndianI, i);
@@ -282,7 +317,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
         MCUXCLMEMORY_FP_MEMORY_COPY(pT_i_buffer, pMacOutput, macByteSize);
 
         /* Compute U_2 ... U_c */
-        for(size_t j = 1u; j < derivationMode->options; j++)
+        for(size_t j = 1U; j < derivationMode->options; j++)
         {
             uint32_t outSize = 0;
             MCUXCLBUFFER_INIT_RO(pMacInBuf, pSession, pMacOutput, macByteSize);
@@ -310,14 +345,14 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
             /* If not last iteration: Copy T_i buffer to derivedKey */
             MCUX_CSSL_FP_FUNCTION_CALL(write_result, mcuxClBuffer_write(
                     pOutputKeyBuf,
-                    (i - 1u) * macByteSize,
+                    (i - 1U) * macByteSize,
                     pT_i_buffer,
                     macByteSize
             ));
             if(MCUXCLBUFFER_STATUS_OK != write_result)
             {
                 /* clean-up the CPU work-area: pBigEndianI, pMacOutput, pT_i_buffer */
-                mcuxClSession_freeWords_cpuWa(pSession, 1u + 2u * (macByteSize / sizeof(uint32_t)));
+                mcuxClSession_freeWords_cpuWa(pSession, 1U + 2U * (macByteSize / sizeof(uint32_t)));
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, write_result);
             }
         }
@@ -327,26 +362,27 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_derivationEngin
             /* If last iteration: Copy first outputBytesLastBlock bytes of T_i buffer to derivedKey */
             MCUX_CSSL_FP_FUNCTION_CALL(write_result, mcuxClBuffer_write(
                     pOutputKeyBuf,
-                    (i - 1u) * macByteSize,
+                    (i - 1U) * macByteSize,
                     pT_i_buffer,
                     outputBytesLastBlock
             ));
             if(MCUXCLBUFFER_STATUS_OK != write_result)
             {
                 /* clean-up the CPU work-area: pBigEndianI, pMacOutput, pT_i_buffer */
-                mcuxClSession_freeWords_cpuWa(pSession, 1u + 2u * (macByteSize / sizeof(uint32_t)));
+                mcuxClSession_freeWords_cpuWa(pSession, 1U + 2U * (macByteSize / sizeof(uint32_t)));
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, write_result);
             }
         }
     }
 
     /* clean-up the CPU work-area: pBigEndianI, pMacOutput, pT_i_buffer */
-    mcuxClSession_freeWords_cpuWa(pSession, 1u + 2u * (macByteSize / sizeof(uint32_t)));
+    mcuxClSession_freeWords_cpuWa(pSession, 1U + 2U * (macByteSize / sizeof(uint32_t)));
 
     /* FP balancing and exit */
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClKey_derivationEngine_PBKDF2, MCUXCLKEY_STATUS_OK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_derivationEngine_PBKDF2_ValidateInput),
         numberOfBlocks * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_derivation_pbkdf2_computeHmac),
-        numberOfBlocks * (derivationMode->options - 1u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute),
+        numberOfBlocks * (derivationMode->options - 1U) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute),
         numberOfBlocks * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
         numberOfBlocks * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_write)
     );

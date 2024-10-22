@@ -43,7 +43,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   .protection_token_process = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_process),
   .protection_token_finish = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_finish),
   .protection_token_verify = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_verify),
+  MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
   .algorithm = (const struct mcuxClAead_AlgorithmDescriptor *)&mcuxClOsccaAead_algorithm_CCM_ENC
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
 };
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
@@ -62,6 +64,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   .protection_token_process = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_process),
   .protection_token_finish = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_finish),
   .protection_token_verify = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_verify),
+  MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
   .algorithm = (const struct mcuxClAead_AlgorithmDescriptor *)&mcuxClOsccaAead_algorithm_CCM_DEC
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
 };
 
+
+#ifdef __cplusplus
+}
+#endif

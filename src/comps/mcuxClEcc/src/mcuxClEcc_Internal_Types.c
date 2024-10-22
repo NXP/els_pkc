@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -49,6 +49,7 @@ const mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t mcuxClEcc_ECDSA_ProtocolDesc
 {
     .pBlindedEphemeralKeyGenFct           = mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_RandomWithExtraBits,
     .pBlindedEphemeralKeyGenFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_RandomWithExtraBits),
+    .keyGenCtxSizeInWords                 = 0U,
 #ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
     .pHmacModeDesc                        = NULL /* not needed for regular (randomized) ECDSA */
 #endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */

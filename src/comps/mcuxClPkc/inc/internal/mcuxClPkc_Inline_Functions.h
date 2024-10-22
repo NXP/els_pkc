@@ -57,6 +57,19 @@ static inline uint16_t * mcuxClPkc_inline_getUptrt(void)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 }
 
+/** Inline function to get the CPU word-aligned address of UPTRT (Universal pointer FUP table). */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_getUptrt32)
+static inline uint32_t * mcuxClPkc_inline_getUptrt32(void)
+{
+    uint32_t uptrtAddr = MCUXCLPKC_SFR_READ(UPTRT);
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("Convert UPTRT address to pointer.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("The UPTR table is always ensured to be 32-bit by the calling components.")
+    return (uint32_t *) uptrtAddr;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+}
+
 /** Inline function to convert CPU pointer to PKC offset. */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_ptr2Offset)
 static inline uint16_t mcuxClPkc_inline_ptr2Offset(const uint8_t * cpuPointer)
@@ -91,15 +104,27 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_offset2PtrWord)
 static inline uint32_t * mcuxClPkc_inline_offset2PtrWord(uint16_t pkcOffset)
 {
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("convert PKC operand offset (PKC-word aligned) to pointer.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Buffers in the PKC RAM are ensured to be aligned to the PKC word-size MCUXCLPKC_WORDSIZE. Any given pkcOffset follows this requirement.")
 
     uint32_t ptrAddress = (uint32_t) pkcOffset | (uint32_t) MCUXCLPKC_RAM_START_ADDRESS;
     uint32_t * ptrWord = (uint32_t *) ptrAddress;
 
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
 
     return ptrWord;
 }
 
+/** Inline function to convert MCUXCLPKC_RAM_START_ADDRESS to CPU word-aligned pointer. */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClPkc_inline_getPointerToPkcRamStart)
+static inline uint32_t * mcuxClPkc_inline_getPointerToPkcRamStart(void)
+{
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("The start address of the PKC RAM is 32-bit aligned, this conversion is safe.")
+
+    return ((uint32_t *) MCUXCLPKC_RAM_START_ADDRESS);
+
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+}
 
 /**********************************************************/
 /* Inline functions for parameter set 1 and 2             */

@@ -42,13 +42,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_crypt);
 
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION("The required fields in mcuxClCipherModFunctions_t are declared using the macro MCUXCLCIPHER_CRYPT_MODEFUNCTIONS");
   const mcuxClCipher_ModeFunctions_t *pModeFunctions = (const mcuxClCipher_ModeFunctions_t *)mode->pModeFunctions;
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION();
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_FP_FUNCTION_CALL(status, pModeFunctions->crypt(
                                               session,
                                               NULL, /* pContext */
@@ -61,7 +61,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
                                               pOut,
                                               pOutLength,
                                               MCUXCLCIPHER_OPTION_ONESHOT));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
   if(MCUXCLCIPHER_STATUS_OK != status)
   {
@@ -87,13 +87,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_init);
 
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION("The required fields in mcuxClCipherModFunctions_t are declared using the macro MCUXCLCIPHER_CRYPT_MODEFUNCTIONS");
   const mcuxClCipher_ModeFunctions_t *pModeFunctions = (const mcuxClCipher_ModeFunctions_t *)mode->pModeFunctions;
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION();
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_FP_FUNCTION_CALL(status, pModeFunctions->crypt(
                                               session,
                                               pContext,
@@ -106,7 +106,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
                                               NULL, /* pOut */
                                               0u,   /* pOutLength */
                                               MCUXCLCIPHER_OPTION_INIT));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT() 
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
   if(MCUXCLCIPHER_STATUS_OK != status)
   {
@@ -129,14 +129,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_process);
 
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION("The required fields in mcuxClCipherModFunctions_t are declared using the macro MCUXCLCIPHER_CRYPT_MODEFUNCTIONS");
   const mcuxClCipher_ModeFunctions_t *pModeFunctions = (const mcuxClCipher_ModeFunctions_t *)pContext->pMode->pModeFunctions;
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION();
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments are not derefernced during process step MCUXCLCIPHER_OPTION_PROCESS")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments are not dereferenced during process step MCUXCLCIPHER_OPTION_PROCESS")
   MCUX_CSSL_FP_FUNCTION_CALL(status, pModeFunctions->crypt(
                                               session,
                                               pContext,
@@ -149,7 +149,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
                                               pOut,
                                               pOutLength,
                                               MCUXCLCIPHER_OPTION_PROCESS));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
   if(MCUXCLCIPHER_STATUS_OK != status)
@@ -171,14 +171,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipher_finish);
 
-  MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION("The required fields in mcuxClCipherModFunctions_t are declared using the macro MCUXCLCIPHER_CRYPT_MODEFUNCTIONS");
   const mcuxClCipher_ModeFunctions_t *pModeFunctions = (const mcuxClCipher_ModeFunctions_t *)pContext->pMode->pModeFunctions;
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_VOIDPTR_TO_FUNCTION();
-  MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments are not derefernced during finish step MCUXCLCIPHER_OPTION_FINISH")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments are not dereferenced during finish step MCUXCLCIPHER_OPTION_FINISH")
   MCUX_CSSL_FP_FUNCTION_CALL(status, pModeFunctions->crypt(
                                               session,
                                               pContext,
@@ -191,7 +191,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
                                               pOut,
                                               pOutLength,
                                               MCUXCLCIPHER_OPTION_FINISH));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
   if(MCUXCLCIPHER_STATUS_OK != status)

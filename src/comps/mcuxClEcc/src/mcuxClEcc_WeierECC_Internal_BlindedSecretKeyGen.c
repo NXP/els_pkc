@@ -93,12 +93,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecret
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.")
     const uint32_t *ptr32N = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(byteLenN, MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_BASEPOINTORDER, MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDER, MCUXCLECC_STATUS_FAULT_ATTACK)
     const uint32_t wordNumN = (byteLenN + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t nMSWord = ptr32N[wordNumN - 1u];
     uint32_t nMSWord_LeadZeros = mcuxClMath_CountLeadingZerosWord(nMSWord);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("'nMSWord_LeadZeros' is less than 'wordNumN', cannot wrap")
     uint32_t bitLenN65 = (wordNumN * (sizeof(uint32_t)) * 8u) - nMSWord_LeadZeros + 65u;
     uint32_t pkcByteLenN65 = (bitLenN65 + (MCUXCLPKC_WORDSIZE * 8u) - 1u) / (MCUXCLPKC_WORDSIZE * 8u) * MCUXCLPKC_WORDSIZE;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Clear buffer S0. */
     MCUXCLPKC_FP_CALC_OP1_CONST(ECC_S0, 0u);
@@ -220,7 +223,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecret
     /*         S2 = c' = c + r, the result fits in (bitLenN+65) bits, with OPLEN = pkcByteLenN65. */
     /*         ZA = d0, duplicate because ModInv(d0) will destroy input d0.                       */
     /* Step 4: Z = n-1. */
-    pOperands[WEIER_VT] = (uint16_t) nMSWord_LeadZeros;
+    pOperands[WEIER_VT] = (uint16_t) (nMSWord_LeadZeros & 0xFFFFU);
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits_Steps34,
                         mcuxClEcc_FUP_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits_Steps34_LEN);
 

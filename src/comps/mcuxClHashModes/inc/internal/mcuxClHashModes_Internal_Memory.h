@@ -120,32 +120,13 @@ extern "C" {
 /* Work area size for the C implementation of SHA-3 */
 #define MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHA3 (4u)
 
-/* Work area sizes for SHA-3 non-blocking with the LTC coprocessor */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING (4u)
-
-/* Work area sizes for SHA-3 blocking with the LTC coprocessor */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_BLOCKING (4u) /* Sha3 blocking with LTC does not need the CPU WA*/
-
-/* Work area sizes for SHA-3 with the LTC coprocessor (without DMA) */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_LTC_SHA3 (4u) /* Sha3 with LTC does not need the CPU WA*/
-
 /* Work area size for the C implementation of Shake */
 #define MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHAKE (4u)
 
-/* Work area size for Shake with the LTC coprocessor */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_LTC_SHAKE (4u) /* Shake with LTC does not need the CPU WA*/
-
-/* Work area size for CShake with the LTC coprocessor */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_LTC_CSHAKE (4u)
 typedef union
 {
     uint8_t mcuxClHash_Internal_WaCpu_Size_C_Sha3[MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHA3];
-    uint8_t mcuxClHash_Internal_WaCpu_Size_LTC_Sha3[MCUXCLHASH_INTERNAL_WACPU_SIZE_LTC_SHA3];
-    uint8_t mcuxClHash_Internal_WaCpu_Size_Sha3_Nonblocking[MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING];
-    uint8_t mcuxClHash_Internal_WaCpu_Size_Sha3_Blocking[MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_BLOCKING];
     uint8_t mcuxClHash_Internal_WaCpu_Size_C_Shake[MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHAKE];
-    uint8_t mcuxClHash_Internal_WaCpu_Size_LTC_Shake[MCUXCLHASH_INTERNAL_WACPU_SIZE_LTC_SHAKE];
-    uint8_t mcuxClHash_Internal_WaCpu_Size_LTC_CShake[MCUXCLHASH_INTERNAL_WACPU_SIZE_LTC_CSHAKE];
 } mcuxClHashModes_Internal_MaxUnion_Sha3Shake_CpuWa_t;
 
 #define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3 (sizeof(mcuxClHashModes_Internal_MaxUnion_Sha3Shake_CpuWa_t))
@@ -183,7 +164,6 @@ typedef union
     uint8_t mcuxClHash_Internal_WaCpu_Size_Sha2_256_Nonblocking[MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_256_NONBLOCKING];
     uint8_t mcuxClHash_Internal_WaCpu_Size_Sha2_384_Nonblocking[MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_384_NONBLOCKING];
     uint8_t mcuxClHash_Internal_WaCpu_Size_Sha2_512_Nonblocking[MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING];
-    uint8_t mcuxClHash_Internal_WaCpu_Size_Sha3_Nonblocking[MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING];
 } mcuxClHashModes_Internal_MaxUnion_WaCpu_t;
 #define MCUXCLHASHMODES_INTERNAL_WACPU_MAX (sizeof(mcuxClHashModes_Internal_MaxUnion_WaCpu_t))
 

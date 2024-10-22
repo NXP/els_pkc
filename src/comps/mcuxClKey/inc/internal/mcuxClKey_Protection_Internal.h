@@ -65,7 +65,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(
   );
 
 
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

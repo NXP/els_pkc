@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -69,8 +69,10 @@ extern "C" {
  * @param[out] pOutLength  Will be incremented by the number of bytes of
  *                         authenticated encrypted data that have been written
  *                         to the @p out buffer.
- * @param[out] pTag        Pointer to the output buffer where the tag needs to
- *                         be written.
+ * @param[in,out] pTag     In case of encrypt pointer to the output buffer
+ *                         where the tag needs to be written. In case of decrypt
+ *                         pointer to the input buffer where the refence tag is
+ *                         stored.
  * @param      tagLength   Number of bytes of tag data that will be written to
  *                         the @p tag buffer.
  * @return status

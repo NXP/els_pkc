@@ -57,6 +57,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      */
     /* Size definitions */
     const uint32_t byteLenPQ = pP->keyEntryLength;  // P and Q have the same byte length
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(byteLenPQ, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
     const uint32_t primePQAlignLen = MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(byteLenPQ);
 
     const uint32_t keyLen = byteLenPQ * 2u;  // LCM have 2 times length of PQ
@@ -118,6 +119,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
         mcuxClRsa_ComputeD_Steps123_FUP_LEN);
     MCUXCLPKC_WAITFORFINISH();
     MCUX_CSSL_FP_FUNCTION_CALL(leadingZeroN, mcuxClMath_LeadingZeros(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_QSUB1));
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(leadingZeroN, 0u, (primePQAlignLen << 3u), MCUXCLRSA_STATUS_INVALID_INPUT)
     uint32_t realGcdByteLen = primePQAlignLen - (leadingZeroN >> 3u);
 
     /*
@@ -142,6 +144,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      */
 
     MCUXCLPKC_PS1_SETLENGTH(keyAlignLen, keyAlignLen);
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(pE->keyEntryLength, ((MCUXCLKEY_SIZE_64 / 8u) / 2u), ((MCUXCLKEY_SIZE_8192 / 8u) /2u), MCUXCLRSA_STATUS_INVALID_INPUT)
     const uint32_t eAlignLen = MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(pE->keyEntryLength);
     MCUXCLPKC_PS2_SETLENGTH(0, eAlignLen);
     /* Clear the PHI buffer */
@@ -157,6 +160,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
      */
     MCUXCLPKC_WAITFORFINISH();
     MCUX_CSSL_FP_FUNCTION_CALL(leadingZeroD, mcuxClMath_LeadingZeros(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_D));
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(leadingZeroD, 0u, (keyAlignLen << 3u), MCUXCLRSA_STATUS_INVALID_INPUT)
     pD->keyEntryLength = keyAlignLen - (leadingZeroD >> 3u);
 
     /*
@@ -172,7 +176,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_ComputeD(
 
     uint32_t idx = (keyBitLength >> 1u) >> 3u;
     uint32_t lowBoundByte = ((uint32_t)1u << ((keyBitLength >> 1u) & 7u));
-    pPhi[idx] = (uint8_t)lowBoundByte;
+    pPhi[idx] = (uint8_t)(lowBoundByte & 0xFFu);
     MCUXCLPKC_FP_CALC_OP1_CMP(MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_PHI, MCUXCLRSA_INTERNAL_UPTRTINDEX_COMPD_D);
     MCUXCLPKC_WAITFORFINISH();
 

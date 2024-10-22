@@ -34,7 +34,6 @@
 #include <internal/mcuxClPkc_Operations.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClPkc_Resource.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
@@ -60,11 +59,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
     /*
      * Step 1: Set up the environment
      */
-
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
-    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(session, 0u);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea = mcuxClEcc_castToEccCpuWorkarea(mcuxClSession_getCpuWaBuffer(session));
+
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) mcuxClKey_getTypeInfo(key);
 
     MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
@@ -139,6 +136,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
      */
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     MCUX_CSSL_FP_FUNCTION_CALL(leadingZerosN, mcuxClMath_LeadingZeros(ECC_N));
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(leadingZerosN, 0u, (operandSize * 8u), MCUXCLECC_STATUS_FAULT_ATTACK)
     uint32_t bitLenN = (operandSize * 8u) - leadingZerosN;
 
     /* Calculate P1 = S * G */
@@ -174,7 +172,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
     /* Generate digest m' from m in case phflag is set */
     const uint8_t *m =  NULL;
     uint32_t mLen = 0u;
-    MCUX_CSSL_FP_FUNCTION_CALL(retPreHash, mcuxClEcc_EdDSA_PreHashMessage(session, pDomainParams, mode->phflag, pIn, inSize, &m, &mLen));
+    MCUX_CSSL_FP_FUNCTION_CALL(retPreHash, mcuxClEcc_EdDSA_PreHashMessage(session, pDomainParams, pCpuWorkarea, mode->phflag, pIn, inSize, &m, &mLen));
     if (MCUXCLECC_STATUS_OK != retPreHash)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -289,7 +287,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
 
 
     /*
-     * Step 10: Derive the encoding (R')enc of R' and store it in ECC_COORD03.
+     * Step 10: Derive the encoding (R')enc of R' and store it in ECC_COORD02.
      */
 
     /* Convert R' to affine coordinates and store them in ECC_COORD00, ECC_COORD01 */
@@ -300,14 +298,8 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
     MCUXCLPKC_WAITFORREADY();                                              /* TODO: PS2 length is not used in the above FUP, but this is required due to unknown reason (CLNS-7276) */
     uint32_t encodedLenPkc = MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(encodedLen);
     MCUXCLPKC_PS2_SETLENGTH(0u, encodedLenPkc);
-    MCUXCLPKC_FP_CALC_OP2_CONST(ECC_COORD03, 0u);                          /* Clear encodedLenPkc bytes of buffer ECC_COORD03 */
-    MCUXCLPKC_FP_CALC_OP1_OR_CONST(ECC_COORD03, ECC_COORD01, 0u);          /* Copy operandSize < encodedLenPkc bytes of the y-coordinate from ECC_COORD01 to ECC_COORD03 */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    uint32_t *pRX = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_COORD00]);
-    uint8_t *pREncLastByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD03])[encodedLen - 1u];
-    MCUXCLPKC_WAITFORFINISH();
-    uint32_t lsbX = (*pRX) & (uint32_t)0x01u;                             /* Loading a word is usually cheaper than loading a byte */
-    *pREncLastByte |= ((uint8_t)lsbX << 7u);
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_EdDSA_EncodePoint(encodedLen));
 
     /*
      * Step 11: Import the signature component Renc and compare it against (R')enc.
@@ -324,9 +316,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         MCUXCLPKC_PS1_SETLENGTH_REG(ps1Backup);
     }
 
-    /* Compare ECC_S0 against ECC_COORD03 */
+    /* Compare ECC_S0 against ECC_COORD02 */
     /* TODO: CLNS-11671, the comparison should include the 57th byte (p8S0[56]) for Ed448 */
-    MCUXCLPKC_FP_CALC_OP1_CMP(ECC_S0, ECC_COORD03);
+    MCUXCLPKC_FP_CALC_OP1_CMP(ECC_S0, ECC_COORD02);
 
 
     /*
@@ -343,7 +335,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         */
 
         /* Compute h and store it in ECC_S1 */
-        const uint8_t h = (uint8_t) (1u << ((uint32_t) pDomainParams->c & 0x1Fu));      /* c = cofactor exponent, i.e. cofactor: h = 2^c */
+        const uint8_t h = (uint8_t) ((1u << ((uint32_t) pDomainParams->c & 0x1Fu)) & 0xffU);      /* c = cofactor exponent, i.e. cofactor: h = 2^c */
         uint8_t *pS1 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S1]);
         pS1[0] = h;
         uint32_t bitLenH = (uint32_t)pDomainParams->c + (uint32_t)1u;
@@ -410,6 +402,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
                 MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
                 MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_EncodePoint),
                 MCUXCLPKC_FP_CALLED_IMPORTLITTLEENDIANTOPKC_BUFFER,              /* Step 11 */
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,                              /* Step 12a */
@@ -480,6 +473,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),                  /* Step 9 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),                  /* Step 10 */
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_EncodePoint),
                 MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
                 MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
                 MCUXCLPKC_FP_CALLED_IMPORTLITTLEENDIANTOPKC_BUFFER,              /* Step 11 */
@@ -542,6 +536,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         /* Step 10 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ModInv),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_EncodePoint),
         MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
         MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
         /* Step 11 */

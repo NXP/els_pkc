@@ -60,7 +60,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_crypt(
         - clean up session
     */
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm const * to mcuxClOsccaAeadModes_algorithm_t const *")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) mode->algorithm;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     // TODO: like this?
     mcuxClOsccaAeadModes_Context_t ctx; // = (mcuxClAead_Context_t) mcuxClSession_allocateWords_cpuWa(session, sizeInNumberOfWords)
@@ -91,12 +93,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_crypt(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ pTag,
       /* uint32_t tagLength,                   */ tagLength,
-      /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_ONESHOT
+      /* uint32_t options                      */ (MCUXCLOSCCASM4_ENCRYPT == pAlgo->direction) ? MCUXCLOSCCAAEADMODES_OPTION_ONESHOT_ENCRYPT : MCUXCLOSCCAAEADMODES_OPTION_ONESHOT_DECRYPT
     ));
 
     /* Clear the context */
     MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)&ctx, sizeof(ctx));
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_crypt, ret_Skeleton, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_crypt, ret_Skeleton,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
                                         pAlgo->protection_token_skeleton);
 }

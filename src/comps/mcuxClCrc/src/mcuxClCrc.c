@@ -26,7 +26,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint16_t) mcuxClCrc_computeCRC16(const uint8_t *pByt
 
     MCUX_CSSL_DI_EXPUNGE(mcuxClCrc_Internal_updateCRC16_pBytes, (uint32_t)pBytes + length);
     MCUX_CSSL_FP_FUNCTION_CALL(crcRet, mcuxClCrc_Internal_updateCRC16(pBytes, length, MCUXCLCRC_DEFAULT_SEED_16));
-    uint16_t crcResult = (uint16_t)crcRet ^ MCUXCLCRC_DEFAULT_CRC_OUT_MASK_16;
+    uint16_t crcResult = (uint16_t)(crcRet & 0xffffU) ^ MCUXCLCRC_DEFAULT_CRC_OUT_MASK_16;
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCrc_computeCRC16, crcResult, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCrc_Internal_updateCRC16));
 }

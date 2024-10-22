@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -70,22 +70,28 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_decrypt(
   if(MCUXCLRSA_KEYTYPE_INTERNAL_PRIVATEPLAIN == keyAlgoId)
   {
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
     mcuxClRsa_KeyData_Plain_t * pRsaKeyData = (mcuxClRsa_KeyData_Plain_t *) mcuxClKey_getKeyData(key);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     rsaKey.keytype = MCUXCLRSA_KEY_PRIVATEPLAIN;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type")
     rsaKey.pMod1 = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->modulus);
     rsaKey.pExp1 = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->exponent);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   }
   else if((MCUXCLRSA_KEYTYPE_INTERNAL_PRIVATECRT == keyAlgoId) || (MCUXCLRSA_KEYTYPE_INTERNAL_PRIVATECRTDFA == keyAlgoId))
   {
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
     mcuxClRsa_KeyData_Crt_t * pRsaKeyData = (mcuxClRsa_KeyData_Crt_t *) mcuxClKey_getKeyData(key);
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     rsaKey.pMod1 = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->p);
     rsaKey.pMod2 = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->q);
     rsaKey.pQInv = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->qInv);
     rsaKey.pExp1 = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->dp);
     rsaKey.pExp2 = (mcuxClRsa_KeyEntry_t *) &(pRsaKeyData->dq);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if(MCUXCLRSA_KEYTYPE_INTERNAL_PRIVATECRT == keyAlgoId)
     {
       rsaKey.keytype = MCUXCLRSA_KEY_PRIVATECRT;
@@ -129,7 +135,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_decrypt(
   uint8_t * pInput = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, inputSizeWord);
   if(NULL == pInput)
   {
-    mcuxClSession_freeWords_pkcWa(pSession, inputSizeWord);
     MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, pkcStateBackup,
             mcuxClRsa_Util_decrypt, MCUXCLRSA_STATUS_FAULT_ATTACK);
     mcuxClSession_freeWords_cpuWa(pSession, cpuWaUsedWord);
@@ -235,7 +240,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_decrypt(
       MCUX_CSSL_FP_COUNTER_STMT(uint32_t paddingFunctionId = pAlgorithmDescriptor->crypt_FunId);
 
   /* Call the padding function */
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_PaddingOperation, pPaddingFunction(
                               /* mcuxClSession_Handle_t       pSession,           */ pSession,
                               /* mcuxCl_InputBuffer_t         pInput,             */ pEncodedMessageBuf,
@@ -249,7 +254,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_decrypt(
                               /* mcuxCl_Buffer_t              pOutput             */ pOut,
                               /* uint32_t * const            pOutLength          */ pOutLength
   ));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
   if(MCUXCLRSA_STATUS_INVALID_INPUT == retVal_PaddingOperation)
   {

@@ -68,7 +68,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
 
     /* Step 2: Read and backup the LSBit x0 from buffer ECC_T0 and clear it in buffer ECC_T0. */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("'encodedLen' is larger than 1, no risk of overflow")
     uint8_t *pT0LastByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T0])[encodedLen - 1u];
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     uint8_t x0 = (*pT0LastByte) >> 7u;
     *pT0LastByte &= 0x7Fu;
 
@@ -172,7 +174,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
 
     uint32_t *pT3FirstWord = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_T3]);    // Loading a word is usually cheaper than loading a byte
     MCUXCLPKC_WAITFORFINISH();
-    uint8_t x0_candidate = (uint8_t)(*pT3FirstWord) & 0x01u;                // LSBit of x~
+    uint8_t x0_candidate = (uint8_t)((*pT3FirstWord) & 0x01u);                // LSBit of x~
 
     /* Check if x0 != x' mod 2 */
     MCUX_CSSL_FP_BRANCH_DECL(x0Isx);

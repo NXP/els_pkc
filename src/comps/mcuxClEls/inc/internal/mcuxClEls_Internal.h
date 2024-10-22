@@ -41,16 +41,16 @@ extern "C" {
 
 /** Asserts the correctness of the supplied parameters*/
 #define MCUXCLELS_INPUT_PARAM_CHECK(x_) if((x_)) { return MCUXCLELS_STATUS_SW_INVALID_PARAM; }
-#define MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(funcid, x_)                         \
+#define MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(funcid, x_)                        \
 do                                                                              \
 {                                                                               \
-    if ((x_))                                                                    \
+    if ((x_))                                                                   \
     {                                                                           \
         MCUX_CSSL_FP_FUNCTION_EXIT(funcid, MCUXCLELS_STATUS_SW_INVALID_PARAM);    \
     }                                                                           \
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()      \
+MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()       \
 } while (false)                                                                 \
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
 #define ELS_CMD_BIG_ENDIAN ((uint8_t) 0x01U)    ///< ELS command option specifying big-endian byte order
 #define ELS_CMD_LITTLE_ENDIAN ((uint8_t) 0x00U) ///< ELS command option specifying little-endian byte order

@@ -101,7 +101,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_oneshot_example)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    
+
     if(sizeof(hash) != hashOutputSize)
 	{
 		return MCUXCLEXAMPLE_STATUS_ERROR;

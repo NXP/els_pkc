@@ -24,20 +24,19 @@ extern "C" {
 #endif
 
 #include <mcuxClMemory.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 #define MCUXCLRANDOM_SECURECOPY(callerID, errorReturn, pTarget, pSource, length)                 \
     do{                                                                                         \
         MCUXCLMEMORY_FP_MEMORY_COPY(pTarget, pSource, length);                                   \
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()                      \
+MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()                       \
     } while(false)                                                                              \
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
 #define MCUXCLRANDOM_SECURECLEAR(callerID, errorReturn, pTarget, length)                         \
     do{                                                                                         \
         MCUXCLMEMORY_FP_MEMORY_CLEAR(pTarget, length);                                           \
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()                      \
+MCUX_CSSL_ANALYSIS_START_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()                       \
     } while(false)                                                                              \
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_BOOLEAN_TYPE_FOR_CONDITIONAL_EXPRESSION()
 
 #define MCUXCLRANDOM_FP_CALLED_SECURECOPY  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)
 

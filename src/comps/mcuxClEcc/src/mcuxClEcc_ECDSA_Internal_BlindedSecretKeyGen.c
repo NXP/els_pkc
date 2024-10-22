@@ -24,12 +24,16 @@
 #include <mcuxClRandom.h>
 #include <mcuxClHmac.h>
 #include <mcuxClMath.h>
+#include <mcuxCsslMemory_Constants.h>
+#include <mcuxCsslMemory_Clear.h>
+#include <mcuxClMemory_Copy.h>
 
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
 #include <internal/mcuxClRandomModes_Internal_HmacDrbg_Functions.h>
 #endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
+#include <internal/mcuxClRandom_Internal_Functions.h>
 #include <internal/mcuxClHmac_Internal_Memory.h>
 #include <internal/mcuxClPkc_ImportExport.h>
 #include <internal/mcuxClPkc_Macros.h>
@@ -47,9 +51,11 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_RandomWithExtra
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_RandomWithExtraBits(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Handle_t pSession,
-    const mcuxClEcc_Sign_Param_t * pParam)
+    const mcuxClEcc_Sign_Param_t * pParam,
+    mcuxClEcc_ECDSA_KeyGenCtx_t *pCtx)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_RandomWithExtraBits);
+    (void) pCtx;
 
 #ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
     /* Verify that the passed signature mode is not for deterministic ECDSA */
@@ -72,7 +78,8 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, 
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Handle_t pSession,
-    const mcuxClEcc_Sign_Param_t * pParam)
+    const mcuxClEcc_Sign_Param_t * pParam,
+    mcuxClEcc_ECDSA_KeyGenCtx_t *pCtx)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic);
 
@@ -85,224 +92,216 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
 
     const uint32_t byteLenN = (pParam->curveParam.misc & mcuxClEcc_DomainParam_misc_byteLenN_mask) >> mcuxClEcc_DomainParam_misc_byteLenN_offset;
+    const uint32_t byteLenHash = (pParam->optLen & mcuxClEcc_Sign_Param_optLen_byteLenHash_mask) >> mcuxClEcc_Sign_Param_optLen_byteLenHash_offset;
+    const uint32_t byteLenHashImport = MCUXCLCORE_MIN(byteLenHash, byteLenN);
 
-    /* Reserve space for Random mode descriptors to be created:
+    /* Space for Random mode descriptors and context must be reserved by the caller:
      *  - one for an HMAC_DRBG in normal mode associated to the given HMAC mode
-     *  - one for an associated HMAC_DRBG in test mode which allows to initialize the HMAC_DRBG with a given seed as required by the deterministic ECDSA ephemeral key construction. */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
-    mcuxClRandom_ModeDescriptor_t *pTestModeDesc = (mcuxClRandom_ModeDescriptor_t *) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
-    mcuxClRandom_ModeDescriptor_t *pHmacDrbgMode = (mcuxClRandom_ModeDescriptor_t *) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
-    if ((NULL == pTestModeDesc) || (NULL == pHmacDrbgMode))
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
+     *  - one for an associated HMAC_DRBG in test mode which allows to initialize the HMAC_DRBG with a given seed as required by the deterministic ECDSA ephemeral key construction.
+     *  - random context */
+    /* Context pointer must be validated by the caller hence no additional checks here */
+    mcuxClEcc_ECDSA_Deterministic_KeyGenCtx_t *pDeterministicCtx = mcuxClEcc_castToECDSADeterministicKeyGenCtx(pCtx);
+    mcuxClRandom_ModeDescriptor_t *pTestModeDesc = mcuxClRandom_castToModeDescriptor(pDeterministicCtx->testModeDescriptor);
+    mcuxClRandom_ModeDescriptor_t *pHmacDrbgMode = mcuxClRandom_castToModeDescriptor(pDeterministicCtx->hmacDrbgModeDescriptor);
+    mcuxClRandom_Context_t pRandomCtx = mcuxClRandom_castToContext(pDeterministicCtx->randomCtx);
+
     // TODO-CLNS-10703: Can there be some of the init stuff shared with higher level functions e.g. sign?
-
-
-    /*********************************************************************************************/
-    /* Create HMAC_DRBG associated to the given HMAC mode.                                       */
-    /*                                                                                           */
-    /* NOTE: The seed sizes passed to the function are chosen in a way that that the HMAC_DRBG   */
-    /*       can later (in test mode) be seeded upon initialization                              */
-    /*        - with the properly encoded private key as entropy input and                       */
-    /*        - with the properly encoded message digest as nonce                                */
-    /*       as specified in NIST SP800-90A.                                                     */
-    /*********************************************************************************************/
-    mcuxClMac_Mode_t hmacMode = pParam->pMode->pHmacModeDesc;
-    uint32_t initSeedSize = 2u * byteLenN;
-    uint32_t reseedSeedSize = byteLenN;
-    MCUX_CSSL_FP_FUNCTION_CALL(retCreateNormalMode, mcuxClRandomModes_createCustomHmacDrbgMode(
-        pHmacDrbgMode,
-        hmacMode,
-        initSeedSize,
-        reseedSeedSize
-    ));
-    if (MCUXCLRANDOM_STATUS_OK != retCreateNormalMode)
+    if(MCUXCLECC_INT_ECDSADETERMINISTIC_CTX_INITIALIZED != pDeterministicCtx->initFlag)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
-
-
-    /*********************************************************************************************/
-    /* Prepare the seed material (entropy_input || nonce) to be used during instantiation of the */
-    /* HMAC_DRBG below:                                                                          */
-    /*   - Prepare the entropy input, i.e. the private key encoded using primitive int2octets as */
-    /*     specified in rfc6979, at the start of buffer ECC_S0                                   */
-    /*   - Prepare the nonce, i.e. the message digest encoded using primitive bits2octets as     */
-    /*     specified in rfc6979, directly behind the entropy input                               */
-    /*                                                                                           */
-    /*         |            ECC_S0               ||              ECC_T0            |             */
-    /*         ---------------------------------------------------------------------             */
-    /*         | int2octets(private key) | bits2octets(digest) | ***************** |             */
-    /*                                                                                           */
-    /*********************************************************************************************/
-    uint32_t *pEntropyInput = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_S0]);
-    uint8_t *pNonce = (uint8_t *) pEntropyInput + byteLenN;
-
-    /* Import digest (up to byteLenN bytes are enough) to ECC_T1.
-     *
-     * NOTES: - Copying the digest without endianess reversal ensures that its endianess is already in line with the bits2octets encoding
-     *        - The digest is imported to ECC_T1 instead of to its (potentially not PKC aligned) final destination to facilitate PKC operations
-     *          needed for its proper encoding.
-     *        - During the import, the digest is already padded with zeros or truncated to byte length depending on the relation between its byte length
-     *          and the byte length of n
-     *        - If the hash byte length is larger than the one of n, further bit level truncation is taken care of after the import. */
-    MCUXCLPKC_FP_CALC_OP1_CONST(ECC_T1, 0u);
-    uint32_t byteLenHash = (pParam->optLen & mcuxClEcc_Sign_Param_optLen_byteLenHash_mask) >> mcuxClEcc_Sign_Param_optLen_byteLenHash_offset;
-    uint32_t byteLenHashImport = MCUXCLCORE_MIN(byteLenHash, byteLenN);
-    uint8_t *pDigestImportDst = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T1]) + byteLenN - byteLenHashImport;
-    MCUXCLPKC_WAITFORFINISH();
-    MCUXCLMEMORY_FP_MEMORY_COPY(pDigestImportDst, pParam->pHash, byteLenHashImport)
-
-    /* Truncate message hash if its bit length is longer than that of n. */
-    if (byteLenHash >= byteLenN)
-    {
-        /* Count leading zeros in MSByte of n. */
-        const volatile uint8_t * ptrN = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
-        uint8_t nMSByte = ptrN[byteLenN - 1u];
-        uint32_t nMSByte_LeadZeros = (uint32_t) mcuxClMath_CountLeadingZerosWord((uint32_t) nMSByte) - (8u * ((sizeof(uint32_t)) - 1u));
-
-        /* Only keep the first bitLenN bits of hash. */
-        MCUXCLPKC_FP_CALC_OP1_SHR(ECC_T1, ECC_T1, (uint8_t) nMSByte_LeadZeros);
-
-        /* Reduce the value modulo n */
-        MCUXCLPKC_FP_CALC_MC1_MS(ECC_T1, ECC_T1, ECC_N, ECC_N);
-    }
-
-    /* Shift the nonce to its destination address */
-    uint8_t *pNoncePkcAligned = pNonce - (byteLenN % MCUXCLPKC_WORDSIZE);
-    uint32_t byteLenNPkcAligned = MCUXCLCORE_ALIGN_TO_WORDSIZE(MCUXCLPKC_WORDSIZE, byteLenN);
-    MCUXCLPKC_WAITFORREADY();
-    pOperands[ECC_V0] = MCUXCLPKC_PTR2OFFSET(pNoncePkcAligned);
-    MCUXCLPKC_PS2_SETLENGTH(0u, MCUXCLCORE_ALIGN_TO_WORDSIZE(MCUXCLPKC_WORDSIZE, byteLenNPkcAligned));
-    MCUXCLPKC_FP_CALC_OP2_SHL(ECC_V0, ECC_T1, (uint8_t) 8u * (byteLenN % MCUXCLPKC_WORDSIZE));
-    MCUXCLPKC_WAITFORFINISH();
-
-    /* Prefill private key buffer with LQRNG. */
-    {
-        MCUXCLBUFFER_INIT(pBuffEntropyInput, NULL, (uint8_t *) pEntropyInput, byteLenN);
-        MCUX_CSSL_FP_FUNCTION_CALL(retNcGenerate_prefillPrivateKeyBuffer, mcuxClRandom_ncGenerate(pSession, pBuffEntropyInput, byteLenN));
-        if (MCUXCLRANDOM_STATUS_OK != retNcGenerate_prefillPrivateKeyBuffer)
+        /*********************************************************************************************/
+        /* Create HMAC_DRBG associated to the given HMAC mode.                                       */
+        /*                                                                                           */
+        /* NOTE: The seed sizes passed to the function are chosen in a way that that the HMAC_DRBG   */
+        /*       can later (in test mode) be seeded upon initialization                              */
+        /*        - with the properly encoded private key as entropy input and                       */
+        /*        - with the properly encoded message digest as nonce                                */
+        /*       as specified in NIST SP800-90A.                                                     */
+        /*********************************************************************************************/
+        mcuxClMac_Mode_t hmacMode = pParam->pMode->pHmacModeDesc;
+        uint32_t initSeedSize = 2u * byteLenN;
+        uint32_t reseedSeedSize = byteLenN;
+        MCUX_CSSL_FP_FUNCTION_CALL(retCreateNormalMode, mcuxClRandomModes_createCustomHmacDrbgMode(
+            pHmacDrbgMode,
+            hmacMode,
+            initSeedSize,
+            reseedSeedSize
+        ));
+        if (MCUXCLRANDOM_STATUS_OK != retCreateNormalMode)
         {
-            if (MCUXCLRANDOM_STATUS_ERROR == retNcGenerate_prefillPrivateKeyBuffer)
-            {
-                mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                                       + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
-
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
-                    MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                    MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
-                        MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                        MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
-                    MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
-            }
-
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
-    }  /* scope of pBuffEntropyInput */
-
-    /* Securely copy the private key to its (PKC word aligned) destination address pEntropyInput before the nonce.
-     * Due to the copy without endianess reversal, the private key is already correctly encoded afterwards (using int2octets) */
-    MCUX_CSSL_FP_FUNCTION_CALL(retCopyPrivKey, mcuxClMemory_copy_secure_int((uint8_t *) pEntropyInput, pParam->pPrivateKey, byteLenN));
-    if (MCUXCLMEMORY_STATUS_OK != retCopyPrivKey)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
 
 
-    /*********************************************************************************************/
-    /* Create an HMAC_DRBG test mode which shall use the seed material prepared above for        */
-    /* seeding during below instantiation and instantiate it.                                    */
-    /*                                                                                           */
-    /* NOTE: Since mcuxClRandomModes_createTestFromNormalMode requires the custom seed input      */
-    /*       pointer to be aligned, we first shift the seed material again to an aligned         */
-    /*       address. Use ECC_S1 || ECC_T1 as temp buffers here.                                 */
-    /*********************************************************************************************/
+        /*********************************************************************************************/
+        /* Prepare the seed material (entropy_input || nonce) to be used during instantiation of the */
+        /* HMAC_DRBG below:                                                                          */
+        /*   - Prepare the entropy input, i.e. the private key encoded using primitive int2octets as */
+        /*     specified in rfc6979, at the start of buffer ECC_S0                                   */
+        /*   - Prepare the nonce, i.e. the message digest encoded using primitive bits2octets as     */
+        /*     specified in rfc6979, directly behind the entropy input                               */
+        /*                                                                                           */
+        /*         |            ECC_S0               ||              ECC_T0            |             */
+        /*         ---------------------------------------------------------------------             */
+        /*         | int2octets(private key) | bits2octets(digest) | ***************** |             */
+        /*                                                                                           */
+        /*********************************************************************************************/
+        uint32_t *pEntropyInput = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_S0]);
+        uint8_t *pNonce = (uint8_t *) pEntropyInput + byteLenN;
 
-    /* Create test mode utilizing the seed prepared above. */
-    MCUX_CSSL_FP_FUNCTION_CALL(retCreateTestMode, mcuxClRandomModes_createTestFromNormalMode(
-        pTestModeDesc,
-        pHmacDrbgMode,
-        pEntropyInput
-    ));
-    if (MCUXCLRANDOM_STATUS_OK != retCreateTestMode)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
+        /* Import digest (up to byteLenN bytes are enough) to ECC_T1.
+        *
+        * NOTES: - Copying the digest without endianess reversal ensures that its endianess is already in line with the bits2octets encoding
+        *        - The digest is imported to ECC_T1 instead of to its (potentially not PKC aligned) final destination to facilitate PKC operations
+        *          needed for its proper encoding.
+        *        - During the import, the digest is already padded with zeros or truncated to byte length depending on the relation between its byte length
+        *          and the byte length of n
+        *        - If the hash byte length is larger than the one of n, further bit level truncation is taken care of after the import. In such case
+        *          endianess has to be reversed to facilitate PKC operations. */
+        MCUXCLPKC_FP_CALC_OP1_CONST(ECC_T1, 0u);
+        uint8_t *pDigestImportDst = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T1]) + byteLenN - byteLenHashImport;
+        MCUXCLPKC_WAITFORFINISH();
+        MCUXCLMEMORY_FP_MEMORY_COPY(pDigestImportDst, pParam->pHash, byteLenHashImport);
 
-#ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
-    /* Derive the security strength required for the RNG from bitLenN/2 and check whether it can be provided.
-     *
-     * NOTE: The function mcuxClRandom_checkSecurityStrength can't be used for this because it reads the security strength from the Random config stored in the session. */
-    if (MCUXCLCORE_MIN((byteLenN * 8u) / 2u, 256u) > pTestModeDesc->securityStrength)
-    {
-        mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                               + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
-
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
-            MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-            MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
-            MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
-                MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode) );
-    }
-#endif
-
-    /* Instantiate HMAC_DRBG */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Return pointer is 32-bit aligned and satisfies the requirement of mcuxClRandom_Context_t")
-    mcuxClRandom_Context_t pRandomCtx = (mcuxClRandom_Context_t) mcuxClSession_allocateWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
-    if (NULL == pRandomCtx)
-    {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL(retTestModeInit, pTestModeDesc->pOperationMode->initFunction(pSession, pTestModeDesc, pRandomCtx));
-    if (MCUXCLRANDOM_STATUS_OK != retTestModeInit)
-    {
-        if (MCUXCLRANDOM_STATUS_ERROR == retTestModeInit)
+        /* Truncate message hash if its bit length is longer than that of n. */
+        if (byteLenHash >= byteLenN)
         {
-            /* Clear CPU workarea before returning. */
-            MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx,
-                mcuxClMemory_clear_secure_int((uint8_t *) pRandomCtx, (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS));
-            if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+            /* Count leading zeros in MSByte of n. */
+            const volatile uint8_t * ptrN = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
+            uint8_t nMSByte = ptrN[byteLenN - 1u];
+            uint32_t nMSByte_LeadZeros = (uint32_t) mcuxClMath_CountLeadingZerosWord((uint32_t) nMSByte) - (8u * ((sizeof(uint32_t)) - 1u));
+            /* Only keep the first bitLenN bits of hash. */
+            MCUXCLMEMORY_FP_MEMORY_COPY_REVERSED(pDigestImportDst, pDigestImportDst, byteLenHashImport);
+            MCUXCLPKC_FP_CALC_OP1_SHR(ECC_T1, ECC_T1, (uint8_t) (nMSByte_LeadZeros & 0xFFu));
+            /* Reduce the value modulo n */
+            MCUXCLPKC_FP_CALC_MC1_MS(ECC_T1, ECC_T1, ECC_N, ECC_N);
+            MCUXCLPKC_WAITFORFINISH();
+            MCUXCLMEMORY_FP_MEMORY_COPY_REVERSED(pDigestImportDst, pDigestImportDst, byteLenHashImport);
+        }
+
+        /* Shift the nonce to its destination address. Take into account destination address may be not aligned to PKC word boundary. */
+        uint32_t noncePkcBufferOffset = byteLenN % MCUXCLPKC_WORDSIZE;
+        uint32_t nonceByteLenPlusPkcBufferOffset = noncePkcBufferOffset + byteLenN;
+        uint32_t noncePkcBufferSize = MCUXCLCORE_ALIGN_TO_WORDSIZE(MCUXCLPKC_WORDSIZE, nonceByteLenPlusPkcBufferOffset);
+        uint8_t *pNoncePkcAligned = pNonce - (byteLenN % MCUXCLPKC_WORDSIZE);
+        MCUXCLPKC_WAITFORREADY();
+        pOperands[ECC_V0] = MCUXCLPKC_PTR2OFFSET(pNoncePkcAligned);
+        MCUXCLPKC_PS2_SETLENGTH(0u, noncePkcBufferSize);
+        MCUXCLPKC_FP_CALC_OP2_SHL(ECC_V0, ECC_T1, (uint8_t) 8u * (byteLenN % MCUXCLPKC_WORDSIZE));
+        MCUXCLPKC_WAITFORFINISH();
+
+        /* Prefill private key buffer with LQRNG. */
+        {
+            MCUXCLBUFFER_INIT(pBuffEntropyInput, NULL, (uint8_t *) pEntropyInput, byteLenN);
+            MCUX_CSSL_FP_FUNCTION_CALL(retNcGenerate_prefillPrivateKeyBuffer, mcuxClRandom_ncGenerate(pSession, pBuffEntropyInput, byteLenN));
+            if (MCUXCLRANDOM_STATUS_OK != retNcGenerate_prefillPrivateKeyBuffer)
             {
+                if (MCUXCLRANDOM_STATUS_ERROR == retNcGenerate_prefillPrivateKeyBuffer)
+                {
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
+                        MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                        MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
+                            MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
+                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
+                        MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate) );
+                }
+
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
             }
+        }  /* scope of pBuffEntropyInput */
 
-            mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS
-                                                   + MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                                   + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
+        /* Securely copy the private key to its (PKC word aligned) destination address pEntropyInput before the nonce.
+        * Due to the copy without endianess reversal, the private key is already correctly encoded afterwards (using int2octets) */
+        MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t *) pEntropyInput, pParam->pPrivateKey, byteLenN);
 
+        /*********************************************************************************************/
+        /* Create an HMAC_DRBG test mode which shall use the seed material prepared above for        */
+        /* seeding during below instantiation and instantiate it.                                    */
+        /*                                                                                           */
+        /* NOTE: Since mcuxClRandomModes_createTestFromNormalMode requires the custom seed input      */
+        /*       pointer to be aligned, we first shift the seed material again to an aligned         */
+        /*       address. Use ECC_S1 || ECC_T1 as temp buffers here.                                 */
+        /*********************************************************************************************/
+
+        /* Create test mode utilizing the seed prepared above. */
+        MCUX_CSSL_FP_FUNCTION_CALL(retCreateTestMode, mcuxClRandomModes_createTestFromNormalMode(
+            pTestModeDesc,
+            pHmacDrbgMode,
+            pEntropyInput
+        ));
+        if (MCUXCLRANDOM_STATUS_OK != retCreateTestMode)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
+        }
+
+    #ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
+        /* Derive the security strength required for the RNG from bitLenN/2 and check whether it can be provided.
+        *
+        * NOTE: The function mcuxClRandom_checkSecurityStrength can't be used for this because it reads the security strength from the Random config stored in the session. */
+        if (MCUXCLCORE_MIN((byteLenN * 8u) / 2u, 256u) > pTestModeDesc->securityStrength)
+        {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
                 MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
                     MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                    MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
-                pTestModeDesc->pOperationMode->protectionTokenInitFunction,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_secure_int) );
+                    MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode) );
         }
+    #endif
 
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
+        /* Instantiate HMAC_DRBG */
+        if (NULL == pRandomCtx)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
+        }
+        MCUX_CSSL_FP_FUNCTION_CALL(retTestModeInit, pTestModeDesc->pOperationMode->initFunction(pSession, pTestModeDesc, pRandomCtx));
+        if (MCUXCLRANDOM_STATUS_OK != retTestModeInit)
+        {
+            if (MCUXCLRANDOM_STATUS_ERROR == retTestModeInit)
+            {
+                /* Clear CPU workarea before returning. */
+                uint32_t clearSize = (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS;
+                MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx, mcuxCsslMemory_Clear(
+                    mcuxCsslParamIntegrity_Protect(3u, pRandomCtx, clearSize, clearSize),
+                    (uint8_t *) pRandomCtx,
+                    clearSize,
+                    clearSize));
+                if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+                {
+                    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
+                }
+
+                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
+                    MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                    MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+                    MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
+                        MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
+                        MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
+                    pTestModeDesc->pOperationMode->protectionTokenInitFunction,
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
+            }
+
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
+        }
     }
-
-
     /*********************************************************************************************/
     /* Generate an ephemeral key k using the HMAC_DBRG in test mode in a loop as specified in    */
     /* rfc6979. If the generated value is not in range [1,n-1], repeat.                          */
@@ -328,8 +327,16 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             uint32_t* pK = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_S2]);
 
             /* Clear upper part of ephemeral key buffer. */
-            MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_K, mcuxClMemory_clear_int(&((uint8_t *)pK)[byteLenN], bufferSize - byteLenN));
-            if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_K)
+
+            uint8_t * pUpper = &((uint8_t *)pK)[byteLenN];
+            MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(byteLenN, 0, bufferSize, MCUXCLECC_STATUS_FAULT_ATTACK)
+            uint32_t upperSize = bufferSize - byteLenN;
+            MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_K, mcuxCsslMemory_Clear(
+                mcuxCsslParamIntegrity_Protect(3u, pUpper, upperSize, upperSize),
+                pUpper,
+                upperSize,
+                upperSize));
+            if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_K)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
             }
@@ -342,16 +349,16 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 if (MCUXCLRANDOM_STATUS_ERROR == retNcGenerate_prefillEphemeralKeyBuffer)
                 {
                     /* Clear CPU workarea before returning. */
-                    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx,
-                        mcuxClMemory_clear_secure_int((uint8_t *) pRandomCtx, (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS));
-                    if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+                    uint32_t clearSize = (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS;
+                    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx, mcuxCsslMemory_Clear(
+                        mcuxCsslParamIntegrity_Protect(3u, pRandomCtx, clearSize, clearSize),
+                        (uint8_t *) pRandomCtx,
+                        clearSize,
+                        clearSize));
+                    if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
                     {
                         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
                     }
-
-                    mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS
-                                                           + MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                                           + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
 
                     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
                         /* Balancing function calls before the loop */
@@ -360,18 +367,20 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                         MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                         MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
                             MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
+                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
                         pTestModeDesc->pOperationMode->protectionTokenInitFunction,
                         MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1),
                         MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K1, fails_k1),
                         /* Balancing function inside the loop until this point */
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_int),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear),
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_secure_int) );
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
                 }
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
             }
@@ -383,16 +392,16 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 if (MCUXCLRANDOM_STATUS_ERROR == retTestModeGenerate)
                 {
                     /* Clear CPU workarea before returning. */
-                    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx,
-                        mcuxClMemory_clear_secure_int((uint8_t *) pRandomCtx, (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS));
-                    if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+                    uint32_t clearSize = (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS;
+                    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx, mcuxCsslMemory_Clear(
+                        mcuxCsslParamIntegrity_Protect(3u, pRandomCtx, clearSize, clearSize),
+                        (uint8_t *) pRandomCtx,
+                        clearSize,
+                        clearSize));
+                    if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
                     {
                         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
                     }
-
-                    mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS
-                                                           + MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                                           + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
 
                     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
                         /* Balancing function calls before the loop */
@@ -401,19 +410,21 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                         MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                         MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
                             MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
+                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
                         pTestModeDesc->pOperationMode->protectionTokenInitFunction,
                         MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1),
                         MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K1, fails_k1),
                         /* Balancing function inside the loop until this point */
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_int),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear),
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
                         pTestModeDesc->pOperationMode->protectionTokenGenerateFunction,
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_secure_int) );
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
                 }
 
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -431,16 +442,16 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 if (MCUXCLRANDOM_STATUS_OK != retNcGenerate_T2)
                 {
                     /* Clear CPU workarea before returning. */
-                    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx,
-                        mcuxClMemory_clear_secure_int((uint8_t *) pRandomCtx, (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS));
-                    if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+                    uint32_t clearSize = (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS;
+                    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx, mcuxCsslMemory_Clear(
+                        mcuxCsslParamIntegrity_Protect(3u, pRandomCtx, clearSize, clearSize),
+                        (uint8_t *) pRandomCtx,
+                        clearSize,
+                        clearSize));
+                    if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
                     {
                         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
                     }
-
-                    mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS
-                                                           + MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                                           + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
 
                     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
                         /* Balancing function calls before the loop */
@@ -449,20 +460,22 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                         MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                         MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
                             MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
+                            MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
                         pTestModeDesc->pOperationMode->protectionTokenInitFunction,
                         MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1),
                         MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K1, fails_k1),
                         /* Balancing function inside the loop until this point */
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_int),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear),
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
                         pTestModeDesc->pOperationMode->protectionTokenGenerateFunction,
                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_secure_int) );
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
                 }
             }  /* scope of pBuffT2 */
             MCUXCLPKC_FP_CALC_OP1_XOR(ECC_S2, ECC_S2, ECC_T2);
@@ -478,7 +491,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             const volatile uint8_t * ptrN = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
             uint8_t nMSByte = ptrN[byteLenN - 1u];
             uint32_t nMSByte_LeadZeros = (uint32_t) mcuxClMath_CountLeadingZerosWord((uint32_t) nMSByte) - (8u * ((sizeof(uint32_t)) - 1u));
-            MCUXCLPKC_FP_CALC_OP1_SHR(ECC_S2, ECC_S2, (uint8_t) nMSByte_LeadZeros);
+            MCUXCLPKC_FP_CALC_OP1_SHR(ECC_S2, ECC_S2, (uint8_t)(nMSByte_LeadZeros & 0xFFU));
 
 
             /*********************************************************************************************/
@@ -493,7 +506,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
             /* Balance FP for the loop so far. */
             MCUX_CSSL_FP_LOOP_ITERATION(MainLoop_K,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_int),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
                 pTestModeDesc->pOperationMode->protectionTokenGenerateFunction,
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
@@ -526,16 +539,16 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             if (MCUXCLRANDOM_STATUS_ERROR == retNcGenerate_2)
             {
                 /* Clear CPU workarea before returning. */
-                MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx,
-                    mcuxClMemory_clear_secure_int((uint8_t *) pRandomCtx, (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS));
-                if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+                uint32_t clearSize = (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS;
+                MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx, mcuxCsslMemory_Clear(
+                    mcuxCsslParamIntegrity_Protect(3u, pRandomCtx, clearSize, clearSize),
+                    (uint8_t *) pRandomCtx,
+                    clearSize,
+                    clearSize));
+                if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
                 {
                     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
                 }
-
-                mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS
-                                                       + MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                                       + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
 
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_RNG_ERROR,
                     /* Balancing function calls before the loop */
@@ -544,10 +557,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                     MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                     MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
                         MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-                        MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
+                        MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
                     pTestModeDesc->pOperationMode->protectionTokenInitFunction,
                     MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1 + 1u),
@@ -555,7 +570,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                     /* Balancing function inside the if-block until this point */
                     MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_secure_int) );
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
             }
 
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -601,31 +616,46 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     } while(MCUXCLPKC_FLAG_ZERO == MCUXCLPKC_GETZERO());
 
     /* Clear CPU workarea before returning. */
-    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx,
-        mcuxClMemory_clear_secure_int((uint8_t *) pRandomCtx, (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS));
-    if (MCUXCLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
+    uint32_t clearSize = (sizeof(uint32_t)) * MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS;
+    MCUX_CSSL_FP_FUNCTION_CALL(retMemoryClear_RandomCtx, mcuxCsslMemory_Clear(
+        mcuxCsslParamIntegrity_Protect(3u, pRandomCtx, clearSize, clearSize),
+        (uint8_t *) pRandomCtx,
+        clearSize,
+        clearSize));
+    if (MCUXCSSLMEMORY_STATUS_OK != retMemoryClear_RandomCtx)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_FAULT_ATTACK);
     }
 
-    mcuxClSession_freeWords_cpuWa(pSession, MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS
-                                           + MCUXCLRANDOMMODES_TESTMODE_DESCRIPTOR_SIZE_IN_WORDS
-                                           + MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS);
+    if(MCUXCLECC_INT_ECDSADETERMINISTIC_CTX_INITIALIZED == pDeterministicCtx->initFlag)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_OK,
+            MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1 + 1u),
+            MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K1, fails_k1 + 1u),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
+    }
+    else
+    {
+        pDeterministicCtx->initFlag = MCUXCLECC_INT_ECDSADETERMINISTIC_CTX_INITIALIZED;
 
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_OK,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
-        MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-        MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_secure_int),
-        MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
-            MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
-            MCUXCLPKC_FP_CALLED_CALC_MC1_MS),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
-        pTestModeDesc->pOperationMode->protectionTokenInitFunction,
-        MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1 + 1u),
-        MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K1, fails_k1 + 1u),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear_secure_int) );
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic, MCUXCLECC_STATUS_OK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createCustomHmacDrbgMode),
+            MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+            MCUXCLPKC_FP_CALLED_CALC_OP2_SHL,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+            MCUX_CSSL_FP_CONDITIONAL((byteLenHash >= byteLenN),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed),
+                MCUXCLPKC_FP_CALLED_CALC_OP1_SHR,
+                MCUXCLPKC_FP_CALLED_CALC_MC1_MS,
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy_reversed)),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_createTestFromNormalMode),
+            pTestModeDesc->pOperationMode->protectionTokenInitFunction,
+            MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K, fails_k + fails_k1 + 1u),
+            MCUX_CSSL_FP_LOOP_ITERATIONS(MainLoop_K1, fails_k1 + 1u),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Clear) );
+    }
+
 }
 #endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */

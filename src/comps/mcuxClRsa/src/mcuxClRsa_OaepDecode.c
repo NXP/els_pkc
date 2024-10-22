@@ -52,6 +52,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_oaepDecode(
   /* Setup lengths */
   const uint32_t keyByteLength = keyBitLength / 8u; /* only byte-level granularity of keys is supported, thus keyBitLength is a multiple of 8 */
   const uint32_t hLen = pHashAlgo->hashSize;
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(hLen, MCUXCLHASH_OUTPUT_SIZE_MD5, MCUXCLHASH_MAX_OUTPUT_SIZE, MCUXCLRSA_STATUS_INVALID_INPUT)
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(keyByteLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
   const uint32_t dbLen = keyByteLength - hLen - 1u;
 
   /* Check key length and hash length.

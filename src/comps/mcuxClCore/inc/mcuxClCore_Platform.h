@@ -22,10 +22,11 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
-/** Address mapping to allow HW IP access 0x2xxx_xxxx memory range */
+
 #define MCUXCL_HW_DMA_WORKAROUND(addr) \
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Convert pointer to address for bitwise operations needed in mapping calculations.") \
-(((uint32_t)(addr) < 0x00780000u) ? ((uint32_t)(addr) | 0x20000000u) : (uint32_t)(addr)) \
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Convert pointer to address for bitwise operations needed in mapping calculations. This instance needed for consistent macro behaviour.") \
+  ((uint32_t)(addr)) \
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+
 
 #endif /* MCUXCLCORE_PLATFORM_H_ */

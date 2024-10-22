@@ -70,6 +70,18 @@ typedef struct
 } mcuxClEcc_CpuWa_t;
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_FLEXIBLE_ARRAY()
 
+/**
+ * @brief Cast a pointer to word-aligned data to a pointer to the mcuxClEcc_CpuWa_t type.
+ *
+ * @param pCpuWa    The pointer to cast to a proper mcuxClEcc_CpuWa_t* type. Must be aligned.
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_castToEccCpuWorkarea)
+static inline mcuxClEcc_CpuWa_t* mcuxClEcc_castToEccCpuWorkarea(uint32_t* pCpuWa)
+{
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  return (mcuxClEcc_CpuWa_t *) pCpuWa;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+}
 
 /**********************************************************/
 /*                                                        */
@@ -96,7 +108,7 @@ typedef MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) (*mcuxClEcc_ScalarMultFu
 typedef struct mcuxClEcc_ScalarMultFunctions
 {
     mcuxClEcc_ScalarMultFunction_t secFixScalarMultFct;    ///< Pointer to secure scalar multiplication function that shall be used to perform a scalar multiplication lambda*G for secret scalar lambda in {1,...,n-1} and base point G
-    uint32_t secFixScalarMultFctFPId;                     ///< FP ID of the secFixScalarMultFct function   
+    uint32_t secFixScalarMultFctFPId;                     ///< FP ID of the secFixScalarMultFct function
     mcuxClEcc_ScalarMultFunction_t secVarScalarMultFct;    ///< Pointer to secure scalar multiplication function that shall be used to perform a scalar multiplication lambad*P for secret scalar lambda in {1,...,n-1} and arbitrary point P on the curve
     uint32_t secVarScalarMultFctFPId;                     ///< FP ID of the secVarScalarMultFct function
     mcuxClEcc_ScalarMultFunction_t plainFixScalarMultFct;  ///< Pointer to plain scalar multiplication function that shall be used to perform a scalar multiplication lambda*G for non-secret scalar lambda in {1,...,n-1} and base point G

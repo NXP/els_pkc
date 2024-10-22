@@ -149,7 +149,7 @@ static const uint8_t SA[] = {0x23, 0x44, 0x4D, 0xAF, 0x8E, 0xD7, 0x53, 0x43, 0x6
  * @warning
  *   none
  */
-bool mcuxClOsccaSm2_Keyagreement_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm2_Keyagreement_example)
 {
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
@@ -168,9 +168,14 @@ bool mcuxClOsccaSm2_Keyagreement_example(void)
     /* Initialize the RNG context */
     /* We need a context for OSCCA Rng. */
     uint32_t rngCtx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRandom_Context_t pRngCtx = (mcuxClRandom_Context_t)rngCtx;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
                                                                pRngCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                                                mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
@@ -219,11 +224,15 @@ bool mcuxClOsccaSm2_Keyagreement_example(void)
     /****************************************************************/
     /* Initialize SM2 private key */
     uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t privKeyA = (mcuxClKey_Handle_t) &privKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t privKeyA = (mcuxClKey_Handle_t) privKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_priv_result, ki_priv_token, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKeyA points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ privKeyA,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Ext_Private,
       /* const uint8_t * pKeyData              */ pri_key_A,
       /* uint32_t keyDataLength                */ sizeof(pri_key_A)
@@ -237,11 +246,15 @@ bool mcuxClOsccaSm2_Keyagreement_example(void)
 
     /* Initialize SM2 public key */
     uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t pubKeyB = (mcuxClKey_Handle_t) &pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t pubKeyB = (mcuxClKey_Handle_t) pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_pub_result, ki_pub_token, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKeyB points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ pubKeyB,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Ext_Public,
       /* const uint8_t * pKeyData              */ public_key_B,
       /* uint32_t keyDataLength                */ sizeof(public_key_B)
@@ -272,14 +285,18 @@ bool mcuxClOsccaSm2_Keyagreement_example(void)
     uint8_t output[sizeof(expected_common_secret)];
     uint32_t outputLen = sizeof(expected_common_secret);
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ka_result, ka_token, mcuxClKey_agreement(
-      /* mcuxClSession_Handle_t session:   */ &session,
-      /* mcuxClKey_Agreement_t agreement:  */ mcuxClOsccaSm2_Agreement_Initiator,
-      /* mcuxClKey_Handle_t key:           */ privKeyA,
-      /* mcuxClKey_Handle_t otherKey:      */ pubKeyB,
-      /* mcuxClKey_AgreementInput_t :      */ additionalInputs,
-      /* uint32_t numberOfInputs:         */ MCUXCLOSCCASM2_KEYAGREEMENT_NUM_OF_ADDITIONAL_INPUTS,
-      /* uint8_t * pOut:                  */ output,
-      /* uint32_t * const pOutLength:     */ &outputLen
+      /* mcuxClSession_Handle_t session    */ &session,
+      /* mcuxClKey_Agreement_t agreement   */ mcuxClOsccaSm2_Agreement_Initiator,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKeyA points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key            */ privKeyA,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKeyB points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key            */ pubKeyB,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClKey_AgreementInput_t        */ additionalInputs,
+      /* uint32_t numberOfInputs          */ MCUXCLOSCCASM2_KEYAGREEMENT_NUM_OF_ADDITIONAL_INPUTS,
+      /* uint8_t * pOut                   */ output,
+      /* uint32_t * const pOutLength      */ &outputLen
     )); /* determine a shared key on based on public and private inputs */
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_agreement) != ka_token) || (MCUXCLKEY_STATUS_OK != ka_result))

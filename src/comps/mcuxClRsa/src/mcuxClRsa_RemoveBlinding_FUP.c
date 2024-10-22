@@ -17,11 +17,10 @@
 #include <internal/mcuxClRsa_Internal_PkcDefs.h>
 #include <internal/mcuxClRsa_RemoveBlinding_FUP.h>
 
+/*
+ * FUP program to convert result of the exponentiation to normal representation modulo Nb.
+ */
 MCUX_CSSL_ANALYSIS_START_PATTERN_FUP_PROGRAM()
 const mcuxClPkc_FUPEntry_t mcuxClRsa_RemoveBlinding_FUP[5] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0x91u,0x09u,0x28u,0x12u},{0x00u,0x3eu,0x05u,0x05u,0x06u,0x05u},{0x00u,0x6au,0x05u,0x05u,0x00u,0x04u},{0x80u,0x00u,0x04u,0x02u,0x01u,0x05u},{0x80u,0x2au,0x01u,0x05u,0x01u,0x04u}};
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_FUP_PROGRAM()
 
-
-/*
- * FUP program to convert result of the exponentiation to normal representation modulo Nb.
- */

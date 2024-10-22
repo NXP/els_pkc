@@ -47,10 +47,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxCsslMemory_Status_t) mcuxCsslMemory_Compare
 
     uint32_t nwords = 0u;
     uint32_t retval = 0u;
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_VOID()
     uint8_t const * cur_lhs = (uint8_t const *)pLhs;
     uint8_t const * cur_rhs = (uint8_t const *)pRhs;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_VOID()
     uint32_t const notValid = ~(MCUXCSSLPARAMINTEGRITY_CHECK_VALID);
     uint32_t const errCode = (uint32_t)MCUXCSSLMEMORY_STATUS_NOT_EQUAL;
 

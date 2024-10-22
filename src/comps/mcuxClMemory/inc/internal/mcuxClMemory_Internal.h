@@ -25,19 +25,4 @@
 #include <mcuxClMemory_Constants.h>
 #include <mcuxClMemory_Types.h>
 
-#include <internal/mcuxClMemory_Clear_Internal.h>
-#include <internal/mcuxClMemory_Compare_Internal.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
-#include <internal/mcuxClMemory_Set_Internal.h>
-#include <internal/mcuxClMemory_Copy_Reversed_Internal.h>
-#include <internal/mcuxClMemory_CopyWords_Internal.h>
-
-#include <internal/mcuxClMemory_ClearSecure_Internal.h>
-#include <internal/mcuxClMemory_CompareDPASecure_Internal.h>
-#include <internal/mcuxClMemory_CompareSecure_Internal.h>
-#include <internal/mcuxClMemory_CopySecure_Internal.h>
-#include <internal/mcuxClMemory_SetSecure_Internal.h>
-#include <internal/mcuxClMemory_CopySecure_Reversed_Internal.h>
-#include <internal/mcuxClMemory_CopySecurePow2_Internal.h>
-
 #endif /* MCUXCLMEMORY_INTERNAL_H */

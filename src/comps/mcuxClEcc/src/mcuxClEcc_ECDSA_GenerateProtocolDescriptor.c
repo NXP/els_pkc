@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -40,6 +40,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_GenerateProtocol
     pProtocolDescriptor->pBlindedEphemeralKeyGenFct = mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic;
     pProtocolDescriptor->pBlindedEphemeralKeyGenFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_ECDSA_BlindedEphemeralKeyGen_Deterministic);
     pProtocolDescriptor->pHmacModeDesc = hmacMode;
+    pProtocolDescriptor->keyGenCtxSizeInWords = sizeof(mcuxClEcc_ECDSA_Deterministic_KeyGenCtx_t) / sizeof(uint32_t);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic,
                                          MCUXCLECC_STATUS_OK, MCUXCLECC_STATUS_FAULT_ATTACK);

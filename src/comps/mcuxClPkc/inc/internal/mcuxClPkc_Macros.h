@@ -52,6 +52,9 @@
 #define MCUXCLPKC_SETUPTRT(pUptrt)  mcuxClPkc_inline_setUptrt(pUptrt)
 /** Gets the address of UPTRT (Universal pointer FUP table). */
 #define MCUXCLPKC_GETUPTRT()  mcuxClPkc_inline_getUptrt()
+/** Gets the 32-bit aligned address of UPTRT (Universal pointer FUP table).
+ * **CAUTION** This macro assumes the UPTRT is 32-bit aligned. */
+#define MCUXCLPKC_GETUPTRT32()  mcuxClPkc_inline_getUptrt32()
 
 /** Converts CPU pointer to PKC offset.
  * **CAUTION** This macro does not guarantee the returned offset is PKC-word aligned. */

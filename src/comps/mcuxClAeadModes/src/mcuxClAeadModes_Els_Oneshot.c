@@ -95,18 +95,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_crypt(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ pTag,
       /* uint32_t tagLength,                   */ tagLength,
-      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_ONESHOT
+      /* uint32_t options                      */ (MCUXCLELS_AEAD_ENCRYPT == mode->algorithm->direction) ? MCUXCLAEADMODES_OPTION_ONESHOT_ENCRYPT : MCUXCLAEADMODES_OPTION_ONESHOT_DECRYPT
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
+    if((MCUXCLAEAD_STATUS_OK != ret_Skeleton) && (MCUXCLAEAD_STATUS_INVALID_TAG != ret_Skeleton))
     {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_crypt, MCUXCLAEAD_STATUS_ERROR,
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_crypt, ret_Skeleton,
                                 mode->algorithm->protection_token_skeleton);
     }
 
     mcuxClSession_freeWords_cpuWa(session, cpuCtxSizeInWords);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_crypt, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_crypt, ret_Skeleton, MCUXCLAEAD_STATUS_FAULT_ATTACK,
                                         mode->algorithm->protection_token_skeleton);
 }
 

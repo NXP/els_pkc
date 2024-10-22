@@ -206,7 +206,7 @@ struct mcuxClKey_DerivationMode {
 
 typedef struct mcuxClKeyDerivation_WorkArea {
   uint8_t input_Wa[8u];
-  uint8_t context_Wa[MCUXCLMAC_MAX_CONTEXT_SIZE];
+  uint32_t context_Wa[MCUXCLMAC_MAX_CONTEXT_SIZE_IN_WORDS];
   uint8_t macResult_Wa[MCUXCLMAC_MAX_OUTPUT_SIZE];
 }mcuxClKeyDerivation_WorkArea_t;
 #endif /* MCUXCL_FEATURE_KEY_DERIVATION */

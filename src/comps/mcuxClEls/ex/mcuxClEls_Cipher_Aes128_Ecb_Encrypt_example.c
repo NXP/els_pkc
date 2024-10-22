@@ -62,6 +62,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example)
     cipher_options.bits.dcrpt = MCUXCLELS_CIPHER_ENCRYPT;                  // Configure that the mcuxClEls_Cipher_Async operation shall perform  encryption.
     cipher_options.bits.extkey = MCUXCLELS_CIPHER_EXTERNAL_KEY;            // Configure that an external key should be used.
             
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Cipher_Async( // Perform the encryption.
             cipher_options,                                 // Set the prepared configuration.
             (mcuxClEls_KeyIndex_t) 0U,                       // This parameter (keyIdx) is ignored, since an external key is used.
@@ -70,6 +71,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example)
             NULL,                                           // This parameter (pIV) is ignored, since the ECB mode is used.
             aes128_output                                   // Output buffer, which the operation will write the ciphertext to.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_Cipher_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {

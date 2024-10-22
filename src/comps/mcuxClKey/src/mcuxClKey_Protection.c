@@ -82,7 +82,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(mcuxC
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
 }
 
-
 const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_None = {&mcuxClKey_protect_fct_none,
                                                                             NULL,
                                                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_protect_fct_none),

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -24,13 +24,15 @@
 
 MCUXCLEXAMPLE_FUNCTION(mcuxClGlikey_example)
 {
-#if defined(CPU_MIMXRT798SGAWA_cm33_core0)
+#if defined(CPU_MIMXRT798SGAWA_cm33_core0) || defined(CPU_MIMXRT798SGFOA_cm33_core0)
     mcuxClGlikey_BaseAddress_t *base = (mcuxClGlikey_BaseAddress_t *)GLIKEY3_BASEADDRESS;
     uint32_t index = 0x7u;
 #else
+    MCUX_CSSL_ANALYSIS_START_PATTERN_HW_ACCESS()
     mcuxClGlikey_BaseAddress_t *base = (mcuxClGlikey_BaseAddress_t *)GLIKEY0_BASEADDRESS;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_HW_ACCESS()
     uint32_t index = 0x4u;
-#endif
+#endif /* defined(CPU_MIMXRT798SGAWA_cm33_core0) || defined(CPU_MIMXRT798SGFOA_cm33_core0) */
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(status1, is_locked_token, mcuxClGlikey_IsLocked(base));
 
@@ -118,6 +120,6 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClGlikey_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-   
+
     return MCUXCLEXAMPLE_STATUS_OK;
 }

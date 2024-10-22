@@ -72,9 +72,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_KeyAgreement_Co
     uint16_t keyLen = pCommonDomainParameters->byteLenP;
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClEcc_CpuWa_t *pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea = mcuxClEcc_castToEccCpuWorkarea(mcuxClSession_getCpuWaBuffer(pSession));
+
     MCUX_CSSL_FP_FUNCTION_CALL(retCode_MontDH_SetupEnvironment, mcuxClEcc_MontDH_SetupEnvironment(pSession,
                                                                  pDomainParameters,
                                                                  ECC_MONTDH_NO_OF_BUFFERS));
@@ -154,7 +153,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_KeyAgreement(
     /* mcuxClKey_Handle_t privKey                                */ otherKey,
     /* uint8_t * pOut                                           */ pOut,
     /* uint32_t * const pOutLength                              */ pOutLength));
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_MontDH_KeyAgreement, keygen_result, MCUXCLECC_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClEcc_MontDH_KeyAgreement, keygen_result, MCUXCLECC_STATUS_RNG_ERROR == keygen_result ? MCUXCLECC_STATUS_RNG_ERROR : MCUXCLECC_STATUS_FAULT_ATTACK,
                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_MontDH_KeyAgreement_Core));
 }

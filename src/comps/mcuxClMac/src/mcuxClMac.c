@@ -46,7 +46,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMac_compute(
                                       pMacLength
   ));
 
-  MCUXCLSESSION_EXIT(session, mcuxClMac_compute, diRefValue, result, MCUXCLMAC_STATUS_FAULT_ATTACK)
+  MCUXCLSESSION_EXIT(session, mcuxClMac_compute, diRefValue, result, MCUXCLMAC_STATUS_ERROR == result ? MCUXCLMAC_STATUS_ERROR : MCUXCLMAC_STATUS_FAULT_ATTACK)
 }
 
 

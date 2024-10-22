@@ -54,10 +54,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_init(
             - all other arguments
             - unused arguments = NULL/0
     */
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) mode->algorithm;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     mcuxClOsccaAeadModes_Context_t *pCtx = (mcuxClOsccaAeadModes_Context_t *)pContext;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_Context_t * to mcuxClOsccaAeadModes_Context_t *")
     pCtx->common.mode = mode;
     pCtx->key = key;
@@ -68,7 +70,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_init(
     pCtx->direction = pAlgo->direction;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("With the options MCUXCLOSCCAAEADMODES_OPTION_INIT, these pointers will not be dereferenced in the underlying function.")
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm * to mcuxClOsccaAeadModes_algorithm_t *")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pAlgo->pSkeleton(
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
@@ -86,15 +88,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_init(
       /* uint32_t tagLength,                   */ tagLength,
       /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_INIT
     ));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
-    {
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_init, MCUXCLAEAD_STATUS_ERROR,
-                                 pAlgo->protection_token_skeleton);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_init, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_init, ret_Skeleton,
                                          pAlgo->protection_token_skeleton);
 }
 
@@ -121,10 +117,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_process(
             - all other arguments
             - unused arguments = NULL/0
     */
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClOsccaAeadModes_Context_t *pCtx = (mcuxClOsccaAeadModes_Context_t *)pContext;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) pCtx->common.mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP(" (pCtx->processedDataLength + inLength) can't be larger than max(uint32_t) ")
     if((pCtx->processedDataLength < pCtx->aadLength) ||
        ((pCtx->processedDataLength + inLength) > (pCtx->aadLength + pCtx->dataLength)))
@@ -133,7 +131,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_process(
          MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_process, MCUXCLAEAD_STATUS_ERROR);
     }
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("With the options MCUXCLOSCCAAEADMODES_OPTION_PROCESS, these pointers will not be dereferenced in the underlying function.")
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm * to mcuxClOsccaAeadModes_algorithm_t *")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pAlgo->pSkeleton(
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
@@ -151,15 +149,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_process(
       /* uint32_t tagLength,                   */ 0u,
       /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_PROCESS
     ));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
-    {
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_process, MCUXCLAEAD_STATUS_ERROR,
-                                 pAlgo->protection_token_skeleton);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_process, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_process, ret_Skeleton,
                                          pAlgo->protection_token_skeleton);
 }
 
@@ -181,10 +173,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_process_a
             - all other arguments
             - unused arguments = NULL/0
     */
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClOsccaAeadModes_Context_t *pCtx = (mcuxClOsccaAeadModes_Context_t *)pContext;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) pCtx->common.mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP(" (pCtx->processedDataLength + adataLength) can't be larger than max(uint32_t) ")
     if((pCtx->processedDataLength + adataLength) > pCtx->aadLength)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
@@ -192,7 +186,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_process_a
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_process_adata, MCUXCLAEAD_STATUS_ERROR);
     }
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("With the options MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD, these pointers will not be dereferenced in the underlying function.")
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm * to mcuxClOsccaAeadModes_algorithm_t *")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pAlgo->pSkeleton(
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
@@ -210,15 +204,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_process_a
       /* uint32_t tagLength,                   */ 0u,
       /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD
     ));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
-    {
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_process_adata, MCUXCLAEAD_STATUS_ERROR,
-                                 pAlgo->protection_token_skeleton);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_process_adata, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_process_adata, ret_Skeleton,
                                          pAlgo->protection_token_skeleton);
 }
 
@@ -241,10 +229,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_finish(
             - all other arguments
             - unused arguments = NULL/0
     */
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClOsccaAeadModes_Context_t *pCtx = (mcuxClOsccaAeadModes_Context_t *)pContext;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) pCtx->common.mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP(" (pCtx->dataLength + pCtx->aadLength) can't be larger than max(uint32_t) ")
     if(pCtx->processedDataLength != (pCtx->dataLength + pCtx->aadLength))
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
@@ -254,7 +244,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_finish(
                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
     }
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("With the options MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT, these pointers will not be dereferenced in the underlying function.")
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm * to mcuxClOsccaAeadModes_algorithm_t *")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pAlgo->pSkeleton(
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
@@ -270,21 +260,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_finish(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ pTag,
       /* uint32_t tagLength,                   */ pCtx->tagLength,
-      /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_FINISH
+      /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT
     ));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
-    {
-        MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaAeadModes_Context_t));
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_finish, MCUXCLAEAD_STATUS_ERROR,
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
-                                pAlgo->protection_token_skeleton);
-    }
-    //if in Context->mode->pSkeletonfunction for MCUXCLOSCCAAEADMODES_OPTION_VERIFY or MCUXCLOSCCAAEADMODES_OPTION_FINISH options,
+    //if in Context->mode->pSkeletonfunction for MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT or MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT options,
     //the context has been clear, ctx.mode->protection_token_skeleton can't be used  here
     MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaAeadModes_Context_t));
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_finish, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_finish, ret_Skeleton,
                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
                                          pAlgo->protection_token_skeleton);
 }
@@ -308,20 +291,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_verify(
             - all other arguments
             - unused arguments = NULL/0
     */
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     mcuxClOsccaAeadModes_Context_t *pCtx = (mcuxClOsccaAeadModes_Context_t *)pContext;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) pCtx->common.mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP(" (pCtx->dataLength + pCtx->aadLength) can't be larger than max(uint32_t) ")
     if(pCtx->processedDataLength != pCtx->dataLength + pCtx->aadLength)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     {
         MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaAeadModes_Context_t));
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_verify, MCUXCLAEAD_STATUS_ERROR,
-                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_verify, MCUXCLAEAD_STATUS_ERROR);
     }
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("With the options MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT, these pointers will not be dereferenced in the underlying function.")
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm * to mcuxClOsccaAeadModes_algorithm_t *")
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, pAlgo->pSkeleton(
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
@@ -339,21 +323,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_verify(
       /* mcuxCl_Buffer_t pTag,                  */ (mcuxCl_Buffer_t) pTag,
       MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
       /* uint32_t tagLength,                   */ pCtx->tagLength,
-      /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_VERIFY
+      /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT
     ));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
-    {
-       MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaAeadModes_Context_t));
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_verify, MCUXCLAEAD_STATUS_ERROR,
-                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
-                                 pAlgo->protection_token_skeleton);
-    }
-    //if in Context->mode->pSkeletonfunction for MCUXCLOSCCAAEADMODES_OPTION_VERIFY or MCUXCLOSCCAAEADMODES_OPTION_FINISH options,
-    //the context has been clear, ctx.mode->protection_token_skeleton can't be used  here
     MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)pCtx, sizeof(mcuxClOsccaAeadModes_Context_t));
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_verify, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+
+    //if in Context->mode->pSkeletonfunction for MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT or MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT options,
+    //the context has been clear, ctx.mode->protection_token_skeleton can't be used  here
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_verify, ret_Skeleton,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
                                         pAlgo->protection_token_skeleton);
 }

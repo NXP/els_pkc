@@ -12,8 +12,8 @@
 /*--------------------------------------------------------------------------*/
 
 /**
- * @file:   mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example.c
- * @brief:  Example OSCCA SM2 signature, including prehash, signature generation and signature
+ * @file    mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example.c
+ * @brief   Example OSCCA SM2 signature, including prehash, signature generation and signature
  *          verification
  */
 
@@ -61,6 +61,21 @@
                                       MCUXCLOSCCASM2_VERIFY_SIZEOF_WA_PKC_256()))
 
 /******************************************************************************
+ * Global variables
+ ******************************************************************************/
+
+/* Create buffers for private and public key */
+static const uint8_t pSm2PrivateKey[MCUXCLOSCCASM2_SM2P256_SIZE_BASEPOINTORDER] = {
+    0x19, 0x42, 0x14, 0xC1, 0xD9, 0x6F, 0x8F, 0x47, 0x46, 0x89, 0xC2, 0xC4, 0x5F, 0x75, 0x5D, 0x8C,
+    0x7F, 0xCE, 0x7B, 0x70, 0x99, 0xCC, 0x18, 0x6F, 0x4A, 0x61, 0x40, 0x64, 0xC7, 0x5F, 0x42, 0xAF};
+
+static const uint8_t pSm2PublicKey[MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP * 2] = {
+    0xF2, 0x27, 0xA6, 0xE8, 0x30, 0x92, 0x0E, 0x1D, 0xF8, 0xA3, 0x41, 0x03, 0x33, 0xED, 0x32, 0xC7,
+    0x55, 0x6F, 0x80, 0x7C, 0x71, 0xCD, 0x2E, 0x68, 0x51, 0xBD, 0xD1, 0x19, 0x7A, 0x43, 0x49, 0xEA,
+    0x03, 0x04, 0x4E, 0x76, 0xB3, 0xD1, 0x0C, 0x61, 0xC2, 0x66, 0x94, 0xF4, 0xC9, 0xD0, 0x12, 0x1F,
+    0xD7, 0x8A, 0xB1, 0x2A, 0x06, 0x28, 0x96, 0xD8, 0xBE, 0xB6, 0xD6, 0x7C, 0x59, 0x5C, 0x4C, 0xE3};
+
+/******************************************************************************
  * External variables
  ******************************************************************************/
 /* none */
@@ -68,7 +83,7 @@
 /**
  * @def Message
  */
-const uint8_t Message[] = {
+static const uint8_t Message[] = {
     0x77U, 0x69U, 0x6fU, 0xbaU,  0xf3U, 0x6bU, 0x49U, 0xcdU,
     0x1cU, 0x0eU, 0x45U, 0x6aU,  0xd1U, 0x86U, 0x59U, 0xfeU,
     0xdeU, 0x3fU, 0xcbU, 0x0cU,  0xceU, 0x69U, 0xa1U, 0xccU,
@@ -89,7 +104,7 @@ const uint8_t Message[] = {
 /**
  * @def pIDentifier for preHash
  */
-const uint8_t pIDentifier[] = {0x01, 0x02, 0x03, 0x04};
+static const uint8_t pIDentifier[] = {0x01, 0x02, 0x03, 0x04};
 
 /******************************************************************************
  * Local variables
@@ -100,7 +115,7 @@ const uint8_t pIDentifier[] = {0x01, 0x02, 0x03, 0x04};
  * Local and global function declarations
  ******************************************************************************/
 /**
- * @brief:  Example OSCCA SM2 signature, including
+ * @brief   Example OSCCA SM2 signature, including
  *          prehash, signature generation and signature verification
  *
  * @return
@@ -119,7 +134,7 @@ const uint8_t pIDentifier[] = {0x01, 0x02, 0x03, 0x04};
  * @warning
  *   none
  */
-bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example)
 {
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
@@ -138,9 +153,14 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
     /* Initialize the RNG context */
     /* We need a context for OSCCA Rng. */
     uint32_t rngCtx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRandom_Context_t pRngCtx = (mcuxClRandom_Context_t)rngCtx;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
                                                                pRngCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                                                mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
@@ -189,14 +209,18 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
     /****************************************************************/
     /* Initialize SM2 private key */
     uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) &privKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) privKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_priv_result, ki_priv_token, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ privKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Std_Private,
-      /* const uint8_t * pKeyData              */ pPrivateKey,
-      /* uint32_t keyDataLength                */ sizeof(pPrivateKey)
+      /* const uint8_t * pKeyData              */ pSm2PrivateKey,
+      /* uint32_t keyDataLength                */ sizeof(pSm2PrivateKey)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != ki_priv_token) || (MCUXCLKEY_STATUS_OK != ki_priv_result))
@@ -207,14 +231,18 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
 
     /* Initialize SM2 public key */
     uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) &pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ki_pub_result, ki_pub_token, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ pubKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM2P256_Std_Public,
-      /* const uint8_t * pKeyData              */ pPublicKey,
-      /* uint32_t keyDataLength                */ sizeof(pPublicKey)
+      /* const uint8_t * pKeyData              */ pSm2PublicKey,
+      /* uint32_t keyDataLength                */ sizeof(pSm2PublicKey)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != ki_pub_token) || (MCUXCLKEY_STATUS_OK != ki_pub_result))
@@ -229,12 +257,14 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
     uint8_t pPrehash[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3];
     uint32_t prehashSize = 0;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prehash_Ret, prehash_Token, mcuxClOsccaSm2_Signature_PreHash(
-      /* mcuxClSession_Handle_t session:   */ &session,
-      /* mcuxClKey_Handle_t key:           */ pubKey,
-      /* mcuxCl_InputBuffer_t pIdentifier: */ pIDentifier,
-      /* uint32_t identifierSize:         */ sizeof(pIDentifier),
-      /* mcuxCl_Buffer_t pPrehash:         */ pPrehash,
-      /* uint32_t * const prehashSize:    */ &prehashSize
+      /* mcuxClSession_Handle_t session    */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key            */ pubKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t pIdentifier  */ pIDentifier,
+      /* uint16_t identifierSize          */ (uint16_t)sizeof(pIDentifier),
+      /* mcuxCl_Buffer_t pPrehash          */ pPrehash,
+      /* uint32_t * const prehashSize     */ &prehashSize
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Signature_PreHash) != prehash_Token) || (MCUXCLOSCCASM2_STATUS_OK != prehash_Ret))
@@ -246,18 +276,27 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
     /* SM3 Message digest calculation                               */
     /****************************************************************/
     uint32_t context[MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClHash_Context_t pHashCtx = (mcuxClHash_Context_t) context;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     uint8_t pDigest_SM2[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3];
     /* Create parameter structure for Hash component */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result1, token1, mcuxClHash_init(&session, (mcuxClHash_Context_t)pHashCtx, mcuxClOsccaSm3_Algorithm_Sm3));
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result1, token1, mcuxClHash_init(
+        &session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pHashCtx has the correct type (mcuxClHash_Context_t), the cast was valid.")
+        pHashCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+        mcuxClOsccaSm3_Algorithm_Sm3));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != token1) || (MCUXCLHASH_STATUS_OK != result1))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of pPrehash is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result2, token2, mcuxClHash_process(&session,(mcuxClHash_Context_t)pHashCtx, pPrehash, MCUXCLOSCCASM3_OUTPUT_SIZE_SM3));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token2) || (MCUXCLHASH_STATUS_OK != result2))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -282,13 +321,15 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
     uint8_t signature[MCUXCLOSCCASM2_SM2P256_SIZE_SIGNATURE];
     uint32_t signatureSize = 0;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(signRet, signToken, mcuxClSignature_sign(
-      /* mcuxClSession_Handle_t session:   */ &session,
-      /* mcuxClKey_Handle_t key:           */ privKey,
-      /* mcuxClSignature_Mode_t mode:      */ mcuxClSignature_Mode_SM2,
-      /* mcuxCl_InputBuffer_t pIn:         */ pDigest_SM2,
-      /* uint32_t inSize:                 */ sizeof(pDigest_SM2),
-      /* mcuxCl_Buffer_t pSignature:       */ signature,
-      /* uint32_t * const pSignatureSize: */ &signatureSize
+      /* mcuxClSession_Handle_t session    */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key            */ privKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClSignature_Mode_t mode       */ mcuxClSignature_Mode_SM2,
+      /* mcuxCl_InputBuffer_t pIn          */ pDigest_SM2,
+      /* uint32_t inSize                  */ sizeof(pDigest_SM2),
+      /* mcuxCl_Buffer_t pSignature        */ signature,
+      /* uint32_t * const pSignatureSize  */ &signatureSize
     ));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSignature_sign) != signToken) || (MCUXCLSIGNATURE_STATUS_OK != signRet))
     {
@@ -299,13 +340,15 @@ bool mcuxClOsccaSm2_Signature_SignVerify_FullFlow_example(void)
     /* OSCCA SM2 signature verification                             */
     /****************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verifyRet, verifyToken, mcuxClSignature_verify(
-      /* mcuxClSession_Handle_t session:  */ &session,
-      /* mcuxClKey_Handle_t key:          */ pubKey,
-      /* mcuxClSignature_Mode_t mode:     */ mcuxClSignature_Mode_SM2,
-      /* mcuxCl_InputBuffer_t pIn:        */ pDigest_SM2,
-      /* uint32_t inSize:                */ sizeof(pDigest_SM2),
-      /* mcuxCl_InputBuffer_t pSignature: */ signature,
-      /* uint32_t signatureSize:         */ signatureSize
+      /* mcuxClSession_Handle_t session   */ &session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key           */ pubKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClSignature_Mode_t mode      */ mcuxClSignature_Mode_SM2,
+      /* mcuxCl_InputBuffer_t pIn         */ pDigest_SM2,
+      /* uint32_t inSize                 */ sizeof(pDigest_SM2),
+      /* mcuxCl_InputBuffer_t pSignature  */ signature,
+      /* uint32_t signatureSize          */ signatureSize
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSignature_verify) != verifyToken) || (MCUXCLSIGNATURE_STATUS_OK != verifyRet))

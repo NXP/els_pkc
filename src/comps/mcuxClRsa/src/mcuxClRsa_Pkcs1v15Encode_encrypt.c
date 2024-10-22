@@ -52,7 +52,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_encrypt
   /* MCUXCLRSA_STATUS_INVALID_INPUT.                          */
   /***********************************************************/
   const uint32_t keyLen = keyBitLength / 8u; //key bit length is always multiple of 8 bits
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(keyBitLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
+
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, 'keyLen' is larger than 11u, so cannot wrap")
   if(inputLength > (keyLen - 11u))
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_pkcs1v15Encode_encrypt, MCUXCLRSA_STATUS_INVALID_INPUT);
   }

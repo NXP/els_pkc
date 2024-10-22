@@ -112,7 +112,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Decode_decrypt
   for(uint32_t i = 0u; i < (emLen - 2u); ++i)
   {
     uint8_t index = (T[1] != rndByte) ? 1u : 0u;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("'index' is 0/1, so result won't wrap")
     messageLen[index] += 1u;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     T[index] = pPS[i * index];
   }
 

@@ -45,7 +45,7 @@
       MCUX_CSSL_FP_FUNCTION_CALL(retValTemp, mcuxClCrc_computeCRC16((uint8_t*)&(pCtx)->crc + sizeof(uint16_t),                     \
                                                     (uint32_t)offsetof(mcuxClOsccaSm2_Internal_EncDecCtx_t, tZeroOrNot) + sizeof(uint16_t) + (uint32_t)(pLen)    \
                                                     - (offsetof(mcuxClOsccaSm2_Internal_EncDecCtx_t, crc) + sizeof(uint16_t))));  \
-      (pCtx)->crc = (uint16_t)retValTemp;  \
+      (pCtx)->crc = (uint16_t)(retValTemp & 0xffffU);  \
    }while(false)
 
 #define MCUXCLOSCCASM2_ENCRYPT                  0xA5A5U

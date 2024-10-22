@@ -30,10 +30,14 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetHwVer
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetHwVersion);
     result->word.value = MCUXCLELS_SFR_READ(ELS_VERSION);
     uint32_t minorVersion = result->bits.minor;
-    result->bits.minor = (minorVersion & 0xFu) + (((minorVersion >> 4u) & 0xFu) * 10u);
+    /* Encode in decimal representation */
+    minorVersion = (minorVersion & 0xFu) + (((minorVersion >> 4u) & 0xFu) * 10u);
+    result->bits.minor = (uint8_t)minorVersion;
 #ifdef MCUXCL_FEATURE_ELS_GET_FW_VERSION
     uint32_t fwMinorVersion = result->bits.fw_minor;
-    result->bits.fw_minor = (fwMinorVersion & 0xFu) + (((fwMinorVersion >> 4u) & 0xFu) * 10u);
+    /* Encode in decimal representation */
+    fwMinorVersion = (fwMinorVersion & 0xFu) + (((fwMinorVersion >> 4u) & 0xFu) * 10u);
+    result->bits.fw_minor = (uint8_t)fwMinorVersion;
 #endif // MCUXCL_FEATURE_ELS_GET_FW_VERSION
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetHwVersion, MCUXCLELS_STATUS_OK);
 }

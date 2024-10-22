@@ -69,7 +69,6 @@ static const mcuxClKey_Protection_t mcuxClKey_Protection_Ckdf =
 
 
 
-
 /** @} */
 
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED()

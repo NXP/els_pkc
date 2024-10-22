@@ -149,16 +149,23 @@ void mcuxClOsccaSafo_Drv_incrementData(uint32_t offset, uint32_t length)
   uint32_t config2 = mcuxClOsccaSafo_Sfr_readCtrl2();
   mcuxClOsccaSafo_Sfr_writeCtrl2(config2 | MCUXCLOSCCASAFO_SFR_CTRL2_INCR);
 
-  length >>= MCUXCLOSCCASAFO_SFR_BYTES_TO_32BIT_WORD_SHIFT;    /* calculate length in a word*/
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_VOID(offset, MCUXCLOSCCASAFO_DRV_DATIN0_INDEX, MCUXCLOSCCASAFO_DRV_DATIN3_INDEX + 3u)
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_VOID(length, 4u, 16u)
+
+  length >>= MCUXCLOSCCASAFO_SFR_BYTES_TO_32BIT_WORD_SHIFT;    /* calculate length in a word */
   uint32_t oriLen = length;
   //Increment from last to first
   while(0u != length)
   {
     length --;
     uint32_t offsetLen = (((config2 & MCUXCLOSCCASAFO_SFR_CTRL2_BYTES_ORDER_MASK) == MCUXCLOSCCASAFO_DRV_BYTE_ORDER_LE)
+
                               ? (oriLen - 1u - length) : (length));
     //writing something to DATIN - this will trigger incrementation
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, this cannot overflow as offsetLen has an upper bound of length.")
     mcuxClOsccaSafo_Sfr_writeDatinWord(offset + offsetLen, 1u);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     mcuxClOsccaSafo_Sfr_writeCtrl2(config2 | MCUXCLOSCCASAFO_SFR_CTRL2_INCR | MCUXCLOSCCASAFO_SFR_CTRL2_INCR_CIN);
   }
 

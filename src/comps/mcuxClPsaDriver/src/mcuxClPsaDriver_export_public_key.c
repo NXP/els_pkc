@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -96,17 +96,18 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
     }
     const uint8_t *originKey = key_buffer;
 
-    /* Modulus*/
+    /* Modulus - key_buffer will be overwritten to point to the first byte after the modulus */
     if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&key_buffer, &rsaPrivateN))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
-    /* Public Exponent*/
+    /* Public Exponent - key_buffer will be overwritten to point to the first byte after the exponent */
     if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_get_integer(&key_buffer, &rsaPrivateE))
     {
         return PSA_ERROR_GENERIC_ERROR;
     }
 
+    /* The pubKeyLen is the length difference between the updated key_buffer pointer and the original key pointer */
     size_t pubKeyLen = ((size_t)key_buffer - (size_t)originKey);
     /* Start the public key with sequence, tag and length of public key*/
     size_t seqAndTagLen= 0x04u;
@@ -124,7 +125,9 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_rsa_public_
         return PSA_ERROR_GENERIC_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("pubKeyLen has a maximum value of MCUXCLKEY_SIZE_1024/8 bytes, this cannot wrap.")
     *data_length = pubKeyLen + seqAndTagLen;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     return PSA_SUCCESS;
 }
@@ -142,6 +145,11 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     //For Montgomery curves
     if(curve == PSA_ECC_FAMILY_MONTGOMERY)
     {
+        if(attributes->domain_parameters_size != 0u)
+        {
+            return PSA_ERROR_INVALID_ARGUMENT;
+        }
+
         /* Setup one session to be used by all functions called */
         mcuxClSession_Descriptor_t session;
 
@@ -159,7 +167,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             uint32_t pCpuWa[MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE / (sizeof(uint32_t))];
             /* Initialize session with pkcWA on the beginning of PKC RAM */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE,
-                                     (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WAPKC_SIZE));
+                                     mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WAPKC_SIZE));
 
 
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -184,9 +192,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             mcuxClKey_Descriptor_t pubKeyData;
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-            mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = (mcuxClEcc_MontDH_DomainParams_t *)(&mcuxClEcc_MontDH_DomainParams_Curve448);
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+            const mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = &mcuxClEcc_MontDH_DomainParams_Curve448;
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
             /* mcuxClSession_Handle_t session         */ &session,
@@ -238,7 +244,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             uint32_t pCpuWa[MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE / (sizeof(uint32_t))];
             /* Initialize session with pkcWA on the beginning of PKC RAM */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE,
-                                     (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE));
+                                     mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE));
 
 
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -262,9 +268,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             mcuxClKey_Descriptor_t pubKeyData;
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-            mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = (mcuxClEcc_MontDH_DomainParams_t *)(&mcuxClEcc_MontDH_DomainParams_Curve25519);
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+            const mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = &mcuxClEcc_MontDH_DomainParams_Curve25519;
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
             /* mcuxClSession_Handle_t session         */ &session,
@@ -316,6 +320,11 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     //For Weierstrass curves, curve_parameters have defined in mcuxClEcc_Types.h
     else if((curve == PSA_ECC_FAMILY_SECP_R1) || (curve == PSA_ECC_FAMILY_SECP_K1) || (curve == PSA_ECC_FAMILY_BRAINPOOL_P_R1))
     {
+        if(attributes->domain_parameters_size != 0u)
+        {
+            return PSA_ERROR_INVALID_ARGUMENT;
+        }
+
         const mcuxClEcc_Weier_DomainParams_t* curveParamData = mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
         if(NULL == curveParamData)
         {
@@ -377,7 +386,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
         uint32_t pCpuWa[MCUXCLECC_POINTMULT_WACPU_SIZE / sizeof(uint32_t)];
         /* Initialize session with pkcWA on the beginning of PKC RAM */
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_POINTMULT_WACPU_SIZE,
-                                 (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_POINTMULT_WAPKC_SIZE(byteLenP,byteLenN)));
+                                 mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_POINTMULT_WAPKC_SIZE(byteLenP,byteLenN)));
 
 
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -438,7 +447,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    psa_key_type_t type = psa_get_key_type(attributes);
+    psa_key_type_t type = attributes->core.type;
 
     /* Reject a zero-length output buffer now, since this can never be a
      * valid key representation. This way we know that data must be a valid

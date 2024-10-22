@@ -25,14 +25,14 @@
 
 #define MCUXCL_VERSION_MAX_SIZE ((size_t) 32U) ///< Maximum size of the CLNS version string, in bytes (including zero-terminator)
 
-#define MCUXCL_VERSION "SDK_1.10.0" ///< String literal for the version string of CLNS release that this header is part of
+#define MCUXCL_VERSION "SDK_V2.0.0_preview" ///< String literal for the version string of CLNS release that this header is part of
 
 /**********************************************
  * FUNCTIONS
  **********************************************/
 
 /** Gets the CLNS version string that uniquely identifies this release of the CLNS. */
-/** @attention This header was delivered as part of a CLNS release with the version string: SDK_1.10.0.
+/** @attention This header was delivered as part of a CLNS release with the version string: SDK_V2.0.0_preview.
  *             A string literal is defined by the macro #MCUXCL_VERSION. */
 /**
  * @return Zero-terminated ASCII string that identifies this release of the CLNS.

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -44,7 +44,7 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Set_example)
   MCUX_CSSL_FP_FUNCTION_CALL_END();
 
   /* Try to call the function with NULL as destination => should return invalid parameter error */
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(setResult1, setToken1, mcuxCsslMemory_Set(
   /*  mcuxCsslParamIntegrity_Checksum_t chk */ mcuxCsslParamIntegrity_Protect(4u, NULL, 42u, sizeof(arr), sizeof(arr)),
   /*  void * pDst                          */ NULL,
@@ -52,7 +52,7 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Set_example)
   /*  size_t length                        */ sizeof(arr),
   /*  size_t bufLength                     */ sizeof(arr)
   ));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
   /* Check the return code of mcuxCsslMemory_Set */
   if(((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Set) != setToken1)) || (MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER != setResult1))

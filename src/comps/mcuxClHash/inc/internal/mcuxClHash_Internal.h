@@ -131,9 +131,9 @@ struct mcuxClHash_AlgorithmDescriptor
  **********************************************/
 /**
  * @brief Adds a 32 Bit constant to an 128 Bit counter
- * 
+ *
  * This function is used to support bigger input length up to 2^128 Bit
- * 
+ *
  * @param[in out] pLen128 128 Bit counter to increment
  * @param[in] addLen 32 Bit constant to increment counter with
  */
@@ -142,10 +142,10 @@ void mcuxClHash_processedLength_add(uint32_t *pLen128, uint32_t addLen);
 
 /**
  * @brief Compares an 128 Bit counter value against a 32 Bit constant.
- * 
+ *
  * @param[in] pLen128 128 Bit counter
  * @param[in] cmpLenLow32 32 Bit constant
- * 
+ *
  * @return ternary value indicating greater, equal, smaller relationship
  * @retval 1    Counter value is bigger than constant
  * @retval 0    Counter and constant have equal value
@@ -155,7 +155,7 @@ int mcuxClHash_processedLength_cmp(uint32_t *pLen128, uint32_t cmpLenLow32);
 
 /**
  * @brief convert 128 bit number of bytes to number of bits
- * 
+ *
  * @param pLen128[in out] 128 Bit number represented as uint32_t array. Upper 3 bits need to be zero to avoid overflow.
  */
 static inline void mcuxClHash_processedLength_toBits(uint32_t *pLen128)
@@ -169,12 +169,12 @@ static inline void mcuxClHash_processedLength_toBits(uint32_t *pLen128)
 
 /**
  * @brief Computes an upper bound of the context size for a given hash algorithm.
- * 
- * This allows usage of smaller context buffers and should be preferred over MCUXCLHASH_CONTEXT_SIZE 
+ *
+ * This allows usage of smaller context buffers and should be preferred over MCUXCLHASH_CONTEXT_SIZE
  * if the Hash algorithm is chosen by the user but the hash context is allocated within the CL.
  *
- * @param[in] algo Hash algorithm, SecSha is currently not supported 
- * 
+ * @param[in] algo Hash algorithm, SecSha is currently not supported
+ *
  * @return Byte size of a Hash context
  */
 static inline uint32_t mcuxClHash_getContextWordSize(mcuxClHash_Algo_t algo)
@@ -186,7 +186,7 @@ static inline uint32_t mcuxClHash_getContextWordSize(mcuxClHash_Algo_t algo)
 
 /**
  * @brief Returns the address of the state within the given context
- * 
+ *
  * @param[in] pContext The given context
  *
 */
@@ -218,6 +218,20 @@ static inline uint32_t *mcuxClHash_getUnprocessedPtr(mcuxClHash_Context_t pConte
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("pUnprocessed is 32 Bit aligned since the state pointer is 64 Bit aligned and the state size is at least 32 Bit aligned.")
   return (uint32_t *)pUnprocessed;
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+}
+
+
+/**
+ * @brief Cast a pointer to word-aligned data to a pointer to the mcuxClHash_ContextDescriptor_t type.
+ *
+ * @param pContext    The pointer to cast to a proper context type. Must be aligned. Must point to an area of enough size.
+*/
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClHash_castToHashContextDescriptor)
+static inline mcuxClHash_ContextDescriptor_t * mcuxClHash_castToHashContextDescriptor(uint32_t* pContext)
+{
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  return (mcuxClHash_ContextDescriptor_t*) pContext;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 }
 
 

@@ -83,33 +83,39 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_Engine_CMAC_
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     mcuxClOsccaMacModes_Context_t* pCtx = (mcuxClOsccaMacModes_Context_t *)pContext;
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_Engine_CMAC_Update,
-        MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE >= (pCtx->nrOfUnprocessedBytes + inLength)), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
-        MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE < (pCtx->nrOfUnprocessedBytes + inLength)),
-                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_ScheduleSM4Key),
-                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
-                                       MCUX_CSSL_FP_CONDITIONAL((0u != pCtx->nrOfUnprocessedBytes),
-                                            MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE > pCtx->nrOfUnprocessedBytes),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
-                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor),
-                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine))));
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_Engine_CMAC_Update);
 
     uint32_t lastBlockRemainingBytes = 0u;
     uint32_t fullBlocksRemainingBytes = 0u;
     uint32_t inLenOri = inLength;
     uint32_t inOffset = 0u;
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("(pCtx->nrOfUnprocessedBytes + inLength) can't be larger than max(uint32_t)")
-    if(MCUXCLOSCCASM4_BLOCK_SIZE >= (pCtx->nrOfUnprocessedBytes + inLength))/* "lazy" processing */
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+    if(0u == inLength)
     {
-       /* Store bytes in context */
-       MCUX_CSSL_ANALYSIS_START_SUPPRESS_OUT_OF_BOUNDS_ACCESS("When pCtx->nrOfUnprocessedBytes equals MCUXCLOSCCASM4_BLOCK_SIZE then inLength is zero and no reading is performed")
-       MCUX_CSSL_FP_FUNCTION_CALL(statusBufferRead, mcuxClBuffer_read(pIn, inOffset, pCtx->stateIn + pCtx->nrOfUnprocessedBytes, inLength));
-       MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_OUT_OF_BOUNDS_ACCESS()
-       (void)statusBufferRead; // No need to check it because the function only returns OK.
+        /* Nothing to process */
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_OK);
+    }
 
-       pCtx->nrOfUnprocessedBytes += inLength;
-       pCtx->dataProcessed += inLength;
+    MCUX_CSSL_FP_EXPECT(
+        MCUX_CSSL_FP_CONDITIONAL((inLength <= (MCUXCLOSCCASM4_BLOCK_SIZE - pCtx->nrOfUnprocessedBytes)), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
+        MCUX_CSSL_FP_CONDITIONAL((inLength > (MCUXCLOSCCASM4_BLOCK_SIZE - pCtx->nrOfUnprocessedBytes)),
+                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_ScheduleSM4Key),
+                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
+                                       MCUX_CSSL_FP_CONDITIONAL((0u != pCtx->nrOfUnprocessedBytes),
+                                            MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE > pCtx->nrOfUnprocessedBytes),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor),
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine)))
+                                            );
+
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pCtx->nrOfUnprocessedBytes, 0u, MCUXCLOSCCASM4_BLOCK_SIZE, MCUXCLMAC_STATUS_FAILURE)
+    if(inLength <= (MCUXCLOSCCASM4_BLOCK_SIZE - pCtx->nrOfUnprocessedBytes)) /* "lazy" processing */
+    {
+        /* Store bytes in context */
+        MCUX_CSSL_FP_FUNCTION_CALL(statusBufferRead, mcuxClBuffer_read(pIn, inOffset, pCtx->stateIn + pCtx->nrOfUnprocessedBytes, inLength));
+        (void)statusBufferRead; // No need to check it because the function only returns OK.
+
+        pCtx->nrOfUnprocessedBytes += inLength;
+        pCtx->dataProcessed += inLength;
     }
     else /* At least one block of data to process */
     {

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -372,6 +372,76 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Plain(
    uint8_t * pPubData,
    uint32_t * const pPubDataLength
  );
+
+/**
+ * @brief RSA key generation initialization.
+ *
+ * This function checks key type, checks entropy provided by RNG and check if E is FIPS compliant.
+ *
+ * @param[in]         pSession     Handle for the current CL session.
+ * @param[in]         type         Type of the key
+ * @param[out]        byteLenE     Pointer to variable where length of E shall be stored
+ *
+ * @return Status of the mcuxClRsa_KeyGeneration_Init operation.
+ * @retval #MCUXCLKEY_STATUS_OK                 Initialization operation executed successfully.
+ * @retval #MCUXCLRSA_STATUS_INVALID_INPUT      E is not valid
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_KeyGeneration_Init)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_Init(
+  mcuxClSession_Handle_t pSession,
+  mcuxClKey_Type_t type,
+  uint32_t *byteLenE
+);
+/**
+ * @brief Store RSA Private CRT key.
+ *
+ *  Store RSA private CRT key (p, q, qInv, dp, dq) to the buffer pointed by pPrivData.
+ *  pPrivData buffer for storing RSA key (mcuxClRsa_Key data type, i.e.: key type and key entries)
+ *  followed by the key data, i.e.: p, q, qInv, dp, dq.
+ *  Key entries stored in big-endian byte order (copy with reverse order).
+ *
+ * @param[in]         pSession            Handle for the current CL session.
+ * @param[in]         pPrivData           Pointer to buffer where RSA CRT key will be stored
+ * @param[out]        pPrivDataLength     Pointer to variable where length of pPrivData shall be stored
+ * @param[in]         byteLenPrime        Length of prime
+ *
+ * @return Status of the mcuxClRsa_KeyGeneration_Init operation.
+ * @retval #MCUXCLKEY_STATUS_OK                Initialization operation executed successfully.
+ * @retval #MCUXCLRSA_STATUS_ERROR             Error occured during export
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_KeyGeneration_StorePrivateCRT)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_StorePrivateCRT(
+  mcuxClSession_Handle_t pSession,
+  uint8_t * pPrivData,
+  uint32_t * const pPrivDataLength,
+  uint32_t byteLenPrime);
+
+/**
+ * @brief Store RSA Prviate Plain key.
+ *
+ *  Store RSA private plain key (d, n) to the buffer pointed by pPrivData.
+ *  pPrivData buffer for storing RSA key (mcuxClRsa_Key data type, i.e.: key type and key entries)
+ *  followed by the key data, i.e.: n, d.
+ *  Key entries stored in big-endian byte order (copy with reverse order).
+ *
+ * @param[in]         pSession            Handle for the current CL session.
+ * @param[out]        pPrivData           Pointer to the buffer where the generated private plain
+ *                                        key data needs to be stored
+ * @param[out]        pPrivDataLength     Pointer to variable where length of pPrivData shall be stored
+ * @param[in]         pPubData            Pointer to buffer where RSA public key is stored
+ * @param[in]         dLen                Length of private exponent
+ *
+ * @return Status of the mcuxClRsa_KeyGeneration_Init operation.
+ * @retval #MCUXCLKEY_STATUS_OK                Initialization operation executed successfully.
+ * @retval #MCUXCLRSA_STATUS_ERROR             Error occured during export
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRsa_KeyGeneration_StorePrivatePlain)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_KeyGeneration_StorePrivatePlain(
+  mcuxClSession_Handle_t pSession,
+  uint8_t * pPrivData,
+  uint32_t * const pPrivDataLength,
+  uint8_t * pPubData,
+  uint32_t dLen);
 
 
 /**

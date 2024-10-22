@@ -34,7 +34,7 @@
 /** Performs an example usage of the mcuxClOsccaRandomModes component with OSCCA mode.
  * @retval true  The example code completed successfully
  * @retval false The example code failed */
-bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaRandomModes_OsccaTrng_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -81,11 +81,16 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     /**************************************************************************/
     /* We need a context for OSCCA Rng. */
     uint32_t ctx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRandom_Context_t pCtx = (mcuxClRandom_Context_t)ctx;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
     /* Initialize the Random session with OSCCA TRNG mode. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInitRet, InitToken, mcuxClRandom_init(
-                                                  &session,
-                                                  pCtx,
+        &session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+        pCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                                   mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != InitToken) || (MCUXCLRANDOM_STATUS_OK != randomInitRet))
     {
@@ -99,6 +104,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     /**************************************************************************/
 
     /* Generate random values of smaller amount than one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of rng_buffer1 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenRet, randomGenToken, mcuxClRandom_generate(
                                                   &session,
                                                   rng_buffer1,
@@ -107,10 +113,12 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of multiple of word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of rng_buffer2 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenRet2, randomGenToken2, mcuxClRandom_generate(
                                                   &session,
                                                   rng_buffer2,
@@ -119,10 +127,12 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of larger amount than but not multiple of one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of rng_buffer3 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenRet3, randomGenToken3, mcuxClRandom_generate(
                                                   &session,
                                                   rng_buffer3,
@@ -131,10 +141,12 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of larger amount than but not multiple of one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of rng_buffer is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenRet4, randomGenToken4, mcuxClRandom_generate(
                                                   &session,
                                                   rng_buffer,
@@ -143,6 +155,7 @@ bool mcuxClOsccaRandomModes_OsccaTrng_example(void)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 

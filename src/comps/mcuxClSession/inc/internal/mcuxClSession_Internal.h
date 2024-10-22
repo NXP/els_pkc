@@ -75,6 +75,19 @@ static inline uint32_t* mcuxClSession_allocateWords_cpuWa(
 }
 
 /**
+ * @brief Get workarea buffer
+ *
+ * @param session   Handle for the current CL session.
+ *
+ * @return Pointer to first unused place in current work area
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClSession_getCpuWaBuffer)
+static inline uint32_t* mcuxClSession_getCpuWaBuffer(mcuxClSession_Handle_t pSession)
+{
+    return &(pSession->cpuWa.buffer[pSession->cpuWa.used]);
+}
+
+/**
  * @brief (inline) function to allocate PKC buffer.
  *
  * This function allocates a buffer in PKC workarea specified in @p pSession.

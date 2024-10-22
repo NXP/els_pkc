@@ -69,7 +69,7 @@
 /******************************************************************************************************/
 /** @brief Platform-independent definition of CPU workarea sizes in bytes for SM2 encryption          */
 /******************************************************************************************************/   
-#define MCUXCLOSCCASM2_ENCRYPT_SIZEOF_WA_CPU(pLength) (212u + mcuxClOscca_alignSize(3u * (uint32_t)pLength + 1u))
+#define MCUXCLOSCCASM2_ENCRYPT_SIZEOF_WA_CPU(pLength) (212u + mcuxClOscca_alignSize(3UL * (uint32_t)pLength + 1UL))
 
 /******************************************************************************************************/
 /** @brief Platform-independent definition of CPU workarea sizes in bytes for SM2 decryption          */
@@ -106,7 +106,7 @@
                                                                MCUXCLOSSCASM2_CIPHER_CRYPT_CONTEXT_SIZE+       \
                                                                MCUXCLOSCCASM2_ENCRYPT_SIZEOF_WA_CPU(pLength)+  \
                                                                MCUXCLOSCCASM2_ENC_DEC_CTX_SIZE(pLength)+       \
-                                                               mcuxClOscca_alignSize(2U*(uint32_t)pLength+1U))
+                                                               mcuxClOscca_alignSize(2UL * (uint32_t)pLength + 1UL))
 
 #endif /* MCUXCL_FEATURE_SM2_CIPHER */
 

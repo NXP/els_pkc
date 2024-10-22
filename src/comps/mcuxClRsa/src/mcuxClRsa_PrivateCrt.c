@@ -41,6 +41,148 @@
 #include <internal/mcuxClRsa_Internal_PkcTypes.h>
 #include <internal/mcuxClRsa_PrivateCrt_FUP.h>
 
+/**
+ * @brief This function calculates the modulo of the CRT key
+ *
+ * \param[in]      pKey           Pointer to key structure of type @ref mcuxClRsa_Key
+ * \param[in/out]  pKeyBitLength  Pointer to return key bit lenght
+ *
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_Calc_Modlen_From_CRTkey)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClRsa_Calc_Modlen_From_CRTkey(
+                        const mcuxClRsa_Key * const pKey,
+                        uint32_t *                 pKeyBitLength)
+{
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_Calc_Modlen_From_CRTkey);
+
+  ///< Note that the most significant byte of P and Q should be non-zero.
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pKey->pMod1->keyEntryLength, 32U, ((MCUXCLRSA_MAX_MODLEN / 2U) + 1U), MCUXCLRSA_STATUS_INVALID_INPUT)
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pKey->pMod2->keyEntryLength, 32U, ((MCUXCLRSA_MAX_MODLEN / 2U) + 1U), MCUXCLRSA_STATUS_INVALID_INPUT)
+
+  uint32_t pBitLength = (pKey->pMod1->keyEntryLength - 1u) * 8u; /* Lengths without first byte */
+  uint32_t qBitLength = (pKey->pMod2->keyEntryLength - 1u) * 8u;
+  uint8_t tmpByte = (uint8_t) pKey->pMod1->pKeyEntryData[0];
+  while (tmpByte != 0u) /* Iterate through first byte of p and add to bit length */
+  {
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Max 7 iterations, this cannot wrap.")
+    ++pBitLength;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    tmpByte = (uint8_t) (tmpByte >> 1u);
+  }
+  tmpByte = (uint8_t) (pKey)->pMod2->pKeyEntryData[0];
+  while (tmpByte != 0u) /* Iterate through first byte of q and add to bit length */
+  {
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Max 7 iterations, this cannot wrap.")
+    ++qBitLength;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    tmpByte = (uint8_t) (tmpByte >> 1u);
+  }
+
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("The sum of keys length cannot wrap.")
+  *pKeyBitLength = pBitLength + qBitLength;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+
+  MCUX_CSSL_FP_FUNCTION_EXIT_VOID(mcuxClRsa_Calc_Modlen_From_CRTkey);
+}
+
+/**
+ * @brief This function checks the DFA
+ *
+ * @param[in]   pSession
+ * @param[in]   pKey
+ * @param[in]   pInput
+ * @param[in]   pModT2
+ * @param[in]   exactModByteLength
+ *
+ * @return statusCode
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_privateCRT_internal_DfaCheck)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT_internal_DfaCheck(
+                        mcuxClSession_Handle_t      pSession,
+                        const mcuxClRsa_Key * const pKey,
+                        uint8_t *                  pInput,
+                        uint8_t *                  pModT2,
+                        const uint32_t             exactModByteLength
+                      )
+{
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_privateCRT_internal_DfaCheck);
+
+  if(MCUXCLRSA_KEY_PRIVATECRT != pKey->keytype)
+  {
+    MCUX_CSSL_FP_FUNCTION_CALL(retPublicExp, mcuxClRsa_publicExp(pSession,
+                                                               MCUXCLPKC_PACKARGS4(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT2,
+                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_M,
+                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N,
+                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT1),
+                                                               MCUXCLPKC_PACKARGS4(0, MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT3,
+                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT4,
+                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_RAND),
+                                                               pKey->pExp3->keyEntryLength,
+                                                               pKey->pExp3->pKeyEntryData));
+    if (MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retPublicExp)
+    {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT_internal_DfaCheck, MCUXCLRSA_STATUS_ERROR);
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pInput, pModT2, exactModByteLength),
+                                                                    pInput /* input C */,
+                                                                    pModT2 /* calculated C' */,
+                                                                    exactModByteLength));
+
+    if (compare_result != MCUXCSSLMEMORY_STATUS_EQUAL)
+    {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT_internal_DfaCheck, MCUXCLRSA_STATUS_FAULT_ATTACK);
+    }
+  }
+
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT_internal_DfaCheck, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
+          MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_KEY_PRIVATECRT != pKey->keytype),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_publicExp),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare)
+          ));
+}
+
+/**
+ * @brief This function checks if C is less than the modulus
+ *
+ *
+ * @param[in]   pN            Pointer to modulus
+ * @param[in]   modAlignLen   Key length in bytes
+ *
+ * @return statusCode
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_privateCRT_internal_CheckModulus)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT_internal_CheckModulus(
+                                  const uint8_t *  pN,
+                                  const uint32_t   modAlignLen)
+{
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRsa_privateCRT_internal_CheckModulus);
+
+  MCUXCLPKC_WAITFORFINISH();
+  if(0U == (pN[0u] & 0x01U))
+  {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT_internal_CheckModulus, MCUXCLRSA_STATUS_INVALID_INPUT);
+  }
+
+  /************************************************************************************************/
+  /* Check that input C < N                                                                       */
+  /************************************************************************************************/
+
+  /* Compare C and N */
+  MCUXCLPKC_PS1_SETLENGTH(0u, modAlignLen);
+  MCUXCLPKC_FP_CALC_OP1_CMP(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_INPUT /* C */, MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N /* N */);
+
+  uint32_t carryFlag = MCUXCLPKC_WAITFORFINISH_GETCARRY();
+  if(MCUXCLPKC_FLAG_CARRY != carryFlag)
+  {
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT_internal_CheckModulus, MCUXCLRSA_STATUS_INVALID_INPUT,
+                              MCUXCLPKC_FP_CALLED_CALC_OP1_CMP);
+  }
+
+  MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT_internal_CheckModulus, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
+                            MCUXCLPKC_FP_CALLED_CALC_OP1_CMP);
+}
+
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRsa_privateCRT)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   mcuxClSession_Handle_t      pSession,
@@ -59,59 +201,19 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
 
-  if(NULL == pKey->pMod1->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
-  if(NULL == pKey->pMod2->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
-  if(NULL == pKey->pQInv->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
-  if(NULL == pKey->pExp1->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
-  if(NULL == pKey->pExp2->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
-  if((MCUXCLRSA_KEY_PRIVATECRT_DFA == pKey->keytype) && (NULL == pKey->pExp3->pKeyEntryData))
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
   /************************************************************************************************/
   /* Check that 64 < modulus length < 512 or 1024; otherwise return MCUXCLRSA_STATUS_INVALID_INPUT.*/
   /************************************************************************************************/
   /* Ensure the length won't overflow */
-  if((pKey->pMod1->keyEntryLength < 32U) || (pKey->pMod1->keyEntryLength >  ((MCUXCLRSA_MAX_MODLEN / 2U) + 1U)) )
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-  if((pKey->pMod2->keyEntryLength < 32U) || (pKey->pMod2->keyEntryLength >  ((MCUXCLRSA_MAX_MODLEN / 2U) + 1U)) )
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pKey->pMod1->keyEntryLength, 32U, ((MCUXCLRSA_MAX_MODLEN / 2U) + 1U), MCUXCLRSA_STATUS_INVALID_INPUT)
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pKey->pMod2->keyEntryLength, 32U, ((MCUXCLRSA_MAX_MODLEN / 2U) + 1U), MCUXCLRSA_STATUS_INVALID_INPUT)
 
   /* Obtain modulus length by counting leading zeroes in P and Q */
-  uint32_t keyBitLength;
-  MCUXCLRSA_CALC_MODLEN_FROM_CRTKEY(pKey, keyBitLength);
+  uint32_t keyBitLength = 0U;
+  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClRsa_Calc_Modlen_From_CRTkey(pKey, &keyBitLength));
   const uint32_t exactModByteLength = keyBitLength / 8u;
 
-  if((exactModByteLength < 64U) || (exactModByteLength > MCUXCLRSA_MAX_MODLEN) )
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(exactModByteLength, 64U, MCUXCLRSA_MAX_MODLEN, MCUXCLRSA_STATUS_INVALID_INPUT)
   /************************************************************************************************/
   /* Initialization - Prepare buffers in PKC workarea and clear PKC workarea                      */
   /************************************************************************************************/
@@ -188,7 +290,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   uint16_t * pOperands = (uint16_t *) pOperands32;
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
 
-
   if (NULL == pOperands)
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_FAULT_ATTACK);
@@ -236,10 +337,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
                                                                                                   MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET4 /* temp */),
                                                                                pKey->pMod2->pKeyEntryData,
                                                                                byteLenPQ));
-  if (MCUXCLPKC_STATUS_OK != ret_SecImport)
-  {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
-  }
+  (void)ret_SecImport;
 
   /* Generate random number used for blinding and set LSB to 1, to ensure it is odd and non-null */
   MCUXCLBUFFER_INIT(pBufBlind, NULL, (uint8_t *) pBlind, blindLen);
@@ -321,10 +419,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
                                                                                                   MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET4 /* temp */),
                                                                                pKey->pMod1->pKeyEntryData,
                                                                                byteLenPQ));
-  if (MCUXCLPKC_STATUS_OK != ret_SecImportP)
-  {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
-  }
+  (void)ret_SecImportP;
 
   /* Generate random number used for blinding and set LSB to 1, to ensure it is odd and non-null */
   MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
@@ -417,10 +512,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
                                                                                                       MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET2 /* temp */),
                                                                                    pKey->pQInv->pKeyEntryData,
                                                                                    byteLenQInv));
-  if (MCUXCLPKC_STATUS_OK != ret_SecImportQInv)
-  {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
-  }
+  (void)ret_SecImportQInv;
 
   /* Generate random number R_qInv */
   MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
@@ -463,10 +555,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
                                                                                                       MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_PRIMET4 /* temp */),
                                                                                    pKey->pMod2->pKeyEntryData,
                                                                                    byteLenPQ));
-  if (MCUXCLPKC_STATUS_OK != ret_SecImportQ)
-  {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
-  }
+  (void)ret_SecImportQ;
 
   /* Calculate T5_b = T4_b*q in MODT4 which has a size of (primeAlignLen + blindedPrimeAlignLen = blindedMessageAlignLen) */
   /* Calculate masked message M_b = T5_b + Mq_b */
@@ -506,10 +595,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   /* Check that modulus is odd; otherwise return MCUXCLRSA_STATUS_INVALID_INPUT.                   */
   /************************************************************************************************/
 
-  MCUXCLPKC_WAITFORFINISH();
-  if(0U == (pN[0u] & 0x01U))
+  MCUX_CSSL_FP_FUNCTION_CALL(retValCheckModulus, mcuxClRsa_privateCRT_internal_CheckModulus(pN, modAlignLen));
+  if(MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retValCheckModulus)
   {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT,
+     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, retValCheckModulus,
+          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_Calc_Modlen_From_CRTkey),
           4u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
           4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
           3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
@@ -523,37 +613,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
           3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
           MCUXCLPKC_FP_CALLED_CALC_OP1_ADD,
           MCUXCLPKC_FP_CALLED_CALC_MC1_PM,
+          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privateCRT_internal_CheckModulus),
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ExactDivideOdd));
-  }
-
-  /************************************************************************************************/
-  /* Check that input C < N                                                                       */
-  /************************************************************************************************/
-
-  /* Compare C and N */
-  MCUXCLPKC_PS1_SETLENGTH(0u, modAlignLen);
-  MCUXCLPKC_FP_CALC_OP1_CMP(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_INPUT /* C */, MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N /* N */);
-
-  uint32_t carryFlag = MCUXCLPKC_WAITFORFINISH_GETCARRY();
-  if(MCUXCLPKC_FLAG_CARRY != carryFlag)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INVALID_INPUT,
-        4u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
-        4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
-        3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
-        4u * MCUXCLPKC_FP_CALLED_CALC_OP1_MUL,
-        2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_NDash),
-        3u * MCUXCLPKC_FP_CALLED_CALC_MC1_MR,
-        3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ShiftModulus),
-        3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_QDash),
-        2u * MCUXCLPKC_FP_CALLED_CALC_MC1_MM,
-        2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_SecModExp),
-        3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup),
-        MCUXCLPKC_FP_CALLED_CALC_OP1_ADD,
-        MCUXCLPKC_FP_CALLED_CALC_MC1_PM,
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ExactDivideOdd),
-        MCUXCLPKC_FP_CALLED_CALC_OP1_CMP);
-
   }
 
   /************************************************************************************************/
@@ -587,31 +648,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   /* Protection against FA: in case of key type MCUXCLRSA_KEY_PRIVATECRT_DFA,                      */
   /* use obtained message M and public exponent to calculate C', and compare with input C         */
   /************************************************************************************************/
-  if(MCUXCLRSA_KEY_PRIVATECRT != pKey->keytype)
-  {
-    MCUX_CSSL_FP_FUNCTION_CALL(retPublicExp, mcuxClRsa_publicExp(pSession,
-                                                               MCUXCLPKC_PACKARGS4(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT2,
-                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_M,
-                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_N,
-                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT1),
-                                                               MCUXCLPKC_PACKARGS4(0, MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT3,
-                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_MODT4,
-                                                                                  MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVCRT_RAND),
-                                                               pKey->pExp3->keyEntryLength,
-                                                               pKey->pExp3->pKeyEntryData));
-    if (MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retPublicExp)
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_ERROR);
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare(mcuxCsslParamIntegrity_Protect(3u, pInput, pModT2, exactModByteLength),
-                                                                    pInput /* input C */,
-                                                                    pModT2 /* calculated C' */,
-                                                                    exactModByteLength));
 
-    if (compare_result != MCUXCSSLMEMORY_STATUS_EQUAL)
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_FAULT_ATTACK);
-    }
+  MCUX_CSSL_FP_FUNCTION_CALL(retValDfaCheck, mcuxClRsa_privateCRT_internal_DfaCheck(pSession, pKey, pInput, pModT2, exactModByteLength));
+  if(MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK != retValDfaCheck)
+  {
+     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, retValDfaCheck);
   }
 
   /************************************************************************************************/
@@ -628,6 +669,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
   mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
 
   MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privateCRT, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
+          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_Calc_Modlen_From_CRTkey),
           4u * MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
           4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_SecureImportBigEndianToPkc),
           3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_ncGenerate),
@@ -642,12 +684,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privateCRT(
           MCUXCLPKC_FP_CALLED_CALC_OP1_ADD,
           MCUXCLPKC_FP_CALLED_CALC_MC1_PM,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_ExactDivideOdd),
-          MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
           MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
-          MCUX_CSSL_FP_CONDITIONAL((MCUXCLRSA_KEY_PRIVATECRT != pKey->keytype),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_publicExp),
-
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare)
-          ),
-        MCUXCLPKC_FP_CALLED_EXPORTBIGENDIANFROMPKC_BUFFER);
+          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privateCRT_internal_CheckModulus),
+          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_privateCRT_internal_DfaCheck),
+          MCUXCLPKC_FP_CALLED_EXPORTBIGENDIANFROMPKC_BUFFER);
 }

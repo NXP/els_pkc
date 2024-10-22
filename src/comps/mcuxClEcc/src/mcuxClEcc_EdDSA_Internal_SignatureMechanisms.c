@@ -93,6 +93,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_PreHashMessage)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_PreHashMessage(
     mcuxClSession_Handle_t pSession,
     mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea,
     uint32_t phflag,
     mcuxCl_InputBuffer_t pIn,
     uint32_t inSize,
@@ -110,6 +111,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_PreHashMessage(
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_PreHashMessage, MCUXCLECC_STATUS_FAULT_ATTACK);
         }
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("the result does not wrap ")
+        pCpuWorkarea->wordNumCpuWa += pDomainParams->algoHash->hashSize / sizeof(uint32_t);
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
         uint32_t hashOutputSize = 0u;
 
         MCUXCLBUFFER_INIT(buffMessageTemp, NULL, pMessageTmp, (uint32_t) pDomainParams->algoHash->hashSize);

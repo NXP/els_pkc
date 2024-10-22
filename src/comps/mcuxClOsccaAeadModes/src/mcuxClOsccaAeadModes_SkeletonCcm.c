@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -113,7 +113,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_SkeletonCc
             - process the first block using pEngine(option: auth+init) with zero IV (the engine will update the state in context)
             - construct the counter for CTR mode encryption and output to state in context, let it start at 'one'
 */
-    if ((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_INIT))
+    if ((options & MCUXCLOSCCAAEADMODES_OPTION_INIT) == MCUXCLOSCCAAEADMODES_OPTION_INIT)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(initRet, mcuxClOsccaAeadModes_Ccm_Internal_Init(session,
                                                                                  pCtx,
@@ -140,7 +140,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_SkeletonCc
               partialDataLength to zero
 */
 
-    if ((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD))
+    if ((options & MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD) == MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(proAadRet, mcuxClOsccaAeadModes_Ccm_Internal_ProcessAad(session,
                                                                                          pCtx,
@@ -165,7 +165,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_SkeletonCc
               and process using pEngine(option: auth+enc), set partialDataLength to zero
 */
 
-    if ((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_PROCESS))
+    if ((options & MCUXCLOSCCAAEADMODES_OPTION_PROCESS) == MCUXCLOSCCAAEADMODES_OPTION_PROCESS)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(proRet, mcuxClOsccaAeadModes_Ccm_Internal_Process(session,
                                                                                    pCtx,
@@ -189,25 +189,25 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_SkeletonCc
             - compare tagLength bytes from partialData to the tag (options == verify)
             - clean up context
 */
+    mcuxClAead_Status_t ccmRet = MCUXCLAEAD_STATUS_OK;
 
-    if ((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_FINISH) || (options == MCUXCLOSCCAAEADMODES_OPTION_VERIFY))
+    if (((options & MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT) == MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT)
+        || ((options & MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT) == MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT))
     {
         MCUX_CSSL_FP_FUNCTION_CALL(finishRet, mcuxClOsccaAeadModes_Ccm_Internal_Finish(session, pCtx, pTag, options));
-        if(MCUXCLAEAD_STATUS_OK != finishRet)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_SkeletonCcm, MCUXCLAEAD_STATUS_ERROR);
-        }
+        ccmRet = finishRet;
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_SkeletonCcm, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
-        MCUX_CSSL_FP_CONDITIONAL(((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_INIT)),
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_SkeletonCcm, ccmRet,
+        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLOSCCAAEADMODES_OPTION_INIT) == MCUXCLOSCCAAEADMODES_OPTION_INIT),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_Ccm_Internal_Init)),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD))),
+        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD) == MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_Ccm_Internal_ProcessAad)),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_PROCESS))),
+        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLOSCCAAEADMODES_OPTION_PROCESS) == MCUXCLOSCCAAEADMODES_OPTION_PROCESS),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_Ccm_Internal_Process)),
-        MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_FINISH) || (options == MCUXCLOSCCAAEADMODES_OPTION_VERIFY))),
+        MCUX_CSSL_FP_CONDITIONAL((((options & MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT) == MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT)
+                                 || ((options & MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT) == MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT)),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_Ccm_Internal_Finish)));
 }
 

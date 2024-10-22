@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 MCUX                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* MCUX Confidential. This software is owned or controlled by MCUX and may    */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
@@ -759,8 +759,8 @@ psa_status_t psa_driver_wrapper_import_key(
 
         /* prepare the key container as expected by oracle */
         key_descriptor.container.pData    = (uint8_t *)key_buffer;
-        key_descriptor.container.length   = (uint16_t)key_buffer_size;
-        key_descriptor.container.used     = (uint16_t)key_buffer_size;
+        key_descriptor.container.length   = (uint32_t)key_buffer_size;
+        key_descriptor.container.used     = (uint32_t)key_buffer_size;
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
         key_descriptor.container.pAuxData = (void *)attributes;
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -1342,6 +1342,9 @@ psa_status_t psa_driver_wrapper_cipher_encrypt_setup(
                                                                     key_buffer_size,
                                                                     alg);
 
+    /* Update top-level iv_required status */
+    operation->iv_required = operation->ctx.els_pkc_driver_ctx.iv_required;
+
     if (PSA_ERROR_NOT_SUPPORTED != status)
     {
         return status;
@@ -1435,6 +1438,9 @@ psa_status_t psa_driver_wrapper_cipher_decrypt_setup(
                                                                     key_buffer,
                                                                     key_buffer_size,
                                                                     alg);
+
+    /* Update top-level iv_required status */
+    operation->iv_required = operation->ctx.els_pkc_driver_ctx.iv_required;
 
     if (PSA_ERROR_NOT_SUPPORTED != status)
     {
@@ -1684,7 +1690,12 @@ psa_status_t psa_driver_wrapper_cipher_abort(
     {
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        return mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
+        psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
+
+        /* Update top-level iv_required status */
+        operation->iv_required = operation->ctx.els_pkc_driver_ctx.iv_required;
+
+        return status;
     }
 
 
@@ -2125,7 +2136,7 @@ psa_status_t psa_driver_wrapper_aead_encrypt_setup(
     {
         return status;
     }
-    
+
     switch( location )
     {
         case PSA_KEY_LOCATION_LOCAL_STORAGE:
@@ -2994,7 +3005,7 @@ psa_status_t psa_driver_get_tag_len( psa_aead_operation_t *operation,
     }
 
     switch( operation->id )
-    {                      
+    {
       case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             (void)mcuxClPsaDriver_psa_driver_get_tag_len(&operation->ctx.els_pkc_driver_ctx,
                                                          tag_len);

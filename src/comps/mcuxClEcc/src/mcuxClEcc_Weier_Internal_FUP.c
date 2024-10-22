@@ -22,11 +22,10 @@
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClEcc_Weier_Internal_FUP.h>
 
+
+/* FUP program: update P:  (X0,Y0, old Z) -> (X1,Y1, new Z) Jacobian; */
+/*              update z = z * z'.                                    */
 MCUX_CSSL_ANALYSIS_START_PATTERN_FUP_PROGRAM()
 const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_UpdateJacobianCoordinates[7] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0x77u,0x08u,0x95u,0x4bu},{0x80u,0x00u,0x22u,0x22u,0x00u,0x1du},{0x80u,0x00u,0x1du,0x22u,0x00u,0x1fu},{0x80u,0x00u,0x24u,0x1du,0x00u,0x26u},{0x80u,0x00u,0x25u,0x1fu,0x00u,0x27u},{0x00u,0x1eu,0x23u,0x23u,0x03u,0x19u},{0x80u,0x00u,0x19u,0x22u,0x00u,0x23u}};
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_FUP_PROGRAM()
 
-
-
-/* FUP program: update P:  (X0,Y0, old Z) -> (X1,Y1, new Z) Jacobian; */
-/*              update z = z * z'.                                    */

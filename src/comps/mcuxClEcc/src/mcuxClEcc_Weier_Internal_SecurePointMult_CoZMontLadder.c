@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -78,12 +78,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) );
 
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("32-bit aligned UPTRT table is assigned in CPU workarea")
-    uint32_t *pOperands32 = (uint32_t *) pOperands;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.")
-    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[iScalar]);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+    uint32_t *pOperands32 = MCUXCLPKC_GETUPTRT32();
+    const uint32_t *pScalar = (const uint32_t *) MCUXCLPKC_OFFSET2PTRWORD(pOperands[iScalar]);
 
     /**
      * Step 1: Randomize input point P coordinates (X0, Y0, Z)
@@ -110,10 +106,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
      */
 
     /* Initialize scalar word shares variables and generate XOR-mask for the first non-zero scalar word */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("'scalarBitLength' always is larger than 32")
     uint32_t scalarBitIndex = scalarBitLength - 1u;
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t scalarWord0 = pScalar[scalarBitIndex / 32u];
-    uint32_t scalarWord1;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+    uint32_t scalarWord1 = 0u;
 
     MCUXCLBUFFER_INIT(buffScalarWord1, NULL, (uint8_t*) &scalarWord1, sizeof(uint32_t));
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_GetRandWord, mcuxClRandom_ncGenerate(pSession, buffScalarWord1, sizeof(uint32_t)));
@@ -125,8 +123,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
     /* Scan scalar and skip leading zero bits. */
     while (0u == scalarWord0)
     {
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("'scalarBitLength' is larger than 32 if 'scalarWord0' == 0, so cannot wrap")
         scalarBitIndex -= 32u;
         scalarWord0 = pScalar[scalarBitIndex / 32u];
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     }
     scalarBitIndex = (scalarBitIndex | 31u) - mcuxClMath_CountLeadingZerosWord(scalarWord0);  /* bit position of most significant non-zero bit */
     scalarWord0 ^= scalarWord1;
@@ -208,7 +208,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
             MCUX_CSSL_FP_FUNCTION_CALL(retReRandomUptrt,
                                       mcuxClPkc_ReRandomizeUPTRT(pSession,
                                                                 &pOperands[WEIER_XA],
-                                                                (uint16_t) operandSize,
+                                                                (uint16_t) (operandSize & 0xffffU),
                                                                 (WEIER_Y1 - WEIER_XA + 1u)) );
             if (MCUXCLPKC_STATUS_OK != retReRandomUptrt)
             {
@@ -237,7 +237,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_SecurePointMult(mcuxCl
             }
 
             MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("'scalarBitIndex' start from length of scalar size, next decrase, cannot overflow.")
             scalarWord0 = pScalar[scalarBitIndex / 32u] ^ scalarWord1;
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
         }
 
         uint32_t offsetsP0;

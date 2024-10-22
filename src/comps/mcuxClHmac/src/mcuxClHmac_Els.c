@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -81,11 +81,11 @@ mcuxClHmac_Engine_Oneshot_Els(
     //ELS requires that the length of the key is added as well
     uint64_t lengthField = (uint64_t) inLength + MCUXCLELS_HMAC_PADDED_KEY_SIZE;
 
-    *pDataIn-- = (uint8_t)(lengthField << 3);
-    *pDataIn-- = (uint8_t)(lengthField >> 5);
-    *pDataIn-- = (uint8_t)(lengthField >> 13);
-    *pDataIn-- = (uint8_t)(lengthField >> 21);
-    *pDataIn-- = (uint8_t)(lengthField >> 29);
+    *pDataIn-- = (uint8_t)((lengthField << 3) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 5) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 13) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 21) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 29) & 0xffU);
 
     /* Set-up the HMAC ELS options */
     mcuxClEls_HmacOption_t hmac_options;
@@ -158,7 +158,7 @@ mcuxClHmac_Engine_Oneshot_Els(
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     *pOutLength = MCUXCLELS_HMAC_OUTPUT_SIZE;
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHmac_Engine_Oneshot_Els, MCUXCLMAC_STATUS_OK,
         MCUX_CSSL_FP_CONDITIONAL((MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(pCtxEls->key)),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_prepareHMACKey)
@@ -167,7 +167,7 @@ mcuxClHmac_Engine_Oneshot_Els(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
         MCUX_CSSL_FP_CONDITIONAL(NULL != pOut,  MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN)
          );
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
 }
 

@@ -32,7 +32,7 @@
 /** Performs an example usage of the mcuxClOsccaRandomModes component with OSCCA TRNG mode.
  * @retval true  The example code completed successfully
  * @retval false The example code failed */
-bool mcuxClOsccaRandomModes_TrngMode_OsccaRng_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaRandomModes_TrngMode_OsccaRng_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
@@ -49,12 +49,17 @@ bool mcuxClOsccaRandomModes_TrngMode_OsccaRng_example(void)
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
 
     uint32_t ctx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRandom_Context_t pCtx = (mcuxClRandom_Context_t)ctx;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
     /* Initialize a DRBG in OSCCA TRNG mode. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInitRet, InitToken, mcuxClRandom_init(
-                                                  session,
-                                                  pCtx,
-                                                  mcuxClOsccaRandomModes_Mode_TRNG));
+        session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+        pCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+        mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != InitToken) || (MCUXCLRANDOM_STATUS_OK != randomInitRet))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -79,10 +84,12 @@ bool mcuxClOsccaRandomModes_TrngMode_OsccaRng_example(void)
     uint8_t random_buffer3[31u];
 
     /* Generate random values of smaller amount than one CPU word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of random_buffer1 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg1_status, generate1_token, mcuxClRandom_generate(
                                         session,
                                         random_buffer1,
                                         sizeof(random_buffer1)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate1_token) || (MCUXCLRANDOM_STATUS_OK != rg1_status))
     {
@@ -91,10 +98,12 @@ bool mcuxClOsccaRandomModes_TrngMode_OsccaRng_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of multiple of CPU word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of random_buffer2 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg2_status, generate2_token, mcuxClRandom_generate(
                                         session,
                                         random_buffer2,
                                         sizeof(random_buffer2)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate2_token) || (MCUXCLRANDOM_STATUS_OK != rg2_status))
     {
@@ -103,10 +112,12 @@ bool mcuxClOsccaRandomModes_TrngMode_OsccaRng_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of larger amount than but not multiple of one CPU word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of random_buffer3 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rg3_status, generate3_token, mcuxClRandom_generate(
                                         session,
                                         random_buffer3,
                                         sizeof(random_buffer3)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != generate3_token) || (MCUXCLRANDOM_STATUS_OK != rg3_status))
     {

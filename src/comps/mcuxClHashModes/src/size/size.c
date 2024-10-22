@@ -18,7 +18,6 @@
 #include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClHashModes_Internal_Memory.h>
 
-
 MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
@@ -34,7 +33,6 @@ volatile uint8_t mcuxClHash_compute_nonblocking_WaCpuSha2_384 [MCUXCLHASH_INTERN
 volatile uint8_t mcuxClHash_compute_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClHash_compute_nonblocking_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING];
 volatile uint8_t mcuxClHash_compute_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3];
-volatile uint8_t mcuxClHash_compute_nonblocking_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING];
 volatile uint8_t mcuxClHash_compute_WaCpuSecSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA_1];
 volatile uint8_t mcuxClHash_compute_WaCpuSecSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA2_224];
 volatile uint8_t mcuxClHash_compute_WaCpuSecSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA2_256];
@@ -57,7 +55,6 @@ volatile uint8_t mcuxClHash_compare_nonblocking_WaCpuSha2_512 [MCUXCLHASH_INTERN
 volatile uint8_t mcuxClHash_compare_nonblocking_WaCpuSha2_512_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_512_224];
 volatile uint8_t mcuxClHash_compare_nonblocking_WaCpuSha2_512_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_512_256];
 volatile uint8_t mcuxClHash_compare_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3 + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA3_512];
-volatile uint8_t mcuxClHash_compare_nonblocking_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA3_512];
 volatile uint8_t mcuxClHash_compare_WaCpuSecSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA_1 + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_1];
 volatile uint8_t mcuxClHash_compare_WaCpuSecSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA2_224 + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_224];
 volatile uint8_t mcuxClHash_compare_WaCpuSecSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA2_256 + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_256];
@@ -74,7 +71,6 @@ volatile uint8_t mcuxClHash_finish_WaCpuSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE
 volatile uint8_t mcuxClHash_finish_WaCpuSha2_384 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_384];
 volatile uint8_t mcuxClHash_finish_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClHash_finish_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3];
-volatile uint8_t mcuxClHash_finish_nonblocking_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING];
 volatile uint8_t mcuxClHash_finish_WaCpuSecSha1 [4u];
 volatile uint8_t mcuxClHash_finish_WaCpuSecSha2_224 [4u]; /* Not needed */
 volatile uint8_t mcuxClHash_finish_WaCpuSecSha2_256 [4u];
@@ -97,7 +93,6 @@ volatile uint8_t mcuxClHash_verify_nonblocking_WaCpuSha2_512 [MCUXCLHASH_INTERNA
 volatile uint8_t mcuxClHash_verify_nonblocking_WaCpuSha2_512_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_512_224];
 volatile uint8_t mcuxClHash_verify_nonblocking_WaCpuSha2_512_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA_512_256];
 volatile uint8_t mcuxClHash_verify_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3 + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA3_512];
-volatile uint8_t mcuxClHash_verify_nonblocking_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_NONBLOCKING + 2u * MCUXCLHASH_OUTPUT_SIZE_SHA3_512];
 volatile uint8_t mcuxClHash_verify_WaCpuSecSha1 [2u * MCUXCLHASH_OUTPUT_SIZE_SHA_1];
 volatile uint8_t mcuxClHash_verify_WaCpuSecSha2_224 [2u * MCUXCLHASH_OUTPUT_SIZE_SHA_224];
 volatile uint8_t mcuxClHash_verify_WaCpuSecSha2_256 [2u * MCUXCLHASH_OUTPUT_SIZE_SHA_256];
@@ -143,7 +138,6 @@ volatile uint8_t mcuxClHash_export_import_size_secsha_1 [MCUXCLHASH_STATE_SIZE_S
 volatile uint8_t mcuxClHash_export_import_size_secsha_256 [MCUXCLHASH_STATE_SIZE_SECSHA_256 + MCUXCLHASH_COUNTER_SIZE_SHA_256];
 volatile uint8_t mcuxClHash_export_import_size_secsha_512 [MCUXCLHASH_STATE_SIZE_SECSHA_512 + MCUXCLHASH_COUNTER_SIZE_SHA_512];
 volatile uint8_t mcuxClHash_export_import_size_secsha3 [MCUXCLHASH_STATE_SIZE_SECSHA3 + MCUXCLHASH_COUNTER_SIZE_SHA3];
-
 
 
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

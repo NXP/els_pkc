@@ -53,6 +53,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
 
   /* Locate paddedMessage buffer at beginning of PKC WA and update session info */
   const uint32_t modulusByteLength = pKey->pMod1->keyEntryLength;
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(modulusByteLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
   const uint32_t pkcWaSizeWord = MCUXCLRSA_INTERNAL_PUBLIC_OUTPUT_SIZE(modulusByteLength) / (sizeof(uint32_t));
 
   uint8_t * pPaddedMessage = (uint8_t *) mcuxClSession_allocateWords_pkcWa(pSession, pkcWaSizeWord);
@@ -110,9 +111,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
     /* Perform padding operation                         */
     /*****************************************************/
 
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(modulusByteLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
     const uint32_t keyBitLength = 8u * modulusByteLength;
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL(retVal_PaddingOperation, pVerifyMode->pPaddingFunction(pSession,
                                                                                      pMessageOrDigest,
                                                                                      messageLength,
@@ -124,7 +126,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_verify(
                                                                                      options,
                                                                                      pOutput,
                                                                                      NULL));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT() 
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     /*****************************************************/
     /* Exit                                              */

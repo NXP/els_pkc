@@ -131,11 +131,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_ECDSA_Deterministic_NIST_P224_example)
     /* Generate an HMAC mode for deterministic ECDSA                          */
     /**************************************************************************/
 
-    ALIGNED uint8_t hmacModeDescBytes[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE];
+    uint32_t hmacModeDescBytes[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_CustomMode_t hmacMode = (mcuxClMac_CustomMode_t) hmacModeDescBytes;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(hashCreateMode_result, hashCreateMode_token, mcuxClHmac_createHmacMode(
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer hmacMode points to an object of the right type, the cast was valid.")
     /* mcuxClMac_CustomMode_t mode:       */ hmacMode,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClHash_Algo_t hashAlgorithm:   */ hashAlgorithm)
     );
 
@@ -150,13 +154,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_ECDSA_Deterministic_NIST_P224_example)
     /**************************************************************************/
 
     /* Allocate space for the deterministic ECDSA signature protocol descriptor. */
-    ALIGNED uint8_t signatureProtocolDescBytes[MCUXCLECC_ECDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE];
+    uint32_t signatureProtocolDescBytes[MCUXCLECC_ECDSA_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t *pSignatureProtocolDesc = (mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t *) signatureProtocolDescBytes;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Generate deterministic ECDSA protocol descriptor */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(genProtocolDesc_result, protocolDesc_token, mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic(
     /* mcuxClSession_Handle_t session                                      */ sessionHandle,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pSignatureProtocolDesc points to an object of the right type, the cast was valid.")
     /* mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t *pProtocolDescriptor  */ pSignatureProtocolDesc,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClMac_Mode_t hmacMode                                           */ hmacMode));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic) != protocolDesc_token)

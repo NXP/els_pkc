@@ -78,7 +78,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_EXP36_C)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 #endif
-   uint32_t *ptrL32 = ptr;
+    uint32_t *ptrL32 = ptr;
 
     /* While there are >= 4 bytes to switch the endianness. */
     MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_18_3, "both ptrH32 and ptrL32 point into ptr[].")
@@ -146,11 +146,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_FastSecureXor(void *pTgt,
     uint32_t wordSize = sizeof(uint32_t);
 
     /* xor by word if aligned */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_DI_CAST_POINTERS()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Cast to integer for alignment check is safe")
     if ((length >= wordSize) && (0U == ((uint32_t)pTgt & (wordSize - 1U)))
                 && (0U == ((uint32_t)pSrc1 & (wordSize - 1U)))
                 && (0U == ((uint32_t)pSrc2 & (wordSize - 1U))))
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_DI_CAST_POINTERS()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
     {
         i = 0U;
         while (length >= wordSize)

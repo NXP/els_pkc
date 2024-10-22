@@ -40,7 +40,7 @@ extern "C" {
 /** Helper macros for constructing SFR field name constants */
 #define MCUXCLELS_PASTE(a,b)  a ## b
 #define MCUXCLELS_CONCAT(a,b) MCUXCLELS_PASTE(a,b)
-#define MCUXCLELS_SFR_FIELD(prefix,sfr,field)        MCUXCLELS_CONCAT(prefix, sfr ## _ ## field)
+#define MCUXCLELS_SFR_FIELD(prefix,sfr,field)        MCUXCLELS_CONCAT(prefix,MCUXCLELS_CONCAT(MCUXCLELS_CONCAT(sfr,_),field))
 
 /** Helper macros to get the mask and shift values for a specific ELS SFR field */
 #define MCUXCLELS_SFR_FIELD_MASK(sfr, field)         MCUXCLELS_CONCAT(MCUXCLELS_SFR_FIELD(ELS_SFR_PREFIX,sfr,field), _MASK)

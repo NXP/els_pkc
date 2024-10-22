@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021, 2023 NXP                                                 */
+/* Copyright 2021, 2023-2024 NXP                                            */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -39,6 +39,7 @@
 #define MCUXCLAEAD_STATUS_FAULT_ATTACK       ((mcuxClAead_Status_t) 0x0111F0F0u)
 #define MCUXCLAEAD_STATUS_OK                 ((mcuxClAead_Status_t) 0x01112E03u)
 #define MCUXCLAEAD_STATUS_NOT_OK             ((mcuxClAead_Status_t) 0x011153FCu)
+#define MCUXCLAEAD_STATUS_INVALID_TAG        ((mcuxClAead_Status_t) 0x011189F8u)  ///< Aead function tag invalid
 
 /**@}*/
 

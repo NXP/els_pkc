@@ -49,7 +49,11 @@
             /* mcuxClSession_Handle_t session:      */ pSession,                                                       \
             /* uint32_t * const cpuWaBuffer:       */ cpuWaBuffer,                                                    \
             /* uint32_t cpuWaSize:                 */ cpuWaLength,                                                    \
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("The start address of the PKC RAM is 32-bit aligned, this conversion is safe.") \
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Convert address to pointer")                    \
             /* uint32_t * const pkcWaBuffer:       */ (uint32_t *) PKC_RAM_ADDR,                                      \
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()                                                 \
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()                                             \
             /* uint32_t pkcWaSize:                 */ pkcWaLength                                                     \
             ));                                                                                                       \
         /* mcuxClSession_init is a flow-protected function: Check the protection token and the return value */         \

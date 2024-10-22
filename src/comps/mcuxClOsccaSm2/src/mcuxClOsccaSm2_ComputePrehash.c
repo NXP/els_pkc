@@ -41,15 +41,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_ComputePreha
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm2_ComputePrehash);
 
-    uint8_t * const pCpuWorakara = (uint8_t*)mcuxClSession_allocateWords_cpuWa(session, MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS);
+    uint32_t * const pCpuWorakara = mcuxClSession_allocateWords_cpuWa(session, MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS);
     if (NULL == pCpuWorakara)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_ComputePrehash, MCUXCLOSCCASM2_STATUS_FAULT_ATTACK);
     }
 
     /* identifierLength < 2^6, so identifierLengthBits < 2^{12} */
-    uint32_t identifierLengthBits = (uint32_t)pParams->identifierLength * 8u;
-    uint8_t identifierLengthBigEndian[2] = {(uint8_t)(identifierLengthBits >> 8), (uint8_t)(identifierLengthBits & 0xffu)};
+    uint32_t identifierLengthBits = (uint32_t)pParams->identifierLength * 8U;
+    uint8_t identifierLengthBigEndian[2] = {(uint8_t)((identifierLengthBits >> 8) & 0xffU), (uint8_t)(identifierLengthBits & 0xffU)};
 
     /* Create buffer for prehash */
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()

@@ -22,11 +22,10 @@
 #include <internal/mcuxClEcc_Internal.h>
 #include <internal/mcuxClEcc_Internal_FUP.h>
 
+/* Prerequisites:
+ *  - Homogeneous X- and Y-coordinates are stored in ECC_COORD00 and ECC_COORD01
+ *  - (Z*R)^(-1), where Z is the homogeneous Z-coordinate is stored in ECC_T0 */
 MCUX_CSSL_ANALYSIS_START_PATTERN_FUP_PROGRAM()
 const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_ConvertHomToAffine[7] MCUX_FUP_ATTRIBUTE = {{0x10u,0x00u,0x4eu,0xd7u,0xe8u,0x4cu},{0x80u,0x00u,0x19u,0x16u,0x00u,0x1bu},{0x80u,0x2au,0x00u,0x1bu,0x00u,0x1bu},{0x80u,0x00u,0x1bu,0x20u,0x00u,0x19u},{0x80u,0x2au,0x00u,0x19u,0x00u,0x20u},{0x80u,0x00u,0x1bu,0x21u,0x00u,0x19u},{0x80u,0x2au,0x00u,0x19u,0x00u,0x21u}};
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_FUP_PROGRAM()
 
-
-/* Prerequisites:
- *  - Homogeneous X- and Y-coordinates are stored in ECC_COORD00 and ECC_COORD01
- *  - (Z*R)^(-1), where Z is the homogeneous Z-coordinate is stored in ECC_T0 */
