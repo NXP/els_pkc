@@ -18,6 +18,7 @@
 #define MCUXCLECC_TWED_INTERNAL_POINTVALIDATION_FUP_H_
 #include <internal/mcuxClPkc_FupMacros.h>
 
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation[14];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation_AffineNR[14];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation_HomMR[13];
 
 #endif /* MCUXCLECC_TWED_INTERNAL_POINTVALIDATION_FUP*/ 

@@ -664,6 +664,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
             mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
 
+        mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
+
          MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, ret_ImportAndCheckPublicPoint,
             MCUXCLECC_FP_VERIFY_INIT,
             MCUXCLECC_FP_VERIFY_PREPARE_AND_CHECK,
@@ -690,6 +692,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_Verify(
         mcuxClSession_freeWords_pkcWa(pSession, pCpuWorkarea->wordNumPkcWa);
         MCUXCLPKC_FP_DEINITIALIZE_RELEASE(pSession, &pCpuWorkarea->pkcStateBackup,
             mcuxClEcc_Verify, MCUXCLECC_STATUS_FAULT_ATTACK);
+
+        mcuxClSession_freeWords_cpuWa(pSession, pCpuWorkarea->wordNumCpuWa);
 
          MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_Verify, ret_Weier_Calc_P2,
             MCUXCLECC_FP_VERIFY_INIT,

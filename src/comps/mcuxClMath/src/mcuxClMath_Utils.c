@@ -81,6 +81,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) mcuxClMath_LeadingZeros(uint8_t iX)
     uint32_t index = ps1Len / (sizeof(uint32_t));  /* Assume PS1 OPLEN is exactly a multiple of MCUXCLPKC_WORDSIZE. */
     uint32_t numLeadingZeros = 0u;
 
+    MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();
     do
     {
         index--;

@@ -51,7 +51,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_LINKAGE_FUP()
 /**
  * FUP program declaration mcuxClEcc_FUP_PointComparisonHom
  */
-#define mcuxClEcc_FUP_PointComparisonHom_LEN  10u
+#define mcuxClEcc_FUP_PointComparisonHom_LEN  12u
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_LINKAGE_FUP()
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_PointComparisonHom[mcuxClEcc_FUP_PointComparisonHom_LEN];

@@ -100,6 +100,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
     uint32_t signatureAligned[MCUXCLELS_ECC_SIGNATURE_SIZE / sizeof(uint32_t)];
 
     MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccSign_Async(  // Perform signature generation.
             SignOptions,                                                    // Set the prepared configuration.
             (mcuxClEls_KeyIndex_t)mcuxClKey_getLoadedKeySlot(pKey),           // Set index of private key in keystore.
@@ -108,6 +109,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_sign_ECDSASignLayer(mcuxC
             0,                                                              // Message length, it is ignored in case of processing digest
             (uint8_t*)signatureAligned                                      // Output buffer, which the operation will write the signature to.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
 
     // mcuxClEls_EccSign_Async is a flow-protected function: Check the protection token and the return value

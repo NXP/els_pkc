@@ -22,11 +22,33 @@
 
 #include <mcuxClConfig.h> // Exported features flags header
 
+#ifdef MCUXCL_FEATURE_HW_DMA_WORKAROUND
+
+/** Convert the register address to the one used in secure mode. */
+#define MCUXCL_MSDK_REG_SECURE_ADDR(x) \
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Convert pointer to address for bitwise operations needed in bit masking.") \
+  ((uint32_t)(x) | (0x1UL << 28)) \
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+
+/** Convert the register address to the one used in non-secure mode. */
+#define MCUXCL_MSDK_REG_NONSECURE_ADDR(x) \
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Convert pointer to address for bitwise operations needed in bit masking.") \
+  ((uint32_t)(x) & ~(0x1UL << 28)) \
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+
+/** Address mapping to allow HW IP access 0x2xxx_xxxx memory range */
+#define MCUXCL_HW_DMA_WORKAROUND(addr) \
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Convert pointer to address for bitwise operations needed in mapping calculations.") \
+  (((uint32_t)(MCUXCL_MSDK_REG_NONSECURE_ADDR(addr)) < 0x00780000u) ? ((uint32_t)(addr) | 0x20000000u) : (uint32_t)(addr)) \
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+
+#else
 
 #define MCUXCL_HW_DMA_WORKAROUND(addr) \
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Convert pointer to address for bitwise operations needed in mapping calculations. This instance needed for consistent macro behaviour.") \
   ((uint32_t)(addr)) \
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
 
+#endif /* MCUXCL_FEATURE_DMA_WORKAROUND */
 
 #endif /* MCUXCLCORE_PLATFORM_H_ */

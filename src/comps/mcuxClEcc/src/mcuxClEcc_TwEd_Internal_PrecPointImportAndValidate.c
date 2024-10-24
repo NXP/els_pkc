@@ -74,7 +74,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PrecPointImportAn
     pOperands[TWED_V2] = (uint16_t) pOperands[iDst+2u];
 
     /* Step 3: Validate the coordinates by checking the curve equation a*x2 + y2 = 1 + d*x2*y2: */
-    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_TwEd_PointValidation, mcuxClEcc_FUP_TwEd_PointValidation_Len);
+    MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_TwEd_PointValidation_AffineNR, mcuxClEcc_FUP_TwEd_PointValidation_AffineNR_Len);
 
     /* Step 4: If the ZERO flag of the PKC is not set, return #MCUXCLECC_STATUS_FAULT_ATTACK. Otherwise, return #MCUXCLECC_STATUS_OK. */
     if (MCUXCLPKC_FLAG_ZERO != MCUXCLPKC_WAITFORFINISH_GETZERO())

@@ -1828,6 +1828,7 @@
 ./includes/mcuxClEcc_Mont_Internal_MontDhX_FUP.h
 ./includes/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.h
 ./includes/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.h
+./includes/mcuxClEcc_TwEd_Internal_PointArithmetic_FUP.h
 ./includes/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
 ./includes/mcuxClEcc_TwEd_Internal_PointValidation_FUP.h
 ./includes/mcuxClEcc_TwEd_Internal_VarScalarMult_FUP.h
@@ -2247,6 +2248,7 @@
 ./src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_MontDhX_FUP.h
 ./src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.h
 ./src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.h
+./src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointArithmetic_FUP.h
 ./src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
 ./src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointValidation_FUP.h
 ./src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_VarScalarMult_FUP.h
@@ -2307,8 +2309,10 @@
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainPtrSelectComb.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainPtrSelectML.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainVarScalarMult.c
+./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmetic.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.c
+./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmetic_FUP.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointValidation_FUP.c
 ./src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PrecPointImportAndValidate.c

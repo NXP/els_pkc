@@ -31,7 +31,7 @@
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
 /**
- * This function implements a scalar multiplication lambda*G for a given secret scalar lambda in {1,...,n-1}
+ * This function implements a scalar multiplication lambda*G for a given secret scalar lambda in {0,...,n-1}
  * and the base point G on a twisted Edwards curves. The result will be returned in homogeneous coordinates (Xres:Yres:Zres).
  * The scalar multiplication is implemented using a regular comb method processing 4 bits at a time. To achieve regularity,
  * the scalar is recoded into a non-zero BSD representation and the comb method is implemented by doing a double-and-add-or-subtract
@@ -45,6 +45,8 @@ MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
  * as described in https://eprint.iacr.org/2008/522.pdf which represent a point (x,y) by (X:Y:Z:T) with x=X/Z, y=Y/Z and x*y=T/Z.
  * Due to the fact that with the chosen regular scalar multiplication algorithm we don't have consecutive doublings, there's no point
  * in mixing extended homogeneous with homogeneous coordinates as suggested in Section 4.3 of https://eprint.iacr.org/2008/522.pdf.
+ *
+ * The function also outputs the correct result, namely the neutral point, in case the input scalar is zero.
  *
  * Input:
  *  - pSession              Handle for the current CL session
@@ -170,7 +172,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
 
         /* Read next scalar word if needed. */
         uint32_t currentDigitInWordIndex  = currentDigitBitIndex % 32u;
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("scalarBitLength length of the scalar must be a multiple of 4, this is false positive. ")
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("The result does not wrap. The roundedScalarBitLength must coincide with the bit length of n rounded up to a multiple of 4.")
         if(((uint32_t)currentDigitBitIndex == (scalarBitLength - 4u)) || (currentDigitInWordIndex  == (32u - MCUXCLECC_TWED_FIXSCALARMULT_DIGITSIZE)))
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
         {
@@ -208,7 +210,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_FixScalarMult(
         MCUXCLPKC_FP_CALC_OP1_SUB(iScalar, ECC_N, iScalar);
         MCUXCLPKC_FP_CALC_MC1_MS(TWED_X, ECC_P, TWED_X, ECC_PS);
     }
-
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_TwEd_FixScalarMult, MCUXCLECC_STATUS_OK,
         MCUX_CSSL_FP_CONDITIONAL((0u == scalarLsb),

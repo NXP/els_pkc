@@ -6,8 +6,8 @@
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.rw61x)
     mcux_add_source(
         SOURCES
-                doc/rw61x_release/html/*.*
-                doc/rw61x_release/html/search/*.*
+                doc/rw61x/html/*.*
+                doc/rw61x/html/search/*.*
                 LICENSE.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
@@ -23,8 +23,8 @@ endif()
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.lpc)
     mcux_add_source(
         SOURCES
-                doc/lpc_release/html/*.*
-                doc/lpc_release/html/search/*.*
+                doc/lpc/html/*.*
+                doc/lpc/html/search/*.*
                 LICENSE.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
@@ -39,8 +39,8 @@ endif()
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mcxn)
     mcux_add_source(
         SOURCES
-                doc/mcxn_release/html/*.*
-                doc/mcxn_release/html/search/*.*
+                doc/mcxn/html/*.*
+                doc/mcxn/html/search/*.*
                 LICENSE.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
@@ -55,8 +55,8 @@ endif()
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mimxrt)
     mcux_add_source(
         SOURCES
-                doc/mimxrt_release/html/*.*
-                doc/mimxrt_release/html/search/*.*
+                doc/mimxrt/html/*.*
+                doc/mimxrt/html/search/*.*
                 LICENSE.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt

@@ -1343,7 +1343,7 @@ psa_status_t psa_driver_wrapper_cipher_encrypt_setup(
                                                                     alg);
 
     /* Update top-level iv_required status */
-    operation->iv_required = operation->ctx.els_pkc_driver_ctx.iv_required;
+    operation->iv_required = (operation->ctx.els_pkc_driver_ctx.iv_required != 0u) ? 1u : 0u;
 
     if (PSA_ERROR_NOT_SUPPORTED != status)
     {
@@ -1440,7 +1440,7 @@ psa_status_t psa_driver_wrapper_cipher_decrypt_setup(
                                                                     alg);
 
     /* Update top-level iv_required status */
-    operation->iv_required = operation->ctx.els_pkc_driver_ctx.iv_required;
+    operation->iv_required = (operation->ctx.els_pkc_driver_ctx.iv_required != 0u) ? 1u : 0u;
 
     if (PSA_ERROR_NOT_SUPPORTED != status)
     {
@@ -1690,10 +1690,10 @@ psa_status_t psa_driver_wrapper_cipher_abort(
     {
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        psa_status_t status = mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
+        status = mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
 
         /* Update top-level iv_required status */
-        operation->iv_required = operation->ctx.els_pkc_driver_ctx.iv_required;
+        operation->iv_required = (operation->ctx.els_pkc_driver_ctx.iv_required != 0u) ? 1u : 0u;
 
         return status;
     }

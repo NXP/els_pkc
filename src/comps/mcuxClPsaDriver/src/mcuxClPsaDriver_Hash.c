@@ -97,10 +97,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* Initialize the hash operation */
     mcuxClPsaDriver_ClnsData_Hash_t * pClnsHashData = mcuxClPsaDriver_getClnsData_hashType(operation);
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClHash_init(
                     /* mcuxCLSession_Handle_t session: */ NULL,
                     /* mcuxClHash_Context_t context:   */ &pClnsHashData->ctx,
                     /* mcuxClHash_Algo_t  algo:        */ hashAlgo));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != token) || (MCUXCLHASH_STATUS_OK != result))
     {
@@ -132,12 +134,14 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(
                                                           session,
                                                           cpuWorkarea,
                                                           MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_MAX,
                                                           NULL,
                                                           0u));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) || (MCUXCLSESSION_STATUS_OK != result))
     {
@@ -199,12 +203,14 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(
                                                           session,
                                                           cpuWorkarea,
                                                           MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_MAX,
                                                           NULL,
                                                           0u));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) || (MCUXCLSESSION_STATUS_OK != result))
     {
@@ -281,12 +287,14 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* Update the actual hashsize from algorithum*/
     *hash_length = pClnsHashData->ctx.algo->hashSize;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClSession_init(
                                                       session,
                                                       cpuWorkarea,
                                                       MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_MAX,
                                                       NULL,
                                                       0u));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) || (MCUXCLSESSION_STATUS_OK != result))
     {
@@ -329,11 +337,13 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
 
     /* Copy content from mcuxClHash_Context_t */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("copy only reads from source")
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(tokenCopy1, mcuxClMemory_copy (
                                                     (uint8_t*)target_operation->clns_data,
                                                     (uint8_t*)source_operation->clns_data,
                                                     sizeof(mcuxClHash_ContextDescriptor_t),
                                                     sizeof(mcuxClHash_ContextDescriptor_t)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != tokenCopy1)
     {
         return PSA_ERROR_CORRUPTION_DETECTED;

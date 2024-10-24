@@ -153,6 +153,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_VarScalarMult(
     uint32_t ptrSelectFctFPId                                      ///<  [in]  ptrSelectFctFPId   FP ID of the function ptrSelectFct
  );
 
+/**
+ * Declaration of function to perform repeated doublings of twisted Edwards curve points in homogeneous coordinates
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_RepeatedDoubling)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_TwEd_RepeatedDoubling(
+    uint16_t noOfDoubles        ///<  [in]  noOfDoubles     Number of double operations to be performed
+);
+
 
 /**********************************************************/
 /* Internal mcuxClEcc_TwEd functions for Ed25519           */
