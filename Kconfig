@@ -1,0 +1,580 @@
+# -------------------------------------
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+# -------------------------------------
+
+menu "ELS PKC"
+
+config MCUX_COMPONENT_component.els_pkc.doc.rw61x
+    bool "Component component.els_pkc.doc.rw61x"
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+
+config MCUX_COMPONENT_component.els_pkc.doc.lpc
+    bool "Component component.els_pkc.doc.lpc"
+    depends on MCUX_HW_DEVICE_LPC55S36
+
+config MCUX_COMPONENT_component.els_pkc.doc.mcxn
+    bool "Component component.els_pkc.doc.mcxn"
+    depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
+
+config MCUX_COMPONENT_component.els_pkc.doc.mimxrt
+    bool "Component component.els_pkc.doc.mimxrt"
+    depends on MCUX_HW_DEVICE_MIMXRT798S
+
+config MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
+    bool "Component component.els_pkc.static_lib.mcxn"
+    depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
+    
+config MCUX_COMPONENT_component.els_pkc.static_lib.rw61x
+    bool "Component component.els_pkc.static_lib.rw61x"
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+    
+config MCUX_COMPONENT_component.els_pkc.static_lib.lpc
+    bool "Component component.els_pkc.static_lib.lpc"
+    depends on MCUX_HW_DEVICE_LPC55S36
+    
+config MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt
+    bool "Component component.els_pkc.static_lib.mimxrt"
+    depends on MCUX_HW_DEVICE_MIMXRT798S
+    
+config MCUX_COMPONENT_component.els_pkc.common
+    bool "Component component.els_pkc.common"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.memory
+    
+config MCUX_COMPONENT_component.els_pkc.aead
+    bool "Component component.els_pkc.aead"
+    select MCUX_COMPONENT_component.els_pkc.aes
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.aead_modes
+    bool "Component component.els_pkc.aead_modes"
+    select MCUX_COMPONENT_component.els_pkc.aead
+    
+config MCUX_COMPONENT_component.els_pkc.aes
+    bool "Component component.els_pkc.aes"
+    select MCUX_COMPONENT_component.els_pkc.key
+    
+config MCUX_COMPONENT_component.els_pkc.buffer
+    bool "Component component.els_pkc.buffer"
+    select MCUX_COMPONENT_component.els_pkc.core
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.data_integrity
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    
+config MCUX_COMPONENT_component.els_pkc.cipher
+    bool "Component component.els_pkc.cipher"
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.cipher_modes
+    bool "Component component.els_pkc.cipher_modes"
+    select MCUX_COMPONENT_component.els_pkc.cipher
+    
+config MCUX_COMPONENT_component.els_pkc.core
+    bool "Component component.els_pkc.core"
+    if MCUX_COMPONENT_component.els_pkc.core
+    endif
+config MCUX_COMPONENT_component.els_pkc.crc
+    bool "Component component.els_pkc.crc"
+    select MCUX_COMPONENT_component.els_pkc.core
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.data_integrity
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    
+config MCUX_COMPONENT_component.els_pkc.ecc_deterministic
+    bool "Component component.els_pkc.ecc_deterministic"
+    
+config MCUX_COMPONENT_component.els_pkc.ecc
+    bool "Component component.els_pkc.ecc"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.els_header_only
+    bool "Component component.els_pkc.els_header_only"
+    if MCUX_COMPONENT_component.els_pkc.els_header_only
+    endif
+config MCUX_COMPONENT_component.els_pkc.els_common
+    bool "Component component.els_pkc.els_common"
+    select MCUX_COMPONENT_component.els_pkc.core
+    
+config MCUX_COMPONENT_component.els_pkc.standalone_gdet
+    bool "Component component.els_pkc.standalone_gdet"
+    select MCUX_COMPONENT_component.els_pkc.els_header_only
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    
+config MCUX_COMPONENT_component.els_pkc.els
+    bool "Component component.els_pkc.els"
+    select MCUX_COMPONENT_component.els_pkc.els_header_only
+    select MCUX_COMPONENT_component.els_pkc.els_common
+    select MCUX_COMPONENT_component.els_pkc.hash
+    select MCUX_COMPONENT_component.els_pkc.core
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.key
+    select MCUX_COMPONENT_component.els_pkc.mac_modes
+    select MCUX_COMPONENT_component.els_pkc.aead_modes
+    select MCUX_COMPONENT_component.els_pkc.data_integrity
+    select MCUX_COMPONENT_component.els_pkc.cipher_modes
+    
+config MCUX_COMPONENT_component.els_pkc.glikey
+    bool "Component component.els_pkc.glikey"
+    select MCUX_COMPONENT_component.els_pkc.core
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    
+config MCUX_COMPONENT_component.els_pkc.hash
+    bool "Component component.els_pkc.hash"
+    select MCUX_COMPONENT_component.els_pkc.hashmodes
+    
+config MCUX_COMPONENT_component.els_pkc.hashmodes
+    bool "Component component.els_pkc.hashmodes"
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.hmac
+    bool "Component component.els_pkc.hmac"
+    select MCUX_COMPONENT_component.els_pkc.key
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    select MCUX_COMPONENT_component.els_pkc.padding
+    
+config MCUX_COMPONENT_component.els_pkc.key_derivation
+    bool "Component component.els_pkc.key_derivation"
+    
+config MCUX_COMPONENT_component.els_pkc.key
+    bool "Component component.els_pkc.key"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.ecc
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.mac
+    bool "Component component.els_pkc.mac"
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    select MCUX_COMPONENT_component.els_pkc.padding
+    select MCUX_COMPONENT_component.els_pkc.hmac
+    
+config MCUX_COMPONENT_component.els_pkc.mac_modes
+    bool "Component component.els_pkc.mac_modes"
+    select MCUX_COMPONENT_component.els_pkc.mac
+    
+config MCUX_COMPONENT_component.els_pkc.math
+    bool "Component component.els_pkc.math"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.memory
+    bool "Component component.els_pkc.memory"
+    select MCUX_COMPONENT_component.els_pkc.param_integrity
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    
+config MCUX_COMPONENT_component.els_pkc.oscca
+    bool "Component component.els_pkc.oscca"
+    select MCUX_COMPONENT_component.els_pkc.oscca_aeadmodes
+    select MCUX_COMPONENT_component.els_pkc.oscca_ciphermodes
+    select MCUX_COMPONENT_component.els_pkc.oscca_macmodes
+    select MCUX_COMPONENT_component.els_pkc.oscca_randommodes
+    select MCUX_COMPONENT_component.els_pkc.oscca_sm2
+    select MCUX_COMPONENT_component.els_pkc.oscca_sm3
+    select MCUX_COMPONENT_component.els_pkc.oscca_sm4
+    select MCUX_COMPONENT_component.els_pkc.oscca_pkc
+    select MCUX_COMPONENT_component.els_pkc.oscca_safo
+    select MCUX_COMPONENT_component.els_pkc.signature
+    select MCUX_COMPONENT_component.els_pkc.crc
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_aeadmodes
+    bool "Component component.els_pkc.oscca_aeadmodes"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_ciphermodes
+    bool "Component component.els_pkc.oscca_ciphermodes"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_macmodes
+    bool "Component component.els_pkc.oscca_macmodes"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_pkc
+    bool "Component component.els_pkc.oscca_pkc"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_randommodes
+    bool "Component component.els_pkc.oscca_randommodes"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_safo
+    bool "Component component.els_pkc.oscca_safo"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_sm2
+    bool "Component component.els_pkc.oscca_sm2"
+    select MCUX_COMPONENT_component.els_pkc.common
+    select MCUX_COMPONENT_component.els_pkc.signature
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_sm3
+    bool "Component component.els_pkc.oscca_sm3"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.oscca_sm4
+    bool "Component component.els_pkc.oscca_sm4"
+    select MCUX_COMPONENT_component.els_pkc.common
+    
+config MCUX_COMPONENT_component.els_pkc.padding
+    bool "Component component.els_pkc.padding"
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.pkc
+    bool "Component component.els_pkc.pkc"
+    select MCUX_COMPONENT_component.els_pkc.ecc
+    select MCUX_COMPONENT_component.els_pkc.math
+    select MCUX_COMPONENT_component.els_pkc.rsa
+    
+config MCUX_COMPONENT_component.els_pkc.prng
+    bool "Component component.els_pkc.prng"
+    select MCUX_COMPONENT_component.els_pkc.ecc
+    select MCUX_COMPONENT_component.els_pkc.math
+    select MCUX_COMPONENT_component.els_pkc.rsa
+    
+config MCUX_COMPONENT_component.els_pkc.psa_driver
+    bool "Component component.els_pkc.psa_driver"
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    select MCUX_COMPONENT_component.els_pkc
+
+config MCUX_COMPONENT_component.els_pkc.random
+    bool "Component component.els_pkc.random"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.random_modes
+    select MCUX_COMPONENT_component.els_pkc.prng
+    
+config MCUX_COMPONENT_component.els_pkc.random_modes_hmacdrbg
+    bool "Component component.els_pkc.random_modes_hmacdrbg"
+    select MCUX_COMPONENT_component.els_pkc.random_modes
+    
+config MCUX_COMPONENT_component.els_pkc.random_modes
+    bool "Component component.els_pkc.random_modes"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.aes
+    select MCUX_COMPONENT_component.els_pkc.trng
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.random_modes_ctr
+    bool "Component component.els_pkc.random_modes_ctr"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.aes
+    select MCUX_COMPONENT_component.els_pkc.trng
+    
+config MCUX_COMPONENT_component.els_pkc.rsa_oaep
+    bool "Component component.els_pkc.rsa_oaep"
+    select MCUX_COMPONENT_component.els_pkc.rsa
+    
+config MCUX_COMPONENT_component.els_pkc.rsa
+    bool "Component component.els_pkc.rsa"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    
+config MCUX_COMPONENT_component.els_pkc.session
+    bool "Component component.els_pkc.session"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    select MCUX_COMPONENT_component.els_pkc.random
+    
+config MCUX_COMPONENT_component.els_pkc.signature
+    bool "Component component.els_pkc.signature"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.toolchain
+    
+config MCUX_COMPONENT_component.els_pkc.trng
+    bool "Component component.els_pkc.trng"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    select MCUX_COMPONENT_component.els_pkc.memory
+    
+config MCUX_COMPONENT_component.els_pkc.trng.type_els
+    bool "Component component.els_pkc.trng.type_els"
+    select MCUX_COMPONENT_component.els_pkc.trng
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.trng.type_rng4
+    bool "Component component.els_pkc.trng.type_rng4"
+    select MCUX_COMPONENT_component.els_pkc.trng
+    
+config MCUX_COMPONENT_component.els_pkc.pre_processor
+    bool "Component component.els_pkc.pre_processor"
+    if MCUX_COMPONENT_component.els_pkc.pre_processor
+    endif
+config MCUX_COMPONENT_component.els_pkc.data_integrity
+    bool "Component component.els_pkc.data_integrity"
+    if MCUX_COMPONENT_component.els_pkc.data_integrity
+    endif
+config MCUX_COMPONENT_component.els_pkc.flow_protection
+    bool "Component component.els_pkc.flow_protection"
+    select MCUX_COMPONENT_component.els_pkc.core
+    
+config MCUX_COMPONENT_component.els_pkc.param_integrity
+    bool "Component component.els_pkc.param_integrity"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.secure_counter
+    select MCUX_COMPONENT_component.els_pkc.pre_processor
+    
+config MCUX_COMPONENT_component.els_pkc.secure_counter
+    bool "Component component.els_pkc.secure_counter"
+    if MCUX_COMPONENT_component.els_pkc.secure_counter
+    endif
+config MCUX_COMPONENT_component.els_pkc
+    bool "Component component.els_pkc"
+    select MCUX_COMPONENT_component.els_pkc.els
+    select MCUX_COMPONENT_component.els_pkc.pkc
+    select MCUX_COMPONENT_component.els_pkc.trng
+    
+    if MCUX_COMPONENT_component.els_pkc
+      choice
+        prompt "Component component.els_pkc anyOf 1"
+        # Uncomment default cause there is only one option for one device
+        # default MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1
+        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1
+            bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_1"
+            select MCUX_COMPONENT_component.els_pkc.platform.lpc
+            select MCUX_COMPONENT_component.els_pkc.static_lib.lpc
+            select MCUX_COMPONENT_component.els_pkc.doc.lpc
+            depends on MCUX_HW_DEVICE_LPC55S36
+            
+        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_2
+            bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_2"
+            select MCUX_COMPONENT_component.els_pkc.platform.mcxn
+            select MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
+            select MCUX_COMPONENT_component.els_pkc.doc.mcxn
+            depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
+            
+        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3
+            bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3"
+            select MCUX_COMPONENT_component.els_pkc.static_lib.rw61x
+            select MCUX_COMPONENT_component.els_pkc.platform.rw61x
+            select MCUX_COMPONENT_component.els_pkc.doc.rw61x
+            depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+            
+        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_4
+            bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_4"
+            select MCUX_COMPONENT_component.els_pkc.platform.mimxrt
+            select MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt
+            select MCUX_COMPONENT_component.els_pkc.doc.mimxrt
+            select MCUX_COMPONENT_component.els_pkc.oscca
+            select MCUX_COMPONENT_component.els_pkc.rsa_oaep
+            depends on MCUX_HW_DEVICE_MIMXRT798S
+            
+      endchoice
+    endif
+    
+config MCUX_COMPONENT_component.els_pkc.toolchain
+    bool "Component component.els_pkc.toolchain"
+    if MCUX_COMPONENT_component.els_pkc.toolchain
+    endif
+config MCUX_COMPONENT_component.els_pkc.platform.mcxn
+    bool "Component component.els_pkc.platform.mcxn"
+    default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && (MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236))
+    select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
+    
+    if MCUX_COMPONENT_component.els_pkc.platform.mcxn
+      choice
+        prompt "Component component.els_pkc.platform.mcxn anyOf 1"
+        # default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1
+        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1
+            bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1"
+            select MCUX_COMPONENT_component.els_pkc.trng.type_els
+            depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236
+            
+      endchoice
+    endif
+    
+config MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only
+    bool "Component component.els_pkc.platform.rw61x_inf_header_only"
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+    
+config MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files
+    bool "Component component.els_pkc.platform.rw61x_interface_files"
+    select MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+    
+config MCUX_COMPONENT_component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor
+    bool "Component component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor"
+    select MCUX_COMPONENT_component.els_pkc.els_header_only
+    select MCUX_COMPONENT_component.els_pkc.els_common
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.standalone_gdet
+    select MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only
+    select MCUX_COMPONENT_component.els_pkc.buffer
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+    
+config MCUX_COMPONENT_component.els_pkc.platform.rw61x
+    bool "Component component.els_pkc.platform.rw61x"
+    default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && (MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612))
+    select MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files
+    select MCUX_COMPONENT_component.els_pkc.trng.type_rng4
+    select MCUX_COMPONENT_component.els_pkc.standalone_gdet
+    select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+    
+config MCUX_COMPONENT_component.els_pkc.platform.lpc
+    bool "Component component.els_pkc.platform.lpc"
+    select MCUX_COMPONENT_component.els_pkc.standalone_gdet
+    depends on MCUX_HW_DEVICE_LPC55S36
+    
+config MCUX_COMPONENT_component.els_pkc.platform.mimxrt
+    bool "Component component.els_pkc.platform.mimxrt"
+    select MCUX_COMPONENT_component.els_pkc.glikey
+    select MCUX_COMPONENT_component.els_pkc.trng.type_els
+    depends on MCUX_HW_DEVICE_MIMXRT798S
+    
+config MCUX_COMPONENT_component.els_pkc.examples
+    bool "Component component.els_pkc.examples"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    select MCUX_COMPONENT_component.els_pkc.pkc
+    select MCUX_COMPONENT_component.els_pkc.random_modes
+    select MCUX_COMPONENT_component.els_pkc
+    select MCUX_COMPONENT_component.els_pkc.examples_aead
+    select MCUX_COMPONENT_component.els_pkc.examples_cipher_modes
+    select MCUX_COMPONENT_component.els_pkc.examples_ecc
+    select MCUX_COMPONENT_component.els_pkc.examples_els
+    select MCUX_COMPONENT_component.els_pkc.examples_hash_modes
+    select MCUX_COMPONENT_component.els_pkc.examples_hmac
+    select MCUX_COMPONENT_component.els_pkc.examples_key
+    select MCUX_COMPONENT_component.els_pkc.examples_mac_modes
+    select MCUX_COMPONENT_component.els_pkc.examples_rsa
+    select MCUX_COMPONENT_component.els_pkc.examples_flow_protection
+    select MCUX_COMPONENT_component.els_pkc.examples_memory
+    
+    if MCUX_COMPONENT_component.els_pkc.examples
+      choice
+        prompt "Component component.els_pkc.examples anyOf 1"
+        # default MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
+        config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
+            bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1"
+            select MCUX_COMPONENT_component.els_pkc.examples_random_modes
+            depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236 || MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612 || MCUX_HW_DEVICE_MIMXRT798S
+            
+      endchoice
+    endif
+    
+config MCUX_COMPONENT_component.els_pkc.examples_memory
+    bool "Component component.els_pkc.examples_memory"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_flow_protection
+    bool "Component component.els_pkc.examples_flow_protection"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_rsa
+    bool "Component component.els_pkc.examples_rsa"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_random_modes
+    bool "Component component.els_pkc.examples_random_modes"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_mac_modes
+    bool "Component component.els_pkc.examples_mac_modes"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    select MCUX_COMPONENT_component.els_pkc.mac
+    
+config MCUX_COMPONENT_component.els_pkc.examples_key
+    bool "Component component.els_pkc.examples_key"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    
+config MCUX_COMPONENT_component.els_pkc.examples_hmac
+    bool "Component component.els_pkc.examples_hmac"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_hash_modes
+    bool "Component component.els_pkc.examples_hash_modes"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_els
+    bool "Component component.els_pkc.examples_els"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_ecc
+    bool "Component component.els_pkc.examples_ecc"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.examples_aead
+    bool "Component component.els_pkc.examples_aead"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    select MCUX_COMPONENT_component.els_pkc.padding
+    
+config MCUX_COMPONENT_component.els_pkc.examples_cipher_modes
+    bool "Component component.els_pkc.examples_cipher_modes"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc.els
+    
+config MCUX_COMPONENT_component.els_pkc.psa_driver_examples
+    bool "Component component.els_pkc.psa_driver_examples"
+    select MCUX_COMPONENT_component.els_pkc.flow_protection
+    select MCUX_COMPONENT_component.els_pkc.session
+    select MCUX_COMPONENT_component.els_pkc.memory
+    select MCUX_COMPONENT_component.els_pkc
+    select MCUX_COMPONENT_component.els_pkc.psa_driver
+    depends on MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
+endmenu 
