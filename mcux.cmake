@@ -8,7 +8,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.rw61x)
         SOURCES
                 doc/rw61x/html/*.*
                 doc/rw61x/html/search/*.*
-                LICENSE.htm
+                LA_OPT_Online_Code_Hosting.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -25,7 +25,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.lpc)
         SOURCES
                 doc/lpc/html/*.*
                 doc/lpc/html/search/*.*
-                LICENSE.htm
+                LA_OPT_Online_Code_Hosting.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -41,7 +41,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mcxn)
         SOURCES
                 doc/mcxn/html/*.*
                 doc/mcxn/html/search/*.*
-                LICENSE.htm
+                LA_OPT_Online_Code_Hosting.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -57,7 +57,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mimxrt)
         SOURCES
                 doc/mimxrt/html/*.*
                 doc/mimxrt/html/search/*.*
-                LICENSE.htm
+                LA_OPT_Online_Code_Hosting.htm
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -73,7 +73,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.mcxn)
         SOURCES static_library/mcxn/libclns.a
                 static_library/mcxn/libclns.a.libsize
                 static_library/mcxn/libclns.a.objsize
-                static_library/mcxn/libclns.stripped.a
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -87,7 +86,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.rw61x)
         SOURCES static_library/rw61x/libclns.a
                 static_library/rw61x/libclns.a.libsize
                 static_library/rw61x/libclns.a.objsize
-                static_library/rw61x/libclns.stripped.a
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -101,7 +99,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.lpc)
         SOURCES static_library/lpc/libclns.a
                 static_library/lpc/libclns.a.libsize
                 static_library/lpc/libclns.a.objsize
-                static_library/lpc/libclns.stripped.a
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -115,7 +112,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt)
         SOURCES static_library/mimxrt/libclns.a
                 static_library/mimxrt/libclns.a.libsize
                 static_library/mimxrt/libclns.a.objsize
-                static_library/mimxrt/libclns.stripped.a
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -170,7 +166,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.aead_modes)
                 src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Multipart.c
                 src/comps/mcuxClAeadModes/src/mcuxClAeadModes_Els_Oneshot.c
                 src/comps/mcuxClAeadModes/inc/mcuxClAeadModes.h
-                src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_MemoryConsumption.h
+#                 src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_MemoryConsumption.h
                 src/comps/mcuxClAeadModes/inc/mcuxClAeadModes_Modes.h
                 src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Common.h
                 src/comps/mcuxClAeadModes/inc/internal/mcuxClAeadModes_Common_Constants.h
@@ -258,7 +254,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.cipher_modes)
                 src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_AesEngine.c
                 src/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_Aes_Internal.c
                 src/comps/mcuxClCipherModes/inc/mcuxClCipherModes.h
-                src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
+#                 src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_MemoryConsumption.h
                 src/comps/mcuxClCipherModes/inc/mcuxClCipherModes_Modes.h
                 src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Common.h
                 src/comps/mcuxClCipherModes/inc/internal/mcuxClCipherModes_Common_Constants.h
@@ -339,6 +335,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_CalcHashModN_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_Ed25519.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_DecodePoint_FUP.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_EncodePoint.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_SetupEnvironment.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_Internal_SignatureMechanisms.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_VerifySignature.c
@@ -366,6 +363,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainPtrSelectComb.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainPtrSelectML.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PlainVarScalarMult.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmetic.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmetic_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.c
@@ -376,7 +375,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_BlindedSecretKeyGen.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_BlindedSecretKeyGen_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateKeyPair.c
-                src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_KeyAgreement_ECDH.c
+#                 src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_KeyAgreement_ECDH.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_SetupEnvironment.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_ConvertPoint_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_Weier_Internal_FUP.c
@@ -408,11 +407,12 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_PointComparison_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_Internal_SetupEnvironment_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_KeyTypes.h
-                src/comps/mcuxClEcc/inc/mcuxClEcc_MemoryConsumption.h
+#                 src/comps/mcuxClEcc/inc/mcuxClEcc_MemoryConsumption.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_MontDhX_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_Mont_Internal_SecureScalarMult_XZMontLadder_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointArithmeticEd25519_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointSubtraction_FUP.h
+                src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointArithmetic_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_PointValidation_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_TwEd_Internal_VarScalarMult_FUP.h
                 src/comps/mcuxClEcc/inc/mcuxClEcc_Types.h
@@ -506,6 +506,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.standalone_gdet)
     mcux_add_source(
         SOURCES src/comps/mcuxClEls/src/mcuxClEls_GlitchDetector.c
                 src/comps/mcuxClEls/inc/mcuxClEls_GlitchDetector.h
+                includes/mcuxClEls_GlitchDetector.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -557,7 +558,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hash)
                 src/comps/mcuxClHash/inc/mcuxClHash.h
                 src/comps/mcuxClHash/inc/mcuxClHash_Constants.h
                 src/comps/mcuxClHash/inc/mcuxClHash_Functions.h
-                src/comps/mcuxClHash/inc/mcuxClHash_MemoryConsumption.h
+#                 src/comps/mcuxClHash/inc/mcuxClHash_MemoryConsumption.h
                 src/comps/mcuxClHash/inc/mcuxClHash_Types.h
                 src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal.h
                 src/comps/mcuxClHash/inc/internal/mcuxClHash_Internal_Memory.h
@@ -581,7 +582,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hashmodes)
                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_Algorithms.h
                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_Constants.h
                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_Functions.h
-                src/comps/mcuxClHashModes/inc/mcuxClHashModes_MemoryConsumption.h
+#                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_MemoryConsumption.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_c_sha1.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_els_sha2.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal.h
@@ -609,7 +610,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hmac)
                 src/comps/mcuxClHmac/inc/mcuxClHmac_Constants.h
                 src/comps/mcuxClHmac/inc/mcuxClHmac_Functions.h
                 src/comps/mcuxClHmac/inc/mcuxClHmac_KeyTypes.h
-                src/comps/mcuxClHmac/inc/mcuxClHmac_MemoryConsumption.h
+#                 src/comps/mcuxClHmac/inc/mcuxClHmac_MemoryConsumption.h
                 src/comps/mcuxClHmac/inc/mcuxClHmac_Modes.h
                 src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Core_Functions_Els.h
                 src/comps/mcuxClHmac/inc/internal/mcuxClHmac_Core_Functions_Sw.h
@@ -641,6 +642,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.key_derivation)
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_NIST_SP800_108.h
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_NIST_SP800_56C.h
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_PBKDF2.h
+                src/comps/mcuxClKey/inc/internal/mcuxClKey_Derivation_Helper.h
                 src/comps/mcuxClKey/inc/internal/mcuxClKey_DerivationAlgorithms_NIST_SP800_108_Internal.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -659,7 +661,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.key)
                 src/comps/mcuxClKey/inc/mcuxClKey.h
                 src/comps/mcuxClKey/inc/mcuxClKey_Constants.h
                 src/comps/mcuxClKey/inc/mcuxClKey_Functions.h
-                src/comps/mcuxClKey/inc/mcuxClKey_MemoryConsumption.h
+#                 src/comps/mcuxClKey/inc/mcuxClKey_MemoryConsumption.h
                 src/comps/mcuxClKey/inc/mcuxClKey_ProtectionMechanisms.h
                 src/comps/mcuxClKey/inc/mcuxClKey_Types.h
                 src/comps/mcuxClKey/inc/internal/mcuxClKey_Functions_Internal.h
@@ -707,7 +709,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.mac_modes)
                 src/comps/mcuxClMacModes/inc/mcuxClMacModes.h
                 src/comps/mcuxClMacModes/inc/mcuxClMacModes_Constants.h
                 src/comps/mcuxClMacModes/inc/mcuxClMacModes_Functions.h
-                src/comps/mcuxClMacModes/inc/mcuxClMacModes_MemoryConsumption.h
+#                 src/comps/mcuxClMacModes/inc/mcuxClMacModes_MemoryConsumption.h
                 src/comps/mcuxClMacModes/inc/mcuxClMacModes_Modes.h
                 src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Common_Algorithms.h
                 src/comps/mcuxClMacModes/inc/internal/mcuxClMacModes_Common_Constants.h
@@ -786,24 +788,24 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.memory)
                 src/comps/mcuxClMemory/inc/mcuxClMemory_Set.h
                 src/comps/mcuxClMemory/inc/mcuxClMemory_Types.h
                 src/comps/mcuxClMemory/inc/mcuxClMemory_Xor.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_ClearSecure_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Clear_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CompareDPASecure_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CompareSecure_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Compare_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopySecurePow2_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopySecure_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopySecure_Reversed_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopyWords_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Copy_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Copy_Reversed_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_ClearSecure_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Clear_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CompareDPASecure_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CompareSecure_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Compare_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopySecurePow2_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopySecure_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopySecure_Reversed_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_CopyWords_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Copy_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Copy_Reversed_Internal.h
                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_SetSecure_Internal.h
-                src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Set_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_SetSecure_Internal.h
+#                 src/comps/mcuxClMemory/inc/internal/mcuxClMemory_Set_Internal.h
                 src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Clear.c
                 src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Compare.c
                 src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Copy.c
-                src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Internal_SecureCompare_Stub.c
+#                 src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Internal_SecureCompare_Stub.c
                 src/comps/mcuxCsslMemory/src/mcuxCsslMemory_Set.c
                 src/comps/mcuxCsslMemory/inc/mcuxCsslMemory.h
                 src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Clear.h
@@ -814,7 +816,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.memory)
                 src/comps/mcuxCsslMemory/inc/mcuxCsslMemory_Types.h
                 src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Compare_asm.h
                 src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_Copy_asm.h
-                src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_SecureCompare.h
+#                 src/comps/mcuxCsslMemory/inc/internal/mcuxCsslMemory_Internal_SecureCompare.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -840,7 +842,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_aeadmodes)
                 src/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4_Multipart.c
                 src/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4_OneShot.c
                 src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes.h
-                src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes_MemoryConsumption.h
+#                 src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes_MemoryConsumption.h
                 src/comps/mcuxClOsccaAeadModes/inc/mcuxClOsccaAeadModes_Modes.h
                 src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Algorithms.h
                 src/comps/mcuxClOsccaAeadModes/inc/internal/mcuxClOsccaAeadModes_Internal_Functions.h
@@ -862,7 +864,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_ciphermodes)
                 src/comps/mcuxClOsccaCipherModes/src/mcuxClOsccaCipherModes_SM4_Crypt_Internal.c
                 src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes.h
                 src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes_Constants.h
-                src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes_MemoryConsumption.h
+#                 src/comps/mcuxClOsccaCipherModes/inc/mcuxClOsccaCipherModes_MemoryConsumption.h
                 src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Algorithms.h
                 src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Internal_Functions.h
                 src/comps/mcuxClOsccaCipherModes/inc/internal/mcuxClOsccaCipherModes_Internal_Types.h
@@ -887,7 +889,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_macmodes)
                 src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes.h
                 src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_Constants.h
                 src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_KeyTypes.h
-                src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_MemoryConsumption.h
+#                 src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_MemoryConsumption.h
                 src/comps/mcuxClOsccaMacModes/inc/mcuxClOsccaMacModes_Modes.h
                 src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_Algorithms.h
                 src/comps/mcuxClOsccaMacModes/inc/internal/mcuxClOsccaMacModes_Ctx.h
@@ -930,7 +932,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_randommodes)
         SOURCES src/comps/mcuxClOsccaRandomModes/src/mcuxClOsccaRandomModes_OsccaMode.c
                 src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes.h
                 src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes_Constants.h
-                src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes_MemoryConsumption.h
+#                 src/comps/mcuxClOsccaRandomModes/inc/mcuxClOsccaRandomModes_MemoryConsumption.h
                 src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_Private_RNG.h
                 src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_Private_Types.h
                 src/comps/mcuxClOsccaRandomModes/inc/internal/mcuxClOsccaRandomModes_SfrAccess.h
@@ -994,7 +996,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_sm2)
                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_Functions.h
                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_FUP.h
                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_KeyTypes.h
-                src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_MemoryConsumption.h
+#                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_MemoryConsumption.h
                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_ModeConstants.h
                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_SelfTest.h
                 src/comps/mcuxClOsccaSm2/inc/mcuxClOsccaSm2_Types.h
@@ -1026,7 +1028,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.oscca_sm3)
                 src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3.h
                 src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_Algorithms.h
                 src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_Constants.h
-                src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_MemoryConsumption.h
+#                 src/comps/mcuxClOsccaSm3/inc/mcuxClOsccaSm3_MemoryConsumption.h
                 src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Core_sm3.h
                 src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal.h
                 src/comps/mcuxClOsccaSm3/inc/internal/mcuxClOsccaSm3_Internal_sm3.h
@@ -1140,7 +1142,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.psa_driver)
                 src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Verify.c
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver.h
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_Constants.h
-                src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_MemoryConsumption.h
+#                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_MemoryConsumption.h
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_Oracle.h
                 src/comps/mcuxClPsaDriver/inc/els_pkc_crypto_primitives.h
                 src/comps/mcuxClPsaDriver/inc/els_pkc_crypto_composites.h
@@ -1203,7 +1205,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.random_modes)
                 src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Constants.h
                 src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Functions_PatchMode.h
                 src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_Functions_TestMode.h
-                src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_MemoryConsumption.h
+#                 src/comps/mcuxClRandomModes/inc/mcuxClRandomModes_MemoryConsumption.h
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Internal_SizeDefinitions.h
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_CtrDrbg.h
                 src/comps/mcuxClRandomModes/inc/internal/mcuxClRandomModes_Private_CtrDrbg_BlockCipher.h
@@ -1268,6 +1270,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.rsa)
                 src/comps/mcuxClRsa/src/mcuxClRsa_getMillerRabinTestIterations.c
                 src/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Crt.c
                 src/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Crt_FUP.c
+                src/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Helper.c
                 src/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Plain.c
                 src/comps/mcuxClRsa/src/mcuxClRsa_Mgf1.c
                 src/comps/mcuxClRsa/src/mcuxClRsa_MillerRabinTest.c
@@ -1298,7 +1301,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.rsa)
                 src/comps/mcuxClRsa/inc/mcuxClRsa_Constants.h
                 src/comps/mcuxClRsa/inc/mcuxClRsa_Functions.h
                 src/comps/mcuxClRsa/inc/mcuxClRsa_KeyGeneration_Crt_FUP.h
-                src/comps/mcuxClRsa/inc/mcuxClRsa_MemoryConsumption.h
+#                 src/comps/mcuxClRsa/inc/mcuxClRsa_MemoryConsumption.h
                 src/comps/mcuxClRsa/inc/mcuxClRsa_MillerRabinTest_FUP.h
                 src/comps/mcuxClRsa/inc/mcuxClRsa_PrivateCrt_FUP.h
                 src/comps/mcuxClRsa/inc/mcuxClRsa_RemoveBlinding_FUP.h
@@ -1308,7 +1311,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.rsa)
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_ComputeD_FUP.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Functions.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Macros.h
-                src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_MemoryConsumption.h
+#                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_MemoryConsumption.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_PkcDefs.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_PkcTypes.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Types.h
@@ -1333,7 +1336,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.session)
         SOURCES src/comps/mcuxClSession/src/mcuxClSession.c
                 src/comps/mcuxClSession/inc/mcuxClSession.h
                 src/comps/mcuxClSession/inc/mcuxClSession_Functions.h
-                src/comps/mcuxClSession/inc/mcuxClSession_MemoryConsumption.h
+#                 src/comps/mcuxClSession/inc/mcuxClSession_MemoryConsumption.h
                 src/comps/mcuxClSession/inc/mcuxClSession_Types.h
                 src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal.h
                 src/comps/mcuxClSession/inc/internal/mcuxClSession_Internal_EntryExit.h
@@ -1355,7 +1358,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.signature)
                 src/comps/mcuxClSignature/inc/mcuxClSignature.h
                 src/comps/mcuxClSignature/inc/mcuxClSignature_Constants.h
                 src/comps/mcuxClSignature/inc/mcuxClSignature_Functions.h
-                src/comps/mcuxClSignature/inc/mcuxClSignature_MemoryConsumption.h
+#                 src/comps/mcuxClSignature/inc/mcuxClSignature_MemoryConsumption.h
                 src/comps/mcuxClSignature/inc/mcuxClSignature_Types.h
                 src/comps/mcuxClSignature/inc/internal/mcuxClSignature_Internal.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -1460,7 +1463,7 @@ endif()
 
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.param_integrity)
     mcux_add_source(
-        SOURCES src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
+        SOURCES src/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity32.c
                 src/comps/mcuxCsslParamIntegrity/inc/mcuxCsslParamIntegrity.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -1522,12 +1525,25 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mcxn)
                 src/platforms/mcxn/mcux_els.h
                 src/platforms/mcxn/mcux_pkc.c
                 src/platforms/mcxn/mcux_pkc.h
+                includes/platform/mcxn/mcuxClAeadModes_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClCipherModes_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClEcc_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClHashModes_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClHash_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClHmac_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClKey_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClOsccaSm3_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClRandomModes_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClRsa_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClSession_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/mcxn
                  src/platforms/mcxn/inc
+                 includes/platform/mcxn
                  BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
@@ -1539,12 +1555,25 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only)
                 src/platforms/rw61x/inc/ip_css_constants.h
                 src/platforms/rw61x/inc/ip_css_design_configuration.h
                 src/platforms/rw61x/inc/ip_platform.h
+                includes/platform/rw61x/mcuxClPsaDriver_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClAeadModes_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClCipherModes_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClEcc_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClHashModes_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClHash_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClHmac_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClKey_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClRandomModes_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClRsa_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClSession_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/rw61x
                  src/platforms/rw61x/inc
+                 includes/platform/rw61x
                  BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
@@ -1575,12 +1604,24 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.lpc)
                 src/platforms/lpc/mcux_els.h
                 src/platforms/lpc/mcux_pkc.c
                 src/platforms/lpc/mcux_pkc.h
+                includes/platform/lpc/mcuxClAeadModes_MemoryConsumption.h
+                includes/platform/lpc/mcuxClCipherModes_MemoryConsumption.h
+                includes/platform/lpc/mcuxClEcc_MemoryConsumption.h
+                includes/platform/lpc/mcuxClHashModes_MemoryConsumption.h
+                includes/platform/lpc/mcuxClHash_MemoryConsumption.h
+                includes/platform/lpc/mcuxClHmac_MemoryConsumption.h
+                includes/platform/lpc/mcuxClKey_MemoryConsumption.h
+                includes/platform/lpc/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/lpc/mcuxClRandomModes_MemoryConsumption.h
+                includes/platform/lpc/mcuxClRsa_MemoryConsumption.h
+                includes/platform/lpc/mcuxClSession_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/lpc
                  src/platforms/lpc/inc
+                 includes/platform/lpc
                  BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
@@ -1596,12 +1637,31 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mimxrt)
                 src/platforms/mimxrt/mcux_els.h
                 src/platforms/mimxrt/mcux_pkc.c
                 src/platforms/mimxrt/mcux_pkc.h
+                includes/platform/mimxrt/mcuxClAeadModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClCipherModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClEcc_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClHash_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClHashModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClHmac_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClKey_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClOsccaAeadModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClOsccaCipherModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClOsccaMacModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClOsccaRandomModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClOsccaSm2_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClOsccaSm3_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClRandomModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClRsa_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClSession_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClSignature_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
         INCLUDES ./
                  src/platforms/mimxrt
                  src/platforms/mimxrt/inc
+                 includes/platform/mimxrt
                  BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
 endif()
