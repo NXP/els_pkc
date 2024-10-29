@@ -325,6 +325,9 @@ endif()
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
     mcux_add_source(
         SOURCES src/comps/mcuxClEcc/src/mcuxClEcc_Constants.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_GenerateProtocolDescriptor.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateSignature.c
@@ -1518,13 +1521,13 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mcxn)
     mcux_add_source(
         SOURCES src/platforms/mcxn/platform_specific_headers.h
                 src/platforms/mcxn/mcuxClConfig.h
-                src/platforms/mcxn/inc/ip_css_constants.h
-                src/platforms/mcxn/inc/ip_css_design_configuration.h
-                src/platforms/mcxn/inc/ip_platform.h
                 src/platforms/mcxn/mcux_els.c
                 src/platforms/mcxn/mcux_els.h
                 src/platforms/mcxn/mcux_pkc.c
                 src/platforms/mcxn/mcux_pkc.h
+                src/platforms/mcxn/inc/ip_css_constants.h
+                src/platforms/mcxn/inc/ip_css_design_configuration.h
+                src/platforms/mcxn/inc/ip_platform.h
                 includes/platform/mcxn/mcuxClAeadModes_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClCipherModes_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClEcc_MemoryConsumption.h
