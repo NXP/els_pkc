@@ -1193,6 +1193,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.random_modes_hmacdrbg)
     )
     mcux_add_include(
         INCLUDES ./
+                 src/comps/mcuxClRandomModes/inc
                  src/comps/mcuxClRandomModes/inc/internal
                  BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )

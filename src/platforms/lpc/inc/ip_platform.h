@@ -66,11 +66,4 @@
 #define ELS_HW_VERSION_MAJOR               2
 #define ELS_HW_VERSION_LEVEL               0
 
-/* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from the platform header file
- * Redefine IP_CSS as an extern pointer.
- */
-#undef ELS_SFR_BASE
-extern void * ip_css_base;
-#define ELS_SFR_BASE           ((S50_Type *) ip_css_base)
-
 #endif

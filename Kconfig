@@ -386,6 +386,9 @@ config MCUX_COMPONENT_component.els_pkc
             select MCUX_COMPONENT_component.els_pkc.doc.mimxrt
             select MCUX_COMPONENT_component.els_pkc.oscca
             select MCUX_COMPONENT_component.els_pkc.rsa_oaep
+            select MCUX_COMPONENT_component.els_pkc.key_derivation
+            select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
+            select MCUX_COMPONENT_component.els_pkc.random_modes_hmacdrbg
             depends on MCUX_HW_DEVICE_MIMXRT798S
             
       endchoice

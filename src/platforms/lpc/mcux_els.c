@@ -19,11 +19,14 @@
 
 #define GET_DTRNG_CFG(offset)   (*((volatile unsigned int *)(FLASH_NMPA_DTRNG_CFG_START + (4U *(offset)))))
 
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
+
 #define FLASH_NMPA_GDET_CFG_START   (0x3FC28U)
 #define FLASH_NMPA_GDET_CFG_END     (0x3FC3CU)
 #define FLASH_NMPA_GDET_CFG_SIZE    (6U)
 
 #define GET_GDET_CFG(offset)   (*((volatile unsigned int *)(FLASH_NMPA_GDET_CFG_START + (4U *(offset)))))
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -48,7 +51,6 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
 {
     status_t status = kStatus_Fail;
     uint32_t DtrngCfg[FLASH_NMPA_DTRNG_CFG_SIZE] = {0};
-    uint32_t GdetCfg[FLASH_NMPA_GDET_CFG_SIZE] = {0};
 
     /* Enable GDET and DTRNG clocks */
     SYSCON->ELS_CLK_CTRL =
@@ -95,6 +97,9 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
+    uint32_t GdetCfg[FLASH_NMPA_GDET_CFG_SIZE] = {0};
+
     /* Get Config values from Flash */
     for (size_t i = 0; i < FLASH_NMPA_GDET_CFG_SIZE; i++)
     {
@@ -116,6 +121,7 @@ status_t ELS_PowerDownWakeupInit(S50_Type *base)
         return kStatus_Fail;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
+#endif
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
     // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
