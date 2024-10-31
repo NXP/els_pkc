@@ -1145,7 +1145,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.psa_driver)
                 src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Verify.c
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver.h
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_Constants.h
-#                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_MemoryConsumption.h
+                src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_MemoryConsumption.h
                 src/comps/mcuxClPsaDriver/inc/mcuxClPsaDriver_Oracle.h
                 src/comps/mcuxClPsaDriver/inc/els_pkc_crypto_primitives.h
                 src/comps/mcuxClPsaDriver/inc/els_pkc_crypto_composites.h
@@ -1559,7 +1559,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only)
                 src/platforms/rw61x/inc/ip_css_constants.h
                 src/platforms/rw61x/inc/ip_css_design_configuration.h
                 src/platforms/rw61x/inc/ip_platform.h
-                includes/platform/rw61x/mcuxClPsaDriver_MemoryConsumption.h
+#                 includes/platform/rw61x/mcuxClPsaDriver_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClAeadModes_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClCipherModes_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClEcc_MemoryConsumption.h
