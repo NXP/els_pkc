@@ -442,7 +442,6 @@ config MCUX_COMPONENT_component.els_pkc.platform.rw61x
     
 config MCUX_COMPONENT_component.els_pkc.platform.lpc
     bool "Component component.els_pkc.platform.lpc"
-    select MCUX_COMPONENT_component.els_pkc.standalone_gdet
     depends on MCUX_HW_DEVICE_LPC55S36
     
 config MCUX_COMPONENT_component.els_pkc.platform.mimxrt
