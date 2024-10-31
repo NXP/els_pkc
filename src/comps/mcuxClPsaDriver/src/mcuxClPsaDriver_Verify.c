@@ -47,7 +47,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
     bool isHash
 )
 {
-    psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(pKey);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
     if( PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) != true
         && PSA_ALG_IS_RSA_PSS(alg) != true
@@ -56,8 +58,8 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
       return PSA_ERROR_NOT_SUPPORTED;
     }
 
-    if((PSA_KEY_TYPE_IS_KEY_PAIR(attributes->core.type) != true)
-        && (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != true))
+    if((PSA_KEY_TYPE_IS_KEY_PAIR(psa_get_key_type(attributes)) != true)
+        && (PSA_KEY_TYPE_IS_PUBLIC_KEY(psa_get_key_type(attributes)) != true))
     {
         /* Invalid key type detected, The response shall be  PSA_ERROR_NOT_SUPPORTED */
         return PSA_ERROR_NOT_SUPPORTED;
@@ -97,7 +99,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
                                     mcuxClSession_init(&session,
                                                       cpuWorkarea,
                                                       MCUXCLPSADRIVER_VERIFY_BY_CLNS_WACPU_SIZE_MAX,
-                                                      mcuxClPkc_inline_getPointerToPkcRamStart(),
+                                                      (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS,
                                                       MCUXCLPSADRIVER_VERIFY_BY_CLNS_WAPKC_SIZE_MAX));
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_INVARIANT_EXPRESSION_WORKAREA_CALCULATIONS()
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != tokenSessionInit) || (MCUXCLSESSION_STATUS_OK != resultSessionInit))
@@ -128,7 +130,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         return PSA_ERROR_GENERIC_ERROR;
       }
 
-      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) != true)
+      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(psa_get_key_type(attributes)) != true)
       {
         /* check and skip the version tag */
         if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_der_updatePointerTag(&pDerData, 0x02u))
@@ -262,15 +264,11 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
         /* const uint32_t                  messageLength: */      messageLength,
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded due to fixed function API. mcuxClRsa_verify does not modify those arguments.")
         /* mcuxCl_Buffer_t                  pSignature: */         (uint8_t *)signature,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The types are compatible.")
-        /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        (mcuxClRsa_SignVerifyMode_t *)pVerifyMode,
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+        /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        (mcuxClRsa_SignVerifyMode)pVerifyMode,
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
         /* const uint32_t                  saltLength: */         saltLength,
         /* uint32_t                        options: */            options,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("pOutput is unused for RSA PKCS1-v1_5 verification.")
         /* mcuxCl_Buffer_t                  pOutput: */            NULL));
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
       if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token) || (MCUXCLRSA_STATUS_VERIFY_OK != verify_result))
       {
         return PSA_ERROR_INVALID_SIGNATURE;
@@ -356,7 +354,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_verify_internal(
 
       /* Decode as described in ANSI X9.62
          Octet String to Elliptic Curve Point Conversion */
-      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(attributes->core.type) == true)
+      if (PSA_KEY_TYPE_IS_PUBLIC_KEY(psa_get_key_type(attributes)) == true)
       {
         if(pKeyData == NULL)
         {

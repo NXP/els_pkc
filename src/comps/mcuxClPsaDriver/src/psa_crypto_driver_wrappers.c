@@ -19,17 +19,18 @@
  *  limitations under the License.
  */
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2024 MCUX                                                  */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* MCUX Confidential. This software is owned or controlled by MCUX and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
+
 
 #include "common.h"
 #include "psa_crypto_aead.h"
@@ -759,8 +760,8 @@ psa_status_t psa_driver_wrapper_import_key(
 
         /* prepare the key container as expected by oracle */
         key_descriptor.container.pData    = (uint8_t *)key_buffer;
-        key_descriptor.container.length   = (uint32_t)key_buffer_size;
-        key_descriptor.container.used     = (uint32_t)key_buffer_size;
+        key_descriptor.container.length   = (uint16_t)key_buffer_size;
+        key_descriptor.container.used     = (uint16_t)key_buffer_size;
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
         key_descriptor.container.pAuxData = (void *)attributes;
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -1342,9 +1343,6 @@ psa_status_t psa_driver_wrapper_cipher_encrypt_setup(
                                                                     key_buffer_size,
                                                                     alg);
 
-    /* Update top-level iv_required status */
-    operation->iv_required = (operation->ctx.els_pkc_driver_ctx.iv_required != 0u) ? 1u : 0u;
-
     if (PSA_ERROR_NOT_SUPPORTED != status)
     {
         return status;
@@ -1438,9 +1436,6 @@ psa_status_t psa_driver_wrapper_cipher_decrypt_setup(
                                                                     key_buffer,
                                                                     key_buffer_size,
                                                                     alg);
-
-    /* Update top-level iv_required status */
-    operation->iv_required = (operation->ctx.els_pkc_driver_ctx.iv_required != 0u) ? 1u : 0u;
 
     if (PSA_ERROR_NOT_SUPPORTED != status)
     {
@@ -1690,12 +1685,7 @@ psa_status_t psa_driver_wrapper_cipher_abort(
     {
     case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
     {
-        status = mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
-
-        /* Update top-level iv_required status */
-        operation->iv_required = (operation->ctx.els_pkc_driver_ctx.iv_required != 0u) ? 1u : 0u;
-
-        return status;
+        return mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(&operation->ctx.els_pkc_driver_ctx);
     }
 
 
@@ -2136,7 +2126,7 @@ psa_status_t psa_driver_wrapper_aead_encrypt_setup(
     {
         return status;
     }
-
+    
     switch( location )
     {
         case PSA_KEY_LOCATION_LOCAL_STORAGE:
@@ -3005,7 +2995,7 @@ psa_status_t psa_driver_get_tag_len( psa_aead_operation_t *operation,
     }
 
     switch( operation->id )
-    {
+    {                      
       case MCUXCLPSADRIVER_CLNS_OPERATION_ID:
             (void)mcuxClPsaDriver_psa_driver_get_tag_len(&operation->ctx.els_pkc_driver_ctx,
                                                          tag_len);

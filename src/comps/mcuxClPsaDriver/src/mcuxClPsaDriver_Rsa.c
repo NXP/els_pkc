@@ -21,7 +21,6 @@
 #include <mcuxClPkc_Types.h>
 #include <internal/mcuxClPkc_Macros.h>
 #include <mcuxClRandom.h>
-#include <internal/mcuxClRandom_Internal_Functions.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClRsa.h>
 #include <mcuxClSession.h>
@@ -37,12 +36,13 @@
 static const uint8_t defaultExponent[] = {0x01u, 0x00u, 0x01u};
 
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
-    mcuxClSession_Handle_t pSession, uint32_t *key_CrtBuf,
-    uint32_t *key_PublicBuf, mcuxClRsa_KeyEntry_t dKey)
+    mcuxClSession_Handle_t pSession, uint8_t *key_CrtBuf,
+    uint8_t *key_PublicBuf, mcuxClRsa_KeyEntry_t dKey)
 {
-    mcuxClRsa_Key *pRsaCrtKey = mcuxClRsa_castToRsaKey(key_CrtBuf);
-    mcuxClRsa_Key *pRsaPubKey = mcuxClRsa_castToRsaKey(key_PublicBuf);
-
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) key_CrtBuf;
+    mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) key_PublicBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if((pRsaCrtKey->keytype != MCUXCLRSA_KEY_PRIVATECRT)
         || (pRsaPubKey->keytype != MCUXCLRSA_KEY_PUBLIC))
     {
@@ -61,9 +61,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClPkc_State_t * pPkcStateBackup = (mcuxClPkc_State_t *) &pSession->cpuWa.buffer[pSession->cpuWa.used];
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Workarea size calculations do not overflow, all involved sizes are small enough to fit.")
     pSession->cpuWa.used += (sizeof(mcuxClPkc_State_t) / (sizeof(uint32_t)));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_PROTECTED(pkcInitialize_token, mcuxClPkc_Initialize(pPkcStateBackup));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Initialize) != pkcInitialize_token))
     {
@@ -73,19 +71,15 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     //Allocate buffers in PKC RAM
     const uint32_t byteLenPrime = pRsaCrtKey->pMod1->keyEntryLength;
     const uint32_t byteLenKey = byteLenPrime * 2u;
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Alignment calculations with the byte-length of a key or prime cannot wrap.")
     const uint32_t pkcByteLenKey = MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(byteLenKey);
     const uint32_t pkcByteLenPrime = MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(byteLenPrime);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     uint8_t * pPkcWorkarea = (uint8_t *) (& pSession->pkcWa.buffer[pSession->pkcWa.used]);
     uint8_t * pPkcBufferP = pPkcWorkarea + MCUXCLPKC_WORDSIZE;
     uint8_t * pPkcBufferQ = pPkcBufferP + pkcByteLenPrime + MCUXCLPKC_WORDSIZE;
     uint8_t * pPkcBufferE = pPkcBufferQ + pkcByteLenPrime;
     uint8_t * pPkcBufferD = pPkcBufferE + pkcByteLenKey + MCUXCLPKC_WORDSIZE;
     /* Allocate space in session for p, q and e for now */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("PKC workarea size calculations cannot overflow with the involved key and prime sizes.")
     pSession->pkcWa.used += (2u * (pkcByteLenPrime + MCUXCLPKC_WORDSIZE) + pkcByteLenKey) / (sizeof(uint32_t));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     //copy parameter to pkc address firstly
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy (pPkcBufferE,
                                                                      pRsaPubKey->pExp1->pKeyEntryData,
@@ -144,9 +138,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(
     d.pKeyEntryData = pPkcBufferD;
 
     pSession->pkcWa.used += pkcByteLenKey / (sizeof(uint32_t)); // allocate space for the D
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Converting the byte-length of an RSA key into its bit-length cannot wrap.")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClRsa_ComputeD(pSession, &e, &p, &q, &d, byteLenKey * 8u));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_ComputeD) != token) || (MCUXCLRSA_STATUS_KEYGENERATION_OK != result))
     {
@@ -182,12 +174,13 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_API_DECLARATIONS()
 }
 
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
-    mcuxClSession_Handle_t pSession, uint32_t *key_CrtBuf,
-    uint32_t *key_PublicBuf, mcuxClRsa_KeyEntry dKey, uint8_t *encoded_key, size_t *key_buffer_length)
+    mcuxClSession_Handle_t pSession, uint8_t *key_CrtBuf,
+    uint8_t *key_PublicBuf, mcuxClRsa_KeyEntry dKey, uint8_t *encoded_key, size_t *key_buffer_length)
 {
-    mcuxClRsa_Key *pRsaCrtKey = mcuxClRsa_castToRsaKey(key_CrtBuf);
-    mcuxClRsa_Key *pRsaPubKey = mcuxClRsa_castToRsaKey(key_PublicBuf);
-
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) key_CrtBuf;
+    mcuxClRsa_Key *pRsaPubKey = (mcuxClRsa_Key *) key_PublicBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if((pRsaCrtKey->keytype != MCUXCLRSA_KEY_PRIVATECRT)
         || (pRsaPubKey->keytype != MCUXCLRSA_KEY_PUBLIC))
     {
@@ -335,16 +328,14 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key_der(
     }
     else  //short from
     {
-        ptr[0u] = (uint8_t)(constructed_fields_length & 0xffU);
+        ptr[0u] = (uint8_t)constructed_fields_length;
         ptrPluslen = 1u;
     }
 
     uint32_t i = 0u;
     for(i = 0u; i < constructed_fields_length; ++i)
     {
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("constructed_fields_length is calculated to represent the DER encoding fields' lengths, increasing ptrPluslen will never wrap in this context.")
         ptr[ptrPluslen++] = encoded_key[6u + i];
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     }
 
     *key_buffer_length = (uint32_t)ptr + (uint32_t)ptrPluslen - (uint32_t)(&encoded_key[0]);
@@ -366,9 +357,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_rsa_key(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     size_t bitLength = psa_get_key_bits(attributes);
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Converting the bit-length of an RSA key to its byte-length cannot wrap.")
     size_t bytes = MCUXCLPSADRIVER_BITS_TO_BYTES(bitLength);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     if(key_buffer_size < bytes)
     {
@@ -387,8 +376,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     uint32_t pCpuWa[MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WACPU_SIZE_MAX / (sizeof(uint32_t))];
     /* Initialize session with pkcWA on the beginning of PKC RAM */
     MCUX_CSSL_ANALYSIS_START_PATTERN_INVARIANT_EXPRESSION_WORKAREA_CALCULATIONS()
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WACPU_SIZE_MAX,
-                             mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WAPKC_SIZE_MAX));
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WACPU_SIZE_MAX/sizeof(uint32_t),
+                             (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WAPKC_SIZE_MAX/sizeof(uint32_t)));
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_INVARIANT_EXPRESSION_WORKAREA_CALCULATIONS()
 
 
@@ -411,7 +400,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                           mcuxClRandom_castToContext(rng_ctx),
+                                                           (mcuxClRandom_Context_t)rng_ctx,
                                                            randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
@@ -429,19 +418,23 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
     /* Public exponent */
     mcuxClRsa_KeyEntry_t pubEKey = {0};
+/* Comemnted as domain paramters have been changed and currently driver wrappers don't have the capability to get these parameters */
+#if 0    
     if(NULL == attributes->domain_parameters)
     {
+#endif      
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
         pubEKey.pKeyEntryData = (uint8_t *)defaultExponent;
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
         pubEKey.keyEntryLength = 3u;
+#if 0
     }
     else
     {
         pubEKey.pKeyEntryData = (uint8_t*) attributes->domain_parameters;
         pubEKey.keyEntryLength = attributes->domain_parameters_size;
     }
-
+#endif
 
     /* Key type structures */
     mcuxClKey_TypeDescriptor_t type;
@@ -451,15 +444,15 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
     /* Key handle for RSA key type private CRT */
     mcuxClKey_Descriptor_t privKey, pubKey;
-    uint32_t pubKeyBuf[MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_4096_SIZE / sizeof(uint32_t)] = {0U};
+    ALIGNED uint8_t pubKeyBuf[MCUXCLRSA_KEYGENERATION_PUBLIC_KEY_DATA_4096_SIZE] = {0U};
     uint32_t pubKeySize = 0u;
-    uint32_t priCrtKeyBuf[MCUXCLRSA_KEYGENERATION_CRT_KEY_DATA_4096_SIZE / sizeof(uint32_t)] = {0U};
+    ALIGNED uint8_t priCrtKeyBuf[MCUXCLRSA_KEYGENERATION_CRT_KEY_DATA_4096_SIZE] = {0U};
     uint32_t priCrtKeySize = 0u;
 
     /* Call key generation and check FP and return code */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygen_ret, keygen_token, mcuxClRsa_KeyGeneration_Crt(&session, &type, mcuxClKey_Protection_None,
-                                                             (mcuxClKey_Handle_t)&privKey, (uint8_t *) priCrtKeyBuf, &priCrtKeySize,
-                                                             (mcuxClKey_Handle_t)&pubKey, (uint8_t *) pubKeyBuf, &pubKeySize));
+                                                             (mcuxClKey_Handle_t)&privKey, priCrtKeyBuf, &priCrtKeySize,
+                                                             (mcuxClKey_Handle_t)&pubKey, pubKeyBuf, &pubKeySize));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_KeyGeneration_Crt) != keygen_token) || (MCUXCLRSA_STATUS_KEYGENERATION_OK != keygen_ret))
     {
         return PSA_ERROR_GENERIC_ERROR;
@@ -467,14 +460,14 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Calculate d and n through CRT key */
-    mcuxClRsa_Key *pRsaCrtKey = mcuxClRsa_castToRsaKey(priCrtKeyBuf);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClRsa_Key *pRsaCrtKey = (mcuxClRsa_Key *) priCrtKeyBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     uint32_t pD[MCUXCLKEY_SIZE_4096_IN_WORDS];
     mcuxClRsa_KeyEntry_t dKey =
     {
         .pKeyEntryData = (uint8_t*) pD,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("pRsaCrtKey->pMod1->keyEntryLength is the byte-length of valid RSA key data, this cannot wrap.")
         .keyEntryLength = pRsaCrtKey->pMod1->keyEntryLength * 2u
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     };
     if(PSA_SUCCESS != mcuxClPsaDriver_psa_driver_wrapper_computeRsa_D(&session, priCrtKeyBuf, pubKeyBuf, dKey))
     {

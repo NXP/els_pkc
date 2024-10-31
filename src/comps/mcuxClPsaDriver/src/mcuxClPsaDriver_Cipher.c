@@ -35,21 +35,15 @@
     #define MCUXCLPSA_MAX_CIPHER_CPUWA_SIZE MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE
 #endif
 
-/** Inline function for proper type casts*/
-static inline mcuxClPsaDriver_ClnsData_Cipher_t* mcuxClPsaDriver_getClnsData_cipherType(els_pkc_cipher_operation_t *operation)
-{
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    return (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-}
-
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_abort(
     els_pkc_cipher_operation_t  *operation )
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(&pClnsCipherData->keydesc))
     {
         return PSA_ERROR_GENERIC_ERROR;
@@ -77,13 +71,15 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_internal(
     mcuxClKey_Descriptor_t *pKey,
     psa_algorithm_t alg,
-    const uint8_t *input, /* Buffer containing the message to decrypt. This consists of the IV followed by the ciphertext. */
+    const uint8_t *input,
     size_t input_length,
     uint8_t *output,
     size_t output_size,
     size_t *output_length )
 {
-    psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(pKey);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     /* For algorithms supported by CLNS, add implementation. */
     if (mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(attributes))
     {
@@ -140,21 +136,16 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_internal(
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-        // If there is no need for IV iv_length will be set to 0 and ciphertext will point to beginning of input buffer
+        // If there is no need for IV iv_length will be set to 0 and ciphertext will point to begining of input buffer
         // In other case first 16B of input buffer will be used as IV and ciphertext will point to input buffer + iv_length
         uint32_t iv_length = (1u == iv_required) ? MCUXCLAES_BLOCK_SIZE : 0u;
         /* Initializing the output length with zero */
         uint32_t output_length_tmp = 0u;
 
         /* Do the decryption */
-        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCipher_crypt(
-            &session, pKey, mode,
-            /* input := IV || ciphertext */
-            input, iv_length,
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Per PSA standard for cipher_decrypt the input_length must contain the iv_length, this cannot wrap.")
-            input + iv_length, input_length - iv_length,
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
-            output, &output_length_tmp));
+        MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCipher_crypt(&session, pKey, mode,
+                                                                         input, // IV buffer (when needed by mode) is located at the begining of input buffer
+                                                                         iv_length, input + iv_length, input_length - iv_length, output, &output_length_tmp));
 
         *output_length = (size_t)output_length_tmp;
         if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token) || (MCUXCLCIPHER_STATUS_OK != result))
@@ -264,8 +255,8 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_setup_inte
         uint8_t tempIV[16] = {0u};
 
         /* Do the encryption */
-        mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
         MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+        mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCipher_init(&session, (mcuxClCipher_Context_t *) &pClnsCipherData->ctx, keyDesc, mode, tempIV, operation->default_iv_length));
         MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
@@ -306,7 +297,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     // The driver handles multiple storage locations, call it first then default to builtin driver
     /* Create the key */
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     mcuxClKey_Descriptor_t *keyDesc = &pClnsCipherData->keydesc;
     psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, keyDesc);
     if(PSA_SUCCESS != keyStatus)
@@ -316,7 +309,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     status = mcuxClPsaDriver_psa_driver_wrapper_cipher_decrypt_setup_internal(operation,
                                                          keyDesc,
                                                          alg);
-
+														 
     keyStatus = mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusSuspend(keyDesc);
     if(PSA_SUCCESS !=  keyStatus)
     {
@@ -337,7 +330,9 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_encrypt_internal(
     size_t output_size,
     size_t *output_length)
 {
-    psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(pKey);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    psa_key_attributes_t *attributes =(psa_key_attributes_t *)mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     /* For algorithms supported by CLNS, add implementation. */
     if (mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(attributes))
     {
@@ -498,8 +493,8 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_cipher_encrypt_setup_inte
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
         /* Do the encryption */
-        mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
         MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+        mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClCipher_init(&session, (mcuxClCipher_Context_t *) &pClnsCipherData->ctx, keyDesc, mode, tempIV, operation->default_iv_length));
         MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
@@ -539,7 +534,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     // The driver handles multiple storage locations, call it first then default to builtin driver
     /* Create the key */
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES();
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY();
     mcuxClKey_Descriptor_t *keyDesc = &pClnsCipherData->keydesc;
     psa_status_t keyStatus = mcuxClPsaDriver_psa_driver_wrapper_createClKey(attributes, key_buffer, key_buffer_size, keyDesc);
     if(PSA_SUCCESS != keyStatus)
@@ -570,7 +567,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     /* check for invalid input based upon following rule
        inLength needs to be a multiple of the granularity, if this is not the case, return an error. */
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     mcuxClCipherModes_Context_Aes_Els_t  *const pContext = &pClnsCipherData->ctx;
     const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *pAlgo = pContext->common.pMode->pAlgorithm;
     if((pContext->common.blockBufferUsed % pAlgo->granularity) != 0u)
@@ -654,7 +653,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     {
         return PSA_ERROR_INVALID_ARGUMENT;
     }
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     uint8_t *pIvState = (uint8_t *) pClnsCipherData->ctx.ivState;
     for (uint32_t i = 0u; i < iv_length; ++i)
     {
@@ -702,7 +703,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* not used */
     (void)output_size;
 
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = (mcuxClPsaDriver_ClnsData_Cipher_t *) operation->clns_data;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     mcuxClKey_Descriptor_t *keyDesc = &pClnsCipherData->keydesc;
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(keyDesc))
     {
