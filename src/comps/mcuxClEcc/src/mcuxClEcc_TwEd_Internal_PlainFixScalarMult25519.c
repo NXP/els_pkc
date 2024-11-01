@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -24,23 +24,6 @@
 #include <mcuxClEcc.h>
 
 #include <internal/mcuxClEcc_TwEd_Internal.h>
-
-MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
-static const mcuxClEcc_TwEd_PointDoubleFunction_FP_t mcuxClEcc_TwEd_PointDoubleEd25519_FP = {
-    .pPointDoubleFct = mcuxClEcc_TwEd_PointDoubleEd25519,
-    .pointDoubleFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PointDoubleEd25519),
-};
-
-static const mcuxClEcc_TwEd_MixedPointAddFunction_FP_t mcuxClEcc_TwEd_MixedPointAddEd25519_FP = {
-    .pMixedPointAddFct = mcuxClEcc_TwEd_MixedPointAddEd25519,
-    .mixedPointAddFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_MixedPointAddEd25519),
-};
-
-static const mcuxClEcc_TwEd_PtrSelectFunction_FP_t mcuxClEcc_TwEd_PlainPtrSelectComb_FP = {
-    .pPtrSelectFct = mcuxClEcc_TwEd_PlainPtrSelectComb,
-    .ptrSelectFct_FP_FuncId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainPtrSelectComb),
-};
-MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_TwEd_PlainFixScalarMult25519, mcuxClEcc_ScalarMultFunction_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainFixScalarMult25519(
@@ -60,9 +43,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_TwEd_PlainFixScalarMul
             pDomainParams,
             iScalar,
             scalarBitLength,
-            &mcuxClEcc_TwEd_MixedPointAddEd25519_FP,
-            &mcuxClEcc_TwEd_PointDoubleEd25519_FP,
-            &mcuxClEcc_TwEd_PlainPtrSelectComb_FP
+            mcuxClEcc_TwEd_MixedPointAddEd25519,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_MixedPointAddEd25519),
+            mcuxClEcc_TwEd_PointDoubleEd25519,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PointDoubleEd25519),
+            mcuxClEcc_TwEd_PlainPtrSelectComb,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_PlainPtrSelectComb)
         )
     );
 

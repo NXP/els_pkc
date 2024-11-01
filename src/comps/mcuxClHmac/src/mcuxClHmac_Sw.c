@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023 NXP                                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClHMac_Sw.c
@@ -45,9 +45,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClHmac_Engine_Init_Sw(
     mcuxClHmac_Context_Sw_t * const pCtxSw = (mcuxClHmac_Context_Sw_t *) pContext;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pCtxSw is of the right type (mcuxClHmac_Context_Sw_t * const)")
     const mcuxClHash_AlgorithmDescriptor_t *hashAlgo = ((mcuxClHmac_ModeDescriptor_t *) (pCtxSw->common.pMode->pCustom))->hashAlgorithm;
     mcuxClKey_Descriptor_t * key = pCtxSw->key;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     const uint32_t hashBlockSize = hashAlgo->blockSize;
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(hashBlockSize, 0u, MCUXCLHASH_BLOCK_SIZE_MAX, MCUXCLMAC_STATUS_FAULT_ATTACK)
 
     uint32_t keySize = mcuxClKey_getSize(key);
     uint8_t *pKeyData = mcuxClKey_getKeyData(key);
@@ -110,7 +113,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClHmac_Engine_Init_Sw(
 
     MCUX_CSSL_FP_FUNCTION_CALL(result_Hash_init, mcuxClHash_init(
     /* mcuxCLSession_Handle_t session: */ session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer is of the right type (mcuxClHash_Context_t *)")
     /* mcuxClHash_Context_t context:   */ pCtxSw->hashCtx,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxClHash_Algo_t  algorithm:   */ hashAlgo
     ));
     if(MCUXCLHASH_STATUS_OK != result_Hash_init)
@@ -178,9 +183,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClHmac_Engine_Update_Sw(
 
     MCUX_CSSL_FP_FUNCTION_CALL(result_Hash_process, mcuxClHash_process(
     /* mcuxCLSession_Handle_t session: */ session,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("hashCTX is initialized by internal trusted function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TAINTED_EXPRESSION("hashCTX is initialized by internal trusted function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pCtxSw is of the right type (mcuxClHmac_Context_Sw_t * const)")
     /* mcuxClHash_Context_t context:   */ pCtxSw->hashCtx,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TAINTED_EXPRESSION()
     /* mcuxCl_InputBuffer_t in:        */ pIn,
     /* uint32_t inSize:               */ inLength
     ));
@@ -205,9 +212,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClHmac_Engine_Finalize_Sw(
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret structure for different HMAC context types")
     mcuxClHmac_Context_Sw_t * const pCtxSw = (mcuxClHmac_Context_Sw_t *) pContext;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pCtxSw is of the right type (mcuxClHmac_Context_Sw_t * const)")
     const mcuxClHash_AlgorithmDescriptor_t *hashAlgo = ((mcuxClHmac_ModeDescriptor_t *) (pCtxSw->common.pMode->pCustom))->hashAlgorithm;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     const uint32_t hashSize = hashAlgo->hashSize;
     const uint32_t hashBlockSize = hashAlgo->blockSize;
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(hashSize, 0u, MCUXCLHASH_MAX_OUTPUT_SIZE, MCUXCLMAC_STATUS_FAULT_ATTACK)
 
     /****************************************************************************************************************************************/
     /* Finalize the inner hash by calling Hash-finalize with the Hash context stored in the Hmac context and write the digest to work area  */

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClMac.h> // Interface to the entire mcuxClMac component
@@ -21,8 +21,8 @@
 #include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClExample_Session_Helper.h>
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 /**
  * @brief Cryptographic Keys
@@ -42,18 +42,17 @@ static const uint8_t sm4CbcMacPtxt[] = { 0x0D, 0x43, 0x46, 0x88, 0x01, 0x80, 0x8
 static const uint8_t sm4CbcMacResult[] = { 0xF1, 0x33, 0x9F, 0x63, 0x93, 0x4E, 0x72, 0xE4,
                                            0xA7, 0x8F, 0x04, 0x7D, 0x9A, 0x9E, 0x7C, 0xCA };
 
-bool mcuxClOsccaMacModes_CBCMAC_Oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaMacModes_CBCMAC_Oneshot_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
@@ -61,14 +60,18 @@ bool mcuxClOsccaMacModes_CBCMAC_Oneshot_example(void)
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /**************************************************************************/
     /* MAC Computation1                                                       */
     /**************************************************************************/
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki, token_ki, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4CbcMacKey,
       /* uint32_t keyDataLength                */ sizeof(sm4CbcMacKey)
@@ -84,6 +87,7 @@ bool mcuxClOsccaMacModes_CBCMAC_Oneshot_example(void)
     uint8_t cbcmacData[sizeof(sm4CbcMacResult)] = {0u};
     uint32_t cbcmac_data_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of cbcmacData is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_mc, token_mc, mcuxClMac_compute(
     /* mcuxClSession_Handle_t session, */ session,
     /* mcuxClKey_Handle_t key,         */ key,
@@ -93,6 +97,7 @@ bool mcuxClOsccaMacModes_CBCMAC_Oneshot_example(void)
     /* uint8_t * const pOut,          */ cbcmacData,
     /* uint32_t * const pOutLength    */ &cbcmac_data_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token_mc) || (MCUXCLMAC_STATUS_OK != result_mc))
     {
@@ -100,7 +105,12 @@ bool mcuxClOsccaMacModes_CBCMAC_Oneshot_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting encrypted msg matches our expected initial message
+    /* Check that the resulting mac size and data match the expectation */
+    if(MCUXCLOSCCASM4_CBCMAC_OUTPUT_SIZE != cbcmac_data_size)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(cbcmacData, sm4CbcMacResult, cbcmac_data_size))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -128,16 +138,11 @@ bool mcuxClOsccaMacModes_CBCMAC_Oneshot_example(void)
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     return MCUXCLEXAMPLE_STATUS_OK;
-}
-bool nxpClOsccaMacModes_CBCMAC_Oneshot_example(void)
-{
-    bool result = mcuxClOsccaMacModes_CBCMAC_Oneshot_example();
-    return result;
 }

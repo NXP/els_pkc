@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLEXAMPLE_RFC3394_HELPER_H_
@@ -91,6 +91,8 @@ static inline bool mcuxClExample_rfc3394_wrap(
             input[3]=concat[3];
 
             // Encrypt concatenated A and chunk to be processed
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of concat is for local use only. The call to mcuxClEls_WaitForOperation ensures it cannot escape.")
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Cipher_Async(
                 cipher_options,
                 keyIdx,
@@ -100,6 +102,8 @@ static inline bool mcuxClExample_rfc3394_wrap(
                 MCUXCLELS_CIPHER_BLOCK_SIZE_AES,
                 NULL,
                 (uint8_t*) concat));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
             {
                 return false;
@@ -189,12 +193,16 @@ static inline bool mcuxClExample_rfc3394_unwrap(
     cipher_options.bits.dcrpt   = MCUXCLELS_CIPHER_DECRYPT;
     cipher_options.bits.extkey  = extkey;
 
-    // input has to be multiple of 64 bits
-    if (inputLength % sizeof(uint64_t) != 0u)
+    // input has to be multiple of 64 bits, and needs to be in range
+    if ((inputLength % sizeof(uint64_t) != 0u)
+#ifdef MCUXCL_FEATURE_ELS_PUK_INTERNAL
+        || (inputLength > MCUXCLELS_RFC3394_CONTAINER_SIZE_P256))
+#else
+        || (inputLength > MCUXCLELS_RFC3394_CONTAINER_SIZE_256))
+#endif
     {
         return false;
     }
-
 
     uint32_t std_n = inputLength/sizeof(uint64_t) - 1u; // n value from standard
     const uint32_t *pSource = pInput + 2u; // skip first 64 bits
@@ -204,11 +212,15 @@ static inline bool mcuxClExample_rfc3394_unwrap(
         for(size_t idx = std_n; idx > 0u; idx--)
         {
             // Load next key chunk
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Index calculation cannot wrap.")
             concat[2u] = pSource[2u * (idx-1u) + 0u];
             concat[3u] = pSource[2u * (idx-1u) + 1u];
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
             // XOR round constant into A
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("The result will fit into 32 bit, as inputLength has an upper bound as checked above.")
             uint32_t gdx = std_n * (jdx-1u) + idx;  // all values should fit into a uint32_t
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
             gdx = (gdx << 24u) | (gdx >> 24u) | ((gdx & 0x0000ff00u) << 8u) | ((gdx >> 8u) & 0x0000ff00u); // swap endianness
             concat[1u] ^= gdx;
 
@@ -218,6 +230,8 @@ static inline bool mcuxClExample_rfc3394_unwrap(
             input[3]=concat[3];
 
             // Decrypt concatenated A and chunk to be processed
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of concat is for local use only. The call to mcuxClEls_WaitForOperation ensures it cannot escape.")
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Cipher_Async(
                 cipher_options,
                 keyIdx,
@@ -227,6 +241,8 @@ static inline bool mcuxClExample_rfc3394_unwrap(
                 MCUXCLELS_CIPHER_BLOCK_SIZE_AES,
                 NULL,
                 (uint8_t*) concat));
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
             {
                 return false;
@@ -241,8 +257,10 @@ static inline bool mcuxClExample_rfc3394_unwrap(
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             // Write out processed key chunk
+            MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Index calculation cannot wrap.")
             pDest[2u * (idx-1u) + 0u] = concat[2u];
             pDest[2u * (idx-1u) + 1u] = concat[3u];
+            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
         }
         pSource = pDest;
     }

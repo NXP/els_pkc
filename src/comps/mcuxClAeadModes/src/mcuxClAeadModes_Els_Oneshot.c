@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAeadModes_Els_Oneshot.c
@@ -67,6 +67,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_crypt(
     mcuxClAeadModes_Context_t *pCtx = (mcuxClAeadModes_Context_t *) mcuxClSession_allocateWords_cpuWa(session, cpuCtxSizeInWords);
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
+    if(NULL == pCtx)
+    {
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_crypt, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx has compatible type and cast was valid")
     pCtx->common.mode = mode;
     pCtx->key = key;
     pCtx->dataLength = inLength;
@@ -74,6 +80,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_crypt(
     pCtx->tagLength = tagLength;
     pCtx->processedDataLength = 0u;
     pCtx->partialDataLength = 0u;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_Skeleton, mode->algorithm->pSkeleton(
       /* mcuxClSession_Handle_t session,        */ session,
@@ -88,18 +95,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAeadModes_crypt(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ pTag,
       /* uint32_t tagLength,                   */ tagLength,
-      /* uint32_t options                      */ MCUXCLAEADMODES_OPTION_ONESHOT
+      /* uint32_t options                      */ (MCUXCLELS_AEAD_ENCRYPT == mode->algorithm->direction) ? MCUXCLAEADMODES_OPTION_ONESHOT_ENCRYPT : MCUXCLAEADMODES_OPTION_ONESHOT_DECRYPT
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != ret_Skeleton)
+    if((MCUXCLAEAD_STATUS_OK != ret_Skeleton) && (MCUXCLAEAD_STATUS_INVALID_TAG != ret_Skeleton))
     {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_crypt, MCUXCLAEAD_STATUS_ERROR,
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_crypt, ret_Skeleton,
                                 mode->algorithm->protection_token_skeleton);
     }
 
     mcuxClSession_freeWords_cpuWa(session, cpuCtxSizeInWords);
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_crypt, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_crypt, ret_Skeleton, MCUXCLAEAD_STATUS_FAULT_ATTACK,
                                         mode->algorithm->protection_token_skeleton);
 }
 

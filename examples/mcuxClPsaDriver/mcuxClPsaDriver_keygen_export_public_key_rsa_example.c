@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -32,6 +32,7 @@
 #include <mcuxClCore_Examples.h>
 #include <mcuxClRsa.h>
 #include <mcuxClPkc.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 
 /* Public RSA exponent e */
@@ -46,21 +47,11 @@ static const ALIGNED uint8_t PublicExp[] =
 MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_keygen_export_public_key_rsa_example)
 {
 	/* Enable ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
-    // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
-    // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
     /*****************************   Generate RSA key   *******************************************/
     /**********************************************************************************************/
 
@@ -76,16 +67,16 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_keygen_export_public_key_rsa_example)
           .alg = PSA_ALG_NONE,
           .alg2 = PSA_ALG_NONE},
         .flags = 0U},                                                         // No flags
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
       .domain_parameters = (uint8_t*)PublicExp,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
       .domain_parameters_size = sizeof(PublicExp)};
 
     /* Call generate_key operation */
-MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
     ALIGNED uint8_t key_buffer[PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE(2048u)] = {0U};
     size_t key_buffer_size = PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE(2048u);
-MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
     size_t key_buffer_length = 0U;
 
     psa_status_t status = psa_driver_wrapper_generate_key(
@@ -99,19 +90,19 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
     }
 
     /* Check the output length */
-MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
     if(key_buffer_length > PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE(2048u))
-MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /******************   Export RSA public key   *************************************************/
     /**********************************************************************************************/
-MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
     ALIGNED uint8_t data[PSA_EXPORT_KEY_OUTPUT_SIZE(PSA_KEY_TYPE_RSA_PUBLIC_KEY,MCUXCLKEY_SIZE_2048)] = {0U};
     size_t data_size = PSA_EXPORT_KEY_OUTPUT_SIZE(PSA_KEY_TYPE_RSA_PUBLIC_KEY,MCUXCLKEY_SIZE_2048);
-MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
     size_t data_length = 0U;
 
     attributes.core.policy.usage = PSA_KEY_USAGE_EXPORT;
@@ -131,14 +122,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Disable()); // Disable the ELS.
-    // mcuxClEls_Disable is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Disable) != token) || (MCUXCLELS_STATUS_OK != result))
+    /* Disable the ELS */
+    if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
     /* Return */
     return MCUXCLEXAMPLE_STATUS_OK;
 }

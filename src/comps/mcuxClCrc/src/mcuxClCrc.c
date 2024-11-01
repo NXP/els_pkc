@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClCore_Platform.h>
@@ -26,7 +26,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint16_t) mcuxClCrc_computeCRC16(const uint8_t *pByt
 
     MCUX_CSSL_DI_EXPUNGE(mcuxClCrc_Internal_updateCRC16_pBytes, (uint32_t)pBytes + length);
     MCUX_CSSL_FP_FUNCTION_CALL(crcRet, mcuxClCrc_Internal_updateCRC16(pBytes, length, MCUXCLCRC_DEFAULT_SEED_16));
-    uint16_t crcResult = (uint16_t)crcRet ^ MCUXCLCRC_DEFAULT_CRC_OUT_MASK_16;
+    uint16_t crcResult = (uint16_t)(crcRet & 0xffffU) ^ MCUXCLCRC_DEFAULT_CRC_OUT_MASK_16;
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCrc_computeCRC16, crcResult, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCrc_Internal_updateCRC16));
 }

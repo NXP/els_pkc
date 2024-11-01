@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2022 NXP                                                  */
+/* Copyright 2020-2022, 2024 NXP                                            */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClEls_Hash.c
@@ -23,6 +23,25 @@
 #include <mcuxClEls.h>
 #include <internal/mcuxClEls_Internal.h>
 
+
+static bool mcuxClEls_Hash_Async_CheckParams(
+    mcuxClEls_HashOption_t options,
+    size_t inputLength)
+{
+    bool isParamInvalid = false;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT("isParamInvalid must be initialized to false for configurability purpose (different sha algorithms are supported on various platforms)")
+    isParamInvalid = isParamInvalid || ((MCUXCLELS_HASH_MODE_SHA_224 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_224)));
+    isParamInvalid = isParamInvalid || ((MCUXCLELS_HASH_MODE_SHA_256 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_256)))
+    || ((MCUXCLELS_HASH_RTF_UPDATE_ENABLE == options.bits.rtfupd) && (MCUXCLELS_HASH_MODE_SHA_256 != options.bits.hashmd))
+    || ((MCUXCLELS_HASH_RTF_UPDATE_ENABLE != options.bits.rtfupd) && (MCUXCLELS_HASH_RTF_OUTPUT_ENABLE == options.bits.rtfoe))
+    || ((MCUXCLELS_HASH_OUTPUT_ENABLE != options.bits.hashoe) && (MCUXCLELS_HASH_RTF_OUTPUT_ENABLE == options.bits.rtfoe));
+    isParamInvalid = isParamInvalid || ((MCUXCLELS_HASH_MODE_SHA_384 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_384)));
+    isParamInvalid = isParamInvalid || ((MCUXCLELS_HASH_MODE_SHA_512 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_512)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
+    ;
+    return isParamInvalid;
+}
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_Hash_Async)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Async(
     mcuxClEls_HashOption_t options,
@@ -33,16 +52,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Asy
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Hash_Async);
 
     /* Length must not be zero and aligned with the block length */
-    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Hash_Async,
-                               (0 == 1) // fixing MISRA warning
-                               || ((MCUXCLELS_HASH_MODE_SHA_224 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_224)))
-                               || ((MCUXCLELS_HASH_MODE_SHA_256 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_256)))
-                               || ((MCUXCLELS_HASH_RTF_UPDATE_ENABLE == options.bits.rtfupd) && (MCUXCLELS_HASH_MODE_SHA_256 != options.bits.hashmd))
-                               || ((MCUXCLELS_HASH_RTF_UPDATE_ENABLE != options.bits.rtfupd) && (MCUXCLELS_HASH_RTF_OUTPUT_ENABLE == options.bits.rtfoe))
-                               || ((MCUXCLELS_HASH_OUTPUT_ENABLE != options.bits.hashoe) && (MCUXCLELS_HASH_RTF_OUTPUT_ENABLE == options.bits.rtfoe))
-                               || ((MCUXCLELS_HASH_MODE_SHA_384 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_384)))
-                               || ((MCUXCLELS_HASH_MODE_SHA_512 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_512)))
-                               );
+    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Hash_Async, mcuxClEls_Hash_Async_CheckParams(options, inputLength));
 
     /* ELS SFRs are not cached => Tell SW to wait for ELS to come back from BUSY state before modifying the SFRs */
     if (mcuxClEls_isBusy())
@@ -57,7 +67,6 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Asy
 
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_Hash_Async, MCUXCLELS_STATUS_OK_WAIT);
-
 }
 
 #ifdef MCUXCL_FEATURE_ELS_SHA_DIRECT
@@ -91,6 +100,34 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_ShaDirec
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_ShaDirect_Disable, MCUXCLELS_STATUS_OK);
 }
 
+static inline bool mcuxClEls_Hash_ShaDirect_CheckParams(
+    mcuxClEls_HashOption_t options,
+    size_t inputLength)
+{
+    bool isParamInvalid = (0u == inputLength)
+    || ((MCUXCLELS_HASH_MODE_SHA_224 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_224)))
+    || ((MCUXCLELS_HASH_MODE_SHA_256 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_256)))
+    || ((MCUXCLELS_HASH_MODE_SHA_384 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_384)))
+    || ((MCUXCLELS_HASH_MODE_SHA_512 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_512)))
+    ;
+    return isParamInvalid;
+}
+
+/* Helper function to get state size */
+static inline size_t mcuxClEls_Hash_GetStateSize(mcuxClEls_HashOption_t options)
+{
+    size_t state_size = MCUXCLELS_HASH_STATE_SIZE_SHA_256;
+    if (MCUXCLELS_HASH_MODE_SHA_512 == options.bits.hashmd)
+    {
+        state_size = MCUXCLELS_HASH_STATE_SIZE_SHA_512;
+    }
+    if (MCUXCLELS_HASH_MODE_SHA_384 == options.bits.hashmd)
+    {
+        state_size = MCUXCLELS_HASH_STATE_SIZE_SHA_384;
+    }
+    return state_size;
+}
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_Hash_ShaDirect)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_ShaDirect(
     mcuxClEls_HashOption_t options,
@@ -103,23 +140,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Hash_Sha
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_Hash_ShaDirect);
 
     /* Length must not be zero and aligned with the block length */
-    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Hash_ShaDirect,
-                               (0u == inputLength)
-                               || ((MCUXCLELS_HASH_MODE_SHA_224 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_224)))
-                               || ((MCUXCLELS_HASH_MODE_SHA_256 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_256)))
-                               || ((MCUXCLELS_HASH_MODE_SHA_384 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_384)))
-                               || ((MCUXCLELS_HASH_MODE_SHA_512 == options.bits.hashmd) && (0u != (inputLength % MCUXCLELS_HASH_BLOCK_SIZE_SHA_512)))
-                               );
+    MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_Hash_ShaDirect, mcuxClEls_Hash_ShaDirect_CheckParams(options, inputLength));
 
-    size_t state_size = MCUXCLELS_HASH_STATE_SIZE_SHA_256;
-    if (MCUXCLELS_HASH_MODE_SHA_512 == options.bits.hashmd)
-    {
-        state_size = MCUXCLELS_HASH_STATE_SIZE_SHA_512;
-    }
-    if (MCUXCLELS_HASH_MODE_SHA_384 == options.bits.hashmd)
-    {
-        state_size = MCUXCLELS_HASH_STATE_SIZE_SHA_384;
-    }
+    size_t state_size = mcuxClEls_Hash_GetStateSize(options);
 
     /* Check for SHA Direct mode */
     if (1u != MCUXCLELS_GET_CFG_FIELD(MCUXCLELS_SFR_CFG_SHA2_DIRECT))

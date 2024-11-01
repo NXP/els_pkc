@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_pkcs1v15Decode_decrypt.c
@@ -83,7 +83,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Decode_decrypt
   /* Generate a random byte not equal to 0x1 for XOR with the whole encoded message pEM */
   uint8_t rndByte = 0x1u;
   MCUXCLBUFFER_INIT(pBufRndByte, NULL, &rndByte, 1u);
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_ARRAY_OUT_OF_BOUNDS("mcuxClRandom_ncGenerate checks unaligned bytes and does not overrun")
   MCUX_CSSL_FP_FUNCTION_CALL(ret_Prng_GetRandom, mcuxClRandom_ncGenerate(pSession, pBufRndByte, 1u));
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ARRAY_OUT_OF_BOUNDS()
   rndByte |= 0x02u;
   if (MCUXCLRANDOM_STATUS_OK != ret_Prng_GetRandom)
   {
@@ -110,7 +112,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Decode_decrypt
   for(uint32_t i = 0u; i < (emLen - 2u); ++i)
   {
     uint8_t index = (T[1] != rndByte) ? 1u : 0u;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("'index' is 0/1, so result won't wrap")
     messageLen[index] += 1u;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     T[index] = pPS[i * index];
   }
 

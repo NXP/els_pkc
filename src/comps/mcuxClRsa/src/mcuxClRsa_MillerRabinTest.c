@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_MillerRabinTest.c
@@ -88,15 +88,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
 
   /* Setup UPTR table */
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE] = backupPtrUptrt[uptrtIndexPrimeCandidate];
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_NB] = backupPtrUptrt[uptrtIndexTmp] + MCUXCLRSA_PKC_WORDSIZE /* Offset for nDash */;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_NB] + (uint16_t) pkcBlindOperandSize;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_RESULT] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED] + (uint16_t)bufferSizeQSquared;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_RESULT] + (uint16_t)bufferSizeResult;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X] + (uint16_t)bufferSizeX;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T1] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0] + (uint16_t)bufferSizeT0;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T2] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T1] + (uint16_t)bufferSizeT1;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T3] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T2] + (uint16_t)bufferSizeT2;
-  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T3] + (uint16_t)bufferSizeT3;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_NB] = (backupPtrUptrt[uptrtIndexTmp] + MCUXCLRSA_PKC_WORDSIZE) & 0xFFFFU; /* Offset for nDash */;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_NB] + (uint16_t)(pkcBlindOperandSize & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_RESULT] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_QSQUARED] + (uint16_t)(bufferSizeQSquared & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_RESULT] + (uint16_t)(bufferSizeResult & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X] + (uint16_t)(bufferSizeX & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T1] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T0] + (uint16_t)(bufferSizeT0 & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T2] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T1] + (uint16_t)(bufferSizeT1 & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T3] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T2] + (uint16_t)(bufferSizeT2 & 0xFFFFU)) & 0xFFFFU;
+  pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE] = (pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_T3] + (uint16_t)(bufferSizeT3 & 0xFFFFU)) & 0xFFFFU;
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_R32] = pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE]; /* uses the same space as TW */
   pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_CONSTANT] = 1u;
 
@@ -117,12 +117,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   MCUXCLPKC_FP_CALC_OP2_SHR(MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_PRIMECANDIDATE, 1);
 
   /* Revert exponent to big-endian - keep it in FXRAM memory */
-  uint8_t * pExp = MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE]) + bufferSizeTE; //allocate space for it in the FXRAM, if there is not enough memory it can be in CPU
-  MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC(pExp, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X, byteLenPrime);
+  uint32_t * pExp = MCUXCLPKC_OFFSET2PTRWORD(pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_TE]) + (bufferSizeTE / sizeof(uint32_t)); //allocate space for it in the FXRAM, if there is not enough memory it can be in CPU
+  MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC((uint8_t*)pExp, MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_X, byteLenPrime);
   /* Allocate space for the temporary buffer for exponent (aligned to CPU word, length shall be a multiple of CPU word and greater than @p byteLenExp) */
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("Cast to CPU word aligned")
-  uint32_t * pExpTemp = (uint32_t *) pExp + MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(byteLenPrime);
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  uint32_t * pExpTemp = pExp + MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(byteLenPrime);
 
 
   /*****************************************************************/
@@ -130,9 +128,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   /*****************************************************************/
 
   /* Generate r32 - odd random number used for blinding */
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("Cast to CPU word aligned")
-  uint32_t *pR32 = (uint32_t *)  MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_R32]);
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+  uint32_t *pR32 = MCUXCLPKC_OFFSET2PTRWORD(pOperands[MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_R32]);
 
   MCUXCLBUFFER_INIT(pBufR32, NULL, (uint8_t *) pR32, MCUXCLRSA_INTERNAL_MOD_BLINDING_SIZE);
   MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate1, mcuxClRandom_ncGenerate(pSession, pBufR32, MCUXCLRSA_INTERNAL_MOD_BLINDING_SIZE));
@@ -177,7 +173,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
   uint32_t counter = 0;
 
   /* Variables related to flow protection to count execution of loops */
-  uint32_t witnessLoopCounterMain = 0;
+  MCUX_CSSL_FP_COUNTER_STMT(uint32_t witnessLoopCounterMain = 0u;)
 
   uint32_t zeroFlag_check = MCUXCLPKC_FLAG_NONZERO;
 
@@ -201,7 +197,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
       /* Get random integer b of length equal to prime candidate from an RBG.    */
       /***************************************************************************/
 
-      ++witnessLoopCounterMain;
+      MCUX_CSSL_FP_COUNTER_STMT(++witnessLoopCounterMain;)
 #ifdef MCUXCL_FEATURE_ELS_ACCESS_PKCRAM_WORKAROUND
       const uint32_t cpuWaSizeWord = MCUXCLRSA_INTERNAL_MILLERRABINTEST_WACPU_SIZE_WO_RNG(byteLenPrime) / sizeof(uint32_t);
       uint8_t * pWitnessCpu = (uint8_t*) mcuxClSession_allocateWords_cpuWa(pSession, cpuWaSizeWord);
@@ -264,7 +260,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_MillerRabinTest(
     MCUX_CSSL_FP_FUNCTION_CALL(secModExpResult,
         MCUXCLMATH_SECMODEXP(
                             pSession,
-                            pExp,
+                            (uint8_t*) pExp,
                             pExpTemp,
                             byteLenPrime,
                             MCUXCLRSA_INTERNAL_UPTRTINDEX_MILLERRABIN_RESULT,  /* Result (z_bm) */

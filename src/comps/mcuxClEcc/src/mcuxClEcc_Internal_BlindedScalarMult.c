@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -44,10 +44,10 @@
  *  - pDomainParameters Pointer to common domain parameters
  *
  * Return values:
- *  - MCUXCLECC_STATUS_OK            if the function executed successfully
- *  - MCUXCLECC_STATUS_NEUTRAL_POINT if the scalar is zero
- *  - MCUXCLECC_STATUS_RNG_ERROR     random number generation (PRNG) error (unexpected behavior)
- *  - MCUXCLECC_STATUS_FAULT_ATTACK  fault attack (unexpected behavior) is detected
+ *  - MCUXCLECC_STATUS_OK                if the function executed successfully
+ *  - MCUXCLECC_STATUS_NEUTRAL_POINT     if the scalar is zero
+ *  - MCUXCLECC_STATUS_RNG_ERROR         random number generation (PRNG) error (unexpected behavior)
+ *  - MCUXCLECC_STATUS_FAULT_ATTACK      fault attack (unexpected behavior) is detected
  *
  * Prerequisites:
  *  - The secret scalar k is contained in buffer ECC_S2
@@ -103,10 +103,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_BlindedScalarMult(mcux
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     MCUX_CSSL_FP_FUNCTION_CALL(leadingZerosN, mcuxClMath_LeadingZeros(ECC_N));
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(leadingZerosN, 0u, (operandSize * 8u), MCUXCLECC_STATUS_FAULT_ATTACK)
     uint32_t bitLenN = (operandSize * 8u) - leadingZerosN;
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_secFixScalarMult,
-        pCommonDomainParams->pSecFixScalarMultFctFP->pScalarMultFct(
+        pCommonDomainParams->pScalarMultFunctions->secFixScalarMultFct(
             pSession,
             pCommonDomainParams,
             ECC_S1,
@@ -131,7 +132,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_BlindedScalarMult(mcux
      *         and store the result P in curve dependent coordinates in MR in buffers ECC_COORD00, ECC_COORD01,....
      */
     MCUX_CSSL_FP_FUNCTION_CALL(ret_secVarScalarMult,
-        pCommonDomainParams->pSecVarScalarMultFctFP->pScalarMultFct(
+        pCommonDomainParams->pScalarMultFunctions->secVarScalarMultFct(
             pSession,
             pCommonDomainParams,
             ECC_S0,
@@ -156,6 +157,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_BlindedScalarMult(mcux
         MCUXCLPKC_FP_CALLED_CALC_OP1_CMP,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_GenerateMultiplicativeBlinding),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMath_LeadingZeros),
-        pCommonDomainParams->pSecFixScalarMultFctFP->scalarMultFct_FP_FuncId,
-        pCommonDomainParams->pSecVarScalarMultFctFP->scalarMultFct_FP_FuncId);
+        pCommonDomainParams->pScalarMultFunctions->secFixScalarMultFctFPId,
+        pCommonDomainParams->pScalarMultFunctions->secVarScalarMultFctFPId);
 }

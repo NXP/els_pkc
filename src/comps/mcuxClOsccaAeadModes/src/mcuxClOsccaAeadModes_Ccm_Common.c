@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaAeadModes_Ccm_Common.c
@@ -21,6 +21,7 @@
 #include <mcuxClCore_Examples.h>
 #include <mcuxCsslAnalysis.h>
 #include <mcuxCsslFlowProtection.h>
+#include <mcuxCsslMemory.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <internal/mcuxClOsccaAeadModes_Internal_Types.h>
 #include <internal/mcuxClOsccaAeadModes_Internal_Functions.h>
@@ -42,9 +43,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_Ccm_Intern
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaAeadModes_Ccm_Internal_Init);
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm const * to mcuxClOsccaAeadModes_algorithm_t const *")
+
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) pCtx->common.mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
     /* Init tag. For CCM, the state store the tag value */
     MCUXCLMEMORY_FP_MEMORY_SET(pCtx->state, 0u, MCUXCLOSCCASM4_BLOCK_SIZE);
@@ -55,25 +59,33 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     // Clear first blocks to guarantee zero padding
     MCUXCLMEMORY_FP_MEMORY_SET(pCtx->partialData, 0u, MCUXCLOSCCASM4_BLOCK_SIZE);
 
-    //Determine whether the nonceLength is less than MCUXCLOSCCASM4_BLOCK_SIZE -1 to prevent memory overflow later
-    //Determine whether the tagLength is less than 2u to prevent memory overflow later
     //Determine pNonce not NULL to avoid dereferencing pNonce
-    if((nonceLength >= MCUXCLOSCCASM4_BLOCK_SIZE - 1u) || (tagLength < 2u) || (pNonce == NULL))
+    if(pNonce == NULL)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Init, MCUXCLAEAD_STATUS_ERROR);
     }
 
-    // Get length of auth field from parameter
-    uint8_t t = (uint8_t)((tagLength - 2u) / 2u);
+    /* Check that tagLength and nonceLength are in range:
+     *  tagLength shall be in {4,6,8,10,12,14,16}
+     *  nonceLength shall be in {7,8,9,10,11,12,13} */
+    if((tagLength < 4U) || (tagLength > 16U) || (nonceLength < 7U) || (nonceLength > 13U))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Init, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+    // Get length of auth field from parameter -
+    uint8_t t = (uint8_t)(((tagLength - 2U) / 2U) & 0xffU);
     // Get q-1 from parameter
-    uint8_t q = (uint8_t)(15u - nonceLength);
+    uint8_t q = (uint8_t)(15U - nonceLength);
     // Assemble the flags byte for B0
     // --------------------------------------------
     // |     7    |   6   |    5..3     |   2..0  |
     // | Reserved | Adata | [(t-2)/2]_3 | [q-1]_3 |
     // --------------------------------------------
-    uint8_t isheaderLen = (uint8_t)(adataLength > 0u);
-    pCtx->partialData[0u] = (uint8_t)((uint8_t)((isheaderLen << 6u) | (t << 3u)) | (q - 1u));
+    uint8_t isheaderLen = (uint8_t)(adataLength > 0U);
+    pCtx->partialData[0u] = ((uint8_t)((isheaderLen << 6) & 0xffU))
+                            | ((uint8_t)((t << 3) & 0xffU))
+                            | (q - 1U);
 
     // Create B0
     // ----------------------------------
@@ -86,11 +98,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     (void)statusBufferRead; // No need to check it because the function only returns OK.
 
     // Create Q
-    uint32_t inMask = 0x000000FFu;
-    for(int32_t it = 15; it >= (16 - ((int32_t)q)); --it)
+    uint32_t inMask = 0x000000ffU;
+    for(int8_t it = 15; it >= (16 - ((int8_t)q)); --it)
     {
-        pCtx->partialData[it] = (uint8_t)((inLength & inMask) >> (((15u - (uint8_t)it) * 8u) & 0x0Fu));
-        inMask = inMask << 8u;
+        pCtx->partialData[it] = (uint8_t)(((inLength & inMask) >> (((15U - (uint8_t)it) * 8U) & 0x0fU)) & 0xffU);
+        inMask = inMask << 8U;
     }
 
     //Calculate tag over B0
@@ -102,10 +114,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                       pCtx,
                                                       pCtx->partialData,
                                                       MCUXCLOSCCASM4_BLOCK_SIZE,
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                       NULL,
                                                       NULL,
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                       MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH | MCUXCLOSCCAAEADMODES_ENGINE_OPTION_INIT));
 
     if(MCUXCLAEAD_STATUS_OK != authRet)
@@ -176,7 +188,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     pCtx->state[63] = 0x1u;
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_Ccm_Internal_Init, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Init, MCUXCLAEAD_STATUS_OK,
             3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
             2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
@@ -196,9 +208,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaAeadModes_Ccm_Internal_ProcessAad);
 
     mcuxClAead_Mode_t mode = pCtx->common.mode;
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
     uint32_t partialDataLenOri = pCtx->partialDataLength;
     uint32_t lenToCopy = adataLength;            // adataLength is the length of AAD for this AAD process call
@@ -231,10 +245,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                 pCtx,
                                                                 pBufferPartialData,
                                                                 MCUXCLOSCCASM4_BLOCK_SIZE,
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                 NULL,
                                                                 NULL,
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                 MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH));
 
             if(MCUXCLAEAD_STATUS_OK != aadAuthRet)
@@ -257,10 +271,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("adataBlocks can't be larger than max(uint32_t) ")
                                                                        adataBlocks * MCUXCLOSCCASM4_BLOCK_SIZE,
                 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
-                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+                MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                        NULL,
                                                                        NULL,
-                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+                MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                        MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH));
 
                 if(MCUXCLAEAD_STATUS_OK != aadBlkAuthRet)
@@ -331,10 +345,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                pCtx,
                                                                pBufferPartialData,
                                                                MCUXCLOSCCASM4_BLOCK_SIZE,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+        MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                NULL,
                                                                NULL,
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH));
 
         if(MCUXCLAEAD_STATUS_OK != aadPadAuthRet)
@@ -348,7 +362,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_Ccm_Internal_ProcessAad, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_ProcessAad, MCUXCLAEAD_STATUS_OK,
             MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(atleastOneBlock, (adataLength != 0u) && (((partialDataLenOri + adataLength)) >= MCUXCLOSCCASM4_BLOCK_SIZE)),
             MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE(atleastOneBlock, (adataLength != 0u) && (((partialDataLenOri + adataLength)) < MCUXCLOSCCASM4_BLOCK_SIZE)),
             MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(lastBlock, ((partialDataLenOri + adataLength) % MCUXCLOSCCASM4_BLOCK_SIZE != 0u) && (pCtx->processedDataLength >= pCtx->aadLength)));
@@ -369,9 +383,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaAeadModes_Ccm_Internal_Process);
 
     mcuxClAead_Mode_t mode = pCtx->common.mode;
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     uint32_t partDataLenMed = pCtx->partialDataLength;
     uint32_t inLenOri = inLength;
     uint32_t proDataLen = pCtx->processedDataLength;
@@ -403,9 +419,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                 pBufferPartialData,
                                                                 MCUXCLOSCCASM4_BLOCK_SIZE,
                                                                 pOut,
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                 NULL,
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                 MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AEAD));
 
             if(MCUXCLAEAD_STATUS_OK != inAeadRet)
@@ -433,9 +449,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                        inputBlocks * MCUXCLOSCCASM4_BLOCK_SIZE,
                 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
                                                                        pOut,
-                MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+                MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                        NULL,
-                MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+                MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                        MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AEAD));
 
                 if(MCUXCLAEAD_STATUS_OK != inBlkAeadRet)
@@ -520,9 +536,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                pBufferPartialData,
                                                                MCUXCLOSCCASM4_BLOCK_SIZE,
                                                                pBufferState16Out,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+        MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                NULL,
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                MCUXCLOSCCAAEADMODES_ENGINE_OPTION_ENC));
 
         if(MCUXCLAEAD_STATUS_OK != inPaddEncRet)
@@ -550,10 +566,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                     pCtx,
                                                                     pBufferPartialData,
                                                                     MCUXCLOSCCASM4_BLOCK_SIZE,
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                     NULL,
                                                                     NULL,
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                     MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH));
 
             if(MCUXCLAEAD_STATUS_OK != inPaddAuthRet)
@@ -576,10 +592,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                                     pCtx,
                                                                     pBufferState16In,
                                                                     MCUXCLOSCCASM4_BLOCK_SIZE,
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                                     NULL,
                                                                     NULL,
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                                     MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH));
 
             if(MCUXCLAEAD_STATUS_OK != inPaddAuthRet)
@@ -595,7 +611,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_Ccm_Internal_Process, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Process, MCUXCLAEAD_STATUS_OK,
             MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(atleastOneBlock, (inLenOri != 0u) && ((partDataLenMed + inLenOri) >= MCUXCLOSCCASM4_BLOCK_SIZE)),
             MCUX_CSSL_FP_BRANCH_TAKEN_NEGATIVE(atleastOneBlock, (inLenOri != 0u) && ((partDataLenMed + inLenOri) < MCUXCLOSCCASM4_BLOCK_SIZE)),
             MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(lastBlock, (pCtx->processedDataLength == pCtx->dataLength + pCtx->aadLength) && ((partDataLenMed + inLenOri) % MCUXCLOSCCASM4_BLOCK_SIZE != 0u)),
@@ -614,9 +630,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClOsccaAeadModes_Ccm_Intern
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaAeadModes_Ccm_Internal_Finish);
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm const * to mcuxClOsccaAeadModes_algorithm_t const *")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) pCtx->common.mode->algorithm;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
 
     if (0u != pCtx->partialDataLength)
     {
@@ -638,9 +656,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                             pBufferState,
                                                             MCUXCLOSCCASM4_BLOCK_SIZE,
                                                             pBufferPartialData,
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                                             NULL,
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                                             MCUXCLOSCCAAEADMODES_ENGINE_OPTION_ENC));
 
     if(MCUXCLAEAD_STATUS_OK != finalTagEncRet)
@@ -648,10 +666,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Finish, MCUXCLAEAD_STATUS_ERROR);
     }
 
-    if ((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_FINISH))
+    mcuxClAead_Status_t finishRet = MCUXCLAEAD_STATUS_INVALID_TAG;
+    if ((options & MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT)  == MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT)
     {
         MCUX_CSSL_FP_FUNCTION_CALL(statusBufferWrite, mcuxClBuffer_write(pTag, 0u, pCtx->partialData, pCtx->tagLength));
         (void)statusBufferWrite; // No need to check it because the function only returns OK.
+        finishRet = MCUXCLAEAD_STATUS_OK;
     }
     else
     {
@@ -659,17 +679,27 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUX_CSSL_FP_FUNCTION_CALL(statusBufferRead, mcuxClBuffer_read(pTag, 0u, tag, pCtx->tagLength));
         (void)statusBufferRead; // No need to check it because the function only returns OK.
 
-        if(true != mcuxClCore_assertEqual(tag, pCtx->partialData, pCtx->tagLength))
+        MCUX_CSSL_FP_FUNCTION_CALL(compareTagRet,
+            mcuxCsslMemory_Compare(
+                mcuxCsslParamIntegrity_Protect(3u, tag, pCtx->partialData, pCtx->tagLength),
+                tag,
+                pCtx->partialData,
+                pCtx->tagLength)
+        );
+
+        if (MCUXCSSLMEMORY_STATUS_EQUAL == compareTagRet)
         {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Finish, MCUXCLAEAD_STATUS_ERROR);
+            finishRet = MCUXCLAEAD_STATUS_OK;
         }
     }
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_Ccm_Internal_Finish, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                pAlgo->protection_token_engine,
-                MCUX_CSSL_FP_CONDITIONAL((((options == MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) || (options == MCUXCLOSCCAAEADMODES_OPTION_FINISH))),
-                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_write)),
-                MCUX_CSSL_FP_CONDITIONAL((((options != MCUXCLOSCCAAEADMODES_OPTION_ONESHOT) && (options != MCUXCLOSCCAAEADMODES_OPTION_FINISH))),
-                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)));
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_Ccm_Internal_Finish, finishRet,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+        pAlgo->protection_token_engine,
+        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT) == MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_write)),
+        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT) == MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare))
+    );
 }

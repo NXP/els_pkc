@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClCipherModes_Els_Aes.c
@@ -26,6 +26,53 @@
 #include <internal/mcuxClCipher_Internal.h>
 #include <internal/mcuxClCipherModes_Common.h>
 
+
+/**
+ * @brief Function performs cipher init operation and OutLength buffer validation
+ * 
+ * @param[in/out]   pCtx
+ * @param[in]       pKey
+ * @param[in]       pMode
+ * @param[in]       pIv
+ * @param[in]       ivLength
+ * @param[in]       inLength
+ * @param[in]       pOutLength   pointer to output length buffer, shall not be modified only validated
+ * @param[in]       steps        bitmask with one bit reserved for init/update/finalize steps
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_InitAndValidate)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_InitAndValidate(
+    mcuxClCipherModes_Context_Aes_Els_t * pCtx,
+    mcuxClKey_Handle_t pKey,
+    mcuxClCipher_Mode_t pMode,
+    mcuxCl_InputBuffer_t pIv,
+    uint32_t ivLength,
+    uint32_t inLength,
+    uint32_t * const pOutLength,
+    uint32_t steps)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipherModes_InitAndValidate);
+    if (MCUXCLCIPHER_OPTION_INIT == (steps & MCUXCLCIPHER_OPTION_INIT)) /* Init or oneshot */
+    {
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pCtx is of type mcuxClCipherModes_Context_Aes_Els_t *")
+        MCUX_CSSL_FP_FUNCTION_CALL(initResult, mcuxClCipherModes_SkeletonAes_Init(pCtx, pKey, pMode, pIv, ivLength));
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+        if(MCUXCLCIPHER_STATUS_OK != initResult)
+        {
+           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_InitAndValidate, initResult, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Init));
+        }
+    }
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pCtx is of type mcuxClCipherModes_Context_Aes_Els_t *")
+    if((MCUXCLCIPHER_OPTION_INIT != steps) && ((*pOutLength > (UINT32_MAX - inLength)) || ((*pOutLength + inLength) > (UINT32_MAX - pCtx->common.blockBufferUsed))))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_InitAndValidate, MCUXCLCIPHER_STATUS_INVALID_INPUT);
+    }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_InitAndValidate, MCUXCLCIPHER_STATUS_OK,
+        MCUX_CSSL_FP_CONDITIONAL(MCUXCLCIPHER_OPTION_INIT == (steps & MCUXCLCIPHER_OPTION_INIT), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Init)));
+}
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_SkeletonAes)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes(
@@ -104,7 +151,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
            - for paddingNone it is set to blocksize
            - for other padding modes it is set to 1
         */
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         if (0u != (inLength % ((mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *)pMode->pAlgorithm)->granularity))
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_ERROR);
         }
@@ -116,25 +165,23 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
     }
 
-    if ((MCUXCLCIPHER_OPTION_INIT == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps))
+    MCUX_CSSL_FP_FUNCTION_CALL(initResult, mcuxClCipherModes_InitAndValidate(
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+                        pCtx,
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+                        pKey,
+                        pMode,
+                        pIv,
+                        ivLength,
+                        inLength,
+                        pOutLength,
+                        steps));
+    if(MCUXCLCIPHER_STATUS_OK != initResult)
     {
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pCtx is of type mcuxClCipherModes_Context_Aes_Els_t *")
-        MCUX_CSSL_FP_FUNCTION_CALL(initResult, mcuxClCipherModes_SkeletonAes_Init(pCtx, pKey, pMode, pIv, ivLength));
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
-        if(MCUXCLCIPHER_STATUS_OK != initResult)
-        {
-           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, initResult, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Init));
-        }
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, initResult, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_InitAndValidate));
     }
-
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pCtx is of type mcuxClCipherModes_Context_Aes_Els_t *")
-    if((MCUXCLCIPHER_OPTION_INIT != steps) && ((*pOutLength > (UINT32_MAX - inLength)) || ((*pOutLength + inLength) > (UINT32_MAX - pCtx->common.blockBufferUsed))))
-    {
-        return MCUXCLCIPHER_STATUS_INVALID_INPUT;
-    }
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     
-    if ((MCUXCLCIPHER_OPTION_PROCESS == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps))
+    if (MCUXCLCIPHER_OPTION_PROCESS == (steps & MCUXCLCIPHER_OPTION_PROCESS)) /* process or oneshot */
     {
         uint32_t outLen = 0u;
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pCtx is of type mcuxClCipherModes_Context_Aes_Els_t *")
@@ -143,7 +190,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         if (MCUXCLCIPHER_STATUS_OK != processResult)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, processResult,
-                                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Process));
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Process),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_InitAndValidate));
         }
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False Positive, *pOutLength will not overflow As it was checked above")
         *pOutLength += outLen;
@@ -151,15 +199,18 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
         pOutput += outLen;
     }
 
-    if ((MCUXCLCIPHER_OPTION_FINISH == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps))
+    if (MCUXCLCIPHER_OPTION_FINISH == (steps & MCUXCLCIPHER_OPTION_FINISH)) /* finish or oneshot */
     {
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pCtx is of type mcuxClCipherModes_Context_Aes_Els_t *")
         MCUX_CSSL_FP_FUNCTION_CALL(finishResult, mcuxClCipherModes_SkeletonAes_Finish(session, pCtx, (mcuxCl_Buffer_t)pOutput, pOutLength));
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
         if(MCUXCLCIPHER_STATUS_OK != finishResult)
         {
-           MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, finishResult,
-                                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Finish));
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, finishResult,
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_InitAndValidate),
+                MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_PROCESS == (steps & MCUXCLCIPHER_OPTION_PROCESS)),
+                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Process)),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Finish));
         }
     }
 
@@ -171,10 +222,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
 
     /* Exit and balance the flow protection. */
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
-        MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_INIT == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Init)),
-        MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_PROCESS == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Process)),
-        MCUX_CSSL_FP_CONDITIONAL(((MCUXCLCIPHER_OPTION_FINISH == steps) || (MCUXCLCIPHER_OPTION_ONESHOT == steps)),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Finish)));
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_InitAndValidate),
+        MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_PROCESS == (steps & MCUXCLCIPHER_OPTION_PROCESS)),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Process)),
+        MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_FINISH == (steps & MCUXCLCIPHER_OPTION_FINISH)),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Finish)));
 }

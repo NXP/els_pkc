@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,6 +21,7 @@
 
 #include <mcuxClToolchain.h>
 #include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClSession.h>
 #include <mcuxClBuffer.h>
 #include <mcuxCsslFlowProtection.h>
@@ -54,10 +55,13 @@ static mcuxClRandom_Status_t prngPatchFunction(
           return MCUXCLRANDOM_STATUS_FAULT_ATTACK;
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
+
+        MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(CERT_INT30_C, "modular arithmetic.")
         *pIndexRandomData = (*pIndexRandomData + 1u) % sizeof(randomData);
+        MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_INT30_C)
     }
 
-    return MCUXCLRANDOM_STATUS_OK;  
+    return MCUXCLRANDOM_STATUS_OK;
 }
 
 /** Performs an example usage of the mcuxClRandom component
@@ -71,7 +75,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandom_PRNG_Patch_example)
 
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, 0u, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE, 0u);
 
     /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
@@ -152,7 +156,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandom_PRNG_Patch_example)
       return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    
+
     /**************************************************************************/
     /* Return to PRNG in normal mode                                          */
     /**************************************************************************/
@@ -190,6 +194,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandom_PRNG_Patch_example)
     if(!mcuxClExample_Session_Clean(session))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
+    /** Disable the ELS **/
+    if(!mcuxClExample_Els_Disable())
+    {
+            return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     return MCUXCLEXAMPLE_STATUS_OK;

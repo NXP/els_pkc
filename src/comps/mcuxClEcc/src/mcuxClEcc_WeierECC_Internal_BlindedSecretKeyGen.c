@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -46,13 +46,13 @@
 
 /**
  * This function implements secure ECDSA private key / ephemeral key generation,
- * according to FIPS 186-4. It outputs multiplicative split d0 and d1 as well as d,
+ * according to FIPS 186-4. It outputs multiplicative split d0 and d1,
  * satisfying d0*d1 mod n = d = (c mod (n-1)) + 1, in which d is the private key
  * derived from a (bitLen(n)+64)-bit true (DRBG) random number c and d0 is a 64-bit
  * random number (with bit 63 set).
  *
  * Inputs:
- *   nByteLength: byte length of n (base point order).
+ *   byteLenN: byte length of n (base point order).
  *
  * Inputs in pOperands[] and PKC workarea: N/A.
  *
@@ -76,7 +76,7 @@
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits(
     mcuxClSession_Handle_t pSession,
-    uint32_t nByteLength)
+    uint32_t byteLenN)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits,
         MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,
@@ -93,12 +93,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecret
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("MISRA Ex. 9 to Rule 11.3 - PKC word is CPU word aligned.")
     const uint32_t *ptr32N = (const uint32_t *) MCUXCLPKC_OFFSET2PTR(pOperands[ECC_N]);
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
-    const uint32_t wordNumN = (nByteLength + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
+    MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(byteLenN, MCUXCLECC_WEIERECC_BRAINPOOLP160T1_SIZE_BASEPOINTORDER, MCUXCLECC_WEIERECC_SECP521R1_SIZE_BASEPOINTORDER, MCUXCLECC_STATUS_FAULT_ATTACK)
+    const uint32_t wordNumN = (byteLenN + (sizeof(uint32_t)) - 1u) / (sizeof(uint32_t));
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t nMSWord = ptr32N[wordNumN - 1u];
     uint32_t nMSWord_LeadZeros = mcuxClMath_CountLeadingZerosWord(nMSWord);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("'nMSWord_LeadZeros' is less than 'wordNumN', cannot wrap")
     uint32_t bitLenN65 = (wordNumN * (sizeof(uint32_t)) * 8u) - nMSWord_LeadZeros + 65u;
     uint32_t pkcByteLenN65 = (bitLenN65 + (MCUXCLPKC_WORDSIZE * 8u) - 1u) / (MCUXCLPKC_WORDSIZE * 8u) * MCUXCLPKC_WORDSIZE;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Clear buffer S0. */
     MCUXCLPKC_FP_CALC_OP1_CONST(ECC_S0, 0u);
@@ -163,7 +166,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecret
 
 #ifdef MCUXCL_FEATURE_ECC_STRENGTH_CHECK
     /* Derive the security strength required for the RNG from bitLenN / 2 and check whether it can be provided. */
-    MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, MCUXCLCORE_MIN((nByteLength * 8u) / 2u, 256u)));
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_checkSecurityStrength, mcuxClRandom_checkSecurityStrength(pSession, MCUXCLCORE_MIN((byteLenN * 8u) / 2u, 256u)));
     if (MCUXCLRANDOM_STATUS_OK != ret_checkSecurityStrength)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits, MCUXCLECC_STATUS_RNG_ERROR,
@@ -220,7 +223,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_WeierECC_BlindedSecret
     /*         S2 = c' = c + r, the result fits in (bitLenN+65) bits, with OPLEN = pkcByteLenN65. */
     /*         ZA = d0, duplicate because ModInv(d0) will destroy input d0.                       */
     /* Step 4: Z = n-1. */
-    pOperands[WEIER_VT] = (uint16_t) nMSWord_LeadZeros;
+    pOperands[WEIER_VT] = (uint16_t) (nMSWord_LeadZeros & 0xFFFFU);
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits_Steps34,
                         mcuxClEcc_FUP_WeierECC_BlindedSecretKeyGen_RandomWithExtraBits_Steps34_LEN);
 

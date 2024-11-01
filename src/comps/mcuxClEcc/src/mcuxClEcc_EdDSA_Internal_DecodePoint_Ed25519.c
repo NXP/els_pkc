@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -68,7 +68,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
 
     /* Step 2: Read and backup the LSBit x0 from buffer ECC_T0 and clear it in buffer ECC_T0. */
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("'encodedLen' is larger than 1, no risk of overflow")
     uint8_t *pT0LastByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_T0])[encodedLen - 1u];
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     uint8_t x0 = (*pT0LastByte) >> 7u;
     *pT0LastByte &= 0x7Fu;
 
@@ -172,7 +174,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_DecodePoint_Ed25
 
     uint32_t *pT3FirstWord = MCUXCLPKC_OFFSET2PTRWORD(pOperands[ECC_T3]);    // Loading a word is usually cheaper than loading a byte
     MCUXCLPKC_WAITFORFINISH();
-    uint8_t x0_candidate = (uint8_t)(*pT3FirstWord) & 0x01u;                // LSBit of x~
+    uint8_t x0_candidate = (uint8_t)((*pT3FirstWord) & 0x01u);                // LSBit of x~
 
     /* Check if x0 != x' mod 2 */
     MCUX_CSSL_FP_BRANCH_DECL(x0Isx);

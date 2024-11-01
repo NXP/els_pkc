@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_PrivatePlain.c
@@ -55,16 +55,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
 
-  if(NULL == pKey->pMod1->pKeyEntryData)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
-
   const uint8_t* const pExp = pKey->pExp1->pKeyEntryData;
-  if(NULL == pExp)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
 
   /************************************************************************************************/
   /* Check that modulus is odd and that 64 < pKey->pMod1->keyEntryLength < 512 or 1024;           */
@@ -74,16 +65,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   const uint32_t byteLenN = pKey->pMod1->keyEntryLength;
   const uint32_t byteLenD = pKey->pExp1->keyEntryLength;
 
-  if((byteLenN < 64U) || (byteLenN > MCUXCLRSA_MAX_MODLEN) )
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
-  }
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(byteLenN, 64U, MCUXCLRSA_MAX_MODLEN, MCUXCLRSA_STATUS_INVALID_INPUT)
 
   if(0U == (pKey->pMod1->pKeyEntryData[byteLenN - 1U] & 0x01U))
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INVALID_INPUT);
   }
-
 
   /************************************************************************************************/
   /* Initialization                                                                               */
@@ -141,8 +128,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
 
   /* Clear PKC workarea after input */
   // TODO CLNS-6350: analyze what should be cleared
-  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_clear(pInput + byteLenN, MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(byteLenN) - byteLenN,
-                                                                      MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(byteLenN) - byteLenN));
+  MCUXCLMEMORY_FP_MEMORY_CLEAR(pInput + byteLenN, MCUXCLRSA_INTERNAL_PRIVATEPLAIN_INPUT_SIZE(byteLenN) - byteLenN);
 
   MCUXCLPKC_PS1_SETLENGTH(0u, bufferSizeTotal);
   MCUXCLPKC_FP_CALC_OP1_CONST(MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_R, 0u);
@@ -187,8 +173,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_privatePlain(
   /* CARRY=1 ==> input=0, and ZERO=1 ==> input=1. In both cases, return input */
   if((MCUXCLPKC_FLAG_CARRY == carryFlag) || (MCUXCLPKC_FLAG_ZERO == zeroFlag))
   {
+    mcuxClSession_freeWords_pkcWa(pSession, pkcWaSizeWord);
+    mcuxClSession_freeWords_cpuWa(pSession, cpuWaSizeWord);
     MCUXCLPKC_FP_EXPORTBIGENDIANFROMPKC_BUFFER(mcuxClRsa_privatePlain, pOutput, MCUXCLRSA_INTERNAL_UPTRTINDEX_PRIVPLAIN_X, byteLenN);
-
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_privatePlain, MCUXCLRSA_STATUS_INTERNAL_KEYOP_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
         MCUXCLPKC_FP_CALLED_CALC_OP1_CONST,

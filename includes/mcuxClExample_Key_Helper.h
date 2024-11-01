@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLEXAMPLE_KEY_HELPER_H_
@@ -38,7 +38,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClExample_Key_Init_And_Load)
 static inline bool mcuxClExample_Key_Init_And_Load(mcuxClSession_Handle_t pSession,
                                                   mcuxClKey_Handle_t pKey,
                                                   mcuxClKey_Type_t type,
-                                                  uint8_t * pData,
+                                                  const uint8_t * pData,
                                                   uint32_t keyDataLength,
                                                   mcuxClEls_KeyProp_t * key_properties,
                                                   uint32_t * dst,
@@ -49,7 +49,7 @@ static inline bool mcuxClExample_Key_Init_And_Load(mcuxClSession_Handle_t pSessi
         /* mcuxClSession_Handle_t session         */ pSession,
         /* mcuxClKey_Handle_t key                 */ pKey,
         /* mcuxClKey_Type_t type                  */ type,
-        /* uint8_t * pKeyData                    */ pData,
+        /* const uint8_t * pKeyData              */ pData,
         /* uint32_t keyDataLength                */ keyDataLength)
     );
 

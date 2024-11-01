@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaMacModes_CMAC.c
@@ -83,31 +83,39 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClOsccaMacModes_Engine_CMAC_
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     mcuxClOsccaMacModes_Context_t* pCtx = (mcuxClOsccaMacModes_Context_t *)pContext;
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_Engine_CMAC_Update,
-        MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE >= (pCtx->nrOfUnprocessedBytes + inLength)), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
-        MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE < (pCtx->nrOfUnprocessedBytes + inLength)),
-                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_ScheduleSM4Key),
-                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
-                                       MCUX_CSSL_FP_CONDITIONAL((0u != pCtx->nrOfUnprocessedBytes),
-                                            MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE > pCtx->nrOfUnprocessedBytes),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
-                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor),
-                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine))));
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaMacModes_Engine_CMAC_Update);
 
     uint32_t lastBlockRemainingBytes = 0u;
     uint32_t fullBlocksRemainingBytes = 0u;
     uint32_t inLenOri = inLength;
     uint32_t inOffset = 0u;
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("(pCtx->nrOfUnprocessedBytes + inLength) can't be larger than max(uint32_t)")
-    if(MCUXCLOSCCASM4_BLOCK_SIZE >= (pCtx->nrOfUnprocessedBytes + inLength))/* "lazy" processing */
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+    if(0u == inLength)
     {
-       /* Store bytes in context */
-       MCUX_CSSL_FP_FUNCTION_CALL(statusBufferRead, mcuxClBuffer_read(pIn, inOffset, pCtx->stateIn + pCtx->nrOfUnprocessedBytes, inLength));
-       (void)statusBufferRead; // No need to check it because the function only returns OK.
+        /* Nothing to process */
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaMacModes_Engine_CMAC_Update, MCUXCLMAC_STATUS_OK);
+    }
 
-       pCtx->nrOfUnprocessedBytes += inLength;
-       pCtx->dataProcessed += inLength;
+    MCUX_CSSL_FP_EXPECT(
+        MCUX_CSSL_FP_CONDITIONAL((inLength <= (MCUXCLOSCCASM4_BLOCK_SIZE - pCtx->nrOfUnprocessedBytes)), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
+        MCUX_CSSL_FP_CONDITIONAL((inLength > (MCUXCLOSCCASM4_BLOCK_SIZE - pCtx->nrOfUnprocessedBytes)),
+                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_ScheduleSM4Key),
+                                       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
+                                       MCUX_CSSL_FP_CONDITIONAL((0u != pCtx->nrOfUnprocessedBytes),
+                                            MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCASM4_BLOCK_SIZE > pCtx->nrOfUnprocessedBytes),MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)),
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor),
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine)))
+                                            );
+
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pCtx->nrOfUnprocessedBytes, 0u, MCUXCLOSCCASM4_BLOCK_SIZE, MCUXCLMAC_STATUS_FAILURE)
+    if(inLength <= (MCUXCLOSCCASM4_BLOCK_SIZE - pCtx->nrOfUnprocessedBytes)) /* "lazy" processing */
+    {
+        /* Store bytes in context */
+        MCUX_CSSL_FP_FUNCTION_CALL(statusBufferRead, mcuxClBuffer_read(pIn, inOffset, pCtx->stateIn + pCtx->nrOfUnprocessedBytes, inLength));
+        (void)statusBufferRead; // No need to check it because the function only returns OK.
+
+        pCtx->nrOfUnprocessedBytes += inLength;
+        pCtx->dataProcessed += inLength;
     }
     else /* At least one block of data to process */
     {

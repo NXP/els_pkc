@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -27,7 +27,6 @@
 #include <mcuxClEls.h>
 
 #include <internal/mcuxClEls_Internal.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 
 #define RANDOM_BIT_ARRAY_SIZE 4U
 
@@ -74,7 +73,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Rng_Drbg
     /* Increment drbg_block_counter. If the counter overflowed, the interrupt handler will
      * reseed the DRBG and reset the counter after the upcoming ELS operation. */
     uint32_t counter_increase = MCUXCLELS_RNG_DRBG_DRBGREQUEST_INCREASE(outputLength);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Overflow handled in interrupt handler")
     mcuxClEls_rng_drbg_block_counter += counter_increase;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 #endif /* MCUXCL_FEATURE_ELS_ITERATIVE_SEEDING */
 
 
@@ -292,7 +293,9 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Prng_Get
     uint8_t * const pOutputEnd = pOutput + outputLength;
 
     /* Fetch one word of PRNG and fill the leading "not word aligned" bytes */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Cast needed for unaligned bytes calculation")
     if (0u != ((uint32_t) bytePtr & 0x03u))
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
     {
         uint32_t randomWord = els_getPRNGWord();
         do
@@ -300,11 +303,15 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_Prng_Get
             *bytePtr = (uint8_t) (randomWord & 0xFFu);
             bytePtr += 1u;
             randomWord >>= 8u;
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Cast needed for unaligned bytes calculation")
         } while ((0u != ((uint32_t) bytePtr & 0x03u)) && (pOutputEnd > bytePtr));
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
     }
 
     /* Fill the specified buffer wordwise */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Cast needed for unaligned bytes calculation")
     size_t unalignedBytes = ((size_t) pOutputEnd & 3u);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
     uint8_t * const pOutputWordEnd = pOutputEnd - unalignedBytes;
     while (pOutputWordEnd > bytePtr)
     {

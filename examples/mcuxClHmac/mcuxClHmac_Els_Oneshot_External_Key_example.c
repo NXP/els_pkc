@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
@@ -22,6 +22,7 @@
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClMac.h> // Interface to the entire mcuxClMac component
 #include <mcuxClHmac.h> // Interface to the entire mcuxClHmac component
+#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClHmac.h> // Interface to the entire mcuxClHmac component
 
@@ -64,21 +65,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Els_Oneshot_External_Key_example)
     /**************************************************************************/
 
     /* Enable ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
-    // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
-
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
-    // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
-    {
-        return MCUXCLEXAMPLE_STATUS_ERROR;
-    }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 
     /* Key buffer for the key in memory. */
@@ -101,16 +91,18 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHmac_Els_Oneshot_External_Key_example)
 
     /* Create and initialize mcuxClKey_Descriptor_t structure. */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClKey_init(
-        /* mcuxClSession_Handle_t pSession:                */  session,
-        /* mcuxClKey_Handle_t key:                         */  key,
-        /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
-        /* uint8_t * pKeyData:                            */  (uint8_t *) hmac_key,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
-        /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
+      /* mcuxClSession_Handle_t pSession:                */  session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_Handle_t key:                         */  key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* const mcuxClKey_Type* type:                     */  mcuxClKey_Type_Hmac_variableLength,
+      /* const uint8_t * pKeyData:                      */  hmac_key,
+      /* uint32_t keyDataLength:                        */  sizeof(hmac_key)));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init) != token) || (MCUXCLKEY_STATUS_OK != result))
     {
@@ -142,6 +134,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
     /* Call the mcuxClMac_compute function to compute a HMAC in one shot. */
     uint32_t result_size = 0u;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of tempIn is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClMac_compute(
         /* mcuxClSession_Handle_t session:  */ session,
         /* const mcuxClKey_Handle_t key:    */ key,
@@ -151,6 +144,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
         /* mcuxCl_Buffer_t pMac:            */ result_buffer,
         /* uint32_t * const pMacLength:    */ &result_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMac_compute) != token) || (MCUXCLMAC_STATUS_OK != result))
     {
@@ -207,13 +201,10 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
 
     /* Disable ELS */
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Disable()); // Disable the ELS.
-    // mcuxClEls_Disable is a flow-protected function: Check the protection token and the return value
-    if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Disable) != token) || (MCUXCLELS_STATUS_OK != result))
+    if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 
     return MCUXCLEXAMPLE_STATUS_OK;

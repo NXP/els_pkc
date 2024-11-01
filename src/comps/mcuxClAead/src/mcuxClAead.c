@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAead.c
@@ -42,7 +42,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_crypt(
   uint32_t tagLength
 )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAead_crypt);
+    MCUXCLSESSION_ENTRY(session, mcuxClAead_crypt, diRefValue, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+                                mode->protection_token_crypt)
 
     MCUX_CSSL_FP_FUNCTION_CALL(status, mode->crypt(
       /* mcuxClSession_Handle_t session,        */ session,
@@ -60,15 +61,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_crypt(
       /* uint32_t tagLength,                   */ tagLength
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != status)
-    {
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_crypt, MCUXCLAEAD_STATUS_ERROR,
-                                mode->protection_token_crypt);
-    }
-
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAead_crypt, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
-                                        mode->protection_token_crypt);
+    MCUXCLSESSION_EXIT(session, mcuxClAead_crypt, diRefValue, status, MCUXCLAEAD_STATUS_FAULT_ATTACK)
 }
 
 
@@ -90,7 +83,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_init(
   uint32_t tagLength
 )
 {
-    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAead_init);
+    MCUXCLSESSION_ENTRY(session, mcuxClAead_init, diRefValue, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+                                mode->protection_token_init)
 
     MCUX_CSSL_FP_FUNCTION_CALL(status, mode->init(
       /* mcuxClSession_Handle_t session,        */ session,
@@ -104,14 +98,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_init(
       /* uint32_t tagLength,                   */ tagLength
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != status)
-    {
-       MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_init, MCUXCLAEAD_STATUS_ERROR,
-                                 mode->protection_token_init);
-    }
-
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAead_init, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
-                                         mode->protection_token_init);
+    MCUXCLSESSION_EXIT(session, mcuxClAead_init, diRefValue, status, MCUXCLAEAD_STATUS_FAULT_ATTACK)
 }
 
 
@@ -138,14 +125,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_process(
       /* uint32_t * const pOutLength,          */ pOutLength
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != status)
-    {
-      // TODO CLNS-11341: fix FP balancing, remove MCUX_CSSL_FP_FUNCTION_EXIT, uncomment MCUXCLSESSION_EXIT
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_process, MCUXCLAEAD_STATUS_ERROR);
-      // MCUXCLSESSION_EXIT(session, mcuxClAead_process, diRefValue, MCUXCLAEAD_STATUS_ERROR, MCUXCLAEAD_STATUS_FAULT_ATTACK)
-    }
-
-    MCUXCLSESSION_EXIT(session, mcuxClAead_process, diRefValue, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK)
+    MCUXCLSESSION_EXIT(session, mcuxClAead_process, diRefValue, status, MCUXCLAEAD_STATUS_FAULT_ATTACK)
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAead_process_adata)
@@ -166,14 +146,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_process_adata(
       /* uint32_t adataLength,                 */ adataLength
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != status)
-    {
-      // TODO CLNS-11341: fix FP balancing, remove MCUX_CSSL_FP_FUNCTION_EXIT, uncomment MCUXCLSESSION_EXIT
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_process_adata, MCUXCLAEAD_STATUS_ERROR);
-      // MCUXCLSESSION_EXIT(session, mcuxClAead_process_adata, diRefValue, MCUXCLAEAD_STATUS_ERROR, MCUXCLAEAD_STATUS_FAULT_ATTACK)
-    }
-
-    MCUXCLSESSION_EXIT(session, mcuxClAead_process_adata, diRefValue, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK)
+    MCUXCLSESSION_EXIT(session, mcuxClAead_process_adata, diRefValue, status, MCUXCLAEAD_STATUS_FAULT_ATTACK)
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAead_finish)
@@ -197,14 +170,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClAead_finish(
       /* mcuxCl_Buffer_t pTag,                  */ pTag
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != status)
-    {
-      // TODO CLNS-11341: fix FP balancing, remove MCUX_CSSL_FP_FUNCTION_EXIT, uncomment MCUXCLSESSION_EXIT
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_finish, MCUXCLAEAD_STATUS_ERROR);
-      // MCUXCLSESSION_EXIT(session, mcuxClAead_finish, diRefValue, MCUXCLAEAD_STATUS_ERROR, MCUXCLAEAD_STATUS_FAULT_ATTACK)
-    }
-
-    MCUXCLSESSION_EXIT(session, mcuxClAead_finish, diRefValue, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK)
+    MCUXCLSESSION_EXIT(session, mcuxClAead_finish, diRefValue, status, MCUXCLAEAD_STATUS_FAULT_ATTACK)
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAead_verify)
@@ -227,14 +193,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAead_verify(
       /* uint32_t * const pOutLength,          */ pOutLength
     ));
 
-    if(MCUXCLAEAD_STATUS_OK != status)
-    {
-      // TODO CLNS-11341: fix FP balancing, remove MCUX_CSSL_FP_FUNCTION_EXIT, uncomment MCUXCLSESSION_EXIT
-      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAead_verify, MCUXCLAEAD_STATUS_ERROR);
-      // MCUXCLSESSION_EXIT(session, mcuxClAead_verify, diRefValue, MCUXCLAEAD_STATUS_ERROR, MCUXCLAEAD_STATUS_FAULT_ATTACK)
-
-    }
-
-    MCUXCLSESSION_EXIT(session, mcuxClAead_verify, diRefValue, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK)
+    MCUXCLSESSION_EXIT(session, mcuxClAead_verify, diRefValue, status, MCUXCLAEAD_STATUS_FAULT_ATTACK)
 }
 

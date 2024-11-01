@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
@@ -24,7 +24,6 @@
 #include <internal/mcuxClRandomModes_Private_Drbg.h>
 #include <internal/mcuxClRandomModes_Private_CtrDrbg.h>
 #include <internal/mcuxClRandomModes_Private_TestMode.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
 
 #ifdef MCUXCL_FEATURE_RANDOMMODES_PR_DISABLED
@@ -51,9 +50,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createTestF
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_createTestFromNormalMode);
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE() /*For a normal mode, auxParam contains a pointer to mcuxClRandom_OperationModeDescriptor_t */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE() /*For a normal mode, auxParam contains a pointer to mcuxClRandom_OperationModeDescriptor_t */
     pTestMode->pOperationMode   = (mcuxClRandom_OperationModeDescriptor_t *) normalMode->auxParam;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_CAST_TO_MORE_SPECIFIC_TYPE()
     pTestMode->pDrbgMode        = normalMode->pDrbgMode;
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded because TestMode needs to update the custom seed hold in auxParam.")
     pTestMode->auxParam         = (uint32_t *) pCustomSeed;
@@ -68,7 +67,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_updateEntropyInput)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_updateEntropyInput(mcuxClRandom_ModeDescriptor_t *pTestMode, const uint32_t * const pCustomSeed)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_updateEntropyInput);
-    
+
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded because TestMode needs to update the custom seed hold in auxParam.")
     pTestMode->auxParam         = (uint32_t *) pCustomSeed;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -104,11 +103,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_in
     mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) context;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Derive the initial DRBG state from the generated entropy input */
     MCUX_CSSL_FP_FUNCTION_CALL(result_instantiate, pDrbgMode->pDrbgAlgorithms->instantiateAlgorithm(
@@ -158,11 +155,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_TestMode_re
     const mcuxClRandomModes_Context_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_Generic_t *) context;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Derive the initial DRBG state from the user-defined entropy input */
     MCUX_CSSL_FP_FUNCTION_CALL(result_reseed, pDrbgMode->pDrbgAlgorithms->reseedAlgorithm(

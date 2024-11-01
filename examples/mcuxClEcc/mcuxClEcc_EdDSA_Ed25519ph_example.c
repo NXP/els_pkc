@@ -1,16 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
-/*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -98,13 +96,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
   /******************************************/
 
   /* Allocate space for and initialize private key handle for an Ed25519 private key */
-  ALIGNED uint8_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-  mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t)&privKeyDesc;
+  uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  mcuxClKey_Handle_t privKey = (mcuxClKey_Handle_t) privKeyDesc;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   ALIGNED uint8_t pPrivateKeyData[MCUXCLECC_EDDSA_ED25519_SIZE_PRIVATEKEYDATA];
 
   MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
   /* mcuxClSession_Handle_t session         */ &session,
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer privKey is of the right type (mcuxClKey_Handle_t)")
   /* mcuxClKey_Handle_t key                 */ privKey,
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
   /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Priv,
   /* uint8_t * pKeyData                    */ pPrivateKeyData,
   /* uint32_t keyDataLength                */ sizeof(pPrivateKeyData)));
@@ -116,13 +118,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
   MCUX_CSSL_FP_FUNCTION_CALL_END();
 
   /* Allocate space for and initialize public key handle for an Ed25519 public key */
-  ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-  mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t)&pubKeyDesc;
+  uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  mcuxClKey_Handle_t pubKey = (mcuxClKey_Handle_t) pubKeyDesc;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   ALIGNED uint8_t pPublicKeyData[MCUXCLECC_EDDSA_ED25519_SIZE_PUBLICKEY];
 
   MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
   /* mcuxClSession_Handle_t session         */ &session,
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pubKey is of the right type (mcuxClKey_Handle_t)")
   /* mcuxClKey_Handle_t key                 */ pubKey,
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
   /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_EdDSA_Ed25519_Pub,
   /* uint8_t * pKeyData                    */ pPublicKeyData,
   /* uint32_t keyDataLength                */ sizeof(pPublicKeyData)));
@@ -134,10 +140,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
   MCUX_CSSL_FP_FUNCTION_CALL_END();
 
   /* Allocate space for and initialize EdDSA key pair generation descriptor for private key input */
-  ALIGNED uint8_t privKeyInputDescriptor[MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE];
+  uint32_t privKeyInputDescriptor[MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE_IN_WORDS];
   MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(initmode_result, initmode_token, mcuxClEcc_EdDSA_InitPrivKeyInputMode(
   /* mcuxClSession_Handle_t pSession                   */ &session,
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   /* mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode */ (mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *)&privKeyInputDescriptor,
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   /* const uint8_t *pPrivKey                          */ pPrivateKey));
 
   if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_InitPrivKeyInputMode) != initmode_token) || (MCUXCLECC_STATUS_OK != initmode_result))
@@ -153,7 +161,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
   /* Call mcuxClEcc_EdDSA_GenerateKeyPair to derive the public key from the private one. */
   MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(keygen_result, keygen_token, mcuxClEcc_EdDSA_GenerateKeyPair(
   /* mcuxClSession_Handle_t pSession                          */ &session,
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   /* const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode  */ (mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *) &privKeyInputDescriptor,
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   /* mcuxClKey_Handle_t privKey                               */ privKey,
   /* mcuxClKey_Handle_t pubKey                                */ pubKey));
 
@@ -168,8 +178,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
   /******************************************/
 
   /* Allocate space for the hash prefix and a protocol descriptor for Ed25519ph. */
-  ALIGNED uint8_t protocolDescBytes[MCUXCLECC_EDDSA_ED25519_SIZE_SIGNATURE_PROTOCOL_DESCRIPTOR(0u)];
+  uint32_t protocolDescBytes[MCUXCLECC_EDDSA_ED25519_SIGNATURE_PROTOCOL_DESCRIPTOR_SIZE_IN_WORD(0u)];
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *pProtocolDesc = (mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *) protocolDescBytes;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
   /* Generate Ed25519ph protocol descriptor */
   MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(genProtocolDescr_result, protocolDescr_token, mcuxClEcc_EdDSA_GenerateProtocolDescriptor(
@@ -177,7 +189,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEcc_EdDSA_Ed25519ph_example)
   /* const mcuxClEcc_EdDSA_DomainParams_t *pDomainParams   */ &mcuxClEcc_EdDSA_DomainParams_Ed25519,
   /* mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t *pProtocolDescriptor */ pProtocolDesc,
   /* uint32_t phflag                                      */ MCUXCLECC_EDDSA_PHFLAG_ONE,
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
   /* mcuxCl_InputBuffer_t pContext                         */ NULL,
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
   /* uint32_t contextLen                                  */ 0u));
 
   if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_GenerateProtocolDescriptor) != protocolDescr_token)

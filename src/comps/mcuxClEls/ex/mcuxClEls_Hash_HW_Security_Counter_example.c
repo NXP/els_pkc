@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020, 2022-2023 NXP                                            */
+/* Copyright 2020, 2022-2024 NXP                                            */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -67,6 +67,7 @@ static uint8_t sha2_256_digest[MCUXCLELS_HASH_STATE_SIZE_SHA_256]; // MCUXCLELS_
  * @retval MCUXCLEXAMPLE_STATUS_ERROR The example code failed */
 MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
 {
+    MCUX_CSSL_ANALYSIS_START_PATTERN_SFR_ACCESS()
     // Watchdog setup
     // Clear pending errors, otherwise the device will rest itself immediately after enable Code Watchdog
     if (kCDOG_LockCtrl_Unlock == ((CDOG->CONTROL & CDOG_CONTROL_LOCK_CTRL_MASK) >> CDOG_CONTROL_LOCK_CTRL_SHIFT))
@@ -96,8 +97,11 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
 
     // Initialize watchdog with zero.
     CDOG->START = 0x0U;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_SFR_ACCESS()
 
     uint32_t const expectedSc = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async)
+                              + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)
+                              + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Reset_Async)
                               + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)
                               + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hash_Async)
                               + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)
@@ -120,7 +124,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
             sha2_256_digest                                             // Output buffer, which the operation will write the hash digest to.
             ));
     // mcuxClEls_Hash_Async is a flow-protected function: Add the protection token to the watchdog
+    MCUX_CSSL_ANALYSIS_START_PATTERN_SFR_ACCESS()
     CDOG->ADD = (uint32_t)(token);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_SFR_ACCESS()
     if (MCUXCLELS_STATUS_OK_WAIT != result) {
         return MCUXCLEXAMPLE_STATUS_ERROR; // Expect that no error occurred, meaning that the mcuxClEls_Hash_Async operation was started.
     }
@@ -128,7 +134,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
     
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Hash_Async operation to complete.
     // mcuxClEls_WaitForOperation is a flow-protected function: Add the protection token to the watchdog
+    MCUX_CSSL_ANALYSIS_START_PATTERN_SFR_ACCESS()
     CDOG->ADD = (uint32_t)(token);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_SFR_ACCESS()
     if(MCUXCLELS_STATUS_OK != result) {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -149,11 +157,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_HW_Security_Counter_example)
     }
 
     // Watchdog assertion
+    MCUX_CSSL_ANALYSIS_START_PATTERN_SFR_ACCESS()
     CDOG->STOP = expectedSc;
     if ((CDOG->FLAGS & CDOG_FLAGS_MISCOM_FLAG_MASK) >> CDOG_FLAGS_MISCOM_FLAG_SHIFT != 0U)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-    
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_SFR_ACCESS()
+
     return MCUXCLEXAMPLE_STATUS_OK;
 }

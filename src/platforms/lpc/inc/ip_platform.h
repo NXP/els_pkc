@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2022 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  ip_platform.h
@@ -62,16 +62,8 @@
 
 // ELS version
 #define ELS_HW_VERSION_REVISION            0
-#define ELS_HW_VERSION_MINOR               19
+#define ELS_HW_VERSION_MINOR               13
 #define ELS_HW_VERSION_MAJOR               2
 #define ELS_HW_VERSION_LEVEL               0
 
-#ifdef NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS
-/* If we are supposed to determine the CSSv2 base address at link time, do not use the definitions from the platform header file
- * Redefine IP_CSS as an extern pointer.
- */
-#undef ELS_SFR_BASE
-extern void * ip_css_base;
-#define ELS_SFR_BASE           ((S50_Type *) ip_css_base)
-#endif /* NXPCL_FEATURE_ELS_LINK_BASE_ADDRESS */
 #endif

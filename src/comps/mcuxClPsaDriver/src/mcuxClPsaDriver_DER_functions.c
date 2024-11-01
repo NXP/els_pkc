@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023 NXP                                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -150,8 +150,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     if(first_octet == 0u)
     {
       //take next non-zero octet, the key date is unsigned
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("ptrLen will be at most 2+numberBytes, with numberBytes being an 8-bit value. This cannot wrap.")
       ptrLen++;
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Key entry lengths are always bigger than 1, so this cannot wrap.")
       key->keyEntryLength -= 1u;
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     }
     *p += ptrLen;
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")

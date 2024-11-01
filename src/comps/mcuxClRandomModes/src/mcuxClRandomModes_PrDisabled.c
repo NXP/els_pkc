@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
@@ -24,7 +24,7 @@
 #include <internal/mcuxClRandomModes_Private_PrDisabled.h>
 #include <internal/mcuxClRandomModes_Private_NormalMode.h>
 
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Hyperlinks in comments are allowed for documentation purposes")
+MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
 /**
  * \brief This function performs a selftest of a DRBG if prediction resistance is disabled
  *
@@ -51,18 +51,16 @@ MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Hyperlinks in comments are a
  *   - MCUXCLRANDOM_STATUS_OK              if the selftest finished successfully
  *   - MCUXCLRANDOM_STATUS_FAULT_ATTACK    if the selftest failed
  */
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_HYPERLINK_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_PrDisabled_selftestAlgorithm, mcuxClRandomModes_selftestAlgorithm_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_selftestAlgorithm(mcuxClSession_Handle_t pSession, mcuxClRandom_Context_t pTestCtx, mcuxClRandom_ModeDescriptor_t *pTestMode)
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_PrDisabled_selftestAlgorithm);
 
     /* Set entropy input pointer in pTestMode */
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) pTestMode->pDrbgMode;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     const uint32_t *const * testVectors = pDrbgMode->pDrbgTestVectors;
     MCUX_CSSL_FP_FUNCTION_CALL(ret_updateIn, mcuxClRandomModes_updateEntropyInput(pTestMode,
@@ -110,7 +108,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_
     MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     MCUX_CSSL_FP_FUNCTION_CALL(ret_generate,
             mcuxClRandom_generate(pSession, pBufRandomBytes, MCUXCLRANDOMMODES_SELFTEST_RANDOMDATALENGTH));
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()    
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     if(MCUXCLRANDOM_STATUS_OK != ret_generate)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_PrDisabled_selftestAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
@@ -124,7 +122,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_PrDisabled_
     MCUX_CSSL_ANALYSIS_START_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     MCUX_CSSL_FP_FUNCTION_CALL(ret_generate2,
             mcuxClRandom_generate(pSession, pBufRandomBytes, MCUXCLRANDOMMODES_SELFTEST_RANDOMDATALENGTH));
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()    
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_ADDRESS_IN_SFR_IS_NOT_REUSED_OUTSIDE()
     if(MCUXCLRANDOM_STATUS_OK != ret_generate2)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_PrDisabled_selftestAlgorithm, MCUXCLRANDOM_STATUS_FAULT_ATTACK);

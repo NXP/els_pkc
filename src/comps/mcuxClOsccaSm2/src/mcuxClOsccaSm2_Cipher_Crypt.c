@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaSm2_Cipher_Crypt.c
@@ -102,13 +102,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
        pParamsDec->pInput = pInput;
        pParamsDec->pC3 = NULL;
        pParamsDec->pOutput = pOut;
-       pParamsDec->inputLength = (uint16_t)inLen;
+       pParamsDec->inputLength = (uint16_t)(inLen & 0xffffU);
        pParamsDec->options = MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_INIT | MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_UPDATE;
        /* Call function mcuxClOsccaSm2_Decrypt */
        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("It is intentional to set NULL to pParamsDec->pC3")
        MCUX_CSSL_FP_FUNCTION_CALL(SM2DecRet, pAlgo->pDecryptMode(session, pParamsDec));
        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
-       if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != (uint16_t)SM2DecRet)
+       if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != SM2DecRet)
        {
            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Decrypt_Process, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
        }
@@ -124,13 +124,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
        pParamsDec->pInput = pIn;
        pParamsDec->pC3 = NULL;
        pParamsDec->pOutput = pOut;
-       pParamsDec->inputLength = (uint16_t)inLen;
+       pParamsDec->inputLength = (uint16_t)(inLen & 0xffffU);
        pParamsDec->options = MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_UPDATE;
        /* Call function mcuxClOsccaSm2_Decrypt */
        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("It is intentional to set NULL to pParamsDec->pC1 and pParamsDec->pC3")
        MCUX_CSSL_FP_FUNCTION_CALL(SM2DecRet, pAlgo->pDecryptMode(session, pParamsDec));
        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
-       if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != (uint16_t)SM2DecRet)
+       if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != SM2DecRet)
        {
            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Decrypt_Process, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
        }
@@ -188,12 +188,12 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
         pParamsDec->pC3 = pC3;
         pParamsDec->pOutput = pOut;
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Caller should set inLength properly to make sure not wrap.")
-        pParamsDec->inputLength = (uint16_t)(inLength - (c1Len + c3Len));
+        pParamsDec->inputLength = (uint16_t)((inLength - (c1Len + c3Len)) & 0xffffU);
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
         pParamsDec->options = MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_ONE_SHOT;
         /* Call function mcuxClOsccaSm2_Decrypt */
         MCUX_CSSL_FP_FUNCTION_CALL(SM2DecRet, pAlgo->pDecryptMode(session, pParamsDec));
-        if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != (uint16_t)SM2DecRet)
+        if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != SM2DecRet)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Decrypt, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
         }
@@ -230,7 +230,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
        MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("It is intentional to set NULL to pParamsDec->pC1, pParamsDec->pInput and pParamsDec->pOutput")
        MCUX_CSSL_FP_FUNCTION_CALL(SM2DecRet, pAlgo->pDecryptMode(session, pParamsDec));
        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
-       if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != (uint16_t)SM2DecRet)
+       if (MCUXCLOSCCASM2_STATUS_DECRYPT_OK != SM2DecRet)
        {
            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Decrypt, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
        }
@@ -283,11 +283,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
         pParamsEnc->pOutput = pOutput;
         MCUXCLBUFFER_DERIVE_RW(pC3, pOut, c1Len);
         pParamsEnc->pC3 = pC3;
-        pParamsEnc->inputLength = (uint16_t)inLength;
+        pParamsEnc->inputLength = (uint16_t)(inLength & 0xffffU);
         pParamsEnc->options = MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_ONE_SHOT;
         /* Call function mcuxClOsccaSm2_Encrypt */
         MCUX_CSSL_FP_FUNCTION_CALL(SM2EncRet, pAlgo->pEncryptMode(session, pParamsEnc));
-        if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != (uint16_t)SM2EncRet)
+        if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != SM2EncRet)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Encrypt, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
         }
@@ -306,13 +306,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
             pParamsEnc->pC3 = NULL;
             MCUXCLBUFFER_DERIVE_RW(pOutput, pOut, c1Len + c3Len);
             pParamsEnc->pOutput = pOutput;
-            pParamsEnc->inputLength = (uint16_t)inLength;
+            pParamsEnc->inputLength = (uint16_t)(inLength & 0xffffU);
             pParamsEnc->options = MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_INIT | MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_UPDATE;
             /* Call function mcuxClOsccaSm2_Encrypt */
             MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("It is intentional to set NULL to pParamsEnc->pC3")
             MCUX_CSSL_FP_FUNCTION_CALL(SM2EncRet, pAlgo->pEncryptMode(session, pParamsEnc));
             MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
-            if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != (uint16_t)SM2EncRet)
+            if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != SM2EncRet)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Encrypt, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
             }
@@ -329,13 +329,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
             pParamsEnc->pC1 = NULL;
             pParamsEnc->pC3 = NULL;
             pParamsEnc->pOutput = pOut;
-            pParamsEnc->inputLength = (uint16_t)inLength;
+            pParamsEnc->inputLength = (uint16_t)(inLength & 0xffffU);
             pParamsEnc->options = MCUXCLOSCCASM2_OPT_ENC_DEC_STATE_UPDATE;
             /* Call function mcuxClOsccaSm2_Encrypt */
             MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("It is intentional to set NULL to pParamsEnc->pC1 and pParamsEnc->pC3")
             MCUX_CSSL_FP_FUNCTION_CALL(SM2EncRet, pAlgo->pEncryptMode(session, pParamsEnc));
             MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
-            if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != (uint16_t)SM2EncRet)
+            if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != SM2EncRet)
             {
                 MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Encrypt, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
             }
@@ -366,7 +366,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("It is intentional to set NULL to pParamsEnc->pInput, pParamsEnc->pOutput and pParamsEnc->pC1")
         MCUX_CSSL_FP_FUNCTION_CALL(SM2EncRet, pAlgo->pEncryptMode(session, pParamsEnc));
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
-        if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != (uint16_t)SM2EncRet)
+        if (MCUXCLOSCCASM2_STATUS_ENCRYPT_OK != SM2EncRet)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Encrypt, MCUXCLCIPHER_STATUS_FAULT_ATTACK);
         }
@@ -482,10 +482,24 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClOsccaSm2_Cipher_
         mcuxClSession_freeWords_cpuWa(session, MCUXCLOSCCASM2_CIPHER_ENCDEC_FIXED_SIZEOF_WA_CPU / sizeof(uint32_t));
     }
 
-    if ((steps == MCUXCLCIPHER_OPTION_ONESHOT) || (steps == MCUXCLCIPHER_OPTION_FINISH))
+    if (steps == MCUXCLCIPHER_OPTION_ONESHOT)
     {
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedByte / sizeof(uint32_t));
     }
+    if (steps == MCUXCLCIPHER_OPTION_FINISH)
+    {
+        /* Free pCtx->pEncDecCtx allocated in INIT stage */
+        mcuxClSession_freeWords_cpuWa(session, MCUXCLOSCCASM2_ENC_DEC_CTX_SIZE(pSm2DomainParams->p.wNumBytes) / sizeof(uint32_t));
+        if(MCUXCLOSCCASM2_DECRYPT == pAlgo->direction)
+        {
+            /* Free the pC1Buffer allocated in INIT stage */
+            mcuxClSession_freeWords_cpuWa(session,
+                            ((uint32_t)pSm2DomainParams->p.wNumBytes * 2u +
+                            MCUXCLOSCCASM2_ENCDEC_FORMAT_INDICATOR_SIZE +
+                            MCUXCLOSCCA_SIZE_ALIGN_OFFSET) / sizeof(uint32_t));
+        }
+    }
+
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_Cipher_SkeletonSM2_Core, MCUXCLCIPHER_STATUS_OK,
         MCUX_CSSL_FP_CONDITIONAL(steps != MCUXCLCIPHER_OPTION_INIT,

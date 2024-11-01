@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -58,9 +58,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_DecodeScalar(
     uint32_t t = (uint32_t) pDomainParameters->t;
 
     MCUXCLPKC_WAITFORREADY();
-    pOperands[MONT_V0] = (uint16_t) c;         /* Clear c LSbits by right shift */
-    pOperands[MONT_V1] = (uint16_t) (c - t);   /* Clear bit t ~ MSbits by left shift. PKC will left shift (c - t mod PKCWordBitLen) bits */
-    pOperands[MONT_V2] = (uint16_t) (0u - t);  /* Left rotate the bit "1" back to bit position t */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("modular arithmetic.")
+    pOperands[MONT_V0] = (uint16_t) (c & 0xFFFFU);         /* Clear c LSbits by right shift */
+    pOperands[MONT_V1] = (uint16_t) ((c - t) & 0xFFFFU);   /* Clear bit t ~ MSbits by left shift. PKC will left shift (c - t mod PKCWordBitLen) bits */
+    pOperands[MONT_V2] = (uint16_t) ((0u - t) & 0xFFFFU);  /* Left rotate the bit "1" back to bit position t */
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* MISRA Ex. 22, while(0) is allowed */
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_MontDhDecodeScalar,
@@ -178,6 +180,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
     uint32_t operandSize = MCUXCLPKC_PS1_GETOPLEN();
     MCUX_CSSL_FP_FUNCTION_CALL(leadingZerosN, mcuxClMath_LeadingZeros(ECC_N));
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(leadingZerosN, 0u, (operandSize * 8u), MCUXCLECC_STATUS_FAULT_ATTACK)
     uint32_t bitLenN = (operandSize * 8u) - leadingZerosN;
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult0,
         mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S1, bitLenN, MCUXCLECC_SCALARMULT_OPTION_AFFINE_INPUT));
@@ -199,7 +202,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_X(
     uint16_t *pOperands = MCUXCLPKC_GETUPTRT();
     uint8_t *pS0 = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_S0]);
     MCUXCLPKC_WAITFORFINISH();
-    *(pS0) = (1u << pDomainParameters->c);
+    *(pS0) = (uint8_t) ((1u << pDomainParameters->c) & 0xffU);
     /* Securely calculate, R = cofactor * R'', stored result in buffers (X0, Z0). */
     MCUX_CSSL_FP_FUNCTION_CALL(retSecScalarMult2,
         mcuxClEcc_Mont_SecureScalarMult_XZMontLadder(pSession, ECC_S0, (uint32_t)(pDomainParameters->c) + 1u, MCUXCLECC_SCALARMULT_OPTION_PROJECTIVE_INPUT));

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClEls.h>              // Interface to the entire mcuxClEls component
@@ -61,14 +61,20 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha512_256_streaming_example)
     /**************************************************************************/
 
     uint32_t context[MCUXCLHASH_CONTEXT_SIZE_SHA2_512_256_IN_WORDS];
+    mcuxClHash_Context_t pHash_ctx = (mcuxClHash_Context_t)context;
 
     MCUXCLBUFFER_INIT_RO(dataBuf, session, data, sizeof(data));
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultHashInit, tokenHashInit, mcuxClHash_init(
     /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) pHash_ctx,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+
     /* mcuxClHash_Algo_t  algorithm:   */ mcuxClHash_Algorithm_Sha512_256
     ));
+
+
     // mcuxClHash_init is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != tokenHashInit) || (MCUXCLHASH_STATUS_OK != resultHashInit))
     {
@@ -78,7 +84,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha512_256_streaming_example)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultProcess, tokenProcess, mcuxClHash_process(
     /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) pHash_ctx,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxCl_InputBuffer_t in:        */ dataBuf,
     /* uint32_t inSize:               */ sizeof(data)
     ));
@@ -95,7 +103,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha512_256_streaming_example)
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultFinish, tokenFinish, mcuxClHash_finish(
     /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) pHash_ctx,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     /* mcuxCl_Buffer_t pOut            */ hashBuf,
     /* uint32_t *const pOutSize,      */ &hashOutputSize
     ));

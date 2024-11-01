@@ -1,18 +1,17 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClCore_Examples.h> // Defines and assertions for examples
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClCipher.h> // Interface to the entire mcuxClOscca_Cipher component
 #include <mcuxClOsccaCipherModes.h> // Interface to the entire mcuxClOscca_Cipher component
@@ -20,6 +19,7 @@
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxClOsccaSm4.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClToolchain.h> // memory segment definitions
@@ -27,6 +27,7 @@
 #include <mcuxClExample_Session_Helper.h>
 #include <mcuxClExample_RNG_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 /**
  * @brief Cryptographic Keys
@@ -55,10 +56,10 @@ static uint8_t const sm4CbcResult[] = {0x71, 0xAB, 0xDD, 0x2C, 0x08, 0xDF, 0xC9,
                                         0x33, 0x30, 0x4A, 0x2A, 0x25, 0x8E, 0x1A, 0xFF, 0x7F, 0x14, 0xD8, 0x1C, 0xE4, 0x40, 0x04, 0x2F};
 static uint8_t const sm4CtrCtxt[] = {0x72, 0x38, 0x91, 0xF7, 0x40};
 
-bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example)
 {
 
-    /** Initialize ELS, MCUXCLELS_RESET_DO_NOT_CANCEL **/
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -67,18 +68,22 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLOSCCACIPHER_MAX_SM4_CPU_WA_BUFFER_SIZE, 0u);
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCACIPHER_MAX_SM4_CPU_WA_BUFFER_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE), 0u);
 
     /* Initlize the prng */
     MCUXCLEXAMPLE_INITIALIZE_PRNG(session);
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki1, token_ki1, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4EcbKey,
       /* uint32_t keyDataLength                */ sizeof(sm4EcbKey)
@@ -97,17 +102,21 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     uint8_t msg_ecb_enc[32];
     uint32_t msg_enc_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_ecb_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_ECB_ENC_NoPadding,
-    /* const uint8_t * const pIv,     */ NULL,
-    /* uint32_t ivLength,             */ 0u,
-    /* const uint8_t * const pIn,     */ sm4EcbPtxt,
-    /* uint32_t inLength,             */ sizeof(sm4EcbPtxt),
-    /* uint8_t * const pOut,          */ msg_ecb_enc,
-    /* uint32_t * const pOutLength    */ &msg_enc_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_ECB_ENC_NoPadding,
+      MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+      /* const uint8_t * const pIv,     */ NULL,
+      MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
+      /* uint32_t ivLength,             */ 0u,
+      /* const uint8_t * const pIn,     */ sm4EcbPtxt,
+      /* uint32_t inLength,             */ sizeof(sm4EcbPtxt),
+      /* uint8_t * const pOut,          */ msg_ecb_enc,
+      /* uint32_t * const pOutLength    */ &msg_enc_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) || (MCUXCLCIPHER_STATUS_OK != result_enc))
     {
@@ -126,17 +135,21 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     uint8_t msg_ecb_dec[32];
     uint32_t msg_dec_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Addresses of msg_ecb_enc, msg_ecb_dec are for internal use only and do not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec, token_dec, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_ECB_DEC,
-    /* const uint8_t * const pIv,     */ NULL,
-    /* uint32_t ivLength,             */ 0,
-    /* const uint8_t * const pIn,     */ msg_ecb_enc,
-    /* uint32_t inLength,             */ msg_enc_size,
-    /* uint8_t * const pOut,          */ msg_ecb_dec,
-    /* uint32_t * const pOutLength    */ &msg_dec_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_ECB_DEC,
+      MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+      /* const uint8_t * const pIv,     */ NULL,
+      MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
+      /* uint32_t ivLength,             */ 0,
+      /* const uint8_t * const pIn,     */ msg_ecb_enc,
+      /* uint32_t inLength,             */ msg_enc_size,
+      /* uint8_t * const pOut,          */ msg_ecb_dec,
+      /* uint32_t * const pOutLength    */ &msg_dec_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_dec) || (MCUXCLCIPHER_STATUS_OK != result_dec))
     {
@@ -152,7 +165,9 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     /* cbc encryption */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki2, token_ki2, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4CbcKey,
       /* uint32_t keyDataLength                */ sizeof(sm4CbcKey)
@@ -170,17 +185,20 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
 
     uint8_t msg_cbc_enc[sizeof(sm4CbcPtxt) + 16u];
     msg_enc_size = 0u;
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_cbc_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc_cbc, token_enc_cbc, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_CBC_ENC_PaddingISO9797_1_Method2,
-    /* const uint8_t * const pIv,     */ sm4CbcIv,
-    /* uint32_t ivLength,             */ sizeof(sm4CbcIv),
-    /* const uint8_t * const pIn,     */ sm4CbcPtxt,
-    /* uint32_t inLength,             */ sizeof(sm4CbcPtxt),
-    /* uint8_t * const pOut,          */ msg_cbc_enc,
-    /* uint32_t * const pOutLength    */ &msg_enc_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_CBC_ENC_PaddingISO9797_1_Method2,
+      /* const uint8_t * const pIv,     */ sm4CbcIv,
+      /* uint32_t ivLength,             */ sizeof(sm4CbcIv),
+      /* const uint8_t * const pIn,     */ sm4CbcPtxt,
+      /* uint32_t inLength,             */ sizeof(sm4CbcPtxt),
+      /* uint8_t * const pOut,          */ msg_cbc_enc,
+      /* uint32_t * const pOutLength    */ &msg_enc_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc_cbc) || (MCUXCLCIPHER_STATUS_OK != result_enc_cbc))
     {
@@ -199,17 +217,19 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     uint8_t msg_cbc_dec[sizeof(sm4CbcPtxt) + 16u];
     msg_dec_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Addresses of msg_cbc_enc, msg_cbc_dec are for internal use only and do not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec, token_dec, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_CBC_DEC,
-    /* const uint8_t * const pIv,     */ sm4CbcIv,
-    /* uint32_t ivLength,             */ sizeof(sm4CbcIv),
-    /* const uint8_t * const pIn,     */ msg_cbc_enc,
-    /* uint32_t inLength,             */ msg_enc_size,
-    /* uint8_t * const pOut,          */ msg_cbc_dec,
-    /* uint32_t * const pOutLength    */ &msg_dec_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_CBC_DEC,
+      /* const uint8_t * const pIv,     */ sm4CbcIv,
+      /* uint32_t ivLength,             */ sizeof(sm4CbcIv),
+      /* const uint8_t * const pIn,     */ msg_cbc_enc,
+      /* uint32_t inLength,             */ msg_enc_size,
+      /* uint8_t * const pOut,          */ msg_cbc_dec,
+      /* uint32_t * const pOutLength    */ &msg_dec_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_dec) || (MCUXCLCIPHER_STATUS_OK != result_dec))
     {
@@ -225,7 +245,9 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     /* Create ctr key */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki3, token_ki3, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4EcbKey,
       /* uint32_t keyDataLength                */ sizeof(sm4EcbKey)
@@ -243,17 +265,19 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
     uint8_t msg_ctr_enc[sizeof(sm4CtrPtxt)];
     msg_enc_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_ctr_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClCipher_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_CTR_ENC,
-    /* const uint8_t * const pIv,     */ sm4CbcIv,
-    /* uint32_t ivLength,             */ sizeof(sm4CbcIv),
-    /* const uint8_t * const pIn,     */ sm4CtrPtxt,
-    /* uint32_t inLength,             */ sizeof(sm4CtrPtxt),
-    /* uint8_t * const pOut,          */ msg_ctr_enc,
-    /* uint32_t * const pOutLength    */ &msg_enc_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClCipher_Mode_t mode,       */ mcuxClOscca_Cipher_Mode_SM4_CTR_ENC,
+      /* const uint8_t * const pIv,     */ sm4CbcIv,
+      /* uint32_t ivLength,             */ sizeof(sm4CbcIv),
+      /* const uint8_t * const pIn,     */ sm4CtrPtxt,
+      /* uint32_t inLength,             */ sizeof(sm4CtrPtxt),
+      /* uint8_t * const pOut,          */ msg_ctr_enc,
+      /* uint32_t * const pOutLength    */ &msg_enc_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipher_crypt) != token_enc) || (MCUXCLCIPHER_STATUS_OK != result_enc))
     {
@@ -274,16 +298,11 @@ bool mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     return MCUXCLEXAMPLE_STATUS_OK;
-}
-bool nxpClOsccaCipherModes_Sm4_Crypt_oneshot_example(void)
-{
-    bool result = mcuxClOsccaCipherModes_Sm4_Crypt_oneshot_example();
-    return result;
 }

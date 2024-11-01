@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClHash.h>
@@ -97,6 +97,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_core_c_sha1(
 
         uint32_t t = 0u;
 
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Per SHA1 standard, the result does not wrap.")
         if(20u > i)
         {
             t = mcuxClHashModes_sha1_K[0] + MCUXCLHASHMODES_SHA1_CH(b,c,d);
@@ -113,10 +114,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_core_c_sha1(
         {
             t = mcuxClHashModes_sha1_K[3] + MCUXCLHASHMODES_SHA1_PARITY(b, c, d);
         }
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Per SHA1 standard, the result does not wrap.")
         t += ((a << 5u) | (a >> 27u))
           + pAccBuf[i & 0xFu]
           + e;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
         e = d;
         d = c;
@@ -129,11 +133,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_core_c_sha1(
      * Step 3: Update state variables
      **************************************************************************************/
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Per SHA1 standard, the result does not wrap.")
     pState[0] += a;
     pState[1] += b;
     pState[2] += c;
     pState[3] += d;
     pState[4] += e;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_core_c_sha1, MCUXCLHASH_STATUS_OK);
 }

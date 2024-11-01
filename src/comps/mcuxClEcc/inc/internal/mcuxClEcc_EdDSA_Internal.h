@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -99,7 +99,7 @@ struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor
 /**********************************************************/
 
 /**
- * Size of message digest for EdDSA 
+ * Size of message digest for EdDSA
  */
 #define MCUXCLECC_EDDSA_MESSAGE_DIGEST_SIZE       (64u)
 
@@ -148,11 +148,20 @@ MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_PreHashMessage)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_PreHashMessage(
     mcuxClSession_Handle_t pSession,
     mcuxClEcc_EdDSA_DomainParams_t *pDomainParams,
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea,
     uint32_t phflag,
     mcuxCl_InputBuffer_t pIn,
     uint32_t inSize,
     const uint8_t **pMessage,
     uint32_t *messageSize
+    );
+
+/**
+ * Declaration of the point encoding function
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_EncodePoint)
+MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_EdDSA_EncodePoint(
+    const uint32_t encodedLen
     );
 
 

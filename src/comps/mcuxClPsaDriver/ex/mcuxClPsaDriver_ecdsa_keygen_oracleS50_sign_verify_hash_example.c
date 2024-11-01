@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -29,13 +29,6 @@ static const ALIGNED uint8_t hash[PSA_HASH_LENGTH(PSA_ALG_SHA_256)] = {
   0x70, 0x6b, 0x3a, 0x4e, 0xd1, 0xa8, 0x5f, 0x69, 0x28, 0xb7, 0x60, 0xff, 0x1b, 0xba, 0xb0, 0xe7
 };
 
-/**
- * @brief Signature
- */
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT("External macro")
-static ALIGNED uint8_t signature[PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, 256u, PSA_ALG_ECDSA_ANY)] = {0u};
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
-
 /* Oracle-internal location defines, needed here to verify/show Oracle behaviour for generate key */
 #ifndef PSA_KEY_LOCATION_ORACLE_S50_STORAGE
 #define PSA_KEY_LOCATION_ORACLE_S50_STORAGE        ((psa_key_location_t)(0x03U))
@@ -53,6 +46,13 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
  */
 MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_ecdsa_keygen_oracleS50_sign_verify_hash_example)
 {
+  /**
+   * @brief Signature
+   */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT("External macro")
+  ALIGNED uint8_t signature[PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, 256u, PSA_ALG_ECDSA_ANY)];
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
+
   /** Initialize ELS, Enable the ELS **/
   if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
   {
@@ -223,6 +223,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_ecdsa_keygen_oracleS50_sign_verify_hash_e
 
   /* Check the return value */
   if(status != PSA_SUCCESS)
+  {
+    return MCUXCLEXAMPLE_STATUS_ERROR;
+  }
+
+  /* Disable the ELS */
+  if(!mcuxClExample_Els_Disable())
   {
     return MCUXCLEXAMPLE_STATUS_ERROR;
   }

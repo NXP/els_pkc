@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClRandom.h>
@@ -34,7 +34,9 @@
 #include <internal/mcuxClMac_Internal_Types.h>
 #include <internal/mcuxClKey_Functions_Internal.h>
 
-const mcuxClRandomModes_DrbgAlgorithmsDescriptor_t mcuxClRandomModes_DrbgAlgorithmsDescriptor_HmacDrbg =
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
+static const mcuxClRandomModes_DrbgAlgorithmsDescriptor_t mcuxClRandomModes_DrbgAlgorithmsDescriptor_HmacDrbg =
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     .instantiateAlgorithm = mcuxClRandomModes_HmacDrbg_instantiateAlgorithm,
     .reseedAlgorithm = NULL, /* reseed not available */
@@ -64,12 +66,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createCusto
     randomMode->pOperationMode = &mcuxClRandomModes_OperationModeDescriptor_NormalMode_PrDisabled;
     randomMode->contextSize = sizeof(mcuxClRandomModes_Context_Generic_t) + 2u * hmacMode->common.macByteSize;
 #ifdef MCUXCL_FEATURE_RANDOMMODES_TESTMODE
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize generic structure.")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     randomMode->auxParam = (uint32_t *) &mcuxClRandomModes_OperationModeDescriptor_TestMode_PrDisabled;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 #else
     randomMode->auxParam = NULL;
 #endif /* MCUXCL_FEATURE_RANDOMMODES_TESTMODE */
     /* Hash algorithm descriptors do not store security strength, for Sha2 and Sha3 it is half the output size in bits. */
-    randomMode->securityStrength = hmacMode->common.macByteSize * 4u;
+    randomMode->securityStrength = (uint16_t)((hmacMode->common.macByteSize * 4u) & 0xFFFFu);
 
     /********************************************************************
      * Fill hash algorithm specific DrbgModeDescriptor                  *
@@ -80,22 +86,32 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createCusto
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     /* Insert custom drbg mode into randomMode */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("Proper alignment is ensured if randomMode is aligned as per customer guidance.")
     randomMode->pDrbgMode = (mcuxClRandomModes_DrbgModeDescriptor_t *)pDrbgModeDescriptorLocation;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize custom drbg.")
     mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (mcuxClRandomModes_DrbgModeDescriptor_t *) randomMode->pDrbgMode;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
     pDrbgMode->pDrbgAlgorithms = &mcuxClRandomModes_DrbgAlgorithmsDescriptor_HmacDrbg;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_INTEGER_TO_POINTER("Proper alignment is ensured if randomMode is aligned as per customer guidance.")
     pDrbgMode->pDrbgVariant = (mcuxClRandomModes_DrbgVariantDescriptor_t *)pDrbgVariantLocation;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_INTEGER_TO_POINTER()
     pDrbgMode->pDrbgTestVectors = NULL; /* selftest not available */
     pDrbgMode->continuousReseedInterval = 0u;
 
     /* Insert custom drbg variant into drbg mode */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize custom drbg.")
     mcuxClRandomModes_DrbgVariantDescriptor_t *pDrbgVariant = ((mcuxClRandomModes_DrbgVariantDescriptor_t *)pDrbgMode->pDrbgVariant);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pDrbgVariant pointer is of the right type")
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Variant descriptors is stored in memory behind drbg mode descriptor.")
     pDrbgVariant->reseedInterval = MCUXCLRANDOMMODES_RESEED_INTERVAL_HMAC_DRBG,
     pDrbgVariant->seedLen = 0u, /* Not needed for HMAC_DRBG, UpdateState takes the role of DF */
-    pDrbgVariant->initSeedSize = initSeedSize;
-    pDrbgVariant->reseedSeedSize = reseedSeedSize;
+    pDrbgVariant->initSeedSize = (uint16_t)(initSeedSize & 0xffffU);
+    pDrbgVariant->reseedSeedSize = (uint16_t)(reseedSeedSize & 0xffffU);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize custom drbg.")
     pDrbgVariant->drbgVariantSpecifier = (void *) hmacMode;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
@@ -132,11 +148,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_HmacDrbg_in
     mcuxClRandomModes_Context_HmacDrbg_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_HmacDrbg_Generic_t *) context;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_Mode_t hmacMode = (mcuxClMac_Mode_t) pDrbgMode->pDrbgVariant->drbgVariantSpecifier;
 
     uint8_t *pSeedMaterial = pEntropyInputAndNonce;
@@ -255,14 +269,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_HmacDrbg_ge
     }
 
     /* Execute Step 6, i.e. update the state of the HMAC_DRBG */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL(result_updatestate, mcuxClRandomModes_HmacDrbg_UpdateState(
                     pSession,
                     mode,
                     context,
                     NULL,
                     0u));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     if(MCUXCLRANDOM_STATUS_ERROR == result_updatestate)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_HmacDrbg_generateAlgorithm, MCUXCLRANDOM_STATUS_ERROR,
@@ -313,11 +327,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_HmacDrbg_Up
     mcuxClRandomModes_Context_HmacDrbg_Generic_t *pRngCtxGeneric = (mcuxClRandomModes_Context_HmacDrbg_Generic_t *) context;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_Mode_t hmacMode = (mcuxClMac_Mode_t) pDrbgMode->pDrbgVariant->drbgVariantSpecifier;
 
     /* Determine pointers to the K and V buffers in the context */
@@ -358,7 +370,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_HmacDrbg_Up
     mcuxClKey_setLoadedKeyLength(key, hmacOutputLength);
 
     /* Allocate space for a MAC context for the upcoming HMAC multipart operations */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_Context_t *pHmacCtx = (mcuxClMac_Context_t *) mcuxClSession_allocateWords_cpuWa(session, MCUXCLHMAC_MAX_CONTEXT_SIZE_IN_WORDS);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     if(NULL == pHmacCtx)
     {
         /* Free CPU workarea used by this function (key descriptor) */
@@ -645,11 +659,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     uint32_t *pState = pCtx->state;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClRandomModes_DrbgModeDescriptor_t *pDrbgMode = (const mcuxClRandomModes_DrbgModeDescriptor_t *) mode->pDrbgMode;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_Mode_t hmacMode = (mcuxClMac_Mode_t) pDrbgMode->pDrbgVariant->drbgVariantSpecifier;
 
     /* Determine pointers to the K and V buffers in the context */

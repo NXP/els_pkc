@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -92,21 +92,27 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example)
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Set key properties. */
     mcuxClEls_KeyProp_t key_properties;
 
     key_properties.word.value = 0u;
     key_properties.bits.ksize = MCUXCLELS_KEYPROPERTY_KEY_SIZE_128;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     uint32_t dstData[8];
     //Initializes a key handle, Set key properties and Load key.
     if(!mcuxClExample_Key_Init_And_Load(session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
                                        key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                        mcuxClKey_Type_Aes128,
-                                       (uint8_t *) aes128_key,
+                                       aes128_key,
                                        sizeof(aes128_key),
                                        &key_properties,
                                        dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
@@ -123,21 +129,23 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example)
 
     ALIGNED uint8_t msg_tag[32];
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc, mcuxClAead_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_GCM_ENC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
-    /* uint32_t nonceSize,            */ sizeof(aes128_iv),
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_plain,
-    /* uint32_t inSize,               */ sizeof(msg_plain),
-    /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
-    /* uint32_t adataSize,            */ sizeof(msg_adata),
-    /* mcuxCl_Buffer_t pOut,           */ msg_enc,
-    /* uint32_t * const pOutSize      */ &msg_enc_size,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag,
-    /* uint32_t tagSize               */ 16u
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_GCM_ENC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
+      /* uint32_t nonceSize,            */ sizeof(aes128_iv),
+      /* mcuxCl_InputBuffer_t pIn,       */ msg_plain,
+      /* uint32_t inSize,               */ sizeof(msg_plain),
+      /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
+      /* uint32_t adataSize,            */ sizeof(msg_adata),
+      /* mcuxCl_Buffer_t pOut,           */ msg_enc,
+      /* uint32_t * const pOutSize      */ &msg_enc_size,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag,
+      /* uint32_t tagSize               */ sizeof(msg_tag_expected)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_enc) || (MCUXCLAEAD_STATUS_OK != result_enc))
     {
@@ -153,7 +161,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example)
         }
     }
     // TODO: change to MCUXCLELS_AEAD_TAG_SIZE
-    for (size_t i = 0U; i < 16u; i++)
+    for (size_t i = 0U; i < sizeof(msg_tag_expected); i++)
     {
         if (msg_tag[i] != msg_tag_expected[i]) // Expect that the resulting authentication tag matches our expected output
         {
@@ -169,21 +177,23 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example)
     ALIGNED uint8_t msg_dec[sizeof(msg_plain)];
     uint32_t msg_dec_size = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Addresses of msg_enc, msg_dec are for internal use only and do not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_dec, token_dec, mcuxClAead_crypt(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_GCM_DEC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
-    /* uint32_t nonceSize,            */ sizeof(aes128_iv),
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
-    /* uint32_t inSize,               */ msg_enc_size,
-    /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
-    /* uint32_t adataSize,            */ sizeof(msg_adata),
-    /* mcuxCl_Buffer_t pOut,           */ msg_dec,
-    /* uint32_t * const pOutSize      */ &msg_dec_size,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag,
-    /* uint32_t tagSize               */ 16u
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_GCM_DEC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
+      /* uint32_t nonceSize,            */ sizeof(aes128_iv),
+      /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
+      /* uint32_t inSize,               */ msg_enc_size,
+      /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
+      /* uint32_t adataSize,            */ sizeof(msg_adata),
+      /* mcuxCl_Buffer_t pOut,           */ msg_dec,
+      /* uint32_t * const pOutSize      */ &msg_dec_size,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag,
+      /* uint32_t tagSize               */ sizeof(msg_tag_expected)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_dec) || (MCUXCLAEAD_STATUS_OK != result_dec))
     {
@@ -191,7 +201,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Els_Gcm_Aes128_Oneshot_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    for (size_t i = 0U; i < msg_dec_size; i++)
+    for (size_t i = 0U; i < sizeof(msg_plain); i++)
     {
         if (msg_dec[i] != msg_plain[i]) // Expect that the resulting decrypted msg matches our initial message
         {

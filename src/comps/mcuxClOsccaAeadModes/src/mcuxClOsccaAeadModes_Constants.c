@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright  2022-2024 NXP                                                 */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaAeadModes_Constants.c
@@ -43,7 +43,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   .protection_token_process = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_process),
   .protection_token_finish = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_finish),
   .protection_token_verify = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_verify),
+  MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
   .algorithm = (const struct mcuxClAead_AlgorithmDescriptor *)&mcuxClOsccaAead_algorithm_CCM_ENC
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
 };
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
@@ -62,6 +64,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
   .protection_token_process = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_process),
   .protection_token_finish = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_finish),
   .protection_token_verify = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaAeadModes_verify),
+  MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
   .algorithm = (const struct mcuxClAead_AlgorithmDescriptor *)&mcuxClOsccaAead_algorithm_CCM_DEC
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
 };
 
+
+#ifdef __cplusplus
+}
+#endif

@@ -1,18 +1,17 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClExample_Session_Helper.h>
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClSession.h> // Interface to the entire mcuxClSession component
 #include <mcuxClKey.h> // Interface to the entire mcuxClKey component
 #include <mcuxClAead.h> // Interface to the entire mcuxClAead component
@@ -23,6 +22,7 @@
 #include <mcuxClToolchain.h> // memory segment definitions
 #include <stdbool.h>  // bool type for the example's return code
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 /**
  * @brief Cryptographic Keys
@@ -73,13 +73,12 @@ static const uint8_t sm4CcmCipher[] = { 0x48, 0xAF, 0x93, 0x50, 0x1F, 0xA6, 0x2A
 static const uint8_t sm4CcmTag[] = { 0x16, 0x84, 0x2D, 0x4F, 0xA1, 0x86, 0xF5, 0x6A,
                                      0xB3, 0x32, 0x56, 0x97, 0x1F, 0xA1, 0x10, 0xF4};
 
-bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
-
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -94,11 +93,15 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_ki, token_ki, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_SM4,
       /* const uint8_t * pKeyData              */ sm4CcmKey,
       /* uint32_t keyDataLength                */ sizeof(sm4CcmKey)
@@ -114,24 +117,28 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     /* Encryption                                                             */
     /**************************************************************************/
 
-    uint8_t msg_enc[sizeof(sm4CcmCipher)] = {0u};
+    uint8_t msg_enc[sizeof(sm4CcmCipher)];
     uint32_t msg_enc_size = 0u;
 
     uint8_t msg_tag[sizeof(sm4CcmTag)];
 
     uint32_t ctxBufEnc[MCUXCLOSCCAAEADMODES_CTX_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAead_Context_t * ctxEnc = (mcuxClAead_Context_t *) ctxBufEnc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_init, token_init, mcuxClAead_init(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxEnc,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_ENC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
-    /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
-    /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
-    /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
-    /* uint32_t tagSize               */ sizeof(sm4CcmTag)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctxEnc points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctxEnc,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_ENC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
+      /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
+      /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
+      /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
+      /* uint32_t tagSize               */ sizeof(sm4CcmTag)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_init) != token_init) || (MCUXCLAEAD_STATUS_OK != result_init))
@@ -140,16 +147,18 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-  /*
-   * mcuxClAead_process_adata() processes the header data. This needs to be completed
-   * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
-   * need to be made before calls to mcuxClAead_process().
-   */
+    /*
+     * mcuxClAead_process_adata() processes the header data. This needs to be completed
+     * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
+     * need to be made before calls to mcuxClAead_process().
+     */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_aad, token_aad, mcuxClAead_process_adata(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxEnc,
-    /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
-    /* uint32_t adataSize,            */ sizeof(sm4CcmAad)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctxEnc points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctxEnc,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
+      /* uint32_t adataSize,            */ sizeof(sm4CcmAad)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process_adata) != token_aad) || (MCUXCLAEAD_STATUS_OK != result_aad))
@@ -158,14 +167,16 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_indata, token_indata, mcuxClAead_process(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxEnc,
-    /* mcuxCl_InputBuffer_t pIn,       */ sm4CcmPtxt,
-    /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
-    /* mcuxCl_Buffer_t pOut,           */ msg_enc,
-    /* uint32_t * const pOutSize      */ &msg_enc_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctxEnc,
+      /* mcuxCl_InputBuffer_t pIn,       */ sm4CcmPtxt,
+      /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
+      /* mcuxCl_Buffer_t pOut,           */ msg_enc,
+      /* uint32_t * const pOutSize      */ &msg_enc_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process) != token_indata) || (MCUXCLAEAD_STATUS_OK != result_indata))
     {
@@ -174,11 +185,11 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_final, token_final, mcuxClAead_finish(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxEnc,
-    /* mcuxCl_Buffer_t pOut,           */ &msg_enc[msg_enc_size],
-    /* uint32_t * const pOutSize      */ &msg_enc_size,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctxEnc,
+      /* mcuxCl_Buffer_t pOut,           */ &msg_enc[msg_enc_size],
+      /* uint32_t * const pOutSize      */ &msg_enc_size,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_finish) != token_final) || (MCUXCLAEAD_STATUS_OK != result_final))
@@ -187,14 +198,19 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    // Expect that the resulting encrypted msg matches our expected output
+    /* Check that the resulting message size and data match the expectation */
+    if(sizeof(msg_enc) != msg_enc_size)
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
     if (!mcuxClCore_assertEqual(msg_enc, sm4CcmCipher, sizeof(msg_enc)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
+    /* Check that the resulting authentication tag size data matches the expectation */
     // TODO: change to MCUXCLELS_AEAD_TAG_SIZE
-    // Expect that the resulting authentication tag matches our expected output
     if (!mcuxClCore_assertEqual(msg_tag, sm4CcmTag, sizeof(sm4CcmTag)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -208,18 +224,22 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     uint32_t msg_dec_size = 0u;
 
     uint32_t ctxBufDec[32u]; //MCUXCLOSCCAAEADMODES_CTX_SIZE_IN_WORDS
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClAead_Context_t * ctxDec = (mcuxClAead_Context_t *) ctxBufDec;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_init2, token_init2, mcuxClAead_init(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxDec,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_DEC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
-    /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
-    /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
-    /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
-    /* uint32_t tagSize               */ sizeof(sm4CcmTag)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctxDec points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctxDec,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClOsccaAead_Mode_CCM_DEC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ sm4CcmIv,
+      /* uint32_t nonceSize,            */ sizeof(sm4CcmIv),
+      /* uint32_t inSize,               */ sizeof(sm4CcmPtxt),
+      /* uint32_t adataSize,            */ sizeof(sm4CcmAad),
+      /* uint32_t tagSize               */ sizeof(sm4CcmTag)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_init) != token_init2) || (MCUXCLAEAD_STATUS_OK != result_init2))
@@ -228,16 +248,18 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-  /*
-   * mcuxClAead_process_adata() processes the header data. This needs to be completed
-   * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
-   * need to be made before calls to mcuxClAead_process().
-   */
+    /*
+     * mcuxClAead_process_adata() processes the header data. This needs to be completed
+     * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
+     * need to be made before calls to mcuxClAead_process().
+     */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_aad2, token_aad2, mcuxClAead_process_adata(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxDec,
-    /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
-    /* uint32_t adataSize,            */ sizeof(sm4CcmAad)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctxDec points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctxDec,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t pAdata,    */ sm4CcmAad,
+      /* uint32_t adataSize,            */ sizeof(sm4CcmAad)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process_adata) != token_aad2) || (MCUXCLAEAD_STATUS_OK != result_aad2))
@@ -246,14 +268,16 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Addresses of msg_enc, msg_dec are for internal use only and do not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_indata2, token_indata2, mcuxClAead_process(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxDec,
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
-    /* uint32_t inSize,               */ msg_enc_size,
-    /* mcuxCl_Buffer_t pOut,           */ msg_dec,
-    /* uint32_t * const pOutSize      */ &msg_dec_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctxDec,
+      /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
+      /* uint32_t inSize,               */ msg_enc_size,
+      /* mcuxCl_Buffer_t pOut,           */ msg_dec,
+      /* uint32_t * const pOutSize      */ &msg_dec_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process) != token_indata2) || (MCUXCLAEAD_STATUS_OK != result_indata2))
     {
@@ -262,11 +286,11 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_verify2, token_verify2, mcuxClAead_verify(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctxDec,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag,
-    /* mcuxCl_Buffer_t pOut,           */ &msg_dec[msg_dec_size],
-    /* uint32_t * const pOutSize      */ &msg_dec_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctxDec,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag,
+      /* mcuxCl_Buffer_t pOut,           */ &msg_dec[msg_dec_size],
+      /* uint32_t * const pOutSize      */ &msg_dec_size
     ));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_verify) != token_verify2) || (MCUXCLAEAD_STATUS_OK != result_verify2))
     {
@@ -284,16 +308,11 @@ bool mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     return MCUXCLEXAMPLE_STATUS_OK;
-}
-bool nxpClOsccaAeadModes_CCM_Crypt_Multipart_example(void)
-{
-    bool result = mcuxClOsccaAeadModes_CCM_Crypt_Multipart_example();
-    return result;
 }

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -19,6 +19,7 @@
 #include <mcuxCsslFlowProtection.h> // Code flow protection
 #include <mcuxClPsaDriver.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 
 
 /**
@@ -61,13 +62,6 @@ static const ALIGNED uint8_t hash[PSA_HASH_LENGTH(PSA_ALG_SHA_224)] = {
   0x28, 0xb7, 0x60, 0xff
 };
 
-/**
- * @brief Signature
- */
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT("External macro")
-static ALIGNED uint8_t signature[PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, BITLEN_N, PSA_ALG_ECDSA_ANY)] = {0};
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
-
 /*
  *Example of ECDSA signature generation and verification for:
  * - secp224k1 curve (modulus length: 224bits, base point order length: 225bits)
@@ -76,22 +70,18 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
  */
 MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example)
 {
-  /* Enable ELS */
-  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async()); // Enable the ELS.
-  // mcuxClEls_Enable_Async is a flow-protected function: Check the protection token and the return value
-  if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
-  {
-      return MCUXCLEXAMPLE_STATUS_ERROR;
-  }
-  MCUX_CSSL_FP_FUNCTION_CALL_END();
+  /**
+   * @brief Signature
+   */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT("External macro")
+  ALIGNED uint8_t signature[PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, BITLEN_N, PSA_ALG_ECDSA_ANY)];
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
 
-  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR)); // Wait for the mcuxClEls_Enable_Async operation to complete.
-  // mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value
-  if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+  /* Enable ELS */
+  if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
   {
-      return MCUXCLEXAMPLE_STATUS_ERROR;
+    return MCUXCLEXAMPLE_STATUS_ERROR;
   }
-  MCUX_CSSL_FP_FUNCTION_CALL_END();
 
   /*
    * Sign hash: PSA_ALG_ECDSA_ANY, SHA_224
@@ -177,6 +167,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_eccsecp224k1_sign_verify_hash_example)
 
   /* Check the return value */
   if(verify_status != PSA_SUCCESS)
+  {
+    return MCUXCLEXAMPLE_STATUS_ERROR;
+  }
+
+  /* Disable the ELS */
+  if(!mcuxClExample_Els_Disable())
   {
     return MCUXCLEXAMPLE_STATUS_ERROR;
   }

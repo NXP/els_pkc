@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -72,11 +72,25 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_VarScalarMult_Recover_X_Coordina
 /**********************************************************/
 
 /**
+ * FUP program declaration mcuxClEcc_FUP_TwEd_PointDouble
+ */
+#define mcuxClEcc_FUP_TwEd_PointDouble_LEN  16u
+
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointDouble[mcuxClEcc_FUP_TwEd_PointDouble_LEN];
+
+/**
+ * FUP program declaration mcuxClEcc_FUP_TwEd_PointValidation_AffineNR
+ */
+#define mcuxClEcc_FUP_TwEd_PointValidation_AffineNR_Len  14u
+
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation_AffineNR[mcuxClEcc_FUP_TwEd_PointValidation_AffineNR_Len];
+
+/**
  * FUP program declaration mcuxClEcc_FUP_TwEd_PointValidation
  */
-#define mcuxClEcc_FUP_TwEd_PointValidation_Len  14u
+#define mcuxClEcc_FUP_TwEd_PointValidation_HomMR_LEN  13u
 
-extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation[mcuxClEcc_FUP_TwEd_PointValidation_Len];
+extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_TwEd_PointValidation_HomMR[mcuxClEcc_FUP_TwEd_PointValidation_HomMR_LEN];
 
 /**
  * FUP program declaration mcuxClEcc_FUP_TwEd_PointSubtraction

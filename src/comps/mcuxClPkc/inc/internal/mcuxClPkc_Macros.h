@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -52,6 +52,9 @@
 #define MCUXCLPKC_SETUPTRT(pUptrt)  mcuxClPkc_inline_setUptrt(pUptrt)
 /** Gets the address of UPTRT (Universal pointer FUP table). */
 #define MCUXCLPKC_GETUPTRT()  mcuxClPkc_inline_getUptrt()
+/** Gets the 32-bit aligned address of UPTRT (Universal pointer FUP table).
+ * **CAUTION** This macro assumes the UPTRT is 32-bit aligned. */
+#define MCUXCLPKC_GETUPTRT32()  mcuxClPkc_inline_getUptrt32()
 
 /** Converts CPU pointer to PKC offset.
  * **CAUTION** This macro does not guarantee the returned offset is PKC-word aligned. */

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClSession.h>          // Interface to the entire mcuxClSession component
@@ -18,89 +18,89 @@
 #include <mcuxClExample_Session_Helper.h>
 
 static const uint32_t message_1[16U] = {
-    0x61626380, 0x00000000,
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000018
+    0x61626380u, 0x00000000u,
+    0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000018u
 };
 static const uint32_t reference_hash_1[8U] = {
-    0x8f4ba8e0, 0x297da02b, 0x5cf2f7a2, 0x4167c487,
-    0xdc10e4e2, 0xd1f2d46b, 0x62eeedd9, 0x66c7f0f4
+    0x8f4ba8e0u, 0x297da02bu, 0x5cf2f7a2u, 0x4167c487u,
+    0xdc10e4e2u, 0xd1f2d46bu, 0x62eeedd9u, 0x66c7f0f4u
 };
 
 static const uint32_t message_2[64U] = {
-    0x64fce814, 0xfa17cecf, 0x9a97c6a8, 0x15183f0d, 0xb881d336, 0x7eb90024, 0x7d997ee0, 0x27a25ed2, 0xaac0a62f, 0x0718227d,
-    0xd6e82f17, 0xe6f56301, 0x1945d3e5, 0x8002e5c5, 0xd0dc66e2, 0x9b55c71c, 0xde0d6d87, 0xcd211331, 0x056b122d, 0x069c5562,
-    0x10d29e62, 0xdfdaca25, 0x87fe07e1, 0x635bc44f, 0xd07bb099, 0x0e6af75c, 0x9b1f0139, 0xa117ef56, 0x39ab73c5, 0xf7f7793b,
-    0xb2277b97, 0x49af279b, 0xf722b9c8, 0x4a786f12, 0x9e441112, 0xf184a9fe, 0x745cd390, 0xd4f4dadc, 0x773c31d0, 0x89c39c2e,
-    0xb610dac9, 0x73bd5e3f, 0x13b14bf5, 0x25b43dd0, 0xc8591380, 0xb0424647, 0x82e6d4b8, 0x336abcda, 0x80000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000600
+    0x64fce814u, 0xfa17cecfu, 0x9a97c6a8u, 0x15183f0du, 0xb881d336u, 0x7eb90024u, 0x7d997ee0u, 0x27a25ed2u, 0xaac0a62fu, 0x0718227du,
+    0xd6e82f17u, 0xe6f56301u, 0x1945d3e5u, 0x8002e5c5u, 0xd0dc66e2u, 0x9b55c71cu, 0xde0d6d87u, 0xcd211331u, 0x056b122du, 0x069c5562u,
+    0x10d29e62u, 0xdfdaca25u, 0x87fe07e1u, 0x635bc44fu, 0xd07bb099u, 0x0e6af75cu, 0x9b1f0139u, 0xa117ef56u, 0x39ab73c5u, 0xf7f7793bu,
+    0xb2277b97u, 0x49af279bu, 0xf722b9c8u, 0x4a786f12u, 0x9e441112u, 0xf184a9feu, 0x745cd390u, 0xd4f4dadcu, 0x773c31d0u, 0x89c39c2eu,
+    0xb610dac9u, 0x73bd5e3fu, 0x13b14bf5u, 0x25b43dd0u, 0xc8591380u, 0xb0424647u, 0x82e6d4b8u, 0x336abcdau, 0x80000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00000600u
 };
 static const uint32_t reference_hash_2[8U] = {
-    0x5cf5619a, 0x84adcfc1, 0x9165d942, 0x19b32dfc, 0xd5baecde, 0x3fa93ce7, 0x1e675e62, 0xe2aa7ce5
+    0x5cf5619au, 0x84adcfc1u, 0x9165d942u, 0x19b32dfcu, 0xd5baecdeu, 0x3fa93ce7u, 0x1e675e62u, 0xe2aa7ce5u
 };
 
 static const uint32_t message_3[176U] = {
-    0xddf39dd9, 0xae5da9b0, 0xf63c9363, 0x73517479, 0x3bdea659, 0x664fad24, 0xd9dc7a1d, 0x13020b98, 0xf9795be4, 0x3ab22f0d,
-    0x6dd5512c, 0x8ef0fcfc, 0x8e04d67c, 0x7d547de6, 0xbbd3e42c, 0xa9c0cbcd, 0x5c1911eb, 0xa08c422f, 0xbe61d18e, 0x3383b88b,
-    0xf6cae616, 0xd6777494, 0x682bf407, 0x9692fbe4, 0x5eb6b789, 0xdcda4ba0, 0x67bdc7aa, 0xbc6ec1ab, 0xc2c23449, 0xc41002ec,
-    0x8eca4259, 0xa5adff55, 0x819ddad4, 0xa9a6a40b, 0x4733a39b, 0xb7ab2ff7, 0x37bc2b6b, 0x97fc2a3b, 0x1f92f768, 0x44f66a3f,
-    0x02927da9, 0x0c4d6239, 0x8da51bca, 0x0740335d, 0x767b3030, 0x846ef03b, 0xa8021667, 0xeb638ad4, 0xc97756a4, 0xb482cdfd,
-    0x1fe94fbd, 0xdab1a577, 0xf3de673c, 0x994b2ec9, 0x60e01031, 0x3df9c681, 0x68b8bf13, 0x2a286368, 0x0b5517b0, 0xd7a619c6,
-    0x6b8b2396, 0xf564898d, 0x349ee1a5, 0xe43243c0, 0xa678b960, 0xa123fcf5, 0x1838cf35, 0xfe9115ff, 0x5b9c9499, 0xba9c7b92,
-    0x91fed3b7, 0x1f99733e, 0x7a80f926, 0xfe42e20c, 0xf7140f96, 0x67c23c37, 0x365c73ca, 0x9b5278b5, 0x77b584d3, 0x439f0f25,
-    0x07534fa6, 0x3a704682, 0x3d350918, 0x4e2f084a, 0x047d7d83, 0xf7028be1, 0x0fe09329, 0xcbe27b00, 0xfb260f7c, 0x628ff4d1,
-    0xbc135a7c, 0xd68543f1, 0x85961abc, 0x8924fdda, 0xb89960bf, 0x5238de7f, 0x11030b11, 0xec9f9f70, 0xf373f7ba, 0x07c80888,
-    0x62168488, 0xcf42703b, 0xe311d072, 0x88684482, 0x28718ebe, 0x661d535f, 0xaa3d9990, 0xae210488, 0xbe3c7c5f, 0x59ca3eac,
-    0x384cba3b, 0xe3d4719a, 0x66cb6056, 0x865178cc, 0xaab98e29, 0xa6e61b45, 0xf37a94de, 0xcb1c32b0, 0x65529429, 0x1de43844,
-    0x6c7405e4, 0x69be23e8, 0x7254e934, 0xf8fa1141, 0xc59be4a6, 0xf7350e7b, 0x72b3b025, 0x12715663, 0xf7fddcf6, 0x5263005d,
-    0x954c2e58, 0x88a09eb3, 0xc7d38046, 0x8c888f25, 0x192b6020, 0xb405f087, 0xca5058ec, 0x1dfce096, 0xf67e3a6f, 0xb7f33cc6,
-    0xeb82c906, 0xb6a38e74, 0xfdb1e842, 0x5f9e168b, 0xa7848c03, 0x7fe036e2, 0x0a6adcf3, 0x558dce26, 0x462b03c3, 0x8a53afdc,
-    0x0309956d, 0x62e60ee7, 0x89b63740, 0x3c74e872, 0x256d9203, 0x5f4f7bfc, 0x720f5699, 0x4ee76628, 0x68685db8, 0x45da2561,
-    0x80000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00001400
+    0xddf39dd9u, 0xae5da9b0u, 0xf63c9363u, 0x73517479u, 0x3bdea659u, 0x664fad24u, 0xd9dc7a1du, 0x13020b98u, 0xf9795be4u, 0x3ab22f0du,
+    0x6dd5512cu, 0x8ef0fcfcu, 0x8e04d67cu, 0x7d547de6u, 0xbbd3e42cu, 0xa9c0cbcdu, 0x5c1911ebu, 0xa08c422fu, 0xbe61d18eu, 0x3383b88bu,
+    0xf6cae616u, 0xd6777494u, 0x682bf407u, 0x9692fbe4u, 0x5eb6b789u, 0xdcda4ba0u, 0x67bdc7aau, 0xbc6ec1abu, 0xc2c23449u, 0xc41002ecu,
+    0x8eca4259u, 0xa5adff55u, 0x819ddad4u, 0xa9a6a40bu, 0x4733a39bu, 0xb7ab2ff7u, 0x37bc2b6bu, 0x97fc2a3bu, 0x1f92f768u, 0x44f66a3fu,
+    0x02927da9u, 0x0c4d6239u, 0x8da51bcau, 0x0740335du, 0x767b3030u, 0x846ef03bu, 0xa8021667u, 0xeb638ad4u, 0xc97756a4u, 0xb482cdfdu,
+    0x1fe94fbdu, 0xdab1a577u, 0xf3de673cu, 0x994b2ec9u, 0x60e01031u, 0x3df9c681u, 0x68b8bf13u, 0x2a286368u, 0x0b5517b0u, 0xd7a619c6u,
+    0x6b8b2396u, 0xf564898du, 0x349ee1a5u, 0xe43243c0u, 0xa678b960u, 0xa123fcf5u, 0x1838cf35u, 0xfe9115ffu, 0x5b9c9499u, 0xba9c7b92u,
+    0x91fed3b7u, 0x1f99733eu, 0x7a80f926u, 0xfe42e20cu, 0xf7140f96u, 0x67c23c37u, 0x365c73cau, 0x9b5278b5u, 0x77b584d3u, 0x439f0f25u,
+    0x07534fa6u, 0x3a704682u, 0x3d350918u, 0x4e2f084au, 0x047d7d83u, 0xf7028be1u, 0x0fe09329u, 0xcbe27b00u, 0xfb260f7cu, 0x628ff4d1u,
+    0xbc135a7cu, 0xd68543f1u, 0x85961abcu, 0x8924fddau, 0xb89960bfu, 0x5238de7fu, 0x11030b11u, 0xec9f9f70u, 0xf373f7bau, 0x07c80888u,
+    0x62168488u, 0xcf42703bu, 0xe311d072u, 0x88684482u, 0x28718ebeu, 0x661d535fu, 0xaa3d9990u, 0xae210488u, 0xbe3c7c5fu, 0x59ca3eacu,
+    0x384cba3bu, 0xe3d4719au, 0x66cb6056u, 0x865178ccu, 0xaab98e29u, 0xa6e61b45u, 0xf37a94deu, 0xcb1c32b0u, 0x65529429u, 0x1de43844u,
+    0x6c7405e4u, 0x69be23e8u, 0x7254e934u, 0xf8fa1141u, 0xc59be4a6u, 0xf7350e7bu, 0x72b3b025u, 0x12715663u, 0xf7fddcf6u, 0x5263005du,
+    0x954c2e58u, 0x88a09eb3u, 0xc7d38046u, 0x8c888f25u, 0x192b6020u, 0xb405f087u, 0xca5058ecu, 0x1dfce096u, 0xf67e3a6fu, 0xb7f33cc6u,
+    0xeb82c906u, 0xb6a38e74u, 0xfdb1e842u, 0x5f9e168bu, 0xa7848c03u, 0x7fe036e2u, 0x0a6adcf3u, 0x558dce26u, 0x462b03c3u, 0x8a53afdcu,
+    0x0309956du, 0x62e60ee7u, 0x89b63740u, 0x3c74e872u, 0x256d9203u, 0x5f4f7bfcu, 0x720f5699u, 0x4ee76628u, 0x68685db8u, 0x45da2561u,
+    0x80000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00001400u
 };
 static const uint32_t reference_hash_3[8U] = {
-    0xfd3366d1, 0x7f9ba57a, 0xf93938b7, 0x30169619, 0x8ce61e2c, 0x491c4ef3, 0x7f866b84, 0xbe271e39
+    0xfd3366d1u, 0x7f9ba57au, 0xf93938b7u, 0x30169619u, 0x8ce61e2cu, 0x491c4ef3u, 0x7f866b84u, 0xbe271e39u
 };
 
 static const uint32_t message_4[64U] = {
-    0x64fce814, 0xfa17cecf, 0x9a97c6a8, 0x15183f0d, 0xb881d336, 0x7eb90024, 0x7d997ee0, 0x27a25ed2, 0xaac0a62f, 0x0718227d,
-    0xd6e82f17, 0xe6f56301, 0x1945d3e5, 0x8002e5c5, 0xd0dc66e2, 0x9b55c71c, 0xde0d6d87, 0xcd211331, 0x056b122d, 0x069c5562,
-    0x10d29e62, 0xdfdaca25, 0x87fe07e1, 0x635bc44f, 0xd07bb099, 0x0e6af75c, 0x9b1f0139, 0xa117ef56, 0x39ab73c5, 0xf7f7793b,
-    0xb2277b97, 0x49af279b, 0xf722b9c8, 0x4a786f12, 0x9e441112, 0xf184a9fe, 0x745cd390, 0xd4f4dadc, 0x773c31d0, 0x89c39c2e,
-    0xb610dac9, 0x73bd5e3f, 0x13b14bf5, 0x25b43dd0, 0xc8591380, 0xb0424647, 0x82e6d4b8, 0x336abcda, 0x80000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000600
+    0x64fce814u, 0xfa17cecfu, 0x9a97c6a8u, 0x15183f0du, 0xb881d336u, 0x7eb90024u, 0x7d997ee0u, 0x27a25ed2u, 0xaac0a62fu, 0x0718227du,
+    0xd6e82f17u, 0xe6f56301u, 0x1945d3e5u, 0x8002e5c5u, 0xd0dc66e2u, 0x9b55c71cu, 0xde0d6d87u, 0xcd211331u, 0x056b122du, 0x069c5562u,
+    0x10d29e62u, 0xdfdaca25u, 0x87fe07e1u, 0x635bc44fu, 0xd07bb099u, 0x0e6af75cu, 0x9b1f0139u, 0xa117ef56u, 0x39ab73c5u, 0xf7f7793bu,
+    0xb2277b97u, 0x49af279bu, 0xf722b9c8u, 0x4a786f12u, 0x9e441112u, 0xf184a9feu, 0x745cd390u, 0xd4f4dadcu, 0x773c31d0u, 0x89c39c2eu,
+    0xb610dac9u, 0x73bd5e3fu, 0x13b14bf5u, 0x25b43dd0u, 0xc8591380u, 0xb0424647u, 0x82e6d4b8u, 0x336abcdau, 0x80000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00000600u
 };
 static const uint32_t reference_hash_4[8U] = {
-    0x5cf5619a, 0x84adcfc1, 0x9165d942, 0x19b32dfc, 0xd5baecde, 0x3fa93ce7, 0x1e675e62, 0xe2aa7ce5
+    0x5cf5619au, 0x84adcfc1u, 0x9165d942u, 0x19b32dfcu, 0xd5baecdeu, 0x3fa93ce7u, 0x1e675e62u, 0xe2aa7ce5u
 };
 
 static const uint32_t message_5[144U] = {
-    0xe14bc03e, 0x9d3f1e0a, 0x7d67ac8d, 0x69d79ca1, 0xa0d1da48, 0xb0a97f3c, 0xab6e0c91, 0x5207236d, 0xd77d5064, 0xb5029523,
-    0xb8541a6d, 0x23e94967, 0x839ae5c4, 0x528eb17a, 0x6f786721, 0x65d5f25f, 0x15e3b8a5, 0x785776ec, 0xeb945ef8, 0x4af9647f,
-    0xd5ea6106, 0xcee57ddf, 0x8ce70e98, 0xeaf0ac8c, 0x688adad9, 0x79d3dedb, 0xda991dab, 0x69a65c04, 0xd5c8c7a9, 0xc8b3c5d4,
-    0xa36fad20, 0x59ab1359, 0x08e146bc, 0xb65d4240, 0x2e540195, 0x4b50b8b6, 0xf22ee682, 0x34c7596e, 0x81dd7dd7, 0x8f046f1b,
-    0x751fed74, 0x2bd3825c, 0x209571c6, 0xf3db93f1, 0xe5621a50, 0xb75840a3, 0xd7683e48, 0x40400e92, 0xadf20de7, 0x9427cb40,
-    0x4555fffa, 0x951f8a8d, 0xdced49bf, 0x607eb1d3, 0xbcc4b3bb, 0x9fcb0fd0, 0x92ccfe06, 0xee7d3a58, 0xd27fbb65, 0xfb5a951b,
-    0xee9bb5b1, 0x0a56d1e0, 0xa029a767, 0x4999ef8e, 0x44999117, 0x04a69dd9, 0xfb3db965, 0x04d792ac, 0x8cdc58a3, 0xbe385a2e,
-    0x1c59ba88, 0xa6f6fa7e, 0xd322c94f, 0xc516b686, 0x53c1444f, 0x1e148be1, 0x1287ee09, 0x6a32b847, 0x1c295efc, 0x0319bab9,
-    0x0f5f5345, 0x55abe724, 0x9a5a1263, 0x5aa4519f, 0xef447474, 0x0927509f, 0x72eea9a4, 0x6de4aef3, 0xb3a579ba, 0x9fe091c5,
-    0xc8a12f14, 0xd07c0fe1, 0xf621f113, 0x0ada1465, 0xe991337d, 0xb24e6996, 0x232fcf0c, 0x79843321, 0x71c68071, 0xb8969cd6,
-    0x0f0bf81a, 0xc0b732ff, 0x17e6b3d9, 0x796c1bd0, 0xfd14c87d, 0xacc955d9, 0x65bf4a14, 0xbf75b464, 0xbfd38323, 0xf09a16be,
-    0x545f1267, 0x0c1cceff, 0x11a9281d, 0x3b5d421d, 0x72c1a3b9, 0xa5e98100, 0x287b58fd, 0x1d749b77, 0x2bf8ca08, 0x05e963c7,
-    0x462dda32, 0xb2942a41, 0x083f196e, 0x1055c8c9, 0xc11efe6e, 0x90c83e4b, 0x8ef328c1, 0x60daabee, 0x80000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00001000
+    0xe14bc03eu, 0x9d3f1e0au, 0x7d67ac8du, 0x69d79ca1u, 0xa0d1da48u, 0xb0a97f3cu, 0xab6e0c91u, 0x5207236du, 0xd77d5064u, 0xb5029523u,
+    0xb8541a6du, 0x23e94967u, 0x839ae5c4u, 0x528eb17au, 0x6f786721u, 0x65d5f25fu, 0x15e3b8a5u, 0x785776ecu, 0xeb945ef8u, 0x4af9647fu,
+    0xd5ea6106u, 0xcee57ddfu, 0x8ce70e98u, 0xeaf0ac8cu, 0x688adad9u, 0x79d3dedbu, 0xda991dabu, 0x69a65c04u, 0xd5c8c7a9u, 0xc8b3c5d4u,
+    0xa36fad20u, 0x59ab1359u, 0x08e146bcu, 0xb65d4240u, 0x2e540195u, 0x4b50b8b6u, 0xf22ee682u, 0x34c7596eu, 0x81dd7dd7u, 0x8f046f1bu,
+    0x751fed74u, 0x2bd3825cu, 0x209571c6u, 0xf3db93f1u, 0xe5621a50u, 0xb75840a3u, 0xd7683e48u, 0x40400e92u, 0xadf20de7u, 0x9427cb40u,
+    0x4555fffau, 0x951f8a8du, 0xdced49bfu, 0x607eb1d3u, 0xbcc4b3bbu, 0x9fcb0fd0u, 0x92ccfe06u, 0xee7d3a58u, 0xd27fbb65u, 0xfb5a951bu,
+    0xee9bb5b1u, 0x0a56d1e0u, 0xa029a767u, 0x4999ef8eu, 0x44999117u, 0x04a69dd9u, 0xfb3db965u, 0x04d792acu, 0x8cdc58a3u, 0xbe385a2eu,
+    0x1c59ba88u, 0xa6f6fa7eu, 0xd322c94fu, 0xc516b686u, 0x53c1444fu, 0x1e148be1u, 0x1287ee09u, 0x6a32b847u, 0x1c295efcu, 0x0319bab9u,
+    0x0f5f5345u, 0x55abe724u, 0x9a5a1263u, 0x5aa4519fu, 0xef447474u, 0x0927509fu, 0x72eea9a4u, 0x6de4aef3u, 0xb3a579bau, 0x9fe091c5u,
+    0xc8a12f14u, 0xd07c0fe1u, 0xf621f113u, 0x0ada1465u, 0xe991337du, 0xb24e6996u, 0x232fcf0cu, 0x79843321u, 0x71c68071u, 0xb8969cd6u,
+    0x0f0bf81au, 0xc0b732ffu, 0x17e6b3d9u, 0x796c1bd0u, 0xfd14c87du, 0xacc955d9u, 0x65bf4a14u, 0xbf75b464u, 0xbfd38323u, 0xf09a16beu,
+    0x545f1267u, 0x0c1cceffu, 0x11a9281du, 0x3b5d421du, 0x72c1a3b9u, 0xa5e98100u, 0x287b58fdu, 0x1d749b77u, 0x2bf8ca08u, 0x05e963c7u,
+    0x462dda32u, 0xb2942a41u, 0x083f196eu, 0x1055c8c9u, 0xc11efe6eu, 0x90c83e4bu, 0x8ef328c1u, 0x60daabeeu, 0x80000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u, 0x00000000u,
+    0x00000000u, 0x00000000u, 0x00000000u, 0x00001000u
 };
 static const uint32_t reference_hash_5[8U] = {
-    0x614fba70, 0x8ba8c2ff, 0x1b2d715c, 0xeea19bd5, 0xe2e479a2, 0x1aae6e37, 0x52ec85e6, 0xd846ff2e
+    0x614fba70u, 0x8ba8c2ffu, 0x1b2d715cu, 0xeea19bd5u, 0xe2e479a2u, 0x1aae6e37u, 0x52ec85e6u, 0xd846ff2eu
 };
 
 static void Load_Partial_Hash(uint32_t *partial_hash)
@@ -126,7 +126,7 @@ static void Load_Partial_Hash(uint32_t *partial_hash)
 
     mcuxClOsccaSafo_Drv_start(MCUXCLOSCCASAFO_DRV_START_SM3);
 
-    mcuxClOsccaSafo_Drv_setByteOrder(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
+    (void) mcuxClOsccaSafo_Drv_setByteOrder(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
     for(int i = 7; i >= 0; i--)
     {
         mcuxClOsccaSafo_Drv_loadFifo(partial_hash[i]);
@@ -174,7 +174,7 @@ static void SM3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
     mcuxClOsccaSafo_Drv_start(MCUXCLOSCCASAFO_DRV_START_SM3);
 
     /* load message blocks into SGI_SM3_FIFO SFRs */
-    for (uint32_t i = 0; i < message_size_words; i++)
+    for (uint32_t i = 0U; i < message_size_words; i++)
     {
         mcuxClOsccaSafo_Drv_loadFifo(message[i]);
     }
@@ -188,10 +188,10 @@ static void SM3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
     mcuxClOsccaSafo_Drv_wait();
 
     /* read first bank(16 bytes) from the hash result */
-    result_digest[0] = mcuxClOsccaSafo_Drv_store(0);
-    result_digest[1] = mcuxClOsccaSafo_Drv_store(1);
-    result_digest[2] = mcuxClOsccaSafo_Drv_store(2);
-    result_digest[3] = mcuxClOsccaSafo_Drv_store(3);
+    result_digest[0] = mcuxClOsccaSafo_Drv_store(0U);
+    result_digest[1] = mcuxClOsccaSafo_Drv_store(1U);
+    result_digest[2] = mcuxClOsccaSafo_Drv_store(2U);
+    result_digest[3] = mcuxClOsccaSafo_Drv_store(3U);
 
     /* setup SGI control SFRs */
     /*
@@ -206,10 +206,10 @@ static void SM3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
     mcuxClOsccaSafo_Drv_wait();
 
     /* read second bank(16 bytes) from the hash result */
-    result_digest[4] = mcuxClOsccaSafo_Drv_store(0);
-    result_digest[5] = mcuxClOsccaSafo_Drv_store(1);
-    result_digest[6] = mcuxClOsccaSafo_Drv_store(2);
-    result_digest[7] = mcuxClOsccaSafo_Drv_store(3);
+    result_digest[4] = mcuxClOsccaSafo_Drv_store(0U);
+    result_digest[5] = mcuxClOsccaSafo_Drv_store(1U);
+    result_digest[6] = mcuxClOsccaSafo_Drv_store(2U);
+    result_digest[7] = mcuxClOsccaSafo_Drv_store(3U);
 }
 
 /* Automatic mode (AUTO - the number of processed blocks is determined during the operation based on the amount of data written into the SM3 FIFO) */
@@ -221,7 +221,7 @@ static void SM3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
  * - wait for SM3 operation to complete (via pooling busy)
  * - read the hash result
  */
-bool mcuxClOsccaSafo_sm3_automode_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSafo_sm3_automode_example)
 {
 
     mcuxClOsccaSafo_Drv_init(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
@@ -240,7 +240,7 @@ bool mcuxClOsccaSafo_sm3_automode_example(void)
     /* SM3 Automatic mode, no intermediate hash value */
     SM3_Operation_Auto_Mode(message_1, 16U, result_digest_1, false);
     /* check if actual result is equal to expected result */
-    if (!mcuxClCore_assertEqual((uint8_t*)reference_hash_1, (uint8_t*)result_digest_1, sizeof(result_digest_1)))
+    if (!mcuxClCore_assertEqual((const uint8_t *)reference_hash_1, (const uint8_t *)result_digest_1, sizeof(result_digest_1)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -260,7 +260,7 @@ bool mcuxClOsccaSafo_sm3_automode_example(void)
     /* SM3 Automatic mode, no intermediate hash value */
     SM3_Operation_Auto_Mode(message_2, 64U, result_digest_2, false);
     /* check if actual result is equal to expected result */
-    if (!mcuxClCore_assertEqual((uint8_t*)reference_hash_2, (uint8_t*)result_digest_2, sizeof(result_digest_2)))
+    if (!mcuxClCore_assertEqual((const uint8_t *)reference_hash_2, (const uint8_t *)result_digest_2, sizeof(result_digest_2)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -280,7 +280,7 @@ bool mcuxClOsccaSafo_sm3_automode_example(void)
     /* SM3 Automatic mode, no intermediate hash value */
     SM3_Operation_Auto_Mode(message_3, 176U, result_digest_3, false);
     /* check if actual result is equal to expected result */
-    if (!mcuxClCore_assertEqual((uint8_t*)reference_hash_3, (uint8_t*)result_digest_3, sizeof(result_digest_3)))
+    if (!mcuxClCore_assertEqual((const uint8_t *)reference_hash_3, (const uint8_t *)result_digest_3, sizeof(result_digest_3)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -299,17 +299,17 @@ bool mcuxClOsccaSafo_sm3_automode_example(void)
     uint32_t result_digest_4[8U];
 
     /* SM3 Automatic mode, partial hash processing (load the partial HASH value while SGI_SM3_CTRL.HASH_RELOAD is set to 1'b1) */
-    for (uint8_t i = 0; i < 4; i++)
+    for (uint8_t i = 0U; i < 4U; i++)
     {
-        bool partial_hash_reload = true ? (i != 0) : false;
-        SM3_Operation_Auto_Mode(&message_4[i * 16], 16U, result_digest_4, partial_hash_reload); /* process one SM3 block (64 bytes) per call */
-        if (i != 3)
+        bool partial_hash_reload = (i != 0U) ? true : false;
+        SM3_Operation_Auto_Mode(&message_4[i * 16U], 16U, result_digest_4, partial_hash_reload); /* process one SM3 block (64 bytes) per call */
+        if (i != 3U)
         {
             Load_Partial_Hash(result_digest_4);
         }
     }
     /* check if actual result is equal to expected result */
-    if (!mcuxClCore_assertEqual((uint8_t*)reference_hash_4, (uint8_t*)result_digest_4, sizeof(result_digest_4)))
+    if (!mcuxClCore_assertEqual((const uint8_t *)reference_hash_4, (const uint8_t *)result_digest_4, sizeof(result_digest_4)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -327,17 +327,17 @@ bool mcuxClOsccaSafo_sm3_automode_example(void)
     uint32_t result_digest_5[8U];
 
     /* SM3 Automatic mode, partial hash processing (load the partial HASH value while SGI_SM3_CTRL.HASH_RELOAD is set to 1'b1) */
-    for (uint8_t i = 0; i < 3; i++)
+    for (uint8_t i = 0U; i < 3U; i++)
     {
-        bool partial_hash_reload = true ? (i != 0) : false;
-        SM3_Operation_Auto_Mode(&message_5[i * 48], 48U, result_digest_5, partial_hash_reload); /* process 3 SM3 blocks (192 bytes) per call */
-        if (i != 2)
+        bool partial_hash_reload = (i != 0U) ? true : false;
+        SM3_Operation_Auto_Mode(&message_5[i * 48U], 48U, result_digest_5, partial_hash_reload); /* process 3 SM3 blocks (192 bytes) per call */
+        if (i != 2U)
         {
             Load_Partial_Hash(result_digest_5);
         }
     }
     /* check if actual result is equal to expected result */
-    if (!mcuxClCore_assertEqual((uint8_t*)reference_hash_5, (uint8_t*)result_digest_5, sizeof(result_digest_5)))
+    if (!mcuxClCore_assertEqual((const uint8_t *)reference_hash_5, (const uint8_t *)result_digest_5, sizeof(result_digest_5)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -350,9 +350,4 @@ bool mcuxClOsccaSafo_sm3_automode_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     return MCUXCLEXAMPLE_STATUS_OK;
-}
-bool nxpClOsccaSafo_sm3_automode_example(void)
-{
-    bool result = mcuxClOsccaSafo_sm3_automode_example();
-    return result;
 }

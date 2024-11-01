@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClMacModes_Els_Cmac.c
@@ -80,12 +80,60 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Proce
     }
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_ProcessBlocks, MCUXCLMAC_STATUS_OK,
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
       MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
       MCUX_CSSL_FP_CONDITIONAL(NULL != pOut, MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN));
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
+}
+
+
+/*
+ * @brief Function will process full blocks as part of oneshot CMAC processing
+ *
+ * @param[in/out]   pContext      pointer to context
+ * @param[in]       completeLen   length of data part which forms full blocks
+ * @param[in]       remainingLen  length of data not aligned to full blocks
+ * @param[in]       pIn           pointer to input buffer
+ * @param[in/out]   pOut          pointer to output buffer
+ * @return status
+ */
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks(
+    mcuxClMacModes_Context_t * const pContext,
+    uint32_t completeLen,
+    uint32_t remainingLen,
+    const uint8_t *const pIn,
+    uint8_t *const pOut)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks);
+    //processing part of the data which is a multiple of the block size
+    if (completeLen != 0u)
+    {
+      //data length is a multiple of the block size ==> no padding needed
+      if(0u == remainingLen)
+      {
+        pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_ENABLE;
+      }
+
+      MCUX_CSSL_FP_FUNCTION_CALL(processFBResult, mcuxClMacModes_Engine_CMAC_ProcessBlocks(
+                                            pContext,
+                                            pIn,
+                                            completeLen,
+                                            pOut));
+      if (MCUXCLMAC_STATUS_OK != processFBResult)
+      {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks, processFBResult,
+                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks));
+      }
+
+      pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
+    }
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks, MCUXCLMAC_STATUS_OK,
+                            MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
+                              MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks)));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMacModes_Engine_CMAC_Oneshot)
@@ -100,7 +148,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_Engine_CMAC_Oneshot);
     uint32_t const completeLen = (inLength/MCUXCLAES_BLOCK_SIZE)*MCUXCLAES_BLOCK_SIZE;
     uint32_t const remainingLen = inLength%MCUXCLAES_BLOCK_SIZE;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMacModes_Algorithm_t pAlgo = (mcuxClMacModes_Algorithm_t)pContext->common.pMode->common.pAlgorithm;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     // Check if key matches to the algorithm
     if (MCUXCLKEY_ALGO_ID_AES != mcuxClKey_getAlgorithm(pContext->key))
@@ -135,26 +185,16 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
     }
 
     //processing part of the data which is a multiple of the block size
-    if (completeLen != 0u)
+    MCUX_CSSL_FP_FUNCTION_CALL(oneshotFullBlocksResult, mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks(
+                                pContext,
+                                completeLen,
+                                remainingLen,
+                                pIn,
+                                pOut));
+    if (MCUXCLMAC_STATUS_OK != oneshotFullBlocksResult)
     {
-      //data length is a multiple of the block size ==> no padding needed
-      if(0u == remainingLen)
-      {
-        pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_ENABLE;
-      }
-
-      MCUX_CSSL_FP_FUNCTION_CALL(processFBResult, mcuxClMacModes_Engine_CMAC_ProcessBlocks(
-                                            pContext,
-                                            pIn,
-                                            completeLen,
-                                            pOut));
-      if (MCUXCLMAC_STATUS_OK != processFBResult)
-      {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, processFBResult,
-                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks));
-      }
-
-      pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
+      MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, oneshotFullBlocksResult,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks));
     }
 
     //apply padding or process empty message
@@ -176,8 +216,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
       {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_ERROR,
                                   pAlgo->protectionToken_addPadding,
-                                  MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u,
-                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks)));
+                                  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks));
       }
 
       pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_ENABLE;
@@ -190,7 +229,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
       if (MCUXCLMAC_STATUS_OK != processFBResult)
       {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClMacModes_Engine_CMAC_Oneshot, processFBResult,
-                                    MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks)),
+                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks),
                                     pAlgo->protectionToken_addPadding,
                                     MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks));
       }
@@ -202,7 +241,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Onesh
     mcuxClSession_freeWords_cpuWa(session, cpuWaSizeInWords);
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClMacModes_Engine_CMAC_Oneshot, MCUXCLMAC_STATUS_OK, MCUXCLMAC_STATUS_FAULT_ATTACK,
-        MCUX_CSSL_FP_CONDITIONAL(completeLen != 0u, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks)),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_Oneshot_fullBlocks),
         MCUX_CSSL_FP_CONDITIONAL((0u != remainingLen) || (0u == inLength),
           pAlgo->protectionToken_addPadding,
           MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMacModes_Engine_CMAC_ProcessBlocks)
@@ -251,11 +290,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
   size_t remainingLength = inLength;
   size_t alreadyProcessedBytes = 0;
 
-  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(UINT32_MAX - inLength, pContext->blockBufferUsed, UINT32_MAX, MCUXCLMAC_STATUS_ERROR)
-  //check if there are "old" bytes to process
-  if((pContext->blockBufferUsed > 0U) && ((pContext->blockBufferUsed + inLength) > MCUXCLAES_BLOCK_SIZE))
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pContext->blockBufferUsed, 0u, MCUXCLAES_BLOCK_SIZE - 1u, MCUXCLMAC_STATUS_FAULT_ATTACK)
+
+  /* Check if there are bytes to process in the blockBuffer, and if the combination with the input size forms more than a block of data.
+    * If yes, process this block.
+    * Note: For CMAC last block handling, we need to make sure that the last block is not processed yet. */
+  if((pContext->blockBufferUsed > 0U) && (inLength > (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed)))
   {
-    //copy new input data
+    /* Copy new input data to the context blockBuffer */
     MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t*)pContext->blockBuffer + pContext->blockBufferUsed, pIn, MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
     //perform cmac operation
     MCUX_CSSL_FP_FUNCTION_CALL(processFBResult, mcuxClMacModes_Engine_CMAC_ProcessBlocks(
@@ -273,9 +315,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Updat
     //update options for the next operations
     pContext->cmac_options.bits.initialize = MCUXCLELS_CMAC_INITIALIZE_DISABLE;
 
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("remainingLength >= (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed)")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, remainingLength=inLength is known to be greater than MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed.")
     remainingLength -= (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     alreadyProcessedBytes = (MCUXCLAES_BLOCK_SIZE - pContext->blockBufferUsed);
   }
 
@@ -350,7 +392,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClMacModes_Engine_CMAC_Final
   uint32_t *const pOutLength)
 {
   pContext->cmac_options.bits.finalize = MCUXCLELS_CMAC_FINALIZE_ENABLE;
+  MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
   mcuxClMacModes_Algorithm_t pAlgo = (mcuxClMacModes_Algorithm_t) pContext->common.pMode->common.pAlgorithm;
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
   MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMacModes_Engine_CMAC_Finalize,
                              pAlgo->protectionToken_addPadding);

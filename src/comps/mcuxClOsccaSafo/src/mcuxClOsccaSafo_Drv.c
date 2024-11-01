@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClOsccaSafo.h>
@@ -149,16 +149,23 @@ void mcuxClOsccaSafo_Drv_incrementData(uint32_t offset, uint32_t length)
   uint32_t config2 = mcuxClOsccaSafo_Sfr_readCtrl2();
   mcuxClOsccaSafo_Sfr_writeCtrl2(config2 | MCUXCLOSCCASAFO_SFR_CTRL2_INCR);
 
-  length >>= MCUXCLOSCCASAFO_SFR_BYTES_TO_32BIT_WORD_SHIFT;    /* calculate length in a word*/
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_VOID(offset, MCUXCLOSCCASAFO_DRV_DATIN0_INDEX, MCUXCLOSCCASAFO_DRV_DATIN3_INDEX + 3u)
+  MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_VOID(length, 4u, 16u)
+
+  length >>= MCUXCLOSCCASAFO_SFR_BYTES_TO_32BIT_WORD_SHIFT;    /* calculate length in a word */
   uint32_t oriLen = length;
   //Increment from last to first
   while(0u != length)
   {
     length --;
     uint32_t offsetLen = (((config2 & MCUXCLOSCCASAFO_SFR_CTRL2_BYTES_ORDER_MASK) == MCUXCLOSCCASAFO_DRV_BYTE_ORDER_LE)
+
                               ? (oriLen - 1u - length) : (length));
     //writing something to DATIN - this will trigger incrementation
+
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, this cannot overflow as offsetLen has an upper bound of length.")
     mcuxClOsccaSafo_Sfr_writeDatinWord(offset + offsetLen, 1u);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     mcuxClOsccaSafo_Sfr_writeCtrl2(config2 | MCUXCLOSCCASAFO_SFR_CTRL2_INCR | MCUXCLOSCCASAFO_SFR_CTRL2_INCR_CIN);
   }
 

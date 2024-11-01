@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -63,16 +63,22 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0};
-
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     /**************************************************************************/
     /* Random init                                                            */
     /**************************************************************************/
 
     /* Initialize the Random session with aes256 mode. */
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInitresult, token, mcuxClRandom_init(
-                                                  session,
-                                                  (mcuxClRandom_Context_t)context,
-                                                  mcuxClRandomModes_Mode_CtrDrbg_AES256));
+        session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRng_ctx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+        pRng_ctx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+        mcuxClRandomModes_Mode_CtrDrbg_AES256));
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != token) || (MCUXCLRANDOM_STATUS_OK != randomInitresult))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -91,10 +97,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_ELS_example)
 
 
     /* Generate random values of smaller amount than one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of drbg_buffer1 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult1, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer1,
                                                   sizeof(drbg_buffer1)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult1))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -103,10 +112,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of multiple of word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of drbg_buffer2 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult2, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer2,
                                                   sizeof(drbg_buffer2)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult2))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -125,10 +137,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_CtrDrbg_AES256_ELS_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     /* Generate random values of larger amount than but not multiple of one word size. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of drbg_buffer3 is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomGenerateresult3, token, mcuxClRandom_generate(
                                                   session,
                                                   drbg_buffer3,
                                                   sizeof(drbg_buffer3)));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate) != token) || (MCUXCLRANDOM_STATUS_OK != randomGenerateresult3))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClSession.h>          // Interface to the entire mcuxClSession component
@@ -30,18 +30,17 @@ static const uint8_t hashExpected[MCUXCLOSCCASM3_OUTPUT_SIZE_SM3] = {
                                         0x29, 0x7d, 0xa0, 0x2b, 0x8f, 0x4b, 0xa8, 0xe0
                                     };
 
-bool mcuxClOsccaSm3_oneshot_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm3_oneshot_example)
 {
     /**************************************************************************/
     /* Preparation                                                            */
     /**************************************************************************/
 
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
-
     /* Initialize session */
     mcuxClSession_Descriptor_t sessionDesc;
     mcuxClSession_Handle_t session = &sessionDesc;
@@ -73,12 +72,12 @@ bool mcuxClOsccaSm3_oneshot_example(void)
     /* Verification                                                           */
     /**************************************************************************/
 
-    if(hashOutputSize != sizeof(hash))
+    /* Check that the resulting hash size and data match the expectation */
+    if(MCUXCLOSCCASM3_OUTPUT_SIZE_SM3 != hashOutputSize)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    // Expect that the resulting hash matches our expected output
     if (!mcuxClCore_assertEqual(hash, hashExpected, sizeof(hash)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -93,7 +92,7 @@ bool mcuxClOsccaSm3_oneshot_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
