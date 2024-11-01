@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 NXP
+ * Copyright 2020-2022,2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,6 +11,7 @@
 #include "app.h"
 #include "mcuxCsslExamples.h"
 #include "els_hash.h"
+#include "mcux_els.h"
 
 /*******************************************************************************
  * Definitions
@@ -34,6 +35,13 @@ int main(void)
 
     /* Init board hardware. */
     BOARD_InitHardware();
+
+    /* Enable ELS and related clocks */
+    if (ELS_PowerDownWakeupInit(ELS) != kStatus_Success)
+    {
+        PRINTF("\r\nELS init failed\r\n");
+        return kStatus_Fail;
+    }
 
     PRINTF("\r\nELS hash example\r\n");
     PRINTF("\r\n============================\r\n");

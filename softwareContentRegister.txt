@@ -1,7 +1,8 @@
 --------------------------------------------
 NXP Software Content Register
 
-Package:                   SDK_V2.0.0.zip
+Package:                   ELS PKC
+Version:                   2.0.0
 Outgoing License:          LA_OPT_Online_Code_Hosting 
 License Files:             LA_OPT_Online_Code_Hosting.htm
 Type of content:           Static library, headers, examples, sources
