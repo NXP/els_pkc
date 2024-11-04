@@ -19,7 +19,7 @@ config MCUX_COMPONENT_component.els_pkc.doc.mcxn
 
 config MCUX_COMPONENT_component.els_pkc.doc.mimxrt
     bool "Component component.els_pkc.doc.mimxrt"
-    depends on MCUX_HW_DEVICE_MIMXRT798S
+    depends on MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
 
 config MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
     bool "Component component.els_pkc.static_lib.mcxn"
@@ -35,7 +35,7 @@ config MCUX_COMPONENT_component.els_pkc.static_lib.lpc
     
 config MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt
     bool "Component component.els_pkc.static_lib.mimxrt"
-    depends on MCUX_HW_DEVICE_MIMXRT798S
+    depends on MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
     
 config MCUX_COMPONENT_component.els_pkc.common
     bool "Component component.els_pkc.common"
@@ -389,7 +389,7 @@ config MCUX_COMPONENT_component.els_pkc
             select MCUX_COMPONENT_component.els_pkc.key_derivation
             select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
             select MCUX_COMPONENT_component.els_pkc.random_modes_hmacdrbg
-            depends on MCUX_HW_DEVICE_MIMXRT798S
+            depends on MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
             
       endchoice
     endif
@@ -451,7 +451,7 @@ config MCUX_COMPONENT_component.els_pkc.platform.mimxrt
     bool "Component component.els_pkc.platform.mimxrt"
     select MCUX_COMPONENT_component.els_pkc.glikey
     select MCUX_COMPONENT_component.els_pkc.trng.type_els
-    depends on MCUX_HW_DEVICE_MIMXRT798S
+    depends on MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
     
 config MCUX_COMPONENT_component.els_pkc.examples
     bool "Component component.els_pkc.examples"
@@ -481,7 +481,7 @@ config MCUX_COMPONENT_component.els_pkc.examples
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1"
             select MCUX_COMPONENT_component.els_pkc.examples_random_modes
-            depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236 || MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612 || MCUX_HW_DEVICE_MIMXRT798S
+            depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236 || MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612 || MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
             
       endchoice
     endif
