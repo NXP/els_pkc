@@ -1315,7 +1315,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.rsa)
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_ComputeD_FUP.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Functions.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Macros.h
-#                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_MemoryConsumption.h
+                src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_MemoryConsumption.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_PkcDefs.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_PkcTypes.h
                 src/comps/mcuxClRsa/inc/internal/mcuxClRsa_Internal_Types.h
