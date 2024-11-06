@@ -31,6 +31,7 @@ extern "C" {
 #include <internal/mcuxClEcc_Weier_Internal.h>
 #include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClKey_Types_Internal.h>
+#include <internal/mcuxClKey_Functions_Internal.h>
 #include <internal/mcuxClPsaDriver_ExternalMacroWrappers.h>
 
 #include "els_pkc_crypto_composites.h"
@@ -50,13 +51,13 @@ static inline bool key_type_is_raw_bytes( psa_key_type_t type )
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_aead_doesKeyPolicySupportAlg(const psa_key_attributes_t *attributes, psa_algorithm_t alg)
 {
-    return (MCUXCLPSADRIVER_PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(psa_get_key_algorithm(attributes)) == MCUXCLPSADRIVER_PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg));
+    return (MCUXCLPSADRIVER_PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(attributes->core.policy.alg) == MCUXCLPSADRIVER_PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG(alg));
 }
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_aead_isAlgSupported(const psa_key_attributes_t *attributes)
 {
-    return ((psa_get_key_type(attributes) == PSA_KEY_TYPE_AES)
-                && (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(psa_get_key_algorithm(attributes))));
+    return ((attributes->core.type == PSA_KEY_TYPE_AES)
+                && (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(attributes->core.policy.alg)));
 }
 
 static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectModeEnc(const psa_algorithm_t alg)
@@ -83,11 +84,10 @@ static inline mcuxClAead_Mode_t mcuxClPsaDriver_psa_driver_wrapper_aead_selectMo
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(const psa_key_attributes_t *attributes)
 {
-    psa_algorithm_t alg = psa_get_key_algorithm(attributes);
-    if( PSA_KEY_TYPE_AES == psa_get_key_type(attributes)
-               && (   PSA_ALG_ECB_NO_PADDING == alg
-                   || PSA_ALG_CBC_NO_PADDING == alg
-                   || PSA_ALG_CTR            == alg ))
+    if( PSA_KEY_TYPE_AES == attributes->core.type
+               && (   PSA_ALG_ECB_NO_PADDING == attributes->core.policy.alg
+                   || PSA_ALG_CBC_NO_PADDING == attributes->core.policy.alg
+                   || PSA_ALG_CTR            == attributes->core.policy.alg ))
     {
         return true;
     }
@@ -97,7 +97,7 @@ static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_isAlgSupported(cons
 
 static inline bool mcuxClPsaDriver_psa_driver_wrapper_cipher_doesKeyPolicySupportAlg(const psa_key_attributes_t *attributes, psa_algorithm_t alg)
 {
-    return (psa_get_key_algorithm(attributes) == alg);
+    return (attributes->core.policy.alg == alg);
 }
 
 static inline uint8_t mcuxClPsaDriver_psa_driver_wrapper_cipher_modeSelectEnc(const psa_algorithm_t alg,
@@ -509,6 +509,21 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_exportKey(
     uint8_t *data,
     size_t data_size,
     size_t *data_length);
+
+
+/* Inline functions for proper type casts */
+
+/**
+ * @brief Cast a key decriptor's auxilary data pointer to a pointer to psa_key_attributes_t.
+ *
+ * @param pKey    Pointer to the key descriptor.
+ */
+static inline psa_key_attributes_t* mcuxClPsaDriver_castAuxDataToKeyAttributes(mcuxClKey_Descriptor_t *pKey)
+{
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    return (psa_key_attributes_t *) mcuxClKey_getAuxData(pKey);
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+}
 
 /**
  * @}

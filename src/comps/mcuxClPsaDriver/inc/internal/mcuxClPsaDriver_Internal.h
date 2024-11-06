@@ -67,12 +67,12 @@
 
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_Sign function */
 #define MCUXCLPSADRIVER_SIGN_BY_CLNS_WAPKC_SIZE_MAX  \
-            MCUXCLCORE_MAX(MCUXCLRSA_SIGN_CRT_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), \
-                               MCUXCLECC_SIGN_WACPU_SIZE)
+            MCUXCLCORE_MAX(MCUXCLCORE_MAX(MCUXCLRSA_SIGN_CRT_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), MCUXCLRSA_SIGN_PLAIN_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX)), \
+                               MCUXCLECC_SIGN_WAPKC_SIZE_640)
 
 /* Macro determining maximum size of PKC workarea size for mcuxClPsaDriver_Verify function */
 #define MCUXCLPSADRIVER_VERIFY_BY_CLNS_WAPKC_SIZE_MAX  \
-            MCUXCLCORE_MAX(MCUXCLRSA_VERIFY_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), MCUXCLECC_VERIFY_WACPU_SIZE)
+            MCUXCLCORE_MAX(MCUXCLRSA_VERIFY_WAPKC_SIZE(MCUXCLPSADRIVER_RSA_KEY_SIZE_MAX), MCUXCLECC_VERIFY_WAPKC_SIZE_640)
 
 /* Macro determining maximum size of CPU workarea size for mcuxClPsaDriver_generate_rsa_key function */
 #define MCUXCLPSADRIVER_RSA_KEY_GEN_BY_CLNS_WACPU_SIZE_MAX  \
@@ -100,7 +100,7 @@ typedef struct
 {
     mcuxClAeadModes_Context_t ctx;
     mcuxClKey_Descriptor_t keydesc;
-    uint8_t keyAttributes[MCUXCLPSADRIVER_AEAD_KEYATT_SIZE];
+    uint32_t keyAttributes[MCUXCLPSADRIVER_AEAD_KEYATT_SIZE / sizeof(uint32_t)];
 } mcuxClPsaDriver_ClnsData_Aead_t;
 
 typedef struct

@@ -22,6 +22,7 @@
 #include <mcuxClSession.h>
 #include <mcuxClBuffer.h>
 #include <mcuxClRandom.h>
+#include <internal/mcuxClRandom_Internal_Functions.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClMemory_Copy.h>
 #include <mcuxClPsaDriver.h>
@@ -33,210 +34,6 @@
 #include <internal/mcuxClEcc_Mont_Internal.h>
 #include <internal/mcuxClPsaDriver_ExternalMacroWrappers.h>
 
-#include <mcuxClPkc_Operations.h>
-#include <mcuxClMath_Functions.h>
-#include <mcuxClSession_Internal.h>
-
-#define ASSERT_CALLED_OR_EXIT(call, func, retval)                            \
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, call);                   \
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(func) != token) || (retval != result)) \
-    {                                                                        \
-        ret = PSA_ERROR_GENERIC_ERROR;                                       \
-        goto exit;                                                           \
-    }                                                                        \
-    MCUX_CSSL_FP_FUNCTION_CALL_END()
-
-#define ASSERT_CALLED_VOID_OR_EXIT(call, func)          \
-    MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, call); \
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(func) != token))  \
-    {                                                   \
-        ret = PSA_ERROR_GENERIC_ERROR;                  \
-        goto exit;                                      \
-    }                                                   \
-    MCUX_CSSL_FP_FUNCTION_CALL_END()
-
-// clang-format off
-#define MCUXCLPSADRIVER_DHM_RFC7919_FFDHE2048_P_BIN {   \
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, \
-        0xAD, 0xF8, 0x54, 0x58, 0xA2, 0xBB, 0x4A, 0x9A, \
-        0xAF, 0xDC, 0x56, 0x20, 0x27, 0x3D, 0x3C, 0xF1, \
-        0xD8, 0xB9, 0xC5, 0x83, 0xCE, 0x2D, 0x36, 0x95, \
-        0xA9, 0xE1, 0x36, 0x41, 0x14, 0x64, 0x33, 0xFB, \
-        0xCC, 0x93, 0x9D, 0xCE, 0x24, 0x9B, 0x3E, 0xF9, \
-        0x7D, 0x2F, 0xE3, 0x63, 0x63, 0x0C, 0x75, 0xD8, \
-        0xF6, 0x81, 0xB2, 0x02, 0xAE, 0xC4, 0x61, 0x7A, \
-        0xD3, 0xDF, 0x1E, 0xD5, 0xD5, 0xFD, 0x65, 0x61, \
-        0x24, 0x33, 0xF5, 0x1F, 0x5F, 0x06, 0x6E, 0xD0, \
-        0x85, 0x63, 0x65, 0x55, 0x3D, 0xED, 0x1A, 0xF3, \
-        0xB5, 0x57, 0x13, 0x5E, 0x7F, 0x57, 0xC9, 0x35, \
-        0x98, 0x4F, 0x0C, 0x70, 0xE0, 0xE6, 0x8B, 0x77, \
-        0xE2, 0xA6, 0x89, 0xDA, 0xF3, 0xEF, 0xE8, 0x72, \
-        0x1D, 0xF1, 0x58, 0xA1, 0x36, 0xAD, 0xE7, 0x35, \
-        0x30, 0xAC, 0xCA, 0x4F, 0x48, 0x3A, 0x79, 0x7A, \
-        0xBC, 0x0A, 0xB1, 0x82, 0xB3, 0x24, 0xFB, 0x61, \
-        0xD1, 0x08, 0xA9, 0x4B, 0xB2, 0xC8, 0xE3, 0xFB, \
-        0xB9, 0x6A, 0xDA, 0xB7, 0x60, 0xD7, 0xF4, 0x68, \
-        0x1D, 0x4F, 0x42, 0xA3, 0xDE, 0x39, 0x4D, 0xF4, \
-        0xAE, 0x56, 0xED, 0xE7, 0x63, 0x72, 0xBB, 0x19, \
-        0x0B, 0x07, 0xA7, 0xC8, 0xEE, 0x0A, 0x6D, 0x70, \
-        0x9E, 0x02, 0xFC, 0xE1, 0xCD, 0xF7, 0xE2, 0xEC, \
-        0xC0, 0x34, 0x04, 0xCD, 0x28, 0x34, 0x2F, 0x61, \
-        0x91, 0x72, 0xFE, 0x9C, 0xE9, 0x85, 0x83, 0xFF, \
-        0x8E, 0x4F, 0x12, 0x32, 0xEE, 0xF2, 0x81, 0x83, \
-        0xC3, 0xFE, 0x3B, 0x1B, 0x4C, 0x6F, 0xAD, 0x73, \
-        0x3B, 0xB5, 0xFC, 0xBC, 0x2E, 0xC2, 0x20, 0x05, \
-        0xC5, 0x8E, 0xF1, 0x83, 0x7D, 0x16, 0x83, 0xB2, \
-        0xC6, 0xF3, 0x4A, 0x26, 0xC1, 0xB2, 0xEF, 0xFA, \
-        0x88, 0x6B, 0x42, 0x38, 0x61, 0x28, 0x5C, 0x97, \
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, }
-
-#define MCUXCLPSADRIVER_DHM_RFC7919_FFDHE3072_P_BIN {   \
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, \
-        0xAD, 0xF8, 0x54, 0x58, 0xA2, 0xBB, 0x4A, 0x9A, \
-        0xAF, 0xDC, 0x56, 0x20, 0x27, 0x3D, 0x3C, 0xF1, \
-        0xD8, 0xB9, 0xC5, 0x83, 0xCE, 0x2D, 0x36, 0x95, \
-        0xA9, 0xE1, 0x36, 0x41, 0x14, 0x64, 0x33, 0xFB, \
-        0xCC, 0x93, 0x9D, 0xCE, 0x24, 0x9B, 0x3E, 0xF9, \
-        0x7D, 0x2F, 0xE3, 0x63, 0x63, 0x0C, 0x75, 0xD8, \
-        0xF6, 0x81, 0xB2, 0x02, 0xAE, 0xC4, 0x61, 0x7A, \
-        0xD3, 0xDF, 0x1E, 0xD5, 0xD5, 0xFD, 0x65, 0x61, \
-        0x24, 0x33, 0xF5, 0x1F, 0x5F, 0x06, 0x6E, 0xD0, \
-        0x85, 0x63, 0x65, 0x55, 0x3D, 0xED, 0x1A, 0xF3, \
-        0xB5, 0x57, 0x13, 0x5E, 0x7F, 0x57, 0xC9, 0x35, \
-        0x98, 0x4F, 0x0C, 0x70, 0xE0, 0xE6, 0x8B, 0x77, \
-        0xE2, 0xA6, 0x89, 0xDA, 0xF3, 0xEF, 0xE8, 0x72, \
-        0x1D, 0xF1, 0x58, 0xA1, 0x36, 0xAD, 0xE7, 0x35, \
-        0x30, 0xAC, 0xCA, 0x4F, 0x48, 0x3A, 0x79, 0x7A, \
-        0xBC, 0x0A, 0xB1, 0x82, 0xB3, 0x24, 0xFB, 0x61, \
-        0xD1, 0x08, 0xA9, 0x4B, 0xB2, 0xC8, 0xE3, 0xFB, \
-        0xB9, 0x6A, 0xDA, 0xB7, 0x60, 0xD7, 0xF4, 0x68, \
-        0x1D, 0x4F, 0x42, 0xA3, 0xDE, 0x39, 0x4D, 0xF4, \
-        0xAE, 0x56, 0xED, 0xE7, 0x63, 0x72, 0xBB, 0x19, \
-        0x0B, 0x07, 0xA7, 0xC8, 0xEE, 0x0A, 0x6D, 0x70, \
-        0x9E, 0x02, 0xFC, 0xE1, 0xCD, 0xF7, 0xE2, 0xEC, \
-        0xC0, 0x34, 0x04, 0xCD, 0x28, 0x34, 0x2F, 0x61, \
-        0x91, 0x72, 0xFE, 0x9C, 0xE9, 0x85, 0x83, 0xFF, \
-        0x8E, 0x4F, 0x12, 0x32, 0xEE, 0xF2, 0x81, 0x83, \
-        0xC3, 0xFE, 0x3B, 0x1B, 0x4C, 0x6F, 0xAD, 0x73, \
-        0x3B, 0xB5, 0xFC, 0xBC, 0x2E, 0xC2, 0x20, 0x05, \
-        0xC5, 0x8E, 0xF1, 0x83, 0x7D, 0x16, 0x83, 0xB2, \
-        0xC6, 0xF3, 0x4A, 0x26, 0xC1, 0xB2, 0xEF, 0xFA, \
-        0x88, 0x6B, 0x42, 0x38, 0x61, 0x1F, 0xCF, 0xDC, \
-        0xDE, 0x35, 0x5B, 0x3B, 0x65, 0x19, 0x03, 0x5B, \
-        0xBC, 0x34, 0xF4, 0xDE, 0xF9, 0x9C, 0x02, 0x38, \
-        0x61, 0xB4, 0x6F, 0xC9, 0xD6, 0xE6, 0xC9, 0x07, \
-        0x7A, 0xD9, 0x1D, 0x26, 0x91, 0xF7, 0xF7, 0xEE, \
-        0x59, 0x8C, 0xB0, 0xFA, 0xC1, 0x86, 0xD9, 0x1C, \
-        0xAE, 0xFE, 0x13, 0x09, 0x85, 0x13, 0x92, 0x70, \
-        0xB4, 0x13, 0x0C, 0x93, 0xBC, 0x43, 0x79, 0x44, \
-        0xF4, 0xFD, 0x44, 0x52, 0xE2, 0xD7, 0x4D, 0xD3, \
-        0x64, 0xF2, 0xE2, 0x1E, 0x71, 0xF5, 0x4B, 0xFF, \
-        0x5C, 0xAE, 0x82, 0xAB, 0x9C, 0x9D, 0xF6, 0x9E, \
-        0xE8, 0x6D, 0x2B, 0xC5, 0x22, 0x36, 0x3A, 0x0D, \
-        0xAB, 0xC5, 0x21, 0x97, 0x9B, 0x0D, 0xEA, 0xDA, \
-        0x1D, 0xBF, 0x9A, 0x42, 0xD5, 0xC4, 0x48, 0x4E, \
-        0x0A, 0xBC, 0xD0, 0x6B, 0xFA, 0x53, 0xDD, 0xEF, \
-        0x3C, 0x1B, 0x20, 0xEE, 0x3F, 0xD5, 0x9D, 0x7C, \
-        0x25, 0xE4, 0x1D, 0x2B, 0x66, 0xC6, 0x2E, 0x37, \
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-
-#define MCUXCLPSADRIVER_DHM_RFC7919_FFDHE4096_P_BIN {   \
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, \
-        0xAD, 0xF8, 0x54, 0x58, 0xA2, 0xBB, 0x4A, 0x9A, \
-        0xAF, 0xDC, 0x56, 0x20, 0x27, 0x3D, 0x3C, 0xF1, \
-        0xD8, 0xB9, 0xC5, 0x83, 0xCE, 0x2D, 0x36, 0x95, \
-        0xA9, 0xE1, 0x36, 0x41, 0x14, 0x64, 0x33, 0xFB, \
-        0xCC, 0x93, 0x9D, 0xCE, 0x24, 0x9B, 0x3E, 0xF9, \
-        0x7D, 0x2F, 0xE3, 0x63, 0x63, 0x0C, 0x75, 0xD8, \
-        0xF6, 0x81, 0xB2, 0x02, 0xAE, 0xC4, 0x61, 0x7A, \
-        0xD3, 0xDF, 0x1E, 0xD5, 0xD5, 0xFD, 0x65, 0x61, \
-        0x24, 0x33, 0xF5, 0x1F, 0x5F, 0x06, 0x6E, 0xD0, \
-        0x85, 0x63, 0x65, 0x55, 0x3D, 0xED, 0x1A, 0xF3, \
-        0xB5, 0x57, 0x13, 0x5E, 0x7F, 0x57, 0xC9, 0x35, \
-        0x98, 0x4F, 0x0C, 0x70, 0xE0, 0xE6, 0x8B, 0x77, \
-        0xE2, 0xA6, 0x89, 0xDA, 0xF3, 0xEF, 0xE8, 0x72, \
-        0x1D, 0xF1, 0x58, 0xA1, 0x36, 0xAD, 0xE7, 0x35, \
-        0x30, 0xAC, 0xCA, 0x4F, 0x48, 0x3A, 0x79, 0x7A, \
-        0xBC, 0x0A, 0xB1, 0x82, 0xB3, 0x24, 0xFB, 0x61, \
-        0xD1, 0x08, 0xA9, 0x4B, 0xB2, 0xC8, 0xE3, 0xFB, \
-        0xB9, 0x6A, 0xDA, 0xB7, 0x60, 0xD7, 0xF4, 0x68, \
-        0x1D, 0x4F, 0x42, 0xA3, 0xDE, 0x39, 0x4D, 0xF4, \
-        0xAE, 0x56, 0xED, 0xE7, 0x63, 0x72, 0xBB, 0x19, \
-        0x0B, 0x07, 0xA7, 0xC8, 0xEE, 0x0A, 0x6D, 0x70, \
-        0x9E, 0x02, 0xFC, 0xE1, 0xCD, 0xF7, 0xE2, 0xEC, \
-        0xC0, 0x34, 0x04, 0xCD, 0x28, 0x34, 0x2F, 0x61, \
-        0x91, 0x72, 0xFE, 0x9C, 0xE9, 0x85, 0x83, 0xFF, \
-        0x8E, 0x4F, 0x12, 0x32, 0xEE, 0xF2, 0x81, 0x83, \
-        0xC3, 0xFE, 0x3B, 0x1B, 0x4C, 0x6F, 0xAD, 0x73, \
-        0x3B, 0xB5, 0xFC, 0xBC, 0x2E, 0xC2, 0x20, 0x05, \
-        0xC5, 0x8E, 0xF1, 0x83, 0x7D, 0x16, 0x83, 0xB2, \
-        0xC6, 0xF3, 0x4A, 0x26, 0xC1, 0xB2, 0xEF, 0xFA, \
-        0x88, 0x6B, 0x42, 0x38, 0x61, 0x1F, 0xCF, 0xDC, \
-        0xDE, 0x35, 0x5B, 0x3B, 0x65, 0x19, 0x03, 0x5B, \
-        0xBC, 0x34, 0xF4, 0xDE, 0xF9, 0x9C, 0x02, 0x38, \
-        0x61, 0xB4, 0x6F, 0xC9, 0xD6, 0xE6, 0xC9, 0x07, \
-        0x7A, 0xD9, 0x1D, 0x26, 0x91, 0xF7, 0xF7, 0xEE, \
-        0x59, 0x8C, 0xB0, 0xFA, 0xC1, 0x86, 0xD9, 0x1C, \
-        0xAE, 0xFE, 0x13, 0x09, 0x85, 0x13, 0x92, 0x70, \
-        0xB4, 0x13, 0x0C, 0x93, 0xBC, 0x43, 0x79, 0x44, \
-        0xF4, 0xFD, 0x44, 0x52, 0xE2, 0xD7, 0x4D, 0xD3, \
-        0x64, 0xF2, 0xE2, 0x1E, 0x71, 0xF5, 0x4B, 0xFF, \
-        0x5C, 0xAE, 0x82, 0xAB, 0x9C, 0x9D, 0xF6, 0x9E, \
-        0xE8, 0x6D, 0x2B, 0xC5, 0x22, 0x36, 0x3A, 0x0D, \
-        0xAB, 0xC5, 0x21, 0x97, 0x9B, 0x0D, 0xEA, 0xDA, \
-        0x1D, 0xBF, 0x9A, 0x42, 0xD5, 0xC4, 0x48, 0x4E, \
-        0x0A, 0xBC, 0xD0, 0x6B, 0xFA, 0x53, 0xDD, 0xEF, \
-        0x3C, 0x1B, 0x20, 0xEE, 0x3F, 0xD5, 0x9D, 0x7C, \
-        0x25, 0xE4, 0x1D, 0x2B, 0x66, 0x9E, 0x1E, 0xF1, \
-        0x6E, 0x6F, 0x52, 0xC3, 0x16, 0x4D, 0xF4, 0xFB, \
-        0x79, 0x30, 0xE9, 0xE4, 0xE5, 0x88, 0x57, 0xB6, \
-        0xAC, 0x7D, 0x5F, 0x42, 0xD6, 0x9F, 0x6D, 0x18, \
-        0x77, 0x63, 0xCF, 0x1D, 0x55, 0x03, 0x40, 0x04, \
-        0x87, 0xF5, 0x5B, 0xA5, 0x7E, 0x31, 0xCC, 0x7A, \
-        0x71, 0x35, 0xC8, 0x86, 0xEF, 0xB4, 0x31, 0x8A, \
-        0xED, 0x6A, 0x1E, 0x01, 0x2D, 0x9E, 0x68, 0x32, \
-        0xA9, 0x07, 0x60, 0x0A, 0x91, 0x81, 0x30, 0xC4, \
-        0x6D, 0xC7, 0x78, 0xF9, 0x71, 0xAD, 0x00, 0x38, \
-        0x09, 0x29, 0x99, 0xA3, 0x33, 0xCB, 0x8B, 0x7A, \
-        0x1A, 0x1D, 0xB9, 0x3D, 0x71, 0x40, 0x00, 0x3C, \
-        0x2A, 0x4E, 0xCE, 0xA9, 0xF9, 0x8D, 0x0A, 0xCC, \
-        0x0A, 0x82, 0x91, 0xCD, 0xCE, 0xC9, 0x7D, 0xCF, \
-        0x8E, 0xC9, 0xB5, 0x5A, 0x7F, 0x88, 0xA4, 0x6B, \
-        0x4D, 0xB5, 0xA8, 0x51, 0xF4, 0x41, 0x82, 0xE1, \
-        0xC6, 0x8A, 0x00, 0x7E, 0x5E, 0x65, 0x5F, 0x6A, \
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-// clang-format on
-
-static const unsigned char dhm_P_2048[] = MCUXCLPSADRIVER_DHM_RFC7919_FFDHE2048_P_BIN;
-static const unsigned char dhm_P_3072[] = MCUXCLPSADRIVER_DHM_RFC7919_FFDHE3072_P_BIN;
-static const unsigned char dhm_P_4096[] = MCUXCLPSADRIVER_DHM_RFC7919_FFDHE4096_P_BIN;
-
-// The following operands are used for calculation of the
-// modular exponentiation for DH key agreement.
-#define MCUXCLPSADRIVER_DHM_OP_X  0u
-#define MCUXCLPSADRIVER_DHM_OP_R  1u
-#define MCUXCLPSADRIVER_DHM_OP_N  2u
-#define MCUXCLPSADRIVER_DHM_OP_T0 3u
-#define MCUXCLPSADRIVER_DHM_OP_T1 4u
-#define MCUXCLPSADRIVER_DHM_OP_T2 5u
-#define MCUXCLPSADRIVER_DHM_OP_T3 6u
-#define MCUXCLPSADRIVER_DHM_OP_TE 7u
-
-// The following ones are used only during calcualtion of montgomery
-// representation of N and for transforming the result back. Those can
-// be overlayed with (temp) buffers from the exponentiation
-// to save memory in PKC RAM.
-#define MCUXCLPSADRIVER_DHM_NUM_OPERANDS 8u
-#define MCUXCLPSADRIVER_DHM_OP_S         MCUXCLPSADRIVER_DHM_OP_T0
-#define MCUXCLPSADRIVER_DHM_OP_Q2        MCUXCLPSADRIVER_DHM_OP_T1
-#define MCUXCLPSADRIVER_DHM_OP_T         MCUXCLPSADRIVER_DHM_OP_T2
-
-// The max supported modulus for accelerated DHM is 4096 bits (due to memory
-// constraints). Now depending on which recomendation is applied the corresponding
-// recommended bit size of the private key (= exponent) varies quite a bit.
-// However 512 bit is a good upper bound with a big margin.
-#define MCUXCLPSADRIVER_DHM_MAX_EXPONENT_SIZE_BYTES (512U / 8U)
-#define MCUXCLPSADRIVER_DHM_WACPU_SIZE              (MCUXCLPSADRIVER_DHM_MAX_EXPONENT_SIZE_BYTES + sizeof(uint32_t))
 
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t *output,
                                                                        size_t output_size )
@@ -246,11 +43,13 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
     /* Allocate workarea space */
     uint32_t cpuWorkarea[MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)];
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retSessionInit, tokenSessionInit, mcuxClSession_init(&session,
                                                                      cpuWorkarea,
                                                                      MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE,
                                                                      NULL,
                                                                      0u));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != tokenSessionInit) || (MCUXCLSESSION_STATUS_OK != retSessionInit))
     {
@@ -278,7 +77,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retRandomInit, tokenRandInit, mcuxClRandom_init(
                                                   &session,
-                                                  (mcuxClRandom_Context_t)rng_ctx,
+                                                  mcuxClRandom_castToContext(rng_ctx),
                                                   randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != tokenRandInit) || (MCUXCLRANDOM_STATUS_OK != retRandomInit))
     {
@@ -394,7 +193,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_createClKey(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
+        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
     if(out_key_descriptor == NULL)
     {
@@ -427,7 +226,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     else
     {
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned")
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned per user guidance.")
         mcuxClKey_setLoadedKeyData(out_key_descriptor, (uint32_t *) key_buffer);
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -441,7 +240,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
     keyTypeDesc.info = NULL;
     MCUX_CSSL_ANALYSIS_START_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
-    switch(psa_get_key_type(attributes)) {
+    switch(attributes->core.type) {
         case PSA_KEY_TYPE_AES:
             switch(mcuxClKey_getLoadedKeyLength(out_key_descriptor)) {
                 case 16u:
@@ -489,7 +288,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_MONTGOMERY):
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_TWISTED_EDWARDS):
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_KEY_PAIR; // not really needed for ECC operation for now
-            keyTypeDesc.size = ((mcuxClKey_Size_t) psa_get_key_bits(attributes)  + 7u) / 8u; // not really needed for ECC operation for now
+            keyTypeDesc.size = ((mcuxClKey_Size_t) attributes->core.bits + 7u) / 8u; // not really needed for ECC operation for now
             MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
             MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -500,7 +299,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_MONTGOMERY):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_TWISTED_EDWARDS):
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP + MCUXCLKEY_ALGO_ID_PUBLIC_KEY;
-            keyTypeDesc.size = ((mcuxClKey_Size_t) psa_get_key_bits(attributes) + 7u) / 8u;
+            keyTypeDesc.size = ((mcuxClKey_Size_t) attributes->core.bits + 7u) / 8u;
             MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
             keyTypeDesc.info = (void *) mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
             MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -510,13 +309,13 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         case PSA_KEY_TYPE_RSA_KEY_PAIR:
             // for now only keys in LOCAL_STORAGE are supported
             keyTypeDesc.algoId = MCUXCLKEY_ALGO_ID_RSA;
-            keyTypeDesc.size = ((mcuxClKey_Size_t) psa_get_key_bits(attributes) + 7u) / 8u;
+            keyTypeDesc.size = ((mcuxClKey_Size_t) attributes->core.bits + 7u) / 8u;
 
             if( MCUXCLKEY_LOADSTATUS_MEMORY != mcuxClKey_getLoadStatus(out_key_descriptor) )
             {
                 return PSA_ERROR_NOT_SUPPORTED;
             }
-            if((psa_get_key_type(attributes) & PSA_KEY_TYPE_CATEGORY_FLAG_PAIR) == PSA_KEY_TYPE_CATEGORY_FLAG_PAIR)
+            if((attributes->core.type & PSA_KEY_TYPE_CATEGORY_FLAG_PAIR) == PSA_KEY_TYPE_CATEGORY_FLAG_PAIR)
             {
                 keyTypeDesc.algoId |= MCUXCLKEY_ALGO_ID_KEY_PAIR;
             }
@@ -544,15 +343,16 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     return PSA_SUCCESS;
 }
 
-// Keeping the implementation for future reference and use.
-#if 0
 static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     const psa_key_attributes_t *attributes,
     mcuxClEls_KeyIndex_t key_index_private_key,
     uint8_t * public_key_buffer, uint32_t public_key_buffer_size)
 {
     size_t bitLength = psa_get_key_bits(attributes);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Converting the bit-length of a cryptographic key to its byte-length cannot wrap.")
     size_t bytes = (size_t)MCUXCLPSADRIVER_BITS_TO_BYTES(bitLength);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+
     if(public_key_buffer_size < (2u * bytes))
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
@@ -564,25 +364,30 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
 
     mcuxClEls_KeyProp_t  keyProp;
     keyProp.word.value       = 0;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     keyProp.bits.ksize       = MCUXCLELS_KEYPROPERTY_KEY_SIZE_256;
     keyProp.bits.kactv       = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
     keyProp.bits.ukgsrc      = MCUXCLELS_KEYPROPERTY_INPUT_FOR_ECC_TRUE;
     keyProp.bits.upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE;
     keyProp.bits.upprot_sec  = MCUXCLELS_KEYPROPERTY_SECURE_FALSE;
     keyProp.bits.wrpok       = MCUXCLELS_KEYPROPERTY_WRAP_TRUE;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     mcuxClEls_EccKeyGenOption_t KeyGenOptions;
     KeyGenOptions.word.value    = 0u;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     KeyGenOptions.bits.kgsign   = MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE;
     KeyGenOptions.bits.kgtypedh = MCUXCLELS_ECC_OUTPUTKEY_SIGN;
     KeyGenOptions.bits.kgsrc    = MCUXCLELS_ECC_OUTPUTKEY_RANDOM;
     KeyGenOptions.bits.skip_pbk = MCUXCLELS_ECC_GEN_PUBLIC_KEY;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     /*Step 1:
         Generate Key pair:
         - Private key will be stored in ELS's KeyStore
         - Public Key will be stored in external RAM
     */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyGen_Async( // Perform key generation.
             KeyGenOptions,                   // Set the prepared configuration.
             (mcuxClEls_KeyIndex_t) 0U,        // This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.
@@ -591,6 +396,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
             NULL,                            // No random data is provided
             public_key_buffer                // Output buffer, which the operation will write the public key to.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -608,7 +414,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
 
     return PSA_SUCCESS;
 }
-#endif
+
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
@@ -617,10 +423,16 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    psa_key_type_t type = psa_get_key_type(attributes);
+    psa_key_type_t type = attributes->core.type;
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION(psa_get_key_lifetime(attributes));
-    mcuxClEls_KeyIndex_t index;
+        PSA_KEY_LIFETIME_GET_LOCATION(attributes->core.lifetime);
+
+    if((attributes->domain_parameters == NULL) &&
+        (attributes->domain_parameters_size != 0u))
+    {
+        return PSA_ERROR_INVALID_ARGUMENT;
+    }
+
     /* Step 1:
        Allocate storage for a key to be generated
     */
@@ -645,7 +457,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     else
     {
         /* local storage - setup loaded key with buffer from caller */
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned")
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned per user guidance.")
         mcuxClKey_setLoadedKeyData(&key, (uint32_t *)key_buffer);
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
         mcuxClKey_setLoadedKeyLength(&key, (uint32_t)key_buffer_size);
@@ -657,23 +469,20 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     */
     if(MCUXCLKEY_LOADSTATUS_COPRO == mcuxClKey_getLoadStatus(&key))
     {
-        /* We can't use direct KEYGEN command over here as the RFC3394
-         * blob which will be generated only contains ECC Private key and
-         * we don't have a way to recreate the public key after unload/reset.
-         * Hence we indirectly create this random key in ELS slot.
-         */
-        status = mcuxClPsaDriver_Oracle_generate_s50_random_key(
+        /* LoadedKeyData serves as a throw-away buffer for the public key.
+           The private key will be kept in the given key slot of the keystore. */
+
+        status = mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
             /* const psa_key_attributes_t *attributes:     */ attributes,
-            /* mcuxClEls_KeyIndex_t key_index_private_key:  */ &index);
+            /* mcuxClEls_KeyIndex_t key_index_private_key:  */ mcuxClKey_getLoadedKeySlot(&key),
+            /* uint8_t *public_key_buffer:                 */ mcuxClKey_getLoadedKeyData(&key),
+            /* uint32_t public_key_buffer_size:            */ mcuxClKey_getLoadedKeyLength(&key)
+        );
 
         if(status != PSA_SUCCESS)
         {
-             /* key stored in orace - call Orcale to free memory reserved for the key */
-            mcuxClPsaDriver_Oracle_FreeKey(&key);
             return status;
         }
-        
-        mcuxClKey_setLoadedKeySlot(&key, index);
     }
     else /* MCUXCLKEY_LOADSTATUS_MEMORY */
     {
@@ -726,17 +535,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             return status;
         }
         *key_buffer_length = mcuxClKey_getKeyContainerUsedSize(&key);
-        
-        /* Unload the Key from slot after usage.
-         * We have limited ELS Slots so unload the key at this point.
-         * RFC blob of the key has been stored in key buffer which can
-         * be loaded at time of use. This can be removed once we have the capability
-         * in key slot manager to free a slot automatically */
-        status = mcuxClPsaDriver_Oracle_UnloadKey(&key);
-        if(PSA_SUCCESS != status)
-        {
-            return status;
-        }
     }
     /* Note: For keys in local storage no additional store or copy operation is needed,
              because the key_buffer was already used during the key generation. */
@@ -751,11 +549,11 @@ const mcuxClEcc_Weier_DomainParams_t* mcuxClPsaDriver_psa_driver_wrapper_getEccD
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     MCUX_CSSL_ANALYSIS_START_PATTERN_SWITCH_STATEMENT_RETURN_TERMINATION()
-    switch(psa_get_key_type(attributes))
+    switch(attributes->core.type)
     {
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_R1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_R1):
-            switch((uint32_t)(MCUXCLPSADRIVER_BITS_TO_BYTES((uint32_t)psa_get_key_bits(attributes)))) {
+            switch((uint32_t)(MCUXCLPSADRIVER_BITS_TO_BYTES((uint32_t)attributes->core.bits))) {
                 case MCUXCLKEY_SIZE_192:
                     return &mcuxClEcc_Weier_DomainParams_secp192r1;
                 case MCUXCLKEY_SIZE_224:
@@ -771,7 +569,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             }
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_SECP_K1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_K1):
-            switch((uint32_t)(MCUXCLPSADRIVER_BITS_TO_BYTES((uint32_t)psa_get_key_bits(attributes)))) {
+            switch((uint32_t)(MCUXCLPSADRIVER_BITS_TO_BYTES((uint32_t)attributes->core.bits))) {
                 case MCUXCLKEY_SIZE_192:
                     return &mcuxClEcc_Weier_DomainParams_secp192k1;
                 case MCUXCLKEY_SIZE_224:
@@ -783,7 +581,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             }
         case PSA_KEY_TYPE_ECC_KEY_PAIR(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
         case PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_BRAINPOOL_P_R1):
-            switch((uint32_t)(MCUXCLPSADRIVER_BITS_TO_BYTES((uint32_t)psa_get_key_bits(attributes)))) {
+            switch((uint32_t)(MCUXCLPSADRIVER_BITS_TO_BYTES((uint32_t)attributes->core.bits))) {
                 case MCUXCLKEY_SIZE_160:
                     return &mcuxClEcc_Weier_DomainParams_brainpoolP160r1;
                 case MCUXCLKEY_SIZE_192:
@@ -853,57 +651,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     return psa_status;
 }
 
-static size_t calc_bitlen_be(const uint8_t *n, size_t len)
-{
-    size_t zeros = 0;
-    for (size_t i = 0; i < len; i++)
-    {
-        if (n[i] == 0u)
-        {
-            zeros += 8u;
-        }
-        else
-        {
-            uint8_t mask = 0x80u;
-            for (size_t j = 0u; j < 8u; j++)
-            {
-                if ((n[i] & mask) == 0u)
-                {
-                    zeros += 1u;
-                }
-                else
-                {
-                    return len * 8u - zeros;
-                }
-                mask >>= 1;
-            }
-        }
-    }
-    return len * 8u - zeros;
-}
-
-static size_t sz_max(size_t a, size_t b)
-{
-    if (a > b)
-    {
-        return a;
-    }
-    return b;
-}
-
-static void reverse_and_copy(uint8_t *dst, size_t dst_len, const uint8_t *src, size_t src_len, size_t copy_len)
-{
-    src = src + src_len;
-    for (size_t i = 0; i < copy_len; i++)
-    {
-        *dst++ = *(--src);
-    }
-    if (dst_len > copy_len)
-    {
-        (void)memset(dst, 0, dst_len - copy_len);
-    }
-}
-
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_agreement_internal(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
@@ -917,14 +664,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     size_t shared_secret_size,
     size_t *shared_secret_length)
 {
-    uint32_t pCpuWa[MCUXCLCORE_MAX(MCUXCLCORE_MAX(MCUXCLCORE_MAX(MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE,
-                                MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE),
-                            MCUXCLECC_POINTMULT_WACPU_SIZE),
-                        MCUXCLPSADRIVER_DHM_WACPU_SIZE) /
-                    (sizeof(uint32_t))];
     if(PSA_ALG_IS_ECDH(alg))
     {
-        if (!PSA_KEY_TYPE_IS_ECC_KEY_PAIR(psa_get_key_type(attributes)))
+        if (!PSA_KEY_TYPE_IS_ECC_KEY_PAIR(attributes->core.type))
         {
             return PSA_ERROR_INVALID_ARGUMENT;
         }
@@ -940,6 +682,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         //For Montgomery curves
         if(PSA_ECC_FAMILY_MONTGOMERY == curve)
         {
+            if(attributes->domain_parameters_size != 0u)
+            {
+                return PSA_ERROR_INVALID_ARGUMENT;
+            }
+
             /* Curve448 */
             if(MCUXCLECC_MONTDH_CURVE448_SIZE_PRIVATEKEY == privateKeySize)
             {
@@ -947,9 +694,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 {
                     return PSA_ERROR_INVALID_ARGUMENT;
                 }
+
+                uint32_t pCpuWa[MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE / (sizeof(uint32_t))];
                 /* Initialize session with pkcWA on the beginning of PKC RAM */
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE,
-                                        (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WAPKC_SIZE));
+                                        mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WAPKC_SIZE));
 
 
                 if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -966,10 +715,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privateKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t privKeyHandler = mcuxClKey_castToKeyHandle(privateKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -983,10 +730,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t pubKeyHandler = mcuxClKey_castToKeyHandle(pubKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -1038,9 +783,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 {
                     return PSA_ERROR_INVALID_ARGUMENT;
                 }
+
+                uint32_t pCpuWa[MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE / (sizeof(uint32_t))];
                 /* Initialize session with pkcWA on the beginning of PKC RAM */
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE,
-                                        (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE));
+                                        mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE));
 
 
                 if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -1057,10 +804,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privateKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t privKeyHandler = mcuxClKey_castToKeyHandle(privateKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -1074,10 +819,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t pubKeyHandler = mcuxClKey_castToKeyHandle(pubKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -1129,6 +872,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         /* For Weierstrass curves, curve_parameters are defined in mcuxClEcc_Constants.h */
         else if((PSA_ECC_FAMILY_SECP_R1 == curve) || (PSA_ECC_FAMILY_SECP_K1 == curve) || (PSA_ECC_FAMILY_BRAINPOOL_P_R1 == curve))
         {
+            if(attributes->domain_parameters_size != 0u)
+            {
+                return PSA_ERROR_INVALID_ARGUMENT;
+            }
+
             if ((peer_key_length & 1u) == 0u) {
                 return PSA_ERROR_INVALID_ARGUMENT;
             }
@@ -1208,9 +956,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 .optLen = 0u
             };
 
+            uint32_t pCpuWa[MCUXCLECC_POINTMULT_WACPU_SIZE / sizeof(uint32_t)];
             /* Initialize session with pkcWA on the beginning of PKC RAM */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_POINTMULT_WACPU_SIZE,
-                                    (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_POINTMULT_WAPKC_SIZE_256));
+                                    mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_POINTMULT_WAPKC_SIZE(byteLenP,byteLenN)));
 
 
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -1273,314 +1022,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             (void) shared_secret_length;
             return PSA_ERROR_NOT_SUPPORTED;
         }
-    }
-    else if (PSA_ALG_IS_FFDH(alg))
-    {
-        if (!PSA_KEY_TYPE_IS_DH_KEY_PAIR(psa_get_key_type(attributes)))
-        {
-            return PSA_ERROR_INVALID_ARGUMENT;
-        }
-
-        size_t bitlen_n = psa_get_key_bits(attributes);
-        if (MCUXCLPSADRIVER_BITS_TO_BYTES(bitlen_n) != key_buffer_size)
-        {
-            return PSA_ERROR_INVALID_ARGUMENT;
-        }
-
-        if (shared_secret_size < MCUXCLPSADRIVER_BITS_TO_BYTES(bitlen_n))
-        {
-            return PSA_ERROR_INVALID_ARGUMENT;
-        }
-
-        if (peer_key_length != key_buffer_size)
-        {
-            return PSA_ERROR_INVALID_ARGUMENT;
-        }
-
-        const uint8_t *modulus = NULL;
-        switch (bitlen_n)
-        {
-            case 2048u:
-                modulus = dhm_P_2048;
-                break;
-            case 3072u:
-                modulus = dhm_P_3072;
-                break;
-            case 4096u:
-                modulus = dhm_P_4096;
-                break;
-            // For the groups with more bits, there is not
-            // enough PKC ram
-            // case 6144u:
-            //     modulus = dhm_P_6144;
-            //     break;
-            // case 8192u:
-            //     modulus = dhm_P_8192;
-            //     break;
-            default:
-                return PSA_ERROR_NOT_SUPPORTED;
-        }
-
-        size_t bitlen_e = calc_bitlen_be(key_buffer, key_buffer_size);
-        size_t bitlen_a = calc_bitlen_be(peer_key, peer_key_length);
-
-        // If the exponent is 0, fall back to SW implementation.
-        if (bitlen_e == 0u)
-        {
-            return PSA_ERROR_NOT_SUPPORTED;
-        }
-
-        // If the modulus or the exponent is too small, fall back to SW implementation.
-        if ((bitlen_n < (MCUXCLPKC_WORDSIZE * 8u)) || (bitlen_e < (MCUXCLPKC_WORDSIZE * 8u)))
-        {
-            return PSA_ERROR_NOT_SUPPORTED;
-        }
-
-        const size_t bytelen_n = MCUXCLPSADRIVER_BITS_TO_BYTES(bitlen_n);
-        const size_t bytelen_e = MCUXCLPSADRIVER_BITS_TO_BYTES(bitlen_e);
-        const size_t bytelen_a = MCUXCLPSADRIVER_BITS_TO_BYTES(bitlen_a);
-
-        // If the exponent is too big to fit into the reseved temp buffer, we fall back
-        // to software implementation.
-        if (bytelen_e > MCUXCLPSADRIVER_DHM_MAX_EXPONENT_SIZE_BYTES)
-        {
-            return PSA_ERROR_NOT_SUPPORTED;
-        }
-
-        // The most significant 32 bits / 4 bytes of the modulus need to be 0 because
-        // of PKC requirements. We achieve that by artificially increasing the operand size
-        // by 4 bytes.
-        size_t pkc_operand_size = MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(bytelen_n + 4u);
-
-        // iX (bits 16~23): index of base number (PKC operand),
-        const size_t bufferSizeX = pkc_operand_size + MCUXCLPKC_WORDSIZE; // size of the base
-
-        // size of the result of the exponentiation
-        // iR (bits 0~7): index of result (PKC operand).
-        // The size shall be at least max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(expByteLength + 1u), lenN +
-        // MCUXCLPKC_WORDSIZE).
-        const size_t bufferSizeR =
-            sz_max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(bytelen_e + 1u), pkc_operand_size + MCUXCLPKC_WORDSIZE);
-
-        // iN (bits 24~31): index of modulus (PKC operand), size = operandSize (= lenN).
-        const size_t bufferSizeN =
-            pkc_operand_size + MCUXCLPKC_WORDSIZE; // size of N + PKC word in front of the modulus buffer for NDash
-
-        // iT0 (bits 8~15): index of temp0 (PKC operand).
-        // The size shall be at least max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(expByteLength + 1u), lenN +
-        // MCUXCLPKC_WORDSIZE).
-        const size_t bufferSizeT0 =
-            sz_max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(bytelen_e + 1u), pkc_operand_size + MCUXCLPKC_WORDSIZE);
-
-        // iT1 (bits 0~7): index of temp1 (PKC operand).
-        // Its size shall be at least max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(expByteLength + 1u), lenN + MCUXCLPKC_WORDSIZE,
-        // 2 * MCUXCLPKC_WORDSIZE).
-        const size_t bufferSizeT1 =
-            sz_max(sz_max(MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE(bytelen_e + 1u), pkc_operand_size + MCUXCLPKC_WORDSIZE),
-                   2u * MCUXCLPKC_WORDSIZE);
-
-        // iT2 (bits 8~15): index of temp2 (PKC operand).
-        // Its size shall be at least max(lenN + MCUXCLPKC_WORDSIZE, 2u * MCUXCLPKC_WORDSIZE).
-        const size_t bufferSizeT2 = sz_max(pkc_operand_size + MCUXCLPKC_WORDSIZE, 2u * MCUXCLPKC_WORDSIZE);
-
-        // iT3 (bits 24~31): index of temp3 (PKC operand).
-        // Its size shall be at least max(lenN + MCUXCLPKC_WORDSIZE, 2u * MCUXCLPKC_WORDSIZE).
-        const size_t bufferSizeT3 = sz_max(pkc_operand_size + MCUXCLPKC_WORDSIZE, 2u * MCUXCLPKC_WORDSIZE);
-
-        // iTE (bits 16~23): index of temp4 (PKC operand).
-        // The size shall be at least (6u * MCUXCLPKC_WORDSIZE).
-        const size_t bufferSizeTE = 6u * MCUXCLPKC_WORDSIZE;
-
-        // ### NDash calculation:
-        // iT (bits 0~7): index of temp (PKC operand).
-        // The size of temp shall be at least (2 * MCUXCLPKC_WORDSIZE).
-        // T is overlayed with mod_exp_T2, size is OK.
-        // const uint32_t bufferSizeT = bufferSizeT2;
-
-        // ### QSqared calculation:
-        // iT (bits 0~7): index of temp (PKC operand).
-        // The size of temp shall be at least (operandSize + MCUXCLPKC_WORDSIZE).
-        // T is overlayed with mod_exp_T2, size is OK.
-
-        // iN (bits 8~15): index of modulus (PKC operand), size = operandSize.
-        // NDash of modulus shall be stored in the PKC word before modulus.
-        // This the modulus buffer used throughout the function, size is OK.
-
-        // iNShifted (bits 16~23): index of shifted modulus (PKC operand), size = operandSize.
-        // If there is no leading zero in the PKC operand modulus, it can be iN.
-        // This is overlayed with mod_exp_T0, size is OK.
-
-        // iQSqr (bits 24~31): index of result QSquared (PKC operand), size = operandSize.
-        // QSquared might be greater than modulus.
-        // Q2 is overlayed with mod_exp_T1, size is OK
-
-        // ### Calculate montgomery representation of base
-        // iR: result of the multiplication size shall be operandSize.
-        // iR is overlayed with mod_exp_X - the base of the exponentiation, size is OK.
-
-        // iX, iY: the two numbers that are multiplied, size shall be operandSize.
-        // iX is overlayed with mod_exp_T1, size is OK.
-        // iY is overlayed with mod_exp_T0, size is OK.
-
-        // iZ: the modulus
-        // This the modulus buffer used throughout the function, size is OK.
-
-        // ### reduction of result
-        // iR: the result, size shall be operandSize.
-        // This is overlayed with mod_exp_T2, size is OK.
-
-        // iX: the number to reduce
-        // This is the output of the exponentiaion, mod_exp_R, size is OK.
-
-        // iZ: the modulus
-        // This the modulus buffer used throughout the function, size is OK.
-
-        const size_t bufferSizeS = bufferSizeT0;
-        const size_t pkcWaLength =
-            bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2 + bufferSizeT3 + bufferSizeTE;
-
-        if ((pkcWaLength) > MCUXCLPKC_RAM_SIZE)
-        {
-            return PSA_ERROR_NOT_SUPPORTED;
-        }
-
-        psa_status_t ret         = PSA_ERROR_GENERIC_ERROR;
-        bool session_initialized = false;
-        bool pkc_initialized     = false;
-        mcuxClPkc_State_t pkc_state;
-
-        ASSERT_CALLED_VOID_OR_EXIT(mcuxClPkc_Initialize(&pkc_state), mcuxClPkc_Initialize);
-        pkc_initialized = true;
-
-        uint32_t *pPkcWaBuffer = (uint32_t *)(MCUXCLPKC_RAM_START_ADDRESS);
-        uint8_t *pPkcWaBuffer8 = (uint8_t *)pPkcWaBuffer;
-
-        mcuxClSession_Descriptor_t session;
-        ASSERT_CALLED_OR_EXIT(mcuxClSession_init(&session, pCpuWa, MCUXCLPSADRIVER_DHM_WACPU_SIZE, pPkcWaBuffer, pkcWaLength), mcuxClSession_init,
-                              MCUXCLSESSION_STATUS_OK);
-        session_initialized = true;
-
-        uint16_t pOperands[MCUXCLPSADRIVER_DHM_NUM_OPERANDS];
-        pOperands[MCUXCLPSADRIVER_DHM_OP_X] = MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_R] = MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8 + bufferSizeX);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_N] = MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8 + bufferSizeX + bufferSizeR);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_T0] =
-            MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8 + bufferSizeX + bufferSizeR + bufferSizeN);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_T1] =
-            MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8 + bufferSizeX + bufferSizeR + bufferSizeN + bufferSizeT0);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_T2] =
-            MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8 + bufferSizeX + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_T3] = MCUXCLPKC_PTR2OFFSET(
-            pPkcWaBuffer8 + bufferSizeX + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 + bufferSizeT2);
-        pOperands[MCUXCLPSADRIVER_DHM_OP_TE] =
-            MCUXCLPKC_PTR2OFFSET(pPkcWaBuffer8 + bufferSizeX + bufferSizeR + bufferSizeN + bufferSizeT0 + bufferSizeT1 +
-                                 bufferSizeT2 + bufferSizeT3);
-
-        /* Set UPTRT table */
-        MCUXCLPKC_WAITFORREADY();
-        MCUXCLPKC_SETUPTRT(pOperands);
-
-        /* Clear work area */
-        MCUXCLPKC_WAITFORREADY();
-        MCUXCLPKC_PS1_SETLENGTH(0u, pkcWaLength);
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(MCUXCLPKC_CALC_OP1_CONST(MCUXCLPSADRIVER_DHM_OP_X, 0u), mcuxClPkc_CalcConst);
-
-        /* Set operand size for the rest of the operations */
-        MCUXCLPKC_WAITFORREADY();
-        MCUXCLPKC_PS1_SETLENGTH(pkc_operand_size, pkc_operand_size);
-
-        /* Import N. */
-        uint16_t offsetN                    = pOperands[MCUXCLPSADRIVER_DHM_OP_N] + MCUXCLPKC_WORDSIZE;
-        pOperands[MCUXCLPSADRIVER_DHM_OP_N] = offsetN;
-
-        uint8_t *pN = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_N]);
-        uint8_t *pT = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_T]);
-        uint8_t *pS = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_S]);
-
-        MCUXCLPKC_WAITFORFINISH();
-        reverse_and_copy(pN, bufferSizeN, modulus, bytelen_n, bytelen_n);
-        __DSB();
-
-        // Calculate Q^2 and N-Dash
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(MCUXCLMATH_NDASH(MCUXCLPSADRIVER_DHM_OP_N, MCUXCLPSADRIVER_DHM_OP_T),
-                                   mcuxClMath_NDash);
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(MCUXCLMATH_SHIFTMODULUS(MCUXCLPSADRIVER_DHM_OP_S, MCUXCLPSADRIVER_DHM_OP_N),
-                                   mcuxClMath_ShiftModulus);
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(MCUXCLMATH_QSQUARED(MCUXCLPSADRIVER_DHM_OP_Q2, MCUXCLPSADRIVER_DHM_OP_S,
-                                                       MCUXCLPSADRIVER_DHM_OP_N, MCUXCLPSADRIVER_DHM_OP_T),
-                                   mcuxClMath_QSquared);
-
-        // Import base
-        MCUXCLPKC_WAITFORFINISH();
-        reverse_and_copy(pS, bufferSizeS, peer_key, peer_key_length, bytelen_a);
-        __DSB();
-
-        // Calculate montgomery representation of base
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(MCUXCLPKC_CALC_MC1_MM(MCUXCLPSADRIVER_DHM_OP_X, MCUXCLPSADRIVER_DHM_OP_Q2,
-                                                         MCUXCLPSADRIVER_DHM_OP_S, MCUXCLPSADRIVER_DHM_OP_N),
-                                   mcuxClPkc_Calc);
-
-        const uint8_t *exp_buffer = key_buffer + key_buffer_size - bytelen_e;
-        uint32_t *tmp_buffer      = mcuxClSession_allocateWords_cpuWa(&session, (bytelen_e / sizeof(uint32_t)) + 1u);
-        if (tmp_buffer == NULL)
-        {
-            ret = PSA_ERROR_CORRUPTION_DETECTED;
-            goto exit;
-        }
-
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_OR_EXIT(
-            MCUXCLMATH_SECMODEXP(&session, exp_buffer, tmp_buffer, bytelen_e, MCUXCLPSADRIVER_DHM_OP_R,
-                                 MCUXCLPSADRIVER_DHM_OP_X, MCUXCLPSADRIVER_DHM_OP_N, MCUXCLPSADRIVER_DHM_OP_TE,
-                                 MCUXCLPSADRIVER_DHM_OP_T0, MCUXCLPSADRIVER_DHM_OP_T1, MCUXCLPSADRIVER_DHM_OP_T2,
-                                 MCUXCLPSADRIVER_DHM_OP_T3),
-            mcuxClMath_SecModExp, MCUXCLMATH_STATUS_OK);
-
-        /* Convert R back to NR. */
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(
-            MCUXCLPKC_CALC_MC1_MR(MCUXCLPSADRIVER_DHM_OP_T, MCUXCLPSADRIVER_DHM_OP_R, MCUXCLPSADRIVER_DHM_OP_N),
-            mcuxClPkc_Calc);
-        MCUXCLPKC_WAITFORREADY();
-        ASSERT_CALLED_VOID_OR_EXIT(MCUXCLPKC_CALC_MC1_MS(MCUXCLPSADRIVER_DHM_OP_T, MCUXCLPSADRIVER_DHM_OP_T,
-                                                         MCUXCLPSADRIVER_DHM_OP_N, MCUXCLPSADRIVER_DHM_OP_N),
-                                   mcuxClPkc_Calc);
-
-        /* Put the result back into the passed buffer for the shared secret. */
-        MCUXCLPKC_WAITFORFINISH();
-        *shared_secret_length = bytelen_n;
-        reverse_and_copy(shared_secret, *shared_secret_length, pT, *shared_secret_length, *shared_secret_length);
-
-        ret = PSA_SUCCESS;
-    exit:
-        if (session_initialized)
-        {
-            MCUXCLPKC_WAITFORREADY();
-            MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClSession_cleanup(&session));
-            if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_cleanup) != token)
-            {
-                return PSA_ERROR_GENERIC_ERROR;
-            }
-            MCUX_CSSL_FP_FUNCTION_CALL_END();
-        }
-
-        if (pkc_initialized)
-        {
-            MCUXCLPKC_WAITFORREADY();
-            MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClPkc_Deinitialize(&pkc_state));
-            if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_Deinitialize) != token)
-            {
-                return PSA_ERROR_GENERIC_ERROR;
-            }
-            MCUX_CSSL_FP_FUNCTION_CALL_END();
-        }
-
-        return ret;
     }
     else
     {

@@ -25,13 +25,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusSuspend(
     mcuxClKey_Descriptor_t *key_descriptor)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    psa_key_attributes_t *attributes =
-        (psa_key_attributes_t *)key_descriptor->container.pAuxData;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(key_descriptor);
 
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
+        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
@@ -46,13 +43,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(
     mcuxClKey_Descriptor_t *key_descriptor)
 {
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    psa_key_attributes_t *attributes =
-        (psa_key_attributes_t *)key_descriptor->container.pAuxData;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(key_descriptor);
 
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
+        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {
@@ -69,12 +63,10 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusUnload(
     mcuxClKey_Descriptor_t *key_descriptor)
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    psa_key_attributes_t *attributes = (psa_key_attributes_t *)key_descriptor->container.pAuxData;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    psa_key_attributes_t *attributes = mcuxClPsaDriver_castAuxDataToKeyAttributes(key_descriptor);
 
     psa_key_location_t location =
-        PSA_KEY_LIFETIME_GET_LOCATION( psa_get_key_lifetime(attributes) );
+        PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
 
     if(false == (MCUXCLPSADRIVER_IS_LOCAL_STORAGE(location)) )
     {

@@ -15,6 +15,7 @@
 
 #include <mcuxClEcc.h>
 #include <mcuxClKey.h>
+#include <internal/mcuxClKey_Functions_Internal.h>
 #include <mcuxClBuffer.h>
 #include <mcuxClMemory_Copy.h>
 #include <mcuxClPkc_Types.h>
@@ -48,6 +49,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     //For Montgomery curves
     if(curve == PSA_ECC_FAMILY_MONTGOMERY)
     {
+        if(attributes->domain_parameters_size != 0u)
+        {
+            return PSA_ERROR_INVALID_ARGUMENT;
+        }
         /* Setup one session to be used by all functions called */
         mcuxClSession_Descriptor_t session;
         //Byte length of a Curve448
@@ -91,12 +96,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             /* Prepare input for key generation */
-            MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
             uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-            mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privKeyDesc;
-            uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-            mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
-            MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+            mcuxClKey_Handle_t privKeyHandler = mcuxClKey_castToKeyHandle(privKeyDesc);
+            uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+            mcuxClKey_Handle_t pubKeyHandler = mcuxClKey_castToKeyHandle(pubKeyDesc);
             uint8_t pubKeyBuffer[MCUXCLECC_MONTDH_CURVE448_SIZE_PUBLICKEY]={0};
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
@@ -188,13 +191,11 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-            MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
             /* Prepare input for key generation */
             uint32_t privKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-            mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privKeyDesc;
-            uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-            mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
-            MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+            mcuxClKey_Handle_t privKeyHandler = mcuxClKey_castToKeyHandle(privKeyDesc);
+            uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+            mcuxClKey_Handle_t pubKeyHandler = mcuxClKey_castToKeyHandle(pubKeyDesc);
             uint8_t pubKeyBuffer[MCUXCLECC_MONTDH_CURVE25519_SIZE_PUBLICKEY]={0};
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
@@ -257,6 +258,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     //For Weierstrass curves, curve_parameters have defined in mcuxClEcc_Types.c
     else if((curve == PSA_ECC_FAMILY_SECP_R1) || (curve == PSA_ECC_FAMILY_SECP_K1) || (curve == PSA_ECC_FAMILY_BRAINPOOL_P_R1))
     {
+        if(attributes->domain_parameters_size != 0u)
+        {
+            return PSA_ERROR_INVALID_ARGUMENT;
+        }
 
         const mcuxClEcc_Weier_DomainParams_t* curveParamData = mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
         if(NULL == curveParamData)
@@ -274,7 +279,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         uint32_t pCpuWa[MCUXCLECC_KEYGEN_WACPU_SIZE / (sizeof(uint32_t))];
         /* Initialize session with pkcWA on the beginning of PKC RAM */
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, sizeof(pCpuWa),
-                                 (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_KEYGEN_WAPKC_SIZE(byteLenP,byteLenN)));
+                                 mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_KEYGEN_WAPKC_SIZE(byteLenP,byteLenN)));
 
 
         if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -285,7 +290,9 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
         /* Initialize the RNG context, with maximum size */
         uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
+        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
+        MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
         mcuxClRandom_Mode_t randomMode = NULL;
         if(byteLenN <= 32u)  /* 128-bit security strength */

@@ -145,6 +145,11 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     //For Montgomery curves
     if(curve == PSA_ECC_FAMILY_MONTGOMERY)
     {
+        if(attributes->domain_parameters_size != 0u)
+        {
+            return PSA_ERROR_INVALID_ARGUMENT;
+        }
+
         /* Setup one session to be used by all functions called */
         mcuxClSession_Descriptor_t session;
 
@@ -187,9 +192,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             mcuxClKey_Descriptor_t pubKeyData;
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-            mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = (mcuxClEcc_MontDH_DomainParams_t *)(&mcuxClEcc_MontDH_DomainParams_Curve448);
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+            const mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = &mcuxClEcc_MontDH_DomainParams_Curve448;
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
             /* mcuxClSession_Handle_t session         */ &session,
@@ -265,9 +268,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
             mcuxClKey_Descriptor_t pubKeyData;
-            MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-            mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = (mcuxClEcc_MontDH_DomainParams_t *)(&mcuxClEcc_MontDH_DomainParams_Curve25519);
-            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
+            const mcuxClEcc_MontDH_DomainParams_t *pDomainParameters = &mcuxClEcc_MontDH_DomainParams_Curve25519;
 
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
             /* mcuxClSession_Handle_t session         */ &session,
@@ -319,6 +320,11 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_ecp_public_
     //For Weierstrass curves, curve_parameters have defined in mcuxClEcc_Types.h
     else if((curve == PSA_ECC_FAMILY_SECP_R1) || (curve == PSA_ECC_FAMILY_SECP_K1) || (curve == PSA_ECC_FAMILY_BRAINPOOL_P_R1))
     {
+        if(attributes->domain_parameters_size != 0u)
+        {
+            return PSA_ERROR_INVALID_ARGUMENT;
+        }
+
         const mcuxClEcc_Weier_DomainParams_t* curveParamData = mcuxClPsaDriver_psa_driver_wrapper_getEccDomainParams(attributes);
         if(NULL == curveParamData)
         {
@@ -441,7 +447,7 @@ psa_status_t mcuxClPsaDriver_psa_driver_wrapper_export_public_key(
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
-    psa_key_type_t type = psa_get_key_type(attributes);
+    psa_key_type_t type = attributes->core.type;
 
     /* Reject a zero-length output buffer now, since this can never be a
      * valid key representation. This way we know that data must be a valid
