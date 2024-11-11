@@ -137,8 +137,8 @@ status_t ELS_PowerDownWakeupInit(ELS_Type *base)
     }
 
     /* TRNG enable CLK */
-    SYSCON0->SEC_CLK_CTRL_SET |= SYSCON0_SEC_CLK_CTRL_SET_TRNG_REFCLK_EN_SET_MASK;
-
+    CLOCK_EnableClock(kCLOCK_TrngRef);
+    
     /* End of write enable */
     GLIKEY_EndOperation(GLIKEY3);
 
