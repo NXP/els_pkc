@@ -483,7 +483,6 @@ config MCUX_COMPONENT_component.els_pkc.examples
             select MCUX_COMPONENT_component.els_pkc.examples_random_modes
             depends on MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236 || MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612 || MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
 
-        prompt "Component component.els_pkc.examples anyOf 2"
         config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_2
             bool "Component MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_2"
             depends on MCUX_HW_DEVICE_LPC55S36
