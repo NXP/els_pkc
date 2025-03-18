@@ -8,7 +8,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.rw61x)
         SOURCES
                 doc/rw61x/html/*.*
                 doc/rw61x/html/search/*.*
-                LA_OPT_Online_Code_Hosting.htm
+                LICENSE.txt
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -25,7 +25,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.lpc)
         SOURCES
                 doc/lpc/html/*.*
                 doc/lpc/html/search/*.*
-                LA_OPT_Online_Code_Hosting.htm
+                LICENSE.txt
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -41,7 +41,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mcxn)
         SOURCES
                 doc/mcxn/html/*.*
                 doc/mcxn/html/search/*.*
-                LA_OPT_Online_Code_Hosting.htm
+                LICENSE.txt
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
@@ -57,7 +57,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mimxrt)
         SOURCES
                 doc/mimxrt/html/*.*
                 doc/mimxrt/html/search/*.*
-                LA_OPT_Online_Code_Hosting.htm
+                LICENSE.txt
                 softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
