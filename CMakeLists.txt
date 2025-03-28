@@ -22,10 +22,16 @@ target_link_options(
         ${TOOLCHAIN_LD_FLAGS}
 )
 
+if(DEFINED CONFIG_SOC_SDKNG_UNSUPPORTED)
+    set(MCUX_SDK_DIR ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk)
+else()
+    set(MCUX_SDK_DIR ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk-ng)
+endif()
+
 target_include_directories(McuxElsPkc
     PRIVATE
         # SDK driver header files
-        ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/drivers/common
+        ${MCUX_SDK_DIR}/drivers/common
         # psa/crypto.h and psa/crypto_types.h
         ${NXP_MODULE_CRYPTO_PATH}/mbedtls/include
         ${NXP_MODULE_CRYPTO_PATH}/mbedtls/include/psa
@@ -60,13 +66,14 @@ if(CONFIG_SOC_SERIES_RW6XX)
         PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/inc
-            ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612
-            ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612/drivers
+            ${MCUX_SDK_DIR}/devices/Wireless/RW/RW612
+            ${MCUX_SDK_DIR}/devices/Wireless/RW/RW612/drivers
+            ${MCUX_SDK_DIR}/devices/Wireless/RW/periph
     )
 
     target_sources(McuxElsPkc
         PRIVATE
-            ${ZEPHYR_HAL_NXP_MODULE_DIR}/mcux/mcux-sdk/devices/RW612/drivers/fsl_ocotp.c
+            ${MCUX_SDK_DIR}/devices/Wireless/RW/RW612/drivers/fsl_ocotp.c
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/mcux_els.c
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/mcux_pkc.c
     )
