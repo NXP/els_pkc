@@ -73,7 +73,7 @@
  ********************************************************************************
  * It swaps ofsAt and ofsA(1-t) (stored in ofsAs), and outputs ofsYX = ofsA(1-t) || ofsMi.
  */
-#if defined(ICCARM_ARMCLANG_GNUC)
+#if defined(ICCARM_ARMCLANG_GNUC) && 0 // Temporary woraround!!!
 
 #define MCUXCLMATH_SECMODEXP_WRITEOFFSET(ofsY_ofsX,maskVal) MCUXCLPKC_PS1_SETXY_REG(ofsY_ofsX)
 #define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0_, expW1_, ofsAs_, ofsYX_, rndW_, bIdx_, oMsH8_, oMsL8_, rnd64_0_, rnd64_1_, mask_)  \
@@ -117,7 +117,8 @@ do{  \
 } while (false)
 
 #else
-#warning Unsupported compiler. The above section must be manually adapted to support the inline assembly syntax.
+// Temporary woraround!!!
+//#warning Unsupported compiler. The above section must be manually adapted to support the inline assembly syntax.
 #define MCUXCLMATH_SECMODEXP_WRITEOFFSET(ofsY_ofsX,maskVal) MCUXCLPKC_PS1_SETXY_REG(ofsY_ofsX)
 #define MCUXCLMATH_ROR(x,y) (((x) >> (y)) | ((x) << ((32u - (y)) & 31u)))
 #define MCUXCLMATH_SECMODEXP_SECUREOFFSETSELECT(expW0, expW1, ofsA, ofsYX, rndW, bIdx, oMsH8, oMsL8,rand64_0,rand64_1,mask)  \
