@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClEls.h>              // Interface to the entire mcuxClEls component
@@ -25,7 +25,7 @@
 #include <mcuxClExample_RNG_Helper.h>
 
 /* Test vector from CAVS 11.0 "SHA-256 LongMsg" */
-static const ALIGNED uint8_t data[] CSS_CONST_SEGMENT = {
+static const ALIGNED uint8_t data[] = {
     0x45u, 0x11u, 0x01u, 0x25u, 0x0eu, 0xc6u, 0xf2u, 0x66u,
     0x52u, 0x24u, 0x9du, 0x59u, 0xdcu, 0x97u, 0x4bu, 0x73u,
     0x61u, 0xd5u, 0x71u, 0xa8u, 0x10u, 0x1cu, 0xdfu, 0xd3u,

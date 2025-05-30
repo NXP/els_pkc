@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -22,6 +22,7 @@
 #include <mcuxClSession.h>
 #include <mcuxClBuffer.h>
 #include <mcuxClRandom.h>
+#include <internal/mcuxClRandom_Internal_Functions.h>
 #include <mcuxClRandomModes.h>
 #include <mcuxClMemory_Copy.h>
 #include <mcuxClPsaDriver.h>
@@ -246,11 +247,13 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
     /* Allocate workarea space */
     uint32_t cpuWorkarea[MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE / sizeof(uint32_t)];
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retSessionInit, tokenSessionInit, mcuxClSession_init(&session,
                                                                      cpuWorkarea,
                                                                      MCUXCLRANDOMMODES_MAX_CPU_WA_BUFFER_SIZE,
                                                                      NULL,
                                                                      0u));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != tokenSessionInit) || (MCUXCLSESSION_STATUS_OK != retSessionInit))
     {
@@ -278,7 +281,7 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retRandomInit, tokenRandInit, mcuxClRandom_init(
                                                   &session,
-                                                  (mcuxClRandom_Context_t)rng_ctx,
+                                                  mcuxClRandom_castToContext(rng_ctx),
                                                   randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != tokenRandInit) || (MCUXCLRANDOM_STATUS_OK != retRandomInit))
     {
@@ -427,7 +430,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     else
     {
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned")
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned per user guidance.")
         mcuxClKey_setLoadedKeyData(out_key_descriptor, (uint32_t *) key_buffer);
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
@@ -544,13 +547,18 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     return PSA_SUCCESS;
 }
 
+// Keeping the implementation for future reference and use.
+#if 0
 static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
     const psa_key_attributes_t *attributes,
     mcuxClEls_KeyIndex_t key_index_private_key,
     uint8_t * public_key_buffer, uint32_t public_key_buffer_size)
 {
     size_t bitLength = psa_get_key_bits(attributes);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("Converting the bit-length of a cryptographic key to its byte-length cannot wrap.")
     size_t bytes = (size_t)MCUXCLPSADRIVER_BITS_TO_BYTES(bitLength);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+
     if(public_key_buffer_size < (2u * bytes))
     {
         return PSA_ERROR_BUFFER_TOO_SMALL;
@@ -562,25 +570,30 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
 
     mcuxClEls_KeyProp_t  keyProp;
     keyProp.word.value       = 0;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     keyProp.bits.ksize       = MCUXCLELS_KEYPROPERTY_KEY_SIZE_256;
     keyProp.bits.kactv       = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
     keyProp.bits.ukgsrc      = MCUXCLELS_KEYPROPERTY_INPUT_FOR_ECC_TRUE;
     keyProp.bits.upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE;
     keyProp.bits.upprot_sec  = MCUXCLELS_KEYPROPERTY_SECURE_FALSE;
     keyProp.bits.wrpok       = MCUXCLELS_KEYPROPERTY_WRAP_TRUE;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     mcuxClEls_EccKeyGenOption_t KeyGenOptions;
     KeyGenOptions.word.value    = 0u;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     KeyGenOptions.bits.kgsign   = MCUXCLELS_ECC_PUBLICKEY_SIGN_DISABLE;
     KeyGenOptions.bits.kgtypedh = MCUXCLELS_ECC_OUTPUTKEY_SIGN;
     KeyGenOptions.bits.kgsrc    = MCUXCLELS_ECC_OUTPUTKEY_RANDOM;
     KeyGenOptions.bits.skip_pbk = MCUXCLELS_ECC_GEN_PUBLIC_KEY;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     /*Step 1:
         Generate Key pair:
         - Private key will be stored in ELS's KeyStore
         - Public Key will be stored in external RAM
     */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyGen_Async( // Perform key generation.
             KeyGenOptions,                   // Set the prepared configuration.
             (mcuxClEls_KeyIndex_t) 0U,        // This parameter (signingKeyIdx) is ignored, since no signature is requested in the configuration.
@@ -589,6 +602,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
             NULL,                            // No random data is provided
             public_key_buffer                // Output buffer, which the operation will write the public key to.
             ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
     // mcuxClEls_EccKeyGen_Async is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -606,7 +620,7 @@ static inline psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
 
     return PSA_SUCCESS;
 }
-
+#endif
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 psa_status_t mcuxClPsaDriver_psa_driver_wrapper_key_generate(
@@ -618,7 +632,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     psa_key_type_t type = psa_get_key_type(attributes);
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION(psa_get_key_lifetime(attributes));
-    
+    mcuxClEls_KeyIndex_t index;
     /* Step 1:
        Allocate storage for a key to be generated
     */
@@ -643,7 +657,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     else
     {
         /* local storage - setup loaded key with buffer from caller */
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned")
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Loaded key is aligned per user guidance.")
         mcuxClKey_setLoadedKeyData(&key, (uint32_t *)key_buffer);
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
         mcuxClKey_setLoadedKeyLength(&key, (uint32_t)key_buffer_size);
@@ -655,20 +669,23 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     */
     if(MCUXCLKEY_LOADSTATUS_COPRO == mcuxClKey_getLoadStatus(&key))
     {
-        /* LoadedKeyData serves as a throw-away buffer for the public key.
-           The private key will be kept in the given key slot of the keystore. */
-
-        status = mcuxClPsaDriver_psa_driver_wrapper_generate_s50_key(
+        /* We can't use direct KEYGEN command over here as the RFC3394
+         * blob which will be generated only contains ECC Private key and
+         * we don't have a way to recreate the public key after unload/reset.
+         * Hence we indirectly create this random key in ELS slot.
+         */
+        status = mcuxClPsaDriver_Oracle_generate_s50_random_key(
             /* const psa_key_attributes_t *attributes:     */ attributes,
-            /* mcuxClEls_KeyIndex_t key_index_private_key:  */ mcuxClKey_getLoadedKeySlot(&key),
-            /* uint8_t *public_key_buffer:                 */ mcuxClKey_getLoadedKeyData(&key),
-            /* uint32_t public_key_buffer_size:            */ mcuxClKey_getLoadedKeyLength(&key)
-        );
+            /* mcuxClEls_KeyIndex_t key_index_private_key:  */ &index);
 
         if(status != PSA_SUCCESS)
         {
+             /* key stored in orace - call Orcale to free memory reserved for the key */
+            mcuxClPsaDriver_Oracle_FreeKey(&key);
             return status;
         }
+        
+        mcuxClKey_setLoadedKeySlot(&key, index);
     }
     else /* MCUXCLKEY_LOADSTATUS_MEMORY */
     {
@@ -721,6 +738,17 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             return status;
         }
         *key_buffer_length = mcuxClKey_getKeyContainerUsedSize(&key);
+        
+        /* Unload the Key from slot after usage.
+         * We have limited ELS Slots so unload the key at this point.
+         * RFC blob of the key has been stored in key buffer which can
+         * be loaded at time of use. This can be removed once we have the capability
+         * in key slot manager to free a slot automatically */
+        status = mcuxClPsaDriver_Oracle_UnloadKey(&key);
+        if(PSA_SUCCESS != status)
+        {
+            return status;
+        }
     }
     /* Note: For keys in local storage no additional store or copy operation is needed,
              because the key_buffer was already used during the key generation. */
@@ -933,7 +961,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 /* Initialize session with pkcWA on the beginning of PKC RAM */
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE,
-                                        (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WAPKC_SIZE));
+                                        mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WAPKC_SIZE));
 
 
                 if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -950,10 +978,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privateKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t privKeyHandler = mcuxClKey_castToKeyHandle(privateKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -967,10 +993,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t pubKeyHandler = mcuxClKey_castToKeyHandle(pubKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -1024,7 +1048,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 /* Initialize session with pkcWA on the beginning of PKC RAM */
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE,
-                                        (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE));
+                                        mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WAPKC_SIZE));
 
 
                 if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))
@@ -1041,10 +1065,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t privKeyHandler = (mcuxClKey_Handle_t) &privateKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t privateKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t privKeyHandler = mcuxClKey_castToKeyHandle(privateKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(privkeyinit_result, privkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -1058,10 +1080,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                 }
                 MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-                ALIGNED uint8_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE];
-                MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-                mcuxClKey_Handle_t pubKeyHandler = (mcuxClKey_Handle_t) &pubKeyDesc;
-                MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+                uint32_t pubKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
+                mcuxClKey_Handle_t pubKeyHandler = mcuxClKey_castToKeyHandle(pubKeyDesc);
 
                 MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(pubkeyinit_result, pubkeyinit_token, mcuxClKey_init(
                 /* mcuxClSession_Handle_t session         */ &session,
@@ -1194,7 +1214,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
             /* Initialize session with pkcWA on the beginning of PKC RAM */
             MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(si_status, si_token, mcuxClSession_init(&session, pCpuWa, MCUXCLECC_POINTMULT_WACPU_SIZE,
-                                    (uint32_t *) MCUXCLPKC_RAM_START_ADDRESS, MCUXCLECC_POINTMULT_WAPKC_SIZE_256));
+                                    mcuxClPkc_inline_getPointerToPkcRamStart(), MCUXCLECC_POINTMULT_WAPKC_SIZE(byteLenP,byteLenN)));
 
 
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != si_token) || (MCUXCLSESSION_STATUS_OK != si_status))

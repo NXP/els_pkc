@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020, 2022-2023 NXP                                            */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -52,7 +52,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Common_Get_Info_example)
     (void) revision;
     (void) minor;
     (void) major;
-#if MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0
+#if !defined(MCUXCL_FEATURE_ELS_GET_FW_VERSION) || MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0
     uint32_t level = hw_version.bits.level;                                              // Release level version
     (void) level;
 #else /* MCUXCL_FEATURE_ELS_GET_FW_VERSION == 0 */

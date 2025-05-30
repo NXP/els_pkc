@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_Pkcs1v15Encode_sign.c
@@ -28,7 +28,6 @@
 #include <internal/mcuxClHash_Internal.h>
 #include <internal/mcuxClSession_Internal.h>
 #include <internal/mcuxClPkc_ImportExport.h>
-#include <internal/mcuxClMemory_Copy_Internal.h>
 #include <internal/mcuxClBuffer_Internal.h>
 
 #include <mcuxClRsa.h>
@@ -133,6 +132,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   /*****************************************************/
 
   /* Length of the encoded message. */
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(keyBitLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(pHashAlgo->hashSize, MCUXCLHASH_OUTPUT_SIZE_MD5, MCUXCLHASH_MAX_OUTPUT_SIZE, MCUXCLRSA_STATUS_INVALID_INPUT)
+
   const uint32_t emLen = (keyBitLength + 7u) / 8u; /* byte length, rounded up */
   /* Length of the output of hash function. */
   const uint32_t hLength = pHashAlgo->hashSize;
@@ -142,9 +144,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
   /* Length of the T-padding DigestInfo containing the hash algorithm identifier. */
   const uint32_t hashAlgorithmIdentifierLength = mcuxClRsa_oidTable[DIGESTSIZE_TO_INDEX(hLength)].length;
 
-  /* Number of required padding bytes */
-  const uint32_t paddingLength = emLen - hashAlgorithmIdentifierLength - hLength - 3u;
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(hashAlgorithmIdentifierLength, 19u, 19u, MCUXCLRSA_STATUS_INVALID_INPUT)
 
+  /* Number of required padding bytes */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("'emLen' is larger than 'hashAlgorithmIdentifierLength' result cannot overflow.")
+  const uint32_t paddingLength = emLen - hashAlgorithmIdentifierLength - hLength - 3u;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
   /*****************************************************/
   /* If emLen < tLen + 11, return 'invalid input'.     */
   /*****************************************************/
@@ -180,20 +185,21 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_pkcs1v15Encode_sign(
 
 
   /* Write 0x00 0x01 prefix */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Because 'pEm' has allocated 2 bytes, 'pEm + 1u' still inside area")
   *(pEm)     = (uint8_t) 0x00;
   *(pEm + 1u) = (uint8_t) 0x01;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
   /* Write padding bytes */
   MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF(pPs, 0xFFU, paddingLength, emLen - 2u);
 
   /* Write 0x00 divider */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Because 'pPs' has size 'paddingLength' area access will be not out of array")
   *(pPs + paddingLength) = (uint8_t) 0x00;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
   /* Write DigestInfo T */
-  MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy(pT,
-                                             phashAlgorithmIdentifier,
-                                             hashAlgorithmIdentifierLength,
-                                             hashAlgorithmIdentifierLength));
+  MCUXCLMEMORY_FP_MEMORY_COPY(pT, phashAlgorithmIdentifier, hashAlgorithmIdentifierLength);
 
   /*****************************************************/
   /* Perform hash operation or just copy the digest    */

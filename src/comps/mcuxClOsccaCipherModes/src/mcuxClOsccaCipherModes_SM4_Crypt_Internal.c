@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaCipherModes_SM4_Crypt_Internal.c
@@ -501,7 +501,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
     if(NULL == pCtx)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4_OneShot, MCUXCLCIPHER_STATUS_FAILURE);
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4_OneShot, MCUXCLCIPHER_STATUS_ERROR);
     }
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret structure for mcuxClOsccaCipherModes_Context_Sm4_t types")
     pCtx->common.pMode = pMode;

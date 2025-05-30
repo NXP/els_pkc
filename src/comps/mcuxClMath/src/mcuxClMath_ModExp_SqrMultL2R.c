@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -49,13 +49,16 @@
  * and then the loop moves to the next bit.
  */
 MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("It is indeed defined.")
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEFINED_MORE_THAN_ONCE("It defined only once.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ModExp_SqrMultL2R)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModExp_SqrMultL2R(const uint8_t *pExp, uint32_t expByteLength, uint32_t iR_iX_iN_iT)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ModExp_SqrMultL2R);
+
+    /* ASSERT: exponent length is reasonable (exponent fits in PKC workarea). */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(expByteLength, 1u, MCUXCLPKC_RAM_SIZE)
 
     MCUXCLPKC_PKC_CPU_ARBITRATION_WORKAROUND();  // avoid CPU accessing to PKC workarea when PKC is busy
 
@@ -80,6 +83,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
             expByte = expByte - ((expByte >> 1u) & 0x55u);  \
             expByte = (expByte & 0x33u) + ((expByte & 0xCCu) >> 2u);  \
             expByte = (expByte & 0x07u) + ((expByte & 0x70u) >> 4u);  \
+            MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(expByte, 0u, 8u)  \
             MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("hwExp will not exceed 8*expByteLength.") \
             hwExp += expByte;
             MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP() )
@@ -87,6 +91,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
 
     const uint32_t expMSByte = (uint32_t) pExp[byteIndex_MSNZByte];  /* nonzero byte */
     const uint32_t leadingZeros = mcuxClMath_CountLeadingZerosWord(expMSByte);
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(leadingZeros, 24u, 31u)
 
     /* Calculate bit index of most significant nonzero bit. */
     const uint32_t bitIndex_MSBit = (8u * (expByteLength - byteIndex_MSNZByte)) - (leadingZeros - 24u) - 1u;
@@ -94,6 +99,7 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
 
     /* Calculate the number of loop iteration for FP. */
     MCUX_CSSL_FP_COUNTER_STMT(
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(hwExp, 1u, 8u * expByteLength)  /* exponent is nonzero. */ \
         const uint32_t loopIteration = bitIndex_MSBit + (hwExp - 1u); )
 
     const uint32_t iR = (iR_iX_iN_iT >> 24) & 0xFFu;  /* Also used as T1. */

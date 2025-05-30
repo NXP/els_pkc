@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023 NXP                                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  ip_platform.h
@@ -52,9 +52,6 @@
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          ELS_        ///< sfr field name prefix
 
-// Workaround (RT700 platform header has a bug and defines ELS_KS0 as ELS_K0, but ELS_KS1 etc. are correct)
-#define ELS_KS0                 ELS_K0
-
 // Define base address of PKC
 #define PKC_SFR_BASE            PKC         ///< base of PKC SFRs
 #define PKC_SFR_NAME(sfr)       PKC_ ## sfr ///< full name of SFR
@@ -95,10 +92,10 @@
 
 // ELS version
 #define ELS_HW_VERSION_REVISION            0
-#define ELS_HW_VERSION_MINOR               16
+#define ELS_HW_VERSION_MINOR               10
 #define ELS_HW_VERSION_MAJOR               3
 #define ELS_HW_VERSION_FW_REVISION         0
-#define ELS_HW_VERSION_FW_MINOR            8
+#define ELS_HW_VERSION_FW_MINOR            10
 #define ELS_HW_VERSION_FW_MAJOR            2
 
 // Define SYSCON0 ASSERT PROT Address Register
@@ -115,16 +112,4 @@
  *            ELS_ALIAS1_BASE, ELS_ALIAS2_BASE, ELS_ALIAS3_BASE, ELS_BASE_NS, ELS_ALIAS1_BASE_NS, ELS_ALIAS2_BASE_NS, ELS_ALIAS3_BASE_NS
  */
 #define ELS_SFR_BASE           ((ELS_Type *) ELS_BASE)
-
-/* Use non-cached section to load PKC FUP and const variables to avoid placing 
- * it in a code PSRAM which is not accesible to ELS and PKC (only via alias)
- */
-#ifndef CSS_CONST_SEGMENT_SECTION
-#define CSS_CONST_SEGMENT_SECTION "NonCacheable.init"
-#endif
-#ifndef MCUX_OBFUSCATED_FUP_SEGMENT
-#define MCUX_OBFUSCATED_FUP_SEGMENT "NonCacheable.init"
-#endif
-
-
 #endif

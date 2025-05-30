@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2018-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /*
@@ -156,10 +156,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_KDF(mcuxClSe
                                             2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init),
                                             2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),
-                                            MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+                                            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                             MCUX_CSSL_FP_CONDITIONAL((NULL != pKDFParam->pZA && NULL != pKDFParam->pZB),
                                                 2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process)),
-                                            MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+                                            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                             counter * (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process)
                                                      + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish)
                                                      + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_write)
@@ -204,7 +204,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_SecondPartOf
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm2_SecondPartOfInitPhase);
 
-    uint8_t *pY2 = (uint8_t *)mcuxClOscca_alignAddressWithOffset(pCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
+    uint8_t *pY2 = mcuxClOscca_alignAddressWithOffset(pCtx, sizeof(mcuxClOsccaSm2_Internal_EncDecCtx_t));
     uint32_t hashRet = MCUXCLHASH_STATUS_FAULT_ATTACK;
     MCUXCLOSCCASM2_FP_CALC_HASHINITPRO(session, pCtx->hashCtxC3, mcuxClOsccaSm3_Algorithm_Sm3, pX2, primeLength, hashRet);
     if(MCUXCLHASH_STATUS_OK != hashRet)
@@ -347,13 +347,13 @@ static inline MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm
 }
 
 MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("It is indeed defined.")
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEFINED_MORE_THAN_ONCE("It defined only once.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm2_EncDec_UpdatePhase)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_EncDec_UpdatePhase(
         mcuxClSession_Handle_t session,
         mcuxClOsccaSm2_EncDec_Common_Param_t *pParams,
         uint32_t functionCode)
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm2_EncDec_UpdatePhase);
@@ -376,7 +376,6 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
     {
         MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         remainingLength = ((mcuxClOsccaSm2_Encrypt_Param_t *)pParams)->inputLength;
-        MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
         pSrcBuf = ((mcuxClOsccaSm2_Encrypt_Param_t *)pParams)->pInput;
         pDestBuf = ((mcuxClOsccaSm2_Encrypt_Param_t *)pParams)->pOutput;
         MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()

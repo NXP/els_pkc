@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -50,11 +50,11 @@
  * needs to calculate only the least significant (rPkcWord - (i+1)) PKC words of X{i+1}.
  */
 MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("It is indeed defined.")
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEFINED_MORE_THAN_ONCE("It defined only once.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ExactDivideOdd)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ExactDivideOdd(uint32_t iR_iX_iY_iT, uint32_t xPkcByteLength, uint32_t yPkcByteLength)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ExactDivideOdd);
 
@@ -67,6 +67,8 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(iR_iX_iY_iT, 0u, pOperands, 4u, &backupPtrUptrt));
 
     const uint16_t offsetT = pOperands[DivOdd_T];
+    /* ASSERT: operand T (length >= 3*MCUXCLPKC_WORDSIZE) is within PKC workarea. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(offsetT, MCUXCLPKC_RAM_OFFSET_MIN, MCUXCLPKC_RAM_OFFSET_MAX - (3u * MCUXCLPKC_WORDSIZE))
 
     pOperands[DivOdd_T1] = (uint16_t) (offsetT + MCUXCLPKC_WORDSIZE);
     pOperands[DivOdd_Ri] = 2u;  /* for _Fup_ExactDivideOdd_NDashY */
@@ -89,6 +91,8 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup) );
     }
 
+    /* ASSERT: length of X >= length of Y, and operand X fits in PKC workarea. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(xPkcByteLength, yPkcByteLength, MCUXCLPKC_RAM_SIZE)
     uint32_t rPkcByteLen = xPkcByteLength - yPkcByteLength + MCUXCLPKC_WORDSIZE;
     MCUXCLPKC_WAITFORREADY();
 
@@ -97,6 +101,8 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
     MCUXCLPKC_FP_CALC_OP1_NEG(DivOdd_X, DivOdd_X);
 
     const uint32_t offsetX = (uint32_t) pOperands[DivOdd_X];
+    /* ASSERT: operand X (length = xPkcByteLength) is within PKC workarea. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(offsetX, MCUXCLPKC_RAM_OFFSET_MIN, MCUXCLPKC_RAM_OFFSET_MAX - xPkcByteLength)
 
     /* Prepare for carry handling. */
     /* When the length of Y is small, the MACCR in the FUP program in the loop       */
@@ -119,6 +125,9 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
     /* This loop calculates R[rPkcWord-1:0] such that X0 + R*Y mod W^rPkcWord = 0. */
     uint32_t rRemainingPkcByteLen = rPkcByteLen;
     uint32_t offsetRi = (uint32_t) pOperands[DivOdd_R];
+
+    /* ASSERT: operand R (length = rPkcByteLen) is within PKC workarea. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(offsetRi, MCUXCLPKC_RAM_OFFSET_MIN, MCUXCLPKC_RAM_OFFSET_MAX - rPkcByteLen)
 
     do
     {

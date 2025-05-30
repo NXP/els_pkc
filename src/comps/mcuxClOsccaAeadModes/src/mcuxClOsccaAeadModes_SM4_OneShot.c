@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaAeadModes_SM4_OneShot.c
@@ -60,7 +60,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_crypt(
         - clean up session
     */
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("change mcuxClAead_algorithm const * to mcuxClOsccaAeadModes_algorithm_t const *")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     const mcuxClOsccaAeadModes_algorithm_t* pAlgo = (const mcuxClOsccaAeadModes_algorithm_t*) mode->algorithm;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_FALSE_POSITIVE_CAST_TYPES_WITH_SAME_ALIGNMENT()
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     // TODO: like this?
     mcuxClOsccaAeadModes_Context_t ctx; // = (mcuxClAead_Context_t) mcuxClSession_allocateWords_cpuWa(session, sizeInNumberOfWords)
@@ -91,12 +93,12 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t)  mcuxClOsccaAeadModes_crypt(
       /* uint32_t * const pOutLength,          */ pOutLength,
       /* mcuxCl_Buffer_t pTag,                  */ pTag,
       /* uint32_t tagLength,                   */ tagLength,
-      /* uint32_t options                      */ MCUXCLOSCCAAEADMODES_OPTION_ONESHOT
+      /* uint32_t options                      */ (MCUXCLOSCCASM4_ENCRYPT == pAlgo->direction) ? MCUXCLOSCCAAEADMODES_OPTION_ONESHOT_ENCRYPT : MCUXCLOSCCAAEADMODES_OPTION_ONESHOT_DECRYPT
     ));
 
     /* Clear the context */
     MCUXCLMEMORY_FP_MEMORY_CLEAR((uint8_t *)&ctx, sizeof(ctx));
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaAeadModes_crypt, ret_Skeleton, MCUXCLAEAD_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaAeadModes_crypt, ret_Skeleton,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_clear),
                                         pAlgo->protection_token_skeleton);
 }

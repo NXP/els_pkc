@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -159,9 +159,11 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
         msg_adata,            // const uint8_t *input
         input_size_part_1     // size_t input_length
     );
-    
+
      /* Update remaining ad bytes */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.ad_remaining is set to sizeof(msg_adata)=16 during psa_driver_wrapper_aead_set_lengths, this cannot wrap.")
     operation.ad_remaining -= input_size_part_1;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -177,7 +179,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining ad bytes */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.ad_remaining is not manipulated internally, it is equal to input_size_part_2 at this point, this cannot wrap.")
     operation.ad_remaining -= input_size_part_2;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -202,7 +206,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining bytes*/
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.body_remaining is set to sizeof(msg_plain)=16 during psa_driver_wrapper_aead_set_lengths, this cannot wrap.")
     operation.body_remaining -= input_size_part_1;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -227,7 +233,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining bytes */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.body_remaining is not manipulated internally, it is equal to input_size_part_2 at this point, this cannot wrap.")
     operation.body_remaining -= input_size_part_2;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -349,7 +357,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining ad bytes */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.ad_remaining is set to sizeof(msg_adata)=16 during psa_driver_wrapper_aead_set_lengths, this cannot wrap.")
     operation.ad_remaining -= input_size_part_1;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -365,7 +375,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining ad bytes */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.ad_remaining is not manipulated internally, it is equal to input_size_part_2 at this point, this cannot wrap.")
     operation.ad_remaining -= input_size_part_2;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -387,7 +399,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining bytes*/
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.body_remaining is set to sizeof(msg_plain)=16 during psa_driver_wrapper_aead_set_lengths, this cannot wrap.")
     operation.body_remaining -= input_size_part_1;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -412,7 +426,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
     );
 
     /* Update remaining bytes*/
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("operation.body_remaining is not manipulated internally, it is equal to input_size_part_2 at this point, this cannot wrap.")
     operation.body_remaining -= input_size_part_2;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Check the return value */
     if(PSA_SUCCESS != result)
@@ -451,6 +467,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_aead_gcm_multipart_example)
 
     /* Check the content of the encrypted output data */
     if(!mcuxClCore_assertEqual(output_dec, msg_plain, sizeof(msg_plain)))
+    {
+        return MCUXCLEXAMPLE_STATUS_ERROR;
+    }
+
+    /* Disable the ELS */
+    if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }

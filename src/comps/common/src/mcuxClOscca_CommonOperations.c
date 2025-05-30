@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023 NXP                                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOscca_CommonOperations.c
@@ -78,7 +78,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_switch_endianness(uint32_t *ptr, u
     MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(CERT_EXP36_C)
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 #endif
-   uint32_t *ptrL32 = ptr;
+    uint32_t *ptrL32 = ptr;
 
     /* While there are >= 4 bytes to switch the endianness. */
     MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_18_3, "both ptrH32 and ptrL32 point into ptr[].")
@@ -146,11 +146,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClOscca_FastSecureXor(void *pTgt,
     uint32_t wordSize = sizeof(uint32_t);
 
     /* xor by word if aligned */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_DI_CAST_POINTERS()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Cast to integer for alignment check is safe")
     if ((length >= wordSize) && (0U == ((uint32_t)pTgt & (wordSize - 1U)))
                 && (0U == ((uint32_t)pSrc1 & (wordSize - 1U)))
                 && (0U == ((uint32_t)pSrc2 & (wordSize - 1U))))
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_DI_CAST_POINTERS()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
     {
         i = 0U;
         while (length >= wordSize)

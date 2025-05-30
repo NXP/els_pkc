@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClHmac_Els.c
@@ -81,17 +81,19 @@ mcuxClHmac_Engine_Oneshot_Els(
     //ELS requires that the length of the key is added as well
     uint64_t lengthField = (uint64_t) inLength + MCUXCLELS_HMAC_PADDED_KEY_SIZE;
 
-    *pDataIn-- = (uint8_t)(lengthField << 3);
-    *pDataIn-- = (uint8_t)(lengthField >> 5);
-    *pDataIn-- = (uint8_t)(lengthField >> 13);
-    *pDataIn-- = (uint8_t)(lengthField >> 21);
-    *pDataIn-- = (uint8_t)(lengthField >> 29);
+    *pDataIn-- = (uint8_t)((lengthField << 3) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 5) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 13) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 21) & 0xffU);
+    *pDataIn-- = (uint8_t)((lengthField >> 29) & 0xffU);
 
     /* Set-up the HMAC ELS options */
     mcuxClEls_HmacOption_t hmac_options;
     hmac_options.word.value = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer is of the right type (mcuxClHmac_Context_Els_t *)")
     if(MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(pCtxEls->key))
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
     {
         hmac_options.bits.extkey = MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE;
 
@@ -156,7 +158,7 @@ mcuxClHmac_Engine_Oneshot_Els(
 #endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
 
     *pOutLength = MCUXCLELS_HMAC_OUTPUT_SIZE;
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHmac_Engine_Oneshot_Els, MCUXCLMAC_STATUS_OK,
         MCUX_CSSL_FP_CONDITIONAL((MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(pCtxEls->key)),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_prepareHMACKey)
@@ -165,7 +167,7 @@ mcuxClHmac_Engine_Oneshot_Els(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
         MCUX_CSSL_FP_CONDITIONAL(NULL != pOut,  MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN)
          );
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
 }
 

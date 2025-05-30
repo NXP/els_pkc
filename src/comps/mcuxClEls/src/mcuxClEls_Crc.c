@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2022 NXP                                                  */
+/* Copyright 2021-2022, 2024 NXP                                            */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClEls_Crc.c
@@ -95,10 +95,10 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_UpdateRe
     // DATAIN = {ELS_CMD[4:0], options[31:0], 3'h0}
     uint8_t pDatain[5];
     pDatain[4] =  command << 3;
-    pDatain[4] |= (uint8_t)(options >> 29);
-    pDatain[3] =  (uint8_t)(options >> 21);
-    pDatain[2] =  (uint8_t)(options >> 13);
-    pDatain[1] =  (uint8_t)(options >> 5);
+    pDatain[4] |= (uint8_t)((options >> 29) & 0xFFu);
+    pDatain[3] =  (uint8_t)((options >> 21) & 0xFFu);
+    pDatain[2] =  (uint8_t)((options >> 13) & 0xFFu);
+    pDatain[1] =  (uint8_t)((options >> 5) & 0xFFu);
     pDatain[0] =  ((uint8_t)(options & 0x1Fu)) << 3;
 
     /* byte-wise CRC32 with nibble-wise LUT */
@@ -106,7 +106,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_UpdateRe
     uint32_t lookupValueLowBits, lookupValueHighBits;
     for(uint32_t byte = 1u; byte <= 5u; byte++)
     {
-        lookupIndex = pDatain[5u - byte] ^ ((uint8_t)(*refCrc >> 24));
+        lookupIndex = (pDatain[5u - byte] ^ ((uint8_t)((*refCrc >> 24) & 0xFFu))) & 0xFFu ;
         lookupValueLowBits = crc32_LUT[(lookupIndex & 0x0Fu)];
         lookupValueHighBits = crc32_LUT[(lookupIndex >> 4) + 16u];
         *refCrc = lookupValueHighBits ^ lookupValueLowBits ^ (*refCrc << 8);

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,18 +21,18 @@
  ******************************************************************************/
 #include <mcuxClSession.h>
 #include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
 #include <mcuxClKey.h>
 #include <mcuxClOsccaSm2.h>
 #include <mcuxClOsccaSm2_CommonParams.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 #include <mcuxClExample_Session_Helper.h>
-#include <mcuxClExample_ELS_Helper.h>
 #include <mcuxClCore_Examples.h>
+#include <mcuxClExample_ELS_Helper.h>
 #if MCUXCL_FEATURE_RANDOMMODES_OSCCA_TRNG == 1
 #include <mcuxClOsccaRandomModes.h>
 #else
-#include <mcuxClRandomModes.h>
 #include <mcuxClMemory.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #endif
@@ -69,13 +69,12 @@
  * @warning
  *   none
  */
-bool mcuxClOsccaSm2_Keyagreement_SelfTest_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSm2_Keyagreement_SelfTest_example)
 {
     /**************************************************************************/
     /* Preparation: RNG initialization, CPU and PKC workarea allocation       */
     /**************************************************************************/
-
-    /* Initialize ELS, Enable the ELS */
+    /** Initialize ELS, Enable the ELS **/
     if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -84,17 +83,23 @@ bool mcuxClOsccaSm2_Keyagreement_SelfTest_example(void)
     /* Setup one session to be used by all functions called */
     mcuxClSession_Descriptor_t session;
     /* Allocate and initialize session with pkcWA on the beginning of PKC RAM */
-    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MCUXCLOSCCASM2_KEYAGREEMENT_SELFTEST_SIZEOF_WA_CPU,
+    MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(&session, MCUXCLEXAMPLE_MAX_WA(MCUXCLOSCCASM2_KEYAGREEMENT_SELFTEST_SIZEOF_WA_CPU, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE),
                         MCUXCLOSCCASM2_KEYAGREEMENT_SELFTEST_SIZEOF_WA_PKC);
 
 #if MCUXCL_FEATURE_RANDOMMODES_OSCCA_TRNG == 1
     /* Initialize the RNG context */
     /* We need a context for OSCCA Rng. */
     uint32_t rngCtx[MCUXCLOSCCARANDOMMODES_OSCCARNG_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClRandom_Context_t pRngCtx = (mcuxClRandom_Context_t)rngCtx;
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                               pRngCtx,
-                                                               mcuxClOsccaRandomModes_Mode_TRNG));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(
+                                                              &session,
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pRngCtx has the correct type (mcuxClRandom_Context_t), the cast was valid.")
+                                                              pRngCtx,
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+                                                              mcuxClOsccaRandomModes_Mode_TRNG));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -157,16 +162,11 @@ bool mcuxClOsccaSm2_Keyagreement_SelfTest_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
-    /* Disable the ELS */
+    /** Disable the ELS **/
     if(!mcuxClExample_Els_Disable())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     return MCUXCLEXAMPLE_STATUS_OK;
-}
-bool nxpClOsccaSm2_Keyagreement_SelfTest_example(void)
-{
-    bool result = mcuxClOsccaSm2_Keyagreement_SelfTest_example();
-    return result;
 }

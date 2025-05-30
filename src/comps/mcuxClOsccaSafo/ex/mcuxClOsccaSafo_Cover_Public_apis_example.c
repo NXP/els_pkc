@@ -1,16 +1,17 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
+#include <mcuxClToolchain.h>
 #include <mcuxClSession.h>          // Interface to the entire mcuxClSession component
 #include <mcuxClMemory.h>
 #include <mcuxClOsccaSafo.h>
@@ -21,62 +22,72 @@
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM4
 /* xorWr_test test vector */
 static const uint32_t message[4U] = {
-    0x8f4ba8e0, 0x297da02b, 0x5cf2f7a2, 0x4167c487
+    0x8f4ba8e0U, 0x297da02bU, 0x5cf2f7a2U, 0x4167c487U
 };
 
 static const uint32_t xormessage[4U] = {
-    0x00000000, 0x00000000, 0x00000000, 0x00000000
+    0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U
 };
 
 /* SM4 Encrypt test vector (1 block message) */
 static const uint32_t plaintext[4U] = {
-    0x01234567, 0x89abcdef, 0xfedcba98, 0x76543210
+    0x01234567U, 0x89abcdefU, 0xfedcba98U, 0x76543210U
 };
 static const uint32_t key[4U] = {
-    0x01234567, 0x89abcdef, 0xfedcba98, 0x76543210
+    0x01234567U, 0x89abcdefU, 0xfedcba98U, 0x76543210U
 };
 static const uint32_t reference_ciphertext[4U] = {
-    0x681edf34, 0xd206965e, 0x86b3e94f, 0x536e4246
+    0x681edf34U, 0xd206965eU, 0x86b3e94fU, 0x536e4246U
 };
 
 /* SM4 Ctr test vector (4 block message) */
-static const uint8_t sm4CtrKey[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
-                                    0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54, 0x32, 0x10 };
+static const ALIGNED uint8_t sm4CtrKey[] = {
+    0x01U, 0x23U, 0x45U, 0x67U, 0x89U, 0xABU, 0xCDU, 0xEFU,
+    0xFEU, 0xDCU, 0xBAU, 0x98U, 0x76U, 0x54U, 0x32U, 0x10U
+};
 
+static const ALIGNED uint8_t sm4CtrPtxt[] = {
+    0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU,
+    0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU,
+    0xCCU, 0xCCU, 0xCCU, 0xCCU, 0xCCU, 0xCCU, 0xCCU, 0xCCU,
+    0xDDU, 0xDDU, 0xDDU, 0xDDU, 0xDDU, 0xDDU, 0xDDU, 0xDDU,
+    0xEEU, 0xEEU, 0xEEU, 0xEEU, 0xEEU, 0xEEU, 0xEEU, 0xEEU,
+    0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU,
+    0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU, 0xAAU,
+    0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU, 0xBBU
+};
 
-static const uint8_t sm4CtrPtxt[] = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
-                                     0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB,
-                                     0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC,
-                                     0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD,
-                                     0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
-                                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                                     0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
-                                     0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB};
-static const uint8_t sm4CtrIv[] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F};
-static const uint8_t sm4CtrCtxt[] = {0xAC,0x32,0x36,0xCB,0x97,0x0C,0xC2,0x07,
-                                     0x91,0x36,0x4C,0x39,0x5A,0x13,0x42,0xD1,
-                                     0xA3,0xCB,0xC1,0x87,0x8C,0x6F,0x30,0xCD,
-                                     0x07,0x4C,0xCE,0x38,0x5C,0xDD,0x70,0xC7,
-                                     0xF2,0x34,0xBC,0x0E,0x24,0xC1,0x19,0x80,
-                                     0xFD,0x12,0x86,0x31,0x0C,0xE3,0x7B,0x92,
-                                     0x6E,0x02,0xFC,0xD0,0xFA,0xA0,0xBA,0xF3,
-                                     0x8B,0x29,0x33,0x85,0x1D,0x82,0x45,0x14};
+static const ALIGNED uint8_t sm4CtrIv[] = {
+    0x00U, 0x01U, 0x02U, 0x03U, 0x04U, 0x05U, 0x06U, 0x07U,
+    0x08U, 0x09U, 0x0AU, 0x0BU, 0x0CU, 0x0DU, 0x0EU, 0x0FU
+};
+
+static const uint8_t sm4CtrCtxt[] = {
+    0xACU, 0x32U, 0x36U, 0xCBU, 0x97U, 0x0CU, 0xC2U, 0x07U,
+    0x91U, 0x36U, 0x4CU, 0x39U, 0x5AU, 0x13U, 0x42U, 0xD1U,
+    0xA3U, 0xCBU, 0xC1U, 0x87U, 0x8CU, 0x6FU, 0x30U, 0xCDU,
+    0x07U, 0x4CU, 0xCEU, 0x38U, 0x5CU, 0xDDU, 0x70U, 0xC7U,
+    0xF2U, 0x34U, 0xBCU, 0x0EU, 0x24U, 0xC1U, 0x19U, 0x80U,
+    0xFDU, 0x12U, 0x86U, 0x31U, 0x0CU, 0xE3U, 0x7BU, 0x92U,
+    0x6EU, 0x02U, 0xFCU, 0xD0U, 0xFAU, 0xA0U, 0xBAU, 0xF3U,
+    0x8BU, 0x29U, 0x33U, 0x85U, 0x1DU, 0x82U, 0x45U, 0x14U
+};
 
 #endif /* MCUXCL_FEATURE_HW_SAFO_SM4 */
 
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM3
 /* SM3 Automatic mode, partial processing (4 padded blocks) */
 static const uint32_t message_hash[64U] = {
-    0x64fce814, 0xfa17cecf, 0x9a97c6a8, 0x15183f0d, 0xb881d336, 0x7eb90024, 0x7d997ee0, 0x27a25ed2, 0xaac0a62f, 0x0718227d,
-    0xd6e82f17, 0xe6f56301, 0x1945d3e5, 0x8002e5c5, 0xd0dc66e2, 0x9b55c71c, 0xde0d6d87, 0xcd211331, 0x056b122d, 0x069c5562,
-    0x10d29e62, 0xdfdaca25, 0x87fe07e1, 0x635bc44f, 0xd07bb099, 0x0e6af75c, 0x9b1f0139, 0xa117ef56, 0x39ab73c5, 0xf7f7793b,
-    0xb2277b97, 0x49af279b, 0xf722b9c8, 0x4a786f12, 0x9e441112, 0xf184a9fe, 0x745cd390, 0xd4f4dadc, 0x773c31d0, 0x89c39c2e,
-    0xb610dac9, 0x73bd5e3f, 0x13b14bf5, 0x25b43dd0, 0xc8591380, 0xb0424647, 0x82e6d4b8, 0x336abcda, 0x80000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000600
+    0x64fce814U, 0xfa17cecfU, 0x9a97c6a8U, 0x15183f0dU, 0xb881d336U, 0x7eb90024U, 0x7d997ee0U, 0x27a25ed2U, 0xaac0a62fU, 0x0718227dU,
+    0xd6e82f17U, 0xe6f56301U, 0x1945d3e5U, 0x8002e5c5U, 0xd0dc66e2U, 0x9b55c71cU, 0xde0d6d87U, 0xcd211331U, 0x056b122dU, 0x069c5562U,
+    0x10d29e62U, 0xdfdaca25U, 0x87fe07e1U, 0x635bc44fU, 0xd07bb099U, 0x0e6af75cU, 0x9b1f0139U, 0xa117ef56U, 0x39ab73c5U, 0xf7f7793bU,
+    0xb2277b97U, 0x49af279bU, 0xf722b9c8U, 0x4a786f12U, 0x9e441112U, 0xf184a9feU, 0x745cd390U, 0xd4f4dadcU, 0x773c31d0U, 0x89c39c2eU,
+    0xb610dac9U, 0x73bd5e3fU, 0x13b14bf5U, 0x25b43dd0U, 0xc8591380U, 0xb0424647U, 0x82e6d4b8U, 0x336abcdaU, 0x80000000U, 0x00000000U,
+    0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
+    0x00000000U, 0x00000000U, 0x00000000U, 0x00000600U
 };
 static const uint32_t reference_hash_hash[8U] = {
-    0x5cf5619a, 0x84adcfc1, 0x9165d942, 0x19b32dfc, 0xd5baecde, 0x3fa93ce7, 0x1e675e62, 0xe2aa7ce5
+    0x5cf5619aU, 0x84adcfc1U, 0x9165d942U, 0x19b32dfcU, 0xd5baecdeU, 0x3fa93ce7U, 0x1e675e62U, 0xe2aa7ce5U
 };
 #endif /* MCUXCL_FEATURE_HW_SAFO_SM3 */
 
@@ -88,25 +99,25 @@ static bool xorWr_test(void)
     uint32_t pXorWrOut[4];
 
     //Copy input to SAFO
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0, message[0]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1, message[1]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2, message[2]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3, message[3]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0U, message[0]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1U, message[1]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2U, message[2]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3U, message[3]);
 
     uint32_t ctrl2Backup = mcuxClOsccaSafo_Drv_enableXorWrite();
 
     //Copy input to SAFO
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0, message[0]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1, message[1]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2, message[2]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3, message[3]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0U, message[0]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1U, message[1]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2U, message[2]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3U, message[3]);
 
     pXorWrOut[0] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0u);
     pXorWrOut[1] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1u);
     pXorWrOut[2] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2u);
     pXorWrOut[3] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3u);
 
-    if(true != mcuxClCore_assertEqual((uint8_t*)pXorWrOut, (uint8_t*)xormessage, sizeof(xormessage)))
+    if(true != mcuxClCore_assertEqual((const uint8_t *)pXorWrOut, (const uint8_t *)xormessage, sizeof(xormessage)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -114,23 +125,23 @@ static bool xorWr_test(void)
     mcuxClOsccaSafo_Drv_disableXorWrite();
 
     //Copy input to SAFO
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0, message[0]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1, message[1]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2, message[2]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3, message[3]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0U, message[0]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1U, message[1]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2U, message[2]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3U, message[3]);
 
     //Copy input to SAFO
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0, message[0]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1, message[1]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2, message[2]);
-    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3, message[3]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0U, message[0]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1U, message[1]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2U, message[2]);
+    mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3U, message[3]);
 
     pXorWrOut[0] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0u);
     pXorWrOut[1] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1u);
     pXorWrOut[2] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 2u);
     pXorWrOut[3] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 3u);
 
-    if(true != mcuxClCore_assertEqual((uint8_t*)pXorWrOut, (uint8_t*)message, sizeof(message)))
+    if(true != mcuxClCore_assertEqual((const uint8_t *)pXorWrOut, (const uint8_t *)message, sizeof(message)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -141,18 +152,19 @@ static bool xorWr_test(void)
 
 
 /* Cover test case for mcuxClOsccaSafo_Drv_incrementData and mcuxClOsccaSafo_Drv_dataOut_res */
-static void sm4Ctr_test(const uint32_t *key, const uint32_t *pIv, const uint32_t *input, uint32_t inSize, uint32_t *pOut, uint32_t* outSize)
+static void sm4Ctr_test(const uint32_t *sm4_key, const uint32_t *pIv, const uint32_t *input, uint32_t inSize, uint32_t *pOut, uint32_t* outSize)
 {
     /* Flush SAFO key registers */
     mcuxClOsccaSafo_Drv_enableFlush(MCUXCLOSCCASAFO_DRV_FLUSH_KEY);
     mcuxClOsccaSafo_Drv_init(0U);
+    *outSize = 0u;
     mcuxClOsccaSafo_Drv_wait();
 
     (void)mcuxClOsccaSafo_Drv_setByteOrder(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_LE);
-    mcuxClOsccaSafo_Drv_loadKey(0u, key[3]);
-    mcuxClOsccaSafo_Drv_loadKey(1u, key[2]);
-    mcuxClOsccaSafo_Drv_loadKey(2u, key[1]);
-    mcuxClOsccaSafo_Drv_loadKey(3u, key[0]);
+    mcuxClOsccaSafo_Drv_loadKey(0u, sm4_key[3]);
+    mcuxClOsccaSafo_Drv_loadKey(1u, sm4_key[2]);
+    mcuxClOsccaSafo_Drv_loadKey(2u, sm4_key[1]);
+    mcuxClOsccaSafo_Drv_loadKey(3u, sm4_key[0]);
 
     mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN1_INDEX + 0u, pIv[3]);  /* load the IV in DATIN1 */
     mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN1_INDEX + 1u, pIv[2]);  /* load the IV in DATIN1 */
@@ -193,19 +205,21 @@ static void sm4Ctr_test(const uint32_t *key, const uint32_t *pIv, const uint32_t
         pOut[1] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATOUT_INDEX + 2u);
         pOut[0] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATOUT_INDEX + 3u);
         pOut += 16u / sizeof(uint32_t);
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("*outSize will be increased by a maximum total of inSize.")
         *outSize += 16u;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
         remainingBytes -= 16u;
     }
 
-   /*
-    * Iterate over remaining blocks. Here, every block is assumed to be of full size
-    */
-   if(remainingBytes > 0u)
-   {
+    /*
+     * Iterate over remaining blocks. Here, every block is assumed to be of full size
+     */
+    if(remainingBytes > 0u)
+    {
         uint32_t pPaddingBuf[4] = {0u};
         uint32_t pPaddingOut[4] = {0u};
         /* Copy the padding to the output and update pOutLength accordingly. */
-        mcuxClMemory_copy((uint8_t*)pPaddingBuf, (uint8_t*)input, remainingBytes, remainingBytes);
+        (void)mcuxClMemory_copy((uint8_t *)pPaddingBuf, (const uint8_t *)input, remainingBytes, remainingBytes);
         //Copy input to SAFO
         mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 0u, pPaddingBuf[3]);  /* load the IV in DATIN1 */
         mcuxClOsccaSafo_Drv_load(MCUXCLOSCCASAFO_DRV_DATIN0_INDEX + 1u, pPaddingBuf[2]);  /* load the IV in DATIN1 */
@@ -229,9 +243,11 @@ static void sm4Ctr_test(const uint32_t *key, const uint32_t *pIv, const uint32_t
         pPaddingOut[1] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATOUT_INDEX + 2u);
         pPaddingOut[0] = mcuxClOsccaSafo_Drv_storeInput(MCUXCLOSCCASAFO_DRV_DATOUT_INDEX + 3u);
         /* Copy the padding to the output and update pOutLength accordingly. */
-        mcuxClMemory_copy((uint8_t*)pOut, (uint8_t*)pPaddingOut, remainingBytes, remainingBytes);
+        (void)mcuxClMemory_copy((uint8_t *)pOut, (const uint8_t *)pPaddingOut, remainingBytes, remainingBytes);
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("*outSize will have been increased by exactly inSize after this operation - it cannot overflow.")
         *outSize += remainingBytes;
-   }
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
+    }
 }
 
 /* Cover test case for mcuxClOsccaSafo_Drv_enableOutputToKey and mcuxClOsccaSafo_Drv_disableOutputToKey */
@@ -239,7 +255,7 @@ static void sm4Ctr_test(const uint32_t *key, const uint32_t *pIv, const uint32_t
  * decrypt = 0 -> perform encrypt operation
  * decrypt = 1 -> perform decrypt operation
  */
-void sm4_Operation(uint8_t decrypt, const uint32_t *input, const uint32_t *key, uint32_t *result)
+static void sm4_Operation(uint8_t decrypt, const uint32_t *input, const uint32_t *sm4_key, uint32_t *result)
 {
     /* Flush SAFO key registers */
     mcuxClOsccaSafo_Drv_enableFlush(MCUXCLOSCCASAFO_DRV_FLUSH_KEY);
@@ -247,16 +263,16 @@ void sm4_Operation(uint8_t decrypt, const uint32_t *input, const uint32_t *key, 
     mcuxClOsccaSafo_Drv_wait();
 
     /* load plaintext/ciphertext */
-    mcuxClOsccaSafo_Drv_load(0, input[3]);
-    mcuxClOsccaSafo_Drv_load(1, input[2]);
-    mcuxClOsccaSafo_Drv_load(2, input[1]);
-    mcuxClOsccaSafo_Drv_load(3, input[0]);
+    mcuxClOsccaSafo_Drv_load(0U, input[3]);
+    mcuxClOsccaSafo_Drv_load(1U, input[2]);
+    mcuxClOsccaSafo_Drv_load(2U, input[1]);
+    mcuxClOsccaSafo_Drv_load(3U, input[0]);
 
     /* load key */
-    mcuxClOsccaSafo_Drv_loadKey(0, key[3]);
-    mcuxClOsccaSafo_Drv_loadKey(1, key[2]);
-    mcuxClOsccaSafo_Drv_loadKey(2, key[1]);
-    mcuxClOsccaSafo_Drv_loadKey(3, key[0]);
+    mcuxClOsccaSafo_Drv_loadKey(0U, sm4_key[3]);
+    mcuxClOsccaSafo_Drv_loadKey(1U, sm4_key[2]);
+    mcuxClOsccaSafo_Drv_loadKey(2U, sm4_key[1]);
+    mcuxClOsccaSafo_Drv_loadKey(3U, sm4_key[0]);
 
     (void) mcuxClOsccaSafo_Drv_enableOutputToKey(MCUXCLOSCCASAFO_DRV_KEY2_INDEX);
 
@@ -282,10 +298,10 @@ void sm4_Operation(uint8_t decrypt, const uint32_t *input, const uint32_t *key, 
     mcuxClOsccaSafo_Drv_wait();
 
     /* read the result */
-    result[3] = mcuxClOsccaSafo_Drv_storeKey(0);
-    result[2] = mcuxClOsccaSafo_Drv_storeKey(1);
-    result[1] = mcuxClOsccaSafo_Drv_storeKey(2);
-    result[0] = mcuxClOsccaSafo_Drv_storeKey(3);
+    result[3] = mcuxClOsccaSafo_Drv_storeKey(0U);
+    result[2] = mcuxClOsccaSafo_Drv_storeKey(1U);
+    result[1] = mcuxClOsccaSafo_Drv_storeKey(2U);
+    result[0] = mcuxClOsccaSafo_Drv_storeKey(3U);
 
     mcuxClOsccaSafo_Drv_disableOutputToKey();
 }
@@ -316,7 +332,7 @@ static void Load_Partial_Hash(uint32_t *partial_hash)
 
     mcuxClOsccaSafo_Drv_start(MCUXCLOSCCASAFO_DRV_START_SM3);
 
-    mcuxClOsccaSafo_Drv_setByteOrder(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
+    (void)mcuxClOsccaSafo_Drv_setByteOrder(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
     for(int i = 7; i >= 0; i--)
     {
         mcuxClOsccaSafo_Drv_loadFifo(partial_hash[i]);
@@ -331,7 +347,7 @@ static void Load_Partial_Hash(uint32_t *partial_hash)
     mcuxClOsccaSafo_Drv_wait();
 }
 
-static void sm3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_size_words, uint32_t *result_digest, bool partial_hash_reload)
+static void sm3_Operation_Auto_Mode(const uint32_t *msg, uint32_t msg_size_words, uint32_t *result_digest, bool partial_hash_reload)
 {
     /* setup SM3 control_sm3 SFRs */
     /*
@@ -363,9 +379,9 @@ static void sm3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
     mcuxClOsccaSafo_Drv_start(MCUXCLOSCCASAFO_DRV_START_SM3);
 
     /* load message blocks into SAFO_SM3_FIFO SFRs */
-    for (uint32_t i = 0; i < message_size_words; i++)
+    for (uint32_t i = 0; i < msg_size_words; i++)
     {
-        mcuxClOsccaSafo_Drv_loadFifo(message[i]);
+        mcuxClOsccaSafo_Drv_loadFifo(msg[i]);
     }
 
     /* set SM3 control SFRs to stop the AUTO mode */
@@ -377,10 +393,10 @@ static void sm3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
     mcuxClOsccaSafo_Drv_wait();
 
     /* read first bank(16 bytes) from the hash result */
-    result_digest[0] = mcuxClOsccaSafo_Drv_store(0);
-    result_digest[1] = mcuxClOsccaSafo_Drv_store(1);
-    result_digest[2] = mcuxClOsccaSafo_Drv_store(2);
-    result_digest[3] = mcuxClOsccaSafo_Drv_store(3);
+    result_digest[0] = mcuxClOsccaSafo_Drv_store(0U);
+    result_digest[1] = mcuxClOsccaSafo_Drv_store(1U);
+    result_digest[2] = mcuxClOsccaSafo_Drv_store(2U);
+    result_digest[3] = mcuxClOsccaSafo_Drv_store(3U);
 
     /* setup SAFO control SFRs */
     /*
@@ -395,10 +411,10 @@ static void sm3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
     mcuxClOsccaSafo_Drv_wait();
 
     /* read second bank(16 bytes) from the hash result */
-    result_digest[4] = mcuxClOsccaSafo_Drv_store(0);
-    result_digest[5] = mcuxClOsccaSafo_Drv_store(1);
-    result_digest[6] = mcuxClOsccaSafo_Drv_store(2);
-    result_digest[7] = mcuxClOsccaSafo_Drv_store(3);
+    result_digest[4] = mcuxClOsccaSafo_Drv_store(0U);
+    result_digest[5] = mcuxClOsccaSafo_Drv_store(1U);
+    result_digest[6] = mcuxClOsccaSafo_Drv_store(2U);
+    result_digest[7] = mcuxClOsccaSafo_Drv_store(3U);
 }
 #endif /* MCUXCL_FEATURE_HW_SAFO_SM3 */
 
@@ -411,7 +427,7 @@ static void sm3_Operation_Auto_Mode(const uint32_t *message, uint32_t message_si
  * - wait for SM3 operation to complete (via pooling busy)
  * - read the hash result
  */
-bool mcuxClOsccaSafo_Cover_Public_apis_example(void)
+MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSafo_Cover_Public_apis_example)
 {
     mcuxClOsccaSafo_Drv_enableFlush(MCUXCLOSCCASAFO_DRV_FLUSH_ALL);
     mcuxClOsccaSafo_Drv_init(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
@@ -447,7 +463,7 @@ bool mcuxClOsccaSafo_Cover_Public_apis_example(void)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     /* check if actual result is equal to expected result */
-    if (true != mcuxClCore_assertEqual((uint8_t*)result_ciphertext, (uint8_t*)reference_ciphertext, sizeof(reference_ciphertext)))
+    if (true != mcuxClCore_assertEqual((const uint8_t *)result_ciphertext, (const uint8_t *)reference_ciphertext, sizeof(reference_ciphertext)))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -469,13 +485,15 @@ bool mcuxClOsccaSafo_Cover_Public_apis_example(void)
     uint32_t cipherCtrtext[4U] = {0U};
     uint32_t outLen = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("sm4CtrKey, sm4CtrIv, sm4CtrPtxt are aligned using the ALIGNED keyword to facilitate example function")
     sm4Ctr_test((const uint32_t *)sm4CtrKey, (const uint32_t *)sm4CtrIv, (const uint32_t *)sm4CtrPtxt, sizeof(sm4CtrPtxt), cipherCtrtext, &outLen);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
     if(mcuxClOsccaSafo_Drv_isStatusError())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     /* check if actual result is equal to expected result */
-    if (true != mcuxClCore_assertEqual((uint8_t*)cipherCtrtext, (uint8_t*)sm4CtrCtxt, outLen))
+    if (true != mcuxClCore_assertEqual((const uint8_t *)cipherCtrtext, (const uint8_t *)sm4CtrCtxt, outLen))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -495,11 +513,11 @@ bool mcuxClOsccaSafo_Cover_Public_apis_example(void)
     mcuxClOsccaSafo_Drv_init(MCUXCLOSCCASAFO_DRV_BYTE_ORDER_BE);
     uint32_t result_digest[8U];
     /* SM3 Automatic mode, partial hash processing (load the partial HASH value while SAFO_SM3_CTRL.HASH_RELOAD is set to 1'b1) */
-    for (uint8_t i = 0; i < 4; i++)
+    for (uint8_t i = 0U; i < 4U; i++)
     {
-        bool partial_hash_reload = true ? (i != 0) : false;
-        sm3_Operation_Auto_Mode(&message_hash[i * 16], 16U, result_digest, partial_hash_reload); /* process one SM3 block (64 bytes) per call */
-        if (i != 3)
+        bool partial_hash_reload = (i != 0U);
+        sm3_Operation_Auto_Mode(&message_hash[i * 16U], 16U, result_digest, partial_hash_reload); /* process one SM3 block (64 bytes) per call */
+        if (i != 3U)
         {
             Load_Partial_Hash(result_digest);
         }

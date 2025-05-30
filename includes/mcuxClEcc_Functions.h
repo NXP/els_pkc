@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -21,8 +21,7 @@
 #define MCUXCLECC_FUNCTIONS_H_
 
 
-#include <stdint.h>
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClCore_Platform.h>
 #include <mcuxClSession.h>
 #include <mcuxClBuffer.h>
 #include <mcuxCsslFlowProtection.h>
@@ -190,7 +189,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_MontDH_KeyAgreement(
     );
 
 
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
 /**
  * @brief This function implements the EdDSA key pair generation for Ed25519 and Ed448 as specified in rfc8032
  *  (see Sections 5.1.5 and 5.2.5 of https://datatracker.ietf.org/doc/html/rfc8032).
@@ -215,7 +214,7 @@ MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comment
  * @retval #MCUXCLECC_STATUS_RNG_ERROR    random number generation (DRBG / PRNG) error (unexpected behavior)
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK fault attack (unexpected behavior) is detected
  */
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_HYPERLINK_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateKeyPair)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     mcuxClSession_Handle_t pSession,
@@ -224,7 +223,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair(
     mcuxClKey_Handle_t pubKey
     );
 
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
 /**
  * @brief This function implements the EdDSA signature generation for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.6 and 5.2.6 of https://datatracker.ietf.org/doc/html/rfc8032).
  *  For given hash prefix prefix (either dom2(x, y) or dom4(x, y) according to the chosen EdDSA variant; see Sections 5.1 and 5.2 of https://datatracker.ietf.org/doc/html/rfc8032),
@@ -255,7 +254,7 @@ MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comment
  * @retval #MCUXCLECC_STATUS_RNG_ERROR     random number generation (DRBG / PRNG) error (unexpected behavior)
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK  fault attack (unexpected behavior) is detected
  */
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_HYPERLINK_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateSignature)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignature(
     mcuxClSession_Handle_t pSession,
@@ -267,7 +266,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateSignatur
     uint32_t * const pSignatureSize
     );
 
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comments.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
 /**
  * @brief This function implements the EdDSA signature verification for Ed25519 and Ed448 as specified in rfc8032 (see Sections 5.1.7 and 5.2.7 of https://datatracker.ietf.org/doc/html/rfc8032).
  *  For given hash prefix prefix (either dom2(x, y) or dom4(x, y) according to the chosen EdDSA variant; see Sections 5.1 and 5.2 of https://datatracker.ietf.org/doc/html/rfc8032),
@@ -297,7 +296,7 @@ MCUX_CSSL_ANALYSIS_START_SUPPRESS_TEXT_IN_COMMENTS("Links are allowed in comment
  * @retval #MCUXCLECC_STATUS_INVALID_PARAMS    input parameters are invalid
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK      fault attack (unexpected behavior) is detected
  */
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TEXT_IN_COMMENTS()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_HYPERLINK_IN_COMMENTS()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_VerifySignature)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySignature(
     mcuxClSession_Handle_t session,
@@ -362,10 +361,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateProtocol
  *
  * This function generates an ECDSA protocol descriptor to perform deterministic ECDSA signature generation
  * based on a given HMAC mode.
+ * 
+ * NOTE: This protocol is implemented according to RFC6979 which deviates from FIPS 186-5 standard in cases
+ * when generated r or s signature components equal zero. In such cases a new signature is generated using
+ * the (deterministic) HMAC_DRBG state from previous iteration.
  *
- * @param[in]  pSession                               Handle for the current CL session.
- * @param[out] pDeterministicECDSAProtocolDescriptor  Pointer to output determinstic ECDSA protocol descriptor.
- * @param[in]  hmacMode                               pointer to HMAC mode.
+ * @param[in]  pSession             Handle for the current CL session.
+ * @param[out] pProtocolDescriptor  Pointer to output deterministic ECDSA protocol descriptor.
+ * @param[in]  hmacMode             pointer to HMAC mode.
  *
  *
  * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
@@ -373,12 +376,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateProtocol
  * @retval #MCUXCLECC_STATUS_INVALID_PARAMS  if the input parameters are invalid.
  * @retval #MCUXCLECC_STATUS_FAULT_ATTACK    if a fault attack (unexpected behavior) is detected.
  */
-MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor(
+MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("Definition is provided assuming library is built properly")
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic(
     mcuxClSession_Handle_t session,
-    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t * const pDeterministicECDSAProtocolDescriptor,
+    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t * const pProtocolDescriptor,
     mcuxClMac_Mode_t hmacMode
     );
+MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
+#define mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic ///< @deprecated Please use mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic instead
 #endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
 
 

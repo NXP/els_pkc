@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_OaepEncode.c
@@ -72,6 +72,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_oaepEncode(
   1b. If mLen > k - 2hLen - 2, output "message too long" and
     stop.
   */
+
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(pHashAlgo->hashSize, MCUXCLHASH_OUTPUT_SIZE_MD5, MCUXCLHASH_MAX_OUTPUT_SIZE, MCUXCLRSA_STATUS_INVALID_INPUT)
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(keyByteLength, (MCUXCLKEY_SIZE_1024 / 8u), (MCUXCLKEY_SIZE_8192 / 8u), MCUXCLRSA_STATUS_INVALID_INPUT)
   uint32_t keyByteLength = keyBitLength / 8u;
   if ( inputLength > (keyByteLength - (2u * pHashAlgo->hashSize) - 2u) )
   {
@@ -84,6 +87,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_oaepEncode(
   */
   uint32_t hashOutputSize = 0u;
   uint32_t psLen = keyByteLength - inputLength - (pHashAlgo->hashSize * 2u) - 2u;
+  MCUX_CSSL_ANALYSIS_COVERITY_ASSERT(inputLength, 0u, (pHashAlgo->hashSize * 2u), MCUXCLRSA_STATUS_INVALID_INPUT)
   uint32_t dbLen = pHashAlgo->hashSize + 1u + inputLength + psLen;
 
   const uint32_t pkcWaSizeWord = MCUXCLRSA_INTERNAL_OAEPENCODE_WAPKC_SIZE_WO_MGF1(keyByteLength) / sizeof(uint32_t);
@@ -94,7 +98,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_oaepEncode(
   }
 
   uint32_t usedPkcWorkarea = 0;
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Because 'usedPkcWorkarea' is less than PKC RAM size, the access will be not out of bounds")
   uint8_t *db = &pPkcWorkarea[usedPkcWorkarea];
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
   usedPkcWorkarea += MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(dbLen);
 
   MCUXCLBUFFER_INIT(dbBuf, pSession, db, pHashAlgo->hashSize);
@@ -132,7 +138,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRsa_Status_t) mcuxClRsa_oaepEncode(
 /*
 d. Generate a random octet string seed of length hLen.
 */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Because 'usedPkcWorkarea' is less than PKC RAM size, the access will be not out of bounds")
   uint8_t *seed = &pPkcWorkarea[usedPkcWorkarea];
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
   usedPkcWorkarea += MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(pHashAlgo->hashSize);
   MCUXCLBUFFER_INIT(pBufSeed, NULL, seed, pHashAlgo->hashSize);
   MCUX_CSSL_FP_FUNCTION_CALL(ret_Random_ncGenerate, mcuxClRandom_ncGenerate(pSession, pBufSeed , pHashAlgo->hashSize));
@@ -145,7 +153,9 @@ d. Generate a random octet string seed of length hLen.
 /*
 e. Let dbMask = MGF(seed, k - hLen - 1).
 */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Because 'usedPkcWorkarea' is less than PKC RAM size, the access will be not out of bounds")
   uint8_t *dbMask = &pPkcWorkarea[usedPkcWorkarea];
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
   usedPkcWorkarea += MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(dbLen);
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_mcuxClRsa_mgf1, mcuxClRsa_mgf1(pSession, pHashAlgo, seed, pHashAlgo->hashSize, dbLen, dbMask));
   if(MCUXCLRSA_STATUS_INTERNAL_MGF_OK != retVal_mcuxClRsa_mgf1)
@@ -169,7 +179,9 @@ i. Concatenate a single octet with hexadecimal value 0x00,
     maskedSeed, and maskedDB to form an encoded message EM of length k octets as
     EM = 0x00 || maskedSeed || maskedDB.
 */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("Because 'usedPkcWorkarea' is less than PKC RAM size, the access will be not out of bounds")
   uint8_t *seedMask = &pPkcWorkarea[usedPkcWorkarea];
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
   usedPkcWorkarea += MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(pHashAlgo->hashSize);
 
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_mcuxClRsa_mgf1_2, mcuxClRsa_mgf1(pSession, pHashAlgo, &pOutputPointer[1ULL + pHashAlgo->hashSize], dbLen, pHashAlgo->hashSize, seedMask));

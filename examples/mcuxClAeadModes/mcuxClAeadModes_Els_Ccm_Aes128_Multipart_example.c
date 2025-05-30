@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -89,21 +89,25 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClAeadModes_Els_Ccm_Aes128_Multipart_example)
 
     /* Initialize key */
     uint32_t keyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) &keyDesc;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClKey_Handle_t key = (mcuxClKey_Handle_t) keyDesc;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     mcuxClEls_KeyProp_t key_properties;
     key_properties.word.value = 0u;
     key_properties.bits.ksize = MCUXCLELS_KEYPROPERTY_KEY_SIZE_128;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     uint32_t dstData[8];
     //Initializes a key handle, Set key properties and Load key.
     if(!mcuxClExample_Key_Init_And_Load(session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
                                        key,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                        mcuxClKey_Type_Aes128,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
-                                       (uint8_t *) aes128_key,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+                                       aes128_key,
                                        sizeof(aes128_key),
                                        &key_properties,
                                        dstData, MCUXCLEXAMPLE_CONST_EXTERNAL_KEY))
@@ -120,19 +124,23 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
 
     ALIGNED uint8_t msg_tag[sizeof(msg_tag_expected)];
 
-    ALIGNED uint8_t ctxBuf[MCUXCLAEAD_CONTEXT_SIZE];
-    mcuxClAead_Context_t *ctx = (mcuxClAead_Context_t *) ctxBuf;
+    uint32_t ctxBuf[MCUXCLAEAD_CONTEXT_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    mcuxClAead_Context_t * ctx = (mcuxClAead_Context_t *) ctxBuf;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_init, token_init, mcuxClAead_init(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_CCM_ENC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
-    /* uint32_t nonceSize,            */ sizeof(aes128_iv),
-    /* uint32_t inSize,               */ sizeof(msg_plain),
-    /* uint32_t adataSize,            */ sizeof(msg_adata),
-    /* uint32_t tagSize               */ sizeof(msg_tag_expected)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_CCM_ENC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
+      /* uint32_t nonceSize,            */ sizeof(aes128_iv),
+      /* uint32_t inSize,               */ sizeof(msg_plain),
+      /* uint32_t adataSize,            */ sizeof(msg_adata),
+      /* uint32_t tagSize               */ sizeof(msg_tag_expected)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_init) != token_init) || (MCUXCLAEAD_STATUS_OK != result_init))
@@ -141,16 +149,18 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-  /*
-   * mcuxClAead_process_adata() processes the header data. This needs to be completed
-   * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
-   * need to be made before calls to mcuxClAead_process().
-   */
+    /*
+     * mcuxClAead_process_adata() processes the header data. This needs to be completed
+     * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
+     * need to be made before calls to mcuxClAead_process().
+     */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_aad, token_aad, mcuxClAead_process_adata(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
-    /* uint32_t adataSize,            */ sizeof(msg_adata)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
+      /* uint32_t adataSize,            */ sizeof(msg_adata)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process_adata) != token_aad) || (MCUXCLAEAD_STATUS_OK != result_aad))
@@ -159,14 +169,16 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_indata, token_indata, mcuxClAead_process(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_plain,
-    /* uint32_t inSize,               */ sizeof(msg_plain),
-    /* mcuxCl_Buffer_t pOut,           */ msg_enc,
-    /* uint32_t * const pOutSize      */ &msg_enc_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      /* mcuxCl_InputBuffer_t pIn,       */ msg_plain,
+      /* uint32_t inSize,               */ sizeof(msg_plain),
+      /* mcuxCl_Buffer_t pOut,           */ msg_enc,
+      /* uint32_t * const pOutSize      */ &msg_enc_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process) != token_indata) || (MCUXCLAEAD_STATUS_OK != result_indata))
     {
@@ -175,11 +187,11 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_final, token_final, mcuxClAead_finish(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxCl_Buffer_t pOut,           */ &msg_enc[msg_enc_size],
-    /* uint32_t * const pOutSize      */ &msg_enc_size,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      /* mcuxCl_Buffer_t pOut,           */ &msg_enc[msg_enc_size],
+      /* uint32_t * const pOutSize      */ &msg_enc_size,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_finish) != token_final) || (MCUXCLAEAD_STATUS_OK != result_final))
@@ -213,15 +225,17 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     uint32_t msg_dec_size = 0u;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_init, token_init, mcuxClAead_init(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxClKey_Handle_t key,         */ key,
-    /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_CCM_DEC,
-    /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
-    /* uint32_t nonceSize,            */ sizeof(aes128_iv),
-    /* uint32_t inSize,               */ sizeof(msg_plain),
-    /* uint32_t adataSize,            */ sizeof(msg_adata),
-    /* uint32_t tagSize               */ sizeof(msg_tag_expected)
+      /* mcuxClSession_Handle_t session, */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid.")
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClKey_Handle_t key,         */ key,
+      /* mcuxClAead_Mode_t mode,         */ mcuxClAead_Mode_AES_CCM_DEC,
+      /* mcuxCl_InputBuffer_t pNonce,    */ aes128_iv,
+      /* uint32_t nonceSize,            */ sizeof(aes128_iv),
+      /* uint32_t inSize,               */ sizeof(msg_plain),
+      /* uint32_t adataSize,            */ sizeof(msg_adata),
+      /* uint32_t tagSize               */ sizeof(msg_tag_expected)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_init) != token_init) || (MCUXCLAEAD_STATUS_OK != result_init))
@@ -230,16 +244,16 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-  /*
-   * mcuxClAead_process_adata() processes the header data. This needs to be completed
-   * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
-   * need to be made before calls to mcuxClAead_process().
-   */
+    /*
+     * mcuxClAead_process_adata() processes the header data. This needs to be completed
+     * before other data can be processed. Therefore all calls to mcuxClAead_process_adata()
+     * need to be made before calls to mcuxClAead_process().
+     */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_aad, token_aad, mcuxClAead_process_adata(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
-    /* uint32_t adataSize,            */ sizeof(msg_adata)
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      /* mcuxCl_InputBuffer_t pAdata,    */ msg_adata,
+      /* uint32_t adataSize,            */ sizeof(msg_adata)
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process_adata) != token_aad) || (MCUXCLAEAD_STATUS_OK != result_aad))
@@ -248,14 +262,16 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Addresses of msg_enc, msg_dec are for internal use only and do not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_indata, token_indata, mcuxClAead_process(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
-    /* uint32_t inSize,               */ msg_enc_size,
-    /* mcuxCl_Buffer_t pOut,           */ msg_dec,
-    /* uint32_t * const pOutSize      */ &msg_dec_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      /* mcuxCl_InputBuffer_t pIn,       */ msg_enc,
+      /* uint32_t inSize,               */ msg_enc_size,
+      /* mcuxCl_Buffer_t pOut,           */ msg_dec,
+      /* uint32_t * const pOutSize      */ &msg_dec_size
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_process) != token_indata) || (MCUXCLAEAD_STATUS_OK != result_indata))
     {
@@ -264,11 +280,11 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_verify, token_verify, mcuxClAead_verify(
-    /* mcuxClSession_Handle_t session, */ session,
-    /* mcuxClAead_Context_t pContext,  */ ctx,
-    /* mcuxCl_Buffer_t pTag,           */ msg_tag,
-    /* mcuxCl_Buffer_t pOut,           */ &msg_dec[msg_dec_size],
-    /* uint32_t * const pOutSize      */ &msg_dec_size
+      /* mcuxClSession_Handle_t session, */ session,
+      /* mcuxClAead_Context_t pContext,  */ ctx,
+      /* mcuxCl_Buffer_t pTag,           */ msg_tag,
+      /* mcuxCl_Buffer_t pOut,           */ &msg_dec[msg_dec_size],
+      /* uint32_t * const pOutSize      */ &msg_dec_size
     ));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_verify) != token_verify) || (MCUXCLAEAD_STATUS_OK != result_verify))
     {

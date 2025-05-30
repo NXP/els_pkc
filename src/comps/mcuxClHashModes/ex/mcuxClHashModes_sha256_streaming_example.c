@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClEls.h>               // Interface to the entire mcuxClEls component
@@ -78,10 +78,13 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
     MCUXCLBUFFER_INIT_RO(data3Buf, session, data3, sizeof(data3));
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result2, token2, mcuxClHash_init(
-    /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
-    /* mcuxClHash_Algo_t  algorithm:   */ mcuxClHash_Algorithm_Sha256
+      /* mcuxCLSession_Handle_t session: */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+      /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClHash_Algo_t  algorithm:   */ mcuxClHash_Algorithm_Sha256
     ));
+
     // mcuxClHash_init is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_init) != token2) || (MCUXCLHASH_STATUS_OK != result2))
     {
@@ -89,12 +92,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of context is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result3, token3, mcuxClHash_process(
-    /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
-    /* mcuxCl_InputBuffer_t in:        */ data1Buf,
-    /* uint32_t inSize:               */ sizeof(data1)
+      /* mcuxCLSession_Handle_t session: */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+      /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t in:        */ data1Buf,
+      /* uint32_t inSize:               */ sizeof(data1)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     // mcuxClHash_process is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token3) || (MCUXCLHASH_STATUS_OK != result3))
     {
@@ -102,12 +110,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of context is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result4, token4, mcuxClHash_process(
-    /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
-    /* mcuxCl_InputBuffer_t in:        */ data2Buf,
-    /* uint32_t inSize:               */ sizeof(data2)
+      /* mcuxCLSession_Handle_t session: */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+      /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t in:        */ data2Buf,
+      /* uint32_t inSize:               */ sizeof(data2)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     // mcuxClHash_process is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token4) || (MCUXCLHASH_STATUS_OK != result4))
     {
@@ -115,12 +128,17 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of context is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result5, token5, mcuxClHash_process(
-    /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
-    /* mcuxCl_InputBuffer_t in:        */ data3Buf,
-    /* uint32_t inSize:               */ sizeof(data3)
+      /* mcuxCLSession_Handle_t session: */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+      /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_InputBuffer_t in:        */ data3Buf,
+      /* uint32_t inSize:               */ sizeof(data3)
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     // mcuxClHash_process is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process) != token5) || (MCUXCLHASH_STATUS_OK != result5))
     {
@@ -132,20 +150,25 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
     MCUXCLBUFFER_INIT_RW(hashBuf, session, hash, sizeof(hash));
     uint32_t hashOutputSize = 0u;
 
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of context is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result6, token6, mcuxClHash_finish(
-    /* mcuxCLSession_Handle_t session: */ session,
-    /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
-    /* mcuxCl_Buffer_t pOut            */ hashBuf,
-    /* uint32_t *const pOutSize,      */ &hashOutputSize
+      /* mcuxCLSession_Handle_t session: */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Reinterpret the memory for the context to the appropriate type. The cast is safe because provided size constants are used.")
+      /* mcuxClHash_Context_t context:   */ (mcuxClHash_Context_t) context,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxCl_Buffer_t pOut            */ hashBuf,
+      /* uint32_t *const pOutSize,      */ &hashOutputSize
     ));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_ESCAPING_LOCAL_ADDRESS()
+
     // mcuxClHash_finish is a flow-protected function: Check the protection token and the return value
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_finish) != token6) || (MCUXCLHASH_STATUS_OK != result6))
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    
-  if(sizeof(hash) != hashOutputSize)
+
+    if(sizeof(hash) != hashOutputSize)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
@@ -162,7 +185,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
             hashDifferent |= 1u;
         }
     }
-    
+
     if(0u != hashDifferent)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
@@ -174,7 +197,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClHashModes_sha256_streaming_example)
     /** Destroy Session and cleanup Session **/
     if(!mcuxClExample_Session_Clean(session))
     {
-            return MCUXCLEXAMPLE_STATUS_ERROR;
+        return MCUXCLEXAMPLE_STATUS_ERROR;
     }
 
     /** Disable the ELS **/

@@ -1,16 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2014-2019, 2021-2024 NXP                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
-/*--------------------------------------------------------------------------*/
-/* Security Classification:  Company Confidential                           */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -28,8 +26,6 @@
 
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM4
 #include <mcuxClOsccaSafo.h>
-#else
-#include <internal/mcuxClMemory_CompareSecure_Internal.h>
 #endif
 
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM4
@@ -159,9 +155,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm4_Status_t) mcuxClOsccaSm4_Engine(
         z[3] = z[3] ^ output_a3; \
         z1[3] = z1[3] ^ output_b3; \
         pRoundKeys += 1u; \
-        MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxClMemory_compare_secure_int((uint8_t*)tempBuffer, \
-                                                        (uint8_t*)tempBuffer1, MCUXCLOSCCASM4_BLOCK_SIZE)); \
-        if (MCUXCLMEMORY_STATUS_EQUAL != compare_result) \
+        MCUX_CSSL_FP_FUNCTION_CALL(compare_result, mcuxCsslMemory_Compare( \
+          mcuxCsslParamIntegrity_Protect(3u, tempBuffer, tempBuffer1, MCUXCLOSCCASM4_BLOCK_SIZE), \
+          (uint8_t*)tempBuffer, (uint8_t*)tempBuffer1, MCUXCLOSCCASM4_BLOCK_SIZE)); \
+        if (MCUXCSSLMEMORY_STATUS_EQUAL != compare_result) \
         { \
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm4_Engine, MCUXCLOSCCASM4_STATUS_FAULT_ATTACK); \
         } \
@@ -244,7 +241,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm4_Status_t) mcuxClOsccaSm4_Engine(
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm4_Engine, MCUXCLOSCCASM4_STATUS_CRYPT_OK,
                     (4u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy)),
                     (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_switch_endianness)),
-                    (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_compare_secure_int)),
+                    (2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare)),
                     /* RK_WORDS normal rounds + first 4 redundant rounds + last 4 redundant rounds */
                     (MCUXCLOSCCASM4_RK_WORDS + 8u) * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_T));
 }

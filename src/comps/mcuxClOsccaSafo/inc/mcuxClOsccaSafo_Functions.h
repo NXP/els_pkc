@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #ifndef MCUXCLOSCCASAFO_FUNCTIONS_H_
@@ -245,8 +245,9 @@ void mcuxClOsccaSafo_Drv_loadKey(uint32_t offset, uint32_t key);
  *
  * Increments data in DATIN register bank by one.
  *
- * @param[in]  offset   Offset with respect to SAFO->DATIN0A
- * @param[in]  length   Size of data on which increment shall be applied
+ * @param[in]  offset   Offset of a DATIN register bank with respect to SAFO->DATIN0A.
+ * @param[in]  length   Size of data on which increment shall be applied. Must be a non-zero multiple
+ *                      of the word-size, with a maximum of 16.
  *
  * @return void
  */

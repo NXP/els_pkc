@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClCipherModes_Els_Aes_Internal.c
@@ -38,8 +38,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipherModes_SkeletonAes_Init);
 
     /* Correct algorithm type for Aes ELS Skeleton */
-    const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *pAlgo = NULL;
-    pAlgo = pMode->pAlgorithm;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *pAlgo = (const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *)pMode->pAlgorithm;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     /* Store mode and key in context */
     pCtx->common.pMode = pMode;
     pCtx->pKey = pKey;
@@ -77,9 +78,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipherModes_SkeletonAes_Process);
 
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *pAlgo = (const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *) pCtx->common.pMode->pAlgorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Keep track of where we are in input and output */
     uint8_t const* pInput = (uint8_t const*) pIn;
@@ -194,9 +195,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
     /* Number of bytes of the padded block - also used to determine how much data to copy to the output,
        therefore it is initialized to the partial data length in case no padding is applied (CTR) . */
     uint32_t padOutLength = pCtx->common.blockBufferUsed;
-    MCUX_CSSL_ANALYSIS_START_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *pAlgo = (const mcuxClCipherModes_AlgorithmDescriptor_Aes_Els_t *) pCtx->common.pMode->pAlgorithm;
-    MCUX_CSSL_ANALYSIS_STOP_CAST_TO_MORE_SPECIFIC_TYPE()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Keep track of where we are in output */
     uint8_t * pOutput = (uint8_t *) pOut;

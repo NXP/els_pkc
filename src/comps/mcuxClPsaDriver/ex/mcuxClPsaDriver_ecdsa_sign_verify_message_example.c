@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include "common.h"
@@ -48,13 +48,6 @@ static const ALIGNED uint8_t message[] = {
   0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88,  0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x80
 };
 
-/**
- * @brief Signature
- */
-MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
-static ALIGNED uint8_t signature[PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, 256u, PSA_ALG_ECDSA(PSA_ALG_SHA_384))] = {0};
-MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
-
 /*
  *Example of ECDSA signature generation and verification for:
  * - key size 256
@@ -63,6 +56,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
  */
 MCUXCLEXAMPLE_FUNCTION(mcuxClPsaDriver_ecdsa_sign_verify_message_example)
 {
+  /**
+   * @brief Signature
+   */
+  MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_MACRO()
+  ALIGNED uint8_t signature[PSA_SIGN_OUTPUT_SIZE(PSA_KEY_TYPE_ECC_KEY_PAIR_BASE, 256u, PSA_ALG_ECDSA(PSA_ALG_SHA_384))];
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
 
   /** Initialize ELS, Enable the ELS **/
   if(!mcuxClExample_Els_Init(MCUXCLELS_RESET_DO_NOT_CANCEL))
@@ -149,6 +148,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_MACRO()
 
   /* Check the return value */
   if(verify_status != PSA_SUCCESS)
+  {
+    return MCUXCLEXAMPLE_STATUS_ERROR;
+  }
+
+  /* Disable the ELS */
+  if(!mcuxClExample_Els_Disable())
   {
     return MCUXCLEXAMPLE_STATUS_ERROR;
   }

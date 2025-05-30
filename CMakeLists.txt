@@ -66,6 +66,7 @@ if(CONFIG_SOC_SERIES_RW6XX)
         PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/
             ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/rw61x/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/includes/platform/rw61x        
             ${MCUX_SDK_DIR}/devices/Wireless/RW/RW612
             ${MCUX_SDK_DIR}/devices/Wireless/RW/RW612/drivers
             ${MCUX_SDK_DIR}/devices/Wireless/RW/periph

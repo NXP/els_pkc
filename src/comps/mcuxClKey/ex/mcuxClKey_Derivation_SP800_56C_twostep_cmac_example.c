@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -45,14 +45,14 @@ static const uint8_t context[2] = {
 };
 
 static const uint8_t expectedDerivedKey[] = {
-    0x79u, 0xa2u, 0x23u, 0x64u, 0xc3u, 0xb9u, 0xc6u, 0x83u, 0x92u, 0x64u, 0x47u, 0x1cu, 0x7fu, 0x0du, 0x25u, 0xaf,
-    0xccu, 0x1eu, 0x3bu, 0xfdu, 0x32u, 0xc9u, 0x09u, 0x53u, 0xe2u, 0x33u, 0xbeu, 0x7eu, 0xf4u, 0x2eu, 0xf3u, 0xa5,
-    0x8cu, 0xb5u, 0x4eu, 0xa6u, 0x8fu, 0x67u, 0x2bu, 0xf4u, 0x42u, 0x79u, 0x2cu, 0x9cu, 0x38u, 0x34u, 0xbdu, 0x14,
-    0x23u, 0x7eu, 0x55u, 0xc6u, 0xa8u, 0xecu, 0x13u, 0xa5u, 0xe4u, 0x2au, 0x77u, 0x9du, 0x47u, 0xfcu, 0xa0u, 0xfd,
-    0x89u, 0x19u, 0x11u, 0x52u, 0xc4u, 0x3fu, 0x8eu, 0x50u, 0x63u, 0x4fu, 0x73u, 0xc5u, 0xf6u, 0x5bu, 0x6du, 0x05,
-    0xe5u, 0xd6u, 0xe3u, 0x24u, 0xddu, 0xcfu, 0x8fu, 0x23u, 0xd8u, 0x62u, 0x9eu, 0xd7u, 0x77u, 0x84u, 0xd2u, 0xfd,
-    0x9du, 0x2cu, 0xf2u, 0xcdu, 0x7au, 0xf6u, 0x5cu, 0x83u, 0xfbu, 0x71u, 0xd8u, 0x4au, 0xb8u, 0x1au, 0x44u, 0xc7,
-    0x4cu, 0x08u, 0x91u, 0xacu, 0x0eu, 0x5au, 0x24u, 0x84u, 0xc6u, 0x15u, 0x0au, 0x67u, 0xffu, 0x46u, 0x74
+    0x50u, 0x00u, 0x18u, 0xbbu, 0x65u, 0xb5u, 0x5du, 0x1fu, 0xf7u, 0xfdu, 0xdbu, 0xd8u, 0x5bu, 0x15u, 0x01u, 0x8f,
+    0x7eu, 0xc4u, 0xb7u, 0x90u, 0xffu, 0x28u, 0x8bu, 0x9eu, 0xc4u, 0x2du, 0x49u, 0xaau, 0x3fu, 0xafu, 0xb6u, 0x94,
+    0x11u, 0x16u, 0x0eu, 0x78u, 0x32u, 0xb6u, 0xcau, 0xb8u, 0xa4u, 0x44u, 0xfau, 0x7eu, 0x8fu, 0x9du, 0x02u, 0xb7,
+    0xabu, 0xf3u, 0x14u, 0xdcu, 0xb6u, 0x74u, 0xb2u, 0x45u, 0xe7u, 0xaeu, 0x82u, 0x7du, 0x06u, 0xadu, 0x4au, 0xdc,
+    0x2cu, 0x62u, 0x4bu, 0x38u, 0x0cu, 0x37u, 0x35u, 0x5bu, 0x84u, 0x54u, 0xc7u, 0x75u, 0x89u, 0x7fu, 0xf0u, 0xe0,
+    0x1au, 0x62u, 0x8eu, 0x9fu, 0x76u, 0x62u, 0x32u, 0x74u, 0x52u, 0x0cu, 0xceu, 0x93u, 0x34u, 0x0cu, 0xbfu, 0x18,
+    0x0fu, 0x00u, 0x9au, 0x23u, 0xaau, 0x8du, 0xd9u, 0xa4u, 0x24u, 0x25u, 0xd5u, 0xecu, 0xc2u, 0xeau, 0xe8u, 0x5f,
+    0x29u, 0xc1u, 0xcdu, 0x94u, 0x21u, 0xbeu, 0x95u, 0x72u, 0x3fu, 0x4eu, 0x3cu, 0x8eu, 0x5au, 0x5bu, 0x1a
 };
 
 
@@ -86,14 +86,16 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_SP800_56C_twostep_cmac_example)
     /**************************************************************************/
     /* Create and initialize key descriptor structure. */
     uint32_t sharedSecretDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t sharedSecretHandle = (mcuxClKey_Handle_t) &sharedSecretDesc;
+    mcuxClKey_Handle_t sharedSecretHandle = (mcuxClKey_Handle_t) sharedSecretDesc;
 
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultKeyInit1, tokenKeyInit1, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer sharedSecretHandle points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ sharedSecretHandle,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Aes128,
-      /* uint8_t * pKeyData                    */ (uint8_t *) sharedSecret,
+      /* const uint8_t * pKeyData              */ (const uint8_t *) sharedSecret,
       /* uint32_t keyDataLength                */ sizeof(sharedSecret)
     ));
 
@@ -109,7 +111,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_SP800_56C_twostep_cmac_example)
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultKeyLoad, tokenKeyLoad, mcuxClKey_loadMemory(
       /* mcuxClSession_Handle_t session         */ session,
       /* mcuxClKey_Handle_t key                 */ sharedSecretHandle,
-      /* mcuxCl_Buffer_t pKeyData               */ key_buffer
+      /* const uint8_t * pKeyData              */ key_buffer
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_loadMemory) != tokenKeyLoad) || (MCUXCLKEY_STATUS_OK != resultKeyLoad))
@@ -117,7 +119,6 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_SP800_56C_twostep_cmac_example)
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-
 
     /* Set up input parameter structures. */
     uint8_t* pSalt = NULL;
@@ -136,14 +137,16 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_SP800_56C_twostep_cmac_example)
 
     /* Create and initialize derivedKey descriptor structure. */
     uint32_t derivedKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t derivedKey = (mcuxClKey_Handle_t) &derivedKeyDesc;
+    mcuxClKey_Handle_t derivedKey = (mcuxClKey_Handle_t) derivedKeyDesc;
 
     /* Type of output key (Hmac_variableLength) was chosen to indicate no specific restrictions on output length */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultKeyInit2, tokenKeyInit2, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer derivedKey points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ derivedKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Hmac_variableLength,
-      /* uint8_t * pKeyData                    */ derivedKeyBuf,
+      /* const uint8_t * pKeyData              */ derivedKeyBuf,
       /* uint32_t keyDataLength                */ sizeof(derivedKeyBuf)
     ));
 
@@ -157,14 +160,20 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_SP800_56C_twostep_cmac_example)
     /* Create CMAC Derivation mode                                   */
     /**************************************************************************/
     uint32_t derivationModeDescBuffer[MCUXCLKEY_DERIVATION_MODE_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClKey_DerivationMode_t * pDerivationMode = (mcuxClKey_DerivationMode_t *) derivationModeDescBuffer;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultModeConstruct, tokenModeConstruct, mcuxClKey_Derivation_ModeConstructor_NIST_SP800_56C(
-    /* mcuxClKey_DerivationMode_t *                      */ pDerivationMode,
-    /* const mcuxClKey_DerivationAlgorithmDescriptor_t * */ mcuxClKey_DerivationAlgorithm_NIST_SP800_56C_TwoStep,
-    /* mcuxClMac_Mode_t                                  */ mcuxClMac_Mode_CMAC, // use this when using mac function as PRF
-    /* mcuxClHash_Algo_t                                 */ NULL, // use this when using hash function as PRF
-    /* uint32_t                                         */ 0u // no options for this mode
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pDerivationMode is of the right type (mcuxClKey_DerivationMode_t *), the cast was valid.")
+      /* mcuxClKey_DerivationMode_t *                      */ pDerivationMode,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* const mcuxClKey_DerivationAlgorithmDescriptor_t * */ mcuxClKey_DerivationAlgorithm_NIST_SP800_56C_TwoStep,
+      /* mcuxClMac_Mode_t                                  */ mcuxClMac_Mode_CMAC, // use this when using mac function as PRF
+      MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+      /* mcuxClHash_Algo_t                                 */ NULL, // use this when using hash function as PRF
+      MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
+      /* uint32_t                                         */ 0u // no options for this mode
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_Derivation_ModeConstructor_NIST_SP800_56C) != tokenModeConstruct) || (MCUXCLKEY_STATUS_OK != resultModeConstruct))

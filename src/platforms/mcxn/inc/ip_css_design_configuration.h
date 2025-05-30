@@ -1,3 +1,19 @@
+/*--------------------------------------------------------------------------*/
+/* Copyright 2016-2022 NXP                                                  */
+/*                                                                          */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
+/* only be used strictly in accordance with the applicable license terms.   */
+/* By expressly accepting such terms or by downloading, installing,         */
+/* activating and/or otherwise using the software, you are agreeing that    */
+/* you have read, and that you agree to comply with and are bound by, such  */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
+/*--------------------------------------------------------------------------*/
+
+#ifndef IP_CSS_DESIGN_CONFIGURATION_H_
+#define IP_CSS_DESIGN_CONFIGURATION_H_
+
 #define ID_CFG_CFGNAME nva
 #define SHA_512 1
 #define ID_CFG_SGI_EOS_TMP_MODS 1
@@ -400,3 +416,5 @@
 #define ID_CFG_RNG4_FREQ_CNT_MAX_DEFAULT_INST 25600
 #define ID_CFG_CSS_PHY_ROM gf40rfnv_nxp_hrom_009216x032bw1c08_ss_pt_m7
 #define ID_CFG_CSS_PHY_ROM_MEM_FILE gf40rfnv_nxp_hrom_008192x032bw1c08_ss_pt_m7_rniobe4a.cde
+
+#endif /* IP_CSS_DESIGN_CONFIGURATION_H_ */

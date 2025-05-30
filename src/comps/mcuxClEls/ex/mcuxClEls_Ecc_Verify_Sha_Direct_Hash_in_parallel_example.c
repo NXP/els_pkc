@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023 NXP                                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -93,11 +93,14 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
     keyGenOptions.bits.kgsign_rnd = MCUXCLELS_ECC_NO_RANDOM_DATA;
 
     mcuxClEls_KeyProp_t keyPropPrivKey = {0u};
+    MCUX_CSSL_ANALYSIS_START_PATTERN_0U_1U_ARE_UNSIGNED()
     keyPropPrivKey.bits.upprot_priv = MCUXCLELS_KEYPROPERTY_PRIVILEGED_FALSE;
     keyPropPrivKey.bits.upprot_sec = MCUXCLELS_KEYPROPERTY_SECURE_TRUE;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
 
     mcuxClEls_KeyIndex_t privKeyIdx = 10u;
     uint8_t *pSignatureAndPubKey = (uint8_t *) ecc_signature_and_public_key;
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccKeyGen_Async(
         /* mcuxClEls_EccKeyGenOption_t options:        */  keyGenOptions,
         /* mcuxClEls_KeyIndex_t signingKeyIdx:         */  (mcuxClEls_KeyIndex_t) 0u,
@@ -106,6 +109,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
         /* uint8_t const * pRandomData:               */  NULL,
         /* uint8_t * pPublicKey:                      */  pSignatureAndPubKey + MCUXCLELS_ECC_SIGNATURE_SIZE
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccKeyGen_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -126,6 +130,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
     mcuxClEls_EccSignOption_t signOptions = {0u};
     signOptions.bits.echashchl = MCUXCLELS_ECC_HASHED;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccSign_Async(
         /* mcuxClEls_EccSignOption_t options: */  signOptions,
         /* mcuxClEls_KeyIndex_t keyIdx:       */  privKeyIdx,
@@ -134,6 +139,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
         /* size_t inputMessageLength:        */  (size_t) 0u,
         /* uint8_t * pOutput:                */  pSignatureAndPubKey
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccSign_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -175,6 +181,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
     verifyOptions.bits.echashchl = MCUXCLELS_ECC_HASHED;
 
     /* Start ECDSA Verify */
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_EccVerify_Async(
         /* mcuxClEls_EccVerifyOption_t options:  */  verifyOptions,
         /* uint8_t const * pInputHash:          */  (const uint8_t *) ecc_digest,
@@ -183,6 +190,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
         /* uint8_t const * pSignatureAndPubKey: */  (const uint8_t *) ecc_signature_and_public_key,
         /* uint8_t * pOutput:                   */  (uint8_t *) ecc_signature_r
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_EccVerify_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
     {
@@ -202,6 +210,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
     hashOptions.bits.hashoe = MCUXCLELS_HASH_OUTPUT_ENABLE;
     hashOptions.bits.hashmd = MCUXCLELS_HASH_MODE_SHA_256;
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Hash_ShaDirect(
         /* mcuxClEls_HashOption_t options:                   */  hashOptions,
         /* uint8_t const * pInput:                          */  ecc_input_to_hash,
@@ -210,6 +219,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Ecc_Verify_Sha_Direct_Hash_in_parallel_example)
         /* mcuxClEls_TransferToRegisterFunction_t pCallback: */  NULL,
         /* void * pCallerData:                              */  NULL
     ));
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hash_ShaDirect) != token) || (MCUXCLELS_STATUS_OK != result))
     {

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClCipherModes_Els_AesEngine.c
@@ -54,7 +54,9 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
     */
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClCipherModes_EngineEls);
 
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClCipherModes_Algorithm_Aes_Els_t pAlgo = (mcuxClCipherModes_Algorithm_Aes_Els_t) pContext->common.pMode->pAlgorithm;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     /* Initialize ELS key info based on the key in the context. */
     mcuxClEls_KeyIndex_t keyIdx = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->pKey);
@@ -66,8 +68,8 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
     /* Initialize ELS options. */
     mcuxClEls_CipherOption_t elsOptions;
     elsOptions.word.value = 0u;
-    elsOptions.bits.dcrpt  = (uint8_t) pAlgo->direction;
-    elsOptions.bits.cphmde = (uint8_t) pAlgo->mode;
+    elsOptions.bits.dcrpt  = (uint8_t) (pAlgo->direction & 0xFFu);
+    elsOptions.bits.cphmde = (uint8_t) (pAlgo->mode & 0xFFu);
 
     if(elsOptions.bits.cphmde != MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_ECB) {
         elsOptions.bits.cphsoe = MCUXCLELS_CIPHER_STATE_OUT_ENABLE;
@@ -89,6 +91,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
             nextState = (uint8_t*)(pOut + inLength - MCUXCLAES_BLOCK_SIZE);
         }
     }
+
     if (MCUXCLKEY_LOADSTATUS_MEMORY == mcuxClKey_getLoadStatus(pContext->pKey))
     {
         elsOptions.bits.extkey = MCUXCLELS_CIPHER_EXTERNAL_KEY;
@@ -140,14 +143,13 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipherModes_EngineEls)
         MCUXCLMEMORY_FP_MEMORY_COPY((uint8_t *) pContext->ivState, nextState, MCUXCLAES_BLOCK_SIZE);
     }
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_EngineEls, MCUXCLCIPHER_STATUS_OK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
         MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN,
         MCUX_CSSL_FP_CONDITIONAL((MCUXCLELS_CIPHERPARAM_ALGORITHM_AES_CBC == elsOptions.bits.cphmde),
-                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
-                                MCUX_CSSL_FP_CONDITIONAL((MCUXCLELS_CIPHER_DECRYPT == pAlgo->direction),
-                                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))
-                                ),
-        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async));
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
+            MCUX_CSSL_FP_CONDITIONAL((MCUXCLELS_CIPHER_DECRYPT == pAlgo->direction),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy))));
 
 }
 

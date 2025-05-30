@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -75,9 +75,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* mcuxClEcc_CpuWa_t will be allocated and placed in the beginning of CPU workarea free space by SetupEnvironment. */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES("MISRA Ex. 9 to Rule 11.3 - re-interpreting the memory")
-    mcuxClEcc_CpuWa_t * const pCpuWorkarea = (mcuxClEcc_CpuWa_t *) mcuxClSession_allocateWords_cpuWa(pSession, 0u);
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY_BETWEEN_INAPT_ESSENTIAL_TYPES()
+    mcuxClEcc_CpuWa_t * const pCpuWorkarea = mcuxClEcc_castToEccCpuWorkarea(mcuxClSession_getCpuWaBuffer(pSession));
+
     mcuxClEcc_EdDSA_DomainParams_t * const pDomainParams = (mcuxClEcc_EdDSA_DomainParams_t *) mcuxClKey_getTypeInfo(key);
 
     MCUX_CSSL_FP_FUNCTION_CALL(retSetupEnvironment,
@@ -104,7 +103,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* Generate digest m' from m in case phflag is set */
     const uint8_t *pMessage = NULL;
     uint32_t messageSize = 0u;
-    MCUX_CSSL_FP_FUNCTION_CALL(retPreHash, mcuxClEcc_EdDSA_PreHashMessage(pSession, pDomainParams, mode->phflag, pIn, inSize, &pMessage, &messageSize));
+    MCUX_CSSL_FP_FUNCTION_CALL(retPreHash, mcuxClEcc_EdDSA_PreHashMessage(pSession, pDomainParams, pCpuWorkarea, mode->phflag, pIn, inSize, &pMessage, &messageSize));
     if (MCUXCLECC_STATUS_OK != retPreHash)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_GenerateSignature_Core, MCUXCLECC_STATUS_FAULT_ATTACK);
@@ -246,13 +245,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* Derive the encoding R_enc of R and store it in buffer ECC_COORD02.
      *
      * NOTE: PS2 lengths are still set to (0u, keyLengthPkc) */
-    MCUXCLPKC_FP_CALC_OP2_CONST(ECC_COORD02, 0u);                    /* Clear keyLengthPkc bytes of buffer ECC_COORD02 */
-    MCUXCLPKC_FP_CALC_OP1_OR_CONST(ECC_COORD02, ECC_COORD01, 0u);    /* Copy operandSize < keyLengthPkc bytes of the y-coordinate from ECC_COORD01 to ECC_COORD02 */
-    const uint8_t *pRX = MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD00]);
-    uint8_t *pREncLsbXByte = &MCUXCLPKC_OFFSET2PTR(pOperands[ECC_COORD02])[keyLength - 1u];
-    MCUXCLPKC_WAITFORFINISH();
-    uint8_t lsbX = (*pRX) & 0x01u;
-    *pREncLsbXByte |= (lsbX << 7u);
+    MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClEcc_EdDSA_EncodePoint(keyLength));
+
 
     /*
      * Step 5: Calculate H(prefix || R^{enc} || Q^{enc} || m') mod n using the hash function algoHash specified in the EdDSA domain parameters
@@ -378,6 +372,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             MCUXCLPKC_FP_CALLED_CALC_OP1_ADD_CONST),
         MCUXCLPKC_FP_CALLED_CALC_OP2_CONST,
         MCUXCLPKC_FP_CALLED_CALC_OP1_OR_CONST,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_EncodePoint),
         /* Step 5 */
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
         /* Step 6 */

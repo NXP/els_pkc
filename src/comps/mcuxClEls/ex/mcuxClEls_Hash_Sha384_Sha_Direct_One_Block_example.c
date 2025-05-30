@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020, 2022-2023 NXP                                            */
+/* Copyright 2020, 2022-2024 NXP                                            */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -104,8 +104,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Hash_Sha384_Sha_Direct_One_Block_example)
             hash_options,                                                   // Set the prepared configuration.
             sha384_padded_input, sizeof(sha384_padded_input),               // Set the data to be hashed. Note that this data's length is a multiple of the block length, so no padding is required
             sha2_384_digest,                                                // Output buffer, which the operation will write the hash digest to.
+            MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
             NULL,                                                           // A callback function can be provided to perform the data loading into the Sha core. If not set, a CPU copy will be used.
             NULL                                                            // An pointer can be provided which will be forwarded to the callback function.
+            MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
             ));
     // mcuxClEls_Hash_ShaDirect is a flow-protected function: Check the protection token and the return value
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Hash_ShaDirect) != token) || (MCUXCLELS_STATUS_OK != result))

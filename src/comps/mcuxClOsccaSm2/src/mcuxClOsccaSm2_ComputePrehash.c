@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2018-2019, 2021-2024 NXP                                       */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -41,15 +41,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_ComputePreha
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClOsccaSm2_ComputePrehash);
 
-    uint8_t * const pCpuWorakara = (uint8_t*)mcuxClSession_allocateWords_cpuWa(session, MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS);
+    uint32_t * const pCpuWorakara = mcuxClSession_allocateWords_cpuWa(session, MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS);
     if (NULL == pCpuWorakara)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_ComputePrehash, MCUXCLOSCCASM2_STATUS_FAULT_ATTACK);
     }
 
     /* identifierLength < 2^6, so identifierLengthBits < 2^{12} */
-    uint32_t identifierLengthBits = (uint32_t)pParams->identifierLength * 8u;
-    uint8_t identifierLengthBigEndian[2] = {(uint8_t)(identifierLengthBits >> 8), (uint8_t)(identifierLengthBits & 0xffu)};
+    uint32_t identifierLengthBits = (uint32_t)pParams->identifierLength * 8U;
+    uint8_t identifierLengthBigEndian[2] = {(uint8_t)((identifierLengthBits >> 8) & 0xffU), (uint8_t)(identifierLengthBits & 0xffU)};
 
     /* Create buffer for prehash */
     MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()

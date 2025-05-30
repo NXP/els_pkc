@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClToolchain.h>
@@ -61,6 +61,12 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_oneSho
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_C_oneShot_Sha1);
 
+    /* Check if the *pOutSize can be safely increased by the output size in the end */
+    if(*pOutSize > (UINT32_MAX - MCUXCLHASH_OUTPUT_SIZE_SHA_1))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_C_oneShot_Sha1, MCUXCLHASH_STATUS_INVALID_PARAMS);
+    }
+
     /**************************************************************************************
      * Step 1: Allocate buffers in workarea and initialize state
      **************************************************************************************/
@@ -90,7 +96,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_oneSho
     {
         /* Copy input to accumulation buffer */
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClBuffer_read(pIn, offsetInputBuf, pAccumulationBytes, MCUXCLHASH_BLOCK_SIZE_SHA_1));
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, offsetInputBuf cannot overflow in this operation.")
         offsetInputBuf += MCUXCLHASH_BLOCK_SIZE_SHA_1;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
         /* Switch endianness of words in accumulation buffer */
         mcuxClHashModes_internal_c_switchEndiannessOfBufferWords(pAccumulationBuffer, MCUXCLHASH_BLOCK_SIZE_SHA_1);
@@ -147,11 +155,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_oneSho
 
     /* Perform padding by adding data counter - length is added from end of the array; byte-length is converted to bit-length */
     uint32_t counterEntry = MCUXCLHASH_BLOCK_SIZE_SHA_1;
-    pAccumulationBytes[--counterEntry] = (uint8_t)(inSize <<  3u);
-    pAccumulationBytes[--counterEntry] = (uint8_t)(inSize >>  5u);
-    pAccumulationBytes[--counterEntry] = (uint8_t)(inSize >> 13u);
-    pAccumulationBytes[--counterEntry] = (uint8_t)(inSize >> 21u);
-    pAccumulationBytes[counterEntry - 1u] = (uint8_t)(inSize >> 29u);
+    pAccumulationBytes[--counterEntry] = (uint8_t)((inSize <<  3u) & 0xffU);
+    pAccumulationBytes[--counterEntry] = (uint8_t)((inSize >>  5u) & 0xffU);
+    pAccumulationBytes[--counterEntry] = (uint8_t)((inSize >> 13u) & 0xffU);
+    pAccumulationBytes[--counterEntry] = (uint8_t)((inSize >> 21u) & 0xffU);
+    pAccumulationBytes[counterEntry - 1u] = (uint8_t)((inSize >> 29u) & 0xffU);
 
     /* Switch endianness of words in accumulation buffer */
     mcuxClHashModes_internal_c_switchEndiannessOfBufferWords(pAccumulationBuffer, MCUXCLHASH_BLOCK_SIZE_SHA_1);
@@ -203,6 +211,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_proces
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_C_process_Sha1);
     const mcuxClHash_AlgorithmDescriptor_t *algorithm = pContext->algo;
+
+    /* Check that inSize calculation for the counter will not overflow */
+    if(inSize > (UINT32_MAX - pContext->unprocessedLength))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_C_process_Sha1, MCUXCLHASH_STATUS_INVALID_PARAMS);
+    }
+
     int32_t processedLengthNotZero = mcuxClHash_processedLength_cmp(pContext->processedLength, 0u);
     /* Initialize state with IV */
     if (0 == processedLengthNotZero)
@@ -212,10 +227,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_proces
 
     uint32_t offsetInputBuf = 0;
     /* Compute counter increase, considering the amount of unprocessed data now and at the end of this function. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("False positive, inSize + pContext->unprocessedLength < UINT32_MAX was already ensured above.")
     uint32_t counterIncrease = (inSize + pContext->unprocessedLength) - ( (inSize + pContext->unprocessedLength) % algorithm->blockSize);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
     mcuxClHash_processedLength_add(pContext->processedLength, counterIncrease);
 
     /* Verify that the processed length will not exceed the algorithm's maximum allowed length */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->counterSize, MCUXCLHASH_COUNTER_SIZE_SHA_1, MCUXCLHASH_COUNTER_SIZE_SHA_1, MCUXCLHASH_STATUS_FAILURE)
     uint8_t counterHighestByte = ((uint8_t *) pContext->processedLength)[algorithm->counterSize - 1u];
     if(0u != (counterHighestByte & algorithm->processedLengthCheckMask))
     {
@@ -231,21 +249,28 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_proces
         (0u < inSize) ? ((inSize + pContext->unprocessedLength) / MCUXCLHASH_BLOCK_SIZE_SHA_1) : 0u);
     /* One additional copy might be needed for new unprocessed data */
     MCUX_CSSL_FP_COUNTER_STMT(const uint32_t  fpLoopCopyOperations =
-        ((0u != ((inSize + pContext->unprocessedLength) % MCUXCLHASH_BLOCK_SIZE_SHA_1)) && (0u < inSize)) ? fpLoopCoreCalls + 1u : fpLoopCoreCalls);
+        ((0u != ((inSize + pContext->unprocessedLength) % MCUXCLHASH_BLOCK_SIZE_SHA_1)) && (0u < inSize)) ? (fpLoopCoreCalls + 1u) : fpLoopCoreCalls);
 
     /**************************************************************************************/
     /*                Process all whole blocks of input data                              */
     /**************************************************************************************/
     while(0u < inSize)
     {
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pContext->unprocessedLength, 0u, MCUXCLHASH_BLOCK_SIZE_SHA_1, MCUXCLHASH_STATUS_FAILURE)
+
         /* Take into account something might be already in unprocessed buffer */
         uint32_t dataToCopyLength = (inSize < (MCUXCLHASH_BLOCK_SIZE_SHA_1 - pContext->unprocessedLength)) ? inSize : (MCUXCLHASH_BLOCK_SIZE_SHA_1 - pContext->unprocessedLength);
         /* Copy input to accumulation buffer */
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClBuffer_read(pIn, offsetInputBuf, pUnprocessedBytes + pContext->unprocessedLength, dataToCopyLength));
 
         /* Update counter / pContext data / input pointer */
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(dataToCopyLength, 0u, MCUXCLHASH_BLOCK_SIZE_SHA_1 - pContext->unprocessedLength, MCUXCLHASH_STATUS_FAILURE)
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(inSize, dataToCopyLength, UINT32_MAX, MCUXCLHASH_STATUS_FAILURE)
         inSize -= dataToCopyLength;
+
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("offsetInputBuf is increased by a total of inSize in this loop, this addition will never overflow.")
         offsetInputBuf += dataToCopyLength;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
         pContext->unprocessedLength += dataToCopyLength;
         /* When whole unprocessed buffer filled, process block and update pContext data*/
         if(pContext->unprocessedLength == MCUXCLHASH_BLOCK_SIZE_SHA_1)
@@ -284,6 +309,12 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_finish
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHashModes_C_finish_Sha1);
 
+    /* Check if the *pOutSize can be safely increased by the output size in the end */
+    if(*pOutSize > (UINT32_MAX - MCUXCLHASH_OUTPUT_SIZE_SHA_1))
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHashModes_C_oneShot_Sha1, MCUXCLHASH_STATUS_INVALID_PARAMS);
+    }
+
     const mcuxClHash_AlgorithmDescriptor_t *algorithm = pContext->algo;
 
     int32_t processedLengthNotZero = mcuxClHash_processedLength_cmp(pContext->processedLength, 0u);
@@ -297,6 +328,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_finish
     mcuxClHash_processedLength_add(pContext->processedLength, pContext->unprocessedLength);
 
     /* Verify that the processed length will not exceed the algorithm's maximum allowed length. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->counterSize, MCUXCLHASH_COUNTER_SIZE_SHA_1, MCUXCLHASH_COUNTER_SIZE_SHA_1, MCUXCLHASH_STATUS_FAILURE)
     uint8_t counterHighestByte = ((uint8_t *) pContext->processedLength)[algorithm->counterSize - 1u];
     if(0u != (counterHighestByte & algorithm->processedLengthCheckMask))
     {
@@ -308,7 +340,10 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_finish
     uint8_t *pUnprocessedBytes = (uint8_t *) pUnprocessed;
     uint32_t *pState = mcuxClHash_getStatePtr(pContext);
 
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pContext->unprocessedLength, 0u, MCUXCLHASH_BLOCK_SIZE_SHA_1, MCUXCLHASH_STATUS_FAILURE)
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("pUnprocessedBytes is a valid pointer in the context.")
     pUnprocessedBytes[pContext->unprocessedLength++] = 0x80u; //set first bit of padding
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     uint32_t remainingBlockLength = MCUXCLHASH_BLOCK_SIZE_SHA_1 - (pContext->unprocessedLength);
 
@@ -340,6 +375,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_finish
     mcuxClHash_processedLength_toBits(pContext->processedLength);
     for(uint32_t i = 0u; i < algorithm->counterSize; ++i)
     {
+        MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(algorithm->blockSize, MCUXCLHASH_BLOCK_SIZE_SHA_1, MCUXCLHASH_BLOCK_SIZE_SHA_1, MCUXCLHASH_STATUS_FAILURE)
         pUnprocessedBytes[algorithm->blockSize - i - 1u] = ((uint8_t*)pContext->processedLength)[i];
     }
 

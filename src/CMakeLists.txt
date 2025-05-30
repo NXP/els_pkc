@@ -94,6 +94,14 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_Aes_Internal.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_AesEngine.c 
 
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/inc/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_GenerateProtocolDescriptor.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.c
+
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_Constants.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.c
@@ -160,7 +168,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_BlindedSecretKeyGen.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_BlindedSecretKeyGen_FUP.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateKeyPair.c 
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_KeyAgreement_ECDH.c 
+#        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_KeyAgreement_ECDH.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_SetupEnvironment.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEls/src/mcuxClEls_Aead.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEls/src/mcuxClEls_Cipher.c
@@ -234,6 +242,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_getMillerRabinTestIterations.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Crt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Crt_FUP.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Helper.c        
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Plain.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_Mgf1.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_MillerRabinTest.c
@@ -266,9 +275,9 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Clear.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Compare.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Copy.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Internal_SecureCompare_Stub.c
+#         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Internal_SecureCompare_Stub.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Set.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity32.c
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mcuxCl_clns.c
 )

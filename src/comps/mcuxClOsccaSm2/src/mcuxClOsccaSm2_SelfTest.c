@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClSession.h>
@@ -255,26 +255,24 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
 
     /* Create buffer for ciphertext */
     uint32_t cpuWaUsedWord = (MCUXCLOSCCASM2_SIGNVERIFY_SELFTEST_SIZEOF_WA_CPU - MCUXCLOSCCASM2_COMPUTE_PREHASH_SIZEOF_WA_CPU) / sizeof(uint32_t);
-    uint8_t * pSigVerBuf = (uint8_t *)mcuxClSession_allocateWords_cpuWa(session, cpuWaUsedWord);
-    if (NULL == pSigVerBuf)
+    uint32_t * pSigVerBuf = mcuxClSession_allocateWords_cpuWa(session, cpuWaUsedWord);
+    if(NULL == pSigVerBuf)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK);
     }
 
-    uint8_t *hashCtx = pSigVerBuf;
-    uint8_t *pPreHash = hashCtx + MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS * sizeof(uint32_t);
-    uint8_t *pHashResult = pPreHash + MCUXCLOSCCASM3_OUTPUT_SIZE_SM3;
-    uint8_t *pPrivKeyDesc = pHashResult + MCUXCLOSCCASM3_OUTPUT_SIZE_SM3;
-    uint8_t *pPubKeyDesc = pPrivKeyDesc + mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE);
-    uint8_t *pSignature_r = pPubKeyDesc + mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE);
+    uint32_t *hashCtx = pSigVerBuf;
+    uint32_t *pPreHash = hashCtx + MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS;
+    uint32_t *pHashResult = pPreHash + (MCUXCLOSCCASM3_OUTPUT_SIZE_SM3 / sizeof(uint32_t));
+    uint32_t *pPrivKeyDesc = pHashResult + (MCUXCLOSCCASM3_OUTPUT_SIZE_SM3 / sizeof(uint32_t));
+    uint32_t *pPubKeyDesc = pPrivKeyDesc + (mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE) / sizeof(uint32_t));
+    uint8_t *pSignature_r = (uint8_t*)pPubKeyDesc + mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE);
 
     /****************************************************************/
     /* Preparation: setup SM2 key                                   */
     /****************************************************************/
     /* Initialize SM2 private key */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClKey_Handle_t privKeyHandle = (mcuxClKey_Handle_t) pPrivKeyDesc;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    mcuxClKey_Handle_t privKeyHandle = mcuxClKey_castToKeyHandle(pPrivKeyDesc);
 
     MCUX_CSSL_FP_FUNCTION_CALL(priKeyInitRet, mcuxClKey_init(session,
          MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
@@ -289,9 +287,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL);
     }
     /* Initialize SM2 public key */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClKey_Handle_t pubKeyHandle = (mcuxClKey_Handle_t) pPubKeyDesc;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    mcuxClKey_Handle_t pubKeyHandle = mcuxClKey_castToKeyHandle(pPubKeyDesc);
 
     MCUX_CSSL_FP_FUNCTION_CALL(pubKeyInitRet, mcuxClKey_init(session,
          MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
@@ -316,7 +312,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
     paramsPreHash.pIdentifier = pIdentifier;
     paramsPreHash.identifierLength = (uint16_t) sizeof(pIdentifier);
     paramsPreHash.pPublicKey = pubKey;
-    paramsPreHash.pPrehash = pPreHash;
+    paramsPreHash.pPrehash = (uint8_t*)pPreHash;
 
     /* Call function mcuxClOsccaSm2_ComputePrehash */
     MCUX_CSSL_FP_FUNCTION_CALL(SM2PreHashRet, mcuxClOsccaSm2_ComputePrehash(session, &paramsPreHash));
@@ -343,7 +339,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
     }
 
 
-    MCUX_CSSL_FP_FUNCTION_CALL(hashProRet, mcuxClHash_process(session,pHashCtx, pPreHash, MCUXCLOSCCASM3_OUTPUT_SIZE_SM3));
+    MCUX_CSSL_FP_FUNCTION_CALL(hashProRet, mcuxClHash_process(session,pHashCtx, (uint8_t*)pPreHash, MCUXCLOSCCASM3_OUTPUT_SIZE_SM3));
     if(MCUXCLHASH_STATUS_OK != hashProRet)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL);
@@ -356,7 +352,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
     }
 
     uint32_t pOutSize = 0u;
-    MCUX_CSSL_FP_FUNCTION_CALL(hashFinRet, mcuxClHash_finish(session, pHashCtx, pHashResult, &pOutSize));
+    MCUX_CSSL_FP_FUNCTION_CALL(hashFinRet, mcuxClHash_finish(session, pHashCtx, (uint8_t*)pHashResult, &pOutSize));
     if(MCUXCLHASH_STATUS_OK != hashFinRet)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL);
@@ -366,7 +362,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
     /* Verify the pre-generated signature                           */
     /****************************************************************/
 
-    MCUX_CSSL_FP_FUNCTION_CALL(SM2VerRet, mcuxClOsccaSm2_Verify(session, pubKeyHandle, mcuxClSignature_Mode_SM2, pHashResult, pOutSize, signature, sizeof(signature)));
+    MCUX_CSSL_FP_FUNCTION_CALL(SM2VerRet, mcuxClOsccaSm2_Verify(session, pubKeyHandle, mcuxClSignature_Mode_SM2, (uint8_t*)pHashResult, pOutSize, signature, sizeof(signature)));
     if(MCUXCLOSCCASM2_STATUS_OK != SM2VerRet)
     {
         if (MCUXCLOSCCASM2_STATUS_FAULT_ATTACK == SM2VerRet)
@@ -391,7 +387,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
     /* Generate new signature                                       */
     /****************************************************************/
     uint32_t signatureSize = 0U;
-    MCUX_CSSL_FP_FUNCTION_CALL(SM2SignRet, mcuxClOsccaSm2_Sign(session, privKeyHandle, mcuxClSignature_Mode_SM2, pHashResult, pOutSize, pSignature_r, &signatureSize));
+    MCUX_CSSL_FP_FUNCTION_CALL(SM2SignRet, mcuxClOsccaSm2_Sign(session, privKeyHandle, mcuxClSignature_Mode_SM2, (uint8_t*)pHashResult, pOutSize, pSignature_r, &signatureSize));
     if(MCUXCLOSCCASM2_STATUS_OK != SM2SignRet)
     {
         if (MCUXCLOSCCASM2_STATUS_FAULT_ATTACK == SM2SignRet)
@@ -416,7 +412,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
     /****************************************************************/
     /* Verify the new signature                                     */
     /****************************************************************/
-    MCUX_CSSL_FP_FUNCTION_CALL(SM2VerRet2, mcuxClOsccaSm2_Verify(session, pubKeyHandle, mcuxClSignature_Mode_SM2, pHashResult, pOutSize, pSignature_r, signatureSize));
+    MCUX_CSSL_FP_FUNCTION_CALL(SM2VerRet2, mcuxClOsccaSm2_Verify(session, pubKeyHandle, mcuxClSignature_Mode_SM2, (uint8_t*)pHashResult, pOutSize, pSignature_r, signatureSize));
     if(MCUXCLOSCCASM2_STATUS_OK != SM2VerRet2)
     {
         if (MCUXCLOSCCASM2_STATUS_FAULT_ATTACK == SM2VerRet2)

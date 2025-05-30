@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright  2022-2024 NXP                                                 */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaAeadModes_Internal_Types.h
@@ -38,18 +38,19 @@ extern "C" {
  */
 
 /* Options for the skeleton function */
-#define MCUXCLOSCCAAEADMODES_OPTION_ONESHOT     0x0000000Fu
-#define MCUXCLOSCCAAEADMODES_OPTION_INIT        0x00000001u
-#define MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD 0x00000002u
-#define MCUXCLOSCCAAEADMODES_OPTION_PROCESS     0x00000004u
-#define MCUXCLOSCCAAEADMODES_OPTION_FINISH      0x00000008u
-#define MCUXCLOSCCAAEADMODES_OPTION_VERIFY      0x00000010u
+#define MCUXCLOSCCAAEADMODES_OPTION_ONESHOT_ENCRYPT      0x0000000FU
+#define MCUXCLOSCCAAEADMODES_OPTION_ONESHOT_DECRYPT      0x00000017U
+#define MCUXCLOSCCAAEADMODES_OPTION_INIT                 0x00000001U
+#define MCUXCLOSCCAAEADMODES_OPTION_PROCESS_AAD          0x00000002U
+#define MCUXCLOSCCAAEADMODES_OPTION_PROCESS              0x00000004U
+#define MCUXCLOSCCAAEADMODES_OPTION_FINISH_ENCRYPT       0x00000008U
+#define MCUXCLOSCCAAEADMODES_OPTION_VERIFY_DECRYPT       0x00000010U
 
 /* Options for the engine function */
-#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH              0x00000001u
-#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_ENC               0x00000002u
-#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AEAD              0x00000003u
-#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_INIT              0x00000008u
+#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AUTH              0x00000001U
+#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_ENC               0x00000002U
+#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_AEAD              0x00000003U
+#define MCUXCLOSCCAAEADMODES_ENGINE_OPTION_INIT              0x00000008U
 
 /**
  * @brief AEAD context structure

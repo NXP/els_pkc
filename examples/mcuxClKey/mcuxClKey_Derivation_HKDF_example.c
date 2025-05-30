@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -31,7 +31,9 @@
 #include <mcuxClEls.h>
 #include <mcuxClExample_ELS_Helper.h>
 
+MCUX_CSSL_ANALYSIS_START_PATTERN_HYPERLINK_IN_COMMENTS()
 /* Test vectors from https://datatracker.ietf.org/doc/html/rfc5869 */
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_HYPERLINK_IN_COMMENTS()
 
 #define OUTPUT_KEY_LENGTH   42
 
@@ -91,13 +93,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_HKDF_example)
 
     /* Create and initialize key descriptor structure. */
     uint32_t sharedSecretDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t sharedSecretHandle = (mcuxClKey_Handle_t) &sharedSecretDesc;
+    mcuxClKey_Handle_t sharedSecretHandle = (mcuxClKey_Handle_t) sharedSecretDesc;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultKeyInit1, tokenKeyInit1, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer sharedSecretHandle points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ sharedSecretHandle,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Hmac_variableLength,    /* size of sharedSecret does not fit any fixed size key type */
-      /* uint8_t * pKeyData                    */ (uint8_t *) sharedSecret,
+      /* const uint8_t * pKeyData              */ sharedSecret,
       /* uint32_t keyDataLength                */ sizeof(sharedSecret)
     ));
 
@@ -116,7 +120,6 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_HKDF_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-
     /* Set up input parameter structures. */
     MCUXCLBUFFER_INIT_RO(fixedInfoBuf, session, fixedInfo, sizeof(fixedInfo));
     MCUXCLBUFFER_INIT_RO(saltBuf, session, salt, sizeof(salt));
@@ -130,13 +133,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_HKDF_example)
 
     /* Create and initialize derivedKey descriptor structure. */
     uint32_t derivedKeyDesc[MCUXCLKEY_DESCRIPTOR_SIZE_IN_WORDS];
-    mcuxClKey_Handle_t derivedKey = (mcuxClKey_Handle_t) &derivedKeyDesc;
+    mcuxClKey_Handle_t derivedKey = (mcuxClKey_Handle_t) derivedKeyDesc;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultKeyInit2, tokenKeyInit2, mcuxClKey_init(
       /* mcuxClSession_Handle_t session         */ session,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer derivedKey points to an object of the right type, the cast was valid.")
       /* mcuxClKey_Handle_t key                 */ derivedKey,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxClKey_Type_t type                  */ mcuxClKey_Type_Hmac_variableLength,
-      /* uint8_t * pKeyData                    */ derivedKeyBuf,
+      /* const uint8_t * pKeyData              */ derivedKeyBuf,
       /* uint32_t keyDataLength                */ sizeof(derivedKeyBuf)
     ));
 
@@ -150,12 +155,16 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_HKDF_example)
     /* Create Hmac mode and Derivation mode                                   */
     /**************************************************************************/
 
-    uint8_t hmacModeDescBuffer[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE];
+    uint32_t hmacModeDescBuffer[MCUXCLHMAC_HMAC_MODE_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClMac_CustomMode_t hmacSha256 = (mcuxClMac_CustomMode_t) hmacModeDescBuffer;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(hashCreateMode_result, hashCreateMode_token, mcuxClHmac_createHmacMode(
-    /* mcuxClMac_CustomMode_t mode:       */ hmacSha256,
-    /* mcuxClHash_Algo_t hashAlgorithm:   */ mcuxClHash_Algorithm_Sha256)
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer hmacSha256 is of the right type (mcuxClMac_CustomMode_t)")
+      /* mcuxClMac_CustomMode_t mode:       */ hmacSha256,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* mcuxClHash_Algo_t hashAlgorithm:   */ mcuxClHash_Algorithm_Sha256)
     );
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_createHmacMode) != hashCreateMode_token) || (MCUXCLMAC_STATUS_OK != hashCreateMode_result))
@@ -164,14 +173,18 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_Derivation_HKDF_example)
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
-    uint8_t derivationModeDescBuffer[MCUXCLKEY_DERIVATION_MODE_DESCRIPTOR_SIZE];
+    uint32_t derivationModeDescBuffer[MCUXCLKEY_DERIVATION_MODE_DESCRIPTOR_SIZE_IN_WORDS];
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
     mcuxClKey_DerivationMode_t * pDerivationMode = (mcuxClKey_DerivationMode_t *) derivationModeDescBuffer;
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(resultModeConstruct, tokenModeConstruct, mcuxClKey_Derivation_ModeConstructor_HKDF(
-    /* mcuxClKey_DerivationMode_t *                      */ pDerivationMode,
-    /* const mcuxClKey_DerivationAlgorithmDescriptor_t * */ mcuxClKey_DerivationAlgorithm_HKDF,
-    /* mcuxClMac_Mode_t                                  */ hmacSha256, // use this when using mac function as PRF
-    /* uint32_t                                         */ 0u // no options for this mode
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer pDerivationMode points to an object of the right type, the cast was valid.")
+      /* mcuxClKey_DerivationMode_t *                      */ pDerivationMode,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+      /* const mcuxClKey_DerivationAlgorithmDescriptor_t * */ mcuxClKey_DerivationAlgorithm_HKDF,
+      /* mcuxClMac_Mode_t                                  */ hmacSha256, // use this when using mac function as PRF
+      /* uint32_t                                         */ 0u // no options for this mode
     ));
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_Derivation_ModeConstructor_HKDF) != tokenModeConstruct) || (MCUXCLKEY_STATUS_OK != resultModeConstruct))

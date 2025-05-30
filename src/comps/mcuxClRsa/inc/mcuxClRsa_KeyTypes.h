@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2023 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -202,8 +202,9 @@ typedef struct
 
 // TODO CLNS-6135: remove those definitions
 #define MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE (sizeof(mcuxClRsa_KeyData_Plain_t)) ///< Size of mcuxClRsa_KeyData_Plain_t
+#define MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE_IN_WORDS MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE)
 #define MCUXCLRSA_KEYSTRUCT_CRT_SIZE (sizeof(mcuxClRsa_KeyData_Crt_t)) ///< Size of mcuxClRsa_KeyData_Crt_t
-
+#define MCUXCLRSA_KEYSTRUCT_CRT_SIZE_IN_WORDS MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRSA_KEYSTRUCT_CRT_SIZE)
 /**
  * @}
  */ /* mcuxClRsa_KeyTypes */

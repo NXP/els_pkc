@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -32,11 +32,11 @@
 #include <internal/mcuxClMath_ModInv_FUP.h>
 
 MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_DEFINED("It is indeed defined.")
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEFINED_MORE_THAN_ONCE("It defined only once.")
+MCUX_CSSL_ANALYSIS_START_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClMath_ModInv)
 MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ModInv(uint32_t iR_iX_iN_iT)
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_SYMBOL_DEFINED_MORE_THAN_ONCE()
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClMath_ModInv);
 
@@ -44,12 +44,17 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEFINED_MORE_THAN_ONCE()
     uint32_t operandSize = MCUXCLPKC_PS1_UNPACK_OPLEN(backupPs1LenReg);
     operandSize &= ~((uint32_t) MCUXCLPKC_WORDSIZE - 1u);  /* round down to a multiple of MCUXCLPKC_WORDSIZE, to calculate exponent correctly. */
 
+    /* ASSERT: operandSize (PS1 LEN) is valid, and operands (of length = operandSize + MCUXCLPKC_WORDSIZE) are within PKC workarea. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(operandSize, MCUXCLPKC_WORDSIZE, MCUXCLPKC_RAM_SIZE - MCUXCLPKC_WORDSIZE)
+
     /* Prepare local UPTRT. */
     uint16_t pOperands[MODINV_UPTRT_SIZE];
     const uint16_t *backupPtrUptrt;
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMath_InitLocalUptrt(iR_iX_iN_iT, 0u, pOperands, 4u, &backupPtrUptrt));
 
     const uint16_t offsetT = pOperands[MODINV_T];
+    /* ASSERT: operand T (length >= operandSize + MCUXCLPKC_WORDSIZE) is within PKC workarea. */
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER_FP_VOID(offsetT, MCUXCLPKC_RAM_OFFSET_MIN, MCUXCLPKC_RAM_OFFSET_MAX - (2u * MCUXCLPKC_WORDSIZE))
 
     pOperands[MODINV_T1] = (uint16_t) (offsetT + MCUXCLPKC_WORDSIZE);
     pOperands[MODINV_CONST1] = 0x0001u;

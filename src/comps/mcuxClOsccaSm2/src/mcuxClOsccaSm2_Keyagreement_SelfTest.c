@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaSm2_Keyagreement_SelfTest.c
@@ -83,8 +83,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClOsccaSm2_KeyAgreement_Self
     /* Create buffer for keyagreement selftest */
     uint32_t cpuWaUsedWord = (MCUXCLOSCCASM2_KEYAGREEMENT_SELFTEST_SIZEOF_WA_CPU -
                             MCUXCLOSCCASM2_KEYAGREEMENT_SIZEOF_WA_CPU) / sizeof(uint32_t);
-    uint8_t * pKeyExBuf = (uint8_t *)mcuxClSession_allocateWords_cpuWa(session, cpuWaUsedWord);
-    if (NULL == pKeyExBuf)
+    uint32_t * pKeyExBuf = mcuxClSession_allocateWords_cpuWa(session, cpuWaUsedWord);
+    if(NULL == pKeyExBuf)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_KeyAgreement_SelfTest, MCUXCLKEY_STATUS_ERROR);
     }
@@ -93,9 +93,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClOsccaSm2_KeyAgreement_Self
     /****************************************************************/
     /* CPU and PKC workarea allocation                              */
     /****************************************************************/
-    uint8_t *pPrivKeyDesc = pKeyExBuf;
-    uint8_t *pPubKeyDesc = pPrivKeyDesc + mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE);
-    uint8_t *pConfirmR2I = pPubKeyDesc + mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE);
+    uint32_t *pPrivKeyDesc = pKeyExBuf;
+    uint32_t *pPubKeyDesc = pPrivKeyDesc + (mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE) / sizeof(uint32_t));
+    uint8_t *pConfirmR2I = (uint8_t*)pPubKeyDesc + mcuxClOscca_alignSize(MCUXCLKEY_DESCRIPTOR_SIZE);
     uint8_t *pConfirmI2R = pConfirmR2I + MCUXCLOSCCASM3_OUTPUT_SIZE_SM3;
     uint8_t *pCommonSecret = pConfirmI2R + MCUXCLOSCCASM3_OUTPUT_SIZE_SM3;
 
@@ -103,9 +103,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClOsccaSm2_KeyAgreement_Self
     /* Preparation: setup SM2 key                                   */
     /****************************************************************/
     /* Initialize SM2 private key */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClKey_Handle_t privKeyA = (mcuxClKey_Handle_t) pPrivKeyDesc;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    mcuxClKey_Handle_t privKeyA = mcuxClKey_castToKeyHandle(pPrivKeyDesc);
 
     MCUX_CSSL_FP_FUNCTION_CALL(priKeyInitRet, mcuxClKey_init(session,
          MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
@@ -122,9 +120,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClOsccaSm2_KeyAgreement_Self
     }
 
     /* Initialize SM2 public key */
-    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-    mcuxClKey_Handle_t pubKeyB = (mcuxClKey_Handle_t) pPubKeyDesc;
-    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+    mcuxClKey_Handle_t pubKeyB = mcuxClKey_castToKeyHandle(pPubKeyDesc);
 
     MCUX_CSSL_FP_FUNCTION_CALL(pubKeyInitRet, mcuxClKey_init(session,
          MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAead_Functions.h
@@ -69,8 +69,10 @@ extern "C" {
  * @param[out] pOutLength  Will be incremented by the number of bytes of
  *                         authenticated encrypted data that have been written
  *                         to the @p out buffer.
- * @param[out] pTag        Pointer to the output buffer where the tag needs to
- *                         be written.
+ * @param[in,out] pTag     In case of encrypt pointer to the output buffer
+ *                         where the tag needs to be written. In case of decrypt
+ *                         pointer to the input buffer where the refence tag is
+ *                         stored.
  * @param      tagLength   Number of bytes of tag data that will be written to
  *                         the @p tag buffer.
  * @return status

@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2018-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaSm2_KeyExchange.c
@@ -345,10 +345,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_KeyExchange(
                          bufferSize));
 
     /* Clear higher bits (w+1 ~ ...) and set bit w */
-    uint8_t twoToWModEight = (1u << (w & 7u));
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("twoToWModEight is always bigger than 1.")
-    pXExt[w >> 3] = (pXExt[w >> 3] & (twoToWModEight - 1u)) | twoToWModEight;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    uint8_t twoToWModEight = (uint8_t)((1u << (w & 7u)) & 0xffU);
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP_AND_CONVERSION("twoToWModEight is always bigger than 1.")
+    pXExt[w >> 3] = (pXExt[w >> 3] & (twoToWModEight - 1U)) | twoToWModEight;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP_AND_CONVERSION()
 
     /* import the point RB */
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOsccaSm2_EccImportInputPointWithInit(TI_sx1,
@@ -427,9 +427,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_KeyExchange(
             pParams->pPublicEphemeralPoint + (byteLenP - wBytes),
             wBytes,
             bufferSize));
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("twoToWModEight is always bigger than 1.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP_AND_CONVERSION("twoToWModEight is always bigger than 1.")
     pXExt[w >> 3] = (pXExt[w >> 3] & (twoToWModEight - 1u)) | twoToWModEight;
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP_AND_CONVERSION()
 
     /****************************************************************************/
     /* Securely compute tA = (d + R.x * r) mod n                                 */
@@ -486,10 +486,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_Status_t) mcuxClOsccaSm2_KeyExchange(
     pXuSwithEnd = pXu + offset;
     pYuSwithEnd = pYu + offset;
     /* Change endianess of x2 and y2, cause Hash needs big endian representation */
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_REINTERPRET_MEMORY("Reinterpret pXu and pYu word aligned from uint8_t* to uint32_t* to improve access.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Reinterpret pXu and pYu word aligned from uint8_t* to uint32_t* to improve access.")
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOscca_switch_endianness((uint32_t*)pXu, alignedLength));
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOscca_switch_endianness((uint32_t*)pYu, alignedLength));
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_REINTERPRET_MEMORY()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
 
     pKDFParam->pX2 = pXuSwithEnd;
     pKDFParam->pY2 = pYuSwithEnd;

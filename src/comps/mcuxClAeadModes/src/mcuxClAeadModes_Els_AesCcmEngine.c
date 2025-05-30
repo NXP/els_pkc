@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClAeadModes_Els_AesCcmEngine.c
@@ -29,15 +29,237 @@
 #include <internal/mcuxClPadding_Internal.h>
 #include <internal/mcuxClBuffer_Internal.h>
 
+
+/**
+ * @brief AES CCM authentication engine function.
+ *
+ * @param[in,out]   pContext          Pointer to context.
+ * @param[in]       pIn               Pointer to input.
+ * @param[in]       inLength          Input length.
+ * @param[out]      pOut              Pointer to output.
+ * @param[in]       options           Options is a bitmask with one bit reserved for each of the operations
+ * @param[in]       pCmacOpt          Pointer to command option bit field for #mcuxClEls_Cmac_Async
+ *
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAeadModes_EngineAesCcmEls_Auth)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls_Auth(
+  mcuxClAeadModes_Context_t * const pContext,
+  mcuxCl_InputBuffer_t pIn,
+  uint32_t inLength,
+  mcuxCl_Buffer_t pOut,
+  uint32_t options,
+  mcuxClEls_CmacOption_t *pCmacOpt)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_EngineAesCcmEls_Auth);
+
+    mcuxClEls_KeyIndex_t keyIdx = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key);
+    uint8_t const * pKey = mcuxClKey_getLoadedKeyData(pContext->key);
+    uint32_t keyLength = mcuxClKey_getSize(pContext->key);
+    const uint32_t direction = pContext->common.mode->algorithm->direction;
+
+    if((options == MCUXCLAEADMODES_ENGINE_OPTION_AEAD) && (MCUXCLELS_AEAD_DECRYPT == direction))
+    {
+        MCUX_CSSL_FP_FUNCTION_CALL(cmacResult, mcuxClEls_Cmac_Async(*pCmacOpt,
+                                                                    keyIdx,
+                                                                    pKey,
+                                                                    keyLength,
+                                                                    pOut,
+                                                                    inLength,
+                                                                    pContext->state));
+
+        if( MCUXCLELS_STATUS_OK_WAIT != cmacResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Auth, MCUXCLAEAD_STATUS_ERROR);
+        }
+    }
+    else
+    {
+        MCUX_CSSL_FP_FUNCTION_CALL(cmacResult, mcuxClEls_Cmac_Async(*pCmacOpt,
+                                                                    keyIdx,
+                                                                    pKey,
+                                                                    keyLength,
+                                                                    pIn,
+                                                                    inLength,
+                                                                    pContext->state));
+        if( MCUXCLELS_STATUS_OK_WAIT != cmacResult)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Auth, MCUXCLAEAD_STATUS_ERROR);
+        }
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL(cmacWaitResult, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+
+    if (MCUXCLELS_STATUS_OK != cmacWaitResult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Auth, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
+
+    if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Auth, MCUXCLAEAD_STATUS_ERROR);
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Auth, MCUXCLAEAD_STATUS_OK,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+            MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
+}
+
+
+/**
+ * @brief AES CCM decryption engine function.
+ *
+ * @param[in,out]   pContext          Pointer to context.
+ * @param[in]       pIn               Pointer to input.
+ * @param[in]       inLength          Input length.
+ * @param[out]      pOut              Pointer to output.
+ * @param[in]       pCipherElsOpt     Pointer to command option bit field for #mcuxClEls_Cipher_Async
+ *
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAeadModes_EngineAesCcmEls_Dec)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls_Dec(
+  mcuxClAeadModes_Context_t * const pContext,
+  mcuxCl_InputBuffer_t pIn,
+  uint32_t inLength,
+  mcuxCl_Buffer_t pOut,
+  mcuxClEls_CipherOption_t *pCipherElsOpt)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_EngineAesCcmEls_Dec);
+
+    mcuxClEls_KeyIndex_t keyIdx = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key);
+    uint8_t const * pKey = mcuxClKey_getLoadedKeyData(pContext->key);
+    uint32_t keyLength = mcuxClKey_getSize(pContext->key);
+
+    MCUX_CSSL_FP_FUNCTION_CALL(ctrRet, mcuxClEls_Cipher_Async(*pCipherElsOpt,
+                                                            keyIdx,
+                                                            pKey,
+                                                            keyLength,
+                                                            pIn,
+                                                            inLength,
+                                                            &pContext->state[48],
+                                                            pOut));
+
+    if(MCUXCLELS_STATUS_OK_WAIT != ctrRet)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Dec, MCUXCLAEAD_STATUS_ERROR,
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async));
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL(ctrWaitRet, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+
+    if (MCUXCLELS_STATUS_OK != ctrWaitRet)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Dec, MCUXCLAEAD_STATUS_ERROR,
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async),
+                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+    }
+
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+
+    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
+
+    if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Dec, MCUXCLAEAD_STATUS_ERROR);
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Dec, MCUXCLAEAD_STATUS_OK,
+                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async),
+                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
+}
+
+
+/**
+ * @brief AES CCM encryption engine function.
+ *
+ * @param[in,out]   pContext          Pointer to context.
+ * @param[in]       pIn               Pointer to input.
+ * @param[in]       inLength          Input length.
+ * @param[out]      pOut              Pointer to output.
+ * @param[in]       pCipherElsOpt     Pointer to command option bit field for #mcuxClEls_Cipher_Async
+ *
+ * @return status
+ */
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAeadModes_EngineAesCcmEls_Enc)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls_Enc(
+  mcuxClAeadModes_Context_t * const pContext,
+  mcuxCl_InputBuffer_t pIn,
+  uint32_t inLength,
+  mcuxCl_Buffer_t pOut,
+  mcuxClEls_CipherOption_t *pCipherElsOpt)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_EngineAesCcmEls_Enc);
+
+    mcuxClEls_KeyIndex_t keyIdx = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key);
+    uint8_t const * pKey = mcuxClKey_getLoadedKeyData(pContext->key);
+    uint32_t keyLength = mcuxClKey_getSize(pContext->key);
+
+    MCUX_CSSL_FP_FUNCTION_CALL(ctrRet, mcuxClEls_Cipher_Async(*pCipherElsOpt,
+                                                            keyIdx,
+                                                            pKey,
+                                                            keyLength,
+                                                            pIn,
+                                                            inLength,
+                                                            &pContext->state[48],
+                                                            pOut));
+
+    if(MCUXCLELS_STATUS_OK_WAIT != ctrRet)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Enc, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+    MCUX_CSSL_FP_FUNCTION_CALL(ctrWaitRet, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+
+    if (MCUXCLELS_STATUS_OK != ctrWaitRet)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Enc, MCUXCLAEAD_STATUS_ERROR);
+    }
+
+#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
+    MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
+
+    if (MCUXCLELS_STATUS_OK != addressComparisonResult)
+    {
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Enc, MCUXCLAEAD_STATUS_ERROR);
+    }
+#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls_Enc, MCUXCLAEAD_STATUS_OK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async),
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN);
+}
+
+/**
+ * @brief AES CCM engine function.
+ *
+ * @param[in]       session           Session handle.
+ * @param[in,out]   pContext          Pointer to context.
+ * @param[in]       pIn               Pointer to input.
+ * @param[in]       inLength          Input length.
+ * @param[out]      pOut              Pointer to output.
+ * @param[out]      pOutLength        Pointer to output length.
+ * @param[in]       options           Options is a bitmask with one bit reserved for each of the operations
+ *
+ * @return status
+ */
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClAeadModes_EngineAesCcmEls)
-MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls (
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls(
   mcuxClSession_Handle_t session UNUSED_PARAM,
   mcuxClAeadModes_Context_t * const pContext,
   mcuxCl_InputBuffer_t pIn,
   uint32_t inLength,
   mcuxCl_Buffer_t pOut,
   uint32_t * const pOutLength,
-  uint32_t options  //!< options is a bitmask with one bit reserved for each of the operations
+  uint32_t options
   )
 {
     /* [Design]
@@ -68,11 +290,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls
 
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClAeadModes_EngineAesCcmEls);
     const uint32_t direction = pContext->common.mode->algorithm->direction;
-
-    /* Initialize ELS key info based on the key in the context. */
-    mcuxClEls_KeyIndex_t keyIdx = (mcuxClEls_KeyIndex_t) mcuxClKey_getLoadedKeySlot(pContext->key);
-    uint8_t const * pKey = mcuxClKey_getLoadedKeyData(pContext->key);
-    uint32_t keyLength = mcuxClKey_getSize(pContext->key);
 
     /* Initialize ELS CMAC options. */
     mcuxClEls_CmacOption_t cmacOpt;
@@ -106,155 +323,66 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_EngineAesCcmEls
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
     }
 
-    if(options == MCUXCLAEADMODES_ENGINE_OPTION_INIT)
-    {
-
-    }
-
     if(((options & MCUXCLAEADMODES_ENGINE_OPTION_ENC) == MCUXCLAEADMODES_ENGINE_OPTION_ENC)
         && (MCUXCLELS_AEAD_DECRYPT == direction))
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(ctrRet, mcuxClEls_Cipher_Async(cipherElsOpt,
-                                                               keyIdx,
-                                                               pKey,
-                                                               keyLength,
-                                                               pIn,
-                                                               inLength,
-                                                               &pContext->state[48],
-                                                               pOut));
+        MCUX_CSSL_FP_FUNCTION_CALL(decRet, mcuxClAeadModes_EngineAesCcmEls_Dec(
+            pContext,
+            pIn,
+            inLength,
+            pOut,
+            &cipherElsOpt));
 
-        if(MCUXCLELS_STATUS_OK_WAIT != ctrRet)
+        if (MCUXCLAEAD_STATUS_OK != decRet)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
-
-        MCUX_CSSL_FP_FUNCTION_CALL(ctrWaitRet, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-
-        if (MCUXCLELS_STATUS_OK != ctrWaitRet)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
-
-
     }
 
     if((options & MCUXCLAEADMODES_ENGINE_OPTION_AUTH) == MCUXCLAEADMODES_ENGINE_OPTION_AUTH)
     {
-        if((options == MCUXCLAEADMODES_ENGINE_OPTION_AEAD) && (MCUXCLELS_AEAD_DECRYPT == direction))
-        {
-            MCUX_CSSL_FP_FUNCTION_CALL(cmacResult, mcuxClEls_Cmac_Async(cmacOpt,
-                                                                     keyIdx,
-                                                                     pKey,
-                                                                     keyLength,
-                                                                     pOut,
-                                                                     inLength,
-                                                                     pContext->state));
+        MCUX_CSSL_FP_FUNCTION_CALL(authRet, mcuxClAeadModes_EngineAesCcmEls_Auth(
+            pContext,
+            pIn,
+            inLength,
+            pOut,
+            options,
+            &cmacOpt));
 
-            if( MCUXCLELS_STATUS_OK_WAIT != cmacResult)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-            }
-        }
-        else
-        {
-            MCUX_CSSL_FP_FUNCTION_CALL(cmacResult, mcuxClEls_Cmac_Async(cmacOpt,
-                                                                      keyIdx,
-                                                                      pKey,
-                                                                      keyLength,
-                                                                      pIn,
-                                                                      inLength,
-                                                                      pContext->state));
-            if( MCUXCLELS_STATUS_OK_WAIT != cmacResult)
-            {
-                MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-            }
-        }
-
-        MCUX_CSSL_FP_FUNCTION_CALL(cmacWaitResult, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-
-        if (MCUXCLELS_STATUS_OK != cmacWaitResult)
+        if(MCUXCLAEAD_STATUS_OK != authRet)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
-
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress((uint8_t*)pContext->state, MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
-
-
     }
 
     if(((options & MCUXCLAEADMODES_ENGINE_OPTION_ENC) == MCUXCLAEADMODES_ENGINE_OPTION_ENC)
       && (MCUXCLELS_AEAD_ENCRYPT == direction))
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(ctrRet, mcuxClEls_Cipher_Async(cipherElsOpt,
-                                                               keyIdx,
-                                                               pKey,
-                                                               keyLength,
-                                                               pIn,
-                                                               inLength,
-                                                               &pContext->state[48],
-                                                               pOut));
+        MCUX_CSSL_FP_FUNCTION_CALL(encRet, mcuxClAeadModes_EngineAesCcmEls_Enc(
+            pContext,
+            pIn,
+            inLength,
+            pOut,
+            &cipherElsOpt));
 
-        if(MCUXCLELS_STATUS_OK_WAIT != ctrRet)
+        if (MCUXCLAEAD_STATUS_OK != encRet)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
         }
-
-        MCUX_CSSL_FP_FUNCTION_CALL(ctrWaitRet, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-
-        if (MCUXCLELS_STATUS_OK != ctrWaitRet)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-
-#ifdef MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK
-        MCUX_CSSL_FP_FUNCTION_CALL(addressComparisonResult, mcuxClEls_CompareDmaFinalOutputAddress(&pContext->state[48], MCUXCLELS_CMAC_OUT_SIZE));
-
-        if (MCUXCLELS_STATUS_OK != addressComparisonResult)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_ERROR);
-        }
-#endif /* MCUXCL_FEATURE_ELS_DMA_FINAL_ADDRESS_READBACK */
-
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_OK, MCUXCLAEAD_STATUS_FAULT_ATTACK,
-        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_ENC) == MCUXCLAEADMODES_ENGINE_OPTION_ENC)
-                                && (MCUXCLELS_AEAD_DECRYPT == direction),
-                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async),
-                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
-                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClAeadModes_EngineAesCcmEls, MCUXCLAEAD_STATUS_OK,
+        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_ENC) == MCUXCLAEADMODES_ENGINE_OPTION_ENC),
+            MCUX_CSSL_FP_CONDITIONAL(MCUXCLELS_AEAD_DECRYPT == direction, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAeadModes_EngineAesCcmEls_Dec)),
+            MCUX_CSSL_FP_CONDITIONAL(MCUXCLELS_AEAD_ENCRYPT == direction, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAeadModes_EngineAesCcmEls_Enc))
         ),
         MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_AUTH) == MCUXCLAEADMODES_ENGINE_OPTION_AUTH),
-                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cmac_Async),
-                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
-                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN
-        ),
-        MCUX_CSSL_FP_CONDITIONAL(((options & MCUXCLAEADMODES_ENGINE_OPTION_ENC) == MCUXCLAEADMODES_ENGINE_OPTION_ENC)
-                                && (MCUXCLELS_AEAD_ENCRYPT == direction),
-                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Cipher_Async),
-                                                                        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
-                                                                        MCUXCLELS_DMA_READBACK_PROTECTION_TOKEN
+                                    MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAeadModes_EngineAesCcmEls_Auth)
         )
     );
 }
+
 MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClAeadModes_AlgorithmDescriptor_t mcuxClAeadModes_AlgorithmDescriptor_Aes_Ccm_enc = {
     .pSkeleton = mcuxClAeadModes_SkeletonAesCcm,

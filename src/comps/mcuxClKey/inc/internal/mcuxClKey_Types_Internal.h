@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -206,7 +206,7 @@ struct mcuxClKey_DerivationMode {
 
 typedef struct mcuxClKeyDerivation_WorkArea {
   uint8_t input_Wa[8u];
-  uint8_t context_Wa[MCUXCLMAC_MAX_CONTEXT_SIZE];
+  uint32_t context_Wa[MCUXCLMAC_MAX_CONTEXT_SIZE_IN_WORDS];
   uint8_t macResult_Wa[MCUXCLMAC_MAX_OUTPUT_SIZE];
 }mcuxClKeyDerivation_WorkArea_t;
 #endif /* MCUXCL_FEATURE_KEY_DERIVATION */

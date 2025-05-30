@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_Util_Encrypt.c
@@ -75,9 +75,13 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_encrypt(
   uint32_t keyBitLength = mcuxClKey_getSize(key);
   const uint32_t keyByteLength = keyBitLength / 8u;
   MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
   mcuxClRsa_KeyData_Plain_t * pRsaKeyData = (mcuxClRsa_KeyData_Plain_t *) mcuxClKey_getKeyData(key);
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type")
   if(keyByteLength != pRsaKeyData->modulus.keyEntryLength)
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   {
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRsa_Util_encrypt, MCUXCLCIPHER_STATUS_INVALID_INPUT);
   }
@@ -103,7 +107,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_encrypt(
 
   /* Call the padding function */
   MCUXCLBUFFER_INIT(pPaddedMessageBuf, NULL, pPaddedMessage, keyByteLength);
-  MCUX_CSSL_ANALYSIS_START_SUPPRESS_NULL_POINTER_CONSTANT("NULL is used in code")
+  MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("False positive, pPaddingFunction never is resolves to 'mcuxClRsa_oaepDecode'")
   MCUX_CSSL_FP_FUNCTION_CALL(retVal_PaddingOperation, pPaddingFunction(
                               /* mcuxClSession_Handle_t       pSession,           */ pSession,
                               /* mcuxCl_InputBuffer_t         pInput,             */ pIn,
@@ -117,7 +122,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClRsa_Util_encrypt(
                               /* mcuxCl_Buffer_t              pOutput             */ pPaddedMessageBuf,
                               /* uint32_t * const            pOutLength          */ NULL /* unused */
   ));
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NULL_POINTER_CONSTANT()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
+  MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
   if(MCUXCLRSA_STATUS_INVALID_INPUT == retVal_PaddingOperation)
   {

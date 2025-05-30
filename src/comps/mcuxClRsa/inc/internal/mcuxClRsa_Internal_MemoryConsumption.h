@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_Internal_MemoryConsumption.h
@@ -84,7 +84,7 @@ extern "C" {
 #define MCUXCLRSA_INTERNAL_PRIVATECRT_WAPKC_SIZE(primeByteLength)  \
     (MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(MCUXCLRSA_INTERNAL_MOD_BLINDING_SIZE) \
      + MCUXCLCORE_MAX((8U * MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(primeByteLength)) + (8U * MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(MCUXCLRSA_INTERNAL_MOD_BLINDING_SIZE)) + (14U * MCUXCLRSA_PKC_WORDSIZE), \
-                    (6U * MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(primeByteLength * 2u)) + (12U * MCUXCLRSA_PKC_WORDSIZE)))
+                    (4U * MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(primeByteLength * 2u)) + (4U * MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(primeByteLength)) + (7U * MCUXCLRSA_ALIGN_TO_PKC_WORDSIZE(MCUXCLRSA_INTERNAL_MOD_BLINDING_SIZE)) + (5U * MCUXCLRSA_PKC_WORDSIZE)))
     ///< Definition of PKC workarea size for the mcuxClRsa_privateCRT function depending on the byte-length of p.
 /** @} */
 

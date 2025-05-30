@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -40,7 +40,7 @@ extern "C" {
 #define MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE_IN_WORDS (MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRANDOMMODES_HMAC_DRBG_MODE_DESCRIPTOR_SIZE))
 #define MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE              (sizeof(mcuxClRandomModes_Context_HmacDrbg_Generic_t))
 #define MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE_IN_WORDS     (MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRANDOMMODES_HMAC_DRBG_MAX_CONTEXT_SIZE))
-#define MCUXCLRANDOMMODES_HMAC_DRBG_GENERATE_WACPU_SIZE           (sizeof(mcuxClKey_Descriptor_t) + MCUXCLCORE_ALIGN_TO_CPU_WORDSIZE(MCUXCLHMAC_INTERNAL_MAX_CONTEXT_SIZE))
+#define MCUXCLRANDOMMODES_HMAC_DRBG_GENERATE_WACPU_SIZE           (sizeof(mcuxClKey_Descriptor_t) + MCUXCLCORE_ALIGN_TO_CPU_WORDSIZE(MCUXCLHMAC_INTERNAL_MAX_CONTEXT_SIZE) + MCUXCLCORE_ALIGN_TO_CPU_WORDSIZE(MCUXCLHMAC_INTERNAL_MAX_WACPU))
 #define MCUXCLRANDOMMODES_HMAC_DRBG_GENERATE_WACPU_SIZE_IN_WORDS  (MCUXCLCORE_NUM_OF_CPUWORDS_CEIL(MCUXCLRANDOMMODES_HMAC_DRBG_GENERATE_WACPU_SIZE))
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_createCustomHmacDrbgMode)

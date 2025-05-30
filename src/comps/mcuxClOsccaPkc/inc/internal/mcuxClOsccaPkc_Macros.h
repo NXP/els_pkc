@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2018-2023 NXP                                                  */
+/* Copyright 2018-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -41,14 +41,14 @@
 /* Macros for UPTR table and offsets                      */
 /**********************************************************/
 #define MCUXCLOSCCAPKC_PKCOFFSETTOPTR(offset)                                \
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Type cast pointer to integer to calculate the offset.") \
-    ((uint8_t *)(MCUXCLOSCCAPKC_PKC_RAM_BASEADDR + (offset))) \
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+    MCUX_CSSL_ANALYSIS_START_PATTERN_HW_ACCESS()                             \
+    ((uint8_t *)(MCUXCLOSCCAPKC_PKC_RAM_BASEADDR + (offset)))                \
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_HW_ACCESS()
 
-#define MCUXCLOSCCAPKC_PTRTOPKCOFFSET(ptr) \
-    MCUX_CSSL_ANALYSIS_START_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER("Type cast pointer to integer to calculate the offset.") \
-    ((uint16_t)((uint32_t)(ptr) - MCUXCLOSCCAPKC_PKC_RAM_BASEADDR)) \
-    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_TYPECAST_BETWEEN_INTEGER_AND_POINTER()
+#define MCUXCLOSCCAPKC_PTRTOPKCOFFSET(ptr)                                   \
+    MCUX_CSSL_ANALYSIS_START_PATTERN_HW_ACCESS()                             \
+    ((uint16_t)((((uint32_t)(ptr) - MCUXCLOSCCAPKC_PKC_RAM_BASEADDR)) & 0xffffU)) \
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_HW_ACCESS()
 
 /**********************************************************/
 /* Macros for parameter set                               */
@@ -171,10 +171,13 @@
 
 #define MCUXCLOSCCAPKC_SETUPTRT(pUptrt)                                               \
     do{                                                                              \
-        MCUXCLOSCCAPKC_SFR_WRITE(UPTRT, (uint32_t) pUptrt);                           \
+        MCUXCLOSCCAPKC_SFR_WRITE(UPTRT, MCUXCL_HW_DMA_WORKAROUND(pUptrt));             \
     } while(false)
 
-#define MCUXCLOSCCAPKC_GETUPTRT()            (uint16_t *)(MCUXCLOSCCAPKC_SFR_READ(UPTRT))
+#define MCUXCLOSCCAPKC_GETUPTRT()                                                     \
+    MCUX_CSSL_ANALYSIS_START_PATTERN_HW_ACCESS()                                      \
+    (uint16_t *)(MCUXCLOSCCAPKC_SFR_READ(UPTRT))                                      \
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_HW_ACCESS()
 
 #define MCUXCLOSCCAPKC_SETWORDSIZE(redmul)                                            \
     do {                                                                             \

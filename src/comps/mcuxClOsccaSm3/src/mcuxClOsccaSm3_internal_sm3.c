@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxCsslAnalysis.h>
@@ -147,11 +147,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_oneSh
     }
 
     /* Perform padding by adding data counter - length is added from end of the array; byte-length is converted to bit-length */
-    accumulationBuffByte[0u] = (uint8_t)(inSize <<  3u);
-    accumulationBuffByte[1u] = (uint8_t)(inSize >>  5u);
-    accumulationBuffByte[2u] = (uint8_t)(inSize >> 13u);
-    accumulationBuffByte[3u] = (uint8_t)(inSize >> 21u);
-    accumulationBuffByte[4u] = (uint8_t)(inSize >> 29u);
+    accumulationBuffByte[0u] = (uint8_t)((inSize <<  3u) & 0xffU);
+    accumulationBuffByte[1u] = (uint8_t)((inSize >>  5u) & 0xffU);
+    accumulationBuffByte[2u] = (uint8_t)((inSize >> 13u) & 0xffU);
+    accumulationBuffByte[3u] = (uint8_t)((inSize >> 21u) & 0xffU);
+    accumulationBuffByte[4u] = (uint8_t)((inSize >> 29u) & 0xffU);
 
     /* Process the data in the accumulation buffer */
     /* Return code will be handled by Exit-Gate functionality within processMessageBlock */
@@ -211,14 +211,17 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
     const size_t algoBlockSize = MCUXCLOSCCASM3_BLOCK_SIZE_SM3;
 
     MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(pSM3Ctx->unprocessedLength, 0u, MCUXCLOSCCASM3_BLOCK_SIZE_SM3, MCUXCLHASH_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(inSize, 0u, UINT32_MAX - unprocessedLen, MCUXCLHASH_STATUS_FAULT_ATTACK)
     MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(inputOffset, 0u, UINT32_MAX, MCUXCLHASH_STATUS_FAULT_ATTACK)
 
     /* Compute counter increase, considering the amount of unprocessed data now and at the end of this function. */
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("(inSize + unprocessedLen) - ((inSize + unprocessedLen) % algoBlockSize) won't wrap")
     uint32_t counterIncrease = (inSize + unprocessedLen) - ((inSize + unprocessedLen) % algoBlockSize);
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     mcuxClHash_processedLength_add(pSM3Ctx->processedLength, counterIncrease);
 
     /* Verify that the processed length will not exceed the algorithm's maximum allowed length. */
-    uint8_t counterHighestByte = ((uint8_t *) pSM3Ctx->processedLength)[pSM3Ctx->algo->counterSize - 1u];
+    uint8_t counterHighestByte = ((uint8_t *) pSM3Ctx->processedLength)[MCUXCLOSCCASM3_COUNTER_SIZE_SM3 - 1u];
     if(0u != (counterHighestByte & pSM3Ctx->algo->processedLengthCheckMask))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_processSkeleton, MCUXCLHASH_STATUS_FULL);
@@ -236,10 +239,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
     /**************************************************************************************/
     /*                Process all whole blocks of input data                              */
     /**************************************************************************************/
-    uint32_t loopTimes = 0u;
-    uint32_t loopTimes1 = 0u;
-    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(loopTimes, 0u, UINT32_MAX, MCUXCLHASH_STATUS_FAULT_ATTACK)
-    MCUX_CSSL_ANALYSIS_ASSERT_PARAMETER(loopTimes1, 0u, UINT32_MAX, MCUXCLHASH_STATUS_FAULT_ATTACK)
     while(0u < inLength)
     {
         /* Take into account something might be already in unprocessed buffer */
@@ -251,10 +250,11 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
         (void)statusBufferRead; // No need to check it because the function only returns OK.
 
         /* Update counter / pSM3Ctx data / input pointer */
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("inputOffset + dataToCopyLength and pSM3Ctx->unprocessedLength + dataToCopyLength can't be max than max(uint32_t), inLength must be >= dataToCopyLength")
         inLength -= dataToCopyLength;
         inputOffset += dataToCopyLength;
         pSM3Ctx->unprocessedLength += dataToCopyLength;
-        loopTimes++;
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
         /* When whole unprocessed buffer filled, process block and update pSM3Ctx data*/
         if(pSM3Ctx->unprocessedLength == algoBlockSize)
         {
@@ -264,7 +264,6 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
 
             /*Data processed, nothing in the buffer,  state buffer updated*/
             pSM3Ctx->unprocessedLength = 0u;
-            loopTimes1++;
         }
     }
 
@@ -275,9 +274,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_proce
                 (((processedLengthNotZero == 0) && (unprocessedLen == 0u)) ? (uint32_t)1u : (uint32_t)0u)
                   * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy),
                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi),
-                loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read_reverse),
-                loopTimes1 * ( MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi)
-                             + MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi)));
+                MCUX_CSSL_FP_CONDITIONAL((inSize > 0u),  ((inSize + unprocessedLen) / algoBlockSize + (((inSize + unprocessedLen) % algoBlockSize) != 0u ? 1u : 0u))* MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read_reverse)),
+                MCUX_CSSL_FP_CONDITIONAL((inSize > 0u),  ((inSize + unprocessedLen) / algoBlockSize)* (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_ProcessMessageBlock_Sgi) +
+                                                                                                      MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm3_SetMessagePreLoadIV_Sgi))));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClOsccaSm3_sm3_finishSkeleton, mcuxClHash_AlgoSkeleton_Finish_t)
@@ -309,7 +308,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
     mcuxClHash_processedLength_add(pSM3Ctx->processedLength, pSM3Ctx->unprocessedLength);
 
     /* Verify that the processed length will not exceed the algorithm's maximum allowed length. */
-    uint8_t counterHighestByte = ((uint8_t *) pSM3Ctx->processedLength)[pSM3Ctx->algo->counterSize - 1u];
+    uint8_t counterHighestByte = ((uint8_t *) pSM3Ctx->processedLength)[MCUXCLOSCCASM3_COUNTER_SIZE_SM3 - 1u];
     if(0u != (counterHighestByte & pSM3Ctx->algo->processedLengthCheckMask))
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm3_sm3_finishSkeleton, MCUXCLHASH_STATUS_FULL,
@@ -348,7 +347,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClOsccaSm3_sm3_finis
 
     /* Perform padding by adding data counter - length is added from start of the array; byte-length is converted to bit-length */
     mcuxClHash_processedLength_toBits(pSM3Ctx->processedLength);
-    for(uint32_t i = 0u; i < pSM3Ctx->algo->counterSize; ++i)
+    for(uint32_t i = 0u; i < MCUXCLOSCCASM3_COUNTER_SIZE_SM3; ++i)
     {
         pUnprocessedByte[i] = ((uint8_t*)pSM3Ctx->processedLength)[i];
     }

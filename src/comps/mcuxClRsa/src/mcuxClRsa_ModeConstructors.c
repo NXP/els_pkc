@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRsa_ModeConstructors.c
@@ -43,7 +43,7 @@ static const mcuxClRsa_Cipher_ModeFunctions_t mcuxClRsa_Cipher_ModeFunctions_Rsa
   .crypt = mcuxClRsa_Util_encrypt,
   .protection_token_crypt = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_Util_encrypt)
 };
- 
+
 /* Cipher crypt mode function for RSA decrypt operation */
 static const mcuxClRsa_Cipher_ModeFunctions_t mcuxClRsa_Cipher_ModeFunctions_Rsa_decrypt  = {
   .crypt = mcuxClRsa_Util_decrypt,
@@ -60,15 +60,19 @@ void mcuxClRsa_CipherModeConstructor_RSAES_OAEP_Encrypt(
   /* Create RSA algorithm descriptor after the cipher mode.
    * It is assumed that sufficient space was allocated by users, with the macro MCUXCLRSA_CIPHER_MODE_SIZE */
   MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
   mcuxClRsa_Cipher_AlgorithmDescriptor_t *pAlgorithmDescriptor = (mcuxClRsa_Cipher_AlgorithmDescriptor_t *) ((uint8_t*)pCipherMode + sizeof(mcuxClCipher_ModeDescriptor_t));
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
   /* Fill cipher algorithm parameters for RSA with OAEP encoding */
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the cipher algorithm parameters.")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type")
   pAlgorithmDescriptor->pHashAlgo = (mcuxClHash_AlgorithmDescriptor_t *)hashAlgorithm;
-  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
   pAlgorithmDescriptor->pCryptMode = mcuxClRsa_oaepEncode;
   pAlgorithmDescriptor->crypt_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_oaepEncode);
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
 
   /* Fill cipher mode parameters for RSA */
   pCipherMode->pModeFunctions = (const void *) &mcuxClRsa_Cipher_ModeFunctions_Rsa_encrypt;
@@ -84,12 +88,16 @@ void mcuxClRsa_CipherModeConstructor_RSAES_OAEP_Decrypt(
   /* Create RSA algorithm descriptor after the cipher mode.
    * It is assumed that sufficient space was allocated by users, with the macro MCUXCLRSA_CIPHER_MODE_SIZE */
   MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
   mcuxClRsa_Cipher_AlgorithmDescriptor_t *pAlgorithmDescriptor = (mcuxClRsa_Cipher_AlgorithmDescriptor_t *) ((uint8_t*)pCipherMode + sizeof(mcuxClCipher_ModeDescriptor_t));
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
   /* Fill cipher algorithm parameters for RSA with OAEP decoding */
   MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the cipher algorithm parameters.")
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type")
   pAlgorithmDescriptor->pHashAlgo = (mcuxClHash_AlgorithmDescriptor_t *)hashAlgorithm;
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()
   pAlgorithmDescriptor->pCryptMode = mcuxClRsa_oaepDecode;
   pAlgorithmDescriptor->crypt_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_oaepDecode);
@@ -109,11 +117,15 @@ void mcuxClRsa_CipherModeConstructor_RSAES_PKCS1_v1_5_Encrypt(
   /* Create RSA algorithm descriptor after the cipher mode.
    * It is assumed that sufficient space was allocated by users, with the macro MCUXCLRSA_CIPHER_MODE_SIZE */
   MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
   mcuxClRsa_Cipher_AlgorithmDescriptor_t *pAlgorithmDescriptor = (mcuxClRsa_Cipher_AlgorithmDescriptor_t *) ((uint8_t*)pCipherMode + sizeof(mcuxClCipher_ModeDescriptor_t));
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
   /* Fill cipher algorithm parameters for RSA with PKCS#1 v1.5 encoding */
-  pAlgorithmDescriptor->pHashAlgo = NULL; /* No hash algorithm is used for RSAES-PKCS1-v1_5 */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type.")
+  pAlgorithmDescriptor->pHashAlgo = (mcuxClHash_AlgorithmDescriptor_t *)NULL; /* No hash algorithm is used for RSAES-PKCS1-v1_5 */
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   pAlgorithmDescriptor->pCryptMode = mcuxClRsa_pkcs1v15Encode_encrypt;
   pAlgorithmDescriptor->crypt_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Encode_encrypt);
 
@@ -130,11 +142,15 @@ void mcuxClRsa_CipherModeConstructor_RSAES_PKCS1_v1_5_Decrypt(
   /* Create RSA algorithm descriptor after the cipher mode.
    * It is assumed that sufficient space was allocated by users, with the macro MCUXCLRSA_CIPHER_MODE_SIZE */
   MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("Casting to internal type")
   mcuxClRsa_Cipher_AlgorithmDescriptor_t *pAlgorithmDescriptor = (mcuxClRsa_Cipher_AlgorithmDescriptor_t *) ((uint8_t*)pCipherMode + sizeof(mcuxClCipher_ModeDescriptor_t));
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY()
 
   /* Fill cipher algorithm parameters for RSA with PKCS#1 v1.5 encoding */
-  pAlgorithmDescriptor->pHashAlgo = NULL; /* No hash algorithm is used for RSAES-PKCS1-v1_5 */
+  MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_CASTING("False positve, correct type.")
+  pAlgorithmDescriptor->pHashAlgo = (mcuxClHash_AlgorithmDescriptor_t *)NULL; /* No hash algorithm is used for RSAES-PKCS1-v1_5 */
+  MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_CASTING()
   pAlgorithmDescriptor->pCryptMode = mcuxClRsa_pkcs1v15Decode_decrypt;
   pAlgorithmDescriptor->crypt_FunId = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_pkcs1v15Decode_decrypt);
 

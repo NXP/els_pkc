@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -64,7 +64,6 @@
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaRandomModes_ROtrng_generate             (0x563Cu)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaRandomModes_ROtrng_init                 (0x7BC0u)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaAeadModes_SkeletonCcm                   (0x30BEu)
-#define MCUX_CSSL_FP_FUNCID_mcuxClOsccaPkc_CalcMontInverse                     (0x6B2Cu)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaAeadModes_EngineCcm                     (0x2E47u)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaAeadModes_SM4_Crypt_Internal_Ctr        (0x457Cu)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaPkc_ComputeModInv                       (0x2BB1u)
@@ -209,8 +208,9 @@
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaRandomModes_ROtrng_generate_words       (0x255Eu)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaRandomModes_ROtrng_generate_tail        (0x583Eu)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOsccaRandomModes_ROtrng_generate_head        (0x235Du)
-#define MCUX_CSSL_FP_FUNCID_mcuxClOscca_54                                     (0x4793u)
-#define MCUX_CSSL_FP_FUNCID_mcuxClOscca_55                                     (0x4A79u)
+#define MCUX_CSSL_FP_FUNCID_mcuxClOsccaSm2_Cipher_Decryption_process           (0x4793u)
+#define MCUX_CSSL_FP_FUNCID_mcuxClOsccaSm2_Cipher_Encryption_process           (0x4A79u)
+#define MCUX_CSSL_FP_FUNCID_mcuxClOscca_55                                     (0x6B2Cu)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOscca_56                                     (0x7E06u)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOscca_57                                     (0x4E74u)
 #define MCUX_CSSL_FP_FUNCID_mcuxClOscca_58                                     (0x2CA7u)

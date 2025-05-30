@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -58,7 +58,9 @@ static mcuxClRandom_Status_t RNG_Patch_function(
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+        MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("The indexRandomData can't exceed UINT32_MAX because is modulo sizeof(randomData)")
         indexRandomData = (indexRandomData + 1u) % sizeof(randomData);
+        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     }
 
     return MCUXCLRANDOM_STATUS_OK;
@@ -84,10 +86,15 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example)
     /**************************************************************************/
     /* RANDOM Patch Mode creation, use custom function RNG_Patch_function     */
     /**************************************************************************/
+
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(cp_status, cp_token, mcuxClRandomModes_createPatchMode(
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("mcuxClRandomModes_Mode_Custom has compatible type and cast was valid")
                                         mcuxClRandomModes_Mode_Custom,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                         (mcuxClRandomModes_CustomGenerateAlgorithm_t)RNG_Patch_function,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
                                         NULL,
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
                                         256U
                                    ));
 
@@ -100,10 +107,12 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRandomModes_PatchMode_CtrDrbg_AES256_DRG3_example)
     /**************************************************************************/
     /* patch mode initialization                                              */
     /**************************************************************************/
-    uint32_t* rngContextPatched = NULL;
+    mcuxClRandom_Context_t rngContextPatched = NULL;
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(ri_status, init_token, mcuxClRandom_init(
                                         session,
-                                        (mcuxClRandom_Context_t)rngContextPatched,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments are not dereferenced in custom mode")
+                                        rngContextPatched,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
                                         mcuxClRandomModes_Mode_Custom
                                    ));
 

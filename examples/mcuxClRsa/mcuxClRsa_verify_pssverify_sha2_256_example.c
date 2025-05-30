@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -27,6 +27,7 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h> // Code flow protection
 #include <mcuxClRandom.h>           // Interface to the entire mcuxClRandom component
+#include <mcuxClRandomModes.h>
 #include <mcuxClBuffer.h>
 #include <mcuxClRsa.h>              // Interface to the entire mcuxClRsa component
 #include <mcuxClToolchain.h>             // Memory segment definitions
@@ -125,7 +126,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
     mcuxClSession_Handle_t session = &sessionDesc;
 
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session,
-                                                 MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE,
+                                                 MCUXCLEXAMPLE_MAX_WA(MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE, MCUXCLRANDOMMODES_NCINIT_WACPU_SIZE),
                                                  MCUXCLRSA_VERIFY_2048_WAPKC_SIZE);
 
 
@@ -139,27 +140,31 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClRsa_verify_pssverify_sha2_256_example)
 
     /* Create key struct of type MCUXCLRSA_KEY_PUBLIC */
     const mcuxClRsa_KeyEntry_t Mod1 = {
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                        .pKeyEntryData = (uint8_t *)modulus,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
                        .keyEntryLength = RSA_KEY_BYTE_LENGTH };
 
     const mcuxClRsa_KeyEntry_t Exp1 = {
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                        .pKeyEntryData = (uint8_t *)exponent,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
                        .keyEntryLength = RSA_PUBLIC_EXP_BYTE_LENGTH };
 
     const mcuxClRsa_Key public_key = {
                        .keytype = MCUXCLRSA_KEY_PUBLIC,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer Mod1 is of the right type (mcuxClRsa_KeyEntry_t)")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                        .pMod1 = (mcuxClRsa_KeyEntry_t *)&Mod1,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                        .pMod2 = NULL,
                        .pQInv = NULL,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                        .pExp1 = (mcuxClRsa_KeyEntry_t *)&Exp1,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
                        .pExp2 = NULL,
                        .pExp3 = NULL };
 
@@ -168,21 +173,31 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     /**************************************************************************/
 
     MCUXCLBUFFER_INIT_RO(messageBuf, session, message, RSA_MESSAGE_DIGEST_LENGTH);
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
     MCUXCLBUFFER_INIT(signatureBuf, session, signature, RSA_KEY_BYTE_LENGTH);
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(verify_result, verify_token, mcuxClRsa_verify(
                 /* mcuxClSession_Handle_t           pSession: */           session,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer public_key points to an object of the right type, the cast was valid.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments (public_key.pMod2) and pOutput are not dereferenced with option MCUXCLRSA_OPTION_MESSAGE_DIGEST")
                 /* const mcuxClRsa_Key * const      pKey: */               &public_key,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                 /* mcuxCl_InputBuffer_t             pMessageOrDigest: */   messageBuf,
                 /* const uint32_t                  messageLength: */      0u,
                 /* mcuxCl_Buffer_t                  pSignature: */         signatureBuf,
-MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer mcuxClRsa_Mode_Verify_Pss_Sha2_256 points to an object of the right type, the cast was valid.")
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST("Required by API function")
                 /* const mcuxClRsa_SignVerifyMode   pVerifyMode: */        (mcuxClRsa_SignVerifyMode_t *)&mcuxClRsa_Mode_Verify_Pss_Sha2_256,
-MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST()
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                 /* const uint32_t                  saltLength: */         RSA_PSS_SALT_LENGTH,
                 /* uint32_t                        options: */            MCUXCLRSA_OPTION_MESSAGE_DIGEST,
+    MCUX_CSSL_ANALYSIS_START_PATTERN_NULL_POINTER_CONSTANT()
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_DEREFERENCE_NULL_POINTER("NULL arguments are not dereferenced in Rsa_verify")
                 /* mcuxCl_Buffer_t                  pOutput: */            NULL));
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRsa_verify) != verify_token) || (MCUXCLRSA_STATUS_VERIFY_OK != verify_result))
     {

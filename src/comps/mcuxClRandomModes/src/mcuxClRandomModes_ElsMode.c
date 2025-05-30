@@ -1,14 +1,14 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Confidential. This software is owned or controlled by NXP and may    */
+/* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
 /* By expressly accepting such terms or by downloading, installing,         */
 /* activating and/or otherwise using the software, you are agreeing that    */
 /* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms. If you do not agree to be bound by the applicable license */
-/* terms, then you may not retain, install, activate or otherwise use the   */
-/* software.                                                                */
+/* license terms.  If you do not agree to be bound by the applicable        */
+/* license terms, then you may not retain, install, activate or otherwise   */
+/* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRandomModes_ElsMode.c
@@ -22,8 +22,10 @@
 #include <mcuxClRandom.h>
 #include <mcuxClRandomModes.h>
 #include <internal/mcuxClRandom_Internal_Types.h>
+#include <internal/mcuxClRandom_Internal_Memory.h>
 #include <internal/mcuxClRandomModes_Private_Drbg.h>
 #include <internal/mcuxClEls_Internal.h>
+
 
 
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClRandomModes_ElsMode_init)
@@ -90,13 +92,71 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_selftest, MCUXCLRANDOM_STATUS_OK);
 }
 
+/*
+ * @brief Function returns requested number of random bytes full words.
+          Number of bytes must be aligned to full words.
+ * 
+ * @param[out]      pOut                        pointer to output buffer
+ * @param[in]       requestSizeFullWordsBytes   number of butes aligned to full words
+ * @return status
+ */
+
+MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_generate_fullWords)
+static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_generate_fullWords(
+    uint8_t *pOut,
+    uint32_t requestSizeFullWordsBytes
+)
+{
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_generate_fullWords);
+
+    /* Request as many random bytes as possible with full word size. */
+    if (requestSizeFullWordsBytes > 0u)
+    {
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_GetRandom1, mcuxClEls_Rng_DrbgRequest_Async(pOut, requestSizeFullWordsBytes));
+        if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_DRBG_GetRandom1)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate_fullWords, MCUXCLRANDOM_STATUS_ERROR,
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async));
+        }
+        else if(MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom1)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate_fullWords, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
+        }
+
+        MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_Wait1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+        if(MCUXCLELS_LEVEL1_ERROR(ret_DRBG_Wait1))
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate_fullWords, MCUXCLRANDOM_STATUS_ERROR,
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+        }
+        else if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait1)
+        {
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate_fullWords, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
+        }
+        else
+        {
+            /* Intentionally left empty */
+        }
+    }
+
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate_fullWords, MCUXCLRANDOM_STATUS_OK,
+        MCUX_CSSL_FP_CONDITIONAL(requestSizeFullWordsBytes > 0u,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)));
+}
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandomModes_ElsMode_generate)
 static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsMode_generate(
     mcuxClSession_Handle_t pSession UNUSED_PARAM,
     mcuxClRandom_Mode_t mode UNUSED_PARAM,
     mcuxClRandom_Context_t context UNUSED_PARAM,
-    uint8_t *             pOut,
-    uint32_t              outLength
+    uint8_t *pOut,
+    uint32_t outLength
 )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandomModes_ElsMode_generate);
@@ -117,41 +177,17 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
 
     uint32_t requestSizeMin = MCUXCLELS_RNG_DRBG_TEST_EXTRACT_OUTPUT_MIN_SIZE;
     uint32_t requestSizeRemainingBytes = outLength % requestSizeMin;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_WRAP("does not wrap since requestSizeRemainingBytes is not larger than outLength due to modulo operation")
     uint32_t requestSizeFullWordsBytes = outLength - requestSizeRemainingBytes;
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
 
     /* Request as many random bytes as possible with full word size. */
-    if (requestSizeFullWordsBytes > 0u)
+    MCUX_CSSL_FP_FUNCTION_CALL(ret_generateFullWords, mcuxClRandomModes_ElsMode_generate_fullWords(
+        pOut, requestSizeFullWordsBytes));
+    if(MCUXCLRANDOM_STATUS_OK != ret_generateFullWords)
     {
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_GetRandom1, mcuxClEls_Rng_DrbgRequest_Async(pOut, requestSizeFullWordsBytes));
-        if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_DRBG_GetRandom1)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async));
-        }
-        else if(MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom1)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
-        }
-        else
-        {
-            /* Intentionally left empty */
-        }
-
-        MCUX_CSSL_FP_FUNCTION_CALL(ret_DRBG_Wait1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-        if(MCUXCLELS_LEVEL1_ERROR(ret_DRBG_Wait1))
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
-        }
-        else if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait1)
-        {
-            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
-        }
-        else
-        {
-            /* Intentionally left empty */
-        }
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, ret_generateFullWords,
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_ElsMode_generate_fullWords));
     }
 
     /* If requested size is not a multiple of 4, request one (additional) word and use it only partially. */
@@ -166,8 +202,8 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
         if (MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT == ret_DRBG_GetRandom2)
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
-                2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_ElsMode_generate_fullWords),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async));
         }
         else if (MCUXCLELS_STATUS_OK_WAIT != ret_DRBG_GetRandom2)
         {
@@ -182,8 +218,9 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
         if(MCUXCLELS_LEVEL1_ERROR(ret_DRBG_Wait2))
         {
             MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_ERROR,
-                2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
-                2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_ElsMode_generate_fullWords),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
+                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
         }
         else if (MCUXCLELS_STATUS_OK != ret_DRBG_Wait2)
         {
@@ -195,19 +232,15 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_ElsM
         }
 
         /* Copy the remaining bytes from the buffer to output. */
-        for(uint32_t i = 0u; i < requestSizeRemainingBytes; i++)
-        {
-            pOut[requestSizeFullWordsBytes + i] = requestRemainingBuffer[i];
-        }
+        MCUXCLRANDOM_SECURECOPY(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_FAULT_ATTACK, &pOut[requestSizeFullWordsBytes], requestRemainingBuffer, requestSizeRemainingBytes);
     }
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandomModes_ElsMode_generate, MCUXCLRANDOM_STATUS_OK,
-            MCUX_CSSL_FP_CONDITIONAL((requestSizeFullWordsBytes > 0u),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)),
-            MCUX_CSSL_FP_CONDITIONAL((requestSizeRemainingBytes > 0u),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
-                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation)));
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandomModes_ElsMode_generate_fullWords),
+        MCUX_CSSL_FP_CONDITIONAL((requestSizeRemainingBytes > 0u),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Rng_DrbgRequest_Async),
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation),
+            MCUXCLRANDOM_FP_CALLED_SECURECOPY));
 }
 
 
