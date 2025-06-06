@@ -94,10 +94,6 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_Aes_Internal.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_AesEngine.c 
 
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/inc/mcuxClEcc_DeterministicECDSA_Internal_BlindedSecretKeyGen_FUP.h
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_GenerateProtocolDescriptor.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.c
