@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023-2024 NXP                                                  */
+/* Copyright 2023-2025 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -66,14 +66,22 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             }
             MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+            mcuxClRandom_Context_t pRng_ctx;
+            mcuxClRandom_Mode_t    randomMode;
+
+#if defined(MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256)
             uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
             MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-            mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
+            pRng_ctx = (mcuxClRandom_Context_t)context;
             MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-
+            randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
+#else
+            pRng_ctx = NULL;
+            randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+#endif
             /* Initialize the RNG context */
             MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Pointer pRng_ctx points to an object of the right type, the cast was valid.")
-            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rngInit_result, rngInit_token, mcuxClRandom_init(&session, pRng_ctx, mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3));
+            MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rngInit_result, rngInit_token, mcuxClRandom_init(&session, pRng_ctx, randomMode));
             MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
             if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != rngInit_token) || (MCUXCLRANDOM_STATUS_OK != rngInit_result))
@@ -280,13 +288,14 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         }
         MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+        mcuxClRandom_Context_t pRng_ctx;
+        mcuxClRandom_Mode_t    randomMode;
+#if defined(MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256)
         /* Initialize the RNG context, with maximum size */
         uint32_t context[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
         MCUX_CSSL_ANALYSIS_START_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-        mcuxClRandom_Context_t pRng_ctx = (mcuxClRandom_Context_t)context;
+        pRng_ctx = (mcuxClRandom_Context_t)context;
         MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
-
-        mcuxClRandom_Mode_t randomMode = NULL;
         if(byteLenN <= 32u)  /* 128-bit security strength */
         {
           randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
@@ -295,6 +304,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         {
           randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
         }
+#else
+        pRng_ctx = NULL;
+        randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+#endif
 
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("Pointer pRng_ctx points to an object of the right type, the cast was valid.")
         MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(rngInit_result, rngInit_token, mcuxClRandom_init(&session, pRng_ctx, randomMode));

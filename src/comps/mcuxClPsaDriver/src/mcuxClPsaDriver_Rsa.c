@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023-2024 NXP                                                  */
+/* Copyright 2023-2025 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -398,9 +398,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
+    mcuxClRandom_Context_t pRng_ctx;
+    mcuxClRandom_Mode_t    randomMode;
+#if defined(MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256)
     /* Initialize the RNG context, with maximum size */
     uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
-    mcuxClRandom_Mode_t randomMode = NULL;
+    pRng_ctx = mcuxClRandom_castToContext(rng_ctx);
     if(bitLength == MCUXCLKEY_SIZE_4096)  /* 256-bit security strength */
     {
       randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
@@ -409,9 +412,13 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     {
       randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
     }
+#else
+    pRng_ctx = NULL;
+    randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+#endif
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token, mcuxClRandom_init(&session,
-                                                           mcuxClRandom_castToContext(rng_ctx),
+                                                           pRng_ctx,
                                                            randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
     {
@@ -430,10 +437,10 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* Public exponent */
     mcuxClRsa_KeyEntry_t pubEKey = {0};
 /* Comemnted as domain paramters have been changed and currently driver wrappers don't have the capability to get these parameters */
-#if 0    
+#if 0
     if(NULL == attributes->domain_parameters)
     {
-#endif      
+#endif
         MCUX_CSSL_ANALYSIS_START_SUPPRESS_DISCARD_CONST_QUALIFIER("Const must be discarded to initialize the generic structure member.")
         pubEKey.pKeyEntryData = (uint8_t *)defaultExponent;
         MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DISCARD_CONST_QUALIFIER()

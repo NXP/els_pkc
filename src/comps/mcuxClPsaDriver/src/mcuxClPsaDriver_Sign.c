@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023-2024 NXP                                                  */
+/* Copyright 2023-2025 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -670,10 +670,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
           return PSA_ERROR_BUFFER_TOO_SMALL;
       }
 
+      mcuxClRandom_Context_t pRng_ctx;
+      mcuxClRandom_Mode_t    randomMode;
+#if defined(MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256)
       /* Initialize the RNG context, with maximum size */
       uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
-
-      mcuxClRandom_Mode_t randomMode = NULL;
+      pRng_ctx = mcuxClRandom_castToContext(rng_ctx);
       if(nLen <= 32u)  /* 128-bit security strength */
       {
         randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
@@ -682,10 +684,14 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
       {
         randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
       }
+#else
+      pRng_ctx = NULL;
+      randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+#endif
 
       MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(randomInit_result, randomInit_token,
                                       mcuxClRandom_init(&session,
-                                                       mcuxClRandom_castToContext(rng_ctx),
+                                                       pRng_ctx,
                                                        randomMode));
       if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != randomInit_token) || (MCUXCLRANDOM_STATUS_OK != randomInit_result))
       {

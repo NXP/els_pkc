@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023-2024 NXP                                                  */
+/* Copyright 2023-2025 NXP                                                  */
 /*                                                                          */
 /* NXP Proprietary. This software is owned or controlled by NXP and may     */
 /* only be used strictly in accordance with the applicable license terms.   */
@@ -266,10 +266,12 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
     /* Random init                                                            */
     /**************************************************************************/
 
+    mcuxClRandom_Context_t pRng_ctx;
+    mcuxClRandom_Mode_t    randomMode;
+#if defined(MCUXCL_FEATURE_RANDOMMODES_SECSTRENGTH_256)
     /* Initialize the RNG context, with maximum size */
     uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0u};
-
-    mcuxClRandom_Mode_t randomMode = NULL;
+    pRng_ctx = mcuxClRandom_castToContext(rng_ctx);
     if(output_size <= 16u)  /* 128-bit security strength */
     {
       randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
@@ -278,10 +280,14 @@ static psa_status_t mcuxClPsaDriver_psa_driver_wrapper_generate_random( uint8_t 
     {
       randomMode = mcuxClRandomModes_Mode_CtrDrbg_AES256_DRG3;
     }
+#else
+    pRng_ctx = NULL;
+    randomMode = mcuxClRandomModes_Mode_ELS_Drbg;
+#endif
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(retRandomInit, tokenRandInit, mcuxClRandom_init(
                                                   &session,
-                                                  mcuxClRandom_castToContext(rng_ctx),
+                                                  pRng_ctx,
                                                   randomMode));
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_init) != tokenRandInit) || (MCUXCLRANDOM_STATUS_OK != retRandomInit))
     {
@@ -684,7 +690,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             mcuxClPsaDriver_Oracle_FreeKey(&key);
             return status;
         }
-        
+
         mcuxClKey_setLoadedKeySlot(&key, index);
     }
     else /* MCUXCLKEY_LOADSTATUS_MEMORY */
@@ -738,7 +744,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
             return status;
         }
         *key_buffer_length = mcuxClKey_getKeyContainerUsedSize(&key);
-        
+
         /* Unload the Key from slot after usage.
          * We have limited ELS Slots so unload the key at this point.
          * RFC blob of the key has been stored in key buffer which can
