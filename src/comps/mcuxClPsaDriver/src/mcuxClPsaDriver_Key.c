@@ -935,6 +935,15 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     size_t shared_secret_size,
     size_t *shared_secret_length)
 {
+    uint16_t offsetN       = 0u;
+    uint8_t *pN            = NULL;
+    uint8_t *pT            = NULL;
+    uint8_t *pS            = NULL;
+    uint8_t *exp_buffer    = NULL;
+    uint32_t *tmp_buffer   = NULL;
+    uint32_t *pPkcWaBuffer = NULL;
+    uint8_t *pPkcWaBuffer8 = NULL;
+
     uint32_t pCpuWa[MCUXCLCORE_MAX(MCUXCLCORE_MAX(MCUXCLCORE_MAX(MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE448_WACPU_SIZE,
                                 MCUXCLECC_MONTDH_KEYAGREEMENT_CURVE25519_WACPU_SIZE),
                             MCUXCLECC_POINTMULT_WACPU_SIZE),
@@ -1462,8 +1471,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         ASSERT_CALLED_VOID_OR_EXIT(mcuxClPkc_Initialize(&pkc_state), mcuxClPkc_Initialize);
         pkc_initialized = true;
 
-        uint32_t *pPkcWaBuffer = (uint32_t *)(MCUXCLPKC_RAM_START_ADDRESS);
-        uint8_t *pPkcWaBuffer8 = (uint8_t *)pPkcWaBuffer;
+        pPkcWaBuffer  = (uint32_t *)(MCUXCLPKC_RAM_START_ADDRESS);
+        pPkcWaBuffer8 = (uint8_t *)pPkcWaBuffer;
 
         mcuxClSession_Descriptor_t session;
         ASSERT_CALLED_OR_EXIT(mcuxClSession_init(&session, pCpuWa, MCUXCLPSADRIVER_DHM_WACPU_SIZE, pPkcWaBuffer, pkcWaLength), mcuxClSession_init,
@@ -1501,12 +1510,12 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         MCUXCLPKC_PS1_SETLENGTH(pkc_operand_size, pkc_operand_size);
 
         /* Import N. */
-        uint16_t offsetN                    = pOperands[MCUXCLPSADRIVER_DHM_OP_N] + MCUXCLPKC_WORDSIZE;
+        offsetN                             = pOperands[MCUXCLPSADRIVER_DHM_OP_N] + MCUXCLPKC_WORDSIZE;
         pOperands[MCUXCLPSADRIVER_DHM_OP_N] = offsetN;
 
-        uint8_t *pN = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_N]);
-        uint8_t *pT = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_T]);
-        uint8_t *pS = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_S]);
+        pN = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_N]);
+        pT = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_T]);
+        pS = (uint8_t *)MCUXCLPKC_OFFSET2PTR(pOperands[MCUXCLPSADRIVER_DHM_OP_S]);
 
         MCUXCLPKC_WAITFORFINISH();
         reverse_and_copy(pN, bufferSizeN, modulus, bytelen_n, bytelen_n);
@@ -1535,8 +1544,8 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
                                                          MCUXCLPSADRIVER_DHM_OP_S, MCUXCLPSADRIVER_DHM_OP_N),
                                    mcuxClPkc_Calc);
 
-        const uint8_t *exp_buffer = key_buffer + key_buffer_size - bytelen_e;
-        uint32_t *tmp_buffer      = mcuxClSession_allocateWords_cpuWa(&session, (bytelen_e / sizeof(uint32_t)) + 1u);
+        exp_buffer = (uint8_t *)key_buffer + key_buffer_size - bytelen_e;
+        tmp_buffer = mcuxClSession_allocateWords_cpuWa(&session, (bytelen_e / sizeof(uint32_t)) + 1u);
         if (tmp_buffer == NULL)
         {
             ret = PSA_ERROR_CORRUPTION_DETECTED;
@@ -1545,7 +1554,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 
         MCUXCLPKC_WAITFORREADY();
         ASSERT_CALLED_OR_EXIT(
-            MCUXCLMATH_SECMODEXP(&session, exp_buffer, tmp_buffer, bytelen_e, MCUXCLPSADRIVER_DHM_OP_R,
+            MCUXCLMATH_SECMODEXP(&session, (const uint8_t *)exp_buffer, tmp_buffer, bytelen_e, MCUXCLPSADRIVER_DHM_OP_R,
                                  MCUXCLPSADRIVER_DHM_OP_X, MCUXCLPSADRIVER_DHM_OP_N, MCUXCLPSADRIVER_DHM_OP_TE,
                                  MCUXCLPSADRIVER_DHM_OP_T0, MCUXCLPSADRIVER_DHM_OP_T1, MCUXCLPSADRIVER_DHM_OP_T2,
                                  MCUXCLPSADRIVER_DHM_OP_T3),
