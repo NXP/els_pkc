@@ -685,16 +685,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
         return( PSA_ERROR_BUFFER_TOO_SMALL );
     }
 
-    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
-
-    if (input_length + pClnsCipherData->ctx.common.blockBufferUsed > output_size)
-    {
-        /* If we have intermediate data inside context from previous calls to update function,
-        we will need bigger output buffer, as internal context data is processed and output once it forms a whole AES block.
-        If this is not checked it could lead to buffer overflow.*/
-       return PSA_ERROR_BUFFER_TOO_SMALL ;
-    }
-
     /* Key buffer for the CPU workarea in memory. */
     uint32_t cpuWorkarea[MCUXCLCIPHER_MAX_AES_CPU_WA_BUFFER_SIZE_IN_WORDS];
 
@@ -712,6 +702,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     /* not used */
     (void)output_size;
 
+    mcuxClPsaDriver_ClnsData_Cipher_t * pClnsCipherData = mcuxClPsaDriver_getClnsData_cipherType(operation);
     mcuxClKey_Descriptor_t *keyDesc = &pClnsCipherData->keydesc;
     if(PSA_SUCCESS !=  mcuxClPsaDriver_psa_driver_wrapper_UpdateKeyStatusResume(keyDesc))
     {
