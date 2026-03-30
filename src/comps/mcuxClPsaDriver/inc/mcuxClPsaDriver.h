@@ -19,9 +19,9 @@
 #define MCUXCLPSADRIVER_H_
 
 
-#include <common.h>
+//#include <common.h>
 #include <psa/crypto.h>
-#include <psa_crypto_driver_wrappers.h>
+//#include <psa_crypto_driver_wrappers.h>
 #include <mcuxClConfig.h> // Exported features flags header
 
 /* Include TF-M builtin key driver added from TFM v1.8 updates */

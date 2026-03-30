@@ -11,7 +11,8 @@
 /* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
-#include "common.h"
+//#include "common.h"
+#include <string.h>
 
 #include <mcuxClAes_KeyTypes.h>
 #include <mcuxClHmac_KeyTypes.h>

@@ -24,6 +24,8 @@
 extern "C" {
 #endif
 
+#define BYTE_0(val) ((uint8_t) ((val) & 0xff))
+#define BYTE_1(val) ((uint8_t) (((val)>> 8) & 0xff))
 
 /**
  * @defgroup mcuxClPsaDriver_ExternalMacroWrappers mcuxClPsaDriver_ExternalMacroWrappers
@@ -83,14 +85,14 @@ extern "C" {
 #define MCUXCLPSADRIVER_MBEDTLS_BYTE_0(x_) \
     (MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONVERSIONS_WITH_INAPPROPRIATE_TYPE("External code. Operation is safe on target platform.") \
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_OPERATIONS_ON_INAPPROPRIATE_TYPE("External code. Operation is safe on target platform.") \
-        MBEDTLS_BYTE_0(x_) \
+        BYTE_0(x_) \
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_OPERATIONS_ON_INAPPROPRIATE_TYPE() \
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONVERSIONS_WITH_INAPPROPRIATE_TYPE())
 
 #define MCUXCLPSADRIVER_MBEDTLS_BYTE_1(x_) \
     (MCUX_CSSL_ANALYSIS_START_SUPPRESS_CONVERSIONS_WITH_INAPPROPRIATE_TYPE("External code. Operation is safe on target platform.") \
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_OPERATIONS_ON_INAPPROPRIATE_TYPE("External code. Operation is safe on target platform.") \
-        MBEDTLS_BYTE_1(x_) \
+        BYTE_1(x_) \
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONVERSIONS_WITH_INAPPROPRIATE_TYPE() \
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_OPERATIONS_ON_INAPPROPRIATE_TYPE())
 

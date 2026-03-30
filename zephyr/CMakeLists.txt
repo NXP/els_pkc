@@ -8,8 +8,6 @@ string(TOUPPER ${CONFIG_SOC} MCUX_DEVICE)
 
 set(ELS_PKC_PATH ${CMAKE_CURRENT_LIST_DIR}/../)
 
-message ("els_pkc module is included.")
-
 if(CONFIG_MCUX_ELS_PKC)
   set(CONFIG_EXPORT_MCUX_ELS_PKC_TARGETS ON)
 endif()
