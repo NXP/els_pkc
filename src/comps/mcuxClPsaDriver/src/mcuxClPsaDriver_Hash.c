@@ -11,7 +11,6 @@
 /* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
-#include "common.h"
 
 #include <mcuxClHash.h>
 #include <mcuxClHashModes.h>

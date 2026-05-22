@@ -11,7 +11,6 @@
 /* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
-#include "common.h"
 
 #include <mcuxClMemory.h>
 #include <mcuxClPsaDriver.h>

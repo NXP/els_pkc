@@ -11,7 +11,6 @@
 /* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
-#include "common.h"
 
 #include <mcuxClEls.h>
 #include <mcuxClBuffer.h>

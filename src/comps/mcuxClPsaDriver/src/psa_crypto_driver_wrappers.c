@@ -31,7 +31,12 @@
 /* use the software.                                                        */
 /*--------------------------------------------------------------------------*/
 
+#include <mbedtls/build_info.h>
+#if defined(MBEDTLS_VERSION_NUMBER) && (MBEDTLS_VERSION_NUMBER >= 0x04000000)
+#include "tf_psa_crypto_common.h"
+#else
 #include "common.h"
+#endif
 #include "psa_crypto_aead.h"
 #include "psa_crypto_cipher.h"
 #include "psa_crypto_core.h"

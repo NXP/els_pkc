@@ -19,7 +19,12 @@
 #define MCUXCLPSADRIVER_H_
 
 
+#include <mbedtls/build_info.h>
+#if defined(MBEDTLS_VERSION_NUMBER) && (MBEDTLS_VERSION_NUMBER >= 0x04000000)
+#include "tf_psa_crypto_common.h"
+#else
 #include <common.h>
+#endif
 #include <psa/crypto.h>
 #include <psa_crypto_driver_wrappers.h>
 #include <mcuxClConfig.h> // Exported features flags header
