@@ -1,0 +1,22 @@
+var a01922 =
+[
+    [ "DAC Register Masks", "a01923.html", "a01923" ],
+    [ "DAC_Type", "a03993.html", [
+      [ "CTRL", "a03993.html#a0110c481948e56f7cee965509b4174e1", null ],
+      [ "STATUS", "a03993.html#aff90ea924ea9bca11f8c5a13747f2798", null ],
+      [ "ACTRL", "a03993.html#a48e4db6459ebf603b10d5cc9e42c487d", null ],
+      [ "BCTRL", "a03993.html#ac91cac2dda173e52ad327d19bead7dc5", null ],
+      [ "ADATA", "a03993.html#a26f9f544cc48ce288fffbbb1dfb0ab41", null ],
+      [ "BDATA", "a03993.html#a5d8a74d27d5d2f62d6d804d651365ad7", null ],
+      [ "ISR", "a03993.html#a072357cf053b68d6f22723620da0759f", null ],
+      [ "IMR", "a03993.html#a4c9d5f000bb0970819b6ca8017e06df4", null ],
+      [ "IRSR", "a03993.html#ab792210135e2de7f40e905753345ffb2", null ],
+      [ "ICR", "a03993.html#ad0cc0fa0c0afe31aa1651eafbf8e99a4", null ],
+      [ "CLK", "a03993.html#affd1af27f4e15a9bf1acf1430f376927", null ],
+      [ "RST", "a03993.html#acbf274b960fca4c0342b015937cca5fb", null ]
+    ] ],
+    [ "GAU_DAC0_BASE", "a01922.html#ga7c1e356677dca5de58fa0ef7ee236b7a", null ],
+    [ "GAU_DAC0", "a01922.html#ga7095a7fddeefb93f2067b7272cf3c5af", null ],
+    [ "DAC_BASE_ADDRS", "a01922.html#ga2e056d497cd21aa7a51e188e005e9b37", null ],
+    [ "DAC_BASE_PTRS", "a01922.html#gab47690040e4d63adc4f324358c27157a", null ]
+];

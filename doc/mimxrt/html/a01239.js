@@ -1,8 +1,16 @@
 var a01239 =
 [
-    [ "MCUX_CSSL_SC_ADD_IMPL", "a01239.html#gaa4a21360f6c3d08fc777879e4f4551ed", null ],
-    [ "MCUX_CSSL_SC_ADD_ON_CALL_IMPL", "a01239.html#ga9c0484fdff900c04462d668a0870bf33", null ],
-    [ "MCUX_CSSL_SC_ADD_0X1_IMPL", "a01239.html#ga45a909bcf29531036b1aad68ac8b0afb", null ],
-    [ "MCUX_CSSL_SC_ADD_0X10_IMPL", "a01239.html#gaac716380d3c29a995745053bb6915044", null ],
-    [ "MCUX_CSSL_SC_ADD_0X100_IMPL", "a01239.html#gafb5fa6d42145120126b00ab3707711be", null ]
+    [ "mcuxClEls_CipherOption_t", "a01814.html", [
+      [ "value", "a01814.html#a1c724d7ce478fcbb4cdd0ccb5c1fd899", null ],
+      [ "word", "a01814.html#a902ddb52122687d15eda3d90982ede23", null ],
+      [ "__pad0__", "a01814.html#abb6ec00ab841f6edcc37f6f51fb35975", null ],
+      [ "dcrpt", "a01814.html#ada47dbd9ac0d8ed1b171e4742ed5d73a", null ],
+      [ "cphmde", "a01814.html#a2e1e4a5d815c2559f0ef02e4fd0e5523", null ],
+      [ "cphsoe", "a01814.html#aa37b413e9a8ffa66655bc529aadaadbc", null ],
+      [ "cphsie", "a01814.html#af8735651384f21746fcea24b5c935a1d", null ],
+      [ "__pad1__", "a01814.html#a8b8096d5f06a8f303976697a0fa369aa", null ],
+      [ "extkey", "a01814.html#a833ce63bdab590215c35b82767479eee", null ],
+      [ "__pad2__", "a01814.html#a568f1ef7bba7f45209bf0cf43bb66b45", null ],
+      [ "bits", "a01814.html#aca0fad4a24ce607a473c4672ac31cd91", null ]
+    ] ]
 ];

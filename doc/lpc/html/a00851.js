@@ -1,4 +1,6 @@
 var a00851 =
 [
-    [ "mcuxCsslMemory_Set", "a00851.html#ga0a0ed6d55e0cb4d633ba19a32aca64c6", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_CLEAR", "a01484.html#ga2dc0fdbb602c3777fffb8515f944d736", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_CLEAR_WITH_BUFF", "a01484.html#ga76dcce466859684502b4725d51d5de4f", null ],
+    [ "mcuxClMemory_clear", "a01484.html#ga1ac6e8a4335f620d41360c090ee5ce73", null ]
 ];

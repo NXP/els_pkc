@@ -1,12 +1,7 @@
 var a00956 =
 [
-    [ "mcuxClRsa_Mode_Sign_NoEncode", "a00956.html#ga4459d773156bf4ac906a1416dd4ed4f4", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_224", "a00956.html#gac7cfd526cb16ba49a48ea0881c12e778", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_256", "a00956.html#ga1845c307f6b2897cf563c1ad97523840", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_384", "a00956.html#ga2e630f5e6e06e0b5adc2d5f63268b77f", null ],
-    [ "mcuxClRsa_Mode_Sign_PKCS1v15_Sha2_512", "a00956.html#ga61cdf384d5eb7774a35bec2dd28b67c8", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_224", "a00956.html#ga6544c3cc75077dde34304c5c45999edf", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_256", "a00956.html#gaf88819f8def0ed1dc626168103856a25", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_384", "a00956.html#ga884749f4e133157dcdc3b85d15b98ada", null ],
-    [ "mcuxClRsa_Mode_Sign_Pss_Sha2_512", "a00956.html#gab71896db47c552effcdad152a574e5a1", null ]
+    [ "mcuxClOsccaSm2_SelfTest_Status_t", "a00956.html#aa42a91b438ae1fdc23914b747a760a4c", null ],
+    [ "mcuxClOsccaSm2_EncDec_SelfTest", "a00956.html#af47930792c5f72cd37d25045a01f14a8", null ],
+    [ "mcuxClOsccaSm2_SignVerify_SelfTest", "a00956.html#abd7006ddfedf0234b7aa67e42978f08a", null ],
+    [ "mcuxClOsccaSm2_KeyExchange_SelfTest", "a00956.html#a4c566cb0f566761fdae837ec2fde556b", null ]
 ];

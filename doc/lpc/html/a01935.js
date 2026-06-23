@@ -1,0 +1,27 @@
+var a01935 =
+[
+    [ "CMP_VERID_FEATURE", "a01709.html#ga3462101ccc181b57711cfcdb970c47d4", null ],
+    [ "CMP_VERID_MINOR", "a01709.html#ga9c3ad04c0e47aec1a92d935ec0f9415d", null ],
+    [ "CMP_VERID_MAJOR", "a01709.html#gadd0c3d8fbc214b0eace8c7bb18b6e23a", null ],
+    [ "CMP_PARAM_PARAM", "a01709.html#gaeaef72c8ddf0e74da48ba3f187426a38", null ],
+    [ "CMP_C0_EN", "a01935.html#ga2fddace856cd4d17afa49b9acfa21332", null ],
+    [ "CMP_C0_OPE", "a01935.html#ga07f4dc979113c8f960d12fb55e4ea564", null ],
+    [ "CMP_C0_COS", "a01935.html#ga2a5525a39d025ec10927a4a319a1b9f7", null ],
+    [ "CMP_C0_INVT", "a01935.html#gab2d319febf093f5f145d91199e54930b", null ],
+    [ "CMP_C0_PMODE", "a01935.html#gaa0795dc916bacac3111f819e9e880338", null ],
+    [ "CMP_C0_COUT", "a01935.html#gaafba6c4154bb3ecf00bff57e4e9bf4e3", null ],
+    [ "CMP_C0_CFF", "a01935.html#ga4a1f322c6c9f09246d401fa60b1ce410", null ],
+    [ "CMP_C0_CFR", "a01935.html#ga48725eca5ee03a54b7755abca2e37970", null ],
+    [ "CMP_C0_IEF", "a01935.html#ga25e9f2a1fdd3b21b92a935c83659c273", null ],
+    [ "CMP_C0_IER", "a01935.html#ga238398cddaf78675a61125ab16082e32", null ],
+    [ "CMP_C0_DMAEN", "a01935.html#gaf36b2fa15d18323f5e03618ee37d359c", null ],
+    [ "CMP_C0_LINKEN", "a01935.html#ga2f12792e8b3da3fa941a75c9e4523e51", null ],
+    [ "CMP_C1_VOSEL", "a01935.html#ga288cf3e06063fb9f3445ae343228b2eb", null ],
+    [ "CMP_C1_DMODE", "a01935.html#ga7b30130c83dd4aebeb02297e50e51431", null ],
+    [ "CMP_C1_VRSEL", "a01935.html#ga41a67c20bb9eea6972dc861298bb2d55", null ],
+    [ "CMP_C1_DACEN", "a01935.html#ga67996ab0ab432e15bc73a14c7b68ab27", null ],
+    [ "CMP_C1_MSEL", "a01935.html#gafdb6535353ad5a7e0aadec24bb79785f", null ],
+    [ "CMP_C1_PSEL", "a01935.html#ga9412eeb4c81ca8ddf0f6d533488622cc", null ],
+    [ "CMP_C3_NCHCTEN", "a01935.html#ga936be1af83cebbc48a5da32e232e7791", null ],
+    [ "CMP_C3_PCHCTEN", "a01935.html#ga852c11e25101716ec18aa38bffbb4a46", null ]
+];

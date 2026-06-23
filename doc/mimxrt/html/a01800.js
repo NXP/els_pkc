@@ -1,0 +1,25 @@
+var a01800 =
+[
+    [ "USBDCD_CONTROL_IACK", "a01800.html#gaead33ef0c7d92aed13fd13ca8f8e97de", null ],
+    [ "USBDCD_CONTROL_IF", "a01800.html#ga192fdf885613a642f3388e89fcf5b70a", null ],
+    [ "USBDCD_CONTROL_IE", "a01800.html#ga24296ed435a398841cc316916c246d5e", null ],
+    [ "USBDCD_CONTROL_BC12", "a01800.html#ga4ebaf436d02214dfbcc5ec5980a1c354", null ],
+    [ "USBDCD_CONTROL_START", "a01800.html#gad40b028fc09a1ed757d15b659dd34dd2", null ],
+    [ "USBDCD_CONTROL_SR", "a01800.html#ga42a2015cc0a2e5bf5c77ee824e4efb91", null ],
+    [ "USBDCD_CLOCK_CLOCK_UNIT", "a01800.html#ga8a6606e128a4febd4313349565067e52", null ],
+    [ "USBDCD_CLOCK_CLOCK_SPEED", "a01800.html#gadaafc909e148543c71cfd927b757be98", null ],
+    [ "USBDCD_STATUS_SEQ_RES", "a01800.html#gaeec86c1cd7a042be608295688f38d243", null ],
+    [ "USBDCD_STATUS_SEQ_STAT", "a01800.html#gaa4db555b4aa4832902a32703f86116ea", null ],
+    [ "USBDCD_STATUS_ERR", "a01800.html#gacd700d5055cf0e652d410253140f0f1f", null ],
+    [ "USBDCD_STATUS_TO", "a01800.html#ga6f2121154cf1ce1dbbc207ca8e5d3a0e", null ],
+    [ "USBDCD_STATUS_ACTIVE", "a01800.html#ga6a4bf61c1f807b4f1e77dc8a370bdefd", null ],
+    [ "USBDCD_SIGNAL_OVERRIDE_PS", "a01800.html#ga654bca89e7534366e8b298f94cfa2f69", null ],
+    [ "USBDCD_TIMER0_TUNITCON", "a01800.html#gad525be70f6473a29d051b39335f48b0c", null ],
+    [ "USBDCD_TIMER0_TSEQ_INIT", "a01800.html#ga87e981b43bb55f4fdf60d88f85bc31ad", null ],
+    [ "USBDCD_TIMER1_TVDPSRC_ON", "a01800.html#ga1a9a39c864450fac6194594af36b0aaf", null ],
+    [ "USBDCD_TIMER1_TDCD_DBNC", "a01800.html#ga1aa87b0c873931aac928ad346f49729d", null ],
+    [ "USBDCD_TIMER2_BC11_CHECK_DM", "a01800.html#ga934bb0d81810c5aa1deebbe47fe86d4d", null ],
+    [ "USBDCD_TIMER2_BC11_TVDPSRC_CON", "a01800.html#gafe8c25b0327bf55ecb4069581007a9f7", null ],
+    [ "USBDCD_TIMER2_BC12_TVDMSRC_ON", "a01800.html#gaf91acfb039899c33d05ca22fe472cba2", null ],
+    [ "USBDCD_TIMER2_BC12_TWAIT_AFTER_PRD", "a01800.html#ga0303615438e18cd52f1e19a84966b670", null ]
+];

@@ -1,7 +1,6 @@
 var a00872 =
 [
-    [ "MCUX_CSSL_SC_SUB_IMPL", "a00872.html#gaca0635e01e8eef97f9a06a50b24d0941", null ],
-    [ "MCUX_CSSL_SC_SUB_0X1_IMPL", "a00872.html#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8", null ],
-    [ "MCUX_CSSL_SC_SUB_0X10_IMPL", "a00872.html#gafa9701e3c0f7e757573c4bfcdae22959", null ],
-    [ "MCUX_CSSL_SC_SUB_0X100_IMPL", "a00872.html#gaa4a6dba75f476d29637e005dc8272083", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_XOR", "a01493.html#ga6c232e7d3a42052c2263f5eb853958f6", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_XOR_WITH_BUFF", "a01493.html#ga0dcd26faded8eb1fe7eaab8330e4c537", null ],
+    [ "mcuxClMemory_xor", "a01493.html#ga5db07fa8946e0fd685fe6fbb2f33c343", null ]
 ];

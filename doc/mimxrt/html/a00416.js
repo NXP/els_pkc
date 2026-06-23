@@ -1,4 +1,5 @@
 var a00416 =
 [
-    [ "MCUX_CSSL_FP_FUNCID_mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor", "a00416.html#a747db24827b2950b394e64daf6cbb507", null ]
+    [ "MCUXCLBUFFER_USE_OBJECT", "a01233.html#ga85034de8f2101add06e8d4763bb2216d", null ],
+    [ "MCUXCLBUFFER_USE_POINTER", "a01233.html#ga98960703c96d974f33e9c87ff9ad8556", null ]
 ];

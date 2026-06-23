@@ -1,15 +1,16 @@
 var a00518 =
 [
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_DATOUT_RES_END_UP", "a01036.html#gac7bb00357635b6a5484fdb7ed75cecf1", null ],
-    [ "MCUXCLOSCCASAFO_DRV_DATIN0_INDEX", "a01036.html#gabd065e26412778d457f57be8bca00a5f", null ],
-    [ "MCUXCLOSCCASAFO_DRV_DATOUT_INDEX", "a01036.html#ga16b80721a95cbad3a9a50b8d8e73a69e", null ],
-    [ "MCUXCLOSCCASAFO_DRV_DATAREG_ADDRESS", "a01036.html#ga587b521ea6f98abc5e2579873df04f4c", null ],
-    [ "MCUXCLOSCCASAFO_DRV_KEY0_INDEX", "a01036.html#ga7d6d5df8be26526fb5b374d7bf5fbd1d", null ],
-    [ "MCUXCLOSCCASAFO_DRV_KEYREG_ADDRESS", "a01036.html#ga477f730d12544882742006cdb0067e33", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_INSEL_DATIN0", "a01036.html#ga80681d32bccb67f6acf0e1c21f189614", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_OUTSEL_RES", "a01036.html#gac05ff285b2b92af711fdec5923d83f7e", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_ENC", "a01036.html#ga88457f636d043697fb948d62f39a4dc1", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_START", "a01036.html#gaf49bd72100630f876d1a72231aba1224", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_INKEYSEL_KEY0", "a01036.html#ga22e60bec14042f8682bdde935a1f5685", null ],
-    [ "mcuxClOsccaSafo_Status_t", "a00891.html#ga967feac7d073a5d27afee97201c4b086", null ]
+    [ "MCUXCLBUFFER_INIT", "a01336.html#ga00af3c9893f4c59ec8ac0675c8332da3", null ],
+    [ "MCUXCLBUFFER_INIT_RO", "a01336.html#gaa0ed06160ed0bb21bbef3def4479d9ce", null ],
+    [ "MCUXCLBUFFER_INIT_RW", "a01336.html#ga1233c58dc0ba531eb3f02c82c0e1b2b5", null ],
+    [ "MCUXCLBUFFER_INIT_DMA_RO", "a01336.html#gae044e167821d2ff7c2b6116bd2dcad38", null ],
+    [ "MCUXCLBUFFER_INIT_DMA_RW", "a01336.html#gae8150b92b8c362ecaac956564dd1f660", null ],
+    [ "MCUXCLBUFFER_INIT_DMA", "a01336.html#gaa76088e1485eed84d85e46cce8479003", null ],
+    [ "MCUXCLBUFFER_INIT_CUSTOM", "a01336.html#ga2d850fe3b4a9013901aa7b53320aee42", null ],
+    [ "MCUXCLBUFFER_UPDATE", "a01337.html#gabcd0245cf9817151a98ef23a6ff7f99f", null ],
+    [ "MCUXCLBUFFER_DERIVE_RO", "a01337.html#gaacf43338c3f4891c4a07ea729b44da01", null ],
+    [ "MCUXCLBUFFER_DERIVE_RW", "a01337.html#ga2010d4ce3e1332cbae4b7b76810dc0bd", null ],
+    [ "MCUXCLBUFFER_SET", "a01337.html#gacf99f5b8dd2d32db1d7f7f9912822a2e", null ],
+    [ "MCUXCLBUFFER_GET", "a01337.html#ga22709da3823282582dd66c0c5216c3fb", null ],
+    [ "MCUXCLBUFFER_IS_NULL", "a01337.html#ga8b8906f9558dd4aa110354c5a7c0bee2", null ]
 ];

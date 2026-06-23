@@ -1,10 +1,16 @@
 var a00590 =
 [
-    [ "mcuxClRsa_sign", "a00913.html#gaea19a43d7a52c159675d93d8e7d6ec51", null ],
-    [ "mcuxClRsa_verify", "a00913.html#ga21bf92b81f28be1b6b6fc7d3bdc69098", null ],
-    [ "mcuxClRsa_KeyGeneration_Crt", "a00913.html#gaa099449b2290a333aac2dcf090a2740c", null ],
-    [ "mcuxClRsa_KeyGeneration_Plain", "a00913.html#ga08dff8d41898b3f372ceab1038205b51", null ],
-    [ "mcuxClRsa_KeyGeneration_Init", "a00913.html#gab5c522ac1a222f9ba3a35b7ea3eb09ff", null ],
-    [ "mcuxClRsa_KeyGeneration_StorePrivateCRT", "a00913.html#ga98470880f4ff6f4902fe9e7ff18c6d2f", null ],
-    [ "mcuxClRsa_KeyGeneration_StorePrivatePlain", "a00913.html#ga12c097aa84888010faa640afa6ce8382", null ]
+    [ "mcuxClEcc_KeyGen", "a01352.html#gabc728b0278908265f9923535391005dc", null ],
+    [ "mcuxClEcc_Sign", "a01352.html#ga105ec4e9dc29573334f52979381686de", null ],
+    [ "mcuxClEcc_Verify", "a01352.html#ga80f15538ec3cb2d3bfa8dc2f2da86366", null ],
+    [ "mcuxClEcc_PointMult", "a01352.html#gab199a221c61f252a0c755ab8d8a6a77c", null ],
+    [ "mcuxClEcc_MontDH_GenerateKeyPair", "a01352.html#ga5616a55dae9d18d4fe8ceea83fb5b2d5", null ],
+    [ "mcuxClEcc_MontDH_KeyAgreement", "a01352.html#ga0857858d5b98a11312d2f50b4f81219e", null ],
+    [ "mcuxClEcc_EdDSA_GenerateKeyPair", "a01352.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85", null ],
+    [ "mcuxClEcc_EdDSA_GenerateSignature", "a01352.html#gafa11fad1402090b533a673f3ab07b408", null ],
+    [ "mcuxClEcc_EdDSA_VerifySignature", "a01352.html#gaf103758e4959f9ac2d7ce0b63e00d2da", null ],
+    [ "mcuxClEcc_EdDSA_InitPrivKeyInputMode", "a01352.html#ga78eaff72d9c8202b51c61c6668b9c3aa", null ],
+    [ "mcuxClEcc_EdDSA_GenerateProtocolDescriptor", "a01352.html#ga54e3517cb9729321cdb4017b0fdc4485", null ],
+    [ "mcuxClEcc_ArithmeticOperation", "a01352.html#gaacf7bf5d590b21a45b283bf8f95a4ef5", null ],
+    [ "mcuxClEcc_WeierECC_PublicKeyValidation", "a01352.html#ga5985027a80aa4b88173e38e3cec26caa", null ]
 ];

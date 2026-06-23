@@ -1,5 +1,6 @@
 var a00857 =
 [
-    [ "mcuxCsslParamIntegrity_Protect", "a00857.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb", null ],
-    [ "mcuxCsslParamIntegrity_Validate", "a00857.html#gaface23af4c626fe4adf70518056f2f33", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_COPY", "a01487.html#ga5d16560ac24ef6ba2dae129206e70208", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_COPY_WITH_BUFF", "a01487.html#gaab249829be1231ec5f08f90093943a40", null ],
+    [ "mcuxClMemory_copy", "a01487.html#gab564183ab5f02cf11b66b6244ba2112a", null ]
 ];

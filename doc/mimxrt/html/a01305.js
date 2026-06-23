@@ -1,9 +1,7 @@
 var a01305 =
 [
-    [ "MCUXCLOSCCASM2_SM2P256_SIZE_PRIVATEKEY", "a01305.html#gadf092a2b6b0b6a4cf7b01f05e457169a", null ],
-    [ "MCUXCLOSCCASM2_SM2P256_SIZE_PUBLICKEY", "a01305.html#ga54e89828c69ab8131cad8df537b51e43", null ],
-    [ "MCUXCLOSCCASM2_SM2P256_SIZE_SHAREDSECRET", "a01305.html#gac50d7602593771181770a48f6ca81171", null ],
-    [ "MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP", "a01305.html#ga26969aa3df48c6a727c73e9e827d4e9b", null ],
-    [ "MCUXCLOSCCASM2_SM2P256_SIZE_BASEPOINTORDER", "a01305.html#ga21f270155f0d39cab75b073b65f8416b", null ],
-    [ "MCUXCLOSCCASM2_SM2P256_SIZE_MAX", "a01305.html#gaed4971ee0ad589fd405dcda68add1d62", null ]
+    [ "mcuxClEls_GlitchDetector_LoadConfig_Async", "a01305.html#ga398e0132665a3f5b1f5a703fca2ee0da", null ],
+    [ "mcuxClEls_GlitchDetector_Trim_Async", "a01305.html#ga67252ef3e66584aaa01bddd0f6d243f4", null ],
+    [ "mcuxClEls_GlitchDetector_GetEventCounter", "a01305.html#ga0097a446c7af94a841c345109a0edf5a", null ],
+    [ "mcuxClEls_GlitchDetector_ResetEventCounter", "a01305.html#ga636bd4ef80d9654ee5e951f355ec0e95", null ]
 ];

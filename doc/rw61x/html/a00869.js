@@ -1,6 +1,6 @@
 var a00869 =
 [
-    [ "MCUXCLELS_HMAC_EXTERNAL_KEY_", "a00870.html", "a00870" ],
-    [ "MCUXCLELS_HMAC_PADDED_KEY_SIZE", "a00869.html#ga039409b9bba04a61be14b175117fb932", null ],
-    [ "MCUXCLELS_HMAC_OUTPUT_SIZE", "a00869.html#ga80d89c1569e578566088cad0ea9127f4", null ]
+    [ "MCUXCLMEMORY_API", "a01492.html#ga2469abde1e59b6b478ba8c393dc3e95a", null ],
+    [ "mcuxClMemory_Status_t", "a01491.html#gad25887c99517f13c547e1d2bf027ccd1", null ],
+    [ "mcuxClMemory_Status_Protected_t", "a01491.html#ga57c9ba76c62b4ad9bd565df4a98c19ba", null ]
 ];

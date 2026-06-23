@@ -1,4 +1,9 @@
 var a00683 =
 [
-    [ "MCUXCLAEAD_WA_SIZE_MAX", "a00982.html#gab4cc3939b235a6d122ce012c23d3e61a", null ]
+    [ "MCUXCLELS_GLITCHDETECTOR_CFG_SIZE", "a01406.html#ga2e602fc14163aee68664a89d14bf8bd0", null ],
+    [ "MCUXCLELS_GLITCHDETECTOR_TRIM_SIZE", "a01406.html#ga38a93e9e15614af275f56eace687e4ab", null ],
+    [ "mcuxClEls_GlitchDetector_LoadConfig_Async", "a01407.html#ga398e0132665a3f5b1f5a703fca2ee0da", null ],
+    [ "mcuxClEls_GlitchDetector_Trim_Async", "a01407.html#ga67252ef3e66584aaa01bddd0f6d243f4", null ],
+    [ "mcuxClEls_GlitchDetector_GetEventCounter", "a01407.html#ga0097a446c7af94a841c345109a0edf5a", null ],
+    [ "mcuxClEls_GlitchDetector_ResetEventCounter", "a01407.html#ga636bd4ef80d9654ee5e951f355ec0e95", null ]
 ];

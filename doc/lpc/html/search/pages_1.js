@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['user_20guidance_20manual_0',['User Guidance Manual',['../a01255.html',1,'']]],
-  ['user_20manual_20of_20crypto_20library_20normal_20secure_20_28clns_29_1',['User Manual of Crypto Library Normal Secure (CLNS)',['../index.html',1,'']]]
+  ['c_3a2004_20compliance_20exceptions_0',['MISRA-C:2004 Compliance Exceptions',['../a04430.html',1,'']]],
+  ['clns_1',['User Manual of Crypto Library Normal Secure (CLNS)',['../index.html',1,'']]],
+  ['compliance_20exceptions_2',['MISRA-C:2004 Compliance Exceptions',['../a04430.html',1,'']]],
+  ['crypto_20library_20normal_20secure_20clns_3',['User Manual of Crypto Library Normal Secure (CLNS)',['../index.html',1,'']]]
 ];

@@ -1,8 +1,10 @@
 var a00959 =
 [
-    [ "curveParam", "a00959.html#a264c295859d39a968b32efbc4f03942a", null ],
-    [ "pScalar", "a00959.html#aa4d8ff74ddc44992f41945301a909666", null ],
-    [ "pPoint", "a00959.html#aed15ab0f942caa21781cdb2c0cbc0577", null ],
-    [ "pResult", "a00959.html#ae78dc6ecf49e3183280b110ca477f6d2", null ],
-    [ "optLen", "a00959.html#a037bdeafd85441ec7c9a5edde80ed772", null ]
+    [ "MCUXCLOSCCASM2_SM2P256_SIZE_PRIVATEKEY", "a01513.html#gadf092a2b6b0b6a4cf7b01f05e457169a", null ],
+    [ "MCUXCLOSCCASM2_SM2P256_SIZE_PUBLICKEY", "a01513.html#ga54e89828c69ab8131cad8df537b51e43", null ],
+    [ "MCUXCLOSCCASM2_SM2P256_SIZE_SHAREDSECRET", "a01513.html#gac50d7602593771181770a48f6ca81171", null ],
+    [ "MCUXCLOSCCASM2_SM2P256_SIZE_PRIMEP", "a01513.html#ga26969aa3df48c6a727c73e9e827d4e9b", null ],
+    [ "MCUXCLOSCCASM2_SM2P256_SIZE_BASEPOINTORDER", "a01513.html#ga21f270155f0d39cab75b073b65f8416b", null ],
+    [ "MCUXCLOSCCASM2_SM2P256_SIZE_MAX", "a01513.html#gaed4971ee0ad589fd405dcda68add1d62", null ],
+    [ "mcuxClOsccaSm2_Status_t", "a01512.html#gab7d3b01a03d8bcc3c192cd8011873c7a", null ]
 ];

@@ -1,7 +1,6 @@
 var a00851 =
 [
-    [ "MCUXCLELS_ECC_HASHED", "a00851.html#gafad38c505a64137b0283ad96c144c503", null ],
-    [ "MCUXCLELS_ECC_NOT_HASHED", "a00851.html#ga871f176b3998d9b5dd709d5a6e2585bd", null ],
-    [ "MCUXCLELS_ECC_RTF", "a00851.html#ga04c77ad43887a66b1b8df87cb9258981", null ],
-    [ "MCUXCLELS_ECC_NO_RTF", "a00851.html#gae7ffc3999117e1796727bd7700d88745", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_CLEAR", "a01484.html#ga2dc0fdbb602c3777fffb8515f944d736", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_CLEAR_WITH_BUFF", "a01484.html#ga76dcce466859684502b4725d51d5de4f", null ],
+    [ "mcuxClMemory_clear", "a01484.html#ga1ac6e8a4335f620d41360c090ee5ce73", null ]
 ];

@@ -1,7 +1,7 @@
 var a01309 =
 [
-    [ "MCUXCLPKC_FP_WAITFORFINISH", "a01309.html#gac1f65eb00620f5683ffd7965a084a977", null ],
-    [ "MCUXCLPKC_FP_WAITFORREADY", "a01309.html#ga1733f3b346a3bd00ffdd8b3f7df0c3fc", null ],
-    [ "mcuxClPkc_WaitForFinish", "a01309.html#ga7d26efcc91094390f7c55fbd870692cd", null ],
-    [ "mcuxClPkc_WaitForReady", "a01309.html#ga963b13a65f2ae869947cbbebf2f9a823", null ]
+    [ "MCUXCLELS_HASH_BLOCK_SIZE_SHA_224", "a01309.html#ga675b25b13fc541b6caf4ede098e62a3a", null ],
+    [ "MCUXCLELS_HASH_BLOCK_SIZE_SHA_256", "a01309.html#gaa8a671b476a7428d5a63addc98c196ce", null ],
+    [ "MCUXCLELS_HASH_BLOCK_SIZE_SHA_384", "a01309.html#ga3f675b49bbe27893e553c19279260be3", null ],
+    [ "MCUXCLELS_HASH_BLOCK_SIZE_SHA_512", "a01309.html#ga9488afdc7a3f5faf48e796ca3b2117dc", null ]
 ];

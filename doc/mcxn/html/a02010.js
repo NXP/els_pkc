@@ -1,0 +1,38 @@
+var a02010 =
+[
+    [ "BLEAPU Register Masks", "a02011.html", "a02011" ],
+    [ "BLEAPU_Type", "a04059.html", [
+      [ "SOCBTAPU_APU_BYPASS0", "a04059.html#aaffe38c6d04eb465c8457c61f0abf681", null ],
+      [ "SOCBTAPU_APU_PWR_CTRL_BYPASS0", "a04059.html#a9da12e81eb988f1ef6dc87a67196fb50", null ],
+      [ "SOCBTAPU_APU_BYPASS1", "a04059.html#a57aa202d71feeba39f8c3f6ba73ff830", null ],
+      [ "SOCBTAPU_APU_BYPASS2", "a04059.html#ad187655d11c4932033e9470bef26b378", null ],
+      [ "SOCBTAPU_APU_BYPASS3", "a04059.html#a397d4449717df64e4d632d422bb1d7c5", null ],
+      [ "SOCBTAPU_APU_CTRL", "a04059.html#a44aa0afd7c1391136b1bc8694854fba5", null ],
+      [ "SOCBTAPU_APU_STATUS", "a04059.html#a45afb9cff277fe5c98c9f908984d8b02", null ],
+      [ "SOCBTAPU_CPU1_LMU_STA_BYPASS0", "a04059.html#a41ac5b7dbb0a1bcb1cfc8bd178e4995f", null ],
+      [ "SOCBTAPU_CPU1_LMU_STA_BYPASS1", "a04059.html#a43e7eaaecc5725ec2a16601997a80e25", null ],
+      [ "SOCBTAPU_CPU1_LMU_STA_BYPASS2", "a04059.html#a5b9069f49db5167d53e18acb8b133b31", null ],
+      [ "SOCBTAPU_LMU_DYN_BYPASS0", "a04059.html#a07dc55248ea113600cd495ec950e2e34", null ],
+      [ "SOCBTAPU_LMU_G2BIST_CTRL_BYPASS", "a04059.html#a7d317f43fc68d476a369c549f97db4fd", null ],
+      [ "SOCBTAPU_CPU1_LMU_G2BIST_CTRL_BYPASS", "a04059.html#a664b65475a0d41366bf728a6c8cfbea3", null ],
+      [ "SOCBTAPU_APU_PWR_CTRL_BYPASS5", "a04059.html#ad11d6c8b69e809cbd268ad5972dc2024", null ],
+      [ "SOCBTAPU_SMU1_HYBRID_LMU_BYPASS0", "a04059.html#adaa2c30734edb27df91f875f793b8d49", null ],
+      [ "SOCBTAPU_SMU1_HYBRID_LMU_BYPASS1", "a04059.html#a3cc0d78588b286112d75a4fd507d343c", null ],
+      [ "SOCBTAPU_SMU1_HYBRID_LMU_BYPASS2", "a04059.html#aadc78f4c344285ecde5d9a5ee4d39868", null ],
+      [ "SOCBTAPU_APU_ECO_CTRL", "a04059.html#affe40d1fc9510f25eca87db3503917cb", null ],
+      [ "SOCBTAPU_GPIO_WKUP_CTRL0", "a04059.html#a50c0a98291baba7c9669e3c5eba68fa3", null ],
+      [ "SOCBTAPU_GPIO_WKUP_CTRL1", "a04059.html#a8919123df5b55c5d7f6c56560452cd87", null ],
+      [ "SOCBTAPU_GPIO_WKUP_CTRL2", "a04059.html#a1ba0c05a0c104a0c40b6d7c79e006a4d", null ],
+      [ "SOCBTAPU_GPIO_WKUP_CTRL3", "a04059.html#a0d5e10526fe12007f49bd3e1e6a415e9", null ],
+      [ "SOCBTAPU_HOST_WKUP_MODE", "a04059.html#a9cc224572865637b3897283a1dd7b997", null ],
+      [ "SOCBTAPU_T3_CLK_DIV_EN_BYPASS", "a04059.html#a46bd6886818976a2b4a13e6c833d993b", null ],
+      [ "SOCBTAPU_LDO_LV_CTRL2", "a04059.html#a7676621c396b64fa3f56fb8305810ec9", null ],
+      [ "SOCBTAPU_CAU_BYPASS", "a04059.html#a85553a781432eb5e284ffcaeb7d2a1e5", null ],
+      [ "SOCBTAPU_MEM_PWDN2", "a04059.html#a2703a3ff53dca20718d80a3cad831045", null ],
+      [ "SOCBTAPU_HOST_WKUP_SOURCE", "a04059.html#a98855d902caf34a0619d4f2245ccf8b7", null ]
+    ] ],
+    [ "BLEAPU_BASE", "a02010.html#ga2fa335400ab45a3d910891ee86f4bbf2", null ],
+    [ "BLEAPU", "a02010.html#ga4b5a3eaa856e1ac5dae5622aefe100d9", null ],
+    [ "BLEAPU_BASE_ADDRS", "a02010.html#gaacd4c57a21667057bb2bd3f42fdb652a", null ],
+    [ "BLEAPU_BASE_PTRS", "a02010.html#ga2037b805a247e6176af6ddf487d44c72", null ]
+];

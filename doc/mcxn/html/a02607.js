@@ -1,0 +1,26 @@
+var a02607 =
+[
+    [ "OSR", "a01705.html#gac3ab3656964c7373fdfb0846898c037f", null ],
+    [ "DIVHFCLK", "a01705.html#ga2d131cf710cfc224deeb81c6b495d072", null ],
+    [ "PREAC2FSCOEF", "a01705.html#ga9e73634c0865c8a29f48bfdea097ee37", null ],
+    [ "PREAC4FSCOEF", "a01705.html#ga09facb2cfdf70b9cddd71197bba31239", null ],
+    [ "GAINSHIFT", "a01705.html#gaaa0e1d7254d8c6434f22f60ba346c8ff", null ],
+    [ "FIFO_CTRL", "a01705.html#gaee5fa8417f86369f95425f3bfbbfd0e4", null ],
+    [ "FIFO_STATUS", "a01705.html#ga7a6626a562cc92126ab9fe106cf3ebae", null ],
+    [ "FIFO_DATA", "a01705.html#ga087c091c4a3c58ad721e5b76504e3974", null ],
+    [ "PHY_CTRL", "a01705.html#gaa3d4a92cbe0c3844405091084c1d893d", null ],
+    [ "DC_CTRL", "a01705.html#ga97fbd2271355298cd0722e975719e191", null ],
+    [ "CHANEN", "a01705.html#gae22c5c678e3b833b3b81fdd5b21b86e6", null ],
+    [ "USE2FS", "a01705.html#gaadbadbb0f3968da6474063c3f28ca614", null ],
+    [ "GLOBAL_SYNC_EN", "a01705.html#ga2b2b3f9d9bd7db87459044aae9d986a7", null ],
+    [ "GLOBAL_COUNT_VAL", "a01705.html#ga6c27ffd0a231af65bef16b06cbbb0220", null ],
+    [ "DECRESET", "a01705.html#gaabbad290a71a182505ff0a441956e4b9", null ],
+    [ "HWVADGAIN", "a01705.html#ga1d3fb99c60f0ffb0ade89ec569adeaa6", null ],
+    [ "HWVADHPFS", "a01705.html#ga993b25883a262d1c64f7bbb7f751aa60", null ],
+    [ "HWVADST10", "a01705.html#ga6121f75b86956bb336c5f41b8417af80", null ],
+    [ "HWVADRSTT", "a01705.html#gabeb734cc7a6c9fb383aba258de1d396d", null ],
+    [ "HWVADTHGN", "a01705.html#ga6339a4425de8a128f8f18a9cb0bbc09a", null ],
+    [ "HWVADTHGS", "a01705.html#gab9a344130b5c65bcbe223b52c64cf4dc", null ],
+    [ "HWVADLOWZ", "a01705.html#ga0579d77e3974b83cc46cd71c0730547b", null ],
+    [ "GLOBAL_SYCN_EN", "a02607.html#ac8906ee877958ce7d4ab7557a99cf706", null ]
+];

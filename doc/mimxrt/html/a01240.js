@@ -1,7 +1,8 @@
 var a01240 =
 [
-    [ "MCUX_CSSL_SC_SUB_IMPL", "a01240.html#gaca0635e01e8eef97f9a06a50b24d0941", null ],
-    [ "MCUX_CSSL_SC_SUB_0X1_IMPL", "a01240.html#ga0ffac921b9dfcb2fcf8796e0a4e1b0c8", null ],
-    [ "MCUX_CSSL_SC_SUB_0X10_IMPL", "a01240.html#gafa9701e3c0f7e757573c4bfcdae22959", null ],
-    [ "MCUX_CSSL_SC_SUB_0X100_IMPL", "a01240.html#gaa4a6dba75f476d29637e005dc8272083", null ]
+    [ "Multi-part Cipher interfaces", "a01241.html", null ],
+    [ "mcuxClCipher_crypt", "a01240.html#ga3bc78aed20c4d8fcf8606d46dd27bf12", null ],
+    [ "mcuxClCipher_init", "a01240.html#ga3d0ee9a87aa371edeac7f361344aeb27", null ],
+    [ "mcuxClCipher_process", "a01240.html#ga1a5072096f7f82fbce313d414dbb438d", null ],
+    [ "mcuxClCipher_finish", "a01240.html#ga90ac41c7d96f333de0708126b0bce4be", null ]
 ];

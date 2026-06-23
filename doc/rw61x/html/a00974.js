@@ -1,6 +1,5 @@
 var a00974 =
 [
-    [ "Data Integrity Configuration", "a00975.html", "a00975" ],
-    [ "Flow Protection Configuration", "a00987.html", "a00987" ],
-    [ "Secure Counter Configuration", "a01016.html", "a01016" ]
+    [ "mcuxClKey_TypeDescriptor_SM4", "a01518.html#gaa571e8e19b6f0e82e3458a6a48cfcb5f", null ],
+    [ "mcuxClKey_Type_SM4", "a01518.html#gae0f6392aeeeda0681c64ac78595a1af5", null ]
 ];

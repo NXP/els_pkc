@@ -1,6 +1,6 @@
 var a00866 =
 [
-    [ "mcuxClMac_init", "a00866.html#ga803bd7822372bdca8dfd0c81b5db96eb", null ],
-    [ "mcuxClMac_process", "a00866.html#ga2749e40209d4308f21ebe761485d4d56", null ],
-    [ "mcuxClMac_finish", "a00866.html#ga9d66c6e242ff75b6ff4826fdcb784e08", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_SET", "a01490.html#ga039e0b482faab4d1aabe2dd5c79d3eb5", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_SET_WITH_BUFF", "a01490.html#gad65a5023a0b0263462b6cfcd6761b904", null ],
+    [ "mcuxClMemory_set", "a01490.html#ga5d86af41c30044c28809914e2901884d", null ]
 ];

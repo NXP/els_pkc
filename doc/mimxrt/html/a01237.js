@@ -1,7 +1,5 @@
 var a01237 =
 [
-    [ "Secure counter core functionality", "a01238.html", "a01238" ],
-    [ "Secure counter increment", "a01239.html", "a01239" ],
-    [ "Secure counter decrement", "a01240.html", "a01240" ],
-    [ "Secure counter direct access", "a01241.html", "a01241" ]
+    [ "mcuxCl_InputBuffer_t", "a01237.html#ga43ce32df6cc1da1a27607535551aba6c", null ],
+    [ "mcuxCl_Buffer_t", "a01237.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb", null ]
 ];

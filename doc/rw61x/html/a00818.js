@@ -1,6 +1,8 @@
 var a00818 =
 [
-    [ "mcuxClEls_Aead_Macros", "a00819.html", "a00819" ],
-    [ "mcuxClEls_Aead_Types", "a00821.html", "a00821" ],
-    [ "mcuxClEls_Aead_Functions", "a00822.html", "a00822" ]
+    [ "mcuxClMac_Status_t", "a01474.html#gaca63aa917056a18f99a911f329f3971b", null ],
+    [ "mcuxClMac_ModeDescriptor_t", "a01474.html#gaad5e6326d43f28d324ef2d98ac3ad2cc", null ],
+    [ "mcuxClMac_Mode_t", "a01474.html#ga8e9aa3b88af43aaf819650568abc471f", null ],
+    [ "mcuxClMac_CustomMode_t", "a01474.html#ga55e9279a13efd1dd87affcc88f3eb34a", null ],
+    [ "mcuxClMac_Context_t", "a01474.html#gaf804dbff6e0d68d2d877b21995ed5c34", null ]
 ];

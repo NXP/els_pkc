@@ -1,0 +1,25 @@
+var a03119 =
+[
+    [ "GDET_CONF_0", "a01821.html#ga906ae2745bfd4b01e3322781df482b62", null ],
+    [ "GDET_CONF_1", "a01821.html#ga8b77d357b6eaa4c85d62fb72cd7a845b", null ],
+    [ "GDET_ENABLE1", "a01821.html#ga43d7ec30966d9d8638b9eefede575125", null ],
+    [ "GDET_CONF_2", "a01821.html#gae36233238d8450153696fa4ed3aa0fb7", null ],
+    [ "GDET_CONF_3", "a01821.html#ga028b4cb7a97c5d7a0e4dff05bf434333", null ],
+    [ "GDET_CONF_4", "a01821.html#ga1dffaf3cd3230e08df13db0de46d68ed", null ],
+    [ "GDET_CONF_5", "a01821.html#ga634c3d64f8d433c0d23747e66629489a", null ],
+    [ "GDET_RESET", "a01821.html#gaa0d9fd43f3b61461250a37a92c347c55", null ],
+    [ "GDET_TEST", "a01821.html#ga25f3e531b55e0ad76c128b6fb9ad3737", null ],
+    [ "GDET_DLY_CTRL", "a01821.html#gae0c27de9bea12e8730b67781cd379ada", null ],
+    [ "GDET_UPDATE_TIMER", "a01705.html#ga2f7841d559ea0241a6cbfe35bdd59f88", null ],
+    [ "GDET_CTRL1", "a01705.html#ga7764efaa2b6a9c4a9ece1935a96e39dc", null ],
+    [ "GDET_INIT_DEL1", "a01705.html#gaefa6b52c19189ce93e5080bb4dc47452", null ],
+    [ "GDET_INIT_DEL1_MODE1", "a01705.html#gabffac749025205ce53d2987c9f78c571", null ],
+    [ "GDET_INIT_DEL1_MODE2", "a01705.html#ga4b553948c4073e9dd95adf0a3cf255af", null ],
+    [ "GDET_MARGIN1", "a01705.html#ga1dc7f38b93d00965a6cbd6dda1db0001", null ],
+    [ "GDET_STATUS1", "a01705.html#ga14f622be709fc01c705324fc85d50868", null ],
+    [ "GDET_RESULT1", "a01705.html#ga07f2e55af89ef6c0de56045ea807953b", null ],
+    [ "GDET_AUTO_TRIM", "a01705.html#ga90559909730eb00c866f45721da6903d", null ],
+    [ "GDET_TRIM_RES", "a01705.html#ga513d64aec82f6a2675b684e9be39f044", null ],
+    [ "GDET_CTRL_CLR", "a01705.html#gaebc61f3936aef25ae433ae01c598b5e7", null ],
+    [ "GDET_IP_VERSION", "a01705.html#ga7730f6702a3fdd1032091f003ec6eb43", null ]
+];

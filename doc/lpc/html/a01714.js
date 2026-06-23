@@ -1,0 +1,38 @@
+var a01714 =
+[
+    [ "CACHE64_CTRL Register Masks", "a01715.html", "a01715" ],
+    [ "CACHE64_CTRL_Type", "a02535.html", [
+      [ "CCR", "a01705.html#gab6c03464079de5c53b85f6a148ec7b38", null ],
+      [ "CLCR", "a01705.html#ga625e9a1ea8f9457a97be2ec1210bcea4", null ],
+      [ "CSAR", "a01705.html#ga41b30eb26b2737354f5818f2fe5bae9b", null ],
+      [ "CCVR", "a01705.html#ga85e892823a5dac338b491d8eb4b2b3a5", null ]
+    ] ],
+    [ "CACHE64_CTRL0_BASE", "a01714.html#ga2299b3325fb12dd5c8b31a9a832929b8", null ],
+    [ "CACHE64_CTRL0", "a01714.html#ga0fa01ea04a970f1eb9465b7ad97456a4", null ],
+    [ "CACHE64_CTRL_BASE_ADDRS", "a01714.html#ga43955c83a0bec746a2210f34fb2544a8", null ],
+    [ "CACHE64_CTRL_BASE_PTRS", "a01714.html#ga71a2ad41611fddcbbd0edc1f96bdbb16", null ],
+    [ "CACHE64_CTRL_PHYMEM_BASES", "a01714.html#gad239c369fad8eec04ef0d04a824192ae", null ],
+    [ "CACHE64_CTRL_PHYMEM_SIZES", "a01714.html#gaf45f43522e1070e2ffd0fb4a841a5b60", null ],
+    [ "CACHE64_CTRL0_BASE", "a01714.html#ga2299b3325fb12dd5c8b31a9a832929b8", null ],
+    [ "CACHE64_CTRL0", "a01714.html#ga0fa01ea04a970f1eb9465b7ad97456a4", null ],
+    [ "CACHE64_CTRL_BASE_ADDRS", "a01714.html#ga43955c83a0bec746a2210f34fb2544a8", null ],
+    [ "CACHE64_CTRL_BASE_PTRS", "a01714.html#ga71a2ad41611fddcbbd0edc1f96bdbb16", null ],
+    [ "CACHE64_CTRL_PHYMEM_BASES", "a01714.html#gad239c369fad8eec04ef0d04a824192ae", null ],
+    [ "CACHE64_CTRL_PHYMEM_SIZES", "a01714.html#gaf45f43522e1070e2ffd0fb4a841a5b60", null ],
+    [ "CACHE64_CTRL0_BASE", "a01714.html#ga2299b3325fb12dd5c8b31a9a832929b8", null ],
+    [ "CACHE64_CTRL0", "a01714.html#ga0fa01ea04a970f1eb9465b7ad97456a4", null ],
+    [ "CACHE64_CTRL1_BASE", "a01714.html#gaad0130e81a4cbfd9867fcb2df892c718", null ],
+    [ "CACHE64_CTRL1", "a01714.html#gad384aa4beb21696cf3a114eb12e7492b", null ],
+    [ "CACHE64_CTRL_BASE_ADDRS", "a01714.html#ga43955c83a0bec746a2210f34fb2544a8", null ],
+    [ "CACHE64_CTRL_BASE_PTRS", "a01714.html#ga71a2ad41611fddcbbd0edc1f96bdbb16", null ],
+    [ "CACHE64_CTRL_PHYMEM_BASES", "a01714.html#gad239c369fad8eec04ef0d04a824192ae", null ],
+    [ "CACHE64_CTRL_PHYMEM_SIZES", "a01714.html#gaf45f43522e1070e2ffd0fb4a841a5b60", null ],
+    [ "CACHE64_CTRL0_BASE", "a01714.html#ga2299b3325fb12dd5c8b31a9a832929b8", null ],
+    [ "CACHE64_CTRL0", "a01714.html#ga0fa01ea04a970f1eb9465b7ad97456a4", null ],
+    [ "CACHE64_CTRL1_BASE", "a01714.html#gaad0130e81a4cbfd9867fcb2df892c718", null ],
+    [ "CACHE64_CTRL1", "a01714.html#gad384aa4beb21696cf3a114eb12e7492b", null ],
+    [ "CACHE64_CTRL_BASE_ADDRS", "a01714.html#ga43955c83a0bec746a2210f34fb2544a8", null ],
+    [ "CACHE64_CTRL_BASE_PTRS", "a01714.html#ga71a2ad41611fddcbbd0edc1f96bdbb16", null ],
+    [ "CACHE64_CTRL_PHYMEM_BASES", "a01714.html#gad239c369fad8eec04ef0d04a824192ae", null ],
+    [ "CACHE64_CTRL_PHYMEM_SIZES", "a01714.html#gaf45f43522e1070e2ffd0fb4a841a5b60", null ]
+];

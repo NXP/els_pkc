@@ -1,11 +1,8 @@
 var a00818 =
 [
-    [ "mcuxClEls_HmacOption_t", "a01255.html", [
-      [ "value", "a01255.html#a577065f77e409f612e5a2fc2072b971d", null ],
-      [ "word", "a01255.html#addc276f42c21d215d17a4147869350b9", null ],
-      [ "__pad0__", "a01255.html#a590b1d47d31c598e6df237437a015b8e", null ],
-      [ "extkey", "a01255.html#a4e16fabb042914665cabe00f5d6a6795", null ],
-      [ "__pad1__", "a01255.html#afa33782e670b9a44a28f71cb097ad830", null ],
-      [ "bits", "a01255.html#a574f136e629da7029edbcc542446d9cc", null ]
-    ] ]
+    [ "mcuxClMac_Status_t", "a01474.html#gaca63aa917056a18f99a911f329f3971b", null ],
+    [ "mcuxClMac_ModeDescriptor_t", "a01474.html#gaad5e6326d43f28d324ef2d98ac3ad2cc", null ],
+    [ "mcuxClMac_Mode_t", "a01474.html#ga8e9aa3b88af43aaf819650568abc471f", null ],
+    [ "mcuxClMac_CustomMode_t", "a01474.html#ga55e9279a13efd1dd87affcc88f3eb34a", null ],
+    [ "mcuxClMac_Context_t", "a01474.html#gaf804dbff6e0d68d2d877b21995ed5c34", null ]
 ];

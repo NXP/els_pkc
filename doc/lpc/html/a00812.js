@@ -1,8 +1,10 @@
 var a00812 =
 [
-    [ "mcuxClSession_init", "a00812.html#gaf1b8776b0d519136df17f6dd632442cf", null ],
-    [ "mcuxClSession_setRtf", "a00812.html#ga159bff529d405fd6da2930590a69ac06", null ],
-    [ "mcuxClSession_cleanup", "a00812.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c", null ],
-    [ "mcuxClSession_destroy", "a00812.html#gaad324fd8f8eeefa29521c4297ac75fd2", null ],
-    [ "mcuxClSession_setRandom", "a00812.html#gaf54e4bf1b4aaf3d11e4da722ea55ef01", null ]
+    [ "MCUXCLMAC_STATUS_ERROR", "a01470.html#ga29a0556d236921ec9e6680cd049f784b", null ],
+    [ "MCUXCLMAC_STATUS_FAILURE", "a01470.html#gaeee9d7aded8807ac014d1030847457a2", null ],
+    [ "MCUXCLMAC_STATUS_INVALID_PARAM", "a01470.html#ga8eb86baa218d3f14c65c4cf1fd4a9a6b", null ],
+    [ "MCUXCLMAC_STATUS_FAULT_ATTACK", "a01470.html#ga025cf49de0fa3225a6d15fd972bf3c64", null ],
+    [ "MCUXCLMAC_STATUS_OK", "a01470.html#ga7df50ebdaad50cfe8661c930df6c43df", null ],
+    [ "MCUXCLMAC_STATUS_COMPARE_NOK", "a01470.html#ga322f2ecd934013fbc12b609d7f92b49f", null ],
+    [ "MCUXCLMAC_STATUS_ERROR_MEMORY_ALLOCATION", "a01470.html#gaf75ae31f35547a5f03ebbe3375ff943a", null ]
 ];

@@ -1,5 +1,11 @@
 var a01230 =
 [
-    [ "mcuxCsslParamIntegrity_Protect", "a01230.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb", null ],
-    [ "mcuxCsslParamIntegrity_Validate", "a01230.html#gaface23af4c626fe4adf70518056f2f33", null ]
+    [ "MCUXCLAES_BLOCK_SIZE", "a01230.html#gaa988298f03dda2718fd7d6a893d84b6a", null ],
+    [ "MCUXCLAES_BLOCK_SIZE_IN_WORDS", "a01230.html#ga70310305440fe83e2f18e79341de4830", null ],
+    [ "MCUXCLAES_AES128_KEY_SIZE", "a01230.html#gaf7377746dc3a4ea714c79c17f9ddbdde", null ],
+    [ "MCUXCLAES_AES128_KEY_SIZE_IN_WORDS", "a01230.html#ga82f8be599a040e7a44d1c4a78513b643", null ],
+    [ "MCUXCLAES_AES192_KEY_SIZE", "a01230.html#ga10c60a14d43acdf3a32074b6104c00b4", null ],
+    [ "MCUXCLAES_AES192_KEY_SIZE_IN_WORDS", "a01230.html#ga68bc6c94d74d3ddde085798e06c5968a", null ],
+    [ "MCUXCLAES_AES256_KEY_SIZE", "a01230.html#gaf85d02f88b56069ada0d2e6eaf184af8", null ],
+    [ "MCUXCLAES_AES256_KEY_SIZE_IN_WORDS", "a01230.html#ga59948f7fc4145e5dc383387f01dc439b", null ]
 ];

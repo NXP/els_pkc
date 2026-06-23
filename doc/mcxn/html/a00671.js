@@ -1,12 +1,13 @@
 var a00671 =
 [
-    [ "MCUX_CSSL_SC_USE_HYBRID_LOCAL_CDOG", "a00971.html#gab32cca78e592e73eb1d15d06be994839", null ],
-    [ "MCUX_CSSL_SC_USE_HW_CDOG", "a00971.html#gaa488aa67a604f34f36c1a99b07a6ab71", null ],
-    [ "MCUX_CSSL_SC_USE_HW_SCM", "a00971.html#gae5b47bf9fecd4e15c34cb859cad286a4", null ],
-    [ "MCUX_CSSL_SC_USE_HW_S3SCM", "a00971.html#gaf65f19a392d0dda41627f1e4ef3f2291", null ],
-    [ "MCUX_CSSL_SC_USE_SW_LOCAL", "a00971.html#ga841fe66e0a59b9c720854ff0ee2c4678", null ],
-    [ "MCUX_CSSL_SC_USE_SW_CONTEXT", "a00971.html#gaff2c61772a19bdf2e5038b674ea04128", null ],
-    [ "MCUX_CSSL_SC_USE_SW_CALLBACK", "a00971.html#ga788677fbf1a036b432007aa84a2879ad", null ],
-    [ "MCUX_CSSL_SC_USE_SW_GLOBAL", "a00971.html#ga8743f66cbadb2592671510ed3160dc09", null ],
-    [ "MCUX_CSSL_SC_USE_NONE", "a00971.html#ga8141a2d6da07d7137207fb35505a6cb0", null ]
+    [ "MCUXCLELS_CMAC_KEY_SIZE_128", "a01372.html#ga62fa42c9462e49ed1e357287492a64e8", null ],
+    [ "MCUXCLELS_CMAC_KEY_SIZE_256", "a01372.html#gab62855422ff04c5fb61bdcd555282931", null ],
+    [ "MCUXCLELS_CMAC_EXTERNAL_KEY_ENABLE", "a01373.html#ga0b115dc62b80bece0cfbb37d8d6be71c", null ],
+    [ "MCUXCLELS_CMAC_EXTERNAL_KEY_DISABLE", "a01373.html#gaf8cc08552ae462283ee61cd55a1e6e6d", null ],
+    [ "MCUXCLELS_CMAC_INITIALIZE_DISABLE", "a01373.html#ga21b0dadab5a6ff16fa81b41a8bf8d190", null ],
+    [ "MCUXCLELS_CMAC_INITIALIZE_ENABLE", "a01373.html#ga556198894993c42af47bb004ddde6f8e", null ],
+    [ "MCUXCLELS_CMAC_FINALIZE_DISABLE", "a01373.html#ga5a7186be485cefe12529107214dd872b", null ],
+    [ "MCUXCLELS_CMAC_FINALIZE_ENABLE", "a01373.html#ga923398d224ee92df39da7b5a27982850", null ],
+    [ "MCUXCLELS_CMAC_OUT_SIZE", "a01371.html#ga5e153a25264389155e68014c29ddf815", null ],
+    [ "mcuxClEls_Cmac_Async", "a01375.html#ga0cc7e60d184ae44edd8ac6376ecf2387", null ]
 ];

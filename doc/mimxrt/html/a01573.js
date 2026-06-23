@@ -1,11 +1,8 @@
 var a01573 =
 [
-    [ "value", "a01573.html#ad5bfabd7e1e04a95627e0cbc144afdcb", null ],
-    [ "word", "a01573.html#aff8b4bc694cdf1d6556a0f970459b508", null ],
-    [ "__pad0__", "a01573.html#a2dfcb81e1476a07a6ab67f8c090b4ab5", null ],
-    [ "revf", "a01573.html#aa699b2cfb2fc82dcbc25d833e09d442e", null ],
-    [ "__pad1__", "a01573.html#ad67985d38d1563a926768316825e1944", null ],
-    [ "kfmt", "a01573.html#ae3892b035704c00a855dd43d96a21b2c", null ],
-    [ "__pad2__", "a01573.html#a05660839da43298f12f96572bf538330", null ],
-    [ "bits", "a01573.html#ad8079f04841b553178c4639c5f09ba39", null ]
+    [ "MCUXCLRANDOM_STATUS_ERROR", "a01573.html#ga1b55e6564466854e9bd070d5bf20c46c", null ],
+    [ "MCUXCLRANDOM_STATUS_LOW_SECURITY_STRENGTH", "a01573.html#ga1318606347b0aa4a477b68572a862552", null ],
+    [ "MCUXCLRANDOM_STATUS_INVALID_PARAM", "a01573.html#ga9b0f869c046d3055dcc6f994c9aa0191", null ],
+    [ "MCUXCLRANDOM_STATUS_OK", "a01573.html#ga951990ff5179cd6fce7310de16002b20", null ],
+    [ "MCUXCLRANDOM_STATUS_FAULT_ATTACK", "a01573.html#ga6d4a0c17c9ec70556936f749305dace8", null ]
 ];

@@ -1,8 +1,10 @@
 var a00788 =
 [
-    [ "mcuxClAead_init", "a00788.html#gaeb2451aba7d135f7af05e94f9b095fae", null ],
-    [ "mcuxClAead_process", "a00788.html#gaa4af5201aaf549186bf80cbf4284f3d1", null ],
-    [ "mcuxClAead_process_adata", "a00788.html#ga40cbd731ba8874d971213fa03605736d", null ],
-    [ "mcuxClAead_finish", "a00788.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba", null ],
-    [ "mcuxClAead_verify", "a00788.html#gafb82bc41120d69281d0fbb719fb35d9d", null ]
+    [ "mcuxClKey_init", "a01466.html#gab177d067c754ceccca8b90c47f2e74b8", null ],
+    [ "mcuxClKey_linkKeyPair", "a01466.html#gaf504f15369b7930024ef4ee38b9b3a87", null ],
+    [ "mcuxClKey_setProtection", "a01466.html#ga90ba1a7dd130f260f5e47f5b78881bd6", null ],
+    [ "mcuxClKey_loadCopro", "a01466.html#ga616ead4a2aaab2d0ae5502ba52315fca", null ],
+    [ "mcuxClKey_loadMemory", "a01466.html#gac4ec3d39748fc018dfb50316d2c51490", null ],
+    [ "mcuxClKey_flush", "a01466.html#ga60a86766cba40477651948cfa55eb7cd", null ],
+    [ "mcuxClKey_setKeyproperties", "a01466.html#gab1586a462e51711691901aa099f8b556", null ]
 ];

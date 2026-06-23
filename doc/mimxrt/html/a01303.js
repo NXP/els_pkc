@@ -1,4 +1,5 @@
 var a01303 =
 [
-    [ "mcuxClOsccaPkc_GeneratePointerTable", "a01303.html#ga871a4326dd69fdabc1d0c7eee4b6dbcd", null ]
+    [ "mcuxClEls_GlitchDetector_Macros", "a01304.html", "a01304" ],
+    [ "mcuxClEls_GlitchDetector_Functions", "a01305.html", "a01305" ]
 ];

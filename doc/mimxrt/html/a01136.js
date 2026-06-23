@@ -1,0 +1,4 @@
+var a01136 =
+[
+    [ "MCUXCLMATH_MODMULT_CPU_WA_BUFFER_SIZE", "a01517.html#ga0d5ca12e4d2568f90e8e3af6d8d2763c", null ]
+];

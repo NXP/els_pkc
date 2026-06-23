@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['secure_20counter_20api_0',['Secure Counter API',['../a00966.html',1,'']]],
-  ['secure_20counter_20configuration_1',['Secure Counter Configuration',['../a00971.html',1,'']]],
-  ['secure_20counter_20core_20functionality_2',['Secure counter core functionality',['../a00967.html',1,'(Global Namespace)'],['../a00973.html',1,'(Global Namespace)'],['../a00978.html',1,'(Global Namespace)']]],
-  ['secure_20counter_20decrement_3',['Secure counter decrement',['../a00969.html',1,'(Global Namespace)'],['../a00975.html',1,'(Global Namespace)'],['../a00980.html',1,'(Global Namespace)']]],
-  ['secure_20counter_20direct_20access_4',['Secure counter direct access',['../a00970.html',1,'(Global Namespace)'],['../a00976.html',1,'(Global Namespace)'],['../a00981.html',1,'(Global Namespace)']]],
-  ['secure_20counter_20increment_5',['Secure counter increment',['../a00968.html',1,'(Global Namespace)'],['../a00974.html',1,'(Global Namespace)'],['../a00979.html',1,'(Global Namespace)']]],
-  ['secure_20counter_3a_20disabled_6',['Secure Counter: Disabled',['../a00972.html',1,'']]],
-  ['secure_20counter_3a_20sw_20local_7',['Secure Counter: SW Local',['../a00977.html',1,'']]],
-  ['session_20rtf_20configuration_20values_8',['Session RTF configuration values',['../a00923.html',1,'']]],
-  ['session_20status_20values_9',['Session Status values',['../a00922.html',1,'']]],
-  ['switching_20flow_20protection_10',['Switching flow protection',['../a00949.html',1,'(Global Namespace)'],['../a00940.html',1,'(Global Namespace)']]]
+  ['ndash_20api_0',['MCUX CSSL &amp;ndash; API',['../a01558.html',1,'']]],
+  ['ndash_20configurations_1',['MCUX CSSL &amp;ndash; Configurations',['../a01562.html',1,'']]],
+  ['ndash_20implementations_2',['MCUX CSSL &amp;ndash; Implementations',['../a01564.html',1,'']]],
+  ['needed_20for_20internal_20use_20only_3',['Option bit field values that are needed for internal use only',['../a01401.html',1,'']]],
+  ['nested_20vectored_20interrupt_20controller_20nvic_4',['Nested Vectored Interrupt Controller (NVIC)',['../a01622.html',1,'']]],
+  ['not_20in_20scb_20scnscb_5',['System Controls not in SCB (SCnSCB)',['../a01624.html',1,'']]],
+  ['npx_20peripheral_20access_20layer_6',['NPX Peripheral Access Layer',['../a01871.html',1,'']]],
+  ['npx_20register_20masks_7',['NPX Register Masks',['../a01872.html',1,'']]],
+  ['numbers_8',['Interrupt vector numbers',['../a01703.html',1,'']]],
+  ['nvic_9',['Nested Vectored Interrupt Controller (NVIC)',['../a01622.html',1,'']]],
+  ['nvic_20functions_10',['NVIC Functions',['../a01634.html',1,'']]]
 ];

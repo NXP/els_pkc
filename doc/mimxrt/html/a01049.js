@@ -1,6 +1,4 @@
 var a01049 =
 [
-    [ "MCUXCLELS_ECC_PUBLICKEY_SIZE", "a01049.html#ga7298491d4e2d679496d0bacab6f351f8", null ],
-    [ "MCUXCLELS_ECC_SIGNATURE_SIZE", "a01049.html#ga922fa06cbacda443d50f2b3c29fdea8c", null ],
-    [ "MCUXCLELS_ECC_SIGNATURE_R_SIZE", "a01049.html#ga18a35b4e98dac7862895339b720d667a", null ]
+    [ "mcuxCsslMemory_Set", "a01491.html#ga0a0ed6d55e0cb4d633ba19a32aca64c6", null ]
 ];

@@ -1,0 +1,28 @@
+var a01839 =
+[
+    [ "FRO_CSR_FROEN", "a01839.html#ga1be44357bc6f3859e24e3291f00e3dbd", null ],
+    [ "FRO_CSR_TREN", "a01839.html#gaa1fd1ec0a5682dfd5ed5d08d0bb23bc4", null ],
+    [ "FRO_CSR_TRUPEN", "a01839.html#gaa0ae3646d40384c8dad30cea96bbf420", null ],
+    [ "FRO_CSR_COARSEN", "a01839.html#gae8b007b9944c75c19a3866b1feddf7be", null ],
+    [ "FRO_CSR_TUNEONCE", "a01839.html#ga6d67d9809ce3c84f4e652a49908de87e", null ],
+    [ "FRO_CSR_CLKGATE", "a01839.html#gaa02920aa58c097c1afaee9e3ed007a96", null ],
+    [ "FRO_CSR_LOL_ERR", "a01839.html#ga6642ccc1364969cad94c6b1fcd3ddcd7", null ],
+    [ "FRO_CSR_TUNE_ERR", "a01839.html#ga257cf5975845eea4c43cc5bd705bf29b", null ],
+    [ "FRO_CSR_TRUPREQ", "a01839.html#ga8ca9a0ffe6d6637329bac889b859358b", null ],
+    [ "FRO_CSR_TRIM_LOCK", "a01839.html#ga298f35863f268d7d010ee611272412b1", null ],
+    [ "FRO_CSR_TUNEONCE_DONE", "a01839.html#ga46b0c2206e2569ded763f76abc90678a", null ],
+    [ "FRO_CNFG1_REFDIV", "a01839.html#ga660fa7595d9a6c955b086d7858c67fad", null ],
+    [ "FRO_CNFG1_LOL_ERR_IE", "a01839.html#gaa088f23a9f4ad8f0296325076902efcf", null ],
+    [ "FRO_CNFG1_TUNE_ERR_IE", "a01839.html#ga38fe67f029d75aa14ac36931f68746ab", null ],
+    [ "FRO_CNFG1_TRUPREQ_IE", "a01839.html#ga640a169cbcd2a90c4b99140ca3a52fb6", null ],
+    [ "FRO_CNFG1_RFCLKCNT", "a01839.html#ga1e400e692fec44f48c9b80ac3584e69c", null ],
+    [ "FRO_CNFG2_TRIM2_DELAY", "a01839.html#ga226acd1ef0f03aa96251b7df07901dc9", null ],
+    [ "FRO_CNFG2_TRIM1_DELAY", "a01839.html#gaa889fae760bd0c3b75a56c6e4d26ec5b", null ],
+    [ "FRO_FROTRIM_FINE_TRIM", "a01839.html#gadad3686b76304245b9609a8e77f6c0a5", null ],
+    [ "FRO_FROTRIM_COARSE_TRIM", "a01839.html#gaacbadd5c83462777ca3d6e0859cfd8d5", null ],
+    [ "FRO_FROTRIM_TRIMTEMP", "a01839.html#gac0ea79723385a6a7afbd5fe2d4eb2f08", null ],
+    [ "FRO_TEXPCNT_TEXPCNT", "a01839.html#ga2ed2d63b0d159c09780a57c01c3dc466", null ],
+    [ "FRO_TEXPCNT_TEXPCNT_RANGE", "a01839.html#ga52c38b8e6fc0341d74d27967862f954a", null ],
+    [ "FRO_AUTOTRIM_AUTOTRIM", "a01839.html#gaa7d98563c4f1dae18c9de1fd112e337a", null ],
+    [ "FRO_TRIMCNT_TRIMCNT", "a01839.html#gaf3903d312f844c25495660252a615f95", null ]
+];

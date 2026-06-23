@@ -1,5 +1,12 @@
 var a01625 =
 [
-    [ "pKeyEntryData", "a01625.html#a1f5a90f95105b9abaf31a7997a2fb24e", null ],
-    [ "keyEntryLength", "a01625.html#a441763378fea50af88f8cdf75648a0e6", null ]
+    [ "DEBUGGER_MAILBOX_CSW_RESYNCH_REQ", "a01625.html#ga2fa94f71992e8c89a9ee58d004f023c6", null ],
+    [ "DEBUGGER_MAILBOX_CSW_REQ_PENDING", "a01625.html#ga36a01ca76c29ba56b8a24ce29b042255", null ],
+    [ "DEBUGGER_MAILBOX_CSW_DBG_OR_ERR", "a01625.html#ga92523e5d2ead95608a97c8e3fe057b11", null ],
+    [ "DEBUGGER_MAILBOX_CSW_AHB_OR_ERR", "a01625.html#ga49086afe1529c93d268f743f170a5e59", null ],
+    [ "DEBUGGER_MAILBOX_CSW_SOFT_RESET", "a01625.html#gad58a293a9b7ea221188622198d78eb7f", null ],
+    [ "DEBUGGER_MAILBOX_CSW_CHIP_RESET_REQ", "a01625.html#gad8c6cf1db5333db04c3194672bdbea3c", null ],
+    [ "DEBUGGER_MAILBOX_REQUEST_REQUEST", "a01625.html#ga1061351c3d7ef6e1f8c48344097a0a31", null ],
+    [ "DEBUGGER_MAILBOX_RETURN_RET", "a01625.html#ga9c1ef470971500c428a7705cdda70cb4", null ],
+    [ "DEBUGGER_MAILBOX_ID_ID", "a01625.html#ga69cf477da1fc04ea076886082f057fcd", null ]
 ];

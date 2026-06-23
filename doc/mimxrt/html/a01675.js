@@ -1,0 +1,27 @@
+var a01675 =
+[
+    [ "PRINCE_ENC_ENABLE_EN", "a01675.html#gacef844a1fd5a207b1f67e8f0e5b82b88", null ],
+    [ "PRINCE_MASK_LSB_MASKVAL", "a01675.html#gaf210df1c24200f886239689452337e35", null ],
+    [ "PRINCE_MASK_MSB_MASKVAL", "a01675.html#ga674c73f6f6e1be06dec133ad2bc8eb8f", null ],
+    [ "PRINCE_LOCK_LOCKREG0", "a01675.html#ga03cca83d6205a797dd645feefdf1eed8", null ],
+    [ "PRINCE_LOCK_LOCKREG1", "a01675.html#gae62d3e66968aeb44df9fce2402b93feb", null ],
+    [ "PRINCE_LOCK_LOCKREG2", "a01675.html#ga558601f7e932b733c77cb51230232008", null ],
+    [ "PRINCE_LOCK_LOCKMASK", "a01675.html#gaf42f837c8a669bc0a6e7f472d179dfcb", null ],
+    [ "PRINCE_IV_LSB0_IVVAL", "a01675.html#gac6fd607acaaabab411a1f405de7e6839", null ],
+    [ "PRINCE_IV_MSB0_IVVAL", "a01675.html#gaa6d27cde37b2cfb998272bc86bafec31", null ],
+    [ "PRINCE_BASE_ADDR0_ADDR_FIXED", "a01675.html#ga8040d492e17592538ec768e22ae1f4e3", null ],
+    [ "PRINCE_BASE_ADDR0_ADDR_PRG", "a01675.html#gaa71321be00b1c2eb490c8f68e5ca94fa", null ],
+    [ "PRINCE_SR_ENABLE0_EN", "a01675.html#ga76206684eb09abb34b246b28be28d06c", null ],
+    [ "PRINCE_IV_LSB1_IVVAL", "a01675.html#ga2001d3ad401178ca61f7d1abcf73a4e3", null ],
+    [ "PRINCE_IV_MSB1_IVVAL", "a01675.html#ga7cd4e49ec7062567d3de78a764550a92", null ],
+    [ "PRINCE_BASE_ADDR1_ADDR_FIXED", "a01675.html#gaa4a390529e385f02d6f8a0d627fbe71e", null ],
+    [ "PRINCE_BASE_ADDR1_ADDR_PRG", "a01675.html#ga8cf7114b6aea720aff4365bcc5dd5120", null ],
+    [ "PRINCE_SR_ENABLE1_EN", "a01675.html#ga34eba47320a60deac78c7c519169ffbb", null ],
+    [ "PRINCE_IV_LSB2_IVVAL", "a01675.html#ga6223aec57afc6f4e45209d023c6c51a9", null ],
+    [ "PRINCE_IV_MSB2_IVVAL", "a01675.html#ga1e06f63dda3dd861dcf48ec0b53e9697", null ],
+    [ "PRINCE_BASE_ADDR2_ADDR_FIXED", "a01675.html#ga400e3a79613fd66e88c2e633d64693ea", null ],
+    [ "PRINCE_BASE_ADDR2_ADDR_PRG", "a01675.html#ga8d0995812e4c5eb91a36d2917a287702", null ],
+    [ "PRINCE_SR_ENABLE2_EN", "a01675.html#gab546ea31406dbd2173056e2d11dcc78b", null ],
+    [ "PRINCE_ERR_ERRSTAT", "a01675.html#gacbd5fb3720167f7487482c1ea32bc82e", null ],
+    [ "PRINCE_SR_XOMX_SR_XOM_XOM_EN", "a01675.html#ga20be5a19178cdd5f8abe09c492dc9186", null ]
+];

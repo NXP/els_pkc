@@ -1,5 +1,9 @@
 var a00500 =
 [
-    [ "MCUXCLOSCCASAFO_STATUS_ERROR", "a00890.html#ga64525ad9739d0a868ed2d8ff840fb52d", null ],
-    [ "MCUXCLOSCCASAFO_STATUS_OK", "a00890.html#ga1175a593fac23cd857035b14063e0632", null ]
+    [ "mcuxClAead_crypt", "a01326.html#gad0713168358588f9550468bf1ef7cfbb", null ],
+    [ "mcuxClAead_init", "a01327.html#gaeb2451aba7d135f7af05e94f9b095fae", null ],
+    [ "mcuxClAead_process", "a01327.html#gaa4af5201aaf549186bf80cbf4284f3d1", null ],
+    [ "mcuxClAead_process_adata", "a01327.html#ga40cbd731ba8874d971213fa03605736d", null ],
+    [ "mcuxClAead_finish", "a01327.html#ga2b18aa6585e4d229d7ccfdd34f3f9dba", null ],
+    [ "mcuxClAead_verify", "a01327.html#gafb82bc41120d69281d0fbb719fb35d9d", null ]
 ];

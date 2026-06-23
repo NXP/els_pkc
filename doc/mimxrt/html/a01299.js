@@ -1,4 +1,5 @@
 var a01299 =
 [
-    [ "mcuxClEcc_EdDsa_Ed25519ProtocolDescriptor", "a01299.html#ga41770640b3d964f8add4ad005c6d81e6", null ]
+    [ "MCUXCLELS_ECC_REVERSEFETCH_ENABLE", "a01299.html#ga0536723a417500b946e92b6432d0a4fd", null ],
+    [ "MCUXCLELS_ECC_REVERSEFETCH_DISABLE", "a01299.html#ga92e6bbdd8cdd2d0ed90e6073e94924df", null ]
 ];

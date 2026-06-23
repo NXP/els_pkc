@@ -1,4 +1,4 @@
 var a01218 =
 [
-    [ "mcuxCsslMemory_Compare Function Definitions", "a01219.html", "a01219" ]
+    [ "mcuxClCrc_Functions", "a01219.html", "a01219" ]
 ];

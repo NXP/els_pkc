@@ -1,4 +1,5 @@
 var a00482 =
 [
-    [ "mcuxClRandomModes_mdELS_Drbg", "a00798.html#ga33a2ec75a1ffddc069c679de7c34b8fc", null ]
+    [ "els_pkc_transparent_mac_operation_t", "a02087.html", null ],
+    [ "els_pkc_transparent_aead_operation_t", "a02091.html", null ]
 ];

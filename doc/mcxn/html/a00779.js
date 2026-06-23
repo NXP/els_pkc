@@ -1,12 +1,8 @@
 var a00779 =
 [
-    [ "mcuxClEls_InterruptOptionEn_t", "a00780.html", "a00780" ],
-    [ "mcuxClEls_InterruptOptionRst_t", "a00781.html", "a00781" ],
-    [ "mcuxClEls_InterruptOptionSet_t", "a00782.html", "a00782" ],
-    [ "MCUXCLELS_ERROR_FLAGS_", "a00783.html", "a00783" ],
-    [ "MCUXCLELS_RESET_", "a00784.html", "a00784" ],
-    [ "MCUXCLELS_STATUS_PPROT_", "a00785.html", "a00785" ],
-    [ "MCUXCLELS_STATUS_ECDSAVFY_", "a00786.html", "a00786" ],
-    [ "MCUXCLELS_STATUS_DRBGENTLVL_", "a00787.html", "a00787" ],
-    [ "MCUXCLELS_API", "a00779.html#ga5f87370c0e52126f57afb5b13c283d73", null ]
+    [ "mcuxClKey_Derivation_ModeConstructor_NIST_SP800_108", "a00779.html#afdf995c2c5f6f8079f670343eb025a96", null ],
+    [ "mcuxClKey_DerivationAlgorithmDescriptor_NIST_SP800_108", "a00779.html#a2cc13bea6fc32a2d17c13045d4040444", null ],
+    [ "mcuxClKey_DerivationAlgorithm_NIST_SP800_108", "a00779.html#a89f293f2a1b992ce349166b8be785925", null ],
+    [ "mcuxClKey_DerivationMode_SP800_108_CM_CMAC", "a00779.html#a2b8ad21966f286740593bb9519bb7c37", null ],
+    [ "mcuxClKey_Derivation_SP800_108_CM_CMAC", "a00779.html#ab895203004ba9e10cc8b2821aceca499", null ]
 ];

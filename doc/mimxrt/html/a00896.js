@@ -1,12 +1,23 @@
 var a00896 =
 [
-    [ "MCUX_CSSL_SC_USE_HYBRID_LOCAL_CDOG", "a01236.html#gab32cca78e592e73eb1d15d06be994839", null ],
-    [ "MCUX_CSSL_SC_USE_HW_CDOG", "a01236.html#gaa488aa67a604f34f36c1a99b07a6ab71", null ],
-    [ "MCUX_CSSL_SC_USE_HW_SCM", "a01236.html#gae5b47bf9fecd4e15c34cb859cad286a4", null ],
-    [ "MCUX_CSSL_SC_USE_HW_S3SCM", "a01236.html#gaf65f19a392d0dda41627f1e4ef3f2291", null ],
-    [ "MCUX_CSSL_SC_USE_SW_LOCAL", "a01236.html#ga841fe66e0a59b9c720854ff0ee2c4678", null ],
-    [ "MCUX_CSSL_SC_USE_SW_CONTEXT", "a01236.html#gaff2c61772a19bdf2e5038b674ea04128", null ],
-    [ "MCUX_CSSL_SC_USE_SW_CALLBACK", "a01236.html#ga788677fbf1a036b432007aa84a2879ad", null ],
-    [ "MCUX_CSSL_SC_USE_SW_GLOBAL", "a01236.html#ga8743f66cbadb2592671510ed3160dc09", null ],
-    [ "MCUX_CSSL_SC_USE_NONE", "a01236.html#ga8141a2d6da07d7137207fb35505a6cb0", null ]
+    [ "MCUXCLPKC_FP_INITIALIZE", "a01594.html#ga3a95e35addbaf26fa41f8e9cf27950f6", null ],
+    [ "MCUXCLPKC_FP_DEINITIALIZE", "a01594.html#gaf47041e2fee71acba1d37b89f7825e02", null ],
+    [ "MCUXCLPKC_FP_GENERATEUPTRT", "a01595.html#ga26921e5d9a66bd8247a277794b04b42c", null ],
+    [ "MCUXCLPKC_FP_CALCFUP", "a01596.html#ga75385d0295607d89d375f6b8706f4299", null ],
+    [ "MCUXCLPKC_FP_CALCFUP_OFFSET", "a01596.html#gac16f7fd691d8868968cc643feed97846", null ],
+    [ "MCUXCLPKC_FP_WAITFORFINISH", "a01597.html#gac1f65eb00620f5683ffd7965a084a977", null ],
+    [ "MCUXCLPKC_FP_WAITFORREADY", "a01597.html#ga1733f3b346a3bd00ffdd8b3f7df0c3fc", null ],
+    [ "mcuxClPkc_PtrFUPEntry_t", "a01596.html#ga9c5b69d5d2b5e9b7551de9cbe163050f", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_POINTER", "a01594.html#gaf821ec5ad694746ba28321b2bb802236", null ],
+    [ "MCUX_CSSL_FP_FUNCTION_POINTER", "a01594.html#ga4ad3a9a17b2090a8d761fcd9c9c86218", null ],
+    [ "mcuxClPkc_Initialize", "a01594.html#ga338ddc55800355531bd20236fa3710b8", null ],
+    [ "mcuxClPkc_Deinitialize", "a01594.html#ga0d09260a20ca358d02264f16a74369c1", null ],
+    [ "mcuxClPkc_GenerateUPTRT", "a01595.html#gae14e20fe9fd56e0ca8125773bc88f822", null ],
+    [ "mcuxClPkc_RandomizeUPTRT", "a01595.html#gaf961165a01be833d3200563399a2c9aa", null ],
+    [ "mcuxClPkc_ReRandomizeUPTRT", "a01595.html#ga195c78d51f2084c693257bc52c725c1f", null ],
+    [ "mcuxClPkc_Calc", "a01596.html#ga1fe435f5e72d9347692a7ac8fa2ba67f", null ],
+    [ "mcuxClPkc_CalcConst", "a01596.html#ga2d214326104dc2ced79098286852ae03", null ],
+    [ "mcuxClPkc_CalcFup", "a01596.html#gaec0a3e70eb593b9bd49edf9e7aba298e", null ],
+    [ "mcuxClPkc_WaitForFinish", "a01597.html#ga7d26efcc91094390f7c55fbd870692cd", null ],
+    [ "mcuxClPkc_WaitForReady", "a01597.html#ga963b13a65f2ae869947cbbebf2f9a823", null ]
 ];

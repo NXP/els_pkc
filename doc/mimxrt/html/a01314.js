@@ -1,7 +1,6 @@
 var a01314 =
 [
-    [ "MCUXCLECC_KEYGEN_WACPU_SIZE", "a01314.html#gac31e701012489696926d6810c6192659", null ],
-    [ "MCUXCLECC_SIGN_WACPU_SIZE", "a01314.html#ga32771cc5e0053d8675673ac08cbfb7b3", null ],
-    [ "MCUXCLECC_VERIFY_WACPU_SIZE", "a01314.html#ga77a772614cead92da188f20009bc24b5", null ],
-    [ "MCUXCLECC_POINTMULT_WACPU_SIZE", "a01314.html#ga46349810877e3b79a8d899648e1b2e06", null ]
+    [ "mcuxClEls_Hmac_Macros", "a01315.html", "a01315" ],
+    [ "mcuxClEls_Hmac_Types", "a01317.html", "a01317" ],
+    [ "mcuxClEls_Hmac_Functions", "a01318.html", "a01318" ]
 ];

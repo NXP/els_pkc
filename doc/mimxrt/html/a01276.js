@@ -1,0 +1,5 @@
+var a01276 =
+[
+    [ "MCUXCLELS_ELS_INTERRUPT_ENABLE", "a01276.html#ga845d16f6376f2c28864f1855ddbde61c", null ],
+    [ "MCUXCLELS_ELS_INTERRUPT_DISABLE", "a01276.html#ga2427d922e877e78bac483cf68f6c5892", null ]
+];

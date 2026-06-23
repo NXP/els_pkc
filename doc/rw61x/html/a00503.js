@@ -1,5 +1,9 @@
 var a00503 =
 [
-    [ "MCUXCLHMAC_ELS_MIN_PADDING_LENGTH", "a00901.html#gaeea21ec876a193348d5f78b5014da165", null ],
-    [ "MCUXCLHMAC_ELS_INPUTBUFFER_LENGTH", "a00901.html#gac9e4d270e79fa637dfac0c4919bf5eda", null ]
+    [ "mcuxClAead_ModeDescriptor_t", "a01328.html#ga8378bbf26468fde8248b08efca599481", null ],
+    [ "mcuxClAead_Mode_t", "a01328.html#ga8084949e97b9ab9cd35ac041b8bbea0a", null ],
+    [ "mcuxClAead_TestDescriptor_t", "a01328.html#gae182daa83ee8ec992f261f2b52b20adb", null ],
+    [ "mcuxClAead_Test_t", "a01328.html#gab0222b5a8fcc204e08515b0b558fb5fe", null ],
+    [ "mcuxClAead_Context_t", "a01328.html#gaf67b42507181f9793498bfaaab35a48a", null ],
+    [ "mcuxClAead_Status_t", "a01328.html#ga1497c344a218545c5980a407e7c9194d", null ]
 ];

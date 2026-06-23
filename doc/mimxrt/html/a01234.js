@@ -1,7 +1,15 @@
 var a01234 =
 [
-    [ "MCUX_CSSL_SC_SUB", "a01234.html#ga270e4467ff02a10df72b1da177385858", null ],
-    [ "MCUX_CSSL_SC_SUB_0x1", "a01234.html#ga7df8a7a4e7798142da2e668ca21f3a5e", null ],
-    [ "MCUX_CSSL_SC_SUB_0x10", "a01234.html#gabb6f649421ad8405aa47812615301933", null ],
-    [ "MCUX_CSSL_SC_SUB_0x100", "a01234.html#gacf7c177e9dbd78d8c5a81fe3b9b4b5cb", null ]
+    [ "MCUXCLBUFFER_INIT", "a01234.html#ga00af3c9893f4c59ec8ac0675c8332da3", null ],
+    [ "MCUXCLBUFFER_INIT_RO", "a01234.html#gaa0ed06160ed0bb21bbef3def4479d9ce", null ],
+    [ "MCUXCLBUFFER_INIT_RW", "a01234.html#ga1233c58dc0ba531eb3f02c82c0e1b2b5", null ],
+    [ "MCUXCLBUFFER_INIT_DMA_RO", "a01234.html#gae044e167821d2ff7c2b6116bd2dcad38", null ],
+    [ "MCUXCLBUFFER_INIT_DMA_RW", "a01234.html#gae8150b92b8c362ecaac956564dd1f660", null ],
+    [ "MCUXCLBUFFER_INIT_DMA", "a01234.html#gaa76088e1485eed84d85e46cce8479003", null ],
+    [ "MCUXCLBUFFER_INIT_CUSTOM", "a01234.html#ga2d850fe3b4a9013901aa7b53320aee42", null ],
+    [ "MCUXCLBUFFER_INIT_PLAIN_RO_IMPL", "a01234.html#gaa22eab198a80ea2b58282666751db878", null ],
+    [ "MCUXCLBUFFER_INIT_PLAIN_RW_IMPL", "a01234.html#ga0556d64587bcb185cb9f588f5051a359", null ],
+    [ "MCUXCLBUFFER_INIT_DMA_RO_IMPL", "a01234.html#gab4efb0eed5c72f49bc0836555bfb3440", null ],
+    [ "MCUXCLBUFFER_INIT_DMA_RW_IMPL", "a01234.html#ga277e7d7efb1fe3dc2f7220acb7e6ce83", null ],
+    [ "MCUXCLBUFFER_INIT_CUSTOM_IMPL", "a01234.html#ga176f4249468516214039b46f98adf9ad", null ]
 ];

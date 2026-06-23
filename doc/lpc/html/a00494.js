@@ -1,10 +1,11 @@
 var a00494 =
 [
-    [ "mcuxClRandom_Status_t", "a00797.html#ga768ea9930242003d2a68991684a1e948", null ],
-    [ "mcuxClRandom_ContextDescriptor_t", "a00797.html#gab409cd7b1e5a4da822bf9ae43d00c79c", null ],
-    [ "mcuxClRandom_Context_t", "a00797.html#gac2ce3a52788240794afde522cfad65c5", null ],
-    [ "mcuxClRandom_ModeDescriptor_t", "a00797.html#gadcfae984a95f3e98617ca5fb9767f5cd", null ],
-    [ "mcuxClRandom_Mode_t", "a00797.html#ga2998181a66cbdc063aa08d76e5fdef9d", null ],
-    [ "mcuxClRandom_CustomNcGenerateAlgorithm_t", "a00797.html#ga159d417f0d48eefc2b516bbd77e9a804", null ],
-    [ "mcuxClRandom_Config_t", "a00797.html#gaf1284eaa96ef47c06697f95e74ffc3ee", null ]
+    [ "mcuxClAead_ModeDescriptor_AES_CCM_ENC", "a01330.html#gac05fdd0d08e4c25390079671875363f3", null ],
+    [ "mcuxClAead_Mode_AES_CCM_ENC", "a01330.html#ga2bcc801c8d408f932f10ef5834bd4dca", null ],
+    [ "mcuxClAead_ModeDescriptor_AES_CCM_DEC", "a01330.html#ga6a1aa3e495a39a8c6d8e399e2195daf2", null ],
+    [ "mcuxClAead_Mode_AES_CCM_DEC", "a01330.html#ga2200749ce58283a93c563c8ca588b266", null ],
+    [ "mcuxClAead_ModeDescriptor_AES_GCM_ENC", "a01330.html#ga8874663e21c7e81e855ebcceacdd300a", null ],
+    [ "mcuxClAead_Mode_AES_GCM_ENC", "a01330.html#gac6b194ee963fcd02a46c187436486f3a", null ],
+    [ "mcuxClAead_ModeDescriptor_AES_GCM_DEC", "a01330.html#gac167912520d7408603f0b4115ea59150", null ],
+    [ "mcuxClAead_Mode_AES_GCM_DEC", "a01330.html#gafec8f3f6510075056a56f46fcec29f0d", null ]
 ];

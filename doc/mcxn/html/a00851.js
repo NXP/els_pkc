@@ -1,7 +1,6 @@
 var a00851 =
 [
-    [ "mcuxClKey_TypeDescriptor_HmacSha256", "a00851.html#gaa7829411660f435c478e54884f9dc235", null ],
-    [ "mcuxClKey_Type_HmacSha256", "a00851.html#ga6d1ebb714b890c9b193a68edb3038720", null ],
-    [ "mcuxClKey_TypeDescriptor_Hmac_variableLength", "a00851.html#gae7b0c9b1b7b2c69b0d8c9ac6decdcf1f", null ],
-    [ "mcuxClKey_Type_Hmac_variableLength", "a00851.html#ga42eb018ca876c87b3d4539532ab2154d", null ]
+    [ "MCUXCLMEMORY_FP_MEMORY_CLEAR", "a01484.html#ga2dc0fdbb602c3777fffb8515f944d736", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_CLEAR_WITH_BUFF", "a01484.html#ga76dcce466859684502b4725d51d5de4f", null ],
+    [ "mcuxClMemory_clear", "a01484.html#ga1ac6e8a4335f620d41360c090ee5ce73", null ]
 ];

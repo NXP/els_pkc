@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['glikey0_5fbaseaddress_0',['GLIKEY0_BASEADDRESS',['../a04571.html#a33e5b6893e828845d5e85d1a923abb15',1,'ip_platform.h']]],
+  ['glikey0_5fnum_5fidx_1',['GLIKEY0_NUM_IDX',['../a04571.html#ac89f87d4517f6be09329dfc3c0b7d82c',1,'ip_platform.h']]],
+  ['glikey1_5fbaseaddress_2',['GLIKEY1_BASEADDRESS',['../a04571.html#a70a708697f5c1c741e8ddafc0cbf94c1',1,'ip_platform.h']]],
+  ['glikey1_5fnum_5fidx_3',['GLIKEY1_NUM_IDX',['../a04571.html#a97add246d10c546112ae8ebbb4f5a9cd',1,'ip_platform.h']]],
+  ['glikey2_5fbaseaddress_4',['GLIKEY2_BASEADDRESS',['../a04571.html#ae1eff268a6612de57ae0b657291f1ada',1,'ip_platform.h']]],
+  ['glikey2_5fnum_5fidx_5',['GLIKEY2_NUM_IDX',['../a04571.html#a4dbbdeb02984b062cb16363cad6c9e33',1,'ip_platform.h']]],
+  ['glikey3_5fbaseaddress_6',['GLIKEY3_BASEADDRESS',['../a04571.html#a3b0f5880b070dcc41249d7d4a144d03d',1,'ip_platform.h']]],
+  ['glikey3_5fnum_5fidx_7',['GLIKEY3_NUM_IDX',['../a04571.html#a0bec5fc68a16da81383b3ca1855fc057',1,'ip_platform.h']]],
+  ['glikey4_5fbaseaddress_8',['GLIKEY4_BASEADDRESS',['../a04571.html#a7ba6fea0e7d71d3c193878231a69c97c',1,'ip_platform.h']]],
+  ['glikey4_5fnum_5fidx_9',['GLIKEY4_NUM_IDX',['../a04571.html#a1e748fba2988d54541c60b73a254916c',1,'ip_platform.h']]],
+  ['glikey5_5fbaseaddress_10',['GLIKEY5_BASEADDRESS',['../a04571.html#a5e4818bcbbf753ba63122430c50d376a',1,'ip_platform.h']]],
+  ['glikey5_5fnum_5fidx_11',['GLIKEY5_NUM_IDX',['../a04571.html#a9cf97ed1813c890f6094e9df2a1c974c',1,'ip_platform.h']]],
+  ['glikey_5fsfr_5fbase_12',['GLIKEY_SFR_BASE',['../a04571.html#a4cab32054e8ccce8ae1901018fb21312',1,'ip_platform.h']]],
+  ['glikey_5fsfr_5fname_13',['GLIKEY_SFR_NAME',['../a04571.html#a491f2f1133a278a0c6a3d6fa949d871d',1,'ip_platform.h']]],
+  ['glikey_5fsfr_5fprefix_14',['GLIKEY_SFR_PREFIX',['../a04571.html#a12dbde373fff5475656a4fbabe27e0bb',1,'ip_platform.h']]],
+  ['glikey_5fsfr_5fsuffix_5fmsk_15',['GLIKEY_SFR_SUFFIX_MSK',['../a04571.html#a35f6d0232eef5341e21a80648299cb9c',1,'ip_platform.h']]],
+  ['glikey_5fsfr_5fsuffix_5fpos_16',['GLIKEY_SFR_SUFFIX_POS',['../a04571.html#ae31c28a28021436047b2a5a7b4976e88',1,'ip_platform.h']]]
+];

@@ -1,0 +1,36 @@
+var a01826 =
+[
+    [ "CLKCTL2 Register Masks", "a01827.html", "a01827" ],
+    [ "CLKCTL2_Type", "a03461.html", [
+      [ "PSCCTL0", "a01603.html#ga2bd387ae8b1c6612a58bc4fa244d95dc", null ],
+      [ "PSCCTL0_SET", "a01603.html#ga69dd6cefff2bf8a2fdef02d8caec3785", null ],
+      [ "PSCCTL0_CLR", "a01603.html#ga3160db6e0c6c022d826f31fa692e126b", null ],
+      [ "COMMONVDDNCLKSEL", "a01603.html#gad0fc5463c2e1d95063bcbd5602fc70d0", null ],
+      [ "COMMONVDDNCLKDIV", "a01603.html#ga5eb1f271460790d4e500b94ba42c6073", null ],
+      [ "SYSOSCCTL0", "a01603.html#ga94716b008b3f17886a7a582bb4efbb68", null ],
+      [ "SYSOSCBYPASS", "a01603.html#ga4bb2f374adea921c083e21aeda487f7c", null ],
+      [ "USBCLKSRC24MCLKSEL", "a01603.html#gac2f95a705ddbc4301fa51a9a61cc2577", null ],
+      [ "COMNBASECLKSEL", "a01603.html#ga16174f74f7d1f0d9a068c8867fd32bd6", null ],
+      [ "EUSBCLKSRC24MCLKSEL", "a01603.html#gaa203b295b6f5be38e92b3dd1db7b02d1", null ],
+      [ "MAINPLL0CLKSEL", "a01603.html#ga9407e7ae2d78047d19f4a99cbe20d75d", null ],
+      [ "MAINPLL0CTL0", "a01603.html#ga920083374de79ee9d20b51a4008e6ac1", null ],
+      [ "MAINPLL0LOCKTIMEDIV2", "a01603.html#gaba406bc324522e16fe7ad983dc9cd2f0", null ],
+      [ "MAINPLL0NUM", "a01603.html#ga99e1a8e113e0e36595b365b8f9fe2374", null ],
+      [ "MAINPLL0DENOM", "a01603.html#ga14ef0aeb1954745be528bb10e94805e3", null ],
+      [ "MAINPLL0PFD", "a01603.html#ga081aee6478181c311126a88b67872598", null ],
+      [ "MAINPLL0PFDDOMAINEN", "a01603.html#ga8732dae0751237699ba39d1a64d59b24", null ],
+      [ "AUDIOPLL0CLKSEL", "a01603.html#ga981a7c6e7e749e632c1a0eb683a367b7", null ],
+      [ "AUDIOPLL0CTL0", "a01603.html#ga6dd7fa2c970d63f3990ef1f2a96a0bbe", null ],
+      [ "AUDIOPLL0LOCKTIMEDIV2", "a01603.html#gafa6a83c35486dc30a99ddf012b0282f9", null ],
+      [ "AUDIOPLL0NUM", "a01603.html#gab4c254eb7a69c25a8ff334c7de2c726f", null ],
+      [ "AUDIOPLL0DENOM", "a01603.html#ga6d65cbbc59d9fef0b49ee3b08ce48330", null ],
+      [ "AUDIOPLL0PFD", "a01603.html#gaf02e0d93ba2da1faec15575055eb65ed", null ],
+      [ "AUDIOPLL0PFDDOMAINEN", "a01603.html#gaa665174f204c80558556a2feea14a52e", null ],
+      [ "AUDIOPLL0VCODOMAINEN", "a01603.html#ga9db28f3ac1b2dca88ad0de41c6e6b138", null ],
+      [ "CKIL_32K_GATE", "a01603.html#gad28e3e62f6258d919776c97c36547ef7", null ]
+    ] ],
+    [ "CLKCTL2_BASE", "a01826.html#gaa85488bf2171b3271af1e3fef2a43d65", null ],
+    [ "CLKCTL2", "a01826.html#ga75dd283dfc4b0e55bf9b430c2c9fb659", null ],
+    [ "CLKCTL2_BASE_ADDRS", "a01826.html#gafa8f0f1335396cc10e77ef5c4cd0d737", null ],
+    [ "CLKCTL2_BASE_PTRS", "a01826.html#ga5e6e081a47d1a129d85570e12f6a697b", null ]
+];

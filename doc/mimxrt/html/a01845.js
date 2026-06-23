@@ -1,0 +1,28 @@
+var a01845 =
+[
+    [ "IOPCTL1_PIO_FSEL", "a01843.html#ga68974811d631acccf8d79db589b8d9bf", null ],
+    [ "IOPCTL1_PIO_PUPDENA", "a01843.html#gacd39f100a1184abcb64e6c3dbbed7fbf", null ],
+    [ "IOPCTL1_PIO_PUPDSEL", "a01843.html#ga37def4f6075c781824fd3e18a5cb116d", null ],
+    [ "IOPCTL1_PIO_IBENA", "a01843.html#ga7eb476f3c01099c610b2b7ae608017c6", null ],
+    [ "IOPCTL1_PIO_SLEWRATE", "a01843.html#ga03dfeb76f77edb81dff58c95511ac1a4", null ],
+    [ "IOPCTL1_PIO_FULLDRIVE", "a01843.html#ga7f4a6c6597f9774c27b3cd3133cf2f7e", null ],
+    [ "IOPCTL1_PIO_AMENA", "a01843.html#gaf6af865094c1c438da415d8d64e2ed6d", null ],
+    [ "IOPCTL1_PIO_ODENA", "a01843.html#gaddf84e458b24e72ead7ee93148c3fbc7", null ],
+    [ "IOPCTL1_PIO_IIENA", "a01843.html#gaf0ff9b18dd2787fe308272fb5caabe02", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_PUPDENA", "a01845.html#gab387e3e67908713749b0739637a8b89d", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_PUPDSEL", "a01845.html#gad8bbfb65e8c90229ea1a166d99d59e10", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_IBENA", "a01845.html#ga46a50c7c2dfa0be419b069bb7faebd10", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_SLEWRATE", "a01845.html#ga8151999dc6d52f59fb0e58f842131310", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_FULLDRIVE", "a01845.html#gaf0aae71a25bfe185a672c5a5a8e13735", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_AMENA", "a01845.html#gae0f8a809382eeb52728fd7250adbc839", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_ODENA", "a01845.html#gab228e91f0cca0ebfc9f4b956717177b4", null ],
+    [ "IOPCTL1_PMIC_I2C_SDA_IIENA", "a01845.html#ga5c8a88e8f1a35fe4b9b72c3060b5117b", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_PUPDENA", "a01845.html#ga90c694177211f01ddcf467ffce9cc227", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_PUPDSEL", "a01845.html#ga940959a523517a93e2c7206cda5fc9fe", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_IBENA", "a01845.html#ga6245b9fbae37b8ee23f1e679960bbf6a", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_SLEWRATE", "a01845.html#ga4590f352da79477d1fa5715714481e86", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_FULLDRIVE", "a01845.html#ga17ccbd190c51d5162d16400116ae9ae5", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_AMENA", "a01845.html#gae04384d704bb9de5030bd62e69a81e94", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_ODENA", "a01845.html#ga689d7b9c4cd45b1e8052b180c313d969", null ],
+    [ "IOPCTL1_PMIC_I2C_SCL_IIENA", "a01845.html#ga5df81969af8563a2489a5f68246181af", null ]
+];

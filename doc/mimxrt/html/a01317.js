@@ -1,8 +1,11 @@
 var a01317 =
 [
-    [ "MCUXCLECC_PKC_WORDSIZE", "a01317.html#ga636a89c09b2210ea78da464825e4bf99", null ],
-    [ "MCUXCLECC_KEYGEN_WAPKC_SIZE", "a01317.html#ga7e26bba72c6eefd7f91907d0df33f17b", null ],
-    [ "MCUXCLECC_SIGN_WAPKC_SIZE", "a01317.html#ga3574ac0f7b7b9b6d17003263fc47c6c0", null ],
-    [ "MCUXCLECC_VERIFY_WAPKC_SIZE", "a01317.html#gab4cdcbfb78c215dbee9ff06dc2955034", null ],
-    [ "MCUXCLECC_POINTMULT_WAPKC_SIZE", "a01317.html#ga36cab670f924640163fc1b02bb753792", null ]
+    [ "mcuxClEls_HmacOption_t", "a02201.html", [
+      [ "value", "a02201.html#a577065f77e409f612e5a2fc2072b971d", null ],
+      [ "word", "a02201.html#a0f1e49989e223220047f7a191bc656eb", null ],
+      [ "__pad0__", "a02201.html#a590b1d47d31c598e6df237437a015b8e", null ],
+      [ "extkey", "a02201.html#a4e16fabb042914665cabe00f5d6a6795", null ],
+      [ "__pad1__", "a02201.html#afa33782e670b9a44a28f71cb097ad830", null ],
+      [ "bits", "a02201.html#a90cd448708cc5bcc3571e338094587b2", null ]
+    ] ]
 ];

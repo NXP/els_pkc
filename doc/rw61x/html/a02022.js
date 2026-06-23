@@ -1,0 +1,37 @@
+var a02022 =
+[
+    [ "CLKCTL1 Register Masks", "a02023.html", "a02023" ],
+    [ "CLKCTL1_Type", "a04083.html", [
+      [ "PSCCTL0", "a04083.html#a8f193245f45c0bd28a258bee3e4ebf0c", null ],
+      [ "PSCCTL1", "a04083.html#a96f6bc15179157c5ec9eb944a5381fe0", null ],
+      [ "PSCCTL2", "a04083.html#ac6d39da717fe092e482805c77f59d9ad", null ],
+      [ "PSCCTL0_SET", "a04083.html#af0e972247548cbd19843adeb096f2e91", null ],
+      [ "PSCCTL1_SET", "a04083.html#a2c8ff426f41bc349cde2117ae685becf", null ],
+      [ "PSCCTL2_SET", "a04083.html#a8127b691ee80e9516098f57536a1d54d", null ],
+      [ "PSCCTL0_CLR", "a04083.html#ae15249b282d00813ac34d75295b4f812", null ],
+      [ "PSCCTL1_CLR", "a04083.html#adbc7e70cbe640947336da280783c138d", null ],
+      [ "PSCCTL2_CLR", "a04083.html#a45bde6ce2a53dfda69140f33e1d2061c", null ],
+      [ "AUDIOPLLCLKDIV", "a04083.html#af4ef8fac356d484cc33289d7445e455c", null ],
+      [ "OSEVENTFCLKSEL", "a04083.html#a24566ef7bb8605824d69d5ef712b85b6", null ],
+      [ "FRGCLKSEL", "a04083.html#a1833262cf96fb88461ee3686f25b50b6", null ],
+      [ "FRGCTL", "a04083.html#a15ea148a1e6820f645c8e783619705ae", null ],
+      [ "FCFCLKSEL", "a04083.html#a1d0767e7afa42a66ac58ef0f3c25ed36", null ],
+      [ "FRG14CLKSEL", "a04083.html#a9f88a16859025c7be8b9b8577de03a44", null ],
+      [ "FRG14CTL", "a04083.html#ae7ec306fc6473bc9c07eb80fd7019f82", null ],
+      [ "FC14FCLKSEL", "a04083.html#a34fecaea908f3e9b9c9ddf64780ab07b", null ],
+      [ "FRGPLLCLKDIV", "a04083.html#a83978324ef8d933f3264ff27118ae19f", null ],
+      [ "DMIC0FCLKSEL", "a04083.html#a65661e73835c9fd39a3a87b8141b527f", null ],
+      [ "DMIC0CLKDIV", "a04083.html#ace8b85ccf52b2259c738a32603275150", null ],
+      [ "CT32BITFCLKSEL", "a04083.html#a97b98c215c8b680ad29791855b88d97d", null ],
+      [ "AUDIOMCLKSEL", "a04083.html#a1ad840343b8e157c109a8d1017874412", null ],
+      [ "AUDIOMCLKDIV", "a04083.html#a692cc9455636d23a99541e396cc08acf", null ],
+      [ "CLKOUTSEL0", "a04083.html#a1c882b5717380c135f8dd03739cd3f50", null ],
+      [ "CLKOUTSEL1", "a04083.html#a7466005f47c649995c0bc96c4c844322", null ],
+      [ "CLKOUTDIV", "a04083.html#ad3225164d19ee7e308f35bdfb981a841", null ],
+      [ "CLKOUTSEL2", "a04083.html#aa59e5d40796448298a4451e3066f1ca6", null ]
+    ] ],
+    [ "CLKCTL1_BASE", "a02022.html#ga218f0ff8ed8a96b05598b57c0534f5cc", null ],
+    [ "CLKCTL1", "a02022.html#gab6701fef0e3ddf46d6980b210137da88", null ],
+    [ "CLKCTL1_BASE_ADDRS", "a02022.html#ga7a28217f3ab3e046ac89f5c483ca800a", null ],
+    [ "CLKCTL1_BASE_PTRS", "a02022.html#ga9943aa8a9020d48d6549de6808348861", null ]
+];

@@ -1,0 +1,6 @@
+var a01979 =
+[
+    [ "RSTCTL2_PRSTCTL0_IOPCTL2", "a01979.html#ga29ad1714cf79ec5d918ebc3a2daa8171", null ],
+    [ "RSTCTL2_PRSTCTL0_SET_IOPCTL2", "a01979.html#ga85ca4a761b91b4792e815591663b3b20", null ],
+    [ "RSTCTL2_PRSTCTL0_CLR_IOPCTL2", "a01979.html#gadd79d71ce226a0c2955ef04f97254c73", null ]
+];

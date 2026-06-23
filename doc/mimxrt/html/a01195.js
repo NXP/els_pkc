@@ -1,5 +1,7 @@
 var a01195 =
 [
-    [ "MCUX_CSSL_DI_USE_SECURE_COUNTER", "a01195.html#gad14940e758b00b26f2e699b4fc0144bb", null ],
-    [ "MCUX_CSSL_DI_USE_NONE", "a01195.html#ga4f0cea555852c5171e55303b6cb062be", null ]
+    [ "mcuxClAead_Constants", "a01196.html", "a01196" ],
+    [ "One-shot AEAD interfaces", "a01197.html", "a01197" ],
+    [ "mcuxClAead_Types", "a01199.html", "a01199" ],
+    [ "mcuxClAead_MemoryConsumption", "a01510.html", "a01510" ]
 ];

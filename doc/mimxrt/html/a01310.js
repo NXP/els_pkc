@@ -1,7 +1,7 @@
 var a01310 =
 [
-    [ "MCUXCLPKC_STATUS_OK", "a01310.html#ga12385077399c226411e29ef427246669", null ],
-    [ "MCUXCLPKC_STATUS_NOK", "a01310.html#gab1f0a5295736463652b7a8c1ba887991", null ],
-    [ "mcuxClPkc_Status_t", "a01310.html#ga9382ab1c4689794b50a3b75ad39a350c", null ],
-    [ "mcuxClPkc_Status_Protected_t", "a01310.html#gaaee98013327cc5777f68c6b9fdb1ef6d", null ]
+    [ "MCUXCLELS_HASH_STATE_SIZE_SHA_224", "a01310.html#ga3fd16f21d04553be99f6c4bade526fcb", null ],
+    [ "MCUXCLELS_HASH_STATE_SIZE_SHA_256", "a01310.html#ga9a24ee94d01d6b1b8cb33c7af84f8d9e", null ],
+    [ "MCUXCLELS_HASH_STATE_SIZE_SHA_384", "a01310.html#ga2d78f8155107a52c3e618bab9bb52f85", null ],
+    [ "MCUXCLELS_HASH_STATE_SIZE_SHA_512", "a01310.html#gaf9f4da1c0d09797adb02f2af0bf4b429", null ]
 ];

@@ -1,10 +1,16 @@
 var a01250 =
 [
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA_1", "a01250.html#ga33b704215984285abfe33b51074e7199", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_224", "a01250.html#ga64ea4a6c44d5714d06cde9c858ca963f", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_256", "a01250.html#gac40907ce6e09e87b7931823ad48a50c3", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_384", "a01250.html#ga09b5656067c3ab3e89c3d0aaa9f2e5ad", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512", "a01250.html#gad09b3d78d2a33f965308f2e4c34ea0cf", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512_224", "a01250.html#gafdc371fcd745111898ccdf7b278cf417", null ],
-    [ "MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512_256", "a01250.html#gad8765430a45e16650b7c7b4ae70eff73", null ]
+    [ "mcuxClEcc_KeyGen", "a01250.html#gabc728b0278908265f9923535391005dc", null ],
+    [ "mcuxClEcc_Sign", "a01250.html#ga105ec4e9dc29573334f52979381686de", null ],
+    [ "mcuxClEcc_Verify", "a01250.html#ga80f15538ec3cb2d3bfa8dc2f2da86366", null ],
+    [ "mcuxClEcc_PointMult", "a01250.html#gab199a221c61f252a0c755ab8d8a6a77c", null ],
+    [ "mcuxClEcc_MontDH_GenerateKeyPair", "a01250.html#ga5616a55dae9d18d4fe8ceea83fb5b2d5", null ],
+    [ "mcuxClEcc_MontDH_KeyAgreement", "a01250.html#ga0857858d5b98a11312d2f50b4f81219e", null ],
+    [ "mcuxClEcc_EdDSA_GenerateKeyPair", "a01250.html#ga0ac2814cb9c8f4b8718a95d8c2ae2b85", null ],
+    [ "mcuxClEcc_EdDSA_GenerateSignature", "a01250.html#gafa11fad1402090b533a673f3ab07b408", null ],
+    [ "mcuxClEcc_EdDSA_VerifySignature", "a01250.html#gaf103758e4959f9ac2d7ce0b63e00d2da", null ],
+    [ "mcuxClEcc_EdDSA_InitPrivKeyInputMode", "a01250.html#ga78eaff72d9c8202b51c61c6668b9c3aa", null ],
+    [ "mcuxClEcc_EdDSA_GenerateProtocolDescriptor", "a01250.html#ga54e3517cb9729321cdb4017b0fdc4485", null ],
+    [ "mcuxClEcc_ArithmeticOperation", "a01250.html#gaacf7bf5d590b21a45b283bf8f95a4ef5", null ],
+    [ "mcuxClEcc_WeierECC_PublicKeyValidation", "a01250.html#ga5985027a80aa4b88173e38e3cec26caa", null ]
 ];

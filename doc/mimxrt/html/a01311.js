@@ -1,7 +1,7 @@
 var a01311 =
 [
-    [ "MCUXCLPKC_ALIGN_TO_PKC_WORDSIZE", "a01311.html#ga8c42266e3f46f637fd8d28d34b1ffdc3", null ],
-    [ "MCUXCLPKC_PACKARGS4", "a01311.html#gac13331e9f328b7a4446314837be58138", null ],
-    [ "MCUXCLPKC_PACKARGS2", "a01311.html#ga5040d930ab47ec9246a95cf32b8f5fed", null ],
-    [ "MCUXCLPKC_WORDSIZE", "a01311.html#ga275596959934aecdbc4dc35cefb1c6ba", null ]
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_224", "a01311.html#ga5cc6964abb7966c445feb2abf14f8067", null ],
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256", "a01311.html#gaaa520442bedd60dec1b7e4b10ac57fe3", null ],
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_384", "a01311.html#gab961aed69bd7828bf783f318a9dde671", null ],
+    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_512", "a01311.html#gab75499823ecacb60bc8c9fdc8d541e95", null ]
 ];

@@ -1,5 +1,5 @@
 var a01320 =
 [
-    [ "MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE", "a01320.html#ga435b584a2a74e53c5987727a938aa65d", null ],
-    [ "MCUXCLECC_EDDSA_GENERATEKEYPAIR_DESCRIPTOR_SIZE_IN_WORDS", "a01320.html#ga074071ed0643663a9548b3dfcf0417db", null ]
+    [ "mcuxClEls_Kdf_Define", "a01321.html", "a01321" ],
+    [ "mcuxClEls_Kdf_Types", "a01322.html", "a01322" ]
 ];

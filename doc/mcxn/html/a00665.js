@@ -1,10 +1,25 @@
 var a00665 =
 [
-    [ "MCUXCSSLPARAMINTEGRITY_BASE_CHECKSUM", "a00963.html#ga53aac27cab05b855d2ae62f2b1d3d7d0", null ],
-    [ "MCUXCSSLPARAMINTEGRITY_CHECK_VALID", "a00963.html#gad7a460092fbe39b438614ba1d159bb16", null ],
-    [ "MCUXCSSLPARAMINTEGRITY_CHECK_INVALID", "a00963.html#ga889eda2d841537edae8f0f7d80dde8b0", null ],
-    [ "mcuxCsslParamIntegrity_AssertionCpuWordSize_t", "a00964.html#gaf2a8a66e39dd0d33d085d3d412cafb96", null ],
-    [ "mcuxCsslParamIntegrity_Checksum_t", "a00964.html#ga6a229130320b395fbb8a8a76a361bd1e", null ],
-    [ "mcuxCsslParamIntegrity_Protect", "a00965.html#gaaa2a9f40eb61dbe8ccce1b3b2dc824bb", null ],
-    [ "mcuxCsslParamIntegrity_Validate", "a00965.html#gaface23af4c626fe4adf70518056f2f33", null ]
+    [ "MCUXCLELS_AEAD_ENCRYPT", "a01361.html#ga3bc61d00867e4344af9c7605a47028cf", null ],
+    [ "MCUXCLELS_AEAD_DECRYPT", "a01361.html#gaaf35b04563d926ceaa1782d82741d7b7", null ],
+    [ "MCUXCLELS_AEAD_STATE_IN_DISABLE", "a01361.html#ga445707b186d86232b626330863532c15", null ],
+    [ "MCUXCLELS_AEAD_STATE_IN_ENABLE", "a01361.html#ga19f5684ee7ffea323b56bab96f7c059b", null ],
+    [ "MCUXCLELS_AEAD_LASTINIT_TRUE", "a01361.html#ga7af98652f0dba78d1c665b2c9dfd0e29", null ],
+    [ "MCUXCLELS_AEAD_LASTINIT_FALSE", "a01361.html#ga7f97e1488141405752147029eee6a818", null ],
+    [ "MCUXCLELS_AEAD_EXTERN_KEY", "a01361.html#ga5b1a905706af4ecad1473f5e3ac8a710", null ],
+    [ "MCUXCLELS_AEAD_INTERN_KEY", "a01361.html#gaa7d58cf548b411d9aaea17af1539203a", null ],
+    [ "MCUXCLELS_AEAD_ACPMOD_INIT", "a01361.html#ga6c775ee90e7ea1e3db4840a2037d303c", null ],
+    [ "MCUXCLELS_AEAD_ACPMOD_AADPROC", "a01361.html#ga536e8fa026cae719c095b47fbb0fd099", null ],
+    [ "MCUXCLELS_AEAD_ACPMOD_MSGPROC", "a01361.html#ga05e3ebc05c195d1f62ff6a40a98b8d3c", null ],
+    [ "MCUXCLELS_AEAD_ACPMOD_FINAL", "a01361.html#ga1d5a6d584b299721149ff9bdbeaee517", null ],
+    [ "MCUXCLELS_AEAD_STATE_OUT_ENABLE", "a01361.html#ga944f3b21904cdbc22385fcfab1c1236b", null ],
+    [ "MCUXCLELS_AEAD_IV_BLOCK_SIZE", "a01360.html#gacc54b347065e037fd7d5814334b82826", null ],
+    [ "MCUXCLELS_AEAD_AAD_BLOCK_SIZE", "a01360.html#ga8a1dab00c208f1b7dc1cf8a2a30a3991", null ],
+    [ "MCUXCLELS_AEAD_TAG_SIZE", "a01360.html#ga61d8f500ac3ed42fff023025b54692f2", null ],
+    [ "MCUXCLELS_AEAD_CONTEXT_SIZE", "a01360.html#ga191963434b3271e31bdffc12943745e2", null ],
+    [ "mcuxClEls_Aead_Init_Async", "a01363.html#ga86bbde5d55c2e44102158ef7b802b819", null ],
+    [ "mcuxClEls_Aead_PartialInit_Async", "a01363.html#ga817b12c984eb2afcaad9aa3c2b75040c", null ],
+    [ "mcuxClEls_Aead_UpdateAad_Async", "a01363.html#gaa34534b5e5196e07cbcef7c858cc0ea9", null ],
+    [ "mcuxClEls_Aead_UpdateData_Async", "a01363.html#ga7d5f1b08fbbcda07f881c274b0100c8b", null ],
+    [ "mcuxClEls_Aead_Finalize_Async", "a01363.html#gab2f0d1f82ce7537c78967ea2989a2054", null ]
 ];

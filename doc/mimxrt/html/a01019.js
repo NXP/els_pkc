@@ -1,5 +1,6 @@
 var a01019 =
 [
-    [ "MCUXCLELS_CMAC_KEY_SIZE_128", "a01019.html#ga62fa42c9462e49ed1e357287492a64e8", null ],
-    [ "MCUXCLELS_CMAC_KEY_SIZE_256", "a01019.html#gab62855422ff04c5fb61bdcd555282931", null ]
+    [ "MCUX_CSSL_FP_USE_CODE_SIGNATURE", "a01473.html#gaeaecd08382d1bf7542d523e67c15b90b", null ],
+    [ "MCUX_CSSL_FP_USE_SECURE_COUNTER", "a01473.html#ga645fafaa87e927ec807c9679dfa6d74e", null ],
+    [ "MCUX_CSSL_FP_USE_NONE", "a01473.html#ga8fcbc78b6821d4cd6ea67bdc3d4e3ba7", null ]
 ];

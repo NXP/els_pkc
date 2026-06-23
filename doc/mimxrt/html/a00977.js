@@ -1,11 +1,8 @@
 var a00977 =
 [
-    [ "MCUXCLAES_BLOCK_SIZE", "a00977.html#gaa988298f03dda2718fd7d6a893d84b6a", null ],
-    [ "MCUXCLAES_BLOCK_SIZE_IN_WORDS", "a00977.html#ga70310305440fe83e2f18e79341de4830", null ],
-    [ "MCUXCLAES_AES128_KEY_SIZE", "a00977.html#gaf7377746dc3a4ea714c79c17f9ddbdde", null ],
-    [ "MCUXCLAES_AES128_KEY_SIZE_IN_WORDS", "a00977.html#ga82f8be599a040e7a44d1c4a78513b643", null ],
-    [ "MCUXCLAES_AES192_KEY_SIZE", "a00977.html#ga10c60a14d43acdf3a32074b6104c00b4", null ],
-    [ "MCUXCLAES_AES192_KEY_SIZE_IN_WORDS", "a00977.html#ga68bc6c94d74d3ddde085798e06c5968a", null ],
-    [ "MCUXCLAES_AES256_KEY_SIZE", "a00977.html#gaf85d02f88b56069ada0d2e6eaf184af8", null ],
-    [ "MCUXCLAES_AES256_KEY_SIZE_IN_WORDS", "a00977.html#ga59948f7fc4145e5dc383387f01dc439b", null ]
+    [ "mcuxClSession_init", "a01448.html#gaf1b8776b0d519136df17f6dd632442cf", null ],
+    [ "mcuxClSession_setRtf", "a01448.html#ga159bff529d405fd6da2930590a69ac06", null ],
+    [ "mcuxClSession_cleanup", "a01448.html#ga1ba3d2c6e561c86e1da8fcc0abfd046c", null ],
+    [ "mcuxClSession_destroy", "a01448.html#gaad324fd8f8eeefa29521c4297ac75fd2", null ],
+    [ "mcuxClSession_setRandom", "a01448.html#gaf54e4bf1b4aaf3d11e4da722ea55ef01", null ]
 ];

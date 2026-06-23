@@ -1,0 +1,7 @@
+var a01768 =
+[
+    [ "MAILBOX_MBOXIRQ_IRQ_INTREQ", "a01768.html#ga297e602bc2a65efb4088e1eb8e9e11a1", null ],
+    [ "MAILBOX_MBOXIRQ_IRQSET_INTREQSET", "a01768.html#ga53b148b79808caeab83cba9d550514bd", null ],
+    [ "MAILBOX_MBOXIRQ_IRQCLR_INTREQCLR", "a01768.html#ga041cf586e6ec7bf4db83d4dc7ec71447", null ],
+    [ "MAILBOX_MUTEX_EX", "a01768.html#ga5d1877151f09a07f16748d8eecca2806", null ]
+];

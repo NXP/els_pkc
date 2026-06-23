@@ -1,0 +1,5 @@
+var a01279 =
+[
+    [ "MCUXCLELS_ERROR_FLAGS_KEEP", "a01279.html#gab2b0ee14cae59a5f5f4f2563d7189854", null ],
+    [ "MCUXCLELS_ERROR_FLAGS_CLEAR", "a01279.html#ga3528b1fa2b3c39524898299a3a90a753", null ]
+];

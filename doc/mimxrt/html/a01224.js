@@ -1,4 +1,5 @@
 var a01224 =
 [
-    [ "mcuxCsslMemory_Set", "a01224.html#ga0a0ed6d55e0cb4d633ba19a32aca64c6", null ]
+    [ "Multi-part AEAD interfaces", "a01225.html", "a01225" ],
+    [ "mcuxClAead_crypt", "a01224.html#gad0713168358588f9550468bf1ef7cfbb", null ]
 ];

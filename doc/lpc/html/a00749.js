@@ -1,17 +1,8 @@
 var a00749 =
 [
-    [ "mcuxClHash_AlgorithmDescriptor_C_Sha1", "a00749.html#ga4bddff55ab9de138d9db851785af2078", null ],
-    [ "mcuxClHash_Algorithm_Sha1", "a00749.html#ga811d2429668e6323e3c6f57193a53592", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha224", "a00749.html#ga56d71cf5a53a9e64a648c4d9776efa8e", null ],
-    [ "mcuxClHash_Algorithm_Sha224", "a00749.html#ga4de6a5917dc46d3aae22f93df66fc228", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha256", "a00749.html#ga0332b3c0540cd1761dfaa17b33f02f02", null ],
-    [ "mcuxClHash_Algorithm_Sha256", "a00749.html#ga672407195f718d55fcee73d1dfb7c623", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha384", "a00749.html#ga18de1261f5761dfc43ef89a102fda259", null ],
-    [ "mcuxClHash_Algorithm_Sha384", "a00749.html#gaa7389b8db9ec5c97b44db899e2b9f8db", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha512", "a00749.html#ga50a5ce5101cf1175127bdf1ea7bfb0e1", null ],
-    [ "mcuxClHash_Algorithm_Sha512", "a00749.html#gae0687309bef869b41302594c6c934d9a", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha512_224", "a00749.html#gad5f84175eff65918d1df0ec01cc1d168", null ],
-    [ "mcuxClHash_Algorithm_Sha512_224", "a00749.html#ga3aaa481ac9917b90eb4600913ada5025", null ],
-    [ "mcuxClHash_AlgorithmDescriptor_Sha512_256", "a00749.html#ga54a4880fa9a7e791a76c9201b2a49bb9", null ],
-    [ "mcuxClHash_Algorithm_Sha512_256", "a00749.html#gad9ccef5f766e8b6a30ada8413ab020ec", null ]
+    [ "mcuxClHash_AlgorithmDescriptor_t", "a01449.html#gacccec0a811d221d2cb0fd8416da271d8", null ],
+    [ "mcuxClHash_Algo_t", "a01449.html#ga0ffeeb89c76da6470176e7621713e1b2", null ],
+    [ "mcuxClHash_ContextDescriptor_t", "a01449.html#ga90ff7c4f43e59b80eca542e35722124c", null ],
+    [ "mcuxClHash_Context_t", "a01449.html#ga84c437ceb6b43a992b75866f793d0956", null ],
+    [ "mcuxClHash_Status_t", "a01449.html#gacdfd7a833fcd06684a73c22364e89b7c", null ]
 ];

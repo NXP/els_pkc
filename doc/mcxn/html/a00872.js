@@ -1,5 +1,6 @@
 var a00872 =
 [
-    [ "mcuxClMath_Functions", "a00873.html", "a00873" ],
-    [ "mcuxClMath_Macros", "a00874.html", "a00874" ]
+    [ "MCUXCLMEMORY_FP_MEMORY_XOR", "a01493.html#ga6c232e7d3a42052c2263f5eb853958f6", null ],
+    [ "MCUXCLMEMORY_FP_MEMORY_XOR_WITH_BUFF", "a01493.html#ga0dcd26faded8eb1fe7eaab8330e4c537", null ],
+    [ "mcuxClMemory_xor", "a01493.html#ga5db07fa8946e0fd685fe6fbb2f33c343", null ]
 ];

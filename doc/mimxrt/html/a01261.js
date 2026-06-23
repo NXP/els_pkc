@@ -1,11 +1,8 @@
 var a01261 =
 [
-    [ "MCUXCLRSA_VERIFY_NOVERIFY_WACPU_SIZE", "a01261.html#gac0a79e3e30fbf6610c95ad399bb55165", null ],
-    [ "MCUXCLRSA_VERIFY_PSSVERIFY_WACPU_SIZE", "a01261.html#gaf4bcc54a8a49029c2454d0afdca0a18e", null ],
-    [ "MCUXCLRSA_VERIFY_PKCS1V15VERIFY_WACPU_SIZE", "a01261.html#gab9dc9df4db1e42592e9f23b90abf7432", null ],
-    [ "MCUXCLRSA_VERIFY_1024_WAPKC_SIZE", "a01261.html#gaf6485ca0f6a219994ba327e9f35dbb94", null ],
-    [ "MCUXCLRSA_VERIFY_2048_WAPKC_SIZE", "a01261.html#ga347b86aaa2ec9e1c6b42d53b8b550139", null ],
-    [ "MCUXCLRSA_VERIFY_3072_WAPKC_SIZE", "a01261.html#gaf370a2aea81eaa53070ecd49de1291fb", null ],
-    [ "MCUXCLRSA_VERIFY_4096_WAPKC_SIZE", "a01261.html#ga8472e567acdaf653ea64617586e69dd5", null ],
-    [ "MCUXCLRSA_VERIFY_WAPKC_SIZE", "a01261.html#ga1890b9a82cba6144b533121da365baeb", null ]
+    [ "mcuxClEls_Aead_Init_Async", "a01261.html#ga86bbde5d55c2e44102158ef7b802b819", null ],
+    [ "mcuxClEls_Aead_PartialInit_Async", "a01261.html#ga817b12c984eb2afcaad9aa3c2b75040c", null ],
+    [ "mcuxClEls_Aead_UpdateAad_Async", "a01261.html#gaa34534b5e5196e07cbcef7c858cc0ea9", null ],
+    [ "mcuxClEls_Aead_UpdateData_Async", "a01261.html#ga7d5f1b08fbbcda07f881c274b0100c8b", null ],
+    [ "mcuxClEls_Aead_Finalize_Async", "a01261.html#gab2f0d1f82ce7537c78967ea2989a2054", null ]
 ];

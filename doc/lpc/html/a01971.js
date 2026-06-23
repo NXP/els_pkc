@@ -1,0 +1,20 @@
+var a01971 =
+[
+    [ "PUF_CTRL_CONFIG_DIS_PUF_ENROLL", "a01971.html#ga2cf59909d436980ffaf6f262082b809a", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_START", "a01971.html#ga393b4b6167318868ca5d7889abc87fb6", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_RECONSTRUCT", "a01971.html#ga786bc882e292906c7f3f7fda993b20db", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_STOP", "a01971.html#ga3529bc052b2d34c2b30bddc95db500f0", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_GET_KEY", "a01971.html#ga18a89fb0a4b6e910feaa8a969973d496", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_UNWRAP_KEY", "a01971.html#ga15bb9ae8695b4eda0f0dba7a6e5e00ad", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_GEN_WRAP_KEY", "a01971.html#ga505b85d0483ff5bc3e0ab0ece63e7eb6", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_WRAP_KEY", "a01971.html#ga741bbc63882c219b2315545eb2ea0cd9", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_GEN_RANDOM_NUMBER", "a01971.html#ga13dd22491d0788249da7425e5a506427", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_TEST_MEMORY", "a01971.html#gaa8dc6e6aaeb93b6c263dac5e6262b16c", null ],
+    [ "PUF_CTRL_CONFIG_DIS_PUF_TEST", "a01971.html#ga9385ded0578e824f5c0cce2f41ebe4d5", null ],
+    [ "PUF_CTRL_SEC_LOCK_SEC_LEVEL", "a01971.html#gaefc7bed945f3bfcf2a2926db11852ec8", null ],
+    [ "PUF_CTRL_SEC_LOCK_ANTI_POLE_SEC_LEVEL", "a01971.html#gabba38a141d2279dee3b5d0609cefda3a", null ],
+    [ "PUF_CTRL_SEC_LOCK_PATTERN", "a01971.html#ga61a84b43d81ad81b987d080ed1d414b5", null ],
+    [ "PUF_CTRL_APP_CTX_MASK_APP_CTX_MASK", "a01971.html#ga848e0d5b63d46ffc84d6debfd8b6a4f0", null ],
+    [ "PUF_CTRL_PUF_MEM_CTRL_POWERON", "a01971.html#ga4fb5b52bee5323805a19e09a6ceb8f9a", null ],
+    [ "PUF_CTRL_PUF_MEM_CTRL_CLK_GATE_EN", "a01971.html#ga528bab2b29d9564a7090e4940e64b91e", null ]
+];

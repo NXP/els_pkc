@@ -1,11 +1,10 @@
 var a01037 =
 [
-    [ "MCUXCLRSA_KEYGENERATION_CRT_2048_WACPU_SIZE", "a01037.html#gad96d63918b029c58379a519458e0fe5e", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_3072_WACPU_SIZE", "a01037.html#ga4f7ea947e335da713b995b3dd5756726", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_4096_WACPU_SIZE", "a01037.html#ga7cd47280b5c29ab35fe15afdb1aff9b5", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_WACPU_SIZE", "a01037.html#gab62b9607b6acf175174f192227482782", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_2048_WAPKC_SIZE", "a01037.html#ga50df60e5ac10a4d18d91793b9975f931", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_3072_WAPKC_SIZE", "a01037.html#ga9cddbdf9c06180c1ad4f1004c013a3b0", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_4096_WAPKC_SIZE", "a01037.html#ga046e2a5713b8ad6d69f9882d2fde5b3f", null ],
-    [ "MCUXCLRSA_KEYGENERATION_CRT_WAPKC_SIZE", "a01037.html#ga398705431e601a6309bcf59a65f72328", null ]
+    [ "mcuxClRandom_Status_t", "a01531.html#ga768ea9930242003d2a68991684a1e948", null ],
+    [ "mcuxClRandom_ContextDescriptor_t", "a01531.html#gab409cd7b1e5a4da822bf9ae43d00c79c", null ],
+    [ "mcuxClRandom_Context_t", "a01531.html#gac2ce3a52788240794afde522cfad65c5", null ],
+    [ "mcuxClRandom_ModeDescriptor_t", "a01531.html#gadcfae984a95f3e98617ca5fb9767f5cd", null ],
+    [ "mcuxClRandom_Mode_t", "a01531.html#ga2998181a66cbdc063aa08d76e5fdef9d", null ],
+    [ "mcuxClRandom_CustomNcGenerateAlgorithm_t", "a01531.html#ga159d417f0d48eefc2b516bbd77e9a804", null ],
+    [ "mcuxClRandom_Config_t", "a01531.html#gaf1284eaa96ef47c06697f95e74ffc3ee", null ]
 ];

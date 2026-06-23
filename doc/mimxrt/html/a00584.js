@@ -1,7 +1,8 @@
 var a00584 =
 [
-    [ "MCUXCLMAC_CBCMAC_OUTPUT_SIZE", "a01116.html#gae3fbb2da7d5fef73ea388eb30cb0e8a4", null ],
-    [ "MCUXCLMAC_CBCMAC_OUTPUT_SIZE_IN_WORDS", "a01116.html#ga071c1074dbc84e227e6bb7de4355d9e4", null ],
-    [ "MCUXCLMAC_CMAC_OUTPUT_SIZE", "a01116.html#ga19fabc0fcc4bb740d3ae3f5af0801932", null ],
-    [ "MCUXCLMAC_CMAC_OUTPUT_SIZE_IN_WORDS", "a01116.html#ga6c92dadeb46681334a49ccd369639ca3", null ]
+    [ "MCUXCLELS_HMAC_EXTERNAL_KEY_ENABLE", "a01316.html#ga19feebc17331ebe966c67a9bfed79e33", null ],
+    [ "MCUXCLELS_HMAC_EXTERNAL_KEY_DISABLE", "a01316.html#ga876370de65e0c65b54c39b34921a4444", null ],
+    [ "MCUXCLELS_HMAC_PADDED_KEY_SIZE", "a01315.html#ga039409b9bba04a61be14b175117fb932", null ],
+    [ "MCUXCLELS_HMAC_OUTPUT_SIZE", "a01315.html#ga80d89c1569e578566088cad0ea9127f4", null ],
+    [ "mcuxClEls_Hmac_Async", "a01318.html#gafc82ce850568a1e0c9f44f9e59d6fbbf", null ]
 ];

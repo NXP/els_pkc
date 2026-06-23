@@ -1,0 +1,15 @@
+var a01973 =
+[
+    [ "PVTS_RED_DEL_CTRL_DELAY0", "a01973.html#ga2a986ed5b9b69a12f7b68e71982532d4", null ],
+    [ "PVTS_RED_DEL_CTRL_DELAY1", "a01973.html#ga33121b060e2c8a14dbcb235b90f97efd", null ],
+    [ "PVTS_RED_ALERT_CNT_CNT", "a01973.html#gad7f4e43f1fbc988fa3fca9d958815065", null ],
+    [ "PVTS_RED_ALERT_CNT_CTRL_CNTEN", "a01973.html#gaa36dbc44e75f00446087a322fd29922f", null ],
+    [ "PVTS_AMBER_DEL_CTRL_DELAY0", "a01973.html#gaa2775eef9a55b16c767744a9f68aa15b", null ],
+    [ "PVTS_AMBER_DEL_CTRL_DELAY1", "a01973.html#gaa057b060b2313ea0f5e3f30ed91eb40e", null ],
+    [ "PVTS_AMBER_RING_OSC_CTRL_RINGOSCEN", "a01973.html#ga616dd95aa72509efa8cb9df5e5d9c45f", null ],
+    [ "PVTS_AMBER_RING_OSC_CTRL_CNTEN", "a01973.html#ga47f3662ca96ff7c9fd6d0223c14acee0", null ],
+    [ "PVTS_AMBER_RING_OSC_CTRL_CNTRST", "a01973.html#ga6571759113b187d162d14caa76ce4a4a", null ],
+    [ "PVTS_AMBER_RING_CNT_CNT", "a01973.html#ga88c98f1c43e52023318c906109aac600", null ],
+    [ "PVTS_AMBER_ALERT_CNT_CNT", "a01973.html#ga704d6d849c15892be0a60031d11859fc", null ],
+    [ "PVTS_AMBER_ALERT_CNT_CTRL_CNTEN", "a01973.html#ga0ea33d28331bf6890c4fdd4cc341b9b7", null ]
+];

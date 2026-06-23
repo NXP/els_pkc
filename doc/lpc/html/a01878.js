@@ -1,0 +1,12 @@
+var a01878 =
+[
+    [ "PLU_LUT_INP_MUX_LUTn_INPx", "a01878.html#gacbe4ac4a355c0f62341d844bff407e6d", null ],
+    [ "PLU_LUT_TRUTH_LUT_TRUTH", "a01878.html#ga0830663a4508b1df2171690801df50e4", null ],
+    [ "PLU_OUTPUTS_OUTPUT_STATE", "a01878.html#ga9a53f184e2ed5bc219143930662df0e9", null ],
+    [ "PLU_WAKEINT_CTRL_MASK", "a01878.html#ga423db14191d4369ed2b5aefa6b144532", null ],
+    [ "PLU_WAKEINT_CTRL_FILTER_MODE", "a01878.html#gab33ea118923e9e41f6c2aa14c6f158a4", null ],
+    [ "PLU_WAKEINT_CTRL_FILTER_CLKSEL", "a01878.html#ga6b11fa3798034b97b2244647418ebc45", null ],
+    [ "PLU_WAKEINT_CTRL_LATCH_ENABLE", "a01878.html#gaedddeea27e0fc0a35746a067973ad876", null ],
+    [ "PLU_WAKEINT_CTRL_INTR_CLEAR", "a01878.html#ga61e9184b1040a4fd34b151c28ffbfe89", null ],
+    [ "PLU_OUTPUT_MUX_OUTPUT", "a01878.html#gabd1bcba4fb7f71d918e0083522797995", null ]
+];

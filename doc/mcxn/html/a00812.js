@@ -1,7 +1,10 @@
 var a00812 =
 [
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_224", "a00812.html#ga5cc6964abb7966c445feb2abf14f8067", null ],
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_256", "a00812.html#gaaa520442bedd60dec1b7e4b10ac57fe3", null ],
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_384", "a00812.html#gab961aed69bd7828bf783f318a9dde671", null ],
-    [ "MCUXCLELS_HASH_OUTPUT_SIZE_SHA_512", "a00812.html#gab75499823ecacb60bc8c9fdc8d541e95", null ]
+    [ "MCUXCLMAC_STATUS_ERROR", "a01470.html#ga29a0556d236921ec9e6680cd049f784b", null ],
+    [ "MCUXCLMAC_STATUS_FAILURE", "a01470.html#gaeee9d7aded8807ac014d1030847457a2", null ],
+    [ "MCUXCLMAC_STATUS_INVALID_PARAM", "a01470.html#ga8eb86baa218d3f14c65c4cf1fd4a9a6b", null ],
+    [ "MCUXCLMAC_STATUS_FAULT_ATTACK", "a01470.html#ga025cf49de0fa3225a6d15fd972bf3c64", null ],
+    [ "MCUXCLMAC_STATUS_OK", "a01470.html#ga7df50ebdaad50cfe8661c930df6c43df", null ],
+    [ "MCUXCLMAC_STATUS_COMPARE_NOK", "a01470.html#ga322f2ecd934013fbc12b609d7f92b49f", null ],
+    [ "MCUXCLMAC_STATUS_ERROR_MEMORY_ALLOCATION", "a01470.html#gaf75ae31f35547a5f03ebbe3375ff943a", null ]
 ];

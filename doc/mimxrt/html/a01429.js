@@ -1,9 +1,16 @@
 var a01429 =
 [
-    [ "value", "a01429.html#a58934a4a256905327206ee08d8c5931f", null ],
-    [ "word", "a01429.html#a55cfd30f217a87c177559dfa7fdacdd1", null ],
-    [ "elsint", "a01429.html#a694dd46e51d111832674fdd7827ba7a2", null ],
-    [ "__pad0__", "a01429.html#a6f7f7fb21a47e0ba886c9c5ebdaae7bf", null ],
-    [ "__pad1__", "a01429.html#a3a1d6b3eaa5f8be52531ddb20f3e85c8", null ],
-    [ "bits", "a01429.html#a85551307199703391453c6d77bdb7641", null ]
+    [ "mcuxClRandom_Config", "a02289.html", [
+      [ "mode", "a02289.html#ad723b63c438689b0d5c978fceb289506", null ],
+      [ "ctx", "a02289.html#a2869dc5912686dc81c5076587bb83327", null ],
+      [ "prngPatchFunction", "a02289.html#ae75595ff66d30f0ab9c18f9738b80ae1", null ],
+      [ "pCustomPrngState", "a02289.html#a73a7ff5cf8624e067dd09f69c5733d32", null ]
+    ] ],
+    [ "mcuxClRandom_Status_t", "a01429.html#ga768ea9930242003d2a68991684a1e948", null ],
+    [ "mcuxClRandom_ContextDescriptor_t", "a01429.html#gab409cd7b1e5a4da822bf9ae43d00c79c", null ],
+    [ "mcuxClRandom_Context_t", "a01429.html#gac2ce3a52788240794afde522cfad65c5", null ],
+    [ "mcuxClRandom_ModeDescriptor_t", "a01429.html#gadcfae984a95f3e98617ca5fb9767f5cd", null ],
+    [ "mcuxClRandom_Mode_t", "a01429.html#ga2998181a66cbdc063aa08d76e5fdef9d", null ],
+    [ "mcuxClRandom_CustomNcGenerateAlgorithm_t", "a01429.html#ga159d417f0d48eefc2b516bbd77e9a804", null ],
+    [ "mcuxClRandom_Config_t", "a01429.html#gaf1284eaa96ef47c06697f95e74ffc3ee", null ]
 ];

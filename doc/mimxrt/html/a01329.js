@@ -1,7 +1,13 @@
 var a01329 =
 [
-    [ "curveParam", "a01329.html#a0396802978ddd78f753922c8dadadb18", null ],
-    [ "pPrivateKey", "a01329.html#a48dad4664822a37f78c78eca1e660a26", null ],
-    [ "pPublicKey", "a01329.html#a96680cb90b6901598b686b38edac1264", null ],
-    [ "optLen", "a01329.html#a6d0e636ce4f30294af6bcfe0ae717a01", null ]
+    [ "mcuxClEls_KeyImportOption_t", "a02249.html", [
+      [ "value", "a02249.html#ad5bfabd7e1e04a95627e0cbc144afdcb", null ],
+      [ "word", "a02249.html#aa004af4b8cc8fba9545f76861cca946b", null ],
+      [ "__pad0__", "a02249.html#a2dfcb81e1476a07a6ab67f8c090b4ab5", null ],
+      [ "revf", "a02249.html#aa699b2cfb2fc82dcbc25d833e09d442e", null ],
+      [ "__pad1__", "a02249.html#ad67985d38d1563a926768316825e1944", null ],
+      [ "kfmt", "a02249.html#ae3892b035704c00a855dd43d96a21b2c", null ],
+      [ "__pad2__", "a02249.html#a05660839da43298f12f96572bf538330", null ],
+      [ "bits", "a02249.html#a64b460e86baa9800aae8ebc79d61aad6", null ]
+    ] ]
 ];
