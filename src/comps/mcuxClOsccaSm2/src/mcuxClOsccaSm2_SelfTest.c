@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClSession.h>
@@ -136,7 +156,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Enc
         {
             /* Free workarea allocated in mcuxClOsccaSm2_EncDec_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt));
         }
     }
@@ -147,7 +167,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Enc
         MCUX_CSSL_SC_SUB((uint32_t)pPlain + (uint32_t)message + sizeof(message) + (uint32_t)MCUXCLOSCCASM2_STATUS_NOT_EQUAL);
         /* Free workarea allocated in mcuxClOsccaSm2_EncDec_SelfTest */
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_RobustCompareBoolean));
     }
@@ -182,7 +202,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Enc
             MCUX_CSSL_SC_SUB((uint32_t)pPlain + (uint32_t)message + sizeof(message) + (uint32_t)MCUXCLOSCCASM2_STATUS_CMP_EQUAL);
             /* Free workarea allocated in mcuxClOsccaSm2_EncDec_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Encrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_RobustCompareBoolean));
@@ -217,7 +237,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Enc
             MCUX_CSSL_SC_SUB((uint32_t)pPlain + (uint32_t)message + sizeof(message) + (uint32_t)MCUXCLOSCCASM2_STATUS_CMP_EQUAL);
             /* Free workarea allocated in mcuxClOsccaSm2_EncDec_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Encrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
@@ -231,7 +251,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Enc
         MCUX_CSSL_SC_SUB(2u * ((uint32_t)pPlain + (uint32_t)message + sizeof(message)) + (uint32_t)MCUXCLOSCCASM2_STATUS_CMP_EQUAL + (uint32_t)MCUXCLOSCCASM2_STATUS_NOT_EQUAL);
         /* Free workarea allocated in mcuxClOsccaSm2_EncDec_SelfTest */
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Encrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
@@ -241,7 +261,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Enc
     MCUX_CSSL_SC_SUB(2u * ((uint32_t)pPlain + (uint32_t)message + sizeof(message) + (uint32_t)MCUXCLOSCCASM2_STATUS_CMP_EQUAL));
     /* Free workarea allocated in mcuxClOsccaSm2_EncDec_SelfTest */
     mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_OK, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_EncDec_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_OK,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Encrypt),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_Decrypt),
@@ -373,7 +393,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
         {
             /* Free workarea allocated in mcuxClOsccaSm2_SignVerify_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, (mcuxClOsccaSm2_SelfTest_Status_t)MCUXCLOSCCASM2_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_ComputePrehash),
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),
@@ -398,7 +418,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
         {
             /* Free workarea allocated in mcuxClOsccaSm2_SignVerify_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, (mcuxClOsccaSm2_SelfTest_Status_t)MCUXCLOSCCASM2_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_ComputePrehash),
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),
@@ -423,7 +443,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
         {
             /* Free workarea allocated in mcuxClOsccaSm2_SignVerify_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, (mcuxClOsccaSm2_SelfTest_Status_t)MCUXCLOSCCASM2_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_ComputePrehash),
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),
@@ -437,7 +457,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Sig
 
     /* Free workarea allocated in mcuxClOsccaSm2_SignVerify_SelfTest */
     mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_OK, (mcuxClOsccaSm2_SelfTest_Status_t)MCUXCLOSCCASM2_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_SignVerify_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_OK,
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_init),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_ComputePrehash),
                                                          2U * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHash_process),
@@ -544,7 +564,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Key
         {
             /* Free workarea allocated in mcuxClOsccaSm2_KeyExchange_SelfTest */
             mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-            MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, (mcuxClOsccaSm2_SelfTest_Status_t)MCUXCLOSCCASM2_STATUS_FAULT_ATTACK,
+            MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_KeyExchange));
         }
     }
@@ -556,7 +576,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Key
         MCUX_CSSL_SC_SUB((uint32_t)expected_common_secret + (uint32_t)pCommonSecret + k_len + (uint32_t)MCUXCLOSCCASM2_STATUS_NOT_EQUAL);
         /* Free workarea allocated in mcuxClOsccaSm2_KeyExchange_SelfTest */
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_KeyExchange),
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_RobustCompareBoolean));
     }
@@ -568,7 +588,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Key
                         (uint32_t)S1 + (uint32_t)pConfirmR2I + MCUXCLOSCCASM3_OUTPUT_SIZE_SM3 + (uint32_t)MCUXCLOSCCASM2_STATUS_NOT_EQUAL);
         /* Free workarea allocated in mcuxClOsccaSm2_KeyExchange_SelfTest */
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_KeyExchange),
                                                          2u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_RobustCompareBoolean));
     }
@@ -581,7 +601,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Key
                         (uint32_t)SA + (uint32_t)pConfirmI2R + (uint32_t)MCUXCLOSCCASM2_STATUS_NOT_EQUAL);
         /* Free workarea allocated in mcuxClOsccaSm2_KeyExchange_SelfTest */
         mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_FAIL,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_KeyExchange),
                                                          3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_RobustCompareBoolean));
     }
@@ -590,7 +610,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClOsccaSm2_SelfTest_Status_t) mcuxClOsccaSm2_Key
                     (uint32_t)S1 + (uint32_t)pConfirmR2I + 2u * MCUXCLOSCCASM3_OUTPUT_SIZE_SM3 + (uint32_t)SA + (uint32_t)pConfirmI2R);
     /* Free workarea allocated in mcuxClOsccaSm2_KeyExchange_SelfTest */
     mcuxClSession_freeWords_cpuWa(session, cpuWaUsedWord);
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_OK, MCUXCLOSCCASM2_STATUS_SELFTEST_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaSm2_KeyExchange_SelfTest, MCUXCLOSCCASM2_STATUS_SELFTEST_OK,
                                                          MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_KeyExchange),
                                                          3u * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm2_RobustCompareBoolean));
 }

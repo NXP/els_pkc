@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClCipherModes_Els_Aes.c
@@ -29,7 +49,7 @@
 
 /**
  * @brief Function performs cipher init operation and OutLength buffer validation
- * 
+ *
  * @param[in/out]   pCtx
  * @param[in]       pKey
  * @param[in]       pMode
@@ -180,7 +200,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, initResult, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_InitAndValidate));
     }
-    
+
     if (MCUXCLCIPHER_OPTION_PROCESS == (steps & MCUXCLCIPHER_OPTION_PROCESS)) /* process or oneshot */
     {
         uint32_t outLen = 0u;
@@ -221,7 +241,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipherModes_SkeletonAes
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipherModes_SkeletonAes, MCUXCLCIPHER_STATUS_OK,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_InitAndValidate),
         MCUX_CSSL_FP_CONDITIONAL((MCUXCLCIPHER_OPTION_PROCESS == (steps & MCUXCLCIPHER_OPTION_PROCESS)),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClCipherModes_SkeletonAes_Process)),

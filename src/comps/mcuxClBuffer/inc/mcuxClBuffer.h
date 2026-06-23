@@ -1,20 +1,45 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/**
- * \file  mcuxClBuffer.h
- * \brief Provides the API for the CL buffer types.
- */
+/** @file  mcuxClBuffer.h
+ *  @brief Top-level include file for the @ref mcuxClBuffer component
+ *
+ *  This includes headers for all of the functionality provided by the @ref mcuxClBuffer component.
+ *
+ *  @defgroup mcuxClBuffer mcuxClBuffer
+ *  @brief Buffer component
+ *
+ * */
 
 #ifndef MCUXCLBUFFER_H_
 #define MCUXCLBUFFER_H_
@@ -28,17 +53,9 @@
 
 
 /**
- * \addtogroup mcuxClAPI MCUX CL -- API
- *
- * \defgroup mcuxClBuffer Buffer API
- * \brief CL Buffer types.
- * \ingroup mcuxClAPI
- */
-
-/**
- * \defgroup clBufInit Buffer initialization functionality
- * \brief Buffer initialization functionality.
- * \ingroup mcuxClBuffer
+ * @defgroup clBufInit Buffer initialization functionality
+ * @brief Buffer initialization functionality.
+ * @ingroup mcuxClBuffer
  *
  * Two sets of default buffer initializations are provided, each with
  * read-only (RO, for mcuxCl_InputBuffer_t) and read-write (RW, for mcuxCl_Buffer_t)
@@ -46,7 +63,7 @@
  *  - Plain: basic CPU copy operations (aligned when possible)
  *  - DMA: utilizing DMA peripherals
  *
- * \note The DMA variants will be mapped to plain for buffer implementations
+ * @note The DMA variants will be mapped to plain for buffer implementations
  * that do not support DMA operations.
  *
  * Additionally a custom initializer is provided as well as some aliases

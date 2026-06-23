@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClHash.h>
@@ -29,7 +49,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
     uint32_t *const pOutSize
     )
 {
-    MCUXCLSESSION_ENTRY(session, mcuxClHash_finish, diRefValue, MCUXCLHASH_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_finish);
 
     if((NULL == pContext->algo) || (NULL == pContext->algo->finishSkeleton)
 #if(1 == MCUX_CSSL_SC_USE_SW_LOCAL)
@@ -37,7 +57,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
 #endif /* (1 == MCUX_CSSL_SC_USE_SW_LOCAL) */
             )
     {
-        MCUXCLSESSION_EXIT(session, mcuxClHash_finish, diRefValue, MCUXCLHASH_STATUS_INVALID_PARAMS, MCUXCLHASH_STATUS_FAULT_ATTACK)
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClHash_finish, MCUXCLHASH_STATUS_INVALID_PARAMS);
     }
 
     /* Save protection token before context is cleared */
@@ -49,10 +69,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_finish(
                                                                      pOutSize
                                                                      ));
 
-    MCUXCLSESSION_EXIT(session,
-        mcuxClHash_finish,
-        diRefValue,
-        result,
-        MCUXCLHASH_STATUS_FAULT_ATTACK,
-        token_finish)
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClHash_finish, result, MCUXCLHASH_STATUS_FAULT_ATTACK,
+        token_finish);
 }

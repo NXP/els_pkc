@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2023-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -26,7 +46,7 @@
 
 /* Macro to calculate the rounded up number of words needed to fit an object of the specified size */
 #define MCUXCLCORE_NUM_OF_WORDS_CEIL(wordsize, size)  \
-  (((size) / (wordsize)) +  ((((size) % (wordsize)) + ((wordsize) - 1u)) / (wordsize)))
+  (((size) / (wordsize)) +  ((((size) % (wordsize)) + ((wordsize) - 1U)) / (wordsize)))
 
 /* Macro to calculate the rounded down number of CPU words that fit into the specified size */
 #define MCUXCLCORE_NUM_OF_CPUWORDS_FLOOR(size)  \
@@ -53,5 +73,14 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CONTROLLING_EXPRESSION_IS_INVARIANT()
 /* Macro to calculate the minimum of two values */
 #define MCUXCLCORE_MIN(a, b)  \
   (((a) < (b)) ? (a) : (b))
+
+/* Macros to get the status code class of a 32-bit return code */
+#define MCUXCLCORE_CLS_MASK           (0x0000FF00U)
+#define MCUXCLCORE_CLS_NORMAL         (0x00002E00U)
+#define MCUXCLCORE_CLS_NORMALMISMATCH (0x00008900U)
+#define MCUXCLCORE_CLS_ABNORMAL       (0x00005300U)
+#define MCUXCLCORE_CLS_ATTACK         (0x0000F000U)
+#define MCUXCLCORE_GET_CLS(returnCode)  \
+  ((returnCode) & MCUXCLCORE_CLS_MASK)
 
 #endif /* MCUXCLCORE_MACROS_H_ */

@@ -9,7 +9,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.rw61x)
                 doc/rw61x/html/*.*
                 doc/rw61x/html/search/*.*
                 LICENSE.txt
-                softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -26,7 +25,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.lpc)
                 doc/lpc/html/*.*
                 doc/lpc/html/search/*.*
                 LICENSE.txt
-                softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -42,7 +40,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mcxn)
                 doc/mcxn/html/*.*
                 doc/mcxn/html/search/*.*
                 LICENSE.txt
-                softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -58,7 +55,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.mimxrt)
                 doc/mimxrt/html/*.*
                 doc/mimxrt/html/search/*.*
                 LICENSE.txt
-                softwareContentRegister.txt
                 ReleaseNotes.txt
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -324,7 +320,11 @@ endif()
 
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
     mcux_add_source(
-        SOURCES src/comps/mcuxClEcc/src/mcuxClEcc_Constants.c
+        SOURCES src/comps/mcuxClEcc/src/mcuxClEcc_ArithmeticOperation.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_ArithmeticOperation_PointAdd.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_ArithmeticOperation_PointAddSub.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_ArithmeticOperation_PointSub.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_Constants.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_GenerateProtocolDescriptor.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.c
@@ -354,6 +354,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/src/mcuxClEcc_Internal_SetupEnvironment_FUP.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_Internal_Types.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_KeyTypes.c
+                src/comps/mcuxClEcc/src/mcuxClEcc_KeyValidation.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_MontDH_GenerateKeyPair.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_MontDH_KeyAgreement.c
                 src/comps/mcuxClEcc/src/mcuxClEcc_Mont_Internal_DhSetupEnvironment.c
@@ -452,6 +453,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.ecc)
                 src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FP.h
                 src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_FUP.h
                 src/comps/mcuxClEcc/inc/internal/mcuxClEcc_Weier_Internal_PkcWaLayout.h
+                src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierEcc_KeyGenerate_Internal.h
+                src/comps/mcuxClEcc/inc/internal/mcuxClEcc_WeierEcc_KeyValidate_Internal.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -749,6 +752,9 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.math)
                 src/comps/mcuxClMath/src/mcuxClMath_ReduceModEven.c
                 src/comps/mcuxClMath/src/mcuxClMath_SecModExp.c
                 src/comps/mcuxClMath/src/mcuxClMath_SecModExp_FUP.c
+                src/comps/mcuxClMath/src/mcuxClMath_SecModMult.c
+                src/comps/mcuxClMath/src/mcuxClMath_SecModMult_FUP.c
+                src/comps/mcuxClMath/src/mcuxClMath_SecModMultOdd.c
                 src/comps/mcuxClMath/src/mcuxClMath_Utils.c
                 src/comps/mcuxClMath/inc/mcuxClMath.h
                 src/comps/mcuxClMath/inc/mcuxClMath_ExactDivideOdd_FUP.h
@@ -757,18 +763,22 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.math)
                 src/comps/mcuxClMath/inc/mcuxClMath_NDash_FUP.h
                 src/comps/mcuxClMath/inc/mcuxClMath_QDash_FUP.h
                 src/comps/mcuxClMath/inc/mcuxClMath_SecModExp_FUP.h
+                src/comps/mcuxClMath/inc/mcuxClMath_SecModMult_FUP.h
                 src/comps/mcuxClMath/inc/mcuxClMath_Types.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_ExactDivideOdd_FUP.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_ExactDivideOdd.h
+                src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_Functions.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_ModInv.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_NDash.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_QDash.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_SecModExp.h
+                src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_SecModMult.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_Internal_Utils.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_ModInv_FUP.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_NDash_FUP.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_QDash_FUP.h
                 src/comps/mcuxClMath/inc/internal/mcuxClMath_SecModExp_FUP.h
+                src/comps/mcuxClMath/inc/internal/mcuxClMath_SecModMult_FUP.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -1537,6 +1547,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mcxn)
                 includes/platform/mcxn/mcuxClHmac_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClKey_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClMath_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClOsccaSm3_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClRandomModes_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClRsa_MemoryConsumption.h
@@ -1616,6 +1627,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.lpc)
                 includes/platform/lpc/mcuxClHmac_MemoryConsumption.h
                 includes/platform/lpc/mcuxClKey_MemoryConsumption.h
                 includes/platform/lpc/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/lpc/mcuxClMath_MemoryConsumption.h
                 includes/platform/lpc/mcuxClRandomModes_MemoryConsumption.h
                 includes/platform/lpc/mcuxClRsa_MemoryConsumption.h
                 includes/platform/lpc/mcuxClSession_MemoryConsumption.h
@@ -1649,6 +1661,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mimxrt)
                 includes/platform/mimxrt/mcuxClHmac_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClKey_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClMath_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClOsccaAeadModes_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClOsccaCipherModes_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClOsccaMacModes_MemoryConsumption.h

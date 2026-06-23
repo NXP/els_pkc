@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -252,7 +272,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
     if(MCUXCLECC_STATUS_OK != ret_decodePoint)
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_EdDSA_VerifySignature_PubKeyScalarMult, ret_decodePoint,
-            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage), 
+            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_PreHashMessage),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
             pDomainParams->pDecodePoint_FP_FuncId);
     }
@@ -294,7 +314,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_EdDSA_CalcHashModN),
         pDomainParams->pDecodePoint_FP_FuncId,
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_TwEd_RepeatedDoubling),
-        pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId);    
+        pDomainParams->common.pScalarMultFunctions->plainVarScalarMultFctFPId);
 }
 
 
@@ -487,8 +507,8 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
 
     /*
     * Step 9: Before finally comparing h*R = (X:Y:Z) with h*R' = (X':Y':Z'), perform a sanity check on the Z-coordinates.
-    *         Since both h*R and h*R' are valid points on the curve derived from finite points via complete curve 
-    *         arithmetic formulas arithmetic, they must also be finite, since for Ed25519 and Ed448 
+    *         Since both h*R and h*R' are valid points on the curve derived from finite points via complete curve
+    *         arithmetic formulas arithmetic, they must also be finite, since for Ed25519 and Ed448
     *         the curve parameter d is a non-square modulo p.
     *         Hence, if one of the two Z-coordinates is zero mod p, FAULT_ATTACK is returned.
     */
@@ -510,13 +530,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
     pOperands[ECC_V2] = pOperands[ECC_COORD27];
 
     /* Run the point comparison of P1 = h*R = (X1:Y1:Z1) and P2 = h*R' = (X2:Y2:Z2). The FUP program expects
-     *  - the coordinates of h*R (point P1) to be passed via ECC_V0, ECC_V1, ECC_V2. 
+     *  - the coordinates of h*R (point P1) to be passed via ECC_V0, ECC_V1, ECC_V2.
      *  - the coordinates of h*R' (point P2) to be stored in buffers ECC_COORD00, ECC_COORD01, ECC_COORD02.
      * As a result of the FUP program
-     *  - the ZERO flag is set if and only if the PKC comparison of the two points passed 
-     *  - buffers ECC_S0 and ECC_S1 contain the concatenations X1' || Y1' and X2' || Y2', respectively, where 
+     *  - the ZERO flag is set if and only if the PKC comparison of the two points passed
+     *  - buffers ECC_S0 and ECC_S1 contain the concatenations X1' || Y1' and X2' || Y2', respectively, where
      *      - (X1':Y1':Z1') = (X1*Z2:Y1*Z2:Z1*Z2) are updated coordinates of P1 and
-     *      - (X2':Y2':Z2') = (X2*Z1:Y2*Z1:Z2*Z1) are updated coordinates for P2 
+     *      - (X2':Y2':Z2') = (X2*Z1:Y2*Z1:Z2*Z1) are updated coordinates for P2
      *    sharing the same Z-coordinate for a potential upcoming double comparison by the CPU. */
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_PointComparisonHom,
                         mcuxClEcc_FUP_PointComparisonHom_LEN);

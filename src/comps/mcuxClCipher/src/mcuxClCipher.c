@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 #include <mcuxClSession.h>
@@ -63,13 +83,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
                                               MCUXCLCIPHER_OPTION_ONESHOT));
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
-  if(MCUXCLCIPHER_STATUS_OK != status)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_crypt, status, pModeFunctions->protection_token_crypt);
-  }
-
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_crypt, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
-                                       pModeFunctions->protection_token_crypt);
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_crypt, status, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    pModeFunctions->protection_token_crypt);
 
 }
 
@@ -108,13 +123,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_init(
                                               MCUXCLCIPHER_OPTION_INIT));
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
 
-  if(MCUXCLCIPHER_STATUS_OK != status)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_init, status, pModeFunctions->protection_token_crypt);
-  }
-
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_init, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
-                                       pModeFunctions->protection_token_crypt);
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_init, status, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    pModeFunctions->protection_token_crypt);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_process)
@@ -152,13 +162,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_process(
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-  if(MCUXCLCIPHER_STATUS_OK != status)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_process, status, pModeFunctions->protection_token_crypt);
-  }
-
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_process, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
-                                       pModeFunctions->protection_token_crypt);
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_process, status, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    pModeFunctions->protection_token_crypt);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClCipher_finish)
@@ -194,12 +199,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_NULL_POINTER_CONSTANT()
   MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DEREFERENCE_NULL_POINTER()
 
-  if(MCUXCLCIPHER_STATUS_OK != status)
-  {
-    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClCipher_finish, status, pModeFunctions->protection_token_crypt);
-  }
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_finish, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
-                                       pModeFunctions->protection_token_crypt);
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClCipher_finish, status, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    pModeFunctions->protection_token_crypt);
 }
 
 

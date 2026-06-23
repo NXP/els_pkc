@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -52,20 +72,15 @@ typedef uint32_t mcuxClOsccaSm2_Status_t;
 /***********************************************************
  *  MACROS
  **********************************************************/
-
-/**
- * @defgroup mcuxClOsccaSm2_Macros mcuxClOsccaSm2_Macros
- * @brief Defines all macros of @ref mcuxClOsccaSm2
- * @ingroup mcuxClOsccaSm2
- * @{
- */
 #define MCUXCLOSCCASM2_CEILING(x,y)                       (((x) + (y) - 1u) / (y))
 #define MCUXCLOSCCASM2_BYTELEN(bitLen)                    (((bitLen) + 7u) / 8u)
 
 /**
- * @addtogroup MCUXCLOSCCASM2_SM2P256_SIZE_
- * mcuxClOsccaSm2_size definitions for curve256 input buffers
- * @{ */
+ * @defgroup MCUXCLOSCCASM2_SM2P256_SIZE_
+ * @brief mcuxClOsccaSm2_size definitions for curve256 input buffers
+ * @ingroup mcuxClOsccaSm2
+ * @{
+ * */
 #define MCUXCLOSCCASM2_ENCDEC_FORMAT_INDICATOR_SIZE (1u)
 #define MCUXCLOSCCASM2_SM2P256_SIZE_PRIVATEKEY      (32u)   ///< Byte length of a SM2P256 private key.
 #define MCUXCLOSCCASM2_SM2P256_SIZE_PUBLICKEY       (2u * MCUXCLOSCCASM2_SM2P256_SIZE_PRIVATEKEY)   ///< Byte length of a SM2P256 public key.
@@ -96,13 +111,6 @@ typedef struct mcuxClOsccaSm2_SignatureProtocolDescriptor mcuxClOsccaSm2_Signatu
 /***********************************************************
  *  MACROS RELATED TO FUNCTION STATUS
  **********************************************************/
-
-/**
- * @defgroup MCUXCLOSCCASM2_STATUS_ MCUXCLOSCCASM2_STATUS_
- * @brief Return code definitions
- * @ingroup mcuxClOsccaSm2_Macros
- * @{
- */
 #define MCUXCLOSCCASM2_STATUS_OK                          ((mcuxClOsccaSm2_Status_t)0x011B2E03u)
 #define MCUXCLOSCCASM2_STATUS_FAILURE                     ((mcuxClOsccaSm2_Status_t)0x011B5354U)
 #define MCUXCLOSCCASM2_STATUS_INVALID_PARAMS              ((mcuxClOsccaSm2_Status_t)0x011B5330u)

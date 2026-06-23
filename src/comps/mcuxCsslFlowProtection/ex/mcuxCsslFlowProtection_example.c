@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 #define MCUX_CSSL_FP_ASSERT_CALLBACK() assertCallback()
@@ -17,6 +37,7 @@
 #include <mcuxCsslExamples.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
+#include <mcuxClCore_Macros.h>
 
 /* Example global SC */
 static volatile uint32_t testVariable = 0u;
@@ -24,6 +45,14 @@ static volatile uint32_t testVariable = 0u;
 /* Protected function pointer type */
 MCUX_CSSL_FP_FUNCTION_POINTER(functionPointerType_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) (*functionPointerType_t)(void));
+
+/* Status code definitions */
+#define MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL          (0x11110000UL | (uint32_t)MCUXCLCORE_CLS_NORMAL | 0x00UL)
+#define MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_1        (0x11110000UL | (uint32_t)MCUXCLCORE_CLS_NORMAL | 0x01UL) // return code of functionOnly1()
+#define MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_2        (0x11110000UL | (uint32_t)MCUXCLCORE_CLS_NORMAL | 0x02UL) // return code of functionOnly2()
+#define MCUX_CSSL_FLOWPROTECTION_STATUS_NORMALMISMATCH  (0x11110000UL | (uint32_t)MCUXCLCORE_CLS_NORMALMISMATCH | 0x21UL)
+#define MCUX_CSSL_FLOWPROTECTION_STATUS_ABNORMAL        (0x11110000UL | (uint32_t)MCUXCLCORE_CLS_ABNORMAL | 0x88UL)
+#define MCUX_CSSL_FLOWPROTECTION_STATUS_ATTACK          (0x11110000UL | (uint32_t)MCUXCLCORE_CLS_ATTACK | 0xFFUL)
 
 
 /****************************************************************************/
@@ -128,7 +157,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(functionOnly1)
 MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionOnly1(void)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(functionOnly1);
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(functionOnly1, 1u, 0xFAFAu);
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(functionOnly1, MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_1, MCUX_CSSL_FLOWPROTECTION_STATUS_ATTACK);
 }
 
 /* Another simple protected function, used in functionCalls example. */
@@ -136,7 +165,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(functionOnly2, functionPointerType_t)
 MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionOnly2(void)
 {
   MCUX_CSSL_FP_FUNCTION_ENTRY(functionOnly2);
-  MCUX_CSSL_FP_FUNCTION_EXIT(functionOnly2, 2u);
+  MCUX_CSSL_FP_FUNCTION_EXIT(functionOnly2, MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_2);
 }
 
 /*
@@ -224,7 +253,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionLoop(uint32_t count)
   /* For a protected loop the expectation is that it should perform an certain
    * number of iterations. This can be indicated to the flow protection
    * mechanism by using the LOOP_ITERATIONS expectation. */
-  MCUX_CSSL_FP_FUNCTION_EXIT(functionLoop, 0xC0DEu,
+  MCUX_CSSL_FP_FUNCTION_EXIT(functionLoop, MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL,
     MCUX_CSSL_FP_LOOP_ITERATIONS(loop, count)
   );
 }
@@ -242,7 +271,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionBranch(uint32_t arg)
   uint32_t result;
   if (0xC0DEu == arg)
   {
-    result = 0xC0DEu;
+    result = MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL;
 
     /* Within the positive scenario of a protected branch, a BRANCH_POSITIVE
      * event must be placed, to indicate to the flow protection mechanism that
@@ -251,7 +280,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionBranch(uint32_t arg)
   }
   else
   {
-    result = 0xDEADu;
+    result = MCUX_CSSL_FLOWPROTECTION_STATUS_NORMALMISMATCH;
 
     /* Within the negative scenario of a protected branch, a BRANCH_NEGATIVE
      * event must be placed, to indicate to the flow protection mechanism that
@@ -259,7 +288,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionBranch(uint32_t arg)
     MCUX_CSSL_FP_BRANCH_NEGATIVE(argCheck);
   }
 
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(functionBranch, result, 0xFAFAu,
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(functionBranch, result, MCUX_CSSL_FLOWPROTECTION_STATUS_ATTACK,
     /* Option 1: provide the condition as part of the branch expectation. */
     MCUX_CSSL_FP_BRANCH_TAKEN_POSITIVE(argCheck, 0xC0DEu == arg),
     /* Option 2: place the branch expectation in a conditional block. */
@@ -284,7 +313,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionSwitch(uint32_t arg)
   {
     case 0xC0DEu:
     {
-      result = 0xC0DEu;
+      result = MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL;
 
       /* Within a case of a protected switch, a SWITCH_CASE event must be
        * placed, to indicate to the flow protection mechanism that this
@@ -294,7 +323,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(uint32_t) functionSwitch(uint32_t arg)
     }
     case 0xDEADu:
     {
-      result = 0xDEADu;
+      result = MCUX_CSSL_FLOWPROTECTION_STATUS_NORMALMISMATCH;
 
       /* Within a case of a protected switch, a SWITCH_CASE event must be
        * placed, to indicate to the flow protection mechanism that this
@@ -383,7 +412,13 @@ MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode, token, functionCalls());
 
-  if (0xC0E4u != returnCode)
+  const uint32_t expectedResult =
+      0xC0DEU  // (functionOnly)
+      + (2U * MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_1) // (functionOnly1)
+      + (2U * MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_2) // (functionOnly2)
+      ;
+
+  if (expectedResult != returnCode)
   {
     return MCUX_CSSL_EX_ERROR;
   }
@@ -399,7 +434,7 @@ MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode1, token1, functionLoop(10));
 
-  if (0xC0DEu != returnCode1)
+  if (MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL != returnCode1)
   {
     return MCUX_CSSL_EX_ERROR;
   }
@@ -415,7 +450,7 @@ MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode2, token2, functionBranch(0xC0DEu));
 
-  if (0xC0DEu != returnCode2)
+  if (MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL != returnCode2)
   {
     return MCUX_CSSL_EX_ERROR;
   }
@@ -431,7 +466,7 @@ MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode3, token3, functionSwitch(0xC0DEu));
 
-  if (0xC0DEu != returnCode3)
+  if (MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL != returnCode3)
   {
     return MCUX_CSSL_EX_ERROR;
   }
@@ -453,7 +488,7 @@ MCUX_CSSL_EX_FUNCTION(mcuxCsslFlowProtection_example)
 
   MCUX_CSSL_FP_FUNCTION_CALL_PROTECTED(returnCode4, token4, funcPtr());
 
-  if (0x2u != returnCode4)
+  if (MCUX_CSSL_FLOWPROTECTION_STATUS_NORMAL_2 != returnCode4)
   {
     return MCUX_CSSL_EX_ERROR;
   }

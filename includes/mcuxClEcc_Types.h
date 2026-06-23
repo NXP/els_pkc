@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -77,6 +97,20 @@ struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor;
  */
 typedef struct mcuxClEcc_EdDSA_SignatureProtocolDescriptor mcuxClEcc_EdDSA_SignatureProtocolDescriptor_t;
 
+/**
+ * @brief Forward declaration for ECC arithmetic operation structure
+ */
+struct mcuxClEcc_ArithmeticOperationDescriptor;
+
+/**
+ * @brief ECC arithmetic operation descriptor type
+ */
+typedef struct mcuxClEcc_ArithmeticOperationDescriptor mcuxClEcc_ArithmeticOperationDescriptor_t;
+
+/**
+ * @brief ECC arithmetic operation type
+ */
+typedef const mcuxClEcc_ArithmeticOperationDescriptor_t * mcuxClEcc_ArithmeticOperation_t;
 
 /** Type for Weierstrass ECC domain parameters */
 typedef struct mcuxClEcc_Weier_DomainParams mcuxClEcc_Weier_DomainParams_t;
@@ -364,8 +398,80 @@ extern const mcuxClEcc_EdDSA_DomainParams_t mcuxClEcc_EdDSA_DomainParams_Ed25519
  * @{
  */
 
+/**
+ * \brief ECC Arithmetic operation descriptor for full point addition on a short Weierstrass curve not secured against side-channel attacks
+ */
+extern const mcuxClEcc_ArithmeticOperationDescriptor_t mcuxClEcc_ArithOpDesc_PointAdd;
+
+/**
+ * \brief ECC Arithmetic operation type for full point addition on a short Weierstrass curve not secured against side-channel attacks
+ *
+ * This type shall be passed to function mcuxClEcc_ArithmeticOperation in order to perform a full point addition P1 + P2
+ * on a short Weierstrass curve over prime p with base point order n. The function is not secured against side-channel attacks.
+ *
+ * The parameters of the function shall be chosen as follows:
+ *
+ *  - pDomainParams:  Pointer to the domain parameters of the Weierstrass curve (of type mcuxClEcc_Weier_DomainParams_t)
+ *  - pOp1:           Pointer to buffer storing the coordinates x1 and y1 of P1 concatenated.
+ *                    Both coordinates are elements of GF(p), i.e. 0 <= x1,y1 < p, and given by byteLen(p) bytes in big endian format.
+ *                    The passed parameter size op1Size must be 2*byteLen(p).
+ *  - pOp2:           Pointer to buffer storing the coordinates x2 and y2 of P2 concatenated.
+ *                    Both coordinates are elements of GF(p), i.e. 0 <= x2,y2 < p, and given by byteLen(p) bytes in big endian format.
+ *                    The passed parameter size op2Size must be 2*byteLen(p).
+ *  - pResult:        Point to buffer in which the coordinates xRes and yRes of the result P1 + P2 shall be stored concatenated.
+ *                    Both coordinates are elements of GF(p), i.e. 0 <= xRes,yRes < p, and given by byteLen(p) bytes in big endian format.
+ *                    This buffer will only be written if #MCUXCLECC_STATUS_OK is returned.
+ *
+ * The function returns
+ *
+ *  - #MCUXCLECC_STATUS_OK               if the operation was successful.
+ *  - #MCUXCLECC_STATUS_INVALID_PARAMS   if the input parameters are invalid.
+ *  - #MCUXCLECC_STATUS_NEUTRAL_POINT    if P1 + P2 is the neutral point.
+ */
+MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_API_DECLARATIONS()
+MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_API_DEFINITIONS()
+static mcuxClEcc_ArithmeticOperation_t mcuxClEcc_ArithmeticOperation_PointAdd =
+  &mcuxClEcc_ArithOpDesc_PointAdd;
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_API_DEFINITIONS()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_API_DECLARATIONS()
 
 
+/**
+ * \brief ECC Arithmetic operation descriptor for full point subtraction on a short Weierstrass curve not secured against side-channel attacks
+ */
+extern const mcuxClEcc_ArithmeticOperationDescriptor_t mcuxClEcc_ArithOpDesc_PointSub;
+
+/**
+ * \brief ECC Arithmetic operation type for full point subtraction on a short Weierstrass curve not secured against side-channel attacks
+ *
+ * This type shall be passed to function mcuxClEcc_ArithmeticOperation in order to perform a full point subtraction P1 - P2
+ * on a short Weierstrass curve over prime p with base point order n. The function is not secured against side-channel attacks.
+ *
+ * The parameters of the function shall be chosen as follows:
+ *
+ *  - pDomainParams:  Pointer to the domain parameters of the Weierstrass curve (of type mcuxClEcc_Weier_DomainParams_t)
+ *  - pOp1:           Pointer to buffer storing the coordinates x1 and y1 of P1 concatenated.
+ *                    Both coordinates are elements of GF(p), i.e. 0 <= x1,y1 < p, and given by byteLen(p) bytes in big endian format.
+ *                    The passed parameter size op1Size must be 2*byteLen(p).
+ *  - pOp2:           Pointer to buffer storing the coordinates x2 and y2 of P2 concatenated.
+ *                    Both coordinates are elements of GF(p), i.e. 0 <= x2,y2 < p, and given by byteLen(p) bytes in big endian format.
+ *                    The passed parameter size op2Size must be 2*byteLen(p).
+ *  - pResult:        Point to buffer in which the coordinates xRes and yRes of the result P1 - P2 shall be stored concatenated.
+ *                    Both coordinates are elements of GF(p), i.e. 0 <= xRes,yRes < p, and given by byteLen(p) bytes in big endian format.
+ *                    This buffer will only be written if #MCUXCLECC_STATUS_OK is returned.
+ *
+ * The function returns
+ *
+ *  - #MCUXCLECC_STATUS_OK               if the operation was successful.
+ *  - #MCUXCLECC_STATUS_INVALID_PARAMS   if the input parameters are invalid.
+ *  - #MCUXCLECC_STATUS_NEUTRAL_POINT    if P1 - P2 is the neutral point.
+ */
+MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_API_DECLARATIONS()
+MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_API_DEFINITIONS()
+static mcuxClEcc_ArithmeticOperation_t mcuxClEcc_ArithmeticOperation_PointSub =
+  &mcuxClEcc_ArithOpDesc_PointSub;
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_API_DEFINITIONS()
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_API_DECLARATIONS()
 
 
 

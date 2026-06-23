@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2025 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -480,6 +500,46 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClMath_ReduceModEven(
 #define MCUXCLMATH_FP_REDUCEMODEVEN(iR, iX, iN, iT0, iT1, iT2, iT3)  \
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(MCUXCLMATH_REDUCEMODEVEN(iR, iX, iN, iT0, iT1, iT2, iT3))
 
+/**
+ * @brief Calculates secure modular multiplication in normal representation: R = X * Y mod N.
+ *
+ * This function computes secure modular multiplication in normal representation
+ *
+ * @param[in] pSession  handle for the current CL session.
+ * @param[in] pX  pointer to X
+ * @param[in] lenX  length of X in bytes
+ * @param[in] pY  pointer to Y
+ * @param[in] lenY  length of Y in bytes
+ * @param[in] pN  pointer to N
+ * @param[in] lenN  length of N in bytes
+ * @param[out] pR  pointer to R
+ *
+ * @pre
+ * - In this function, the maximum input length for X, Y and N is limited by the available PKC RAM.
+ * - a buffer for the result should be allocated by the caller with a size at least equal to the modulus size previously.
+ *
+ * @post
+ *  - Data Integrity: Expunge(pX, lenX, pY, lenY, pN, lenN)
+ *
+ * @return A code-flow protected error code (see @ref mcuxCsslFlowProtection)
+ * @retval #MCUXCLMATH_STATUS_OK                 function executed successfully
+ * @retval #MCUXCLMATH_STATUS_ERROR              error occurred during operation
+ * @retval #MCUXCLMATH_STATUS_FAULT_ATTACK       fault attack occurred during operation
+ * @retval #MCUXCLMATH_STATUS_INVALID_PARAMS     function called with invalid parameters
+ * @retval #MCUXCLRESOURCE_STATUS_UNAVAILABLE    PKC Resource request failed
+ * @retval #MCUXCLRESOURCE_STATUS_ERROR          Error occurred during PKC Resource operation
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClMath_SecModMultOdd)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMath_Status_t) mcuxClMath_SecModMultOdd(
+    mcuxClSession_Handle_t pSession,
+    mcuxCl_InputBuffer_t pX,
+    uint32_t lenX,
+    mcuxCl_InputBuffer_t pY,
+    uint32_t lenY,
+    mcuxCl_InputBuffer_t pN,
+    uint32_t lenN,
+    mcuxCl_Buffer_t pR
+    );
 
 /**
  * @brief Calculates modular exponentiation.

@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2020-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -48,9 +68,9 @@
  * @ingroup mcuxClRsa_Macros
  * @{
  */
-#define MCUXCLRSA_STATUS_SIGN_OK                            ((mcuxClRsa_Status_t) 0x0FF62E03u )  ///< RSA sign operation successful
-#define MCUXCLRSA_STATUS_VERIFY_OK                          ((mcuxClRsa_Status_t) 0x0FF62E07u )  ///< RSA verify operation successful
 #define MCUXCLRSA_STATUS_VERIFYPRIMITIVE_OK                 ((mcuxClRsa_Status_t) 0x0FF62E0Bu )  ///< RSA verify primitive operation (RSAVP1) successful
+#define MCUXCLRSA_STATUS_SIGN_OK                            ((mcuxClRsa_Status_t) 0x0FF62E07u )  ///< RSA sign operation successful
+#define MCUXCLRSA_STATUS_VERIFY_OK                          ((mcuxClRsa_Status_t) 0x0FF62E03u )  ///< RSA verify operation successful
 #define MCUXCLRSA_STATUS_OK                                 ((mcuxClRsa_Status_t) 0x0FF62E17u )  ///< RSA operation was successful
 #define MCUXCLRSA_STATUS_ERROR                              ((mcuxClRsa_Status_t) 0x0FF65330u )  ///< Error occurred during RSA operation
 #define MCUXCLRSA_STATUS_INVALID_INPUT                      ((mcuxClRsa_Status_t) 0x0FF653F8u )  ///< Input data cannot be processed
@@ -59,6 +79,8 @@
 #define MCUXCLRSA_STATUS_KEYGENERATION_OK                   ((mcuxClRsa_Status_t) 0x0FF62E0Fu )  ///< RSA key generation operation executed successfully
 #define MCUXCLRSA_STATUS_KEYGENERATION_ITERATIONSEXCEEDED   ((mcuxClRsa_Status_t) 0x0FF68934u )  ///< RSA key generation exceeds the limit of iterations to generate a prime
 #define MCUXCLRSA_STATUS_RNG_ERROR                          ((mcuxClRsa_Status_t) 0x0FF65338u )  ///< Random number (DRBG / PRNG) error (unexpected behavior)
+#define MCUXCLRSA_STATUS_ERROR_MEMORY_ALLOCATION            ((mcuxClRsa_Status_t) 0x0FF65334u )  ///< Memory allocation error during RSA operation
+
 
 /** @} */
 

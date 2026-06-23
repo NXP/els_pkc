@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClRandom_DRBG.c
@@ -89,7 +109,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_generate_interna
     /* Call generate function from randommodes */
     MCUX_CSSL_FP_FUNCTION_CALL(retCode_generateFunction, sessionMode->pOperationMode->generateFunction(pSession, sessionMode, pRngCtx, pOut, outLength));
 
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_generate_internal, retCode_generateFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClRandom_generate_internal, retCode_generateFunction,
                             sessionMode->pOperationMode->protectionTokenGenerateFunction);
 }
 
@@ -100,7 +120,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_init(
     mcuxClRandom_Mode_t    mode
 )
 {
-    MCUXCLSESSION_ENTRY(pSession, mcuxClRandom_init, diRefValue, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_init);
 
     MCUX_CSSL_DI_EXPUNGE(sumOfRandomInitParams, (uint32_t)pSession + (uint32_t)pContext + (uint32_t)mode);
 
@@ -122,7 +142,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_init(
 
     MCUX_CSSL_DI_RECORD(sumOfRandomInitParams, (uint32_t)pSession + (uint32_t)pContext + (uint32_t)mode);
 
-    MCUXCLSESSION_EXIT(pSession, mcuxClRandom_init, diRefValue, retCode_initFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK, mode->pOperationMode->protectionTokenInitFunction)
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_init, retCode_initFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+        mode->pOperationMode->protectionTokenInitFunction);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_reseed)
@@ -130,7 +151,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_reseed(
     mcuxClSession_Handle_t pSession
 )
 {
-    MCUXCLSESSION_ENTRY(pSession, mcuxClRandom_reseed, diRefValue, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_reseed);
 
     MCUX_CSSL_DI_EXPUNGE(sumOfRandomReseedParams,  (uint32_t)pSession);
 
@@ -149,7 +170,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_reseed(
 
     MCUX_CSSL_DI_RECORD(sumOfRandomReseedParams, (uint32_t)pSession);
 
-    MCUXCLSESSION_EXIT(pSession, mcuxClRandom_reseed, diRefValue, retCode_reseedFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK, sessionMode->pOperationMode->protectionTokenReseedFunction)
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_reseed, retCode_reseedFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+        sessionMode->pOperationMode->protectionTokenReseedFunction);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_generate)
@@ -159,14 +181,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_generate(
     uint32_t              outLength
 )
 {
-    MCUXCLSESSION_ENTRY(pSession, mcuxClRandom_generate, diRefValue, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_generate);
 
     MCUX_CSSL_DI_RECORD(sumOfRandomGenerateParams, (uint32_t)pSession + (uint32_t)pOut + outLength);
 
     /* Call internal generate function */
     MCUX_CSSL_FP_FUNCTION_CALL(retCode_generateInternal, mcuxClRandom_generate_internal(pSession, pOut, outLength));
 
-    MCUXCLSESSION_EXIT(pSession, mcuxClRandom_generate, diRefValue, retCode_generateInternal, MCUXCLRANDOM_STATUS_FAULT_ATTACK, MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate_internal))
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_generate, retCode_generateInternal, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+        MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClRandom_generate_internal));
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_uninit)
@@ -174,7 +197,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_uninit(
   mcuxClSession_Handle_t pSession
 )
 {
-    MCUXCLSESSION_ENTRY(pSession, mcuxClRandom_uninit, diRefValue, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_uninit);
 
     MCUX_CSSL_DI_EXPUNGE(sumOfRandomUninitParams, (uint32_t)pSession);
 
@@ -186,7 +209,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_uninit(
         pSession->randomCfg.ctx = NULL;
         pSession->randomCfg.mode = NULL;
         MCUX_CSSL_DI_RECORD(sumOfRandomUninitParams, (uint32_t)pSession);
-        MCUXCLSESSION_EXIT(pSession, mcuxClRandom_uninit, diRefValue, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_uninit, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
 
     /* Verify context integrity */
@@ -206,7 +229,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_uninit(
 
     MCUX_CSSL_DI_RECORD(sumOfRandomUninitParams, (uint32_t)pSession);
 
-    MCUXCLSESSION_EXIT(pSession, mcuxClRandom_uninit, diRefValue, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK, MCUXCLRANDOM_FP_CALLED_SECURECLEAR)
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_uninit, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+      MCUXCLRANDOM_FP_CALLED_SECURECLEAR);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_selftest)
@@ -215,7 +239,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_selftest(
     mcuxClRandom_Mode_t    mode
 )
 {
-    MCUXCLSESSION_ENTRY(pSession, mcuxClRandom_selftest, diRefValue, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_selftest);
 
     MCUX_CSSL_DI_EXPUNGE(sumOfRandomSelftestParams, (uint32_t)pSession + (uint32_t)mode);
 
@@ -231,7 +255,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_selftest(
 
     MCUX_CSSL_DI_RECORD(sumOfRandomSelftestParams, (uint32_t)pSession + (uint32_t)mode);
 
-    MCUXCLSESSION_EXIT(pSession, mcuxClRandom_selftest, diRefValue, retCode_selftestFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK, mode->pOperationMode->protectionTokenSelftestFunction)
+    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_selftest, retCode_selftestFunction, MCUXCLRANDOM_STATUS_FAULT_ATTACK,
+        mode->pOperationMode->protectionTokenSelftestFunction);
 }
 
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClRandom_checkSecurityStrength)
@@ -240,7 +265,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_checkSecurityStr
     uint32_t              securityStrength
 )
 {
-    MCUXCLSESSION_ENTRY(pSession, mcuxClRandom_checkSecurityStrength, diRefValue, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+    MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClRandom_checkSecurityStrength);
 
     MCUX_CSSL_DI_EXPUNGE(sumOfRandomCheckSecurityStrengthParams, (uint32_t)pSession + (uint32_t)securityStrength);
 
@@ -250,10 +275,10 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandom_checkSecurityStr
 
     if (securityStrength > sessionMode->securityStrength)
     {
-        MCUXCLSESSION_EXIT(pSession, mcuxClRandom_checkSecurityStrength, diRefValue, MCUXCLRANDOM_STATUS_LOW_SECURITY_STRENGTH, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_checkSecurityStrength, MCUXCLRANDOM_STATUS_LOW_SECURITY_STRENGTH, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
     else
     {
-        MCUXCLSESSION_EXIT(pSession, mcuxClRandom_checkSecurityStrength, diRefValue, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK)
+        MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClRandom_checkSecurityStrength, MCUXCLRANDOM_STATUS_OK, MCUXCLRANDOM_STATUS_FAULT_ATTACK);
     }
 }

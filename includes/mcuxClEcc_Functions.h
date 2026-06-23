@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2025 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /**
@@ -352,6 +372,45 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateProtocol
 
 
 
+/**
+ * @brief Function to perform ECC arithmetic operations.
+ *
+ * From given input operands op1 and op2, this function calculates the result of an ECC arithmetic operation
+ * specified by an arithmetic operation specifier passed to the function.
+ *
+ * For more details regarding the function parameters and return codes, please refer to the definition of the
+ * used arithmetic operation type passed via arithmeticOperation.
+ *
+ * @param[in]  pSession             Handle for the current CL session.
+ * @param[in]  arithmeticOperation  arithmetic operand type.
+ * @param[in]  pDomainParams        pointer to domain parameters of the used curve.
+ * @param[in]  pOp1                 first operand op1.
+ * @param[in]  inSize               Number of bytes of data in the \p pOp1 buffer.
+ * @param[in]  pOp2                 second operand op2.
+ * @param[in]  inSize               Number of bytes of data in the \p pOp2 buffer.
+ * @param[out] pResult              result buffer.
+ * @param[out] pResultSize          Pointer to CPU word which will be incremented by the number of bytes of data
+ *                                  that have been written to the \p pResult buffer.
+ *
+ *
+ * @return A code-flow protected error code (see @ref MCUXCLECC_STATUS_)
+ * @retval #MCUXCLECC_STATUS_OK              if the operation finished successfully.
+ * @retval #MCUXCLECC_STATUS_INVALID_PARAMS  if the input parameters are invalid.
+ * @retval #MCUXCLECC_STATUS_NEUTRAL_POINT   if the result is the neutral point.
+ * @retval #MCUXCLECC_STATUS_FAULT_ATTACK    if a fault attack (unexpected behavior) is detected.
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_ArithmeticOperation)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ArithmeticOperation(
+    mcuxClSession_Handle_t pSession,
+    mcuxClEcc_ArithmeticOperation_t arithmeticOperation,
+    mcuxClEcc_Weier_DomainParams_t *pEccWeierDomainParams,
+    mcuxCl_InputBuffer_t pOp1,
+    uint32_t op1Size,
+    mcuxCl_InputBuffer_t pOp2,
+    uint32_t op2Size,
+    mcuxCl_Buffer_t pResult,
+    uint32_t * const pResultSize
+    );
 
 
 #ifdef MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC
@@ -386,6 +445,15 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_GenerateProtocol
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_DEFINED()
 #define mcuxClEcc_DeterministicECDSA_GenerateProtocolDescriptor mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic ///< @deprecated Please use mcuxClEcc_ECDSA_GenerateProtocolDescriptor_Deterministic instead
 #endif /* MCUXCL_FEATURE_ECC_ECDSA_DETERMINISTIC */
+
+
+/**
+ * @brief ECC public key validation function
+ */
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_WeierECC_PublicKeyValidation, mcuxClKey_ValidationFunction_t)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClEcc_WeierECC_PublicKeyValidation(
+    mcuxClSession_Handle_t pSession,
+    mcuxClKey_Handle_t key);
 
 
 /**

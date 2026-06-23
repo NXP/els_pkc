@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
 /* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClOsccaCipherModes_SM4_Crypt_Internal.c
@@ -111,7 +131,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     pCtx->common.totalInputLength = 0u;
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4_Init, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4_Init, MCUXCLCIPHER_STATUS_OK,
                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_ScheduleSM4Key),
         MCUX_CSSL_FP_CONDITIONAL((ivLength != 0u), MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read)));
 }
@@ -154,7 +174,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClOscca_FastSecureXor(pCtx->state[pCtx->out], pCtx->state[pCtx->out], pCtx->state[pCtx->in], MCUXCLOSCCASM4_BLOCK_SIZE));
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4Ctr_BlockPro, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4Ctr_BlockPro, MCUXCLCIPHER_STATUS_OK,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaCipherModes_SM4_Crypt_IncCounter),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor));
@@ -195,7 +215,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4NoCtr_BlockPro, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4NoCtr_BlockPro, MCUXCLCIPHER_STATUS_OK,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine),
                                             MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCACIPHERPARAM_ALGORITHM_SM4_CBC == pAlgo->mode),
                                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor)));
@@ -295,7 +315,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4_Process, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4_Process, MCUXCLCIPHER_STATUS_OK,
                                             loopTimes * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_read),
                                             loopTimes1 * MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClBuffer_write),
                                             MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCACIPHERPARAM_ALGORITHM_SM4_CTR == pAlgo->mode),
@@ -354,7 +374,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     *pOutLength += pCtx->common.blockBufferUsed;
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_WRAP()
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4Ctr_LastBlockPro, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4Ctr_LastBlockPro, MCUXCLCIPHER_STATUS_OK,
                                             pAlgo->protection_token_addPadding,
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine),
                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOscca_FastSecureXor),
@@ -422,7 +442,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4NoCtr_LastBlockPro, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4NoCtr_LastBlockPro, MCUXCLCIPHER_STATUS_OK,
                                             pAlgo->protection_token_addPadding,
                                             MCUX_CSSL_FP_CONDITIONAL((padOutLength > 0u),
                                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaSm4_Engine),
@@ -467,7 +487,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     }
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4_Finish, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4_Finish, MCUXCLCIPHER_STATUS_OK,
                                             MCUX_CSSL_FP_CONDITIONAL((((pCtx->common.blockBufferUsed > 0u) && (MCUXCLOSCCACIPHERPARAM_ALGORITHM_SM4_CTR == pAlgo->mode))),
                                                         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaCipherModes_SkeletonSM4Ctr_LastBlockPro)),
                                             MCUX_CSSL_FP_CONDITIONAL((MCUXCLOSCCACIPHERPARAM_ALGORITHM_SM4_CTR != pAlgo->mode),
@@ -555,7 +575,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_freeWords_cpuWa(session, (sizeof(mcuxClOsccaCipherModes_Context_Sm4_t) + MCUXCLOSCCA_SIZE_ALIGN_OFFSET) / sizeof(uint32_t));
 
     /* Exit and balance the flow protection. */
-    MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClOsccaCipherModes_SkeletonSM4_OneShot, MCUXCLCIPHER_STATUS_OK, MCUXCLCIPHER_STATUS_FAULT_ATTACK,
+    MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClOsccaCipherModes_SkeletonSM4_OneShot, MCUXCLCIPHER_STATUS_OK,
                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaCipherModes_SkeletonSM4_Init),
                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaCipherModes_SkeletonSM4_Process),
                                            MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClOsccaCipherModes_SkeletonSM4_Finish));

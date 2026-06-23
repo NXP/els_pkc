@@ -1,14 +1,34 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2024 NXP                                                  */
 /*                                                                          */
-/* NXP Proprietary. This software is owned or controlled by NXP and may     */
-/* only be used strictly in accordance with the applicable license terms.   */
-/* By expressly accepting such terms or by downloading, installing,         */
-/* activating and/or otherwise using the software, you are agreeing that    */
-/* you have read, and that you agree to comply with and are bound by, such  */
-/* license terms.  If you do not agree to be bound by the applicable        */
-/* license terms, then you may not retain, install, activate or otherwise   */
-/* use the software.                                                        */
+/* SPDX-License-Identifier: BSD-3-Clause                                    */
+/*                                                                          */
+/* Redistribution and use in source and binary forms, with or without       */
+/* modification, are permitted provided that the following conditions are   */
+/* met:                                                                     */
+/*                                                                          */
+/* 1. Redistributions of source code must retain the above copyright        */
+/*    notice, this list of conditions and the following disclaimer.         */
+/*                                                                          */
+/* 2. Redistributions in binary form must reproduce the above copyright     */
+/*    notice, this list of conditions and the following disclaimer in the   */
+/*    documentation and/or other materials provided with the distribution.  */
+/*                                                                          */
+/* 3. Neither the name of the copyright holder nor the names of its         */
+/*    contributors may be used to endorse or promote products derived from  */
+/*    this software without specific prior written permission.              */
+/*                                                                          */
+/* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS  */
+/* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED    */
+/* TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A          */
+/* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT       */
+/* HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   */
+/* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED */
+/* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR   */
+/* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF   */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING     */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
+/* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
 /** @file  mcuxClSignature_sign.c
@@ -41,7 +61,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_sign(
   uint32_t * const pSignatureSize
 )
 {
-  MCUXCLSESSION_ENTRY(session, mcuxClSignature_sign, diRefValue, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK)
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClSignature_sign);
 
   MCUX_CSSL_FP_FUNCTION_CALL(sign_status, mode->pSignFct(
     /* mcuxClSession_Handle_t           session:          */  session,
@@ -52,12 +72,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_sign(
     /* mcuxCl_Buffer_t                  pSignature:       */  pSignature,
     /* uint32_t * const                pSignatureSize:   */  pSignatureSize));
 
-  // TODO: Remove workaround (CLNS-8518)
-  volatile mcuxClSignature_Status_t sign_result_tmp = MCUXCLSIGNATURE_STATUS_FAILURE;
+  mcuxClSignature_Status_t sign_result_tmp = MCUXCLSIGNATURE_STATUS_FAILURE;
 
   MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_14_3, "intentional, this 'false' is a temporary solution")
   if(
-    MCUXCLECC_STATUS_OK == sign_status || 
+    MCUXCLECC_STATUS_OK == sign_status ||
 #ifdef MCUXCL_FEATURE_SM2_SIGNATURE
     MCUXCLOSCCASM2_STATUS_OK == sign_status ||
 #endif
@@ -67,12 +86,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_sign(
   }
   MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_14_3)
 
-  MCUXCLSESSION_EXIT(session,
-      mcuxClSignature_sign,
-      diRefValue,
-      sign_result_tmp,
-      MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
-      mode->protection_token_sign)
+
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClSignature_sign, sign_result_tmp, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
+    mode->protection_token_sign);
 }
 #endif /* MCUXCL_FEATURE_SIGNATURE_SIGN */
 
@@ -89,7 +105,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_verify(
   uint32_t signatureSize
 )
 {
-  MCUXCLSESSION_ENTRY(session, mcuxClSignature_verify, diRefValue, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK)
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClSignature_verify);
 
   MCUX_CSSL_FP_FUNCTION_CALL(verify_status, mode->pVerifyFct(
     /* mcuxClSession_Handle_t           session:           */  session,
@@ -100,40 +116,11 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_verify(
     /* mcuxCl_InputBuffer_t             pSignature:        */  pSignature,
     /* uint32_t                        signatureSize:     */  signatureSize));
 
-  // TODO: Remove workaround (CLNS-8518)
-  volatile mcuxClSignature_Status_t verify_result_tmp = MCUXCLSIGNATURE_STATUS_FAILURE;
-
-  MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_14_3, "intentional, this 'false' is a temporary solution")
-if(
-    MCUXCLECC_STATUS_INVALID_SIGNATURE == verify_status || 
-#ifdef MCUXCL_FEATURE_SM2_SIGNATURE
-    MCUXCLOSCCASM2_STATUS_INVALID_SIGNATURE == verify_status ||
-#endif
-    false) // This causes a MISRA violation Rule 14.3
-  {
-    verify_result_tmp = MCUXCLSIGNATURE_STATUS_NOT_OK;
-  }
-else if(
-    MCUXCLECC_STATUS_OK == verify_status || 
-#ifdef MCUXCL_FEATURE_SM2_SIGNATURE
-    MCUXCLOSCCASM2_STATUS_OK == verify_status ||
-#endif
-    false) // This causes a MISRA violation Rule 14.3
-  {
-    verify_result_tmp = MCUXCLSIGNATURE_STATUS_OK;
-  }
-  else
-  {
-      /* Intentionally left empty */
-  }
-  MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_14_3)
-
-  MCUXCLSESSION_EXIT(session,
-      mcuxClSignature_verify,
-      diRefValue,
-      verify_result_tmp,
-      MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
-      mode->protection_token_verify)
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(
+    mcuxClSignature_verify,
+    MCUXCLSIGNATURE_TRANSLATE_VERIFY_RETURN_CODE(verify_status),
+    MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
+    mode->protection_token_verify);
 
 }
 #endif /* MCUXCL_FEATURE_SIGNATURE_VERIFY */
@@ -148,18 +135,14 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_selftest(
   mcuxClSignature_Test_t test
 )
 {
-  MCUXCLSESSION_ENTRY(session, mcuxClSignature_selftest, diRefValue, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK)
+  MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClSignature_selftest);
 
   MCUX_CSSL_FP_FUNCTION_CALL(selftest_status, test->pSelfTestFct(
     /* mcuxClSession_Handle_t            session:             */  session,
     /* mcuxClSignature_Mode_t            mode:                */  mode));
 
-  MCUXCLSESSION_EXIT(session,
-      mcuxClSignature_selftest,
-      diRefValue,
-      selftest_status,
-      MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
-      test->protection_token_selftest)
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClSignature_selftest, selftest_status, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
+    test->protection_token_selftest);
 }
 #endif /* MCUXCL_FEATURE_SIGNATURE_SELFTEST */
 
