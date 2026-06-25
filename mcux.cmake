@@ -1579,6 +1579,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only)
                 includes/platform/rw61x/mcuxClHmac_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClKey_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClMacModes_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClMath_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClRandomModes_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClRsa_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClSession_MemoryConsumption.h
