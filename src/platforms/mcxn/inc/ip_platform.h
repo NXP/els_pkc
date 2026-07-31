@@ -53,6 +53,13 @@
 #define ELS_SFR_NAME(sfr)       sfr         ///< full name of SFR
 #define ELS_SFR_PREFIX          S50_        ///< sfr field name prefix
 
+/* The MCXN family exposes the PKC peripheral under the CMSIS symbol PKC0,
+ * whereas other SoCs (e.g. RW61x) expose it as the generic name PKC. Map the
+ * generic PKC name onto PKC0 here so code that refers to PKC builds on MCXN. */
+#if !defined(PKC) && defined(PKC0)
+#define PKC PKC0
+#endif
+
 // Define base address of PKC
 #define PKC_SFR_BASE            PKC0        ///< base of PKC SFRs
 #define PKC_SFR_NAME(sfr)       PKC_ ## sfr ///< full name of SFR

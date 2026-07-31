@@ -42,6 +42,8 @@
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <internal/mcuxClEls_Internal.h>
 
+#ifdef MCUXCL_FEATURE_ELS_GLITCHDETECTOR
+
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_GlitchDetector_LoadConfig_Async)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GlitchDetector_LoadConfig_Async(
     uint8_t const * pInput)
@@ -116,3 +118,5 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GlitchDe
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GlitchDetector_ResetEventCounter, MCUXCLELS_STATUS_OK);
 }
+
+#endif /* MCUXCL_FEATURE_ELS_GLITCHDETECTOR */

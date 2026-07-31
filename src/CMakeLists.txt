@@ -94,6 +94,10 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_Aes_Internal.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCipherModes/src/mcuxClCipherModes_Els_AesEngine.c 
 
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_GenerateProtocolDescriptor.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_ECDSA_Internal_BlindedSecretKeyGen_FUP.c
+
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_Constants.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_EdDSA_GenerateKeyPair_FUP.c
@@ -160,7 +164,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_BlindedSecretKeyGen.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_BlindedSecretKeyGen_FUP.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_GenerateKeyPair.c 
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_KeyAgreement_ECDH.c 
+#        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_KeyAgreement_ECDH.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEcc/src/mcuxClEcc_WeierECC_Internal_SetupEnvironment.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEls/src/mcuxClEls_Aead.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClEls/src/mcuxClEls_Cipher.c
@@ -190,6 +194,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Protection.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClMac/src/mcuxClMac.c
+
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClMacModes/src/mcuxClMacModes_Common.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClMacModes/src/mcuxClMacModes_Common_Modes.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClMacModes/src/mcuxClMacModes_Els_Cbcmac.c
@@ -234,6 +239,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_getMillerRabinTestIterations.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Crt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Crt_FUP.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Helper.c        
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyGeneration_Plain.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_Mgf1.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_MillerRabinTest.c
@@ -260,15 +266,141 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_Verify_NoEMSA.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_VerifyE.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClSession/src/mcuxClSession.c
-
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClTrng/src/mcuxClTrng_SA_TRNG.c
-
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Clear.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Compare.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Copy.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Internal_SecureCompare_Stub.c
+#         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Internal_SecureCompare_Stub.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslMemory/src/mcuxCsslMemory_Set.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxCsslParamIntegrity/src/mcuxCsslParamIntegrity32.c
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mcuxCl_clns.c
 )
+
+# TRNG source selection is platform dependent and controlled by the
+# CONFIG_MCUX_ELS_PKC_TRNG_USE_ELS Kconfig option. Platforms without a
+# standalone SA_TRNG peripheral (e.g. MCXN, RT700 / MIMXRT7xx) use the ELS
+# internal TRNG (mcuxClTrng_ELS.c); others (e.g. RW61x) use the standalone
+# SA_TRNG (mcuxClTrng_SA_TRNG.c).
+if(CONFIG_MCUX_ELS_PKC_TRNG_USE_ELS)
+    target_sources(
+        McuxElsPkc
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClTrng/src/mcuxClTrng_ELS.c
+    )
+else()
+    target_sources(
+        McuxElsPkc
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClTrng/src/mcuxClTrng_SA_TRNG.c
+    )
+endif()
+
+# Key-derivation (HKDF/PBKDF2/NIST SP800-108/SP800-56C) and RSA key-type
+# sources are controlled by the CONFIG_MCUX_ELS_PKC_ENABLE_KEY_DERIVATION
+# Kconfig option. They provide descriptor symbols
+# (mcuxClKey_DerivationAlgorithmDescriptor_*,
+# mcuxClKey_TypeDescriptor_derivationKey_variableLength,
+# mcuxClKey_TypeDescriptor_Rsa_*) required by platforms such as RT700 /
+# MIMXRT7xx. Platforms that do not use this feature set (e.g. MCXN, RW61x)
+# leave the option disabled.
+if(CONFIG_MCUX_ELS_PKC_ENABLE_KEY_DERIVATION)
+    target_sources(
+        McuxElsPkc
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation_HKDF.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation_PBKDF2.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation_NIST_SP800_108.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation_NIST_SP800_56C.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyTypes.c
+    )
+endif()
+
+# OSCCA (Chinese national cryptographic algorithms: SM2/SM3/SM4) support.
+# Supported only on MIMXRT7xx 
+if(CONFIG_SOC_SERIES_IMXRT7XX)
+    target_include_directories(
+        McuxElsPkc
+        PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaCipherModes/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaCipherModes/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaPkc/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaPkc/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaRandomModes/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaRandomModes/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSafo/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm3/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm3/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm4/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm4/inc/internal
+            # The OSCCA comps (e.g. Sm2) pull in the mcuxClSignature and
+            # mcuxClCrc component headers (mcuxClSignature_Types.h, mcuxClCrc.h).
+            # These are not OSCCA comps but are required build dependencies, so
+            # add their include paths here (IMXRT7XX-gated) as well.
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClSignature/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClSignature/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClSignature/inc/platform
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCrc/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClCrc/inc/internal
+    )
+
+
+    target_sources(
+        McuxElsPkc
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_Ccm_Common.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_Constants.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_EngineCcm.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SkeletonCcm.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4Ctr.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4_Multipart.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaAeadModes/src/mcuxClOsccaAeadModes_SM4_OneShot.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaCipherModes/src/mcuxClOsccaCipherModes_Constants.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaCipherModes/src/mcuxClOsccaCipherModes_SM4_Crypt.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaCipherModes/src/mcuxClOsccaCipherModes_SM4_Crypt_Internal.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/src/mcuxClOsccaMacModes.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/src/mcuxClOsccaMacModes_CBCMac.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/src/mcuxClOsccaMacModes_CMac.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/src/mcuxClOsccaMacModes_Helper.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/src/mcuxClOsccaMacModes_KeyTypes.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaMacModes/src/mcuxClOsccaMacModes_Modes.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaPkc/src/mcuxClOsccaPkc.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaRandomModes/src/mcuxClOsccaRandomModes_OsccaMode.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSafo/src/mcuxClOsccaSafo_Drv.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Cipher_Crypt.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_ComputePrehash.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Constants.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_CryptoUtils.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Decrypt.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Ecc.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_EccUtils.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_EncDec_Internal.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Encrypt.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_FUP.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_GenerateKeyPair.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Helper.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_InvertPrivateKey.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Keyagreement.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Keyagreement_SelfTest.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_KeyExchange.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_KeyTypes.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_SelfTest.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Sign.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Signature_Internal.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Signature_PreHash.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Signature_SelfTest.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm2/src/mcuxClOsccaSm2_Verify.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm3/src/mcuxClOsccaSm3_core_sm3.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm3/src/mcuxClOsccaSm3_internal_sm3.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm4/src/mcuxClOsccaSm4_CommonOperations.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm4/src/mcuxClOsccaSm4_Core.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm4/src/mcuxClOsccaSm4_KeyTypes.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClOsccaSm4/src/mcuxClOsccaSm4_LoadKey.c
+    )
+endif()
