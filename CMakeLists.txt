@@ -124,10 +124,15 @@ if(CONFIG_SOC_FAMILY_MCXN)
                 ${NXP_MCUX_SDK_NG_PATH}/devices/MCX/MCXN/MCXN947/drivers
         )
     elseif(CONFIG_SOC_MCXN547)
+        # MCXN547 has no device drivers/ dir of its own; it reuses the MCXN947
+        # drivers (hal_nxp compiles MCXN947/drivers/fsl_clock.c for it). Add the
+        # MCXN947 drivers include path so fsl_clock.h (pulled in via
+        # fsl_common_arm.h) resolves.
         target_include_directories(McuxElsPkc
             PUBLIC
                 ${NXP_MCUX_SDK_NG_PATH}/devices/MCX/MCXN/periph
                 ${NXP_MCUX_SDK_NG_PATH}/devices/MCX/MCXN/MCXN547
+                ${NXP_MCUX_SDK_NG_PATH}/devices/MCX/MCXN/MCXN947/drivers
         )
     elseif(CONFIG_SOC_MCXN236)
         target_include_directories(McuxElsPkc
