@@ -229,6 +229,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_Els.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_CtrDrbg_PrDisabled.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_ElsMode.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_HmacDrbg.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_NormalMode.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_PatchMode.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRandomModes/src/mcuxClRandomModes_PrDisabled.c
