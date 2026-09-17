@@ -15,19 +15,19 @@ menu "ELS PKC"
 # The period (.) in the config name excludes these symbols from being placed
 # into the preinclude config header.
 # ---------------------------------------------------------------------------
-    config is_device.LPC
+    config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.LPC
         bool
         default y if MCUX_HW_DEVICE_LPC55S36
 
-    config is_device.MCXN
+    config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
         bool
         default y if MCUX_HW_DEVICE_MCXN247 || MCUX_HW_DEVICE_MCXN526 || MCUX_HW_DEVICE_MCXN527 || MCUX_HW_DEVICE_MCXN536 || MCUX_HW_DEVICE_MCXN537 || MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN556S || MCUX_HW_DEVICE_MCXN557S || MCUX_HW_DEVICE_MCXN556T || MCUX_HW_DEVICE_MCXN557T || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236 || MCUX_HW_DEVICE_MCXN246T || MCUX_HW_DEVICE_MCXN246 || MCUX_HW_DEVICE_MCXN247T || MCUX_HW_DEVICE_MCXN526T || MCUX_HW_DEVICE_MCXN527T || MCUX_HW_DEVICE_MCXN536T || MCUX_HW_DEVICE_MCXN537T || MCUX_HW_DEVICE_MCXN546T || MCUX_HW_DEVICE_MCXN547T || MCUX_HW_DEVICE_MCXN946T || MCUX_HW_DEVICE_MCXN947T
 
-    config is_device.RW61X
+    config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
         bool
         default y if MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612
 
-    config is_device.MIMXRT
+    config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
         bool
         default y if MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
 
@@ -35,37 +35,37 @@ menu "ELS PKC"
 
         config MCUX_COMPONENT_component.els_pkc.doc.rw61x
             bool "RW61x"
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc.doc.lpc
             bool "LPC"
-            depends on is_device.LPC
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.LPC
 
         config MCUX_COMPONENT_component.els_pkc.doc.mcxn
             bool "MCXN"
-            depends on is_device.MCXN
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
 
         config MCUX_COMPONENT_component.els_pkc.doc.mimxrt
             bool "MIMXRT"
-            depends on is_device.MIMXRT
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
     endmenu
 
     menu "Static Libraries"
         config MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
             bool "MCXN"
-            depends on is_device.MCXN
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
 
         config MCUX_COMPONENT_component.els_pkc.static_lib.rw61x
             bool "RW61x"
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc.static_lib.lpc
             bool "LPC"
-            depends on is_device.LPC
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.LPC
 
         config MCUX_COMPONENT_component.els_pkc.static_lib.mimxrt
             bool "MIMXRT"
-            depends on is_device.MIMXRT
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
     endmenu
 
     menu "Cryptographic Modules"
@@ -404,21 +404,21 @@ menu "ELS PKC"
                         select MCUX_COMPONENT_component.els_pkc.platform.lpc
                         select MCUX_COMPONENT_component.els_pkc.static_lib.lpc
                         select MCUX_COMPONENT_component.els_pkc.doc.lpc
-                        depends on is_device.LPC
+                        depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.LPC
 
                     config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_2
                         bool "MCXN"
                         select MCUX_COMPONENT_component.els_pkc.platform.mcxn
                         select MCUX_COMPONENT_component.els_pkc.static_lib.mcxn
                         select MCUX_COMPONENT_component.els_pkc.doc.mcxn
-                        depends on is_device.MCXN
+                        depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
 
                     config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_3
                         bool "RW61x"
                         select MCUX_COMPONENT_component.els_pkc.static_lib.rw61x
                         select MCUX_COMPONENT_component.els_pkc.platform.rw61x
                         select MCUX_COMPONENT_component.els_pkc.doc.rw61x
-                        depends on is_device.RW61X
+                        depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
                     config MCUX_DEPENDENCY_COMPONENT_component.els_pkc_DEPEND_ANYOF_OPTION_4
                         bool "MIMXRT"
@@ -430,7 +430,7 @@ menu "ELS PKC"
                         select MCUX_COMPONENT_component.els_pkc.key_derivation
                         select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
                         select MCUX_COMPONENT_component.els_pkc.random_modes_hmacdrbg
-                        depends on is_device.MIMXRT
+                        depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
                   endchoice
                 endif
 
@@ -443,7 +443,7 @@ menu "ELS PKC"
     menu "Platform Support"
         config MCUX_COMPONENT_component.els_pkc.platform.mcxn
             bool "MCXN"
-            default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && is_device.MCXN)
+            default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN)
             select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
 
             if MCUX_COMPONENT_component.els_pkc.platform.mcxn
@@ -452,19 +452,19 @@ menu "ELS PKC"
                 config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.platform.mcxn_DEPEND_ANYOF_OPTION_1
                     bool "ELS TRNG"
                     select MCUX_COMPONENT_component.els_pkc.trng.type_els
-                    depends on is_device.MCXN
+                    depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
 
               endchoice
             endif
 
         config MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only
             bool "RW61x interface headers only"
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files
             bool "RW61x interface files"
             select MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc.platform.rw61x_standalone_clib_gdet_sensor
             bool "RW61x standalone CLIB GDET sensor"
@@ -474,26 +474,26 @@ menu "ELS PKC"
             select MCUX_COMPONENT_component.els_pkc.standalone_gdet
             select MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only
             select MCUX_COMPONENT_component.els_pkc.buffer
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc.platform.rw61x
             bool "RW61x"
-            default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && is_device.RW61X)
+            default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X)
             select MCUX_COMPONENT_component.els_pkc.platform.rw61x_interface_files
             select MCUX_COMPONENT_component.els_pkc.trng.type_rng4
             select MCUX_COMPONENT_component.els_pkc.standalone_gdet
             select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc.platform.lpc
             bool "LPC"
-            depends on is_device.LPC
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.LPC
 
         config MCUX_COMPONENT_component.els_pkc.platform.mimxrt
             bool "MIMXRT"
             select MCUX_COMPONENT_component.els_pkc.glikey
             select MCUX_COMPONENT_component.els_pkc.trng.type_els
-            depends on is_device.MIMXRT
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
     endmenu
 
     menu "Examples"
@@ -524,11 +524,11 @@ menu "ELS PKC"
                 config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_1
                     bool "Include random mode"
                     select MCUX_COMPONENT_component.els_pkc.examples_random_modes
-                    depends on MCUX_HW_DEVICE_MCXN247 || MCUX_HW_DEVICE_MCXN526 || MCUX_HW_DEVICE_MCXN527 || MCUX_HW_DEVICE_MCXN536 || MCUX_HW_DEVICE_MCXN537 || MCUX_HW_DEVICE_MCXN546 || MCUX_HW_DEVICE_MCXN547 || MCUX_HW_DEVICE_MCXN556S || MCUX_HW_DEVICE_MCXN557S || MCUX_HW_DEVICE_MCXN556T || MCUX_HW_DEVICE_MCXN557T || MCUX_HW_DEVICE_MCXN946 || MCUX_HW_DEVICE_MCXN947 || MCUX_HW_DEVICE_MCXN235 || MCUX_HW_DEVICE_MCXN236 || MCUX_HW_DEVICE_RW610 || MCUX_HW_DEVICE_RW612 || MCUX_HW_DEVICE_MIMXRT798S || MCUX_HW_DEVICE_MIMXRT758S || MCUX_HW_DEVICE_MIMXRT735S
+                    depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
 
                 config MCUX_DEPENDENCY_COMPONENT_component.els_pkc.examples_DEPEND_ANYOF_OPTION_2
                     bool "No random mode"
-                    depends on MCUX_HW_DEVICE_LPC55S36
+                    depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.LPC
               endchoice
             endif
 
@@ -624,6 +624,6 @@ menu "ELS PKC"
             select MCUX_COMPONENT_component.els_pkc.memory
             select MCUX_COMPONENT_component.els_pkc
             select MCUX_COMPONENT_component.els_pkc.psa_driver
-            depends on is_device.RW61X
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
     endmenu
 endmenu
