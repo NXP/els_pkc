@@ -1,16 +1,12 @@
 var a00695 =
 [
-    [ "MCUXCLELS_KEYIMPORT_VALUE_KFMT_UDF", "a01428.html#ga984d35cad96543f5cb269a9ee771834b", null ],
-    [ "MCUXCLELS_KEYIMPORT_VALUE_KFMT_RFC3394", "a01428.html#ga8ae5e78cfde658034967faafbbc84c97", null ],
-    [ "MCUXCLELS_KEYIMPORT_VALUE_KFMT_PUF", "a01428.html#gabf3d81b763b4402dd1a4716ca7b10a56", null ],
-    [ "MCUXCLELS_KEYIMPORT_KFMT_UDF", "a01429.html#ga1935d246d89a89d4d04c393b40161429", null ],
-    [ "MCUXCLELS_KEYIMPORT_KFMT_RFC3394", "a01429.html#gaa3f8c4e99d3c233eeaa2685d9e0d4b67", null ],
-    [ "MCUXCLELS_KEYIMPORT_KFMT_PUF", "a01429.html#ga757baa3bf038e4f16c63e356a2a590a6", null ],
-    [ "MCUXCLELS_RFC3394_OVERHEAD", "a01429.html#ga9c38ef72ae48380b864e6e5fb950ee17", null ],
-    [ "MCUXCLELS_RFC3394_CONTAINER_SIZE_128", "a01430.html#ga4d0fa5e5255eb1fa89b0cf6a30a452fb", null ],
-    [ "MCUXCLELS_RFC3394_CONTAINER_SIZE_256", "a01430.html#ga46c8e56ff10c6a6ecb28c511cd32178c", null ],
-    [ "mcuxClEls_KeyDelete_Async", "a01432.html#ga035d072c033f988194110973581c6303", null ],
-    [ "mcuxClEls_KeyImport_Async", "a01432.html#ga867d4be563b347273af25a559abd7f87", null ],
-    [ "mcuxClEls_KeyExport_Async", "a01432.html#ga698ad21f0b3576d2b9f4b7b3ef83134f", null ],
-    [ "mcuxClEls_GetKeyProperties", "a01432.html#ga524d99bbf9aae0d299fbb52d2a121c4f", null ]
+    [ "mcuxClRandom_init", "a01082.html#ga989cf9033b30c383d1548037f2ec8bc9", null ],
+    [ "mcuxClRandom_reseed", "a01082.html#ga89fe90a4ca175d03b4a821cf2fa2004f", null ],
+    [ "mcuxClRandom_generate", "a01082.html#ga8abb91a3866764d86635358085f406ba", null ],
+    [ "mcuxClRandom_uninit", "a01082.html#ga92889d1e06ba33656278bd2a4110be99", null ],
+    [ "mcuxClRandom_selftest", "a01082.html#ga4c882c0d6b1e1bba418934c44acc873c", null ],
+    [ "mcuxClRandom_checkSecurityStrength", "a01082.html#ga6e48c6007ea1d6cfa2ec329152072fc0", null ],
+    [ "mcuxClRandom_ncPatch", "a01082.html#gaf2a93d382af17308266bf687b1e9de27", null ],
+    [ "mcuxClRandom_ncInit", "a01082.html#ga4522b9cfa28cb224b653003d481d7100", null ],
+    [ "mcuxClRandom_ncGenerate", "a01082.html#gadb8ca3062045564b8f919d40a3da6569", null ]
 ];

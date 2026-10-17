@@ -1,11 +1,9 @@
 var a00950 =
 [
-    [ "mcuxClKey_TypeDescriptor_SM2P256_Std_Public", "a01511.html#ga4d5a98a0869d936e6c471b2b66a689ec", null ],
-    [ "mcuxClKey_Type_SM2P256_Std_Public", "a01511.html#gaaf79037c342de04285264102a2911b47", null ],
-    [ "mcuxClKey_TypeDescriptor_SM2P256_Std_Private", "a01511.html#ga0699ed7e171625ce04e223a4845ea2aa", null ],
-    [ "mcuxClKey_Type_SM2P256_Std_Private", "a01511.html#ga2da388ffb7be426bc34e279d8d22ee13", null ],
-    [ "mcuxClKey_TypeDescriptor_SM2P256_Ext_Public", "a01511.html#ga9321b0939155e5e339bdf75cfc771df5", null ],
-    [ "mcuxClKey_Type_SM2P256_Ext_Public", "a01511.html#ga437e751730693f4b32f46a1f0947ae9e", null ],
-    [ "mcuxClKey_TypeDescriptor_SM2P256_Ext_Private", "a01511.html#ga2258b810821de5b1b2018aa39f69afac", null ],
-    [ "mcuxClKey_Type_SM2P256_Ext_Private", "a01511.html#ga5fe7d5fb468ac6819fca3582015d3764", null ]
+    [ "MCUXCLELS_CMAC_EXTERNAL_KEY_ENABLE", "a00950.html#ga0b115dc62b80bece0cfbb37d8d6be71c", null ],
+    [ "MCUXCLELS_CMAC_EXTERNAL_KEY_DISABLE", "a00950.html#gaf8cc08552ae462283ee61cd55a1e6e6d", null ],
+    [ "MCUXCLELS_CMAC_INITIALIZE_DISABLE", "a00950.html#ga21b0dadab5a6ff16fa81b41a8bf8d190", null ],
+    [ "MCUXCLELS_CMAC_INITIALIZE_ENABLE", "a00950.html#ga556198894993c42af47bb004ddde6f8e", null ],
+    [ "MCUXCLELS_CMAC_FINALIZE_DISABLE", "a00950.html#ga5a7186be485cefe12529107214dd872b", null ],
+    [ "MCUXCLELS_CMAC_FINALIZE_ENABLE", "a00950.html#ga923398d224ee92df39da7b5a27982850", null ]
 ];

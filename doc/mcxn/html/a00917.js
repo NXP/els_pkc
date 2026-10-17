@@ -1,5 +1,5 @@
 var a00917 =
 [
-    [ "MCUXCLOSCCASAFO_STATUS_ERROR", "a01507.html#ga64525ad9739d0a868ed2d8ff840fb52d", null ],
-    [ "MCUXCLOSCCASAFO_STATUS_OK", "a01507.html#ga1175a593fac23cd857035b14063e0632", null ]
+    [ "mcuxCl_InputBuffer_t", "a00917.html#ga43ce32df6cc1da1a27607535551aba6c", null ],
+    [ "mcuxCl_Buffer_t", "a00917.html#gabe9cd4a1ba45b05e7d09ef0576ea89bb", null ]
 ];

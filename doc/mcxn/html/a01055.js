@@ -1,5 +1,8 @@
 var a01055 =
 [
-    [ "MCUXCLRSA_KEYSTRUCT_PLAIN_SIZE", "a01542.html#ga7cb7e859de58bdf04061a6e726693f96", null ],
-    [ "MCUXCLRSA_KEYSTRUCT_CRT_SIZE", "a01542.html#gabe8ea189cf39253f528d52a6346a8510", null ]
+    [ "MCUXCLMEMORY_STATUS_OK", "a01055.html#ga0a6eff5e1bb27d6c237a16f7d60b9eb9", null ],
+    [ "MCUXCLMEMORY_STATUS_EQUAL", "a01055.html#gabaa088c030f9f7a12cbdbac0132659bd", null ],
+    [ "MCUXCLMEMORY_STATUS_NOT_EQUAL", "a01055.html#gabde52183de79322bf40674ee07a0bdac", null ],
+    [ "MCUXCLMEMORY_STATUS_INVALID_PARAMETER", "a01055.html#ga7cea03b509fbd3782a4d9cb163a1e53b", null ],
+    [ "MCUXCLMEMORY_STATUS_FAULT", "a01055.html#gaf8817536a1139834b1b59ee8cf7ad04e", null ]
 ];

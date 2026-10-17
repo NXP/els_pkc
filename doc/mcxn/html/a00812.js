@@ -1,10 +1,4 @@
 var a00812 =
 [
-    [ "MCUXCLMAC_STATUS_ERROR", "a01470.html#ga29a0556d236921ec9e6680cd049f784b", null ],
-    [ "MCUXCLMAC_STATUS_FAILURE", "a01470.html#gaeee9d7aded8807ac014d1030847457a2", null ],
-    [ "MCUXCLMAC_STATUS_INVALID_PARAM", "a01470.html#ga8eb86baa218d3f14c65c4cf1fd4a9a6b", null ],
-    [ "MCUXCLMAC_STATUS_FAULT_ATTACK", "a01470.html#ga025cf49de0fa3225a6d15fd972bf3c64", null ],
-    [ "MCUXCLMAC_STATUS_OK", "a01470.html#ga7df50ebdaad50cfe8661c930df6c43df", null ],
-    [ "MCUXCLMAC_STATUS_COMPARE_NOK", "a01470.html#ga322f2ecd934013fbc12b609d7f92b49f", null ],
-    [ "MCUXCLMAC_STATUS_ERROR_MEMORY_ALLOCATION", "a01470.html#gaf75ae31f35547a5f03ebbe3375ff943a", null ]
+    [ "mcuxCsslMemory_Set", "a01147.html#ga0a0ed6d55e0cb4d633ba19a32aca64c6", null ]
 ];

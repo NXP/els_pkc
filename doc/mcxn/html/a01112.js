@@ -1,5 +1,8 @@
 var a01112 =
 [
-    [ "MCUX_CSSL_DI_USE_SECURE_COUNTER", "a01563.html#gad14940e758b00b26f2e699b4fc0144bb", null ],
-    [ "MCUX_CSSL_DI_USE_NONE", "a01563.html#ga4f0cea555852c5171e55303b6cb062be", null ]
+    [ "Data Integrity API", "a01113.html", "a01113" ],
+    [ "Flow Protection API", "a01122.html", "a01122" ],
+    [ "Memory API", "a01137.html", "a01137" ],
+    [ "Parameter Integrity API", "a01149.html", "a01149" ],
+    [ "Secure Counter API", "a01153.html", "a01153" ]
 ];

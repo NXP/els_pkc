@@ -1,5 +1,5 @@
 var a01381 =
 [
-    [ "MCUXCLELS_ERROR_FLAGS_KEEP", "a01381.html#gab2b0ee14cae59a5f5f4f2563d7189854", null ],
-    [ "MCUXCLELS_ERROR_FLAGS_CLEAR", "a01381.html#ga3528b1fa2b3c39524898299a3a90a753", null ]
+    [ "word", "a01381.html#a292cc023d5aa74cdbd3d074912e48197", null ],
+    [ "bits", "a01381.html#ac7f6f42c0f7fdaaa1bd65f0aaae63309", null ]
 ];

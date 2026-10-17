@@ -1,4 +1,5 @@
 var a01533 =
 [
-    [ "mcuxClRandomModes_mdELS_Drbg", "a01533.html#ga33a2ec75a1ffddc069c679de7c34b8fc", null ]
+    [ "pKeyEntryData", "a01533.html#a1f5a90f95105b9abaf31a7997a2fb24e", null ],
+    [ "keyEntryLength", "a01533.html#a441763378fea50af88f8cdf75648a0e6", null ]
 ];

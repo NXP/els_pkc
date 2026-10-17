@@ -1,5 +1,4 @@
 var a00521 =
 [
-    [ "MCUXCLBUFFER_USE_OBJECT", "a01335.html#ga85034de8f2101add06e8d4763bb2216d", null ],
-    [ "MCUXCLBUFFER_USE_POINTER", "a01335.html#ga98960703c96d974f33e9c87ff9ad8556", null ]
+    [ "mcuxClHmac_createHmacMode", "a01026.html#ga43f6d98b6b3b6a6e62263130e2c95a68", null ]
 ];

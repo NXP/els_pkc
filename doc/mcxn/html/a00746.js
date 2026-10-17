@@ -1,7 +1,8 @@
 var a00746 =
 [
-    [ "mcuxClHash_compute", "a01448.html#ga7beb1bb4063eae682eca700efeba93db", null ],
-    [ "mcuxClHash_init", "a01448.html#ga68263436904cf849bfbe8c9b1f6542d4", null ],
-    [ "mcuxClHash_process", "a01448.html#ga49bdf3dca9746328fe58e6d5859e92eb", null ],
-    [ "mcuxClHash_finish", "a01448.html#gad55cc3a702b915f84d9cd2e94c2b7f6b", null ]
+    [ "mcuxClXof_compute", "a01108.html#ga9d9dc1e485b0a5251be63d96c4fd5723", null ],
+    [ "mcuxClXof_init", "a01108.html#ga68799488ebfd17e3cdf1d6a212ea7f0e", null ],
+    [ "mcuxClXof_process", "a01108.html#gae4acffc293e8774cf6b52f5e7d67755f", null ],
+    [ "mcuxClXof_generate", "a01108.html#gaaaae29a01783e703c055cdaccf99b0b9", null ],
+    [ "mcuxClXof_finish", "a01108.html#ga64bb8f44359cc8437057f474601ac9d5", null ]
 ];

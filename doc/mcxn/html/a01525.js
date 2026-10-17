@@ -1,5 +1,5 @@
 var a01525 =
 [
-    [ "mcuxClPsaDriver_Constants", "a01526.html", null ],
-    [ "mcuxClPsaDriver_Oracle", "a01527.html", "a01527" ]
+    [ "ctrl", "a01525.html#a3b225011dfe5fd36551cb70210f9b41c", null ],
+    [ "cfg", "a01525.html#a5d5778eef90af40b0ba73b22fdeedb57", null ]
 ];

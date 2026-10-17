@@ -1,10 +1,16 @@
 var a01037 =
 [
-    [ "mcuxClRandom_Status_t", "a01531.html#ga768ea9930242003d2a68991684a1e948", null ],
-    [ "mcuxClRandom_ContextDescriptor_t", "a01531.html#gab409cd7b1e5a4da822bf9ae43d00c79c", null ],
-    [ "mcuxClRandom_Context_t", "a01531.html#gac2ce3a52788240794afde522cfad65c5", null ],
-    [ "mcuxClRandom_ModeDescriptor_t", "a01531.html#gadcfae984a95f3e98617ca5fb9767f5cd", null ],
-    [ "mcuxClRandom_Mode_t", "a01531.html#ga2998181a66cbdc063aa08d76e5fdef9d", null ],
-    [ "mcuxClRandom_CustomNcGenerateAlgorithm_t", "a01531.html#ga159d417f0d48eefc2b516bbd77e9a804", null ],
-    [ "mcuxClRandom_Config_t", "a01531.html#gaf1284eaa96ef47c06697f95e74ffc3ee", null ]
+    [ "mcuxClKey_Status_t", "a01037.html#gaa19905c3963849a56ee26a9b0e5013f5", null ],
+    [ "mcuxClKey_AlgorithmId_t", "a01037.html#ga322cbacb57f10aa6cb6731d64d4e64e3", null ],
+    [ "mcuxClKey_Size_t", "a01037.html#ga90c030f08081016123496c56021b9bab", null ],
+    [ "mcuxClKey_Status_Protected_t", "a01037.html#ga9886ee2d82f96093ad0a39385452cdfb", null ],
+    [ "mcuxClKey_Descriptor_t", "a01037.html#ga1b7557c7a8892e65d43b90f8d6226d6a", null ],
+    [ "mcuxClKey_Handle_t", "a01037.html#gafe84fa2aa66094f542164e0627a54c5d", null ],
+    [ "mcuxClKey_TypeDescriptor_t", "a01037.html#gae9a4d21e5a5239fd0ef48978a3774a89", null ],
+    [ "mcuxClKey_Type_t", "a01037.html#ga9ea75aa8fe6ddb914d91b170bb5d8be5", null ],
+    [ "mcuxClKey_CustomType_t", "a01037.html#ga4249d6ccc1dab6d15b46270da3c3d6d4", null ],
+    [ "mcuxClKey_ProtectionDescriptor_t", "a01037.html#ga1c51acf51723d52dbcdc1a0f80f98572", null ],
+    [ "mcuxClKey_Protection_t", "a01037.html#gab16fa58359f9994921f5d4a58c597c66", null ],
+    [ "mcuxClKey_GenerationDescriptor_t", "a01037.html#gaad2bc2272e961dd28dba4697d9287a14", null ],
+    [ "mcuxClKey_Generation_t", "a01037.html#gabb1e565ab474265cf8b53be6d9a1f758", null ]
 ];

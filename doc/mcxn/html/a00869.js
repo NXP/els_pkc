@@ -1,6 +1,13 @@
 var a00869 =
 [
-    [ "MCUXCLMEMORY_API", "a01492.html#ga2469abde1e59b6b478ba8c393dc3e95a", null ],
-    [ "mcuxClMemory_Status_t", "a01491.html#gad25887c99517f13c547e1d2bf027ccd1", null ],
-    [ "mcuxClMemory_Status_Protected_t", "a01491.html#ga57c9ba76c62b4ad9bd565df4a98c19ba", null ]
+    [ "MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_SM3", "a01177.html#ga69194394354130bb74c3a659c6a6382a", null ],
+    [ "MCUXCLOSCCASM3_COMPUTE_CPU_WA_BUFFER_SIZE_MAX", "a01177.html#gaac9381a82113d329dd25ab934c95dfd5", null ],
+    [ "MCUXCLOSCCASM3_INIT_CPU_WA_BUFFER_SIZE", "a01177.html#gab8638606efbce3f6c35b1584e2edf157", null ],
+    [ "MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_SM3", "a01177.html#ga44f1d4fbc45ff4047678df48c2673868", null ],
+    [ "MCUXCLOSCCASM3_PROCESS_CPU_WA_BUFFER_SIZE_MAX", "a01177.html#ga7fc2a9c206d05b1b56fdb4a50964e8aa", null ],
+    [ "MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_SM3", "a01177.html#gac8ba7076a5518d52ce295d48099d4ae3", null ],
+    [ "MCUXCLOSCCASM3_FINISH_CPU_WA_BUFFER_SIZE_MAX", "a01177.html#ga53ef6d92e75dc64d5cdf0bf5cf9c4231", null ],
+    [ "MCUXCLOSCCASM3_MAX_CPU_WA_BUFFER_SIZE", "a01177.html#ga92c12b7d0bcd8ebcaf3ffa9bcac45b6b", null ],
+    [ "MCUXCLOSCCASM3_CONTEXT_SIZE_IN_WORDS", "a01178.html#ga60a96727f7daf1d9762c0c54544e0ca8", null ],
+    [ "MCUXCLOSCCASM3_EXPORT_IMPORT_CPU_WA_BUFFER_SIZE", "a01178.html#ga55b2857bb7c8aec7fb22e3ebab7ebf77", null ]
 ];

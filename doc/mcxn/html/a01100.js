@@ -1,6 +1,6 @@
 var a01100 =
 [
-    [ "MCUXCL_VERSION_MAX_SIZE", "a01100.html#aac49d4488517875c56358012b911da08", null ],
-    [ "MCUXCL_VERSION", "a01100.html#aaac021cf1e464db8ec89a2313860577b", null ],
-    [ "mcuxCl_GetVersion", "a01100.html#af612341ea0abe1213bdc088ed857b2b8", null ]
+    [ "MCUXCLSESSION_STATUS_OK", "a01100.html#ga3f63cf17e4f26ba5ee4d92152fca1eb6", null ],
+    [ "MCUXCLSESSION_STATUS_ERROR", "a01100.html#ga547425b7379de3ee1fb96c79140fd68e", null ],
+    [ "MCUXCLSESSION_STATUS_HW_UNAVAILABLE", "a01100.html#gaa3a0727f4c8a2658cb607d45cd28229e", null ]
 ];

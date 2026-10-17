@@ -1,4 +1,0 @@
-var a00407 =
-[
-    [ "MCUXCLEXAMPLE_FUNCTION", "a00407.html#af6e46674f1435d99ca3972b152c635ca", null ]
-];

@@ -1,5 +1,5 @@
 var a01501 =
 [
-    [ "mcuxClOsccaPkc_Functions", "a01502.html", "a01502" ],
-    [ "mcuxClOsccaPkc_Types", "a01503.html", "a01503" ]
+    [ "word", "a01501.html#a8097bfd6e5ab1e5ee6ed1162b04413f3", null ],
+    [ "bits", "a01501.html#a612ce670968b009823166ed88724b560", null ]
 ];

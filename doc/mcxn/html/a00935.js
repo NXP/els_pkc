@@ -1,15 +1,15 @@
 var a00935 =
 [
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_DATOUT_RES_END_UP", "a01695.html#gac7bb00357635b6a5484fdb7ed75cecf1", null ],
-    [ "MCUXCLOSCCASAFO_DRV_DATIN0_INDEX", "a01695.html#gabd065e26412778d457f57be8bca00a5f", null ],
-    [ "MCUXCLOSCCASAFO_DRV_DATOUT_INDEX", "a01695.html#ga16b80721a95cbad3a9a50b8d8e73a69e", null ],
-    [ "MCUXCLOSCCASAFO_DRV_DATAREG_ADDRESS", "a01695.html#ga587b521ea6f98abc5e2579873df04f4c", null ],
-    [ "MCUXCLOSCCASAFO_DRV_KEY0_INDEX", "a01695.html#ga7d6d5df8be26526fb5b374d7bf5fbd1d", null ],
-    [ "MCUXCLOSCCASAFO_DRV_KEYREG_ADDRESS", "a01695.html#ga477f730d12544882742006cdb0067e33", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_INSEL_DATIN0", "a01695.html#ga80681d32bccb67f6acf0e1c21f189614", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_OUTSEL_RES", "a01695.html#gac05ff285b2b92af711fdec5923d83f7e", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_ENC", "a01695.html#ga88457f636d043697fb948d62f39a4dc1", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_START", "a01695.html#gaf49bd72100630f876d1a72231aba1224", null ],
-    [ "MCUXCLOSCCASAFO_DRV_CTRL_INKEYSEL_KEY0", "a01695.html#ga22e60bec14042f8682bdde935a1f5685", null ],
-    [ "mcuxClOsccaSafo_Status_t", "a01508.html#ga967feac7d073a5d27afee97201c4b086", null ]
+    [ "mcuxClEls_Aead", "a00936.html", "a00936" ],
+    [ "mcuxClEls_Cipher", "a00941.html", "a00941" ],
+    [ "mcuxClEls_Cmac", "a00947.html", "a00947" ],
+    [ "mcuxClEls_Common", "a00953.html", "a00953" ],
+    [ "mcuxClEls_Crc", "a00965.html", "a00965" ],
+    [ "mcuxClEls_Ecc", "a00972.html", "a00972" ],
+    [ "mcuxClEls_Hash", "a00982.html", "a00982" ],
+    [ "mcuxClEls_Hmac", "a00990.html", "a00990" ],
+    [ "mcuxClEls_Kdf", "a00995.html", "a00995" ],
+    [ "mcuxClEls_KeyManagement", "a01000.html", "a01000" ],
+    [ "mcuxClEls_Rng", "a01007.html", "a01007" ],
+    [ "mcuxClEls_Types", "a01010.html", "a01010" ]
 ];

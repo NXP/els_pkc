@@ -1,4 +1,4 @@
 var a00413 =
 [
-    [ "MCUXCLEXAMPLE_FUNCTION", "a00413.html#a8cbc037b8fa449be72bf01c6b63ca7a7", null ]
+    [ "mcuxClCrc_computeCRC16", "a00925.html#ga2405ffe3841f68ec6ad5fbfcb8db70a8", null ]
 ];

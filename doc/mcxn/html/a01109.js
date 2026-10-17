@@ -1,10 +1,8 @@
 var a01109 =
 [
-    [ "MCUX_CSSL_DI_CHECK_PASSED", "a01560.html#gaf795c9830ecd5c53d21ae5efb05716c0", null ],
-    [ "MCUX_CSSL_DI_CHECK_FAILED", "a01560.html#ga836c5e13eae4d1fdcfe33a41051c26b5", null ],
-    [ "MCUX_CSSL_DI_INIT", "a01560.html#ga3f6c85a388e4eb44cb69e6bf76768ca5", null ],
-    [ "MCUX_CSSL_DI_CHECK", "a01560.html#ga86a850875eca35952e2c3a8312364896", null ],
-    [ "MCUX_CSSL_DI_CHECK_EXIT", "a01560.html#ga05531e777e457085ce2826205d849e53", null ],
-    [ "MCUX_CSSL_DI_RECORD", "a01561.html#ga885885837b7340002b9782ffc41e4842", null ],
-    [ "MCUX_CSSL_DI_EXPUNGE", "a01561.html#ga3e10066c4efffa9040982cde10a52076", null ]
+    [ "mcuxClXof_AlgorithmDescriptor_t", "a01109.html#ga87d0a83ea0a33776f003f357f2cc46fb", null ],
+    [ "mcuxClXof_Algo_t", "a01109.html#gae81456a05942eca8efc532d06f20eb73", null ],
+    [ "mcuxClXof_ContextDescriptor_t", "a01109.html#ga2a035d35d6b007c229fd74af54c32464", null ],
+    [ "mcuxClXof_Context_t", "a01109.html#ga12840d1a183c9196ade8a72845c3a750", null ],
+    [ "mcuxClXof_Status_t", "a01109.html#ga1fded28de09972be090a88c34d621ceb", null ]
 ];

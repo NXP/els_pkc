@@ -1,7 +1,5 @@
 var a00956 =
 [
-    [ "mcuxClOsccaSm2_SelfTest_Status_t", "a00956.html#aa42a91b438ae1fdc23914b747a760a4c", null ],
-    [ "mcuxClOsccaSm2_EncDec_SelfTest", "a00956.html#af47930792c5f72cd37d25045a01f14a8", null ],
-    [ "mcuxClOsccaSm2_SignVerify_SelfTest", "a00956.html#abd7006ddfedf0234b7aa67e42978f08a", null ],
-    [ "mcuxClOsccaSm2_KeyExchange_SelfTest", "a00956.html#a4c566cb0f566761fdae837ec2fde556b", null ]
+    [ "MCUXCLELS_ELS_RESET_CLEAR", "a00956.html#ga1a702565c0bfd8fa6b28db41f61ba3be", null ],
+    [ "MCUXCLELS_ELS_RESET_KEEP", "a00956.html#gac963d24ca31b1b3e89d31efb7ccf6abf", null ]
 ];
