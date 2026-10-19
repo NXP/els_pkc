@@ -57,6 +57,7 @@
     #define MCUX_CSSL_UNUSED(p) ((void) (p))
     /* Macro for alligning buffers to cpu word */
     #define ALIGNED __attribute__((aligned(4))) 
+    #define ALWAYS_INLINE __attribute__((always_inline))
 
 /* using the gcc toolchain file for both gcc and armgcc */
 #elif defined ( __GNUC__ )
@@ -67,6 +68,7 @@
     #define UNALIGNED
     /* Macro for alligning buffers to cpu word */
     #define ALIGNED __attribute__((aligned(4))) 
+    #define ALWAYS_INLINE __attribute__((always_inline))
 
 /* for armcc compiler */
 #elif defined ( __CC_ARM )
@@ -77,6 +79,7 @@
     #define UNALIGNED __packed
     /* Macro for alligning buffers to cpu word */
     #define ALIGNED __attribute__((aligned(4))) 
+    #define ALWAYS_INLINE __attribute__((always_inline))
 
 /* for ghs compiler */
 #elif defined ( __ghs__ )
@@ -87,6 +90,7 @@
     #define UNALIGNED
     /* Macro for alligning buffers to cpu word */
     #define ALIGNED __attribute__((aligned(4))) 
+    #define ALWAYS_INLINE __attribute__((always_inline))
 
 /* for iar compiler */
 #elif defined ( __ICCARM__ )
@@ -108,6 +112,7 @@
     #define UNALIGNED
     /* Macro for alligning buffers to cpu word */
     #define ALIGNED __attribute__((aligned(4))) 
+    #define ALWAYS_INLINE __attribute__((always_inline))
     
 
 #endif

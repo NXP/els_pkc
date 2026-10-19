@@ -159,8 +159,6 @@
         ((mcuxClHash_Context_t)pCtxDst)->unprocessedLength = ((mcuxClHash_Context_t)pCtxOri)->unprocessedLength;    \
         ((mcuxClHash_Context_t)pCtxDst)->processedLength[0U] = ((mcuxClHash_Context_t)pCtxOri)->processedLength[0U];\
         ((mcuxClHash_Context_t)pCtxDst)->processedLength[1U] = ((mcuxClHash_Context_t)pCtxOri)->processedLength[1U];\
-        ((mcuxClHash_Context_t)pCtxDst)->processedLength[2U] = ((mcuxClHash_Context_t)pCtxOri)->processedLength[2U];\
-        ((mcuxClHash_Context_t)pCtxDst)->processedLength[3U] = ((mcuxClHash_Context_t)pCtxOri)->processedLength[3U];\
         ((mcuxClHash_Context_t)pCtxDst)->algo = ((mcuxClHash_Context_t)pCtxOri)->algo;                                        \
         MCUX_CSSL_FP_FUNCTION_CALL_VOID(mcuxClMemory_copy((uint8_t *)mcuxClHash_getUnprocessedPtr((mcuxClHash_Context_t)pCtxDst),                 \
                                                         (uint8_t *)mcuxClHash_getUnprocessedPtr((mcuxClHash_Context_t)pCtxOri),                 \

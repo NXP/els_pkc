@@ -197,8 +197,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
                  derivation_data,
                  key_expansion_string,
-                 sizeof(key_expansion_string),
-                 sizeof(key_expansion_string)
+                 (sizeof(key_expansion_string) - 1u),
+                 (sizeof(key_expansion_string) - 1u)
             ));
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
@@ -208,7 +208,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
-                 derivation_data+sizeof(key_expansion_string),
+                 derivation_data+(sizeof(key_expansion_string) - 1u),
                  server_random,
                  sizeof(server_random),
                  sizeof(server_random)
@@ -221,7 +221,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
-                 derivation_data+sizeof(key_expansion_string)+32U,
+                 derivation_data+(sizeof(key_expansion_string) - 1u)+32U,
                  client_random,
                  sizeof(client_random),
                  sizeof(client_random)
@@ -234,7 +234,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_set(
-                 derivation_data+sizeof(key_expansion_string)+32U+32U,
+                 derivation_data+(sizeof(key_expansion_string) - 1u)+32U+32U,
                  0x80,
                  1U,
                  1U
@@ -247,7 +247,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_set(
-                 derivation_data+sizeof(key_expansion_string)+32U+32U+1U,
+                 derivation_data+(sizeof(key_expansion_string) - 1u)+32U+32U+1U,
                  0x00,
                  2U,
                  2U
@@ -294,8 +294,8 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
                  derivation_data,
                  master_key_string,
-                 sizeof(master_key_string),
-                 sizeof(master_key_string)
+                 (sizeof(master_key_string) - 1u),
+                 (sizeof(master_key_string) - 1u)
             ));
     // mcuxClMemory_copy is a flow-protected function: Check the protection token and the return value
     if (MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_copy) != token)
@@ -305,7 +305,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
-                 derivation_data+sizeof(master_key_string),
+                 derivation_data+(sizeof(master_key_string) - 1u),
                  client_random,
                  sizeof(client_random),
                  sizeof(client_random)
@@ -318,7 +318,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_copy(
-                 derivation_data+sizeof(master_key_string)+32U,
+                 derivation_data+(sizeof(master_key_string) - 1u)+32U,
                  server_random,
                  sizeof(server_random),
                  sizeof(server_random)
@@ -331,7 +331,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_set(
-                 derivation_data+sizeof(master_key_string)+32U+32U,
+                 derivation_data+(sizeof(master_key_string) - 1u)+32U+32U,
                  0x80,
                  1U,
                  1U
@@ -344,7 +344,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClEls_Tls_Master_Key_Session_Keys_example)
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
     MCUX_CSSL_FP_FUNCTION_CALL_VOID_BEGIN(token, mcuxClMemory_set(
-                 derivation_data+sizeof(master_key_string)+32U+32U+1U,
+                 derivation_data+(sizeof(master_key_string) - 1u)+32U+32U+1U,
                  0x00,
                  2U,
                  2U

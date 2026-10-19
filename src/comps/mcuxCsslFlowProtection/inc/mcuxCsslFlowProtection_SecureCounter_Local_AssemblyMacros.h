@@ -48,6 +48,26 @@
  */
 #define MCUX_CSSL_FP_FUNCTION_ID_ENTRY_EXIT_MASK  0x5A5A5A5A
 
+#if (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || defined(__GNUC__)
+
+.macro MCUX_CSSL_FP_ASM_FUNCTION_ENTRY rSc, rTmp, funcID
+  MCUX_CSSL_SC_ASM_INIT_BASE \rSc
+  ldr                       \rTmp, =(\funcID & MCUX_CSSL_FP_FUNCTION_ID_ENTRY_EXIT_MASK)
+  MCUX_CSSL_SC_ASM_ADD       \rSc,  \rTmp
+  .endm
+
+.macro MCUX_CSSL_FP_ASM_FUNCTION_CALL rSc, func
+  bl                        \func
+  MCUX_CSSL_SC_ASM_ADD       \rSc, r1
+  .endm
+
+.macro MCUX_CSSL_FP_ASM_FUNCTION_EXIT rSc, rTmp, funcID
+  ldr                       \rTmp, =(\funcID - (\funcID & MCUX_CSSL_FP_FUNCTION_ID_ENTRY_EXIT_MASK))
+  MCUX_CSSL_SC_ASM_ADD       \rSc,  \rTmp   /* rSc = VALUE(fn_identifier) - VALUE(fn_identifier) & EXIT_MASK */
+  .endm
+
+#elif defined(__IASMARM__) || defined(__ICCARM__)
+
 MCUX_CSSL_FP_ASM_FUNCTION_ENTRY macro rSc, rTmp, funcID
   MCUX_CSSL_SC_ASM_INIT_BASE rSc
   ldr                       rTmp, =(funcID & MCUX_CSSL_FP_FUNCTION_ID_ENTRY_EXIT_MASK)
@@ -63,5 +83,8 @@ MCUX_CSSL_FP_ASM_FUNCTION_EXIT macro rSc, rTmp, funcID
   ldr                       rTmp, =(funcID - (funcID & MCUX_CSSL_FP_FUNCTION_ID_ENTRY_EXIT_MASK))
   MCUX_CSSL_SC_ASM_ADD       rSc,  rTmp   /* rSc = VALUE(fn_identifier) - VALUE(fn_identifier) & EXIT_MASK */
   endm
+
+#endif /* defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050) || defined(__GNUC__) */
+
 
 #endif /* MCUXCSSLFLOWPROTECTION_SECURECOUNTER_LOCAL_ASSEMBLYMACROS_H_ */
