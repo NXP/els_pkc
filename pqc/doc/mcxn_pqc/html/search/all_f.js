@@ -1,0 +1,12 @@
+var searchData=
+[
+  ['of_20crypto_20library_20normal_20secure_20clns_0',['User Manual of Crypto Library Normal Secure (CLNS)',['../index.html',1,'']]],
+  ['one_20shot_20aead_20interfaces_1',['One-shot AEAD interfaces',['../a00925.html',1,'']]],
+  ['one_20shot_20cipher_20interfaces_2',['One-shot Cipher interfaces',['../a00941.html',1,'']]],
+  ['one_20shot_20mac_20interfaces_3',['One-shot MAC interfaces',['../a01062.html',1,'']]],
+  ['only_4',['Option bit field values that are needed for internal use only',['../a00999.html',1,'']]],
+  ['option_20bit_20field_20values_5',['option bit field values',['../a00997.html',1,'MCUXCLELS_ECC (Sign and Verify) option bit field values'],['../a00998.html',1,'MCUXCLELS_KEYGEN option bit field values']]],
+  ['option_20bit_20field_20values_20that_20are_20needed_20for_20internal_20use_20only_6',['Option bit field values that are needed for internal use only',['../a00999.html',1,'']]],
+  ['option_20word_20values_7',['option word values',['../a00995.html',1,'MCUXCLELS_ECC (Sign and Verify) option word values'],['../a00996.html',1,'MCUXCLELS_KEYGEN option word values']]],
+  ['optlen_8',['optLen',['../a01274.html#a6d0e636ce4f30294af6bcfe0ae717a01',1,'mcuxClEcc_KeyGen_Param_t::optLen'],['../a01278.html#af5376d1c58c5cfaf33ae6156572700ff',1,'mcuxClEcc_Sign_Param_t::optLen'],['../a01282.html#afa16cb1249abe8848bfe2beeb909c4f3',1,'mcuxClEcc_Verify_Param_t::optLen'],['../a01286.html#a037bdeafd85441ec7c9a5edde80ed772',1,'mcuxClEcc_PointMult_Param_t::optLen']]]
+];
