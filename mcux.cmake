@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #---------------------------------------------
 
+#Add cmake for PQC addon
+mcux_add_cmakelists(${SdkRootDirPath}/components/els_pkc/pqc/ OPTIONAL)
+
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.doc.rw61x)
     mcux_add_source(
         SOURCES

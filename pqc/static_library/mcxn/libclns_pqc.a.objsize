@@ -1,0 +1,22 @@
+
+========================================================================
+
+** Object/Image Component Sizes
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+         0          0          4          0          0          0   mcuxClMlDsa_KeyEncodings.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+         0          0         96          0          0          0   mcuxClMlDsa_KeyTypes.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+       108          0       1024          0          0        266   mcuxClMlDsa_NTT.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+      2836          0          0          0          0       1656   mcuxClMlDsa_Packing.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+        56          0        132          0          0         60   mcuxClMlDsa_Params.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+      2642          0          0          0          0       1708   mcuxClMlDsa_Poly.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+      2272          0          0          0          0        837   mcuxClMlDsa_Verify.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+      3082          0          0          0          0        948   mcuxClMlDsa_Sign.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+      1430          0          0          0          0        521   mcuxClMlDsa_KeyGen.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+         0          0         48          0          0          0   mcuxClMlDsa_KeyGenerationModes.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+       514          0          0          0          0         88   mcuxClMlDsa_ExternalApi.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+       338          0          0          0          0         73   mcuxClMlDsa_ModeConstructor.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+       572          8          0          0          0          0   mcuxClMlDsa_NTT_ForwardNTT_asm.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+       608         16          0          0          0          0   mcuxClMlDsa_NTT_InverseNTT_asm.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)
+       148          8          0          0          0          0   mcuxClMlDsa_NTT_PointMont_asm.o (from delivery/mcxn_release/static_library/mcxn/libclns_pqc.a)

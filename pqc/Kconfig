@@ -1,0 +1,61 @@
+# -------------------------------------
+# Copyright 2026 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+# -------------------------------------
+
+menu "ELS PKC - PQC Addon"
+
+config MCUX_COMPONENT_component.els_pkc_pqc
+    bool "ELS PKC - PQC Addon"
+    # This is just an addon for the els_pkc component
+    select MCUX_COMPONENT_component.els_pkc
+    select MCUX_COMPONENT_component.els_pkc_pqc.mldsa
+    depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+
+    if MCUX_COMPONENT_component.els_pkc_pqc
+      choice
+        prompt "Target device family - Platform Support"
+
+        config MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.mcxn
+            bool "MCXN"
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+      endchoice
+    endif
+
+    menu "Documentation"
+        config MCUX_COMPONENT_component.els_pkc_pqc.doc.mcxn
+            bool "MCXN"
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+    endmenu
+
+    menu "Static Libraries"
+        config MCUX_COMPONENT_component.els_pkc_pqc.static_lib_pqc.mcxn
+            bool "MCXN"
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+    endmenu
+
+    menu "Cryptographic Modules"
+        config MCUX_COMPONENT_component.els_pkc_pqc.mldsa
+            bool "MlDsa"
+            select MCUX_COMPONENT_component.els_pkc.signature
+            select MCUX_COMPONENT_component.els_pkc.hashmodes
+            select MCUX_COMPONENT_component.els_pkc.xof_modes
+            select MCUX_COMPONENT_component.els_pkc.key
+            select MCUX_COMPONENT_component.els_pkc.random
+            select MCUX_COMPONENT_component.els_pkc.crc
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+    endmenu
+
+    menu "Examples"
+        config MCUX_COMPONENT_component.els_pkc_pqc.examples
+            bool "Examples"
+            select MCUX_COMPONENT_component.els_pkc.examples
+            select MCUX_COMPONENT_component.els_pkc_pqc.examples_mldsa
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+
+        config MCUX_COMPONENT_component.els_pkc_pqc.examples_mldsa
+            bool "MlDsa examples"
+            select MCUX_COMPONENT_component.els_pkc_pqc.mldsa
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+    endmenu
+endmenu

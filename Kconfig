@@ -660,3 +660,5 @@ menu "ELS PKC"
             depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
     endmenu
 endmenu
+
+rsource "pqc/Kconfig"

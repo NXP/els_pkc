@@ -1,0 +1,22 @@
+SDK PQC (6.0.0) RFP Release Notes
+
+- Release: Nirvana_PQC_SDK_V6.0.0_PQC
+- Version: 6.0.0
+- Date:    2026-10-16
+- Compiler: IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM
+    ARM Compiler 6.15
+--- Test Target: 
+    Nirvana sample
+	niobe4aSdk_2020
+	redfinchSdk sample
+	rt700Sdk sample
+
+--- CLNS memory consumption: 
+
+delivery/mcxn_release/static_library/mcxn/libclns_pqc.a
+TEXT RO RW ZI TOTAL_CONSUMPTION
+14606 1304 0 0 15910
+
+--- Features:
+    - Nirvana components included: mcuxClMlDsa
+
