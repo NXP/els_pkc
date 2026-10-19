@@ -49,14 +49,6 @@
 extern "C" {
 #endif
 
-/**
- * \addtogroup mcuxClAPI MCUX CL -- API
- *
- * \addtogroup mcuxClSignature Signature API
- * \brief Signature operations.
- * \ingroup mcuxClAPI
- */
-
 #ifdef MCUXCL_FEATURE_SIGNATURE_ONESHOT
 /**
  * \defgroup clSignatureOneShot One-shot Signature interfaces

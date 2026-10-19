@@ -31,6 +31,15 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
+/**
+ * @file  mcuxClMacModes.h
+ * @brief Top-level include file for the modes of MAC
+ *
+ * @defgroup mcuxClMacModes mcuxClMacModes
+ * @brief Modes definition of Message Authentication Code (MAC) component
+ * @ingroup mcuxClMac
+ */
+
 #ifndef MCUXCLMACMODES_H_
 #define MCUXCLMACMODES_H_
 

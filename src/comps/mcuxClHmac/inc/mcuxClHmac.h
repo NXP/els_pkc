@@ -31,6 +31,17 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
+/**
+ * @file  mcuxClHmac.h
+ * @brief Top-level interface header for the mcuxClHmac component
+ *
+ * @defgroup mcuxClHmac mcuxClHmac
+ * @brief HMAC component
+ *
+ * The mcuxClHmac component provides the constants, key types and data types
+ * used for HMAC.
+ */
+
 #ifndef MCUXCLHMAC_H_
 #define MCUXCLHMAC_H_
 

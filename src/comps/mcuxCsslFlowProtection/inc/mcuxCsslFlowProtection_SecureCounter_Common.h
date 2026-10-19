@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2023, 2025 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -311,7 +311,7 @@
  * \param result The result that needs to be encoded.
  */
 #define MCUX_CSSL_FP_RESULT_VALUE(result) \
-  (((uint64_t)(result) & MCUX_CSSL_FP_RESULT_MASK) << MCUX_CSSL_FP_RESULT_OFFSET)
+  ((uint64_t)((uint32_t)(result) & MCUX_CSSL_FP_RESULT_MASK) << MCUX_CSSL_FP_RESULT_OFFSET)
 
 /**
  * \def MCUX_CSSL_FP_RESULT_IMPL2

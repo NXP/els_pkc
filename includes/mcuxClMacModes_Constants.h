@@ -42,7 +42,7 @@
 #include <mcuxClConfig.h> // Exported features flags header
 
 /**
- * @defgroup mcuxClMacModes_Constants mcuxClMacModes_Constants
+ * @defgroup mcuxClMacModes_Constants mcuxClMacModes Constants
  * @brief Constants of @ref mcuxClMacModes component
  * @ingroup mcuxClMacModes
  * @{

@@ -45,7 +45,7 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClPadding_Constants mcuxClPadding_Constants
+ * @defgroup clPadding Constants definitions
  * @brief Constants used by the Padding component.
  * @ingroup mcuxClPadding
  * @{

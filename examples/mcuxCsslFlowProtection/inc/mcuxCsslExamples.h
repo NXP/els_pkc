@@ -38,10 +38,17 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define MCUX_CSSL_EX_FUNCTION(_name) __attribute__((section(".example"))) bool _name(void)
+#define MCUX_CSSL_EX_FUNCTION(_name) __attribute__((section(".example"))) uint32_t _name(void)
 
-#define MCUX_CSSL_EX_OK    true
-#define MCUX_CSSL_EX_ERROR false
+/* Packed example status word: bits[31:24] = class (0xEE = error), bits[15:0] = line number.
+ * Mirrors the MCUXCLEXAMPLE_STATUS_* scheme in mcuxClCore_Examples.h, but is defined locally
+ * since mcuxCssl is a dependency of mcuxClCore and must not include its headers. */
+#define MCUX_CSSL_EX_STATUS_CLASS_ERROR  0xEEu
+#define MCUX_CSSL_EX_STATUS_CLASS_SHIFT  24u
+#define MCUX_CSSL_EX_STATUS_LINE_MASK    0x0000FFFFu
+
+#define MCUX_CSSL_EX_OK    0u
+#define MCUX_CSSL_EX_ERROR (((uint32_t) MCUX_CSSL_EX_STATUS_CLASS_ERROR << MCUX_CSSL_EX_STATUS_CLASS_SHIFT) | ((uint32_t) __LINE__ & MCUX_CSSL_EX_STATUS_LINE_MASK))
 
 static inline bool mcuxCsslExamples_assertEqual(const uint8_t * const x, const uint8_t * const y, uint32_t length)
 {

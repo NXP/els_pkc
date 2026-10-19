@@ -42,16 +42,22 @@
 #include <mcuxClCore_Platform.h>
 
 /**
+ * \defgroup mcuxClBuffer_CFG Buffer Configuration
+ * \brief Configuration options for the buffer types.
+ * \ingroup mcuxClBuffer
+ */
+
+/**
  * \def MCUXCLBUFFER_USE_OBJECT
  * \brief If set to 1, use the object oriented buffer implementation.
- * \ingroup mcuxClBuffer
+ * \ingroup mcuxClBuffer_CFG
  */
     #define MCUXCLBUFFER_USE_OBJECT 0
 
 /**
  * \def MCUXCLBUFFER_USE_POINTER
  * \brief If set to 1, use the plain C pointer buffer implementation.
- * \ingroup mcuxClBuffer
+ * \ingroup mcuxClBuffer_CFG
  */
     #define MCUXCLBUFFER_USE_POINTER 1
 

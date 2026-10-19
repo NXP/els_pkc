@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021, 2023 NXP                                            */
+/* Copyright 2020-2021, 2023, 2026 NXP                                      */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -39,10 +39,22 @@
 #ifndef MCUXCLMEMORY_INTERNAL_H
 #define MCUXCLMEMORY_INTERNAL_H
 
-#include <mcuxClConfig.h> // Exported features flags header
+#include <mcuxClConfig.h> /* Exported features flags header */
+#include <stdint.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClCore_FunctionIdentifiers.h>
 #include <mcuxClMemory_Constants.h>
 #include <mcuxClMemory_Types.h>
+#include <mcuxClMemory_Clear.h>
+#include <mcuxClMemory_Set.h>
+#include <mcuxClMemory_Copy.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MCUXCLMEMORY_INTERNAL_H */

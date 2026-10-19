@@ -31,8 +31,12 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClOsccaSm3_Constants.h
- *  @brief Constants for use with the mcuxClOsccaSm3 component */
+/** 
+ * @file  mcuxClOsccaSm3_Constants.h
+ * @brief Constants for use with the mcuxClOsccaSm3 component
+ * @defgroup mcuxClOsccaSm3_Constants mcuxClOsccaSm3_Constants
+ * @ingroup mcuxClOsccaSm3 
+ */
 
 #ifndef MCUXCLOSCCASM3_CONSTANTS_H_
 #define MCUXCLOSCCASM3_CONSTANTS_H_

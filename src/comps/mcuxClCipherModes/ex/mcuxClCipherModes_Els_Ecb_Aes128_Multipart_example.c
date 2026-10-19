@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2024 NXP                                                  */
+/* Copyright 2022-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -112,10 +112,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_Els_Ecb_Aes128_Multipart_example)
     /* Load key. */
     uint32_t dstData[8];
     //Initializes a key handle, Set key properties and Load key.
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
     if(!mcuxClExample_Key_Init_And_Load(session,
-      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
                                        key,
-      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                        mcuxClKey_Type_Aes128,
                                        aes128_key,
                                        sizeof(aes128_key),
@@ -124,6 +123,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_Els_Ecb_Aes128_Multipart_example)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
     /* Create a buffer for the context */
     uint32_t ctxBuf[MCUXCLCIPHER_AES_CONTEXT_SIZE_IN_WORDS];
@@ -166,7 +166,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_Els_Ecb_Aes128_Multipart_example)
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_proc, token_proc, mcuxClCipher_process(
       /* mcuxClSession_Handle_t session:         */ session,
-      /* mcuxClCipher_Context_t * const pContext, */ ctx,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid.")
+      /* mcuxClCipher_Context_t * const pContext: */ ctx,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxCl_InputBuffer_t pIn:               */ msg_plain,
       /* uint32_t inLength:                     */ sizeof(msg_plain),
       /* mcuxCl_Buffer_t pOut:                   */ msg_enc,
@@ -188,7 +190,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_Els_Ecb_Aes128_Multipart_example)
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_ESCAPING_LOCAL_ADDRESS("Address of msg_enc is for internal use only and does not escape")
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_fin, token_fin, mcuxClCipher_finish(
       /* mcuxClSession_Handle_t session:         */ session,
-      /* mcuxClCipher_Context_t * const pContext:*/ ctx,
+      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer ctx points to an object of the right type, the cast was valid.")
+      /* mcuxClCipher_Context_t * const pContext: */ ctx,
+      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
       /* mcuxCl_Buffer_t pOut:                   */ msg_enc,
       /* uint32_t * const pOutLength:           */ &msg_enc_size
     ));

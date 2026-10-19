@@ -78,7 +78,8 @@ do                                                                              
  *
  * @note Implementation is platform independent.
  *
- * @param[in]       source          pointer to a 4 byte big-endian order @c uint8_t buffer that will be converted to an unsigned integer
+ * @param[out]      destination     pointer to a 4 byte buffer were 32-bit integer in big-endian will be encoded.
+ * @param[in]       value           pointer to the 32-bit integer to be encoded.
  *
  */
 #define mcuxClMemory_StoreBigEndian32( destination, value )                          \
@@ -109,7 +110,7 @@ do                                                                              
 /**
  * @brief Converts a big-endian order @c uint8_t array to a 32-bit unsigned integer.
  *
- * @param[in]       destination     pointer to a 4 byte buffer were 32-bit integer in big-endian will be decoded.
+ * @param[in]       source          pointer to a 4 byte big-endian order @c uint8_t buffer that will be converted to an unsigned integer
  *
  * @return a 32-bit unsigned integer
  */

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2024 NXP                                                  */
+/* Copyright 2022-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -67,16 +67,19 @@
 #define MCUXCLECC_FP_GENKEYPAIR_SECSTRENGTH  (0u)
 #endif
 
-
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClEcc_EdDSA_GenerateKeyPair_Core)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_Core(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Handle_t pSession,
     const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
     mcuxClKey_Handle_t privKey,
     mcuxClKey_Handle_t pubKey
 );
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEcc_EdDSA_GenerateKeyPair_Core)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_GenerateKeyPair_Core(
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     mcuxClSession_Handle_t pSession,
     const mcuxClEcc_EdDSA_GenerateKeyPairDescriptor_t *mode,
     mcuxClKey_Handle_t privKey,

@@ -361,6 +361,19 @@ menu "ELS PKC"
             bool "TRNG type RNG4"
             select MCUX_COMPONENT_component.els_pkc.trng
 
+        config MCUX_COMPONENT_component.els_pkc.xof
+            bool "XOF"
+            select MCUX_COMPONENT_component.els_pkc.flow_protection
+            select MCUX_COMPONENT_component.els_pkc.secure_counter
+            select MCUX_COMPONENT_component.els_pkc.pre_processor
+            select MCUX_COMPONENT_component.els_pkc.memory
+            select MCUX_COMPONENT_component.els_pkc.toolchain
+
+        config MCUX_COMPONENT_component.els_pkc.xof_modes
+            bool "XOF modes"
+            select MCUX_COMPONENT_component.els_pkc.xof
+            select MCUX_COMPONENT_component.els_pkc.hashmodes
+
 
 
 
@@ -445,6 +458,8 @@ menu "ELS PKC"
             bool "MCXN"
             default y if (MCUX_COMPONENT_component.els_pkc.psa_driver && MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN)
             select MCUX_COMPONENT_component.els_pkc.random_modes_ctr
+            select MCUX_COMPONENT_component.els_pkc.xof_modes
+            select MCUX_COMPONENT_component.els_pkc.signature
 
             if MCUX_COMPONENT_component.els_pkc.platform.mcxn
               choice
@@ -517,6 +532,8 @@ menu "ELS PKC"
             select MCUX_COMPONENT_component.els_pkc.examples_rsa
             select MCUX_COMPONENT_component.els_pkc.examples_flow_protection
             select MCUX_COMPONENT_component.els_pkc.examples_memory
+            select MCUX_COMPONENT_component.els_pkc.examples_hash_modes_sha3 if MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+            select MCUX_COMPONENT_component.els_pkc.examples_xof_modes if MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
 
             if MCUX_COMPONENT_component.els_pkc.examples
               choice
@@ -587,6 +604,22 @@ menu "ELS PKC"
             select MCUX_COMPONENT_component.els_pkc.session
             select MCUX_COMPONENT_component.els_pkc.memory
             select MCUX_COMPONENT_component.els_pkc.els
+
+        config MCUX_COMPONENT_component.els_pkc.examples_hash_modes_sha3
+            bool "Hash modes SHA-3"
+            select MCUX_COMPONENT_component.els_pkc.flow_protection
+            select MCUX_COMPONENT_component.els_pkc.session
+            select MCUX_COMPONENT_component.els_pkc.memory
+            select MCUX_COMPONENT_component.els_pkc.els
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+
+        config MCUX_COMPONENT_component.els_pkc.examples_xof_modes
+            bool "XOF modes"
+            select MCUX_COMPONENT_component.els_pkc.flow_protection
+            select MCUX_COMPONENT_component.els_pkc.session
+            select MCUX_COMPONENT_component.els_pkc.memory
+            select MCUX_COMPONENT_component.els_pkc.xof_modes
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
 
         config MCUX_COMPONENT_component.els_pkc.examples_els
             bool "ELS"

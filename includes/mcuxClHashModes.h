@@ -31,16 +31,6 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClHashModes.h
- *  @brief Top-level include file for the @ref mcuxClHashModes component
- *
- *  This includes headers for all of the functionality provided by the @ref mcuxClHashModes component.
- *
- *  @defgroup mcuxClHashModes mcuxClHashModes
- *  @brief mcuxClHashModes component
- *
- * */
-
 #ifndef MCUXCLHASHMODES_H_
 #define MCUXCLHASHMODES_H_
 

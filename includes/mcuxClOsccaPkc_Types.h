@@ -46,13 +46,6 @@
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxClOscca_FunctionIdentifiers.h>
 
-/**
- * @defgroup mcuxClOsccaPkc_Types mcuxClOsccaPkc_Types
- * @brief Defines all Types of @ref mcuxClOsccaPkc
- * @ingroup mcuxClOsccaPkc
- * @{
- */
-
 /**********************************************************/
 /* Helper macros                                          */
 /**********************************************************/

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -130,6 +130,11 @@ struct mcuxClKey_TypeDescriptor {
   /* uint16_t                  PADDING_FOR_32BIT_ALIGNMENT; */
   mcuxClKey_Size_t           size;   ///< the key size for the key type in bytes, refer to #mcuxClKey_KeySize
   void *                    info;   ///< pointer to additional information for this key type (e.g. curve parameters, public exponent)
+  /* plainEncoding: wrapper field added for MLDSA port compatibility. The
+   * MCUXCLKEY_LOAD_FP macro in mcuxClKey_Internal.h ignores this pointer at
+   * runtime; it exists only so that mcuxClMlDsa_KeyTypes.c can compile
+   * without changes. */
+  const void *              plainEncoding;
 };
 
 /**

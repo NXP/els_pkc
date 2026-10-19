@@ -50,7 +50,7 @@ extern "C" {
 
 /**
  * @defgroup mcuxClAes_Types mcuxClAes_Types
- * @brief Types associated with @ref mcuxClAes
+ * @brief Types associated with @ref mcuxClAes component
  * @ingroup mcuxClAes
  * @{
  */

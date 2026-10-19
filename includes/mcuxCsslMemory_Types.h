@@ -44,7 +44,7 @@
 /**
  * @defgroup mcuxCsslMemory_Types mcuxCsslMemory_Types
  * @brief Defines common macros and types of @ref mcuxCsslMemory
- * @ingroup mcuxCsslMemory
+ * @ingroup mcuxCsslConstants
  * @{
  */
 
@@ -53,19 +53,10 @@
  **********************************************/
 
 /**
- * @defgroup mcuxCsslMemory_Types_Types mcuxCsslMemory_Types_Types
- * @brief Defines all types of @ref mcuxCsslMemory_Types
- * @ingroup mcuxCsslMemory_Types
- * @{
- */
-
-/**
  * @brief Type for CSSL Memory status codes.
  */
 typedef uint32_t mcuxCsslMemory_Status_t;
 /**
- * @}
- *
  * @}
  */
 

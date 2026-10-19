@@ -44,14 +44,6 @@ extern "C" {
 #endif
 
 /**
- * @addtogroup mcuxClAPI MCUX CL -- API
- *
- * @addtogroup mcuxClMacModes MAC Modes API
- * @brief Message Authentication Code (MAC) mode operations.
- * @ingroup mcuxClAPI
- */
-
-/**
  * @defgroup mcuxClMacModes_Modes MAC mode definitions
  * @brief Modes used by the MAC operations.
  * @ingroup mcuxClMacModes

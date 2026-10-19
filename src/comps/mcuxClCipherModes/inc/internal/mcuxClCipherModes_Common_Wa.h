@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2023, 2025-2026 NXP                                       */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -40,18 +40,18 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <internal/mcuxClAes_Internal_Constants.h>
+#include <internal/mcuxClAes_Wa.h>
 #include <mcuxClAes.h>
 #include <mcuxClCore_Platform.h>
 #include <internal/mcuxClCipher_Internal_Constants.h>
 #include <mcuxClCipher_Types.h>
-#include <internal/mcuxClAes_Wa.h>
 #include <mcuxCsslFlowProtection.h>
 #include <internal/mcuxClKey_Types_Internal.h>
 
 #include <mcuxClBuffer.h>
 
 
-MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClCipherModes_copyOut_t, 
+MCUX_CSSL_FP_FUNCTION_POINTER(mcuxClCipherModes_copyOut_t,
 typedef MCUX_CSSL_FP_PROTECTED_TYPE(void) (*mcuxClCipherModes_copyOut_t)( void* pWa,  mcuxCl_Buffer_t pOut, uint32_t offset ));
 
 

@@ -44,14 +44,15 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClRandomModes_Functions_TestMode mcuxClRandomModes_Functions_TestMode
- * @brief Random operations in TEST_MODE.
- * @ingroup mcuxClRandomModes
- * @{
+ * \defgroup clRandomTestMode Random interfaces
+ * \brief Interfaces to perform Random handling operations.
+ * \ingroup mcuxClRandom
  */
 
 /**
- * @brief This function creates a TEST_MODE descriptor from an existing NORMAL_MODE one
+ * \brief This function creates a TEST_MODE descriptor from an existing NORMAL_MODE one
+ * \api
+ * \ingroup mcuxClRandom
  *
  * This function creates a TEST_MODE descriptor from an existing NORMAL_MODE one.
  * The function expects as input a pointer to a buffer to which the user of the CL shall write a custom seed to be used for (re)seeding the DRBG.
@@ -85,8 +86,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_updateEntro
     mcuxClRandom_ModeDescriptor_t *pTestMode,
     const uint32_t * const pCustomSeed
 );
-
-/** @} */
 
 #ifdef __cplusplus
 } /* extern "C" */

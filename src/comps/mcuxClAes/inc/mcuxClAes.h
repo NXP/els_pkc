@@ -31,15 +31,15 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAes.h
- *  @brief Top-level include file for the @ref mcuxClAes component
- * 
- *  This includes headers for all of the functionality provided by the @ref mcuxClAes component.
- */
-
 /**
- *  @defgroup mcuxClAes mcuxClAes
- *  @brief Aes component
+ * @file  mcuxClAes.h
+ * @brief Top-level interface header for the mcuxClAes component
+ *
+ * @defgroup mcuxClAes mcuxClAes
+ * @brief Advanced Encryption Standard (AES) component
+ *
+ * The mcuxClAes component provides the constants, key types and data types
+ * used for AES based operations.
  */
 
 #ifndef MCUXCLAES_H_

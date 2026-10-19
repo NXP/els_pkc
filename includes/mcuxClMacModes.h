@@ -31,15 +31,14 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClMacModes.h
- *  @brief Top-level include file for the @ref mcuxClMacModes component
+/**
+ * @file  mcuxClMacModes.h
+ * @brief Top-level include file for the modes of MAC
  *
- *  This includes headers for all of the functionality provided by the @ref mcuxClMacModes component.
- *
- *  @defgroup mcuxClMacModes mcuxClMacModes
- *  @brief mcuxClMacModes component
- *
- * */
+ * @defgroup mcuxClMacModes mcuxClMacModes
+ * @brief Modes definition of Message Authentication Code (MAC) component
+ * @ingroup mcuxClMac
+ */
 
 #ifndef MCUXCLMACMODES_H_
 #define MCUXCLMACMODES_H_

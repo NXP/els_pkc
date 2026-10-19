@@ -154,6 +154,10 @@ struct mcuxClAeadModes_Context{
 };
 
 
+/**
+ * @}
+ */ /* MCUXCLAEADMODES_OPTION_ */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

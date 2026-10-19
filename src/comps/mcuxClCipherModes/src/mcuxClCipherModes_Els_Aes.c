@@ -50,7 +50,7 @@
 /**
  * @brief Function performs cipher init operation and OutLength buffer validation
  *
- * @param[in/out]   pCtx
+ * @param[in,out]   pCtx
  * @param[in]       pKey
  * @param[in]       pMode
  * @param[in]       pIv

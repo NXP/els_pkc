@@ -53,8 +53,8 @@ extern "C" {
  */
 
 /* Error codes */
-#define MCUXCLAES_STATUS_ERROR              ((mcuxClAes_Status_t) 0x0FF95330u)
-#define MCUXCLAES_STATUS_OK                 ((mcuxClAes_Status_t) 0x0FF92E03u)
+#define MCUXCLAES_STATUS_ERROR              ((mcuxClAes_Status_t) 0x0FF95330u)    ///< AES operation fails
+#define MCUXCLAES_STATUS_OK                 ((mcuxClAes_Status_t) 0x0FF92E03u)    ///< AES operation successful
 
 /* Block size */
 #define MCUXCLAES_BLOCK_SIZE                (16u)                                    ///< AES block size in bytes
@@ -68,7 +68,9 @@ extern "C" {
 #define MCUXCLAES_AES256_KEY_SIZE           (MCUXCLKEY_SIZE_256)            ///< AES-256 key size in bytes
 #define MCUXCLAES_AES256_KEY_SIZE_IN_WORDS  (MCUXCLKEY_SIZE_256_IN_WORDS)   ///< AES-256 key size in words
 
-/**@}*/
+/**
+ * @}
+ */ /* mcuxClAes_Constants */
 
 #ifdef __cplusplus
 } /* extern "C" */

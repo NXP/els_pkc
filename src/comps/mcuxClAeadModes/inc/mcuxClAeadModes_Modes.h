@@ -45,14 +45,6 @@ extern "C" {
 #endif
 
 /**
- * @addtogroup mcuxClAPI MCUX CL -- API
- *
- * @addtogroup mcuxClAead Aead API
- * @brief Authenticated Encryption with Associated Data (AEAD) operations.
- * @ingroup mcuxClAPI
- */
-
-/**
  * @defgroup clAeadModes AEAD mode definitions
  * @brief Modes used by the AEAD operations.
  * @ingroup mcuxClAead

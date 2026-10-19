@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -179,7 +179,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_process(
  *                             store other relevant information about the operation.
  * @param[out]      pOut       Pointer to the output buffer where the computed hash
  *                             value needs to be written.
- * @param[out]      pOutSize   Will be incremented by the number of bytes of data
+ * @param[out]      pOutSize   Will be set to the number of bytes of data
  *                             that have been written to the \p pOut buffer.
  *
  * @return status

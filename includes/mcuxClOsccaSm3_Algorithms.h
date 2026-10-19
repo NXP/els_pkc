@@ -42,9 +42,9 @@
 #include <mcuxCsslAnalysis.h>
 
 /**
-* @defgroup mcuxClOsccaSm3_Algorithms mcuxClOsccaSm3_Algorithms
+* @defgroup mcuxClOsccaSm3_Modes mcuxClOsccaSm3_Modes
 * @brief Hashing modes of the @ref mcuxClOsccaSm3 component
-* @ingroup mcuxClOsccaSm3
+* @ingroup mcuxClOsccaSm3_Constants
 * @{
 */
 

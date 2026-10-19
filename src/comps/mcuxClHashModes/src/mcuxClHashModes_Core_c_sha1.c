@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -53,7 +53,7 @@
 /**
  * @brief Sha-1 constants vector
  */
-const static uint32_t mcuxClHashModes_sha1_K[] = {0x5A827999u,
+static const uint32_t mcuxClHashModes_sha1_K[] = {0x5A827999u,
                                                  0x6ED9EBA1u,
                                                  0x8F1BBCDCu,
                                                  0xCA62C1D6u};

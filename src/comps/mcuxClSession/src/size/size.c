@@ -46,4 +46,6 @@ MCUX_CSSL_ANALYSIS_START_PATTERN_OBJ_SIZES()
 
 volatile uint8_t mcuxClSession_HwTable_WaCPU_SIZE   [4u];
 
+volatile uint8_t mcuxClSession_Descriptor_SIZE [sizeof(mcuxClSession_Descriptor_t)];
+
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

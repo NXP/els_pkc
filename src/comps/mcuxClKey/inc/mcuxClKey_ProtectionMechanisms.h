@@ -50,14 +50,6 @@ extern "C" {
 MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED("Consumed by user / customer. Hence, it is declared but never referenced. ")
 
 /**
- * @addtogroup mcuxClAPI MCUX CL -- API
- *
- * @addtogroup mcuxClKey Key API
- * @brief Key handling operations.
- * @ingroup mcuxClAPI
- */
-
-/**
  * @defgroup clKeyProtectionMechanisms Key protection mechanism definitions
  * @brief Mechanisms used by the Key operations.
  * @ingroup mcuxClKey

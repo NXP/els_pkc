@@ -54,7 +54,7 @@ MCUX_CSSL_ANALYSIS_START_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED("Consumed by use
 
 /**
  * @defgroup mcuxClAes_KeyTypes mcuxClAes_KeyTypes
- * @brief Defines of supported key types of @ref mcuxClAes, see @ref mcuxClKey
+ * @brief Defines of supported key types of @ref mcuxClAes, see @ref mcuxClKey component
  * @ingroup mcuxClAes
  * @{
  */

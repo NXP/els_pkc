@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2023 NXP                                                  */
+/* Copyright 2022-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -96,7 +96,8 @@
     #define UNUSED_PARAM __attribute__((unused))
     #define UNALIGNED __packed
     /* Macro for alligning buffers to cpu word */
-    #define ALIGNED __attribute__((aligned(4))) 
+    #define ALIGNED __attribute__((aligned(4)))
+    #define ALWAYS_INLINE __attribute__((always_inline))
 
 /* for llvm */
 #elif defined ( __clang__ )

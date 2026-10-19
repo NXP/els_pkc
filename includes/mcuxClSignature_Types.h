@@ -42,7 +42,7 @@ extern "C" {
 #endif
 
 /**
- * \defgroup mcuxClSignature_Types mcuxClSignature_Types
+ * \defgroup clSignatureTypes Signature type definitions
  * \brief Types used by the Signature operations.
  * \ingroup mcuxClSignature
  * @{

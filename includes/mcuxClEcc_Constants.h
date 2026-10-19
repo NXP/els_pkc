@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -66,6 +66,7 @@ extern "C" {
 #define MCUXCLECC_STATUS_OK                        ((mcuxClEcc_Status_t) 0x04442E03u)  ///< Operation was successful.
 #define MCUXCLECC_STATUS_INVALID_PARAMS            ((mcuxClEcc_Status_t) 0x044453F8u)  ///< Parameters are invalid.
 #define MCUXCLECC_STATUS_RNG_ERROR                 ((mcuxClEcc_Status_t) 0x04445334u)  ///< Random number (DRBG / PRNG) error (unexpected behavior).
+#define MCUXCLECC_STATUS_NOT_OK_HASH_ZERO          ((mcuxClEcc_Status_t) 0x04445364u)  ///< Input hash is zero
 #define MCUXCLECC_STATUS_INVALID_SIGNATURE         ((mcuxClEcc_Status_t) 0x04448930u)  ///< ECDSA Signature is invalid.
 #define MCUXCLECC_STATUS_NEUTRAL_POINT             ((mcuxClEcc_Status_t) 0x04448934u)  ///< The result of the point operation is the neutral point.
 #define MCUXCLECC_STATUS_FAULT_ATTACK              ((mcuxClEcc_Status_t) 0x0444F0F0u)  ///< Fault attack (unexpected behavior) is detected.

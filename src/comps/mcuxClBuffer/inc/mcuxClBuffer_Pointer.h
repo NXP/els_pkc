@@ -43,14 +43,6 @@
 #include <mcuxCsslFlowProtection.h>
 
 /**
- * \addtogroup mcuxClAPI MCUX CL -- API
- *
- * \addtogroup mcuxClBuffer Buffer API
- * \brief Essential types and functionality.
- * \ingroup mcuxClAPI
- */
-
-/**
  * \defgroup clBufferTypes Buffer type definitions
  * \brief Types used by the buffer operations.
  * \ingroup mcuxClBuffer

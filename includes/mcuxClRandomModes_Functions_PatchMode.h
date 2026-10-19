@@ -45,10 +45,9 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClRandomModes_Functions_PatchMode mcuxClRandomModes_Functions_PatchMode
- * @brief Random operations in PATCH_MODE.
- * @ingroup mcuxClRandomModes
- * @{
+ * \defgroup clRandomPatchMode Random interfaces
+ * \brief Interfaces to perform Random handling operations.
+ * \ingroup mcuxClRandom
  */
 
 /* Interface definition for a custom RNG function */
@@ -85,7 +84,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClRandom_Status_t) mcuxClRandomModes_createPatch
     uint32_t securityStrength
 );
 
-/** @} */
 
 #ifdef __cplusplus
 } /* extern "C" */

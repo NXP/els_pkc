@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -53,6 +53,7 @@ volatile uint8_t mcuxClHash_compute_nonblocking_WaCpuSha2_384 [MCUXCLHASH_INTERN
 volatile uint8_t mcuxClHash_compute_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512];
 volatile uint8_t mcuxClHash_compute_nonblocking_WaCpuSha2_512 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING];
 volatile uint8_t mcuxClHash_compute_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3];
+volatile uint8_t mcuxClHash_process_WaCpuSha3 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3];
 volatile uint8_t mcuxClHash_compute_WaCpuSecSha1 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA_1];
 volatile uint8_t mcuxClHash_compute_WaCpuSecSha2_224 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA2_224];
 volatile uint8_t mcuxClHash_compute_WaCpuSecSha2_256 [MCUXCLHASH_INTERNAL_WACPU_SIZE_SECSHA2_256];
@@ -158,7 +159,6 @@ volatile uint8_t mcuxClHash_export_import_size_secsha_1 [MCUXCLHASH_STATE_SIZE_S
 volatile uint8_t mcuxClHash_export_import_size_secsha_256 [MCUXCLHASH_STATE_SIZE_SECSHA_256 + MCUXCLHASH_COUNTER_SIZE_SHA_256];
 volatile uint8_t mcuxClHash_export_import_size_secsha_512 [MCUXCLHASH_STATE_SIZE_SECSHA_512 + MCUXCLHASH_COUNTER_SIZE_SHA_512];
 volatile uint8_t mcuxClHash_export_import_size_secsha3 [MCUXCLHASH_STATE_SIZE_SECSHA3 + MCUXCLHASH_COUNTER_SIZE_SHA3];
-
 
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_OBJ_SIZES()

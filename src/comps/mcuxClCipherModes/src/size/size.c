@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2024 NXP                                                  */
+/* Copyright 2021-2026 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -40,7 +40,6 @@
 #include <mcuxCsslAnalysis.h>
 #include <mcuxClCore_Macros.h>
 #include <internal/mcuxClAes_Wa.h>
-//#include <internal/mcuxClDes_Wa.h>  // TODO: uncomment
 #include <internal/mcuxClCipherModes_Common_Wa.h>
 #include <internal/mcuxClCipherModes_Common_Helper.h>
 

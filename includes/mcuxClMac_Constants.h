@@ -56,8 +56,4 @@
 #define MCUXCLMAC_STATUS_COMPARE_NOK               ((mcuxClMac_Status_t) 0x088889FCu) ///< Blocking operation finished, invalid tag detected
 #define MCUXCLMAC_STATUS_ERROR_MEMORY_ALLOCATION   ((mcuxClMac_Status_t) 0x0888533Cu) ///< Memory allocation error detected
 
-/**
- * @}
- */ /* mcuxClMac_Constants */
-
 #endif /* MCUXCLMAC_CONSTANTS_H_ */

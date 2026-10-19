@@ -181,6 +181,7 @@ target_sources(
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHash/src/mcuxClHash_api_multipart_compute.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHash/src/mcuxClHash_api_oneshot_compute.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHash/src/mcuxClHash_Internal.c 
+        ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHash/src/mcuxClHash_Oid.c
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHashModes/src/mcuxClHashModes_Core_c_sha1.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHashModes/src/mcuxClHashModes_Core_els_sha2.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHashModes/src/mcuxClHashModes_Internal_c_sha1.c 
@@ -314,6 +315,28 @@ if(CONFIG_MCUX_ELS_PKC_ENABLE_KEY_DERIVATION)
             ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation_NIST_SP800_108.c
             ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClKey/src/mcuxClKey_Derivation_NIST_SP800_56C.c
             ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClRsa/src/mcuxClRsa_KeyTypes.c
+    )
+endif()
+
+# SHA-3 hash modes and XOF (SHAKE) support, introduced in ELS_PKC v6.0.0.
+# Enabled by MCUXCL_FEATURE_HASH_C_SHA3 / MCUXCL_FEATURE_XOF_* on MCXN only.
+if(CONFIG_SOC_FAMILY_MCXN)
+    target_include_directories(
+        McuxElsPkc
+        PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClXof/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClXof/inc/internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClXofModes/inc
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClXofModes/inc/internal
+    )
+
+    target_sources(
+        McuxElsPkc
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHashModes/src/mcuxClHashModes_Core_c_sha3.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClHashModes/src/mcuxClHashModes_Internal_c_sha3.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClXof/src/mcuxClXof_api.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/comps/mcuxClXofModes/src/mcuxClXofModes_Internal_shake.c
     )
 endif()
 

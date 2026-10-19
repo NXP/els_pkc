@@ -35,16 +35,12 @@
  *  @brief Example constant-time memory copy (CSSL component mcuxCsslMemory) */
 
 #include <mcuxClToolchain.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <mcuxCsslMemory.h>
 #include <mcuxCsslMemory_Examples.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
 #include <mcuxCsslParamIntegrity.h>
-
-#define EXIT_CODE_ERROR false   ///< example return code in case an error occurred
-#define EXIT_CODE_OK    true    ///< example return code in case of successful operation
 
 MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Copy_example)
 {   
@@ -69,7 +65,7 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Copy_example)
     /* Check the return code of mcuxCsslMemory_Copy */
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy) != copyToken) || (MCUXCSSLMEMORY_STATUS_INVALID_PARAMETER != copyResult))
     {
-        return EXIT_CODE_ERROR;
+        return MCUXCSSLMEMORY_EX_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -86,7 +82,7 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Copy_example)
     /* Check the return code of mcuxCsslMemory_Copy */
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy) != copyToken1) || (MCUXCSSLMEMORY_STATUS_OK != copyResult1))
     {
-        return EXIT_CODE_ERROR;
+        return MCUXCSSLMEMORY_EX_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -103,12 +99,12 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Copy_example)
     /* Check the return code of mcuxCsslMemory_Copy */
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Copy) != copyToken2) || (MCUXCSSLMEMORY_STATUS_OK != copyResult2))
     {
-        return EXIT_CODE_ERROR;
+        return MCUXCSSLMEMORY_EX_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 
-    /* No error occurred during execution, exit with EXIT_CODE_OK */
-    return EXIT_CODE_OK;
+    /* No error occurred during execution, exit with MCUXCSSLMEMORY_EX_OK */
+    return MCUXCSSLMEMORY_EX_OK;
 }

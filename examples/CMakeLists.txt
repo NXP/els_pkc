@@ -29,6 +29,10 @@ target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
     ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_MontDH_Curve25519_example.c
     ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_MontDH_Curve448_example.c
+    ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_ECDH_KeyAgreement_NIST_P256_example.c
+    ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_ECDSA_FixedKeys_P256_example.c
+    ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_ECDSA_GeneratedKeys_NIST_P256_example.c
+    ${CMAKE_CURRENT_LIST_DIR}/mcuxClEcc/mcuxClEcc_ECDSA_VerifyOnly_ExternalVerification_NIST_P256_example.c
 	
     ${CMAKE_CURRENT_LIST_DIR}/mcuxClEls/mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c
     ${CMAKE_CURRENT_LIST_DIR}/mcuxClEls/mcuxClEls_Cipher_Aes128_Ecb_Encrypt_example.c
@@ -87,6 +91,22 @@ target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/mcuxCsslMemory/mcuxCsslMemory_Copy_example.c
     ${CMAKE_CURRENT_LIST_DIR}/mcuxCsslMemory/mcuxCsslMemory_Set_example.c
 )
+
+if(CONFIG_SOC_FAMILY_MCXN)
+    target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_224_oneshot_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_224_streaming_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_256_oneshot_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_256_streaming_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_384_oneshot_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_384_streaming_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_512_oneshot_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClHashModes/mcuxClHashModes_sha3_512_streaming_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClXofModes/mcuxClXofModes_shake_256_more_streaming_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClXofModes/mcuxClXofModes_shake_256_oneshot_example.c
+        ${CMAKE_CURRENT_LIST_DIR}/mcuxClXofModes/mcuxClXofModes_shake_256_streaming_example.c
+    )
+endif()
 
 target_compile_options(${MCUX_SDK_PROJECT_NAME}
     PRIVATE

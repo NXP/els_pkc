@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2024 NXP                                                  */
+/* Copyright 2021-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -52,10 +52,8 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHash_init(
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClHash_init);
 
     pContext->unprocessedLength = 0u;
-    pContext->processedLength[0] = 0u;
-    pContext->processedLength[1] = 0u;
-    pContext->processedLength[2] = 0u;
-    pContext->processedLength[3] = 0u;
+        pContext->processedLength[0] = 0ULL;
+        pContext->processedLength[1] = 0ULL;
     pContext->algo = algorithm;
 
     MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClHash_init, MCUXCLHASH_STATUS_OK, MCUXCLHASH_STATUS_FAULT_ATTACK);

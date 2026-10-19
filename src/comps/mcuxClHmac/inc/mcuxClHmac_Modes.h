@@ -49,14 +49,6 @@ extern "C" {
 #endif
 
 /**
- * @addtogroup mcuxClAPI MCUX CL -- API
- *
- * @addtogroup mcuxClHmac HMAC Modes API
- * @brief HMAC mode operations
- * @ingroup mcuxClAPI
- */
-
-/**
  * @defgroup mcuxClHmac_Modes HMAC mode definitions
  * @brief Modes used by the HMAC operations.
  * @ingroup mcuxClHmac

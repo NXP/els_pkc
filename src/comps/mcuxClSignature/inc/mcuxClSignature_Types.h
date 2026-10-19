@@ -42,14 +42,6 @@ extern "C" {
 #endif
 
 /**
- * \addtogroup mcuxClAPI MCUX CL -- API
- *
- * \addtogroup mcuxClSignature Signature API
- * \brief Signature operations.
- * \ingroup mcuxClAPI
- */
-
-/**
  * \defgroup clSignatureTypes Signature type definitions
  * \brief Types used by the Signature operations.
  * \ingroup mcuxClSignature

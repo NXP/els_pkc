@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021 NXP                                                       */
+/* Copyright 2026 NXP                                                       */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -30,7 +30,7 @@
 /* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS       */
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
-
+ 
  #ifndef PLATFORM_SPECIFIC_HEADERS_H_ 
  #define PLATFORM_SPECIFIC_HEADERS_H_ 
  #pragma once
@@ -39,7 +39,7 @@
  #include "mcuxCsslAnalysis.h"
  
  MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
- #include "ip_platform.h"
+ #include "ip_platform.h" 
  #include "ip_css_constants.h" 
  #include "ip_css_design_configuration.h" 
  MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_HEADER()

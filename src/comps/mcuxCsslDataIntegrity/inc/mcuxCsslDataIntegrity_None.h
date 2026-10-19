@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023-2024 NXP                                                  */
+/* Copyright 2023-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -150,5 +150,8 @@
   (void)(value) \
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_DI_CAST_POINTERS()
 
+#ifndef MCUX_CSSL_DI_DONOTOPTIMIZE
+#define MCUX_CSSL_DI_DONOTOPTIMIZE(x) ((void)(x))
+#endif
 
 #endif /* MCUXCSSLDATAINTEGRITY_NONE_H_ */

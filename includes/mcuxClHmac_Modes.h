@@ -48,7 +48,6 @@
 extern "C" {
 #endif
 
-
 /**
  * @defgroup mcuxClHmac_Modes HMAC mode definitions
  * @brief Modes used by the HMAC operations.

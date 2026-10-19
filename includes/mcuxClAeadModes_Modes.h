@@ -45,10 +45,9 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClAeadModes_Modes mcuxClAeadModes_Modes
+ * @defgroup clAeadModes AEAD mode definitions
  * @brief Modes used by the AEAD operations.
- * @ingroup mcuxClAeadModes
- * @{
+ * @ingroup mcuxClAead
  */
 
 MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_API_DECLARATIONS()
@@ -99,8 +98,6 @@ static mcuxClAead_Mode_t mcuxClAead_Mode_AES_GCM_DEC =
 
 
 MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_API_DECLARATIONS()
-
-/** @} */
 
 #ifdef __cplusplus
 } /* extern "C" */

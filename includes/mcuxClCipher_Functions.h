@@ -48,12 +48,10 @@
 extern "C" {
 #endif
 
-
 /**
- * @defgroup mcuxClCipher_Functions mcuxClCipher_Functions
+ * @defgroup clCipherOneShot One-shot Cipher interfaces
  * @brief Interfaces to perform Cipher operations in one shot.
  * @ingroup mcuxClCipher
- * @{
  */
 
 /**
@@ -89,6 +87,7 @@ extern "C" {
  * @return status
  *
  * @attention When used with RSA modes, the function uses PRNG, which has to be initialized prior to calling the function.
+ * @attention For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
  */
 MCUX_CSSL_FP_FUNCTION_DECL(mcuxClCipher_crypt)
 MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_crypt(
@@ -200,7 +199,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClCipher_Status_t) mcuxClCipher_finish(
 
 
 
-/** @} */
 
 
 #ifdef __cplusplus

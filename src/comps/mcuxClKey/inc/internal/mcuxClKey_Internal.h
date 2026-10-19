@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022 NXP                                                       */
+/* Copyright 2022, 2026 NXP                                                 */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -41,6 +41,34 @@
 
 #ifdef __cplusplus
 extern "C" {
+#endif
+
+/* Action selector: ignored by the wrapper but preserved for source-compatibility. */
+#ifndef MCUXCLKEY_ENCODING_SPEC_ACTION_PTR
+#define MCUXCLKEY_ENCODING_SPEC_ACTION_PTR  (0u)
+#endif
+
+/**
+ * Load / obtain a pointer to the (public) key bytes carried by @p key.
+ * @p ppKeyDest is set to point at the key data buffer; @p pWa and @p action
+ * are unused (no encoding dispatch, no work-area needed).
+ */
+#ifndef MCUXCLKEY_LOAD_FP
+#define MCUXCLKEY_LOAD_FP(session, key, ppKeyDest, pWa, action) \
+  do { \
+    (void)(session); \
+    (void)(pWa); \
+    (void)(action); \
+    *(ppKeyDest) = mcuxClKey_getKeyData((key)); \
+  } while(0 != 0)
+#endif
+
+/**
+ * FP protection token for MCUXCLKEY_LOAD_FP. No FP-protected
+ * function is called, so no token is consumed.
+ */
+#ifndef MCUXCLKEY_LOAD_FP_CALLED
+#define MCUXCLKEY_LOAD_FP_CALLED(key)  (0u)
 #endif
 
 #ifdef __cplusplus

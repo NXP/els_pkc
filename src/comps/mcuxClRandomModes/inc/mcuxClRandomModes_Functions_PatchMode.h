@@ -45,14 +45,6 @@ extern "C" {
 #endif
 
 /**
- * \addtogroup mcuxClAPI MCUX CL -- API
- *
- * \defgroup mcuxClRandomPatchMode Random PATCH_MODE API
- * \brief Random operations in PATCH_MODE.
- * \ingroup mcuxClAPI
- */
-
-/**
  * \defgroup clRandomPatchMode Random interfaces
  * \brief Interfaces to perform Random handling operations.
  * \ingroup mcuxClRandom

@@ -113,7 +113,7 @@ static const uint32_t reference_hash_hash[8U] = {
 
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM4
 /* Cover test case for mcuxClOsccaSafo_Drv_enableXorWrite and mcuxClOsccaSafo_Drv_disableXorWrite */
-static bool xorWr_test(void)
+static uint32_t xorWr_test(void)
 {
     /* Cover test case for mcuxClOsccaSafo_Drv_enableXorWrite and mcuxClOsccaSafo_Drv_disableXorWrite */
     uint32_t pXorWrOut[4];
@@ -455,7 +455,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClOsccaSafo_Cover_Public_apis_example)
 #ifdef MCUXCL_FEATURE_HW_SAFO_SM4
     /******************************************************************************************************************/
     /******************************************************************************************************************/
-    if(true != xorWr_test())
+    if(MCUXCLEXAMPLE_STATUS_OK != xorWr_test())
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }

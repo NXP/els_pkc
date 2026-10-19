@@ -51,7 +51,7 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClCipher_Types mcuxClCipher_Types
+ * @defgroup clCipherTypes Cipher type definitions
  * @brief Types used by the Cipher operations.
  * @ingroup mcuxClCipher
  * @{

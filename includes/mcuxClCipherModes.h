@@ -31,18 +31,12 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClCipherModes.h
- *  @brief Top-level include file for the @ref mcuxClCipherModes component
- *
- *  This includes headers for all of the functionality provided by the @ref mcuxClCipherModes component.
- *
- *  @defgroup mcuxClCipherModes mcuxClCipherModes
- *  @brief CipherModes component
- *
- * */
-
 #ifndef MCUXCLCIPHERMODES_H_
 #define MCUXCLCIPHERMODES_H_
+
+/** @file  mcuxClCipher.h
+ *  @brief Top-level include file for the @ref mcuxClCipherModes component
+ */
 
 #include <mcuxClConfig.h> // Exported features flags header
 

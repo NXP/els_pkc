@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023, 2025 NXP                                                 */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -429,8 +429,9 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClMac_Status_t) mcuxClHmac_Engine_Oneshot_Sw(
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_Engine_Update_Sw),
             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_Engine_Finalize_Sw));
 }
-
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClHmac_AlgorithmDescriptor_t mcuxClHmac_AlgorithmDescriptor_Sw = {
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     .engineInit = mcuxClHmac_Engine_Init_Sw,
     .protectionToken_engineInit = MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClHmac_Engine_Init_Sw),
     .engineUpdate = mcuxClHmac_Engine_Update_Sw,

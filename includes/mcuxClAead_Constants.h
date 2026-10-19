@@ -44,6 +44,13 @@
  * @{
  */
 
+/**
+ * @defgroup MCUXCLAEAD_STATUS_ MCUXCLAEAD_STATUS_
+ * @brief Return code definitions
+ * @ingroup mcuxClAead_Constants
+ * @{
+ */
+
 #include <mcuxClConfig.h> // Exported features flags header
 
 /* Error codes */
@@ -53,6 +60,8 @@
 #define MCUXCLAEAD_STATUS_OK                 ((mcuxClAead_Status_t) 0x01112E03u)
 #define MCUXCLAEAD_STATUS_NOT_OK             ((mcuxClAead_Status_t) 0x011153FCu)
 #define MCUXCLAEAD_STATUS_INVALID_TAG        ((mcuxClAead_Status_t) 0x011189F8u)  ///< Aead function tag invalid
+
+/**@}*/
 
 /**@}*/
 

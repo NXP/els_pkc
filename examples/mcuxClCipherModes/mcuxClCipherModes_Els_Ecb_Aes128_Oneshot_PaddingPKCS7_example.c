@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -127,10 +127,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingPKCS7_exa
     /* Load key. */
     uint32_t dstData[4];
     //Initializes a key handle, Set key properties and Load key.
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
     if(!mcuxClExample_Key_Init_And_Load(session,
-      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
                                        key,
-      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                        mcuxClKey_Type_Aes128,
                                        aes128_key,
                                        sizeof(aes128_key),
@@ -139,6 +138,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClCipherModes_Els_Ecb_Aes128_Oneshot_PaddingPKCS7_exa
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
     /**************************************************************************/
     /* Encryption                                                             */

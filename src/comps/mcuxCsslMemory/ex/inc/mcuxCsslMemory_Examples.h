@@ -38,10 +38,17 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define MCUXCSSL_MEMORY_EX_FUNCTION(_name) __attribute__((section(".example"))) bool _name(void)
+#define MCUXCSSL_MEMORY_EX_FUNCTION(_name) __attribute__((section(".example"))) uint32_t _name(void)
 
-#define MCUXCSSLMEMORY_EX_OK    true
-#define MCUXCSSLMEMORY_EX_ERROR false
+/* Packed example status word: bits[31:24] = class (0xEE = error), bits[15:0] = line number.
+ * Mirrors the MCUXCLEXAMPLE_STATUS_* scheme in mcuxClCore_Examples.h, but is defined locally
+ * since mcuxCssl is a dependency of mcuxClCore and must not include its headers. */
+#define MCUXCSSLMEMORY_EX_STATUS_CLASS_ERROR  0xEEu
+#define MCUXCSSLMEMORY_EX_STATUS_CLASS_SHIFT  24u
+#define MCUXCSSLMEMORY_EX_STATUS_LINE_MASK    0x0000FFFFu
+
+#define MCUXCSSLMEMORY_EX_OK    0u
+#define MCUXCSSLMEMORY_EX_ERROR (((uint32_t) MCUXCSSLMEMORY_EX_STATUS_CLASS_ERROR << MCUXCSSLMEMORY_EX_STATUS_CLASS_SHIFT) | ((uint32_t) __LINE__ & MCUXCSSLMEMORY_EX_STATUS_LINE_MASK))
 
 MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Compare_example);
 MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Copy_example);

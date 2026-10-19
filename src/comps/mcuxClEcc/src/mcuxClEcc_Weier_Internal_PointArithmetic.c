@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2021, 2023-2024 NXP                                       */
+/* Copyright 2020-2021, 2023-2024, 2026 NXP                                 */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -121,7 +121,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(void) mcuxClEcc_RepeatPointDouble(uint32_t iteration
  * @retval #MCUXCLECC_STATUS_NEUTRAL_POINT             if the result is the neutral point.
  *
  * Inputs in pOperands[] and PKC workarea:
- *   buffers (VX0,VY0, VZ0) contain P0, relative-z;
+ *   buffers (VX2,VY2, VZ2) contain P0, relative-z;
  *   buffers (VX1,VY1, VZ) contain P1, Jacobian.
  *
  * Prerequisites:
@@ -157,7 +157,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void)
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_DoubleAdd, mcuxClEcc_FUP_Weier_DoubleAdd_Len1);
 
     /* Check if P0.x != P2.x. */
-    MCUXCLPKC_FP_CALC_MC1_MS(ECC_T1, WEIER_VX0, WEIER_VT2, ECC_PS);  // t1 = P0.x - P2.x
+    MCUXCLPKC_FP_CALC_MC1_MS(ECC_T1, WEIER_VX2, WEIER_VT2, ECC_PS);  // t1 = P0.x - P2.x
     MCUXCLPKC_FP_CALC_MC1_MR(ECC_T0, ECC_T1,  ECC_P);            // t0 = P0.x - P2.x in NR in range [0, p]
     MCUXCLPKC_FP_CALC_MC1_MS(ECC_T0, ECC_T0,  ECC_P,   ECC_P);   // t0 in range [0, p-1]
     if (MCUXCLPKC_FLAG_ZERO != MCUXCLPKC_WAITFORFINISH_GETZERO())
@@ -173,7 +173,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void)
     }
 
     /* Check if P0.y == - P2.y. */
-    MCUXCLPKC_FP_CALC_MC1_MA(ECC_T1, WEIER_VY0, WEIER_VT3, ECC_PS);  // t1 = P0.x + P2.x
+    MCUXCLPKC_FP_CALC_MC1_MA(ECC_T1, WEIER_VY2, WEIER_VT3, ECC_PS);  // t1 = P0.x + P2.x
     MCUXCLPKC_FP_CALC_MC1_MR(ECC_T0, ECC_T1, ECC_P);                 // t0 = P0.x + P2.x in NR in range [0,p]
     MCUXCLPKC_FP_CALC_MC1_MS(ECC_T0, ECC_T0, ECC_P, ECC_P);          // t0 in range [0, p-1]
     if (MCUXCLPKC_FLAG_ZERO == MCUXCLPKC_WAITFORFINISH_GETZERO())
@@ -185,7 +185,6 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_PointFullAdd(void)
     }
 
     /* Calculate 2*P0 in (VX0,VY0, VZ0) relative-z. */
-    MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_VX0, WEIER_VY0);
     MCUXCLECC_FP_CALCFUP_ONE_DOUBLE();
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEcc_PointFullAdd, MCUXCLECC_STATUS_OK,

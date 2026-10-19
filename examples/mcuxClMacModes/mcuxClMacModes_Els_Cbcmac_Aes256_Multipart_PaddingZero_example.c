@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2024 NXP                                                  */
+/* Copyright 2021-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -118,12 +118,10 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_Els_Cbcmac_Aes256_Multipart_PaddingZero_ex
     cmac_key_properties.bits.ksize = MCUXCLELS_KEYPROPERTY_KEY_SIZE_128;
     cmac_key_properties.bits.kactv = MCUXCLELS_KEYPROPERTY_ACTIVE_TRUE;
     MCUX_CSSL_ANALYSIS_STOP_PATTERN_0U_1U_ARE_UNSIGNED()
-
     //Initializes a key handle, Set key properties and Load key.
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
     if(!mcuxClExample_Key_Init_And_Load(session,
-      MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
                                        key,
-      MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                        mcuxClKey_Type_Aes256,
                                        (uint8_t *) key256,
                                        sizeof(key256),
@@ -132,6 +130,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClMacModes_Els_Cbcmac_Aes256_Multipart_PaddingZero_ex
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
     /**************************************************************************/
     /* MAC computation                                                        */

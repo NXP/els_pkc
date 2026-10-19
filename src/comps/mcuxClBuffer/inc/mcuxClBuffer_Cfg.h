@@ -42,11 +42,9 @@
 #include <mcuxClCore_Platform.h>
 
 /**
- * \addtogroup mcuxClCFG MCUX CL -- Configurations
- *
  * \defgroup mcuxClBuffer_CFG Buffer Configuration
  * \brief Configuration options for the buffer types.
- * \ingroup mcuxClCFG
+ * \ingroup mcuxClBuffer
  */
 
 /**

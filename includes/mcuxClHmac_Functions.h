@@ -50,7 +50,7 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClHmac_Functions mcuxClHmac_Functions
+ * @defgroup mcuxClHmac_Functions mcuxClHmac Functions
  * @brief Defines all functions of @ref mcuxClHmac
  * @ingroup mcuxClHmac
  * @{

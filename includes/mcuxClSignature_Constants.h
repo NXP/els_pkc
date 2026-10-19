@@ -31,10 +31,20 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClSignature_Constants.h
+ *  @brief Constants for use with the mcuxClSignature component */
+
 #ifndef MCUXCLSIGNATURE_CONSTANTS_H_
 #define MCUXCLSIGNATURE_CONSTANTS_H_
 
 #include <mcuxClConfig.h> // Exported features flags header
+
+/**
+ * @defgroup mcuxClSignature_Constants mcuxclSignature_Constants
+ * @brief Defines of constants associated with @ref mcuxClSignature component
+ * @ingroup mcuxClSignature
+ * @{
+ */
 
 /* New Error codes */
 #define MCUXCLSIGNATURE_STATUS_OK                      (0x0FF72E03u)
@@ -51,6 +61,8 @@
 #define MCUXCLSIGNATURE_INVALID_PARAMS                               MCUXCLSIGNATURE_STATUS_INVALID_PARAMS ///< @deprecated Please use #MCUXCLSIGNATURE_STATUS_INVALID_PARAMS instead
 #define MCUXCLSIGNATURE_STATUS_NOT_SUPPORTED                         (0x0FF75370u)
 #define MCUXCLSIGNATURE_NOT_SUPPORTED                                MCUXCLSIGNATURE_STATUS_NOT_SUPPORTED  ///< @deprecated Please use #MCUXCLSIGNATURE_STATUS_NOT_SUPPORTED instead
+
+/** @} */
 
 #define MCUXCLSIGNATURE_TRANSLATE_VERIFY_RETURN_CODE(code) \
   ((((code & 0x0000FFFFu) == 0x00002E03u) || ((code & 0x0000FFFFu) == 0x00008930u)) \

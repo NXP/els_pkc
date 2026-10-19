@@ -561,6 +561,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hash)
                 src/comps/mcuxClHash/src/mcuxClHash_api_multipart_compute.c
                 src/comps/mcuxClHash/src/mcuxClHash_api_oneshot_compute.c
                 src/comps/mcuxClHash/src/mcuxClHash_Internal.c
+                src/comps/mcuxClHash/src/mcuxClHash_Oid.c
                 src/comps/mcuxClHash/inc/mcuxClHash.h
                 src/comps/mcuxClHash/inc/mcuxClHash_Constants.h
                 src/comps/mcuxClHash/inc/mcuxClHash_Functions.h
@@ -584,6 +585,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hashmodes)
                 src/comps/mcuxClHashModes/src/mcuxClHashModes_Core_els_sha2.c
                 src/comps/mcuxClHashModes/src/mcuxClHashModes_Internal_c_sha1.c
                 src/comps/mcuxClHashModes/src/mcuxClHashModes_Internal_els_sha2.c
+                src/comps/mcuxClHashModes/src/mcuxClHashModes_Core_c_sha3.c
+                src/comps/mcuxClHashModes/src/mcuxClHashModes_Internal_c_sha3.c
                 src/comps/mcuxClHashModes/inc/mcuxClHashModes.h
                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_Algorithms.h
                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_Constants.h
@@ -591,6 +594,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.hashmodes)
 #                 src/comps/mcuxClHashModes/inc/mcuxClHashModes_MemoryConsumption.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_c_sha1.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_els_sha2.h
+                src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Core_c_sha3.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_els_sha2.h
                 src/comps/mcuxClHashModes/inc/internal/mcuxClHashModes_Internal_Memory.h
@@ -642,7 +646,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.key_derivation)
                 src/comps/mcuxClKey/src/mcuxClKey_Derivation_NIST_SP800_108.c
                 src/comps/mcuxClKey/src/mcuxClKey_Derivation_NIST_SP800_56C.c
                 src/comps/mcuxClKey/src/mcuxClKey_Derivation_PBKDF2.c
-                src/comps/mcuxClKey/src/mcuxClKey_generate_keypair.c
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms.h
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_HKDF.h
                 src/comps/mcuxClKey/inc/mcuxClKey_DerivationAlgorithms_NIST_SP800_108.h
@@ -664,6 +667,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.key)
     mcux_add_source(
         SOURCES src/comps/mcuxClKey/src/mcuxClKey.c
                 src/comps/mcuxClKey/src/mcuxClKey_Protection.c
+                src/comps/mcuxClKey/src/mcuxClKey_generate_keypair.c
                 src/comps/mcuxClKey/inc/mcuxClKey.h
                 src/comps/mcuxClKey/inc/mcuxClKey_Constants.h
                 src/comps/mcuxClKey/inc/mcuxClKey_Functions.h
@@ -1104,6 +1108,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.pkc)
                 src/comps/mcuxClPkc/inc/mcuxClPkc.h
                 src/comps/mcuxClPkc/inc/mcuxClPkc_Functions.h
                 src/comps/mcuxClPkc/inc/mcuxClPkc_Types.h
+                src/comps/mcuxClPkc/inc/internal/mcuxClPkc_BasicDefs.h
                 src/comps/mcuxClPkc/inc/internal/mcuxClPkc_FupMacros.h
                 src/comps/mcuxClPkc/inc/internal/mcuxClPkc_ImportExport.h
                 src/comps/mcuxClPkc/inc/internal/mcuxClPkc_Inline_Functions.h
@@ -1430,9 +1435,45 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.trng.type_rng4)
     )
 endif()
 
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.xof)
+    mcux_add_source(
+        SOURCES src/comps/mcuxClXof/src/mcuxClXof_api.c
+                src/comps/mcuxClXof/inc/mcuxClXof.h
+                src/comps/mcuxClXof/inc/mcuxClXof_Constants.h
+                src/comps/mcuxClXof/inc/mcuxClXof_Functions.h
+                src/comps/mcuxClXof/inc/mcuxClXof_Types.h
+                src/comps/mcuxClXof/inc/internal/mcuxClXof_Internal.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+                 src/comps/mcuxClXof/inc
+                 src/comps/mcuxClXof/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.xof_modes)
+    mcux_add_source(
+        SOURCES src/comps/mcuxClXofModes/src/mcuxClXofModes_Internal_shake.c
+                src/comps/mcuxClXofModes/inc/mcuxClXofModes.h
+                src/comps/mcuxClXofModes/inc/mcuxClXofModes_Algorithms.h
+                src/comps/mcuxClXofModes/inc/internal/mcuxClXofModes_Internal_Algorithms.h
+                src/comps/mcuxClXofModes/inc/internal/mcuxClXofModes_Internal_Memory.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+                 src/comps/mcuxClXofModes/inc
+                 src/comps/mcuxClXofModes/inc/internal
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.pre_processor)
     mcux_add_source(
         SOURCES src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslAnalysis.h
+                src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslAssembly.h
                 src/comps/mcuxCsslCPreProcessor/inc/mcuxCsslCPreProcessor.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
@@ -1466,6 +1507,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.flow_protection)
                 src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_Impl.h
                 src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Common.h
                 src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Local.h
+                src/comps/mcuxCsslFlowProtection/inc/mcuxCsslFlowProtection_SecureCounter_Local_AssemblyMacros.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -1491,6 +1533,7 @@ endif()
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.secure_counter)
     mcux_add_source(
         SOURCES src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter.h
+                src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_AssemblyMacros.h
                 src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_Cfg.h
                 src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_Impl.h
                 src/comps/mcuxCsslSecureCounter/inc/mcuxCsslSecureCounter_None.h
@@ -1552,6 +1595,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mcxn)
                 includes/platform/mcxn/mcuxClRandomModes_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClRsa_MemoryConsumption.h
                 includes/platform/mcxn/mcuxClSession_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClSignature_MemoryConsumption.h
+                includes/platform/mcxn/mcuxClXofModes_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -1835,6 +1880,45 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_hash_modes)
     )
 endif()
 
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_hash_modes_sha3)
+    mcux_add_source(
+        SOURCES examples/mcuxClHashModes/mcuxClHashModes_sha3_224_oneshot_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_224_streaming_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_256_oneshot_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_256_streaming_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_384_oneshot_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_384_streaming_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_512_oneshot_example.c
+                examples/mcuxClHashModes/mcuxClHashModes_sha3_512_streaming_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+                 examples/mcuxCsslFlowProtection/inc/
+                 examples/mcuxCsslMemory/inc/
+                 src/comps/mcuxClExample/inc/
+                 src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_xof_modes)
+    mcux_add_source(
+        SOURCES examples/mcuxClXofModes/mcuxClXofModes_shake_256_more_streaming_example.c
+                examples/mcuxClXofModes/mcuxClXofModes_shake_256_oneshot_example.c
+                examples/mcuxClXofModes/mcuxClXofModes_shake_256_streaming_example.c
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+                 examples/mcuxCsslFlowProtection/inc/
+                 examples/mcuxCsslMemory/inc/
+                 src/comps/mcuxClExample/inc/
+                 src/comps/mcuxClBuffer/inc/
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
+    )
+endif()
+
 if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_els)
     mcux_add_source(
         SOURCES examples/mcuxClEls/mcuxClEls_Cipher_Aes128_Cbc_Encrypt_example.c
@@ -1880,6 +1964,10 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.examples_ecc)
                 examples/mcuxClEcc/mcuxClEcc_EdDSA_VerifySignature_Ed25519_example.c
                 examples/mcuxClEcc/mcuxClEcc_MontDH_Curve25519_example.c
                 examples/mcuxClEcc/mcuxClEcc_MontDH_Curve448_example.c
+                examples/mcuxClEcc/mcuxClEcc_ECDH_KeyAgreement_NIST_P256_example.c
+                examples/mcuxClEcc/mcuxClEcc_ECDSA_FixedKeys_P256_example.c
+                examples/mcuxClEcc/mcuxClEcc_ECDSA_GeneratedKeys_NIST_P256_example.c
+                examples/mcuxClEcc/mcuxClEcc_ECDSA_VerifyOnly_ExternalVerification_NIST_P256_example.c
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(

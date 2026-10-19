@@ -44,10 +44,9 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClMacModes_Modes mcuxClMacModes_Modes
+ * @defgroup mcuxClMacModes_Modes MAC mode definitions
  * @brief Modes used by the MAC operations.
  * @ingroup mcuxClMacModes
- * @{
  */
 
 

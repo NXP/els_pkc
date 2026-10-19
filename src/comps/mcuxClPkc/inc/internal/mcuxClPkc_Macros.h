@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -48,18 +48,7 @@
 
 #include <mcuxClPkc_Types.h>
 #include <internal/mcuxClPkc_SfrAccess.h>
-
-
-/**********************************************************/
-/* Internal PKC definitions                               */
-/**********************************************************/
-#define MCUXCLPKC_RAM_SIZE           0x00001000u  ///< PKC workarea size = 4 KByte
-#define MCUXCLPKC_RAM_OFFSET_MASK    0x00000FFFu  ///< Mask to extract PKC offset from CPU pointer
-#define MCUXCLPKC_LOG2_WORDSIZE  3u  ///< log2(PKC wordsize in byte)
-
-#define MCUXCLPKC_RAM_OFFSET_MIN     0u                 ///< Minimum (included) of PKC operand offset
-#define MCUXCLPKC_RAM_OFFSET_MAX     MCUXCLPKC_RAM_SIZE  ///< Maximum (not included) of PKC operand offset
-#define MCUXCLPKC_RAM_START_ADDRESS  PKC_RAM_ADDR       ///< PKC workarea address
+#include <internal/mcuxClPkc_BasicDefs.h>
 
 /* Included intentionally after the above PKC definitions. */
 #include <internal/mcuxClPkc_Inline_Functions.h>

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -110,11 +110,15 @@ extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_PointCheckAffNR[mcuxClEcc_
 extern const mcuxClPkc_FUPEntry_t mcuxClEcc_FUP_Weier_DoubleAdd[mcuxClEcc_FUP_Weier_DoubleAdd_Len];
 
 #define MCUXCLECC_FP_CALCFUP_ADD_ONLY()  \
+    MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_VX0, WEIER_VY0); \
+    pOperands[WEIER_VZ2] = pOperands[WEIER_VZ0]; \
     MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_DoubleAdd, mcuxClEcc_FUP_Weier_DoubleAdd_Len)
 #define MCUXCLECC_FP_CALLED_CALCFUP_ADD_ONLY  MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClPkc_CalcFup)
 
 #define MCUXCLECC_FP_CALCFUP_DOUBLE_ADD()  \
     do{  \
+        MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX2, WEIER_VY2, WEIER_VX0, WEIER_VY0); \
+        pOperands[WEIER_VZ2] = pOperands[WEIER_VZ0]; \
         MCUXCLPKC_FP_CALCFUP(mcuxClEcc_FUP_Weier_DoubleAdd, mcuxClEcc_FUP_Weier_DoubleAdd_Len);  \
         MCUXCLPKC_FP_CALCFUP_OFFSET(mcuxClEcc_FUP_Weier_DoubleAdd, mcuxClEcc_FUP_Weier_DoubleAdd_Len1,  \
                                    mcuxClEcc_FUP_Weier_DoubleAdd_Len2);  \

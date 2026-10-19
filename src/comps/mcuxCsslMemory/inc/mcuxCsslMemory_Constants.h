@@ -52,9 +52,10 @@
 #define MCUXCSSLMEMORY_COMPONENT_MASK              0x04240000u ///< Component mask value
 
 /**
- * @defgroup MCUXCSSLMEMORY_STATUS_ MCUXCSSLMEMORY_STATUS_
- * @brief Defines valid mcuxCsslMemory function return codes
- * @ingroup mcuxCsslMemory_Constants
+ * @addtogroup mcuxCsslConstants MCUX CSSL -- Constants
+ * @defgroup mcuxCsslMemory_Constants mcuxCsslMemory_Constants
+ * @brief Defines valid @ref mcuxCsslMemory function return codes
+ * @ingroup mcuxCsslConstants
  * @{
  */
 #define MCUXCSSLMEMORY_STATUS_OK                 ((mcuxCsslMemory_Status_t) 0x04242E03u) ///< The operation was successful

@@ -54,7 +54,7 @@
 /**
  * @defgroup MCUXCLOSCCASAFO_STATUS_ MCUXCLOSCCASAFO_STATUS_
  * @brief Defines valid mcuxClOsccaSafo function return codes
- * @ingroup mcuxClOsccaSafo
+ * @ingroup mcuxClOsccaSafo_Types_Macros
  * @{
  */
 /* Status/error codes */

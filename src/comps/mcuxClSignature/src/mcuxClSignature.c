@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2024 NXP                                                  */
+/* Copyright 2022-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -72,22 +72,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_sign(
     /* mcuxCl_Buffer_t                  pSignature:       */  pSignature,
     /* uint32_t * const                pSignatureSize:   */  pSignatureSize));
 
-  mcuxClSignature_Status_t sign_result_tmp = MCUXCLSIGNATURE_STATUS_FAILURE;
-
-  MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_14_3, "intentional, this 'false' is a temporary solution")
-  if(
-    MCUXCLECC_STATUS_OK == sign_status ||
-#ifdef MCUXCL_FEATURE_SM2_SIGNATURE
-    MCUXCLOSCCASM2_STATUS_OK == sign_status ||
-#endif
-    false) // This causes a MISRA violation Rule 14.3
-  {
-    sign_result_tmp = MCUXCLSIGNATURE_STATUS_OK;
-  }
-  MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_14_3)
-
-
-  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClSignature_sign, sign_result_tmp, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
+  MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(mcuxClSignature_sign, sign_status, MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
     mode->protection_token_sign);
 }
 #endif /* MCUXCL_FEATURE_SIGNATURE_SIGN */
@@ -118,7 +103,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClSignature_Status_t) mcuxClSignature_verify(
 
   MCUX_CSSL_FP_FUNCTION_EXIT_WITH_CHECK(
     mcuxClSignature_verify,
-    MCUXCLSIGNATURE_TRANSLATE_VERIFY_RETURN_CODE(verify_status),
+    verify_status,
     MCUXCLSIGNATURE_STATUS_FAULT_ATTACK,
     mode->protection_token_verify);
 

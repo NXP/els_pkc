@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023, 2026 NXP                                                 */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -138,10 +138,10 @@ extern "C" {
 #define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA2_512_NONBLOCKING (4u)     ///< CPU workarea consumption of SHA2-512
 
 /* Work area size for the C implementation of SHA-3 */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHA3 (4u)
+#define MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHA3 (MCUXCLHASH_STATE_SIZE_SHA3 + MCUXCLHASH_BLOCK_SIZE_SHA3_224)
 
 /* Work area size for the C implementation of Shake */
-#define MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHAKE (4u)
+#define MCUXCLHASH_INTERNAL_WACPU_SIZE_C_SHAKE (MCUXCLHASH_STATE_SIZE_SHA3 + MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_128)
 
 typedef union
 {
@@ -150,6 +150,16 @@ typedef union
 } mcuxClHashModes_Internal_MaxUnion_Sha3Shake_CpuWa_t;
 
 #define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3 (sizeof(mcuxClHashModes_Internal_MaxUnion_Sha3Shake_CpuWa_t))
+
+#ifndef MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_ONESHOT
+#define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_ONESHOT MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3
+#endif
+#ifndef MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_PROCESS
+#define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_PROCESS MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3
+#endif
+#ifndef MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_FINISH
+#define MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3_FINISH  MCUXCLHASH_INTERNAL_WACPU_SIZE_SHA3
+#endif
 
 
 /* Work area size for SecSha-1 */
@@ -190,6 +200,15 @@ typedef union
 #define MCUXCLHASHMODES_CONTEXT_MAX_SIZE_INTERNAL       (MCUXCLCORE_ALIGN_TO_WORDSIZE(sizeof(uint32_t), sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_CONTEXT_MAX_ALIGNMENT_OFFSET + MCUXCLHASH_BLOCK_SIZE_MAX + MCUXCLHASH_STATE_SIZE_MAX))
 /* TODO: CLNS-10242*/
 #define MCUXCLHASHMODES_CONTEXT_MAX_SIZE_INTERNAL_NO_SECSHA       (MCUXCLCORE_ALIGN_TO_WORDSIZE(sizeof(uint32_t), sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_CONTEXT_MAX_ALIGNMENT_OFFSET + MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_128 + MCUXCLHASH_STATE_SIZE_SHA3))
+
+#ifndef MCUXCLHASHMODES_SHAKE128_CONTEXT_SIZE_INTERNAL
+#define MCUXCLHASHMODES_SHAKE128_CONTEXT_SIZE_INTERNAL \
+    MCUXCLCORE_ALIGN_TO_CPU_WORDSIZE(sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_CONTEXT_MAX_ALIGNMENT_OFFSET + MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_128 + MCUXCLHASH_STATE_SIZE_SHA3)
+#endif
+#ifndef MCUXCLHASHMODES_SHAKE256_CONTEXT_SIZE_INTERNAL
+#define MCUXCLHASHMODES_SHAKE256_CONTEXT_SIZE_INTERNAL \
+    MCUXCLCORE_ALIGN_TO_CPU_WORDSIZE(sizeof(mcuxClHash_ContextDescriptor_t) + MCUXCLHASH_CONTEXT_MAX_ALIGNMENT_OFFSET + MCUXCLHASH_BLOCK_SIZE_SHA3_SHAKE_256 + MCUXCLHASH_STATE_SIZE_SHA3)
+#endif
 
 #ifdef __cplusplus
 } /* extern "C" */

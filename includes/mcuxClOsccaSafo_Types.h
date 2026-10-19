@@ -63,13 +63,18 @@ extern "C" {
  */
 typedef uint32_t mcuxClOsccaSafo_Status_t;
 
+/**
+ * @}
+ */ /* MCUXCLOSCCASAFO_STATUS_ */
+
 
 /**********************************************************/
 /* Helper macros                                          */
 /**********************************************************/
 /**
- * @addtogroup MCUXCLOSCCASAFO_MISC_
- * mcuxClOsccaSafo misc macros and definitions
+ * @defgroup MCUXCLOSCCASAFO_MISC_ MCUXCLOSCCASAFO_MISC_
+ * @brief Defines the misc macros and definitions of the @ref mcuxClOsccaSafo component.
+ * @ingroup mcuxClOsccaSafo
  * @{
  */
 /** Datout update handling */

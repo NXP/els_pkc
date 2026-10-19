@@ -37,7 +37,7 @@
  *  This includes headers for all of the functionality provided by the @ref mcuxClAead component.
  *
  *  @defgroup mcuxClAead mcuxClAead
- *  @brief Hash component
+ *  @brief Authenticated Encryption with Associated Data (AEAD) component
  *
  *  The mcuxClAead component implements the Authenticated Encryption with Associated Data (AEAD)
  *  operations supported by CLNS.

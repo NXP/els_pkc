@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023, 2025 NXP                                            */
+/* Copyright 2021-2023, 2025-2026 NXP                                       */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -88,6 +88,7 @@
  * @{
  */
 #define MCUXCLKEY_ALGO_ID_DES                  0x030Du ///< DES key
+#define MCUXCLKEY_ALGO_ID_3DES                 0x020Eu ///< 3DES key
 #define MCUXCLKEY_ALGO_ID_AES                  0x0F01u ///< AES key
 #define MCUXCLKEY_ALGO_ID_RSA                  0x0E02u ///< RSA key
 #define MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP         0x0D03u ///< ECC key using Short Weierstrass Curve over GF(p)
@@ -101,6 +102,7 @@
 #define MCUXCLKEY_ALGO_ID_ECC_SHWS_GFP_STATIC_CUSTOM 0x060Au    ///< ECC key using Short Weierstrass Curve over GF(p) with static custom domain parameters
 #define MCUXCLKEY_ALGO_ID_KYBER                0x050Bu    ///< Kyber key
 #define MCUXCLKEY_ALGO_ID_DILITHIUM            0x040Cu    ///< Dilithium key
+#define MCUXCLKEY_ALGO_ID_MLDSA                0x040Du    ///< ML-DSA key
 #define MCUXCLKEY_ALGO_ID_ALGO_MASK            0x0FFFu ///< Mask for Algorithm
 
 #define MCUXCLKEY_ALGO_ID_SYMMETRIC_KEY        0x0000u ///< Symmetric key
@@ -223,7 +225,5 @@ MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_AMBIGUOUS_IDENTIFIER()
  * @brief Define the value for an invalid key slot.
  */
 #define MCUXCLKEY_INVALID_KEYSLOT    0xFFu
-
-/** @} */
 
 #endif /* MCUXCLKEY_CONSTANTS_H_ */

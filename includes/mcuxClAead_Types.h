@@ -52,7 +52,7 @@ extern "C" {
 
 
 /**
- * @defgroup mcuxClAead_Types mcuxClAead_Types
+ * @defgroup mcuxClAeadTypes AEAD type definitions
  * @brief Types used by the AEAD operations.
  * @ingroup mcuxClAead
  * @{

@@ -55,7 +55,7 @@
  * @param[in]       session           Session handle.
  * @param[in,out]   pContext          Pointer to context.
  * @param[in]       pNonce            Pointer to nonce.
- * @param[in]       nonceLength,      Nonce length.
+ * @param[in]       nonceLength       Nonce length.
  * @param[in]       inLength          Input length.
  * @param[in]       adataLength       Adata length.
  * @param[in]       tagLength         Tag length.
@@ -773,7 +773,7 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClAead_Status_t) mcuxClAeadModes_Skeleton
  * @param[in]       session           Session handle.
  * @param[in,out]   pContext          Pointer to context.
  * @param[in]       pNonce            Pointer to nonce.
- * @param[in]       nonceLength,      Nonce length.
+ * @param[in]       nonceLength       Nonce length.
  * @param[in]       pIn               Pointer to input.
  * @param[in]       inLength          Input length.
  * @param[in]       pAdata            Pointer to adata.

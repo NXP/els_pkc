@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -157,7 +157,7 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     .pDrbgMode        = (void *) &mcuxClRandomModes_DrbgModeDescriptor_CtrDrbg_AES256_PrDisabled,
     .contextSize      = MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE,
 #ifdef MCUXCL_FEATURE_RANDOMMODES_TESTMODE
-    .auxParam         = (uint32_t *) &mcuxClRandomModes_OperationModeDescriptor_TestMode_PrDisabled,
+    .auxParam         = (uint32_t *)(void *) &mcuxClRandomModes_OperationModeDescriptor_TestMode_PrDisabled,
 #else
     .auxParam         = NULL,
 #endif /* MCUXCL_FEATURE_RANDOMMODES_TESTMODE */

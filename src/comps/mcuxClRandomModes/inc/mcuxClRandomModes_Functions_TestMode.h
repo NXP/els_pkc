@@ -44,14 +44,6 @@ extern "C" {
 #endif
 
 /**
- * \addtogroup mcuxClAPI MCUX CL -- API
- *
- * \defgroup mcuxClRandomTestMode Random TEST_MODE API
- * \brief Random operations in TEST_MODE.
- * \ingroup mcuxClAPI
- */
-
-/**
  * \defgroup clRandomTestMode Random interfaces
  * \brief Interfaces to perform Random handling operations.
  * \ingroup mcuxClRandom
@@ -60,7 +52,7 @@ extern "C" {
 /**
  * \brief This function creates a TEST_MODE descriptor from an existing NORMAL_MODE one
  * \api
- * \ingroup clRandom
+ * \ingroup mcuxClRandom
  *
  * This function creates a TEST_MODE descriptor from an existing NORMAL_MODE one.
  * The function expects as input a pointer to a buffer to which the user of the CL shall write a custom seed to be used for (re)seeding the DRBG.

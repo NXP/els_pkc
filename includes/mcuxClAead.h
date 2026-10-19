@@ -37,7 +37,7 @@
  *  This includes headers for all of the functionality provided by the @ref mcuxClAead component.
  *
  *  @defgroup mcuxClAead mcuxClAead
- *  @brief Aead component
+ *  @brief Authenticated Encryption with Associated Data (AEAD) component
  *
  *  The mcuxClAead component implements the Authenticated Encryption with Associated Data (AEAD)
  *  operations supported by CLNS.
@@ -59,7 +59,7 @@
  *  are possible.
  *
  *  The targeted AEAD algorithm is selected by passing one of the offered algorithm mode
- *  descriptors (@ref mcuxClAeadModes), which are listed in file mcuxClAead_Modes.h
+ *  descriptors (@ref mcuxClAead_Modes), which are listed in file mcuxClAead_Modes.h
  *
  * */
 

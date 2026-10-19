@@ -40,9 +40,9 @@
 #include <mcuxClConfig.h> // Exported features flags header
 
 /**
- * @defgroup mcuxClHashModes_Constants mcuxClHashModes_Constants
- * @brief Constants of @ref mcuxClHashModes component
- * @ingroup mcuxClHashModes
+ * @defgroup mcuxClHash_Constants mcuxClHash_Constants
+ * @brief Constants of @ref mcuxClHash component
+ * @ingroup mcuxClHash
  * @{
  */
 

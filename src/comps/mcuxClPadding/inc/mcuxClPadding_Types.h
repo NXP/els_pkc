@@ -49,7 +49,7 @@ extern "C" {
 #endif
 
 /**
- * @defgroup mcuxClPadding_Types mcuxClPadding_Types
+ * @defgroup clPaddingTypes Padding type definitions
  * @brief Types used by the Padding component.
  * @ingroup mcuxClPadding
  * @{

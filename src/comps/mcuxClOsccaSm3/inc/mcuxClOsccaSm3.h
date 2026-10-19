@@ -37,7 +37,7 @@
  *  This includes headers for all of the functionality provided by the @ref mcuxClOsccaSm3 component.
  *
  *  @defgroup mcuxClOsccaSm3 mcuxClOsccaSm3
- *  @brief Hash component
+ *  @brief OSCCA Sm3 component
  *
  *  The mcuxClOsccaSm3 component implements the Hash functionality supported by CLNS.
  *

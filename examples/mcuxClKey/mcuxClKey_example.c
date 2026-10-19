@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2024 NXP                                                  */
+/* Copyright 2021-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -92,11 +92,9 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_example)
     /* Key buffer for the key in memory. */
     uint32_t key_buffer[MCUXCLAES_AES128_KEY_SIZE_IN_WORDS];
     //Initializes a key handle, Set key properties and Load key.
-
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
     if(!mcuxClExample_Key_Init_And_Load(&session,
-        MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("The pointer key points to an object of the right type, the cast was valid.")
                                        key,
-        MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
                                        mcuxClKey_Type_Aes128,
                                        (const uint8_t*) aes128_key,
                                        sizeof(aes128_key),
@@ -105,6 +103,7 @@ MCUXCLEXAMPLE_FUNCTION(mcuxClKey_example)
     {
         return MCUXCLEXAMPLE_STATUS_ERROR;
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
 
 
     /**************************************************************************/

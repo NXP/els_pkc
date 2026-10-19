@@ -124,6 +124,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_UpdateRe
     /* byte-wise CRC32 with nibble-wise LUT */
     uint8_t lookupIndex;
     uint32_t lookupValueLowBits, lookupValueHighBits;
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_INTEGER_OVERFLOW("CRC32 arithmetic uses intentional wrapping; all bit-shift and XOR operations on uint32_t refCrc stay within the defined 32-bit CRC computation range")
     for(uint32_t byte = 1u; byte <= 5u; byte++)
     {
         lookupIndex = (pDatain[5u - byte] ^ ((uint8_t)((*refCrc >> 24) & 0xFFu))) & 0xFFu ;
@@ -131,6 +132,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_UpdateRe
         lookupValueHighBits = crc32_LUT[(lookupIndex >> 4) + 16u];
         *refCrc = lookupValueHighBits ^ lookupValueLowBits ^ (*refCrc << 8);
     }
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_INTEGER_OVERFLOW()
 
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_UpdateRefCRC, MCUXCLELS_STATUS_OK);
 }

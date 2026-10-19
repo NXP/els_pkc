@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -48,8 +48,8 @@
 #include <mcuxCsslFlowProtection.h>
 
 #include <mcuxClPkc_Types.h>
-#include <internal/mcuxClPkc_Macros.h>
 #include <internal/mcuxClPkc_SfrAccess.h>
+#include <internal/mcuxClPkc_BasicDefs.h>
 
 
 /**********************************************************/

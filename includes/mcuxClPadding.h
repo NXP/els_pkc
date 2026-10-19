@@ -31,15 +31,16 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClPadding.h
- *  @brief Top-level include file for the @ref mcuxClPadding component
+/**
+ * @file  mcuxClPadding.h
+ * @brief Top-level include file for the padding component.
  *
- *  This includes headers for all of the functionality provided by the @ref mcuxClPadding component.
+ * @defgroup mcuxClPadding mcuxClPadding
+ * @brief Padding component
  *
- *  @defgroup mcuxClPadding mcuxClPadding
- *  @brief Padding component
- *
- * */
+ * The mcuxClPadding component provides the constants and data types used to
+ * apply and remove padding on block cipher inputs.
+ */
 
 #ifndef MCUXCLPADDING_H
 #define MCUXCLPADDING_H

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2024 NXP                                                  */
+/* Copyright 2022-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -246,8 +246,13 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_EdDSA_VerifySig
 
     MCUX_CSSL_FP_FUNCTION_CALL(ret_CalcHashModN,
         mcuxClEcc_EdDSA_CalcHashModN(
-            pSession, pCtx, pDomainParams,
-            mode->pHashPrefix, mode->hashPrefixLen,
+            pSession,
+    MCUX_CSSL_ANALYSIS_START_SUPPRESS_POINTER_INCOMPATIBLE("pCtx is compatible with the type of mcuxClHash_Context_t")
+            pCtx,
+    MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_POINTER_INCOMPATIBLE()
+            pDomainParams,
+            mode->pHashPrefix,
+            mode->hashPrefixLen,
             buffSignatureR,
             pPubKey,
             buffM, mLen) );

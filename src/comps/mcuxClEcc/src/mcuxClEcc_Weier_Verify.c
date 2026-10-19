@@ -429,13 +429,21 @@ static MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEcc_Status_t) mcuxClEcc_ECDSA_VerifySig
     /* Calculate P2 += P1, if u1 != 0. */
     if (MCUXCLPKC_FLAG_ZERO != checkHashZero)
     {
+#if (WEIER_VX0 % 2 != 0) || (WEIER_VX0 + 1 != WEIER_VY0) || (WEIER_XA % 2 != 0) || (WEIER_XA + 1 != WEIER_YA) \
+ || (WEIER_VX1 % 2 != 0) || (WEIER_VX1 + 1 != WEIER_VY1) || (WEIER_X0 % 2 != 0) || (WEIER_X0 + 1 != WEIER_Y0) \
+ || (WEIER_VX2 % 2 != 0) || (WEIER_VX2 + 1 != WEIER_VY2) || (WEIER_X2 % 2 != 0) || (WEIER_X2 + 1 != WEIER_Y2)
+#error Each of above pairs of UPTRT indices shall map to offsets in the same CPU word.
+#endif
         /* Input: P1 in (X0,Y0, Z) Jacobian;          */
         /*        P2 in (XA,YA, ZA) relative-z.       */
         /* Output: P1 + P2 in (XA,YA, ZA) relative-z. */
         MCUXCLPKC_WAITFORREADY();
-        MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX0, WEIER_VY0, WEIER_XA, WEIER_YA);  /* input: P2; output P1 + P2 */
-        MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VZ0, WEIER_VZ, WEIER_ZA, WEIER_Z);    /* input: z' and z; output z' */
-        MCUXCLECC_COPY_2OFFSETS(pOperands32, WEIER_VX1, WEIER_VY1, WEIER_X0, WEIER_Y0);  /* input: P1 */
+        pOperands32[WEIER_VX2 / 2u] = pOperands32[WEIER_XA / 2u];   /* input: P2 */
+        pOperands[WEIER_VZ2] = pOperands[WEIER_ZA];                 /* input: z' */
+        pOperands32[WEIER_VX1 / 2u] = pOperands32[WEIER_X0 / 2u];   /* input: P1 */
+        pOperands[WEIER_VZ] = pOperands[WEIER_Z];                   /* input: z */
+        pOperands32[WEIER_VX0 / 2u] = pOperands32[WEIER_XA / 2u];   /* output P1 + P2 */
+        pOperands[WEIER_VZ0] = pOperands[WEIER_ZA];                 /* output: z' */
         MCUX_CSSL_FP_FUNCTION_CALL(statusPointFullAdd, mcuxClEcc_PointFullAdd());
         if (MCUXCLECC_STATUS_NEUTRAL_POINT == statusPointFullAdd)
         {

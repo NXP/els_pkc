@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2023, 2025-2026 NXP                                       */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -181,6 +181,199 @@ extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_AES_CTR;
 static mcuxClCipher_Mode_t mcuxClCipher_Mode_AES_CTR =
   &mcuxClCipher_ModeDescriptor_AES_CTR;
 
+
+/**
+ * @brief Secure 2k3des ECB Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec2k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief Secure 2k3des ECB Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec2k3des_ECB_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec2k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief Secure 2k3des ECB Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec2k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief Secure 2k3des ECB Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec2k3des_ECB_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec2k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief Secure 3k3des ECB Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec3k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief Secure 3k3des ECB Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec3k3des_ECB_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec3k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief Secure 3k3des ECB Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec3k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief Secure 3k3des ECB Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec3k3des_ECB_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec3k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief 2k3des ECB Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_2k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief 2k3des ECB Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_2k3des_ECB_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_2k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief 2k3des ECB Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_2k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief 2k3des ECB Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_2k3des_ECB_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_2k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief 3k3des ECB Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_3k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief 3k3des ECB Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_3k3des_ECB_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_3k3des_ECB_Enc_NoPadding;
+
+/**
+ * @brief 3k3des ECB Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_3k3des_ECB_Dec_NoPadding;
+
+/**
+ * @brief 3k3des ECB Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_3k3des_ECB_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_3k3des_ECB_Dec_NoPadding;
+
+
+/**
+ * @brief Secure 2k3des CBC Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec2k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief Secure 2k3des CBC Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec2k3des_CBC_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec2k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief Secure 2k3des CBC Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec2k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief Secure 2k3des CBC Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec2k3des_CBC_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec2k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief Secure 3k3des CBC Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec3k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief Secure 3k3des CBC Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec3k3des_CBC_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec3k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief Secure 3k3des CBC Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_sec3k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief Secure 3k3des CBC Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_sec3k3des_CBC_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_sec3k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief 2k3des CBC Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_2k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief 2k3des CBC Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_2k3des_CBC_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_2k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief 2k3des CBC Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_2k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief 2k3des CBC Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_2k3des_CBC_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_2k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief 3k3des CBC Encryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_3k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief 3k3des CBC Encryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_3k3des_CBC_Enc_NoPadding =
+  &mcuxClCipher_ModeDescriptor_3k3des_CBC_Enc_NoPadding;
+
+/**
+ * @brief 3k3des CBC Decryption mode descriptor without padding
+ */
+extern const mcuxClCipher_ModeDescriptor_t mcuxClCipher_ModeDescriptor_3k3des_CBC_Dec_NoPadding;
+
+/**
+ * @brief 3k3des CBC Decryption mode without padding
+ * @note For 3DES modes, pIv, pIn, and pOut must be CPU-word aligned.
+ */
+static mcuxClCipher_Mode_t mcuxClCipher_Mode_3k3des_CBC_Dec_NoPadding =
+  &mcuxClCipher_ModeDescriptor_3k3des_CBC_Dec_NoPadding;
 
 
 MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_DECLARED_BUT_NEVER_REFERENCED()

@@ -31,19 +31,25 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClOsccaSm3_Constants.h
- *  @brief Constants for use with the mcuxClOsccaSm3 component */
+/** 
+ * @file  mcuxClOsccaSm3_Constants.h
+ * @brief Constants for use with the mcuxClOsccaSm3 component
+ * @defgroup mcuxClOsccaSm3_Constants mcuxClOsccaSm3_Constants
+ * @ingroup mcuxClOsccaSm3 
+ */
 
 #ifndef MCUXCLOSCCASM3_CONSTANTS_H_
 #define MCUXCLOSCCASM3_CONSTANTS_H_
 
 /**
- * @defgroup mcuxClOsccaSm3_Constants mcuxClOsccaSm3_Constants
- * @brief Constants used by the OSCCA SM3 operations
- * @ingroup mcuxClOsccaSm3
+ * @defgroup MCUXCLOSCCASM3_OUTPUT_SIZE_ MCUXCLOSCCASM3_OUTPUT_SIZE_
+ * @brief Defines for digest sizes
+ * @ingroup mcuxClOsccaSm3_Constants
  * @{
  */
 #define MCUXCLOSCCASM3_OUTPUT_SIZE_SM3      (32U) ///< SM3 output size: 256 bit (32 bytes)
+/**@}*/
+
 /**@}*/
 
 #endif /* MCUXCLOSCCASM3_CONSTANTS_H_ */

@@ -35,16 +35,12 @@
  *  @brief Example constant-time memory compare (CSSL component mcuxCsslMemory) */
 
 #include <mcuxClToolchain.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <mcuxCsslMemory.h>
 #include <mcuxCsslMemory_Examples.h>
 #include <mcuxCsslFlowProtection.h>
 #include <mcuxCsslFlowProtection_FunctionIdentifiers.h>
 #include <mcuxCsslParamIntegrity.h>
-
-#define EXIT_CODE_ERROR false   ///< example return code in case an error occurred
-#define EXIT_CODE_OK    true    ///< example return code in case of successful operation
 
 MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Compare_example)
 {
@@ -76,7 +72,7 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Compare_example)
     /* Check the return code of mcuxCsslMemory_Compare */
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare) != compareToken) || (MCUXCSSLMEMORY_STATUS_EQUAL != compareResult))
     {
-        return EXIT_CODE_ERROR;
+        return MCUXCSSLMEMORY_EX_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -92,7 +88,7 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Compare_example)
     /* Check the return code of mcuxCsslMemory_Compare */
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare) != compareToken1) || (MCUXCSSLMEMORY_STATUS_NOT_EQUAL != compareResult1))
     {
-        return EXIT_CODE_ERROR;
+        return MCUXCSSLMEMORY_EX_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
@@ -108,12 +104,12 @@ MCUXCSSL_MEMORY_EX_FUNCTION(mcuxCsslMemory_Compare_example)
     /* Check the return code of mcuxCsslMemory_Compare */
     if((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxCsslMemory_Compare) != compareToken2) || (MCUXCSSLMEMORY_STATUS_EQUAL != compareResult2))
     {
-        return EXIT_CODE_ERROR;
+        return MCUXCSSLMEMORY_EX_ERROR;
     }
 
     MCUX_CSSL_FP_FUNCTION_CALL_END();
 
 
-    /* No error occurred during execution, exit with EXIT_CODE_OK */
-    return EXIT_CODE_OK;
+    /* No error occurred during execution, exit with MCUXCSSLMEMORY_EX_OK */
+    return MCUXCSSLMEMORY_EX_OK;
 }

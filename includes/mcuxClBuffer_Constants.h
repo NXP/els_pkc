@@ -40,9 +40,9 @@
 #include <mcuxClCore_Platform.h>
 
 /**
- * @defgroup mcuxClBuffer_Constants mcuxClBuffer_Constants
- * @brief Buffer constants
- * @ingroup mcuxClBuffer
+ * \defgroup clBufferConstants Buffer constants
+ * \brief Buffer constants
+ * \ingroup mcuxClBuffer
  */
 
 /**

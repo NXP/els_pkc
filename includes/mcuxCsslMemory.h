@@ -40,7 +40,7 @@
 #define MCUXCSSLMEMORY_H
 
 /**
- * @defgroup mcuxCsslMemory mcuxCsslMemory
+ * @defgroup mcuxCsslMemory Memory API
  * @brief Control Flow Protected Memory Functions
  *
  * @ingroup mcuxCsslAPI

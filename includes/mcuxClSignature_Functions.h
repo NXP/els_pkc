@@ -49,8 +49,9 @@
 extern "C" {
 #endif
 
+#ifdef MCUXCL_FEATURE_SIGNATURE_ONESHOT
 /**
- * \defgroup mcuxClSignature_Functions mcuxClSignature_Functions
+ * \defgroup clSignatureOneShot One-shot Signature interfaces
  * \brief Interfaces to perform Signature operations in one shot.
  * \ingroup mcuxClSignature
  * @{

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2023 NXP                                                  */
+/* Copyright 2021-2023, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -50,7 +50,7 @@ extern "C" {
 /**
 * @defgroup mcuxClHashModes_Algorithms mcuxClHashModes_Algorithms
 * @brief Hashing algorithms of the @ref mcuxClHashModes component
-* @ingroup mcuxClHashModes
+* @ingroup mcuxClHash_Constants
 * @{
 */
 
@@ -269,6 +269,77 @@ static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha512_256 = &mcuxClHash_Algorithm
 
 
 
+/**
+ * @brief Sha3-224 algorithm descriptor
+ *        Sha3-224 hash calculation using an underlying software implementation of Keccak.
+ */
+extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_C_Sha3_224;
+
+/**
+ * @brief Sha3-224 algorithm descriptor
+ *        Sha3-224 hash calculation using an underlying software implementation of Keccak.
+ */
+static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha3_224 = &mcuxClHash_AlgorithmDescriptor_C_Sha3_224;
+
+/**
+ * @brief Sha3-256 algorithm descriptor
+ *        Sha3-256 hash calculation using an underlying software implementation of Keccak.
+ */
+extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_C_Sha3_256;
+
+/**
+ * @brief Sha3-256 algorithm descriptor
+ *        Sha3-256 hash calculation using an underlying software implementation of Keccak.
+ */
+static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha3_256 = &mcuxClHash_AlgorithmDescriptor_C_Sha3_256;
+
+/**
+ * @brief Sha3-384 algorithm descriptor
+ *        Sha3-384 hash calculation using an underlying software implementation of Keccak.
+ */
+extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_C_Sha3_384;
+
+/**
+ * @brief Sha3-384 algorithm descriptor
+ *        Sha3-384 hash calculation using an underlying software implementation of Keccak.
+ */
+static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha3_384 = &mcuxClHash_AlgorithmDescriptor_C_Sha3_384;
+
+/**
+ * @brief Sha3-512 algorithm descriptor
+ *        Sha3-512 hash calculation using an underlying software implementation of Keccak.
+ */
+extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_C_Sha3_512;
+
+/**
+ * @brief Sha3-512 algorithm descriptor
+ *        Sha3-512 hash calculation using an underlying software implementation of Keccak.
+ */
+static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha3_512 = &mcuxClHash_AlgorithmDescriptor_C_Sha3_512;
+
+/**
+ * @brief Sha3-shake-128 algorithm descriptor
+ *        Sha3-shake-128 hash calculation using an underlying software implementation of Keccak.
+ */
+extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_C_Sha3_Shake_128;
+
+/**
+ * @brief Sha3-shake-128 algorithm
+ *        Sha3-shake-128 hash calculation using an underlying software implementation of Keccak.
+ */
+static mcuxClHash_Algo_t mcuxClHash_Algorithm_Sha3_Shake_128 = &mcuxClHash_AlgorithmDescriptor_C_Sha3_Shake_128;
+
+/**
+ * @brief Sha3-shake-256 algorithm descriptor
+ *        Sha3-shake-256 hash calculation using an underlying software implementation of Keccak.
+ */
+extern const mcuxClHash_AlgorithmDescriptor_t mcuxClHash_AlgorithmDescriptor_C_Sha3_Shake_256;
+
+/**
+ * @brief Sha3-shake-256 algorithm
+ *        Sha3-shake-256 hash calculation using an underlying software implementation of Keccak.
+ */
+#define mcuxClHash_Algorithm_Sha3_Shake_256 (&mcuxClHash_AlgorithmDescriptor_C_Sha3_Shake_256)
 
 
 

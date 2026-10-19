@@ -42,13 +42,6 @@
 #include <stdint.h>
 #include <mcuxCsslMemory_Types.h>
 
-/**
- * @defgroup mcuxCsslMemory_Constants mcuxCsslMemory_Constants
- * @brief Defines valid function return codes of @ref mcuxCsslMemory
- * @ingroup mcuxCsslMemory
- * @{
- */
-
 /**********************************************
  * CONSTANTS
  **********************************************/
@@ -59,9 +52,10 @@
 #define MCUXCSSLMEMORY_COMPONENT_MASK              0x04240000u ///< Component mask value
 
 /**
- * @defgroup MCUXCSSLMEMORY_STATUS_ MCUXCSSLMEMORY_STATUS_
+ * @addtogroup mcuxCsslConstants MCUX CSSL -- Constants
+ * @defgroup mcuxCsslMemory_Constants mcuxCsslMemory_Constants
  * @brief Defines valid @ref mcuxCsslMemory function return codes
- * @ingroup mcuxCsslMemory_Constants
+ * @ingroup mcuxCsslConstants
  * @{
  */
 #define MCUXCSSLMEMORY_STATUS_OK                 ((mcuxCsslMemory_Status_t) 0x04242E03u) ///< The operation was successful

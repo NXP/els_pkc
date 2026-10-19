@@ -35,7 +35,7 @@
  * @file mcuxClRandomModes.h
  * @brief Top level header of mcuxClRandomModes component
  *
- * @defgroup mcuxClRandomModes mcuxClRandomModes
+ * @defgroup mcuxClRandom mcuxClRandom
  * @brief component of random number generation
  */
 

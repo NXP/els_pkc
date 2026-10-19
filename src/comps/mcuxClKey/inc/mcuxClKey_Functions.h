@@ -62,14 +62,6 @@ extern "C" {
  **********************************************/
 
 /**
- * @addtogroup mcuxClAPI MCUX CL -- API
- *
- * @defgroup mcuxClKey Key API
- * @brief Key handling operations.
- * @ingroup mcuxClAPI
- */
-
-/**
  * @defgroup mcuxClKey_Functions mcuxClKey_Functions
  * @brief Defines all functions of @ref mcuxClKey
  * @ingroup mcuxClKey

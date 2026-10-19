@@ -43,7 +43,7 @@
 #include <mcuxClHashModes_Constants.h>
 
 /**
- * @defgroup mcuxClHmac_Constants mcuxClHmac_Constants
+ * @defgroup mcuxClHmac_Constants mcuxClHmac Constants
  * @brief Constants of @ref mcuxClHmac component
  * @ingroup mcuxClHmac
  * @{

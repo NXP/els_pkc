@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2024 NXP                                                  */
+/* Copyright 2022-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -991,5 +991,20 @@
 #define MCUX_CSSL_ANALYSIS_ARMCLANG_START_SUPPRESS_WARNING(warning_identifier, rationale)
 #define MCUX_CSSL_ANALYSIS_ARMCLANG_STOP_SUPPRESS_WARNING(warning_identifier)
 #endif
+
+#define MCUX_CSSL_ANALYSIS_START_SUPPRESS_NESTED_COMMENTS(rationale) \
+  MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_3_1, rationale)
+#define MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_NESTED_COMMENTS() \
+  MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_3_1)
+
+#define MCUX_CSSL_ANALYSIS_START_SUPPRESS_SYMBOL_DECLARED_MORE_THAN_ONCE() \
+  MCUX_CSSL_ANALYSIS_COVERITY_START_FALSE_POSITIVE(MISRA_C_2012_Rule_8_5, "This symbol declared only once")
+#define MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_SYMBOL_DECLARED_MORE_THAN_ONCE() \
+  MCUX_CSSL_ANALYSIS_COVERITY_STOP_FALSE_POSITIVE(MISRA_C_2012_Rule_8_5)
+
+#define MCUX_CSSL_ANALYSIS_START_SUPPRESS_CAST_VOID() \
+  MCUX_CSSL_ANALYSIS_COVERITY_START_DEVIATE(MISRA_C_2012_Rule_11_5, "Typecast pointer (void *) for correct representation to use pointer")
+#define MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_CAST_VOID() \
+  MCUX_CSSL_ANALYSIS_COVERITY_STOP_DEVIATE(MISRA_C_2012_Rule_11_5)
 
 #endif /* MCUX_CSSL_ANALYSIS_H_ */

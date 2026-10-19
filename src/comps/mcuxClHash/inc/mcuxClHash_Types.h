@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -68,7 +68,6 @@ typedef struct mcuxClHash_AlgorithmDescriptor mcuxClHash_AlgorithmDescriptor_t;
  *
  */
 typedef const mcuxClHash_AlgorithmDescriptor_t * const mcuxClHash_Algo_t;
-
 
 
 /**

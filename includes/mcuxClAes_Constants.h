@@ -31,6 +31,9 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
+/** @file  mcuxClAes_Constants.h
+ *  @brief Constants for use with the mcuxClAes component */
+
 #ifndef MCUXCLAES_CONSTANTS_H_
 #define MCUXCLAES_CONSTANTS_H_
 
@@ -44,14 +47,14 @@ extern "C" {
 
 /**
  * @defgroup mcuxClAes_Constants mcuxClAes_Constants
- * @brief Defines of constants associated with @ref mcuxClAes
+ * @brief Defines of constants associated with @ref mcuxClAes component
  * @ingroup mcuxClAes
  * @{
  */
 
 /* Error codes */
-#define MCUXCLAES_STATUS_ERROR              ((mcuxClAes_Status_t) 0x0FF95330u)
-#define MCUXCLAES_STATUS_OK                 ((mcuxClAes_Status_t) 0x0FF92E03u)
+#define MCUXCLAES_STATUS_ERROR              ((mcuxClAes_Status_t) 0x0FF95330u)    ///< AES operation fails
+#define MCUXCLAES_STATUS_OK                 ((mcuxClAes_Status_t) 0x0FF92E03u)    ///< AES operation successful
 
 /* Block size */
 #define MCUXCLAES_BLOCK_SIZE                (16u)                                    ///< AES block size in bytes

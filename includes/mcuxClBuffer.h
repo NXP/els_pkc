@@ -31,15 +31,15 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClBuffer.h
- *  @brief Top-level include file for the @ref mcuxClBuffer component
+/**
+ * \file  mcuxClBuffer.h
+ * \brief Provides the API for the CL buffer types.
+ * \defgroup mcuxClBuffer mcuxClBuffer
+ * \brief Buffer operations component
  *
- *  This includes headers for all of the functionality provided by the @ref mcuxClBuffer component.
- *
- *  @defgroup mcuxClBuffer mcuxClBuffer
- *  @brief Buffer component
- *
- * */
+ * The mcuxClBuffer component provides the constants, key types and data types
+ * used for Buffer operations.
+ */
 
 #ifndef MCUXCLBUFFER_H_
 #define MCUXCLBUFFER_H_
@@ -51,11 +51,10 @@
 /* Include the actual implementation of the flow protection mechanism. */
 #include <mcuxClBuffer_Impl.h>
 
-
 /**
- * @defgroup clBufInit Buffer initialization functionality
- * @brief Buffer initialization functionality.
- * @ingroup mcuxClBuffer
+ * \defgroup clBufInit Buffer initialization functionality
+ * \brief Buffer initialization functionality.
+ * \ingroup mcuxClBuffer
  *
  * Two sets of default buffer initializations are provided, each with
  * read-only (RO, for mcuxCl_InputBuffer_t) and read-write (RW, for mcuxCl_Buffer_t)

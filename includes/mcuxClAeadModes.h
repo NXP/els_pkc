@@ -31,16 +31,6 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
-/** @file  mcuxClAeadModes.h
- *  @brief Top-level include file for the @ref mcuxClAeadModes component
- *
- *  This includes headers for all of the functionality provided by the @ref mcuxClAeadModes component.
- *
- *  @defgroup mcuxClAeadModes mcuxClAeadModes
- *  @brief AeadModes component
- *
- * */
-
 #ifndef MCUXCLAEADMODES_H_
 #define MCUXCLAEADMODES_H_
 

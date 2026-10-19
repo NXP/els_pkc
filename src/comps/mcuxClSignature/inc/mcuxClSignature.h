@@ -31,6 +31,17 @@
 /* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.             */
 /*--------------------------------------------------------------------------*/
 
+/**
+ * @file  mcuxClSignature.h
+ * @brief Top-level interface header for the mcuxClSignature component
+ *
+ * @defgroup mcuxClSignature mcuxClSignature
+ * @brief Signature component
+ *
+ * The mcuxClSignature component provides the constants, key types and data types
+ * used for signature operations.
+ */
+
 #ifndef MCUXCLSIGNATURE_H_
 #define MCUXCLSIGNATURE_H_
 

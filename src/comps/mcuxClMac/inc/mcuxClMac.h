@@ -37,7 +37,6 @@
  *
  * @defgroup mcuxClMac mcuxClMac
  * @brief Message Authentication Code (MAC) component
- * @ingroup mcuxClAPI
  *
  * The mcuxClMac component implements Message Authentication Code (MAC) calculation,
  * based on either HMAC or CMAC.

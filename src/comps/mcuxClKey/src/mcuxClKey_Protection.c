@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2024 NXP                                                  */
+/* Copyright 2020-2025 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -101,7 +101,7 @@ MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClKey_Status_t) mcuxClKey_protect_fct_ckdf(mcuxC
                                MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Ckdf_Sp800108_Async),
                                 MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation));
 }
-
+MCUX_CSSL_ANALYSIS_START_PATTERN_DESCRIPTIVE_IDENTIFIER()
 const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_None = {&mcuxClKey_protect_fct_none,
                                                                             NULL,
                                                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_protect_fct_none),
@@ -112,4 +112,4 @@ const mcuxClKey_ProtectionDescriptor_t mcuxClKey_ProtectionDescriptor_Ckdf = {&m
                                                                             MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClKey_protect_fct_ckdf),
                                                                             0u};
 
-
+MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()

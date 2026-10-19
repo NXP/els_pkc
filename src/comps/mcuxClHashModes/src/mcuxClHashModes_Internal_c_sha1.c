@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2022-2025 NXP                                                  */
+/* Copyright 2022-2026 NXP                                                  */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -55,7 +55,7 @@
 /**
  * @brief Sha-1 initialization vector
  */
-const static uint32_t mcuxClHashModes_sha1_iv[] = {0x67452301u,
+static const uint32_t mcuxClHashModes_sha1_iv[] = {0x67452301u,
                                              0xEFCDAB89u,
                                              0x98BADCFEu,
                                              0x10325476u,
@@ -449,4 +449,6 @@ MCUX_CSSL_ANALYSIS_STOP_PATTERN_DESCRIPTIVE_IDENTIFIER()
     .hashSize                         = MCUXCLHASH_OUTPUT_SIZE_SHA_1,
     .stateSize                        = MCUXCLHASH_STATE_SIZE_SHA_1,
     .counterSize                      = MCUXCLHASH_COUNTER_SIZE_SHA_1,
+    .pOid                             = mcuxClHash_oidSha1,
+    .oidSize                          = sizeof(mcuxClHash_oidSha1),
 };

@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2021-2024 NXP                                                  */
+/* Copyright 2021-2024, 2026 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -73,7 +73,7 @@ extern "C" {
  */
 struct mcuxClHash_ContextDescriptor
 {
-  uint32_t processedLength[4];
+  uint64_t processedLength[2];
   uint32_t unprocessedLength;
   const mcuxClHash_AlgorithmDescriptor_t * algo;
 };
@@ -142,7 +142,31 @@ struct mcuxClHash_AlgorithmDescriptor
   size_t stateSize;                                        ///< Size of the state used by the hash algorithm
   uint32_t counterSize;                                    ///< Size of the counter used by the hash algorithm
   const void *pAlgorithmDetails;                           ///< Contains algorithm specific details not needed on API level
+  const uint8_t *pOid;                                     ///< Pointer to the OID
+  uint32_t oidSize;                                        ///< Size of the OID
 };
+
+/**********************************************
+ * Hash algorithm OID declarations.
+ * Definitions live in mcuxClHash_Oid.c.
+ **********************************************/
+#define MCUXCLHASH_OID_SHA2SHA3_LEN    19U
+#define MCUXCLHASH_OID_SHA1_LEN        15U
+
+extern const uint8_t mcuxClHash_oidSha2_224[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha2_256[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha2_384[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha2_512[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha2_512_224[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha2_512_256[MCUXCLHASH_OID_SHA2SHA3_LEN];
+
+extern const uint8_t mcuxClHash_oidSha3_224[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha3_256[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha3_384[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha3_512[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha3_shake_128[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha3_shake_256[MCUXCLHASH_OID_SHA2SHA3_LEN];
+extern const uint8_t mcuxClHash_oidSha1[MCUXCLHASH_OID_SHA1_LEN];
 
 /**@}*/
 
@@ -150,39 +174,37 @@ struct mcuxClHash_AlgorithmDescriptor
  * Function declarations
  **********************************************/
 /**
- * @brief Adds a 32 Bit constant to an 128 Bit counter
+ * @brief Adds a 64 Bit constant to an 128 Bit counter
  *
  * This function is used to support bigger input length up to 2^128 Bit
  *
- * @param[in out] pLen128 128 Bit counter to increment
- * @param[in] addLen 32 Bit constant to increment counter with
+ * @param[in out] pLen128 128 Bit counter to increment, represented as two 64 Bit words
+ * @param[in] addLen 64 Bit constant to increment counter with
  */
-void mcuxClHash_processedLength_add(uint32_t *pLen128, uint32_t addLen);
+void mcuxClHash_processedLength_add(uint64_t *pLen128, uint64_t addLen);
 
 
 /**
- * @brief Compares an 128 Bit counter value against a 32 Bit constant.
+ * @brief Compares an 128 Bit counter value against a 64 Bit constant.
  *
- * @param[in] pLen128 128 Bit counter
- * @param[in] cmpLenLow32 32 Bit constant
+ * @param[in] pLen128 128 Bit counter, represented as two 64 Bit words
+ * @param[in] cmpLenLow64 64 Bit constant
  *
  * @return ternary value indicating greater, equal, smaller relationship
  * @retval 1    Counter value is bigger than constant
  * @retval 0    Counter and constant have equal value
  * @retval -1   Counter value is smaller than constant
  */
-int mcuxClHash_processedLength_cmp(uint32_t *pLen128, uint32_t cmpLenLow32);
+int mcuxClHash_processedLength_cmp(uint64_t *pLen128, uint64_t cmpLenLow64);
 
 /**
  * @brief convert 128 bit number of bytes to number of bits
  *
- * @param pLen128[in out] 128 Bit number represented as uint32_t array. Upper 3 bits need to be zero to avoid overflow.
+ * @param pLen128[in out] 128 Bit number represented as uint64_t array of length 2. Upper 3 bits need to be zero to avoid overflow.
  */
-static inline void mcuxClHash_processedLength_toBits(uint32_t *pLen128)
+static inline void mcuxClHash_processedLength_toBits(uint64_t *pLen128)
 {
-  pLen128[3] = (pLen128[3] << 3u) | (pLen128[2] >> 29u);
-  pLen128[2] = (pLen128[2] << 3u) | (pLen128[1] >> 29u);
-  pLen128[1] = (pLen128[1] << 3u) | (pLen128[0] >> 29u);
+  pLen128[1] = (pLen128[1] << 3u) | (pLen128[0] >> 61u);
   pLen128[0] = pLen128[0] << 3u;
 }
 
@@ -253,7 +275,6 @@ static inline mcuxClHash_ContextDescriptor_t * mcuxClHash_castToHashContextDescr
   return (mcuxClHash_ContextDescriptor_t*) pContext;
   MCUX_CSSL_ANALYSIS_STOP_PATTERN_REINTERPRET_MEMORY_OF_OPAQUE_TYPES()
 }
-
 
 #ifdef __cplusplus
 } /* extern "C" */

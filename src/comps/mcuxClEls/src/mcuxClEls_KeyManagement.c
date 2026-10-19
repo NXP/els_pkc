@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2020-2023 NXP                                                  */
+/* Copyright 2020-2023, 2025 NXP                                            */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -57,7 +57,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyDelet
 
     /* ELS SFRs are not cached => Tell SW to wait for ELS to come back from BUSY state before modifying the SFRs */
     if (mcuxClEls_isBusy())
-    {   
+    {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyDelete_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
 
@@ -106,18 +106,18 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyImpor
                                          (wrappingKeyIdx >= ELS_KS_CNT)
                                          || (targetKeyIdx >= ELS_KS_CNT)
                                          || ((options.bits.kfmt == MCUXCLELS_KEYIMPORT_KFMT_RFC3394) && (importKeyLength == 0u)));
-    
+
     /* ELS SFRs are not cached => Tell SW to wait for ELS to come back from BUSY state before modifying the SFRs */
     if (mcuxClEls_isBusy())
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyImport_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
-    
+
     mcuxClEls_setKeystoreIndex0(wrappingKeyIdx);
     mcuxClEls_setKeystoreIndex1(targetKeyIdx);
     mcuxClEls_setInput0(pImportKey, importKeyLength);
     mcuxClEls_startCommand(ID_CFG_ELS_CMD_KEYIN, options.word.value, ELS_CMD_BIG_ENDIAN);
-    
+
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyImport_Async, MCUXCLELS_STATUS_OK_WAIT);
 }
 
@@ -200,18 +200,18 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyExpor
 
     /* Key indices out of bounds or the source key pointer is NULL although the key format indicates that it should be imported from memory */
     MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_KeyExport_Async, wrappingKeyIdx >= ELS_KS_CNT || exportKeyIdx >= ELS_KS_CNT);
-    
+
     /* ELS SFRs are not cached => Tell SW to wait for ELS to come back from BUSY state before modifying the SFRs */
     if (mcuxClEls_isBusy())
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
     }
-    
+
     /* ELS KEYOUT */
     mcuxClEls_setKeystoreIndex0(wrappingKeyIdx);
     mcuxClEls_setKeystoreIndex1(exportKeyIdx);
     mcuxClEls_setOutput_fixedSize(pOutput);
- 
+
     MCUX_CSSL_FP_EXPECT(
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GetIntEnableFlags),
         MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_SetIntEnableFlags));
@@ -289,27 +289,25 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyExpor
 
     if(MCUXCLELS_STATUS_OK_WAIT != status_delete)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async,
-                                  mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state),
+        MCUX_CSSL_FP_FUNCTION_CALL(errorHandle_Ret, mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, errorHandle_Ret,
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
     }
-    
+
     /* wait for ELS KDELETE */
     MCUX_CSSL_FP_FUNCTION_CALL(status_wait1, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-
     if(MCUXCLELS_STATUS_OK != status_wait1)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async,
-                                  mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state),
+        MCUX_CSSL_FP_FUNCTION_CALL(errorHandle_Ret, mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, errorHandle_Ret,
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
     }
-
     /* ELS KEYIN */
     mcuxClEls_KeyImportOption_t import_options;
     import_options.word.value = 0U;
     import_options.bits.kfmt = MCUXCLELS_KEYIMPORT_KFMT_RFC3394;
-    
-    MCUX_CSSL_FP_FUNCTION_CALL(status_import, 
+
+    MCUX_CSSL_FP_FUNCTION_CALL(status_import,
                     mcuxClEls_KeyImport_Async(
                         import_options,
                         pOutput,
@@ -317,23 +315,23 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyExpor
                         wrappingKeyIdx,
                         exportKeyIdx
                     ));
-    
+    MCUX_CSSL_ANALYSIS_START_PATTERN_EXTERNAL_HEADER()
     if(MCUXCLELS_STATUS_OK_WAIT != status_import)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async,
-                                  mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state),
+        MCUX_CSSL_FP_FUNCTION_CALL(errorHandle_Ret, mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, errorHandle_Ret,
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
     }
-    
     /* wait for ELS KEYIN */
     MCUX_CSSL_FP_FUNCTION_CALL(status_wait2, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
 
     if(MCUXCLELS_STATUS_OK != status_wait2)
     {
-        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async,
-                                  mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state),
+        MCUX_CSSL_FP_FUNCTION_CALL(errorHandle_Ret, mcuxClEls_handleKeyExportError(pOutput, key_length, interrupt_state));
+        MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, errorHandle_Ret,
                                   MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClMemory_set));
     }
+    MCUX_CSSL_ANALYSIS_STOP_PATTERN_EXTERNAL_HEADER()
 
     /* Restore ELS interrupt state - will trigger an interrupt immediately if interrupt is enabled since ELS_IRQ is expected to be set at this point */
     MCUX_CSSL_FP_FUNCTION_CALL(status_set1, mcuxClEls_SetIntEnableFlags(interrupt_state));
@@ -342,7 +340,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_KeyExpor
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, MCUXCLELS_STATUS_SW_FAULT);
     }
 
-    
+
     /* Exit function */
     MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_KeyExport_Async, MCUXCLELS_STATUS_OK_WAIT);
 }
@@ -352,7 +350,7 @@ MCUX_CSSL_FP_FUNCTION_DEF(mcuxClEls_GetKeyProperties)
 MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetKeyProperties(
     mcuxClEls_KeyIndex_t keyIdx,
     mcuxClEls_KeyProp_t * pKeyProp
-    ) 
+    )
 {
     MCUX_CSSL_FP_FUNCTION_ENTRY(mcuxClEls_GetKeyProperties);
     MCUXCLELS_INPUT_PARAM_CHECK_PROTECTED(mcuxClEls_GetKeyProperties, (ELS_KS_CNT <= keyIdx));
@@ -361,7 +359,7 @@ MCUXCLELS_API MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClEls_Status_t) mcuxClEls_GetKeyPr
     if (mcuxClEls_isBusy())
     {
         MCUX_CSSL_FP_FUNCTION_EXIT(mcuxClEls_GetKeyProperties, MCUXCLELS_STATUS_SW_CANNOT_INTERRUPT);
-    } 
+    }
     MCUX_CSSL_ANALYSIS_START_SUPPRESS_HARDWARE_ACCESS("Sfr offset from address")
     pKeyProp->word.value = ((const volatile uint32_t *) (&MCUXCLELS_SFR_READ(ELS_KS0)))[keyIdx];
     MCUX_CSSL_ANALYSIS_STOP_SUPPRESS_HARDWARE_ACCESS()

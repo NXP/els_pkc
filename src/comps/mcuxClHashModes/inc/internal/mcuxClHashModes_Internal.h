@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/* Copyright 2023 NXP                                                       */
+/* Copyright 2023, 2026 NXP                                                 */
 /*                                                                          */
 /* SPDX-License-Identifier: BSD-3-Clause                                    */
 /*                                                                          */
@@ -163,7 +163,42 @@ static inline void mcuxClHashModes_internal_c_genericSwitchEndiannessOfBufferWor
   }
 }
 
+/**
+ * @brief Xors two buffers (pDst, pSrc1, and pSrc2 should have a size >= length)
+ */
+static inline void mcuxClHashModes_xor_buffers(uint8_t* pDst, const uint8_t* pSrc1, const uint8_t* pSrc2, uint32_t length)
+{
+  for( uint32_t i = 0u; i < length; i++){
+    pDst[i] = pSrc1[i] ^ pSrc2[i];
+  }
+}
 
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHashModes_C_oneShot_sha3_shake, mcuxClHash_AlgoSkeleton_OneShot_t)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_oneShot_sha3_shake(
+                                mcuxClSession_Handle_t session,
+                                mcuxClHash_Algo_t algorithm,
+                                mcuxCl_InputBuffer_t pIn,
+                                uint32_t inSize,
+                                mcuxCl_Buffer_t pOut,
+                                uint32_t *const pOutSize);
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHashModes_C_process_sha3_shake, mcuxClHash_AlgoSkeleton_Process_t)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_process_sha3_shake(
+                        mcuxClSession_Handle_t session,
+                        mcuxClHash_Context_t pContext,
+                        mcuxCl_InputBuffer_t pIn,
+                        uint32_t inSize);
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHashModes_C_shake_finishAbsorb)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_shake_finishAbsorb(
+                            mcuxClHash_Context_t pContext);
+
+MCUX_CSSL_FP_FUNCTION_DECL(mcuxClHashModes_C_generate_shake)
+MCUX_CSSL_FP_PROTECTED_TYPE(mcuxClHash_Status_t) mcuxClHashModes_C_generate_shake(
+                            mcuxClSession_Handle_t session,
+                            mcuxClHash_Context_t pContext,
+                            mcuxCl_Buffer_t pOut,
+                            uint32_t *pOutSize);
 
 #ifdef __cplusplus
 } /* extern "C" */
