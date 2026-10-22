@@ -95,6 +95,11 @@
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_512                    (320u)                        ///< Defines the workarea size required for mcuxClHash_verify on SHA2-512
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_512_224                (248u)                    ///< Defines the workarea size required for mcuxClHash_verify on SHA2-512/224
 #define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA2_512_256                (256u)                    ///< Defines the workarea size required for mcuxClHash_verify on SHA2-512/256
+#define MCUXCLHASH_COMPUTE_CPU_WA_BUFFER_SIZE_SHA3               (368u)                           ///< Defines the workarea size required for mcuxClHash_compute on all SHA3 modes
+#define MCUXCLHASH_COMPARE_CPU_WA_BUFFER_SIZE_SHA3               (496u)                           ///< Defines the workarea size required for mcuxClHash_compare on all SHA3 modes
+#define MCUXCLHASH_PROCESS_CPU_WA_BUFFER_SIZE_SHA3               (368u)                           ///< Defines the workarea size required for mcuxClHash_process on all SHA3 modes
+#define MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA3                (368u)                            ///< Defines the workarea size required for mcuxClHash_finish on all SHA3 modes
+#define MCUXCLHASH_VERIFY_CPU_WA_BUFFER_SIZE_SHA3                MCUXCLHASH_FINISH_CPU_WA_BUFFER_SIZE_SHA3                    ///< Defines the workarea size required for mcuxClHash_verify on all SHA3 modes
 /** @} */
 
 
@@ -123,6 +128,13 @@
 #define MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512_224         (80u)  ///< Defines the state size required for SHA2-512/224
 #define MCUXCLHASH_CONTEXT_SIZE_SHA2_512_256_IN_WORDS            (224u / sizeof(uint32_t))
 #define MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA2_512_256         (80u)  ///< Defines the state size required for SHA2-512/256
+#define MCUXCLHASH_CONTEXT_SIZE_SHA3_224_IN_WORDS                (376u / sizeof(uint32_t))
+#define MCUXCLHASH_CONTEXT_SIZE_SHA3_256_IN_WORDS                (368u / sizeof(uint32_t))
+#define MCUXCLHASH_CONTEXT_SIZE_SHA3_384_IN_WORDS                (336u / sizeof(uint32_t))
+#define MCUXCLHASH_CONTEXT_SIZE_SHA3_512_IN_WORDS                (304u / sizeof(uint32_t))
+#define MCUXCLHASH_CONTEXT_SIZE_SHA3_SHAKE_128_IN_WORDS          (400u / sizeof(uint32_t)) ///< @deprecated in favor of MCUXCLXOF_SHAKE128_CONTEXT_SIZE_IN_WORDS
+#define MCUXCLHASH_CONTEXT_SIZE_SHA3_SHAKE_256_IN_WORDS          (368u / sizeof(uint32_t)) ///< @deprecated in favor of MCUXCLXOF_SHAKE256_CONTEXT_SIZE_IN_WORDS
+#define MCUXCLHASH_EXPORT_IMPORT_STATE_SIZE_SHA3                 (216u)     ///< Defines the state size required for all SHA3 variants
 /** @} */
 
 

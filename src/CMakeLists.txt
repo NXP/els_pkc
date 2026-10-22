@@ -319,8 +319,8 @@ if(CONFIG_MCUX_ELS_PKC_ENABLE_KEY_DERIVATION)
 endif()
 
 # SHA-3 hash modes and XOF (SHAKE) support, introduced in ELS_PKC v6.0.0.
-# Enabled by MCUXCL_FEATURE_HASH_C_SHA3 / MCUXCL_FEATURE_XOF_* on MCXN only.
-if(CONFIG_SOC_FAMILY_MCXN)
+# Pure software implementation, enabled on MCXN and RT700 / MIMXRT7xx.
+if(CONFIG_SOC_FAMILY_MCXN OR CONFIG_SOC_SERIES_IMXRT7XX OR CONFIG_SOC_SERIES_RW6XX)
     target_include_directories(
         McuxElsPkc
         PUBLIC

@@ -54,6 +54,30 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.mcxn)
     )
 endif()
 
+if (CONFIG_MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.mimxrt)
+    mcux_add_source(
+        SOURCES includes/platform/mimxrt/mcuxClMlDsa_MemoryConsumption.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/pqc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+                 includes/platform/mimxrt
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/pqc/
+    )
+endif()
+
+if (CONFIG_MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.rw61x)
+    mcux_add_source(
+        SOURCES includes/platform/rw61x/mcuxClMlDsa_MemoryConsumption.h
+                BASE_PATH ${SdkRootDirPath}/components/els_pkc/pqc/
+    )
+    mcux_add_include(
+        INCLUDES ./
+                 includes/platform/rw61x
+                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/pqc/
+    )
+endif()
+
 ########################
 #    Components        #
 ########################
@@ -103,15 +127,6 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc_pqc.mldsa)
                  src/comps/mcuxClMlDsa/inc/internal
                  BASE_PATH ${SdkRootDirPath}/components/els_pkc/pqc/
     )
-
-    # ML-DSA key generation uses mcuxClKey_generate_keypair(); add it here
-    # unless the key_derivation component already provides it.
-    if (NOT CONFIG_MCUX_COMPONENT_component.els_pkc.key_derivation)
-        mcux_add_source(
-            SOURCES src/comps/mcuxClKey/src/mcuxClKey_generate_keypair.c
-            BASE_PATH ${SdkRootDirPath}/components/els_pkc/
-        )
-    endif()
 endif()
 
 ########################

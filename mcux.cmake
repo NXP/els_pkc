@@ -1631,6 +1631,8 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.rw61x_inf_header_only)
                 includes/platform/rw61x/mcuxClRandomModes_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClRsa_MemoryConsumption.h
                 includes/platform/rw61x/mcuxClSession_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClSignature_MemoryConsumption.h
+                includes/platform/rw61x/mcuxClXofModes_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(
@@ -1721,6 +1723,7 @@ if (CONFIG_MCUX_COMPONENT_component.els_pkc.platform.mimxrt)
                 includes/platform/mimxrt/mcuxClRsa_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClSession_MemoryConsumption.h
                 includes/platform/mimxrt/mcuxClSignature_MemoryConsumption.h
+                includes/platform/mimxrt/mcuxClXofModes_MemoryConsumption.h
                 BASE_PATH ${SdkRootDirPath}/components/els_pkc/
     )
     mcux_add_include(

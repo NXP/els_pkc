@@ -10,7 +10,7 @@ config MCUX_COMPONENT_component.els_pkc_pqc
     # This is just an addon for the els_pkc component
     select MCUX_COMPONENT_component.els_pkc
     select MCUX_COMPONENT_component.els_pkc_pqc.mldsa
-    depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+    depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
     if MCUX_COMPONENT_component.els_pkc_pqc
       choice
@@ -19,6 +19,14 @@ config MCUX_COMPONENT_component.els_pkc_pqc
         config MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.mcxn
             bool "MCXN"
             depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+
+        config MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.mimxrt
+            bool "MIMXRT"
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT
+
+        config MCUX_COMPONENT_component.els_pkc_pqc.platform_pqc.rw61x
+            bool "RW61x"
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
       endchoice
     endif
 
@@ -43,7 +51,7 @@ config MCUX_COMPONENT_component.els_pkc_pqc
             select MCUX_COMPONENT_component.els_pkc.key
             select MCUX_COMPONENT_component.els_pkc.random
             select MCUX_COMPONENT_component.els_pkc.crc
-            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
     endmenu
 
     menu "Examples"
@@ -51,11 +59,11 @@ config MCUX_COMPONENT_component.els_pkc_pqc
             bool "Examples"
             select MCUX_COMPONENT_component.els_pkc.examples
             select MCUX_COMPONENT_component.els_pkc_pqc.examples_mldsa
-            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
 
         config MCUX_COMPONENT_component.els_pkc_pqc.examples_mldsa
             bool "MlDsa examples"
             select MCUX_COMPONENT_component.els_pkc_pqc.mldsa
-            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN
+            depends on MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MCXN || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.MIMXRT || MCUX_DEPENDENCY_COMPONENT_component.els_pkc.is_device.RW61X
     endmenu
 endmenu
